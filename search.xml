@@ -57,6 +57,161 @@
       </tags>
   </entry>
   <entry>
+    <title>ssh的使用笔记</title>
+    <url>/2022/01/30/ssh-note/</url>
+    <content><![CDATA[<h1 id="ssh参数详解"><a href="#ssh参数详解" class="headerlink" title="ssh参数详解"></a>ssh参数详解</h1><h2 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h2><table>
+<thead>
+<tr>
+<th>-b bind_address</th>
+<th>在本地主机上绑定用于ssh连接的地址，当系统有多个ip时才生效。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-E log_file</strong></td>
+<td><strong>将debug日志写入到log_file中，而不是默认的标准错误输出stderr。</strong></td>
+</tr>
+<tr>
+<td><strong>-F configfile</strong></td>
+<td><strong>指定用户配置文件，默认为~/.ssh/config。</strong></td>
+</tr>
+<tr>
+<td><strong>-f</strong></td>
+<td><strong>请求ssh在工作在后台模式。该选项隐含了”-n”选项，所以标准输入将变为/dev/null。</strong></td>
+</tr>
+<tr>
+<td><strong>-i identity_file</strong></td>
+<td><strong>指定公钥认证时要读取的私钥文件。默认为id_rsa。</strong></td>
+</tr>
+<tr>
+<td><strong>-l login_name</strong></td>
+<td><strong>指定登录在远程机器上的用户名。也可以在全局配置文件中设置。</strong></td>
+</tr>
+<tr>
+<td><strong>-N</strong></td>
+<td><strong>显式指明ssh不执行远程命令。一般用于端口转发，见后文端口转发的示例分析。</strong></td>
+</tr>
+<tr>
+<td><strong>-n</strong></td>
+<td><strong>将/dev/null作为标准输入stdin，可以防止从标准输入中读取内容。ssh在后台运行时默认该项。</strong></td>
+</tr>
+<tr>
+<td><strong>-p port</strong></td>
+<td><strong>指定目的端口，默认为22。</strong></td>
+</tr>
+<tr>
+<td><strong>-q</strong></td>
+<td><strong>静默模式。大多数警告信息将不输出。</strong></td>
+</tr>
+<tr>
+<td><strong>-T</strong></td>
+<td><strong>禁止为ssh分配伪终端。</strong></td>
+</tr>
+<tr>
+<td><strong>-t</strong></td>
+<td><strong>强制分配伪终端，重复使用该选项”-tt”将进一步强制。</strong></td>
+</tr>
+<tr>
+<td><strong>-v</strong></td>
+<td><strong>详细模式，将输出debug消息，可用于调试。”-vvv”可更详细。</strong></td>
+</tr>
+<tr>
+<td><strong>-V</strong></td>
+<td><strong>显示版本号并退出。</strong></td>
+</tr>
+<tr>
+<td><strong>-o</strong></td>
+<td><strong>指定额外选项，选项非常多。</strong></td>
+</tr>
+<tr>
+<td><strong>user@host</strong></td>
+<td><strong>指定登录远端主机的用户名。</strong></td>
+</tr>
+<tr>
+<td><strong>host</strong></td>
+<td><strong>如果本机用户名和需要登录的远端用户名一致，可省略用户名。</strong></td>
+</tr>
+</tbody></table>
+<h3 id="基本示例"><a href="#基本示例" class="headerlink" title="基本示例"></a>基本示例</h3><p>以172.16.10.6主机上的longshuai用户登录172.16.10.6</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh longshuai@172.16.10.6</span><br></pre></td></tr></table></figure>
+
+<p>使用ssh还可以实现主机跳转，即跳板功能。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh 172.16.10.6</span><br></pre></td></tr></table></figure>
+
+<h2 id="ssh-keygen"><a href="#ssh-keygen" class="headerlink" title="ssh-keygen"></a>ssh-keygen</h2><table>
+<thead>
+<tr>
+<th><strong>-b length</strong></th>
+<th><strong>指定密钥长度</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>-e file</strong></td>
+<td><strong>读取openssh的私钥或者公钥文件</strong></td>
+</tr>
+<tr>
+<td><strong>-C comment</strong></td>
+<td><strong>添加注释</strong></td>
+</tr>
+<tr>
+<td><strong>-f filename</strong></td>
+<td><strong>指定用来保存密钥的文件名</strong></td>
+</tr>
+<tr>
+<td><strong>-i file</strong></td>
+<td><strong>读取未加密的ssh-v2兼容的私钥/公钥文件，然后在标准输出设备上显示openssh兼容的私钥/公钥</strong></td>
+</tr>
+<tr>
+<td><strong>-I file</strong></td>
+<td><strong>显示公钥文件的指纹数据</strong></td>
+</tr>
+<tr>
+<td><strong>-N key</strong></td>
+<td><strong>提供一个新密语</strong></td>
+</tr>
+<tr>
+<td><strong>-P key</strong></td>
+<td><strong>提供（旧）密语</strong></td>
+</tr>
+<tr>
+<td><strong>-q</strong></td>
+<td><strong>静默模式</strong></td>
+</tr>
+<tr>
+<td><strong>-t type</strong></td>
+<td><strong>指定要创建的密钥类型</strong></td>
+</tr>
+</tbody></table>
+<p>默认在**~/.ssh<strong>目录下生成</strong>id_rsa<strong>和</strong>id_rsa.pub**文件</p>
+<table>
+<thead>
+<tr>
+<th><strong>id_rsa</strong></th>
+<th><strong>私钥文件</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>id_rsa.pub</strong></td>
+<td><strong>公钥文件</strong></td>
+</tr>
+<tr>
+<td><strong>known_hosts</strong></td>
+<td><strong>类似hosts文件，用于保存访问过的计算机的公钥，OpenSSH会自动进行核对</strong></td>
+</tr>
+</tbody></table>
+<p>多个<strong>SSH key</strong>的管理的情况需要指定秘钥文件名。</p>
+<h3 id="基本示例-1"><a href="#基本示例-1" class="headerlink" title="基本示例"></a>基本示例</h3><p>默认在 <strong>~/.ssh</strong>目录中生成<strong>SSH RSA</strong>公钥和私钥文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p>默认在 <strong>~/.ssh</strong>目录中生成4096位<strong>SSH RSA</strong>公钥和私钥文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -m PEM -t rsa -b 4096</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>ssh</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>使用Hexo搭建Blog</title>
     <url>/2022/01/30/hexo-blog/</url>
     <content><![CDATA[<h2 id="hexo环境"><a href="#hexo环境" class="headerlink" title="hexo环境"></a>hexo环境</h2><ul>
@@ -578,161 +733,6 @@
       <tags>
         <tag>note</tag>
         <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>ssh的使用笔记</title>
-    <url>/2022/01/30/ssh-note/</url>
-    <content><![CDATA[<h1 id="ssh参数详解"><a href="#ssh参数详解" class="headerlink" title="ssh参数详解"></a>ssh参数详解</h1><h2 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h2><table>
-<thead>
-<tr>
-<th>-b bind_address</th>
-<th>在本地主机上绑定用于ssh连接的地址，当系统有多个ip时才生效。</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>-E log_file</strong></td>
-<td><strong>将debug日志写入到log_file中，而不是默认的标准错误输出stderr。</strong></td>
-</tr>
-<tr>
-<td><strong>-F configfile</strong></td>
-<td><strong>指定用户配置文件，默认为~/.ssh/config。</strong></td>
-</tr>
-<tr>
-<td><strong>-f</strong></td>
-<td><strong>请求ssh在工作在后台模式。该选项隐含了”-n”选项，所以标准输入将变为/dev/null。</strong></td>
-</tr>
-<tr>
-<td><strong>-i identity_file</strong></td>
-<td><strong>指定公钥认证时要读取的私钥文件。默认为id_rsa。</strong></td>
-</tr>
-<tr>
-<td><strong>-l login_name</strong></td>
-<td><strong>指定登录在远程机器上的用户名。也可以在全局配置文件中设置。</strong></td>
-</tr>
-<tr>
-<td><strong>-N</strong></td>
-<td><strong>显式指明ssh不执行远程命令。一般用于端口转发，见后文端口转发的示例分析。</strong></td>
-</tr>
-<tr>
-<td><strong>-n</strong></td>
-<td><strong>将/dev/null作为标准输入stdin，可以防止从标准输入中读取内容。ssh在后台运行时默认该项。</strong></td>
-</tr>
-<tr>
-<td><strong>-p port</strong></td>
-<td><strong>指定目的端口，默认为22。</strong></td>
-</tr>
-<tr>
-<td><strong>-q</strong></td>
-<td><strong>静默模式。大多数警告信息将不输出。</strong></td>
-</tr>
-<tr>
-<td><strong>-T</strong></td>
-<td><strong>禁止为ssh分配伪终端。</strong></td>
-</tr>
-<tr>
-<td><strong>-t</strong></td>
-<td><strong>强制分配伪终端，重复使用该选项”-tt”将进一步强制。</strong></td>
-</tr>
-<tr>
-<td><strong>-v</strong></td>
-<td><strong>详细模式，将输出debug消息，可用于调试。”-vvv”可更详细。</strong></td>
-</tr>
-<tr>
-<td><strong>-V</strong></td>
-<td><strong>显示版本号并退出。</strong></td>
-</tr>
-<tr>
-<td><strong>-o</strong></td>
-<td><strong>指定额外选项，选项非常多。</strong></td>
-</tr>
-<tr>
-<td><strong>user@host</strong></td>
-<td><strong>指定登录远端主机的用户名。</strong></td>
-</tr>
-<tr>
-<td><strong>host</strong></td>
-<td><strong>如果本机用户名和需要登录的远端用户名一致，可省略用户名。</strong></td>
-</tr>
-</tbody></table>
-<h3 id="基本示例"><a href="#基本示例" class="headerlink" title="基本示例"></a>基本示例</h3><p>以172.16.10.6主机上的longshuai用户登录172.16.10.6</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh longshuai@172.16.10.6</span><br></pre></td></tr></table></figure>
-
-<p>使用ssh还可以实现主机跳转，即跳板功能。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh 172.16.10.6</span><br></pre></td></tr></table></figure>
-
-<h2 id="ssh-keygen"><a href="#ssh-keygen" class="headerlink" title="ssh-keygen"></a>ssh-keygen</h2><table>
-<thead>
-<tr>
-<th><strong>-b length</strong></th>
-<th><strong>指定密钥长度</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>-e file</strong></td>
-<td><strong>读取openssh的私钥或者公钥文件</strong></td>
-</tr>
-<tr>
-<td><strong>-C comment</strong></td>
-<td><strong>添加注释</strong></td>
-</tr>
-<tr>
-<td><strong>-f filename</strong></td>
-<td><strong>指定用来保存密钥的文件名</strong></td>
-</tr>
-<tr>
-<td><strong>-i file</strong></td>
-<td><strong>读取未加密的ssh-v2兼容的私钥/公钥文件，然后在标准输出设备上显示openssh兼容的私钥/公钥</strong></td>
-</tr>
-<tr>
-<td><strong>-I file</strong></td>
-<td><strong>显示公钥文件的指纹数据</strong></td>
-</tr>
-<tr>
-<td><strong>-N key</strong></td>
-<td><strong>提供一个新密语</strong></td>
-</tr>
-<tr>
-<td><strong>-P key</strong></td>
-<td><strong>提供（旧）密语</strong></td>
-</tr>
-<tr>
-<td><strong>-q</strong></td>
-<td><strong>静默模式</strong></td>
-</tr>
-<tr>
-<td><strong>-t type</strong></td>
-<td><strong>指定要创建的密钥类型</strong></td>
-</tr>
-</tbody></table>
-<p>默认在**~/.ssh<strong>目录下生成</strong>id_rsa<strong>和</strong>id_rsa.pub**文件</p>
-<table>
-<thead>
-<tr>
-<th><strong>id_rsa</strong></th>
-<th><strong>私钥文件</strong></th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>id_rsa.pub</strong></td>
-<td><strong>公钥文件</strong></td>
-</tr>
-<tr>
-<td><strong>known_hosts</strong></td>
-<td><strong>类似hosts文件，用于保存访问过的计算机的公钥，OpenSSH会自动进行核对</strong></td>
-</tr>
-</tbody></table>
-<p>多个<strong>SSH key</strong>的管理的情况需要指定秘钥文件名。</p>
-<h3 id="基本示例-1"><a href="#基本示例-1" class="headerlink" title="基本示例"></a>基本示例</h3><p>默认在 <strong>~/.ssh</strong>目录中生成<strong>SSH RSA</strong>公钥和私钥文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-
-<p>默认在 <strong>~/.ssh</strong>目录中生成4096位<strong>SSH RSA</strong>公钥和私钥文件。</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -m PEM -t rsa -b 4096</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>note</tag>
-        <tag>ssh</tag>
       </tags>
   </entry>
 </search>
