@@ -142,8 +142,8 @@
 <li><p><strong>Git</strong></p>
 <p>Git 需要绑定好 Github 的账号与邮箱，并能够建立连接</p>
 <blockquote>
-<p><a href="git-note.md#Git%E7%9A%84User%E9%85%8D%E7%BD%AE">绑定账号与邮箱</a></p>
-<p><a href="git-note.md#%E4%BD%BF%E7%94%A8SSH%E6%96%B9%E5%BC%8F%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5Github">Git使用SSH与Github建立远程连接</a></p>
+<p><a href="/git-note.html/#Git%E7%9A%84User%E9%85%8D%E7%BD%AE">绑定账号与邮箱</a></p>
+<p><a href="/git-note.html/#%E4%BD%BF%E7%94%A8SSH%E6%96%B9%E5%BC%8F%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5Github">Git使用SSH与Github建立远程连接</a></p>
 </blockquote>
 </li>
 <li><p><strong>Node.js</strong></p>
