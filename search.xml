@@ -97,7 +97,7 @@
       </tags>
   </entry>
   <entry>
-    <title>hexo-plugins-note</title>
+    <title>hexo 插件笔记</title>
     <url>//hexo-plugins-note.html</url>
     <content><![CDATA[<h2 id="hexo-插件-hexo-word-counter"><a href="#hexo-插件-hexo-word-counter" class="headerlink" title="hexo 插件 - hexo-word-counter"></a>hexo 插件 - <code>hexo-word-counter</code></h2><ul>
 <li><p><strong>安装指令</strong></p>
@@ -234,9 +234,9 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean					<span class="comment"># 清除缓存</span></span><br><span class="line">hexo g -d					<span class="comment"># 重新生成并部署</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>了解 NexT 主题的更多信息可以使用<a href="next-note.md">NexT 笔记</a></p>
+<p>了解 NexT 主题的更多信息可以使用<a href="/next-note.html">NexT 笔记</a></p>
 </blockquote>
-<h2 id="hexo-博文插入图片"><a href="#hexo-博文插入图片" class="headerlink" title="hexo 博文插入图片"></a>hexo 博文插入图片</h2><p>更改hexo配置文件(博客根目录下的**<code>_config.yml</code>**文件)中的[**<code>Writing</code>**配置项](#文章 - Writing)</p>
+<h2 id="hexo-博文插入图片"><a href="#hexo-博文插入图片" class="headerlink" title="hexo 博文插入图片"></a>hexo 博文插入图片</h2><p>更改hexo配置文件 (<code>next/_config.yml</code>) 中的[**<code>Writing</code>**配置项](#文章 - Writing)</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
