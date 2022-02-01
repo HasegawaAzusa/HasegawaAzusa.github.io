@@ -18,6 +18,8 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
 <meta name="description" content="NexT 配置文件、插件及服务的小小笔记">
@@ -28,8 +30,22 @@
 <meta property="og:description" content="NexT 配置文件、插件及服务的小小笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="d:/HexoBlog/blog/source_posts/next-note.assets/image-20220130133846711.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Minimal.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Flash.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Barber%20Shop.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Mac%20OSX.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Fill%20Left.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Flat%20Top.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Big%20Counter.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Corner%20Indicator.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Bounce.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Loading%20Bar.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Center%20Circle.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Center%20Atom.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Center%20Radar.png">
+<meta property="og:image" content="d:/HexoBlog/blog/source/_posts/next-note.assets/Center%20Simple.png">
 <meta property="article:published_time" content="2022-01-30T11:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-01T13:19:32.608Z">
+<meta property="article:modified_time" content="2022-02-01T14:01:51.456Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="hexo">
@@ -150,7 +166,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT-%E6%8A%80%E5%B7%A7"><span class="nav-number">1.</span> <span class="nav-text">NexT 技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%85%E8%AF%BB%E5%85%A8%E6%96%87-Read-More"><span class="nav-number">1.1.</span> <span class="nav-text">阅读全文 - Read More</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT-%E6%9C%8D%E5%8A%A1%E3%80%81%E6%8F%92%E4%BB%B6%E9%85%8D%E7%BD%AE-Adding-Plugins"><span class="nav-number">2.</span> <span class="nav-text">NexT 服务、插件配置 - Adding Plugins</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT-%E5%8D%9A%E6%96%87%E5%A4%B4-Front-matter"><span class="nav-number">3.</span> <span class="nav-text">NexT 博文头 - Front-matter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT-%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">NexT 主题配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E8%AE%BE%E7%BD%AE-Cache-Support"><span class="nav-number">4.1.</span> <span class="nav-text">缓存设置 - Cache Support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%8C%96%E7%94%9F%E6%88%90%E8%AE%BE%E7%BD%AE-Minify-Support"><span class="nav-number">4.2.</span> <span class="nav-text">最小化生成设置 - Minify Support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E7%89%88%E6%96%B9%E6%A1%88%E8%AE%BE%E7%BD%AE-Choosing-Scheme"><span class="nav-number">4.3.</span> <span class="nav-text">排版方案设置 - Choosing Scheme</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%91%E5%A4%9C%E6%A8%A1%E5%BC%8F-Dark-Mode"><span class="nav-number">4.4.</span> <span class="nav-text">黑夜模式 - Dark Mode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E5%9B%BE%E6%A0%87%E9%85%8D%E7%BD%AE-Configuring-Favicon"><span class="nav-number">4.5.</span> <span class="nav-text">网站图标配置 - Configuring Favicon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-Logo-%E8%AE%BE%E7%BD%AE-Custom-Logo-Support"><span class="nav-number">4.6.</span> <span class="nav-text">自定义 Logo 设置 - Custom Logo Support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9D%83%E5%8D%8F%E8%AE%AE%E9%85%8D%E7%BD%AE-Creative-Commons"><span class="nav-number">4.7.</span> <span class="nav-text">版权协议配置 - Creative Commons</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8F%9C%E5%8D%95%E3%80%81%E5%88%86%E7%B1%BB%E9%A1%B5%E9%85%8D%E7%BD%AE-Configuring-Menu-Items"><span class="nav-number">4.8.</span> <span class="nav-text">菜单、分类页配置 - Configuring Menu Items</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E6%A0%B7%E5%BC%8F-Sidebar-Style"><span class="nav-number">4.9.</span> <span class="nav-text">侧边栏样式 - Sidebar Style</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E5%A4%B4%E5%83%8F%E8%AE%BE%E7%BD%AE-Configuring-Avatar"><span class="nav-number">4.10.</span> <span class="nav-text">侧边栏头像设置 - Configuring Avatar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%BD%91%E7%AB%99%E7%8A%B6%E6%80%81-Sidebar-Site-State"><span class="nav-number">4.11.</span> <span class="nav-text">侧边栏网站状态 - Sidebar Site State</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%A4%BE%E4%BA%A4%E9%93%BE%E6%8E%A5-Sidebar-Social-Links"><span class="nav-number">4.12.</span> <span class="nav-text">侧边栏社交链接 - Sidebar Social Links</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F-Blogrolls-%E9%85%8D%E7%BD%AE-Sidebar-Blogrolls"><span class="nav-number">4.13.</span> <span class="nav-text">侧边栏 Blogrolls 配置 - Sidebar Blogrolls</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95-Sidebar-TOC-Table-of-Contents"><span class="nav-number">4.14.</span> <span class="nav-text">侧边栏文章目录 - Sidebar TOC (Table of Contents)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5%E8%84%9A%E9%85%8D%E7%BD%AE-Site-Footer-Setting"><span class="nav-number">4.15.</span> <span class="nav-text">页脚配置 - Site Footer Setting</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E5%BC%80%E5%A7%8B%E6%97%B6%E9%97%B4-Site-Start-Time"><span class="nav-number">4.15.1.</span> <span class="nav-text">网站开始时间 - Site Start Time</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B5%E8%84%9A%E5%9B%BE%E6%A0%87-Site-Footer-Icon"><span class="nav-number">4.15.2.</span> <span class="nav-text">页脚图标 - Site Footer Icon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E7%89%88%E6%9D%83%E5%90%8D%E7%A7%B0-Site-Copyright-Name"><span class="nav-number">4.15.3.</span> <span class="nav-text">网站版权名称 - Site Copyright Name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E5%B9%B3%E5%8F%B0%E4%BF%A1%E6%81%AF-Site-Platform-Information"><span class="nav-number">4.15.4.</span> <span class="nav-text">网站平台信息 - Site Platform Information</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E5%A4%87%E6%A1%88%E4%BF%A1%E6%81%AF-Site-Beian-Information"><span class="nav-number">4.15.5.</span> <span class="nav-text">网站备案信息 - Site Beian Information</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E6%96%87%E6%91%98%E8%A6%81%E9%85%8D%E7%BD%AE-Preamble-Text"><span class="nav-number">4.16.</span> <span class="nav-text">博文摘要配置 - Preamble Text</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E4%BF%A1%E6%81%AF%E9%85%8D%E7%BD%AE-Post-Meta-Display"><span class="nav-number">4.17.</span> <span class="nav-text">发布信息配置 - Post Meta Display</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AB%E6%A0%87%E7%AD%BE%E5%9B%BE%E6%A0%87-Tag-Icon"><span class="nav-number">4.18.</span> <span class="nav-text">文末标签图标 - Tag Icon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%90%E8%B5%A0%E9%93%BE%E6%8E%A5%E9%85%8D%E7%BD%AE-Donate-Settings"><span class="nav-number">4.19.</span> <span class="nav-text">捐赠链接配置 - Donate Settings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E6%B3%A8-Follow-Me"><span class="nav-number">4.20.</span> <span class="nav-text">关注 - Follow Me</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E6%96%87%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE-Post-Edit"><span class="nav-number">4.21.</span> <span class="nav-text">博文编辑配置 - Post Edit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E6%96%87%E5%AF%BC%E8%88%AA%E9%85%8D%E7%BD%AE-Post-Navigation"><span class="nav-number">4.22.</span> <span class="nav-text">博文导航配置 - Post Navigation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CDN%E9%85%8D%E7%BD%AE-Preconnect"><span class="nav-number">4.23.</span> <span class="nav-text">CDN配置 - Preconnect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F-Text-Align"><span class="nav-number">4.24.</span> <span class="nav-text">文本对齐方式 - Text Align</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D-Mobile-Devices-Adaptation"><span class="nav-number">4.25.</span> <span class="nav-text">移动端适配 - Mobile Devices Adaptation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E9%A2%98%E9%A2%9C%E8%89%B2-Theme-Color"><span class="nav-number">4.26.</span> <span class="nav-text">主题颜色 - Theme Color</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E6%96%87%E6%BB%9A%E5%8A%A8%E6%9D%A1-Body-Scrollbar"><span class="nav-number">4.27.</span> <span class="nav-text">正文滚动条 - Body Scrollbar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%A0%B7%E5%BC%8F-Codeblock-Style"><span class="nav-number">4.28.</span> <span class="nav-text">代码样式 - Codeblock Style</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%9B%9E%E9%A1%B6-Back-To-Top"><span class="nav-number">4.29.</span> <span class="nav-text">快速回顶 - Back To Top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%85%E8%AF%BB%E8%BF%9B%E5%BA%A6-Reading-Progress"><span class="nav-number">4.30.</span> <span class="nav-text">阅读进度 - Reading Progress</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%A6%E7%AD%BE-Bookmark"><span class="nav-number">4.31.</span> <span class="nav-text">书签 - Bookmark</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E4%BD%93%E9%85%8D%E7%BD%AE-Fonts-Customization"><span class="nav-number">4.32.</span> <span class="nav-text">字体配置 - Fonts Customization</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT-%E6%8A%80%E5%B7%A7"><span class="nav-number">1.</span> <span class="nav-text">NexT 技巧</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%85%E8%AF%BB%E5%85%A8%E6%96%87-Read-More"><span class="nav-number">1.1.</span> <span class="nav-text">阅读全文 - Read More</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E5%BA%A6%E6%9D%A1-Pace"><span class="nav-number">1.2.</span> <span class="nav-text">进度条 - Pace</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT-%E6%9C%8D%E5%8A%A1%E3%80%81%E6%8F%92%E4%BB%B6%E9%85%8D%E7%BD%AE-Adding-Plugins"><span class="nav-number">2.</span> <span class="nav-text">NexT 服务、插件配置 - Adding Plugins</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT-%E5%8D%9A%E6%96%87%E5%A4%B4-Front-matter"><span class="nav-number">3.</span> <span class="nav-text">NexT 博文头 - Front-matter</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NexT-%E4%B8%BB%E9%A2%98%E9%85%8D%E7%BD%AE"><span class="nav-number">4.</span> <span class="nav-text">NexT 主题配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%93%E5%AD%98%E8%AE%BE%E7%BD%AE-Cache-Support"><span class="nav-number">4.1.</span> <span class="nav-text">缓存设置 - Cache Support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E5%8C%96%E7%94%9F%E6%88%90%E8%AE%BE%E7%BD%AE-Minify-Support"><span class="nav-number">4.2.</span> <span class="nav-text">最小化生成设置 - Minify Support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%92%E7%89%88%E6%96%B9%E6%A1%88%E8%AE%BE%E7%BD%AE-Choosing-Scheme"><span class="nav-number">4.3.</span> <span class="nav-text">排版方案设置 - Choosing Scheme</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BB%91%E5%A4%9C%E6%A8%A1%E5%BC%8F-Dark-Mode"><span class="nav-number">4.4.</span> <span class="nav-text">黑夜模式 - Dark Mode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E5%9B%BE%E6%A0%87%E9%85%8D%E7%BD%AE-Configuring-Favicon"><span class="nav-number">4.5.</span> <span class="nav-text">网站图标配置 - Configuring Favicon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-Logo-%E8%AE%BE%E7%BD%AE-Custom-Logo-Support"><span class="nav-number">4.6.</span> <span class="nav-text">自定义 Logo 设置 - Custom Logo Support</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%88%E6%9D%83%E5%8D%8F%E8%AE%AE%E9%85%8D%E7%BD%AE-Creative-Commons"><span class="nav-number">4.7.</span> <span class="nav-text">版权协议配置 - Creative Commons</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%8F%9C%E5%8D%95%E3%80%81%E5%88%86%E7%B1%BB%E9%A1%B5%E9%85%8D%E7%BD%AE-Configuring-Menu-Items"><span class="nav-number">4.8.</span> <span class="nav-text">菜单、分类页配置 - Configuring Menu Items</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E6%A0%B7%E5%BC%8F-Sidebar-Style"><span class="nav-number">4.9.</span> <span class="nav-text">侧边栏样式 - Sidebar Style</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E5%A4%B4%E5%83%8F%E8%AE%BE%E7%BD%AE-Configuring-Avatar"><span class="nav-number">4.10.</span> <span class="nav-text">侧边栏头像设置 - Configuring Avatar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%BD%91%E7%AB%99%E7%8A%B6%E6%80%81-Sidebar-Site-State"><span class="nav-number">4.11.</span> <span class="nav-text">侧边栏网站状态 - Sidebar Site State</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E7%A4%BE%E4%BA%A4%E9%93%BE%E6%8E%A5-Sidebar-Social-Links"><span class="nav-number">4.12.</span> <span class="nav-text">侧边栏社交链接 - Sidebar Social Links</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F-Blogrolls-%E9%85%8D%E7%BD%AE-Sidebar-Blogrolls"><span class="nav-number">4.13.</span> <span class="nav-text">侧边栏 Blogrolls 配置 - Sidebar Blogrolls</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%A7%E8%BE%B9%E6%A0%8F%E6%96%87%E7%AB%A0%E7%9B%AE%E5%BD%95-Sidebar-TOC-Table-of-Contents"><span class="nav-number">4.14.</span> <span class="nav-text">侧边栏文章目录 - Sidebar TOC (Table of Contents)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A1%B5%E8%84%9A%E9%85%8D%E7%BD%AE-Site-Footer-Setting"><span class="nav-number">4.15.</span> <span class="nav-text">页脚配置 - Site Footer Setting</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E5%BC%80%E5%A7%8B%E6%97%B6%E9%97%B4-Site-Start-Time"><span class="nav-number">4.15.1.</span> <span class="nav-text">网站开始时间 - Site Start Time</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B5%E8%84%9A%E5%9B%BE%E6%A0%87-Site-Footer-Icon"><span class="nav-number">4.15.2.</span> <span class="nav-text">页脚图标 - Site Footer Icon</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E7%89%88%E6%9D%83%E5%90%8D%E7%A7%B0-Site-Copyright-Name"><span class="nav-number">4.15.3.</span> <span class="nav-text">网站版权名称 - Site Copyright Name</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E5%B9%B3%E5%8F%B0%E4%BF%A1%E6%81%AF-Site-Platform-Information"><span class="nav-number">4.15.4.</span> <span class="nav-text">网站平台信息 - Site Platform Information</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%AB%99%E5%A4%87%E6%A1%88%E4%BF%A1%E6%81%AF-Site-Beian-Information"><span class="nav-number">4.15.5.</span> <span class="nav-text">网站备案信息 - Site Beian Information</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E6%96%87%E6%91%98%E8%A6%81%E9%85%8D%E7%BD%AE-Preamble-Text"><span class="nav-number">4.16.</span> <span class="nav-text">博文摘要配置 - Preamble Text</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%91%E5%B8%83%E4%BF%A1%E6%81%AF%E9%85%8D%E7%BD%AE-Post-Meta-Display"><span class="nav-number">4.17.</span> <span class="nav-text">发布信息配置 - Post Meta Display</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AB%E6%A0%87%E7%AD%BE%E5%9B%BE%E6%A0%87-Tag-Icon"><span class="nav-number">4.18.</span> <span class="nav-text">文末标签图标 - Tag Icon</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8D%90%E8%B5%A0%E9%93%BE%E6%8E%A5%E9%85%8D%E7%BD%AE-Donate-Settings"><span class="nav-number">4.19.</span> <span class="nav-text">捐赠链接配置 - Donate Settings</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B3%E6%B3%A8-Follow-Me"><span class="nav-number">4.20.</span> <span class="nav-text">关注 - Follow Me</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E6%96%87%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE-Post-Edit"><span class="nav-number">4.21.</span> <span class="nav-text">博文编辑配置 - Post Edit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%9A%E6%96%87%E5%AF%BC%E8%88%AA%E9%85%8D%E7%BD%AE-Post-Navigation"><span class="nav-number">4.22.</span> <span class="nav-text">博文导航配置 - Post Navigation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CDN%E9%85%8D%E7%BD%AE-Preconnect"><span class="nav-number">4.23.</span> <span class="nav-text">CDN配置 - Preconnect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E6%9C%AC%E5%AF%B9%E9%BD%90%E6%96%B9%E5%BC%8F-Text-Align"><span class="nav-number">4.24.</span> <span class="nav-text">文本对齐方式 - Text Align</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A7%BB%E5%8A%A8%E7%AB%AF%E9%80%82%E9%85%8D-Mobile-Devices-Adaptation"><span class="nav-number">4.25.</span> <span class="nav-text">移动端适配 - Mobile Devices Adaptation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E9%A2%98%E9%A2%9C%E8%89%B2-Theme-Color"><span class="nav-number">4.26.</span> <span class="nav-text">主题颜色 - Theme Color</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E6%96%87%E6%BB%9A%E5%8A%A8%E6%9D%A1-Body-Scrollbar"><span class="nav-number">4.27.</span> <span class="nav-text">正文滚动条 - Body Scrollbar</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E6%A0%B7%E5%BC%8F-Codeblock-Style"><span class="nav-number">4.28.</span> <span class="nav-text">代码样式 - Codeblock Style</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BF%AB%E9%80%9F%E5%9B%9E%E9%A1%B6-Back-To-Top"><span class="nav-number">4.29.</span> <span class="nav-text">快速回顶 - Back To Top</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%85%E8%AF%BB%E8%BF%9B%E5%BA%A6-Reading-Progress"><span class="nav-number">4.30.</span> <span class="nav-text">阅读进度 - Reading Progress</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B9%A6%E7%AD%BE-Bookmark"><span class="nav-number">4.31.</span> <span class="nav-text">书签 - Bookmark</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%97%E4%BD%93%E9%85%8D%E7%BD%AE-Fonts-Customization"><span class="nav-number">4.32.</span> <span class="nav-text">字体配置 - Fonts Customization</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -244,13 +260,6 @@
 
       <time title="创建时间：2022-01-30 19:00:00" itemprop="dateCreated datePublished" datetime="2022-01-30T19:00:00+08:00">2022-01-30</time>
     </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-02-01 21:19:32" itemprop="dateModified" datetime="2022-02-01T21:19:32+08:00">2022-02-01</time>
-    </span>
 
   
     <span class="post-meta-break"></span>
@@ -259,7 +268,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>7.4k</span>
+      <span>7.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -284,10 +293,85 @@
 <blockquote>
 <p>注意：如果该方法会被[博文摘要配置 - Preamble Text](#博文摘要配置 - Preamble Text)覆盖</p>
 </blockquote>
-<h1 id="NexT-服务、插件配置-Adding-Plugins"><a href="#NexT-服务、插件配置-Adding-Plugins" class="headerlink" title="NexT 服务、插件配置 - Adding Plugins"></a>NexT 服务、插件配置 - Adding Plugins</h1><p>可以使用以下进行插件的获取与配置</p>
+<h2 id="进度条-Pace"><a href="#进度条-Pace" class="headerlink" title="进度条 - Pace"></a>进度条 - Pace</h2><ul>
+<li><p><strong>NexT 配置</strong></p>
+<ul>
+<li><p><code>color</code> → 进度条的颜色 (英文单词)</p>
+</li>
+<li><p><code>theme</code> → 主题配置 (<a target="_blank" rel="noopener" href="https://codebyzach.github.io/pace/">themes</a>)</p>
+<table>
+<thead>
+<tr>
+<th>theme name</th>
+<th>theme effect</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Minimal</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Minimal.png" alt="Minimal" style="zoom: 67%;" /></td>
+</tr>
+<tr>
+<td>Flash</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Flash.png" alt="Flash" style="zoom: 67%;" /></td>
+</tr>
+<tr>
+<td>Barber Shop</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Barber Shop.png" alt="Barber Shop" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Mac OSX</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Mac OSX.png" alt="Mac OSX" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Fill Left</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Fill Left.png" alt="Fill Left" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Flat Top</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Flat Top.png" alt="Flat Top" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Big Counter</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Big Counter.png" alt="Big Counter" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Corner Indicator</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Corner Indicator.png" alt="Corner Indicator" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Bounce</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Bounce.png" alt="Bounce" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Loading Bar</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Loading Bar.png" alt="Loading Bar" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Center Circle</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Center Circle.png" alt="Center Circle" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Center Atom</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Center Atom.png" alt="Center Atom" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Center Radar</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Center Radar.png" alt="Center Radar" style="zoom:67%;" /></td>
+</tr>
+<tr>
+<td>Center Simple</td>
+<td><img src="D:\HexoBlog\blog\source\_posts\next-note.assets\Center Simple.png" alt="Center Simple" style="zoom:67%;" /></td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">pace:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># All available colors:</span></span><br><span class="line">  <span class="comment"># black | blue | green | orange | pink | purple | red | silver | white | yellow</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">blue</span></span><br><span class="line">  <span class="comment"># All available themes:</span></span><br><span class="line">  <span class="comment"># big-counter | bounce | barber-shop | center-atom | center-circle | center-radar | center-simple | corner-indicator | fill-left | flat-top | flash | loading-bar | mac-osx | material | minimal</span></span><br><span class="line">  <span class="attr">theme:</span> <span class="string">minimal</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="NexT-服务、插件配置-Adding-Plugins"><a href="#NexT-服务、插件配置-Adding-Plugins" class="headerlink" title="NexT 服务、插件配置 - Adding Plugins"></a>NexT 服务、插件配置 - Adding Plugins</h1><p>可以使用以下了解插件</p>
 <ul>
 <li>第三方服务 <a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/third-party-services/">https://theme-next.js.org/docs/third-party-services/</a></li>
 <li>Tag 插件（更合适的排版样式） <a target="_blank" rel="noopener" href="https://theme-next.js.org/docs/tag-plugins/">https://theme-next.js.org/docs/tag-plugins/</a></li>
+<li><a href="/hexo-plugins-note.html">本站</a></li>
 </ul>
 <h1 id="NexT-博文头-Front-matter"><a href="#NexT-博文头-Front-matter" class="headerlink" title="NexT 博文头 - Front-matter"></a>NexT 博文头 - Front-matter</h1><table>
 <thead>
@@ -625,13 +709,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/ssh-note.html" rel="prev" title="ssh的使用笔记">
-                  <i class="fa fa-chevron-left"></i> ssh的使用笔记
+                <a href="/hgame/ezrsa.html" rel="prev" title="hgame-ezrsa">
+                  <i class="fa fa-chevron-left"></i> hgame-ezrsa
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/hexo-plugins-note.html" rel="next" title="hexo 插件笔记">
-                  hexo 插件笔记 <i class="fa fa-chevron-right"></i>
+                <a href="/ssh-note.html" rel="next" title="ssh的使用笔记">
+                  ssh的使用笔记 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -664,13 +748,15 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">18k</span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">19k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">16 分钟</span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">17 分钟</span>
   </span>
 </div>
 
@@ -688,6 +774,7 @@
 
 
 
+  <script src="/js/third-party/pace.js"></script>
 
   
 
