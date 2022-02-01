@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Git的使用笔记</title>
+    <url>//git-note.html</url>
+    <content><![CDATA[<h1 id="Git的使用"><a href="#Git的使用" class="headerlink" title="Git的使用"></a>Git的使用</h1><h2 id="Git的User配置"><a href="#Git的User配置" class="headerlink" title="Git的User配置"></a>Git的User配置</h2><p>打开<strong>Git Bash</strong>(使用命令行也可以)</p>
+<p>配置全局**<code>name</code>**</p>
+<blockquote>
+<p><strong>Github</strong>用户名</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name name</span><br></pre></td></tr></table></figure>
+
+<p>配置全局**<code>email</code>**</p>
+<blockquote>
+<p><strong>Github</strong>邮箱</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.email email</span><br></pre></td></tr></table></figure>
+
+<p>以我的Github账户为例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name HasegawaAzusa</span><br><span class="line">git config --global user.email xxx@qq.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用SSH方式远程连接Github"><a href="#使用SSH方式远程连接Github" class="headerlink" title="使用SSH方式远程连接Github"></a>使用SSH方式远程连接Github</h2><p>打开<strong>Git Bash</strong>(使用命令行也可以)</p>
+<p>先在本地生成对应邮箱的<strong>SSH RSA公钥密钥</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
+
+<p>使用<strong>默认生成路径</strong>，<strong>默认空key</strong></p>
+<p>前往**<code>~/.ssh</code><strong>目录下寻找密钥（其中默认</strong><code>id_rsa</code><strong>是密钥信息，</strong><code>id_rsa.pub</code>**为公钥信息）</p>
+<p>在<strong>Github</strong>中新建<strong>SSH keys(Github - Settings - SSH and GPG keys - New SSH key)</strong></p>
+<p><strong><code>Title</code><strong>任意，</strong><code>Key</code><strong>填入</strong>公钥信息</strong>(**<code>id_rsa.pub</code>**文件内容)</p>
+<p><img src="D:\HexoBlog\blog\source_posts\git-note.assets\image-20220126185216302.png" alt="image-20220126185216302"></p>
+<p>输入以下，验证是否连接成功</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
+
+<p>成功结果如下</p>
+<p><img src="D:\HexoBlog\blog\source_posts\git-note.assets\image-20220126185530728.png" alt="image-20220126185530728"></p>
+<blockquote>
+<p><a href="ssh%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.md">ssh-keygen参数详解</a></p>
+<p><a href="ssh%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.md">ssh参数详解</a></p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>git</tag>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>有关条形码的认识</title>
     <url>//barcode-note.html</url>
     <content><![CDATA[<h1 id="条形码分类"><a href="#条形码分类" class="headerlink" title="条形码分类"></a>条形码分类</h1><h2 id="UPC-条形码（统一产品代码）"><a href="#UPC-条形码（统一产品代码）" class="headerlink" title="UPC 条形码（统一产品代码）"></a>UPC 条形码（统一产品代码）</h2><p><img src="data:image/png;base64,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" alt="UPC-A"></p>
@@ -49,90 +92,8 @@
 </ul>
 ]]></content>
       <tags>
+        <tag>note</tag>
         <tag>barcode</tag>
-        <tag>note</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git的使用笔记</title>
-    <url>//git-note.html</url>
-    <content><![CDATA[<h1 id="Git的使用"><a href="#Git的使用" class="headerlink" title="Git的使用"></a>Git的使用</h1><h2 id="Git的User配置"><a href="#Git的User配置" class="headerlink" title="Git的User配置"></a>Git的User配置</h2><p>打开<strong>Git Bash</strong>(使用命令行也可以)</p>
-<p>配置全局**<code>name</code>**</p>
-<blockquote>
-<p><strong>Github</strong>用户名</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name name</span><br></pre></td></tr></table></figure>
-
-<p>配置全局**<code>email</code>**</p>
-<blockquote>
-<p><strong>Github</strong>邮箱</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.email email</span><br></pre></td></tr></table></figure>
-
-<p>以我的Github账户为例：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name HasegawaAzusa</span><br><span class="line">git config --global user.email xxx@qq.com</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用SSH方式远程连接Github"><a href="#使用SSH方式远程连接Github" class="headerlink" title="使用SSH方式远程连接Github"></a>使用SSH方式远程连接Github</h2><p>打开<strong>Git Bash</strong>(使用命令行也可以)</p>
-<p>先在本地生成对应邮箱的<strong>SSH RSA公钥密钥</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-
-<p>使用<strong>默认生成路径</strong>，<strong>默认空key</strong></p>
-<p>前往**<code>~/.ssh</code><strong>目录下寻找密钥（其中默认</strong><code>id_rsa</code><strong>是密钥信息，</strong><code>id_rsa.pub</code>**为公钥信息）</p>
-<p>在<strong>Github</strong>中新建<strong>SSH keys(Github - Settings - SSH and GPG keys - New SSH key)</strong></p>
-<p><strong><code>Title</code><strong>任意，</strong><code>Key</code><strong>填入</strong>公钥信息</strong>(**<code>id_rsa.pub</code>**文件内容)</p>
-<p><img src="D:\HexoBlog\blog\source_posts\git-note.assets\image-20220126185216302.png" alt="image-20220126185216302"></p>
-<p>输入以下，验证是否连接成功</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
-
-<p>成功结果如下</p>
-<p><img src="D:\HexoBlog\blog\source_posts\git-note.assets\image-20220126185530728.png" alt="image-20220126185530728"></p>
-<blockquote>
-<p><a href="ssh%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.md">ssh-keygen参数详解</a></p>
-<p><a href="ssh%E5%8F%82%E6%95%B0%E8%AF%A6%E8%A7%A3.md">ssh参数详解</a></p>
-</blockquote>
-]]></content>
-      <tags>
-        <tag>note</tag>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo 插件笔记</title>
-    <url>//hexo-plugins-note.html</url>
-    <content><![CDATA[<h2 id="hexo-插件-hexo-word-counter"><a href="#hexo-插件-hexo-word-counter" class="headerlink" title="hexo 插件 - hexo-word-counter"></a>hexo 插件 - <code>hexo-word-counter</code></h2><ul>
-<li><p><strong>安装指令</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-word-counter --save</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>hexo 配置</strong></p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">symbols:</span> <span class="literal">true</span>					<span class="comment"># 显示博文字数</span></span><br><span class="line">  <span class="attr">time:</span> <span class="literal">true</span>					<span class="comment"># 显示预计阅读时间</span></span><br><span class="line">  <span class="attr">total_symbols:</span> <span class="literal">true</span>			<span class="comment"># 在页脚显示总字数</span></span><br><span class="line">  <span class="attr">total_time:</span> <span class="literal">true</span>				<span class="comment"># 在页脚显示总阅读时间</span></span><br><span class="line">  <span class="attr">awl:</span> <span class="number">4</span>						<span class="comment"># 平均字长 (用于计算)</span></span><br><span class="line">  <span class="attr">wpm:</span> <span class="number">275</span>						<span class="comment"># 每分钟阅读的平均字数 (用于计算)</span></span><br></pre></td></tr></table></figure></li>
-<li><p><strong>NexT 主题配置</strong></p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">separated_meta:</span> <span class="literal">true</span>			<span class="comment"># 字数和阅读时间是否分行显示</span></span><br><span class="line">  <span class="attr">item_text_total:</span> <span class="literal">true</span>			<span class="comment"># 页脚是否显示字数和阅读时间 (默认不显示)</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="hexo插件-hexo-generator-searchdb"><a href="#hexo插件-hexo-generator-searchdb" class="headerlink" title="hexo插件 - hexo-generator-searchdb"></a>hexo插件 - hexo-generator-searchdb</h2><ul>
-<li><p><strong>安装指令</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>hexo配置</strong></p>
-<ul>
-<li><code>path</code> → 搜索记录文件</li>
-<li><code>field</code>  → 搜索内容</li>
-<li><code>format</code> → 搜索后缀</li>
-<li><code>limit</code> → 最大搜索限制</li>
-</ul>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span></span><br></pre></td></tr></table></figure></li>
-<li><p><strong>NexT主题配置</strong></p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">trigger:</span> <span class="string">auto</span>					<span class="comment"># 是否无视回车自动搜索 (auto | maual)</span></span><br><span class="line">  <span class="attr">top_n_per_article:</span> <span class="number">1</span>			<span class="comment"># 每个搜索展示几个结果</span></span><br><span class="line">  <span class="attr">unescape:</span> <span class="literal">false</span>				<span class="comment"># 读取内容</span></span><br><span class="line">  <span class="attr">preload:</span> <span class="literal">false</span>				<span class="comment"># 预读取页面内容</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="NexT插件-hexo-related-popular-posts"><a href="#NexT插件-hexo-related-popular-posts" class="headerlink" title="NexT插件 - hexo-related-popular-posts"></a>NexT插件 - hexo-related-popular-posts</h2><ul>
-<li><p><strong>安装指令</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-related-popular-posts --save</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>NexT主题配置</strong></p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">related_posts:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 是否开启插件</span></span><br><span class="line">  <span class="attr">title:</span>						<span class="comment"># related-popular-posts 的名字 (默认使用相关文章)</span></span><br><span class="line">  <span class="attr">display_in_home:</span> <span class="literal">false</span>		<span class="comment"># 是否在首页使用相关/热门帖子</span></span><br><span class="line">  <span class="attr">params:</span></span><br><span class="line">    <span class="attr">maxCount:</span> <span class="number">5</span>					<span class="comment"># 最大显示</span></span><br><span class="line">    <span class="comment">#PPMixingRate: 0.0			# 热门与相关的混合比例</span></span><br><span class="line">    <span class="comment">#isDate: false				# 是否显示日期</span></span><br><span class="line">    <span class="comment">#isImage: false				# 是否显示图像</span></span><br><span class="line">    <span class="comment">#isExcerpt: false			# 是否显示摘录</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>note</tag>
-        <tag>hexo</tag>
-        <tag>NexT</tag>
-        <tag>plugins</tag>
       </tags>
   </entry>
   <entry>
@@ -350,10 +311,49 @@
 
 ]]></content>
       <tags>
-        <tag>note</tag>
         <tag>git</tag>
-        <tag>hexo</tag>
+        <tag>note</tag>
         <tag>nodejs</tag>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo 插件笔记</title>
+    <url>//hexo-plugins-note.html</url>
+    <content><![CDATA[<h2 id="hexo-插件-hexo-word-counter"><a href="#hexo-插件-hexo-word-counter" class="headerlink" title="hexo 插件 - hexo-word-counter"></a>hexo 插件 - <code>hexo-word-counter</code></h2><ul>
+<li><p><strong>安装指令</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-word-counter --save</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>hexo 配置</strong></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">symbols:</span> <span class="literal">true</span>					<span class="comment"># 显示博文字数</span></span><br><span class="line">  <span class="attr">time:</span> <span class="literal">true</span>					<span class="comment"># 显示预计阅读时间</span></span><br><span class="line">  <span class="attr">total_symbols:</span> <span class="literal">true</span>			<span class="comment"># 在页脚显示总字数</span></span><br><span class="line">  <span class="attr">total_time:</span> <span class="literal">true</span>				<span class="comment"># 在页脚显示总阅读时间</span></span><br><span class="line">  <span class="attr">awl:</span> <span class="number">4</span>						<span class="comment"># 平均字长 (用于计算)</span></span><br><span class="line">  <span class="attr">wpm:</span> <span class="number">275</span>						<span class="comment"># 每分钟阅读的平均字数 (用于计算)</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>NexT 主题配置</strong></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">separated_meta:</span> <span class="literal">true</span>			<span class="comment"># 字数和阅读时间是否分行显示</span></span><br><span class="line">  <span class="attr">item_text_total:</span> <span class="literal">true</span>			<span class="comment"># 页脚是否显示字数和阅读时间 (默认不显示)</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="hexo插件-hexo-generator-searchdb"><a href="#hexo插件-hexo-generator-searchdb" class="headerlink" title="hexo插件 - hexo-generator-searchdb"></a>hexo插件 - hexo-generator-searchdb</h2><ul>
+<li><p><strong>安装指令</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>hexo配置</strong></p>
+<ul>
+<li><code>path</code> → 搜索记录文件</li>
+<li><code>field</code>  → 搜索内容</li>
+<li><code>format</code> → 搜索后缀</li>
+<li><code>limit</code> → 最大搜索限制</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>NexT主题配置</strong></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">trigger:</span> <span class="string">auto</span>					<span class="comment"># 是否无视回车自动搜索 (auto | maual)</span></span><br><span class="line">  <span class="attr">top_n_per_article:</span> <span class="number">1</span>			<span class="comment"># 每个搜索展示几个结果</span></span><br><span class="line">  <span class="attr">unescape:</span> <span class="literal">false</span>				<span class="comment"># 读取内容</span></span><br><span class="line">  <span class="attr">preload:</span> <span class="literal">false</span>				<span class="comment"># 预读取页面内容</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="NexT插件-hexo-related-popular-posts"><a href="#NexT插件-hexo-related-popular-posts" class="headerlink" title="NexT插件 - hexo-related-popular-posts"></a>NexT插件 - hexo-related-popular-posts</h2><ul>
+<li><p><strong>安装指令</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-related-popular-posts --save</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>NexT主题配置</strong></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">related_posts:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 是否开启插件</span></span><br><span class="line">  <span class="attr">title:</span>						<span class="comment"># related-popular-posts 的名字 (默认使用相关文章)</span></span><br><span class="line">  <span class="attr">display_in_home:</span> <span class="literal">false</span>		<span class="comment"># 是否在首页使用相关/热门帖子</span></span><br><span class="line">  <span class="attr">params:</span></span><br><span class="line">    <span class="attr">maxCount:</span> <span class="number">5</span>					<span class="comment"># 最大显示</span></span><br><span class="line">    <span class="comment">#PPMixingRate: 0.0			# 热门与相关的混合比例</span></span><br><span class="line">    <span class="comment">#isDate: false				# 是否显示日期</span></span><br><span class="line">    <span class="comment">#isImage: false				# 是否显示图像</span></span><br><span class="line">    <span class="comment">#isExcerpt: false			# 是否显示摘录</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>hexo</tag>
+        <tag>NexT</tag>
+        <tag>plugins</tag>
       </tags>
   </entry>
   <entry>
@@ -679,6 +679,20 @@
       </tags>
   </entry>
   <entry>
+    <title>hgame-ezrsa</title>
+    <url>//hgame/ezrsa.html</url>
+    <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extendedGCD</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    <span class="comment">#a*xi + b*yi = ri</span></span><br><span class="line">    <span class="keyword">if</span> b == <span class="number">0</span>:         </span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>, <span class="number">0</span>, a     </span><br><span class="line">    <span class="keyword">else</span>:         </span><br><span class="line">        x, y, q = extendedGCD(b, a % b) </span><br><span class="line">        <span class="comment"># q = gcd(a, b) = gcd(b, a%b)         </span></span><br><span class="line">        x, y = y, (x - (a // b) * y)         </span><br><span class="line">        <span class="keyword">return</span> x, y, q</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">computeD</span>(<span class="params">fn, e</span>):</span></span><br><span class="line">    (x, y, r) = extendedGCD(fn, e)</span><br><span class="line">    <span class="comment">#y maybe &lt; 0, so convert it</span></span><br><span class="line">    <span class="keyword">if</span> y &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> fn + y</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fastExpMod</span>(<span class="params">b,e,c</span>):</span></span><br><span class="line">    result = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> e != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">if</span> (e &amp; <span class="number">1</span>) == <span class="number">1</span>:</span><br><span class="line">            result = (result * b) % c</span><br><span class="line">        e &gt;&gt;= <span class="number">1</span></span><br><span class="line">        b = (b * b ) % c</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">l = [(<span class="number">12433</span>, <span class="number">149</span>, <span class="number">197</span>, <span class="number">104</span>), (<span class="number">8147</span>, <span class="number">131</span>, <span class="number">167</span>, <span class="number">6633</span>), (<span class="number">10687</span>, <span class="number">211</span>, <span class="number">197</span>, <span class="number">35594</span>), (<span class="number">19681</span>, <span class="number">131</span>, <span class="number">211</span>, <span class="number">15710</span>), (<span class="number">33577</span>, <span class="number">251</span>, <span class="number">211</span>, <span class="number">38798</span>), (<span class="number">30241</span>, <span class="number">157</span>, <span class="number">251</span>, <span class="number">35973</span>), (<span class="number">293</span>, <span class="number">211</span>, <span class="number">157</span>, <span class="number">31548</span>), (<span class="number">26459</span>, <span class="number">179</span>, <span class="number">149</span>, <span class="number">4778</span>), (<span class="number">27479</span>, <span class="number">149</span>, <span class="number">223</span>, <span class="number">32728</span>), (<span class="number">9029</span>, <span class="number">223</span>, <span class="number">137</span>, <span class="number">20696</span>), (<span class="number">4649</span>, <span class="number">149</span>, <span class="number">151</span>, <span class="number">13418</span>), (<span class="number">11783</span>, <span class="number">223</span>, <span class="number">251</span>, <span class="number">14239</span>), (<span class="number">13537</span>, <span class="number">179</span>, <span class="number">137</span>, <span class="number">11702</span>), (<span class="number">3835</span>, <span class="number">167</span>, <span class="number">139</span>, <span class="number">20051</span>), (<span class="number">30983</span>, <span class="number">149</span>, <span class="number">227</span>, <span class="number">23928</span>), (<span class="number">17581</span>, <span class="number">157</span>, <span class="number">131</span>, <span class="number">5855</span>), (<span class="number">35381</span>, <span class="number">223</span>, <span class="number">179</span>, <span class="number">37774</span>), (<span class="number">2357</span>, <span class="number">151</span>, <span class="number">223</span>, <span class="number">1849</span>), (<span class="number">22649</span>, <span class="number">211</span>, <span class="number">229</span>, <span class="number">7348</span>), (<span class="number">1151</span>, <span class="number">179</span>, <span class="number">223</span>, <span class="number">17982</span>), (<span class="number">8431</span>, <span class="number">251</span>, <span class="number">163</span>, <span class="number">30226</span>), (<span class="number">38501</span>, <span class="number">193</span>, <span class="number">211</span>, <span class="number">30559</span>), (<span class="number">14549</span>, <span class="number">211</span>, <span class="number">151</span>, <span class="number">21143</span>), (<span class="number">24781</span>, <span class="number">239</span>, <span class="number">241</span>, <span class="number">45604</span>), (<span class="number">8051</span>, <span class="number">179</span>, <span class="number">131</span>, <span class="number">7994</span>), (<span class="number">863</span>, <span class="number">181</span>, <span class="number">131</span>, <span class="number">11493</span>), (<span class="number">1117</span>, <span class="number">239</span>, <span class="number">157</span>, <span class="number">12579</span>), (<span class="number">7561</span>, <span class="number">149</span>, <span class="number">199</span>, <span class="number">8960</span>), (<span class="number">19813</span>, <span class="number">239</span>, <span class="number">229</span>, <span class="number">53463</span>), (<span class="number">4943</span>, <span class="number">131</span>, <span class="number">157</span>, <span class="number">14606</span>), (<span class="number">29077</span>, <span class="number">191</span>, <span class="number">181</span>, <span class="number">33446</span>), (<span class="number">18583</span>, <span class="number">211</span>, <span class="number">163</span>, <span class="number">31800</span>), (<span class="number">30643</span>, <span class="number">173</span>, <span class="number">191</span>, <span class="number">27293</span>), (<span class="number">11617</span>, <span class="number">223</span>, <span class="number">251</span>, <span class="number">13448</span>), (<span class="number">19051</span>, <span class="number">191</span>, <span class="number">151</span>, <span class="number">21676</span>), (<span class="number">18367</span>, <span class="number">179</span>, <span class="number">157</span>, <span class="number">14139</span>), (<span class="number">18861</span>, <span class="number">149</span>, <span class="number">191</span>, <span class="number">5139</span>), (<span class="number">9581</span>, <span class="number">211</span>, <span class="number">193</span>, <span class="number">25595</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> l:</span><br><span class="line">    e = i[<span class="number">0</span>]</span><br><span class="line">    p = i[<span class="number">1</span>]</span><br><span class="line">    q = i[<span class="number">2</span>]</span><br><span class="line">    c = i[<span class="number">3</span>]</span><br><span class="line">    n = p * q</span><br><span class="line">    fn = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">    d = computeD(fn, e)</span><br><span class="line">    m = fastExpMod(c, d, n)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(m), end=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <tags>
+        <tag>ctf</tag>
+        <tag>hgame</tag>
+        <tag>rsa</tag>
+        <tag>python</tag>
+        <tag>wp</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>ssh的使用笔记</title>
     <url>//ssh-note.html</url>
     <content><![CDATA[<h1 id="ssh参数详解"><a href="#ssh参数详解" class="headerlink" title="ssh参数详解"></a>ssh参数详解</h1><h2 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h2><table>
@@ -831,20 +845,6 @@
       <tags>
         <tag>note</tag>
         <tag>ssh</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hgame-ezrsa</title>
-    <url>//hgame/ezrsa.html</url>
-    <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extendedGCD</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    <span class="comment">#a*xi + b*yi = ri</span></span><br><span class="line">    <span class="keyword">if</span> b == <span class="number">0</span>:         </span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>, <span class="number">0</span>, a     </span><br><span class="line">    <span class="keyword">else</span>:         </span><br><span class="line">        x, y, q = extendedGCD(b, a % b) </span><br><span class="line">        <span class="comment"># q = gcd(a, b) = gcd(b, a%b)         </span></span><br><span class="line">        x, y = y, (x - (a // b) * y)         </span><br><span class="line">        <span class="keyword">return</span> x, y, q</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">computeD</span>(<span class="params">fn, e</span>):</span></span><br><span class="line">    (x, y, r) = extendedGCD(fn, e)</span><br><span class="line">    <span class="comment">#y maybe &lt; 0, so convert it</span></span><br><span class="line">    <span class="keyword">if</span> y &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> fn + y</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fastExpMod</span>(<span class="params">b,e,c</span>):</span></span><br><span class="line">    result = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> e != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">if</span> (e &amp; <span class="number">1</span>) == <span class="number">1</span>:</span><br><span class="line">            result = (result * b) % c</span><br><span class="line">        e &gt;&gt;= <span class="number">1</span></span><br><span class="line">        b = (b * b ) % c</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">l = [(<span class="number">12433</span>, <span class="number">149</span>, <span class="number">197</span>, <span class="number">104</span>), (<span class="number">8147</span>, <span class="number">131</span>, <span class="number">167</span>, <span class="number">6633</span>), (<span class="number">10687</span>, <span class="number">211</span>, <span class="number">197</span>, <span class="number">35594</span>), (<span class="number">19681</span>, <span class="number">131</span>, <span class="number">211</span>, <span class="number">15710</span>), (<span class="number">33577</span>, <span class="number">251</span>, <span class="number">211</span>, <span class="number">38798</span>), (<span class="number">30241</span>, <span class="number">157</span>, <span class="number">251</span>, <span class="number">35973</span>), (<span class="number">293</span>, <span class="number">211</span>, <span class="number">157</span>, <span class="number">31548</span>), (<span class="number">26459</span>, <span class="number">179</span>, <span class="number">149</span>, <span class="number">4778</span>), (<span class="number">27479</span>, <span class="number">149</span>, <span class="number">223</span>, <span class="number">32728</span>), (<span class="number">9029</span>, <span class="number">223</span>, <span class="number">137</span>, <span class="number">20696</span>), (<span class="number">4649</span>, <span class="number">149</span>, <span class="number">151</span>, <span class="number">13418</span>), (<span class="number">11783</span>, <span class="number">223</span>, <span class="number">251</span>, <span class="number">14239</span>), (<span class="number">13537</span>, <span class="number">179</span>, <span class="number">137</span>, <span class="number">11702</span>), (<span class="number">3835</span>, <span class="number">167</span>, <span class="number">139</span>, <span class="number">20051</span>), (<span class="number">30983</span>, <span class="number">149</span>, <span class="number">227</span>, <span class="number">23928</span>), (<span class="number">17581</span>, <span class="number">157</span>, <span class="number">131</span>, <span class="number">5855</span>), (<span class="number">35381</span>, <span class="number">223</span>, <span class="number">179</span>, <span class="number">37774</span>), (<span class="number">2357</span>, <span class="number">151</span>, <span class="number">223</span>, <span class="number">1849</span>), (<span class="number">22649</span>, <span class="number">211</span>, <span class="number">229</span>, <span class="number">7348</span>), (<span class="number">1151</span>, <span class="number">179</span>, <span class="number">223</span>, <span class="number">17982</span>), (<span class="number">8431</span>, <span class="number">251</span>, <span class="number">163</span>, <span class="number">30226</span>), (<span class="number">38501</span>, <span class="number">193</span>, <span class="number">211</span>, <span class="number">30559</span>), (<span class="number">14549</span>, <span class="number">211</span>, <span class="number">151</span>, <span class="number">21143</span>), (<span class="number">24781</span>, <span class="number">239</span>, <span class="number">241</span>, <span class="number">45604</span>), (<span class="number">8051</span>, <span class="number">179</span>, <span class="number">131</span>, <span class="number">7994</span>), (<span class="number">863</span>, <span class="number">181</span>, <span class="number">131</span>, <span class="number">11493</span>), (<span class="number">1117</span>, <span class="number">239</span>, <span class="number">157</span>, <span class="number">12579</span>), (<span class="number">7561</span>, <span class="number">149</span>, <span class="number">199</span>, <span class="number">8960</span>), (<span class="number">19813</span>, <span class="number">239</span>, <span class="number">229</span>, <span class="number">53463</span>), (<span class="number">4943</span>, <span class="number">131</span>, <span class="number">157</span>, <span class="number">14606</span>), (<span class="number">29077</span>, <span class="number">191</span>, <span class="number">181</span>, <span class="number">33446</span>), (<span class="number">18583</span>, <span class="number">211</span>, <span class="number">163</span>, <span class="number">31800</span>), (<span class="number">30643</span>, <span class="number">173</span>, <span class="number">191</span>, <span class="number">27293</span>), (<span class="number">11617</span>, <span class="number">223</span>, <span class="number">251</span>, <span class="number">13448</span>), (<span class="number">19051</span>, <span class="number">191</span>, <span class="number">151</span>, <span class="number">21676</span>), (<span class="number">18367</span>, <span class="number">179</span>, <span class="number">157</span>, <span class="number">14139</span>), (<span class="number">18861</span>, <span class="number">149</span>, <span class="number">191</span>, <span class="number">5139</span>), (<span class="number">9581</span>, <span class="number">211</span>, <span class="number">193</span>, <span class="number">25595</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> l:</span><br><span class="line">    e = i[<span class="number">0</span>]</span><br><span class="line">    p = i[<span class="number">1</span>]</span><br><span class="line">    q = i[<span class="number">2</span>]</span><br><span class="line">    c = i[<span class="number">3</span>]</span><br><span class="line">    n = p * q</span><br><span class="line">    fn = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">    d = computeD(fn, e)</span><br><span class="line">    m = fastExpMod(c, d, n)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(m), end=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <tags>
-        <tag>ctf</tag>
-        <tag>hgame</tag>
-        <tag>rsa</tag>
-        <tag>python</tag>
-        <tag>wp</tag>
       </tags>
   </entry>
 </search>
