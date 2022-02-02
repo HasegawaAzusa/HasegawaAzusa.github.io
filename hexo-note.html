@@ -29,14 +29,16 @@
 <meta property="og:site_name" content="独奏の小屋">
 <meta property="og:description" content="使用 hexo + Git&amp;Github 搭建 blog の简要笔记">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/hexo-note/typorasetting.png">
 <meta property="article:published_time" content="2022-01-30T11:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-01T13:29:11.704Z">
+<meta property="article:modified_time" content="2022-02-02T06:00:10.647Z">
 <meta property="article:author" content="qsDuzou">
-<meta property="article:tag" content="git">
-<meta property="article:tag" content="note">
-<meta property="article:tag" content="nodejs">
 <meta property="article:tag" content="hexo">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="git">
+<meta property="article:tag" content="nodejs">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/hexo-note/typorasetting.png">
 
 
 <link rel="canonical" href="https://hasegawaazusa.github.io/hexo-note">
@@ -253,7 +255,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.5k</span>
+      <span>5.6k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -276,8 +278,8 @@
 <li><p><strong>Git</strong></p>
 <p>Git 需要绑定好 Github 的账号与邮箱，并能够建立连接</p>
 <blockquote>
-<p><a href="/git-note.html/#Git%E7%9A%84User%E9%85%8D%E7%BD%AE">绑定账号与邮箱</a></p>
-<p><a href="/git-note.html/#%E4%BD%BF%E7%94%A8SSH%E6%96%B9%E5%BC%8F%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5Github">Git使用SSH与Github建立远程连接</a></p>
+<p><a href="/git-note.html#Git%E7%9A%84User%E9%85%8D%E7%BD%AE">绑定账号与邮箱</a></p>
+<p><a href="/git-note.html#%E4%BD%BF%E7%94%A8SSH%E6%96%B9%E5%BC%8F%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5Github">Git使用SSH与Github建立远程连接</a></p>
 </blockquote>
 </li>
 <li><p><strong>Node.js</strong></p>
@@ -313,7 +315,7 @@
 <p>在博客根目录下安装 <code>hexo-deployer-git</code> 部署插件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 
-<p>更改 hexo 站点配置文件 (<code>~/_config.yml</code>) 中的 [<code>Deployment</code>配置项](#部署 - Deployment)</p>
+<p>更改 hexo 站点配置文件 (<code>~/_config.yml</code>) 中的 [Deployment配置项](#部署 - Deployment)</p>
 <p>以我为例更改的配置项结果为</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">git@github.com:HasegawaAzusa/HasegawaAzusa.github.io.git</span></span><br></pre></td></tr></table></figure>
 
@@ -332,6 +334,8 @@
 <p>以我为例链接为 <a href="https://hasegawaazusa.github.io/">https://hasegawaazusa.github.io</a></p>
 </blockquote>
 <h1 id="hexo-入门"><a href="#hexo-入门" class="headerlink" title="hexo 入门"></a>hexo 入门</h1><h2 id="hexo-更新"><a href="#hexo-更新" class="headerlink" title="hexo 更新"></a>hexo 更新</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm update -g hexo-cli		<span class="comment"># 使用 npm 更新 hexo</span></span><br></pre></td></tr></table></figure>
+
+
 
 <h2 id="hexo-新建博文"><a href="#hexo-新建博文" class="headerlink" title="hexo 新建博文"></a>hexo 新建博文</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new hello				<span class="comment"># 新建博文</span></span><br></pre></td></tr></table></figure>
 
@@ -356,6 +360,8 @@
 <p>修改后，在正文处输入内容即可编辑博文内容。<code>.md</code>格式文本示例如下：</p>
 <figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line">title: hello</span><br><span class="line">date: 1970-1-1 8:00:00</span><br><span class="line"><span class="section">tags: [hello, demo]</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"><span class="section"># First Blog</span></span><br><span class="line">This is my <span class="strong">**first**</span> blog!</span><br><span class="line">Do you like?</span><br></pre></td></tr></table></figure>
 
+
+
 <h2 id="hexo-主题"><a href="#hexo-主题" class="headerlink" title="hexo 主题"></a>hexo 主题</h2><p>进入 <a target="_blank" rel="noopener" href="https://hexo.io/themes/">https://hexo.io/themes/</a> 进行挑选合适的主题</p>
 <p>这里以配置 <code>NexT</code> 主题为例：</p>
 <p>打开 <code>Powershell</code> 输入以下命令，安装 <code>NexT</code> 主题</p>
@@ -370,16 +376,19 @@
 <blockquote>
 <p>了解 NexT 主题的更多信息可以使用<a href="/next-note.html">NexT 笔记</a></p>
 </blockquote>
-<h2 id="hexo-博文插入图片"><a href="#hexo-博文插入图片" class="headerlink" title="hexo 博文插入图片"></a>hexo 博文插入图片</h2><p>更改hexo配置文件 (<code>next/_config.yml</code>) 中的[**<code>Writing</code>**配置项](#文章 - Writing)</p>
+<h2 id="hexo-博文插入图片"><a href="#hexo-博文插入图片" class="headerlink" title="hexo 博文插入图片"></a>hexo 博文插入图片</h2><p>更改hexo配置文件 (<code>next/_config.yml</code>) 中的[Writing配置项](#文章 - Writing)</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">post_asset_folder:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
-<p>当新建博文时，会对应生成一个与文章同名的文件夹，可以将相关图片资源放进此文件夹内</p>
+<p>该选项为真时，新建博文会对应生成一个与文章同名的文件夹，可以将相关图片资源放进此文件夹内</p>
 </blockquote>
 <p>在<strong>博客根目录</strong>下安装**<code>hexo-asset-image</code>**插件</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-asset-image --save</span><br></pre></td></tr></table></figure>
 
 <p>将相关图片资源放进对应文件夹并直接使用文件夹内的资源即可。</p>
+<p>特别地，对于 <code>Typora</code> 使用者，可以在 <code>文件 - 偏好设置 - 图像</code> 中修改设置：</p>
+<p><img src="/hexo-note/typorasetting.png" alt="typorasetting"></p>
+<p>这样，当 <code>Typora</code> 插入图片时，会自动将图片资源复制进入 hexo 可以检索的 asset 文件夹</p>
 <h2 id="hexo-添加标签页"><a href="#hexo-添加标签页" class="headerlink" title="hexo 添加标签页"></a>hexo 添加标签页</h2><p>在博客根目录下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page tags</span><br></pre></td></tr></table></figure>
 
@@ -521,18 +530,18 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/git/" rel="tag"># git</a>
-              <a href="/tags/note/" rel="tag"># note</a>
-              <a href="/tags/nodejs/" rel="tag"># nodejs</a>
               <a href="/tags/hexo/" rel="tag"># hexo</a>
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/git/" rel="tag"># git</a>
+              <a href="/tags/nodejs/" rel="tag"># nodejs</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/hexo-plugins-note.html" rel="prev" title="hexo 插件笔记">
-                  <i class="fa fa-chevron-left"></i> hexo 插件笔记
+                <a href="/ssh-note.html" rel="prev" title="ssh的使用笔记">
+                  <i class="fa fa-chevron-left"></i> ssh的使用笔记
                 </a>
             </div>
             <div class="post-nav-item">
