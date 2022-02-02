@@ -974,7 +974,7 @@
       </tags>
   </entry>
   <entry>
-    <title>3 使用笔记</title>
+    <title>z3 使用笔记</title>
     <url>/2022/02/02/z3-note/</url>
     <content><![CDATA[<h1 id="z3-简介"><a href="#z3-简介" class="headerlink" title="z3 简介"></a>z3 简介</h1><p>z3 是 Microsoft Research 开发的一个定理证明器，支持位向量、布尔值、数组、浮点数、字符串和其他数据类型，可以用来自动化证明定理、线性规划求解和方程求解。</p>
 <p>但方程求解效率过低，不建议使用 z3 求解方程 (少量未知数可以使用)。</p>
