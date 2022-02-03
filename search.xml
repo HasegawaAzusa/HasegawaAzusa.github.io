@@ -103,7 +103,7 @@
 
 <h2 id="hexo-服务"><a href="#hexo-服务" class="headerlink" title="hexo 服务"></a>hexo 服务</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo server					<span class="comment"># 开启服务</span></span><br></pre></td></tr></table></figure>
 
-<p>开启hexo服务后，即可通过本地访问 blog 页面（默认为**<code>localhost:4000</code>**）预览博客页面。</p>
+<p>开启hexo服务后，即可通过本地访问 blog 页面（默认为 <code>localhost:4000</code> ）预览博客页面。</p>
 <p>可选的额外选项：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo s						<span class="comment"># 简化指令</span></span><br><span class="line">hexo s -s					<span class="comment"># 静态模式</span></span><br><span class="line">hexo s -p 5000				<span class="comment"># 更改端口</span></span><br><span class="line">hexo s -i 192.168.1.5		<span class="comment"># 自定义ip</span></span><br></pre></td></tr></table></figure>
 
@@ -216,9 +216,10 @@
 <p>在 Front-matter 中添加：</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">type:</span> <span class="string">tags</span></span><br></pre></td></tr></table></figure>
 
+<p><img src="/hexo-note/index.png" alt="index"></p>
 <p>完成后 hexo 便会自动生成标签页</p>
 <blockquote>
-<p>记得添加进入方式</p>
+<p>记得在菜单中添加进入方式</p>
 </blockquote>
 <h2 id="hexo-添加关于页"><a href="#hexo-添加关于页" class="headerlink" title="hexo 添加关于页"></a>hexo 添加关于页</h2><p>在博客根目录下：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page about</span><br></pre></td></tr></table></figure>
@@ -1017,7 +1018,7 @@
   </entry>
   <entry>
     <title>z3 使用笔记</title>
-    <url>/2022/02/02/z3-note/</url>
+    <url>/temp</url>
     <content><![CDATA[<h1 id="z3-简介"><a href="#z3-简介" class="headerlink" title="z3 简介"></a>z3 简介</h1><p>z3 是 Microsoft Research 开发的一个定理证明器，支持位向量、布尔值、数组、浮点数、字符串和其他数据类型，可以用来自动化证明定理、线性规划求解和方程求解。</p>
 <p>但方程求解效率过低，不建议使用 z3 求解方程 (少量未知数可以使用)。</p>
 <h1 id="z3-安装"><a href="#z3-安装" class="headerlink" title="z3 安装"></a>z3 安装</h1><p>可以使用 pip 进行安装</p>
@@ -1049,6 +1050,107 @@
         <tag>note</tag>
         <tag>python</tag>
         <tag>z3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sagemath 方程求解笔记</title>
+    <url>//sagemath-equation-note.html</url>
+    <content><![CDATA[<p><a href="https://sagecell.sagemath.org/">sagemath 在线运行网站</a></p>
+<p><a href="https://www.lainme.com/doku.php/topic/sage/chapter_02/section_08">线性代数中文文档</a></p>
+<h1 id="矩阵操作"><a href="#矩阵操作" class="headerlink" title="矩阵操作"></a>矩阵操作</h1><ul>
+<li><p>环</p>
+<ul>
+<li><code>ZZ</code> → 整数环</li>
+<li><code>QQ</code> → 有理数环</li>
+<li><code>Zmod(p)</code> → p为素数，定义在$Zp$上的环</li>
+</ul>
+</li>
+<li><p>矩阵声明</p>
+<ul>
+<li><p>完整定义</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 矩阵所在环, 矩阵行, 矩阵列, 矩阵元素初始化</span></span><br><span class="line">mt = matrix(ZZ, <span class="number">3</span>, <span class="number">2</span>, <span class="built_in">range</span>(<span class="number">6</span>))		<span class="comment"># 即定义在整数环上的 3行4列 矩阵</span></span><br></pre></td></tr></table></figure></li>
+<li><p>空矩阵</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 默认矩阵元素为 0</span></span><br><span class="line">mt = matrix(ZZ, <span class="number">3</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>缺省定义</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 对应生成在有理数环上的 3列 矩阵</span></span><br><span class="line">mt = matrix(QQ, <span class="number">3</span>, <span class="built_in">range</span>(<span class="number">6</span>))</span><br><span class="line"><span class="comment"># 对应生成在有理数环上的列矩阵</span></span><br><span class="line">mt = matrix(QQ, <span class="built_in">range</span>(<span class="number">6</span>))</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>添加行</p>
+<ul>
+<li><p>在末尾添加一行</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mt = mt.stack(vector([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br></pre></td></tr></table></figure></li>
+<li><p>在指定行插入一行</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 行号, 元素</span></span><br><span class="line">mt = mt.insert_row(<span class="number">1</span>, vector([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]))</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>修改元素值</p>
+<ul>
+<li><p>修改单值 (类似修改二维数组)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将第 3 行第 4 列的值修改为 1</span></span><br><span class="line">mt[<span class="number">2</span>, <span class="number">3</span>] = <span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+<li><p>修改一行的值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将第 3 行的值依次修改为列表中的值</span></span><br><span class="line">mt[<span class="number">2</span>] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>求秩</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mt.rank()</span><br></pre></td></tr></table></figure></li>
+<li><p>求行数、列数</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mt.nrows()	<span class="comment"># 将返回矩阵行数</span></span><br><span class="line">mt.ncols()	<span class="comment"># 将返回矩阵列数</span></span><br></pre></td></tr></table></figure></li>
+<li><p>求行列式的值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mt.determinant()</span><br></pre></td></tr></table></figure></li>
+<li><p>求逆</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 判断是否可逆</span></span><br><span class="line">mt.is_invertible()</span><br><span class="line"><span class="comment"># 求逆</span></span><br><span class="line">mt.inverse()</span><br><span class="line">mt ** -<span class="number">1</span></span><br><span class="line">mt ^ -<span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+<li><p>改变矩阵所处环</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将矩阵的环改为 ZZ</span></span><br><span class="line">mt.change_ring(ZZ)</span><br></pre></td></tr></table></figure></li>
+<li><p>求解线性方程和线性相关组</p>
+<ul>
+<li><p>求解 $Ax=B$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = A.solve_right(B)</span><br><span class="line">x = A.inverse() * B</span><br><span class="line">x = A \ B</span><br></pre></td></tr></table></figure></li>
+<li><p>求解 $xA=B$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = A.solve_left(B)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>寻找线性相关的行向量</p>
+<ul>
+<li><p>满足 $xA=0$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = A.left_kernel()</span><br></pre></td></tr></table></figure></li>
+<li><p>满足 $Ax=0$</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = A.right_kernel()</span><br></pre></td></tr></table></figure></li>
+<li><p>找 $x$ 中指定行向量</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 解 x 中的第 1 行</span></span><br><span class="line">x.gen(<span class="number">0</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p>求最短正交基 (LLL格基约简算法)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mt.LLL()</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+<h1 id="高斯消元法"><a href="#高斯消元法" class="headerlink" title="高斯消元法"></a>高斯消元法</h1><p>高斯消元法求解多元一次方程，即求解<br>$$<br>Ax=B<br>$$<br>利用 sagemath 的矩阵运算轻松求解：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 系数矩阵</span></span><br><span class="line">A = matrix(<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">A[<span class="number">0</span>, <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">A[<span class="number">1</span>, <span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 常数向量</span></span><br><span class="line">B = vector([<span class="number">3</span>, <span class="number">9</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得到未知数向量</span></span><br><span class="line">x = A \ B</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="一次同余式"><a href="#一次同余式" class="headerlink" title="一次同余式"></a>一次同余式</h1><p>求解一次同余式即求解<br>$$<br>Ax\equiv B(mod;m)<br>$$<br>在 sagemath 中引入环后，同理高斯消元法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m = <span class="number">2</span></span><br><span class="line"><span class="comment"># 系数矩阵</span></span><br><span class="line">A = matrix(Zmod(m), <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">A[<span class="number">0</span>, <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">A[<span class="number">1</span>, <span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 常数向量</span></span><br><span class="line">B = vector([<span class="number">3</span>, <span class="number">9</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得到未知数向量</span></span><br><span class="line">x = A \ B</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>python</tag>
+        <tag>sagemath</tag>
       </tags>
   </entry>
 </search>
