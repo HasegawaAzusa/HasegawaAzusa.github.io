@@ -882,7 +882,7 @@
 <h2 id="文末标签图标-Tag-Icon"><a href="#文末标签图标-Tag-Icon" class="headerlink" title="文末标签图标 - Tag Icon"></a>文末标签图标 - Tag Icon</h2><p>默认情况下，博文末尾存在以#开头的标签超链接。</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">tag_icon:</span> <span class="literal">true</span>					<span class="comment"># 开启标签图标</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="捐赠链接配置-Donate-Settings"><a href="#捐赠链接配置-Donate-Settings" class="headerlink" title="捐赠链接配置 - Donate Settings"></a>捐赠链接配置 - Donate Settings</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">reward_settings:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 开启捐赠链接 (默认在所有博文下显示)</span></span><br><span class="line">  <span class="attr">animation:</span> <span class="literal">false</span>				<span class="comment"># 捐赠链接注释</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 收款码</span></span><br><span class="line"><span class="attr">reward:</span></span><br><span class="line">  <span class="comment">#wechatpay: /images/wechatpay.png	</span></span><br><span class="line">  <span class="comment">#alipay: /images/alipay.png</span></span><br></pre></td></tr></table></figure>
+<h2 id="捐赠、打赏配置-Donate-Settings"><a href="#捐赠、打赏配置-Donate-Settings" class="headerlink" title="捐赠、打赏配置 - Donate Settings"></a>捐赠、打赏配置 - Donate Settings</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">reward_settings:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 开启捐赠链接 (默认在所有博文下显示)</span></span><br><span class="line">  <span class="attr">animation:</span> <span class="literal">false</span>				<span class="comment"># 是否开启动画效果</span></span><br><span class="line">  <span class="attr">comment:</span> <span class="string">&#x27;&#x27;</span>					<span class="comment"># 捐赠注释</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 收款码</span></span><br><span class="line"><span class="attr">reward:</span></span><br><span class="line">  <span class="comment">#wechatpay: /images/wechatpay.png	</span></span><br><span class="line">  <span class="comment">#alipay: /images/alipay.png</span></span><br></pre></td></tr></table></figure>
 
 <h2 id="关注-Follow-Me"><a href="#关注-Follow-Me" class="headerlink" title="关注 - Follow Me"></a>关注 - Follow Me</h2><blockquote>
 <p>参数参考[侧边栏社交链接 - Sidebar Social Links](#侧边栏社交链接 - Sidebar Social Links)</p>
@@ -1007,6 +1007,20 @@
         <tag>note</tag>
         <tag>python</tag>
         <tag>z3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>powershell：尝试新的跨平台 PowerShell https://aka.ms/pscore6</title>
+    <url>/2022/02/02/pscore-error/</url>
+    <content><![CDATA[<h1 id="错误分析"><a href="#错误分析" class="headerlink" title="错误分析"></a>错误分析</h1><p>powershell 版本过老，提示更新</p>
+<p><img src="/.io//pserror.png" alt="pserror"></p>
+<h1 id="修复错误"><a href="#修复错误" class="headerlink" title="修复错误"></a>修复错误</h1><p>进入 <a href="https://github.com/PowerShell/PowerShell/releases/">https://github.com/PowerShell/PowerShell/releases/</a> 寻找合适的版本 (推荐最新版) 进行下载并安装</p>
+<p><img src="/.io//psreleases.png" alt="psreleases"></p>
+]]></content>
+      <tags>
+        <tag>error</tag>
+        <tag>powershell</tag>
+        <tag>windows</tag>
       </tags>
   </entry>
 </search>
