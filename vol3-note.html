@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="volatility3 2.0.0 电子数据取证工具 (内存取证工具) 使用笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="volatility3 使用笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/vol3-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="volatility3 2.0.0 电子数据取证工具 (内存取证工具) 使用笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/vol3-note/image-20220204224548796.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/vol3-note/vol3help.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/vol3-note/layerwritehelp.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/vol3-note/symbols.png">
+<meta property="article:published_time" content="2022-02-04T14:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-04T16:31:30.790Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="volatility3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/vol3-note/image-20220204224548796.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/vol3-note">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/vol3-note.html","path":"/vol3-note.html","title":"volatility3 使用笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>volatility3 使用笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">20</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">13</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#volatility3-%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">volatility3 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatility3-%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">volatility3 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">2.1.</span> <span class="nav-text">使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6"><span class="nav-number">2.2.</span> <span class="nav-text">插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%98%A0%E5%83%8F%E4%BF%A1%E6%81%AF"><span class="nav-number">2.3.1.</span> <span class="nav-text">查看映像信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%98%A0%E5%83%8F%E8%BF%9B%E7%A8%8B"><span class="nav-number">2.3.2.</span> <span class="nav-text">查看映像进程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E8%BD%AC%E5%82%A8"><span class="nav-number">2.3.3.</span> <span class="nav-text">进程转储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E8%BD%AC%E5%82%A8"><span class="nav-number">2.3.4.</span> <span class="nav-text">内存转储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%8F%A5%E6%9F%84"><span class="nav-number">2.3.5.</span> <span class="nav-text">查看句柄</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-DLL"><span class="nav-number">2.3.6.</span> <span class="nav-text">查看 DLL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#DLL-%E8%BD%AC%E5%82%A8"><span class="nav-number">2.3.7.</span> <span class="nav-text">DLL 转储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%91%BD%E4%BB%A4%E8%A1%8C"><span class="nav-number">2.3.8.</span> <span class="nav-text">查看命令行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%BD%91%E7%BB%9C%E7%AB%AF%E5%8F%A3"><span class="nav-number">2.3.9.</span> <span class="nav-text">查看网络端口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF"><span class="nav-number">2.3.10.</span> <span class="nav-text">查看注册表信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E8%A1%A8%E4%BF%A1%E6%81%AF%E8%BD%AC%E5%82%A8"><span class="nav-number">2.3.11.</span> <span class="nav-text">注册表信息转储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%B3%A8%E5%86%8C%E8%A1%A8%E9%94%AE%E5%80%BC%E5%AF%B9"><span class="nav-number">2.3.12.</span> <span class="nav-text">查看注册表键值对</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">2.3.13.</span> <span class="nav-text">查看文件信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E8%BD%AC%E5%82%A8"><span class="nav-number">2.3.14.</span> <span class="nav-text">文件转储</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E6%89%BE%E6%81%B6%E6%84%8F%E6%B3%A8%E5%85%A5%E4%BB%A3%E7%A0%81"><span class="nav-number">2.3.15.</span> <span class="nav-text">查找恶意注入代码</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">qsDuzou's blog</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/vol3-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="qsDuzou's blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          volatility3 使用笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-04 22:00:00" itemprop="dateCreated datePublished" datetime="2022-02-04T22:00:00+08:00">2022-02-04</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">volatility3 2.0.0 电子数据取证工具 (内存取证工具) 使用笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="volatility3-安装"><a href="#volatility3-安装" class="headerlink" title="volatility3 安装"></a>volatility3 安装</h1><p><strong>volatility3 需要 Python 3.6.0 或更高版本。</strong></p>
+<p>进入 <a target="_blank" rel="noopener" href="https://github.com/volatilityfoundation/volatility3/releases">https://github.com/volatilityfoundation/volatility3/releases</a> 选择 <code>volatility3-2.0.0-py3-none-any.whl</code> 进行下载</p>
+<p><img src="/vol3-note/image-20220204224548796.png" alt="image-20220204224548796"></p>
+<p>通过以下指令进行自动化安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 wheel volatility3-2.0.0-py3-none-any.whl</span><br></pre></td></tr></table></figure>
+
+<p>若安装失败可直接下载源码后直接使用，但需要手动调用脚本 <code>vol.py</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 vol.py --<span class="built_in">help</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以通过以下指令达到与 <code>.whl</code> 安装同样的效果</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">python3 setup.py build</span><br><span class="line">python3 setup.py install</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>如果需要使用 volatility3 最基本功能，请将以下内容保存为 <code>r.txt</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># These packages are required for core functionality.</span></span><br><span class="line">pefile&gt;=2017.8.1 <span class="comment">#foo</span></span><br></pre></td></tr></table></figure>
+
+<p>如果需要使用 volatility3 完整功能，请将以下内容保存为 <code>r.txt</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># The following packages are required for core functionality.</span></span><br><span class="line">pefile&gt;=2017.8.1</span><br><span class="line"></span><br><span class="line"><span class="comment"># The following packages are optional.</span></span><br><span class="line"><span class="comment"># If certain packages are not necessary, place a comment (#) at the start of the line.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># This is required for the yara plugins</span></span><br><span class="line">yara-python&gt;=3.8.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># This is required for several plugins that perform malware analysis and disassemble code.</span></span><br><span class="line"><span class="comment"># It can also improve accuracy of Windows 8 and later memory samples.</span></span><br><span class="line">capstone&gt;=3.0.5</span><br><span class="line"></span><br><span class="line"><span class="comment"># This is required by plugins that decrypt passwords, password hashes, etc.</span></span><br><span class="line">pycryptodome</span><br><span class="line"></span><br><span class="line"><span class="comment"># This can improve error messages regarding improperly configured ISF files.</span></span><br><span class="line">jsonschema&gt;=2.3.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># This is required for memory acquisition via leechcore/pcileech.</span></span><br><span class="line">leechcorepyc&gt;=2.4.0</span><br><span class="line"></span><br><span class="line"><span class="comment"># This is required for analyzing Linux samples compressed using AVMLs native</span></span><br><span class="line"><span class="comment"># compression format.  It is not required for AVML&#x27;s standard LiME compression.</span></span><br><span class="line">python-snappy==0.6.0</span><br></pre></td></tr></table></figure>
+
+<p>然后运行以下指令安装 volatility3 所需依赖</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -r r.txt</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="volatility3-使用"><a href="#volatility3-使用" class="headerlink" title="volatility3 使用"></a>volatility3 使用</h1><h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>通过 <code>-h</code> 指令获取帮助</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -h</span><br></pre></td></tr></table></figure>
+
+<p><img src="/vol3-note/vol3help.png" alt="vol3help"></p>
+<p>同样地，可以对插件使用 <code>-h</code> 指令获取插件帮助</p>
+<p><img src="/vol3-note/layerwritehelp.png" alt="layerwritehelp"></p>
+<h2 id="插件"><a href="#插件" class="headerlink" title="插件"></a>插件</h2><p>使用对应 linux / mac / windows 插件之前，请先下载对应的符号表 (最好下载所有的符号包)：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://downloads.volatilityfoundation.org/volatility3/symbols/windows.zip">https://downloads.volatilityfoundation.org/volatility3/symbols/windows.zip</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://downloads.volatilityfoundation.org/volatility3/symbols/mac.zip">https://downloads.volatilityfoundation.org/volatility3/symbols/mac.zip</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://downloads.volatilityfoundation.org/volatility3/symbols/linux.zip">https://downloads.volatilityfoundation.org/volatility3/symbols/linux.zip</a></p>
+</li>
+</ul>
+<p>并将其解压在 <code>./volatility/symbols/</code> 目录下</p>
+<p><img src="/vol3-note/symbols.png" alt="symbols"></p>
+<blockquote>
+<p>以下，部分插件可能出现不存在或者更名的情况，我并未使用到的功能并不会及时更新</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>插件名</th>
+<th>用法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>layerwriter</code></td>
+<td>列出内存镜像 platform 信息，分割 layers</td>
+</tr>
+<tr>
+<td><code>linux.bash</code></td>
+<td>从内存中恢复 bash 命令历史记录</td>
+</tr>
+<tr>
+<td><code>linux.check_afinfo</code></td>
+<td>验证网络协议的操作功能指针</td>
+</tr>
+<tr>
+<td><code>linux.check_syscall</code></td>
+<td>检查系统调用表中的挂钩</td>
+</tr>
+<tr>
+<td><code>linux.elfs</code></td>
+<td>列出所有进程的所有内存映射ELF文件</td>
+</tr>
+<tr>
+<td><code>linux.lsmod</code></td>
+<td>列出加载的内核模块</td>
+</tr>
+<tr>
+<td><code>linux.lsof</code></td>
+<td>列出所有进程的所有内存映射</td>
+</tr>
+<tr>
+<td><code>linux.malfind</code></td>
+<td>列出可能包含注入代码的进程内存范围</td>
+</tr>
+<tr>
+<td><code>linux.proc</code></td>
+<td>列出所有进程的所有内存映射</td>
+</tr>
+<tr>
+<td><code>linux.pslist</code></td>
+<td>列出 linux 内存映像中存在的进程</td>
+</tr>
+<tr>
+<td><code>linux.pstree</code></td>
+<td>列出进程树</td>
+</tr>
+<tr>
+<td><code>mac.bash</code></td>
+<td>从内存中恢复 bash 命令历史记录</td>
+</tr>
+<tr>
+<td><code>mac.check_syscall</code></td>
+<td>检查系统调用表中的挂钩</td>
+</tr>
+<tr>
+<td><code>mac.check_sysctl</code></td>
+<td>检查 sysctl 处理程序的挂钩</td>
+</tr>
+<tr>
+<td><code>mac.check_trap_table</code></td>
+<td>检查 trap 表中的挂钩</td>
+</tr>
+<tr>
+<td><code>mac.ifconfig</code></td>
+<td>列出网卡信息</td>
+</tr>
+<tr>
+<td><code>mac.lsmod</code></td>
+<td>列出加载的内核模块</td>
+</tr>
+<tr>
+<td><code>mac.lsof</code></td>
+<td>列出所有进程的所有内存映射</td>
+</tr>
+<tr>
+<td><code>mac.malfind</code></td>
+<td>列出可能包含注入代码的进程内存范围</td>
+</tr>
+<tr>
+<td><code>mac.netstat</code></td>
+<td>列出所有进程的所有网络连接</td>
+</tr>
+<tr>
+<td><code>mac.psaux</code></td>
+<td>恢复程序命令行参数</td>
+</tr>
+<tr>
+<td><code>mac.pslist</code></td>
+<td>列出 mac 内存映像中存在的进程</td>
+</tr>
+<tr>
+<td><code>mac.pstree</code></td>
+<td>列出进程树</td>
+</tr>
+<tr>
+<td><code>mac.tasks</code></td>
+<td>列出 mac 内存映像中存在的进程</td>
+</tr>
+<tr>
+<td><code>windows.info</code></td>
+<td>显示正在分析的内存样本的 OS 和内核详细信息</td>
+</tr>
+<tr>
+<td><code>windows.callbacks</code></td>
+<td>列出内核回调和通知例程</td>
+</tr>
+<tr>
+<td><code>windows.cmdline</code></td>
+<td>列出进程命令行参数</td>
+</tr>
+<tr>
+<td><code>windows.dlldump</code></td>
+<td>将进程内存范围 DLL 转储</td>
+</tr>
+<tr>
+<td><code>windows.dlllist</code></td>
+<td>列出 Windows 内存映像中已加载的 dll 模块</td>
+</tr>
+<tr>
+<td><code>windows.driverirp</code></td>
+<td>在 Windows 内存映像中列出驱动程序的 IRP</td>
+</tr>
+<tr>
+<td><code>windows.driverscan</code></td>
+<td>扫描 Windows 内存映像中存在的驱动程序</td>
+</tr>
+<tr>
+<td><code>windows.filescan</code></td>
+<td>扫描 Windows 内存映像中存在的文件对象</td>
+</tr>
+<tr>
+<td><code>windows.handles</code></td>
+<td>列出进程打开的句柄</td>
+</tr>
+<tr>
+<td><code>windows.malfind</code></td>
+<td>列出可能包含注入代码的进程内存范围</td>
+</tr>
+<tr>
+<td><code>windows.moddump</code></td>
+<td>转储内核模块</td>
+</tr>
+<tr>
+<td><code>windows.modscan</code></td>
+<td>扫描 Windows 内存映像中存在的模块</td>
+</tr>
+<tr>
+<td><code>windows.mutantscan</code></td>
+<td>扫描 Windows 内存映像中存在的互斥锁</td>
+</tr>
+<tr>
+<td><code>windows.pslist</code></td>
+<td>列出 Windows 内存映像中存在的进程，转储处理可执行映像</td>
+</tr>
+<tr>
+<td><code>windows.psscan</code></td>
+<td>扫描 Windows 内存映像中存在的进程</td>
+</tr>
+<tr>
+<td><code>windows.pstree</code></td>
+<td>列出进程树</td>
+</tr>
+<tr>
+<td><code>windows.registry.certificates</code></td>
+<td>列出注册表中存储的证书</td>
+</tr>
+<tr>
+<td><code>windows.registry.hivelist</code></td>
+<td>列出内存映像中存在的注册表配置单元</td>
+</tr>
+<tr>
+<td><code>windows.registry.hivescan</code></td>
+<td>扫描 Windows 内存映像中存在的注册表配置单元</td>
+</tr>
+<tr>
+<td><code>windows.registry.printkey</code></td>
+<td>在配置单元或特定键值下列出注册表项</td>
+</tr>
+<tr>
+<td><code>windows.registry.userassist</code></td>
+<td>打印用户助手注册表项和信息</td>
+</tr>
+<tr>
+<td><code>windows.ssdt</code></td>
+<td>列出系统调用表</td>
+</tr>
+<tr>
+<td><code>windows.strings</code></td>
+<td>读取字符串命令的输出，并指示每个字符串属于哪个进程</td>
+</tr>
+<tr>
+<td><code>windows.svcscan</code></td>
+<td>扫描 Windows 服务</td>
+</tr>
+<tr>
+<td><code>windows.symlinkscan</code></td>
+<td>扫描 Windows 内存映像中存在的链接</td>
+</tr>
+</tbody></table>
+<h2 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h2><h3 id="查看映像信息"><a href="#查看映像信息" class="headerlink" title="查看映像信息"></a>查看映像信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.info</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看映像进程"><a href="#查看映像进程" class="headerlink" title="查看映像进程"></a>查看映像进程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.pslist</span><br><span class="line">vol.exe -f xxx.raw windows.psscan</span><br><span class="line">vol.exe -f xxx.raw windows.pstree</span><br></pre></td></tr></table></figure>
+
+<p><strong>查看指定 pid 的进程</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.pslist --pid 1234</span><br></pre></td></tr></table></figure>
+
+<h3 id="进程转储"><a href="#进程转储" class="headerlink" title="进程转储"></a>进程转储</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -o ./outputdir/ -f xxx.raw windows.pslist --pid 1234 --dump</span><br></pre></td></tr></table></figure>
+
+<h3 id="内存转储"><a href="#内存转储" class="headerlink" title="内存转储"></a>内存转储</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -o ./outputdir/ -f xxx.raw windows.memmap --pid 1234 --dump</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看句柄"><a href="#查看句柄" class="headerlink" title="查看句柄"></a>查看句柄</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.handles</span><br><span class="line">vol.exe -f xxx.raw windows.handles --pid 1234</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看-DLL"><a href="#查看-DLL" class="headerlink" title="查看 DLL"></a>查看 DLL</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.dlllist</span><br><span class="line">vol.exe -f xxx.raw windows.dlllist --pid 1234</span><br></pre></td></tr></table></figure>
+
+<h3 id="DLL-转储"><a href="#DLL-转储" class="headerlink" title="DLL 转储"></a>DLL 转储</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -o ./outputdir/ -f xxx.raw windows.dlllist --pid 1234 --dump</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看命令行"><a href="#查看命令行" class="headerlink" title="查看命令行"></a>查看命令行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.cmdline</span><br><span class="line">vol.exe -f xxx.raw windows.cmdline --pid 1234</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看网络端口"><a href="#查看网络端口" class="headerlink" title="查看网络端口"></a>查看网络端口</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.netscan</span><br></pre></td></tr></table></figure>
+
+<p><strong>查看完整的结果，但可能包含垃圾信息和虚假信息 (谨慎使用)</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.netscan --include-corrupt</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看注册表信息"><a href="#查看注册表信息" class="headerlink" title="查看注册表信息"></a>查看注册表信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.registry.hivescan</span><br><span class="line">vol.exe -f xxx.raw windows.registry.hivelist</span><br></pre></td></tr></table></figure>
+
+<p><strong>查看指定过滤器 (文件夹) 下的注册表信息</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.registry.hivelist --filter FILTER</span><br></pre></td></tr></table></figure>
+
+<h3 id="注册表信息转储"><a href="#注册表信息转储" class="headerlink" title="注册表信息转储"></a>注册表信息转储</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -o ./outputdir/ -f xxx.raw windows.hivelist --filter FILTER --dump</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看注册表键值对"><a href="#查看注册表键值对" class="headerlink" title="查看注册表键值对"></a>查看注册表键值对</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.registry.printkey</span><br></pre></td></tr></table></figure>
+
+<p><strong>查看指定过滤器 (文件夹) 下的注册表信息，但需要 <code>hivelist</code> 提供的 <code>offset</code></strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.registry.printkey --offset OFFSET</span><br></pre></td></tr></table></figure>
+
+<p><strong>查看指定键下的注册表值</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.registry.printkey --key KEY</span><br></pre></td></tr></table></figure>
+
+<p><strong>打印所有键的信息</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.registry.printkey --recurse</span><br></pre></td></tr></table></figure>
+
+<h3 id="查看文件信息"><a href="#查看文件信息" class="headerlink" title="查看文件信息"></a>查看文件信息</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.filescan</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>建议通过 powershell 的 Select-String 或者 bash 的 grep 进行搜索，如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.filescan | grep <span class="string">&quot;flag&quot;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe <span class="operator">-f</span> xxx.raw windows.filescan | <span class="built_in">Select-String</span> <span class="string">&quot;flag&quot;</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="文件转储"><a href="#文件转储" class="headerlink" title="文件转储"></a>文件转储</h3><p><strong>需要 <code>pslist</code> 提供的 <code>pid</code></strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -o ./outputdir/ -f xxx.raw windows.dumpfiles --pid 1234</span><br></pre></td></tr></table></figure>
+
+<p>**(推荐) 需要 <code>filescan</code> 提供的 <code>offset</code> (一般来说为 <code>physaddr</code>) **</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -o ./outputdir/ -f xxx.raw windows.dumpfiles --virtaddr 0xee1122</span><br><span class="line">vol.exe -o ./outputdir/ -f xxx.raw windows.dumpfiles --physaddr 0xee1122</span><br></pre></td></tr></table></figure>
+
+<h3 id="查找恶意注入代码"><a href="#查找恶意注入代码" class="headerlink" title="查找恶意注入代码"></a>查找恶意注入代码</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -f xxx.raw windows.malfind</span><br><span class="line">vol.exe -f xxx.raw windows.malfind --pid 1234</span><br></pre></td></tr></table></figure>
+
+<p><strong>恶意注入代码转储</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vol.exe -o ./outputdir/ -f xxx.raw windows.malfind --pid 1234 --dump</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/vol3-note.html" title="volatility3 使用笔记">https://hasegawaazusa.github.io/vol3-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/volatility3/" rel="tag"># volatility3</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/errors/vol3-gbk-error.html" rel="prev" title="vol3-gbk-error">
+                  <i class="fa fa-chevron-left"></i> vol3-gbk-error
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">27k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">25 分钟</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
