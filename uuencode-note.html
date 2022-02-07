@@ -22,32 +22,30 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="hexo-asset-imgae 插件出现的静态图片资源链接重导向错误解决方案">
+<meta name="description" content="uuencode 的简要笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo-asset-image：update link as:--&gt;&#x2F;.io&#x2F;&#x2F;xxx.png">
-<meta property="og:url" content="https://hasegawaazusa.github.io/errors/hexo-image-link-error.html">
+<meta property="og:title" content="uuencode 笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/uuencode-note.html">
 <meta property="og:site_name" content="独奏の小屋">
-<meta property="og:description" content="hexo-asset-imgae 插件出现的静态图片资源链接重导向错误解决方案">
+<meta property="og:description" content="uuencode 的简要笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hasegawaazusa.github.io/errors/hexo-image-link-error/update-link-error.png">
-<meta property="article:published_time" content="2022-02-03T07:55:00.000Z">
-<meta property="article:modified_time" content="2022-02-03T08:12:49.913Z">
+<meta property="article:published_time" content="2022-02-07T08:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-07T09:48:44.955Z">
 <meta property="article:author" content="qsDuzou">
-<meta property="article:tag" content="error">
-<meta property="article:tag" content="hexo">
-<meta property="article:tag" content="hexo-asset-image">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="uuencode">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hasegawaazusa.github.io/errors/hexo-image-link-error/update-link-error.png">
 
 
-<link rel="canonical" href="https://hasegawaazusa.github.io/errors/hexo-image-link-error">
+<link rel="canonical" href="https://hasegawaazusa.github.io/uuencode-note">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/errors/hexo-image-link-error.html","path":"/errors/hexo-image-link-error.html","title":"hexo-asset-image：update link as:-->/.io//xxx.png"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/uuencode-note.html","path":"/uuencode-note.html","title":"uuencode 笔记"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>hexo-asset-image：update link as:-->/.io//xxx.png | 独奏の小屋</title>
+<title>uuencode 笔记 | 独奏の小屋</title>
   
 
 
@@ -152,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">错误分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E5%A4%8D%E9%94%99%E8%AF%AF"><span class="nav-number">2.</span> <span class="nav-text">修复错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-hexo-%E7%9A%84%E7%AB%99%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">修改 hexo 的站点配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E6%AF%8F%E7%AF%87%E6%96%87%E7%AB%A0%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE-permalink"><span class="nav-number">2.2.</span> <span class="nav-text">为每篇文章手动配置 permalink</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#UUEncode-%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">UUEncode 原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">C++ 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-Encode"><span class="nav-number">2.1.</span> <span class="nav-text">加密 - Encode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-Decode"><span class="nav-number">2.2.</span> <span class="nav-text">解密 - Decode</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">Python 实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E7%BD%91%E7%AB%99"><span class="nav-number">4.</span> <span class="nav-text">在线网站</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -220,7 +218,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/errors/hexo-image-link-error.html">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/uuencode-note.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -233,7 +231,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          hexo-asset-image：update link as:-->/.io//xxx.png
+          uuencode 笔记
         </h1>
 
         <div class="post-meta-container">
@@ -244,7 +242,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-02-03 15:55:00" itemprop="dateCreated datePublished" datetime="2022-02-03T15:55:00+08:00">2022-02-03</time>
+      <time title="创建时间：2022-02-07 16:00:00" itemprop="dateCreated datePublished" datetime="2022-02-07T16:00:00+08:00">2022-02-07</time>
     </span>
 
   
@@ -254,7 +252,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>328</span>
+      <span>1.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -265,7 +263,7 @@
     </span>
 </div>
 
-            <div class="post-description">hexo-asset-imgae 插件出现的静态图片资源链接重导向错误解决方案</div>
+            <div class="post-description">uuencode 的简要笔记</div>
         </div>
       </header>
 
@@ -273,24 +271,25 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="错误分析"><a href="#错误分析" class="headerlink" title="错误分析"></a>错误分析</h1><p>hexo-asset-image 无法识别 hexo 默认的永久链接 (<code>permalink</code>) 时，导致无法自动生成静态资源文件夹路径</p>
-<p><img src="/errors/hexo-image-link-error/update-link-error.png" alt="update-link-error"></p>
-<h1 id="修复错误"><a href="#修复错误" class="headerlink" title="修复错误"></a>修复错误</h1><p>有以下两种解决方案：</p>
-<ol>
-<li>修改 hexo 的站点配置文件</li>
-<li>为每篇文章手动配置 <code>permalink</code></li>
-</ol>
-<blockquote>
-<p>建议两者一起使用</p>
-</blockquote>
-<h2 id="修改-hexo-的站点配置文件"><a href="#修改-hexo-的站点配置文件" class="headerlink" title="修改 hexo 的站点配置文件"></a>修改 hexo 的站点配置文件</h2><p>将 <code>URL</code> 配置中的 <code>permalink</code> 参数置空或改为英文文件夹名 (详细配置请参考<a href="/hexo-note.html#%E7%BD%91%E5%9D%80-URL">网址-URL</a>)</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permalink:</span> </span><br></pre></td></tr></table></figure>
+        <h1 id="UUEncode-原理"><a href="#UUEncode-原理" class="headerlink" title="UUEncode 原理"></a>UUEncode 原理</h1><p>Uuencode是二进制信息和文字信息之间的转换编码，也就是机器和人眼识读的转换。Uuencode编码方案常见于电子邮件信息的传输，目前已被多用途互联网邮件扩展（MIME）大量取代。</p>
+<p>Uuencode将输入文字以每三个字节为单位进行编码，如此重复进行。如果最后剩下的文字少于三个字节，不够的部份用零补齐。这三个字节共有24个Bit，以6-bit为单位分为4个群组，每个群组以十进制来表示所出现的数值只会落在0到63之间。将每个数加上32，所产生的结果刚好落在ASCII字符集中可打印字符（32-空白…95-底线）的范围之中。</p>
+<p>Uuencode编码每60个将输出为独立的一行（相当于45个输入字节），每行的开头会加上长度字符，除了最后一行之外，长度字符都应该是“M”这个ASCII字符（77=32+45），最后一行的长度字符为32+剩下的字节数目这个ASCII字符。</p>
+<p>Uuencode编码与base64编码类似，但base64将0~63之间的数字通过查表换字符，而Uuencode编码是直接将这个数字加上32转换为可打印字符。</p>
+<h1 id="C-实现"><a href="#C-实现" class="headerlink" title="C++ 实现"></a>C++ 实现</h1><h2 id="加密-Encode"><a href="#加密-Encode" class="headerlink" title="加密 - Encode"></a>加密 - Encode</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">encode</span><span class="params">(<span class="keyword">const</span> string&amp; plain)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;有机会再实现&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
-<h2 id="为每篇文章手动配置-permalink"><a href="#为每篇文章手动配置-permalink" class="headerlink" title="为每篇文章手动配置 permalink"></a>为每篇文章手动配置 <code>permalink</code></h2><p>在你的博文的 <code>Front-matter</code> 中添加 <code>permalink</code> 参数 (详细配置请参考[Front-matter](/hexo-note.html#hexo 博文头 - Front-matter))</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">/project/index.html</span></span><br></pre></td></tr></table></figure>
+<h2 id="解密-Decode"><a href="#解密-Decode" class="headerlink" title="解密 - Decode"></a>解密 - Decode</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">decode</span><span class="params">(<span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;有机会再实现&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+
+
+<h1 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uu</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 uuencode 将 in_file 文件编码为 out_file 文件。</span></span><br><span class="line"><span class="comment"># 经过 uuencoded 编码的文件将具有指定 name 和 mode 作为解码该文件默认结果的标头。</span></span><br><span class="line"><span class="comment"># 默认值会相应地从 in_file 或 &#x27;-&#x27; 以及 0o666 中提取。</span></span><br><span class="line"><span class="comment"># 如果 backtick 为真值，零会用 &#x27;`&#x27; 而不是空格来表示。</span></span><br><span class="line">uu.encode(in_file, out_file, mode=<span class="literal">None</span>, *, backtick=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用此函数会解码 uuencod 编码的 in_file 文件并将结果放入 out_file 文件。</span></span><br><span class="line"><span class="comment"># 如果 out_file 是一个路径名称，mode 会在必须创建文件时用于设置权限位。</span></span><br><span class="line"><span class="comment"># out_file 和 mode 的默认值会从 uuencode 标头中提取。</span></span><br><span class="line"><span class="comment"># 但是，如果标头中指定的文件已存在，则会引发 uu.Error。</span></span><br><span class="line">uu.decode(in_file, out_file=<span class="literal">None</span>, mode=<span class="literal">None</span>, quiet=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="在线网站"><a href="#在线网站" class="headerlink" title="在线网站"></a>在线网站</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.qqxiuzi.cn/bianma/uuencode.php">https://www.qqxiuzi.cn/bianma/uuencode.php</a></li>
+</ul>
 
     </div>
 
@@ -308,7 +307,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hasegawaazusa.github.io/errors/hexo-image-link-error.html" title="hexo-asset-image：update link as:--&gt;&#x2F;.io&#x2F;&#x2F;xxx.png">https://hasegawaazusa.github.io/errors/hexo-image-link-error.html</a>
+      <a href="https://hasegawaazusa.github.io/uuencode-note.html" title="uuencode 笔记">https://hasegawaazusa.github.io/uuencode-note.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -317,22 +316,22 @@
 </div>
 
           <div class="post-tags">
-              <a href="/tags/error/" rel="tag"># error</a>
-              <a href="/tags/hexo/" rel="tag"># hexo</a>
-              <a href="/tags/hexo-asset-image/" rel="tag"># hexo-asset-image</a>
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+              <a href="/tags/uuencode/" rel="tag"># uuencode</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/errors/pscore6-error.html" rel="prev" title="powershell：尝试新的跨平台 PowerShell https://aka.ms/pscore6">
-                  <i class="fa fa-chevron-left"></i> powershell：尝试新的跨平台 PowerShell https://aka.ms/pscore6
+                <a href="/vol3-note.html" rel="prev" title="volatility3 使用笔记">
+                  <i class="fa fa-chevron-left"></i> volatility3 使用笔记
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/sagemath-equation-note.html" rel="next" title="sagemath 方程求解笔记">
-                  sagemath 方程求解笔记 <i class="fa fa-chevron-right"></i>
+                <a href="/rc4-note.html" rel="next" title="rc4 笔记">
+                  rc4 笔记 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

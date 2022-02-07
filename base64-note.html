@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="base64 的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="base64 笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/base64-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="base64 的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-07T08:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-07T09:41:58.023Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="base64">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/base64-note">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/base64-note.html","path":"/base64-note.html","title":"base64 笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>base64 笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">24</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">16</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Base64-%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">Base64 原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">C++ 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-Encode"><span class="nav-number">2.1.</span> <span class="nav-text">加密 - Encode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-Decode"><span class="nav-number">2.2.</span> <span class="nav-text">解密 - Decode</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">Python 实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bash"><span class="nav-number">4.</span> <span class="nav-text">bash</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-Encode-1"><span class="nav-number">4.1.</span> <span class="nav-text">加密 - Encode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-Decode-1"><span class="nav-number">4.2.</span> <span class="nav-text">解密 - Decode</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E7%BD%91%E7%AB%99"><span class="nav-number">5.</span> <span class="nav-text">在线网站</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">qsDuzou's blog</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">24</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/base64-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="qsDuzou's blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          base64 笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-07 16:00:00" itemprop="dateCreated datePublished" datetime="2022-02-07T16:00:00+08:00">2022-02-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">base64 的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Base64-原理"><a href="#Base64-原理" class="headerlink" title="Base64 原理"></a>Base64 原理</h1><p>Base64编码是使用64个可打印ASCII字符（A-Z、a-z、0-9、+、/）将任意字节序列数据编码成ASCII字符串，另有“=”符号用作后缀用途。</p>
+<p>Base64将输入字符串按字节切分，取得每个字节对应的二进制值（若不足8比特则高位补0），然后将这些二进制数值串联起来，再按照6比特一组进行切分（因为2^6=64），最后一组若不足6比特则末尾补0。将每组二进制值转换成十进制，然后在上述表格中找到对应的符号并串联起来就是Base64编码结果。</p>
+<p>由于二进制数据是按照8比特一组进行传输，因此Base64按照6比特一组切分的二进制数据必须是24比特的倍数（6和8的最小公倍数）。24比特就是3个字节，若原字节序列数据长度不是3的倍数时且剩下1个输入数据，则在编码结果后加2个=；若剩下2个输入数据，则在编码结果后加1个=。</p>
+<p>完整的Base64定义可见RFC1421和RFC2045。因为Base64算法是将3个字节原数据编码为4个字节新数据，所以Base64编码后的数据比原始数据略长，为原来的4/3。在电子邮件中，根据RFC822规定，每76个字符，还需要加上一个回车换行。可以估算编码后数据长度大约为原长的135.1%。</p>
+<p>Base64可用于任意数据的底层二进制数据编码，以应用于只能传输ASCII字符的场合。不过最常用于文本数据的处理传输，例如在MIME格式的电子邮件中，Base64可以用来编码邮件内容，方便在不同语言计算机间传输而不乱码，注意是传输而不是显示，例如在西欧地区计算机上使用UTF-8编码即可正常显示中文（安装有对应字库），但是它未必能正常传输中文，这时转换为Base64便无此顾虑。</p>
+<p>Base64编码若无特别说明，通常约定非ASCII字符按照UTF-8字符集进行编码处理。</p>
+<p>base64编码编码Uuencode编码类似，但base64将0~63之间的数字通过查表换字符，所以可能存在不用默认表而用另一个表进行base64编码加密</p>
+<h1 id="C-实现"><a href="#C-实现" class="headerlink" title="C++ 实现"></a>C++ 实现</h1><h2 id="加密-Encode"><a href="#加密-Encode" class="headerlink" title="加密 - Encode"></a>加密 - Encode</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">encode</span><span class="params">(<span class="keyword">const</span> string&amp; plain)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 转码表</span></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">char</span> table[] = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span>;</span><br><span class="line">    <span class="comment">// 计算加密字符数</span></span><br><span class="line">	<span class="keyword">size_t</span> count = plain.<span class="built_in">size</span>() / <span class="number">3</span>;</span><br><span class="line">	<span class="keyword">size_t</span> remain = plain.<span class="built_in">size</span>() % <span class="number">3</span>;</span><br><span class="line">	<span class="function">string <span class="title">result</span><span class="params">(count * <span class="number">4</span> + (remain ? <span class="number">4</span> : <span class="number">0</span>), <span class="number">0</span>)</span></span>;</span><br><span class="line">	<span class="keyword">size_t</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (i != count)</span><br><span class="line">	&#123;</span><br><span class="line">        <span class="comment">// 3 bytes 为一组进行加密</span></span><br><span class="line">        <span class="comment">// 取第一个 byte 的前 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span>] = table[plain[i * <span class="number">3</span>] &gt;&gt; <span class="number">2</span>];</span><br><span class="line">        <span class="comment">// 取第一个 byte 的后 2 位与第二个 byte 的前 4 位组合</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">1</span>] = table[((plain[i * <span class="number">3</span>] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>) | (plain[i * <span class="number">3</span> + <span class="number">1</span>] &gt;&gt; <span class="number">4</span>)];</span><br><span class="line">		<span class="comment">// 取第二个 byte 的后 4 位与第三个 byte 的前 2 位组合</span></span><br><span class="line">        result[i * <span class="number">4</span> + <span class="number">2</span>] = table[((plain[i * <span class="number">3</span> + <span class="number">1</span>] &amp; <span class="number">0xf</span>) &lt;&lt; <span class="number">2</span>) | (plain[i * <span class="number">3</span> + <span class="number">2</span>] &gt;&gt; <span class="number">6</span>)];</span><br><span class="line">        <span class="comment">// 取第三个 byte 的后 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">3</span>] = table[plain[i * <span class="number">3</span> + <span class="number">2</span>] &amp; <span class="number">0x3f</span>];</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 迭代至下一个 3 bytes</span></span><br><span class="line">		++i;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 若多出 1 byte</span></span><br><span class="line">	<span class="keyword">if</span> (remain == <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">        <span class="comment">// 取 byte 前 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span>] = table[plain[i * <span class="number">3</span>] &gt;&gt; <span class="number">2</span>];</span><br><span class="line">        <span class="comment">// 取 byte 后 2 位，剩余 4 位补 0</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">1</span>] = table[(plain[i * <span class="number">3</span>] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>];</span><br><span class="line">        <span class="comment">// 剩余补 &#x27;=&#x27; 凑满 4 的倍数长度</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">2</span>] = result[i * <span class="number">4</span> + <span class="number">3</span>] = <span class="string">&#x27;=&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="comment">// 若多出 2 bytes</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">        <span class="comment">// 取第一个 byte 前 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span>] = table[plain[i * <span class="number">3</span>] &gt;&gt; <span class="number">2</span>];</span><br><span class="line">        <span class="comment">// 取第一个 byte 的后 2 位与第二个 byte 的前 4 位组合</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">1</span>] = table[((plain[i * <span class="number">3</span>] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>) | (plain[i * <span class="number">3</span> + <span class="number">1</span>] &gt;&gt; <span class="number">4</span>)];</span><br><span class="line">		<span class="comment">// 取第二个 byte 的后 4 位，剩余 2 位补 0</span></span><br><span class="line">        result[i * <span class="number">4</span> + <span class="number">2</span>] = table[(plain[i * <span class="number">3</span> + <span class="number">1</span>] &amp; <span class="number">0xf</span>) &lt;&lt; <span class="number">2</span>];</span><br><span class="line">        <span class="comment">// 剩余补 &#x27;=&#x27; 凑满 4 的倍数长度</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">3</span>] = <span class="string">&#x27;=&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="解密-Decode"><a href="#解密-Decode" class="headerlink" title="解密 - Decode"></a>解密 - Decode</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">decode</span><span class="params">(<span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">// 映射表</span></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">char</span> table[] = &#123;</span><br><span class="line">		<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">62</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">63</span>,</span><br><span class="line">		<span class="number">52</span>, <span class="number">53</span>, <span class="number">54</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">57</span>, <span class="number">58</span>, <span class="number">59</span>, <span class="number">60</span>, <span class="number">61</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>,</span><br><span class="line">		<span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">25</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">33</span>, <span class="number">34</span>, <span class="number">35</span>, <span class="number">36</span>, <span class="number">37</span>, <span class="number">38</span>, <span class="number">39</span>, <span class="number">40</span>,</span><br><span class="line">		<span class="number">41</span>, <span class="number">42</span>, <span class="number">43</span>, <span class="number">44</span>, <span class="number">45</span>, <span class="number">46</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">49</span>, <span class="number">50</span>, <span class="number">51</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span></span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> string <span class="title">bad</span><span class="params">(<span class="string">&quot;decode bad!&quot;</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 如果长度不是 4 的倍数，则返回 bad 字符串</span></span><br><span class="line">	<span class="keyword">if</span> ((code.<span class="built_in">size</span>() &amp; <span class="number">0x3</span>) != <span class="number">0</span>) <span class="keyword">return</span> bad;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 计算解密字符</span></span><br><span class="line">	<span class="keyword">size_t</span> count = code.<span class="built_in">size</span>() / <span class="number">4</span>;</span><br><span class="line">	<span class="function">string <span class="title">result</span><span class="params">(count * <span class="number">3</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">	<span class="keyword">size_t</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">char</span> h, l;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (i != count)</span><br><span class="line">	&#123;</span><br><span class="line">        <span class="comment">// 以 4 bytes 为一组进行解密</span></span><br><span class="line">        <span class="comment">// 取映射表对应数 (每个数作 6 bit 计算)</span></span><br><span class="line">		h = table[code[i * <span class="number">4</span>]];</span><br><span class="line">		l = table[code[i * <span class="number">4</span> + <span class="number">1</span>]];</span><br><span class="line">        <span class="comment">// 若一组中前两个字符不在 base64 加密字符范围，则返回 bad 字符串</span></span><br><span class="line">		<span class="keyword">if</span> (h == <span class="number">64</span> || l == <span class="number">64</span>) <span class="keyword">return</span> bad;</span><br><span class="line">        <span class="comment">// 将第一个数的前 4 bit 与第二个数的前 4 bit 组合</span></span><br><span class="line">		result[i * <span class="number">3</span>] = (h &lt;&lt; <span class="number">2</span>) | (l &gt;&gt; <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 取映射表对应数</span></span><br><span class="line">		h = table[code[i * <span class="number">4</span> + <span class="number">2</span>]];</span><br><span class="line">        <span class="comment">// 若一组中第三个数不在 base64 加密字符范围，则说明为 &#x27;=&#x27;，即解密结束 (严格来说需判断是否为&#x27;=&#x27;)</span></span><br><span class="line">		<span class="keyword">if</span> (h != <span class="number">64</span>)</span><br><span class="line">		&#123;</span><br><span class="line">            <span class="comment">// 将第二个数的前 2 bit 与第三个数的前 4 bit 组合</span></span><br><span class="line">			result[i * <span class="number">3</span> + <span class="number">1</span>] = (l &lt;&lt; <span class="number">4</span>) | (h &gt;&gt; <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 取映射表对应数</span></span><br><span class="line">			l = table[code[i * <span class="number">4</span> + <span class="number">3</span>]];</span><br><span class="line">			<span class="keyword">if</span> (l != <span class="number">64</span>)</span><br><span class="line">			&#123;</span><br><span class="line">                <span class="comment">// 将第三个数的前 2 bit 与第二个数的 6 bit 组合</span></span><br><span class="line">				result[i * <span class="number">3</span> + <span class="number">2</span>] = (h &lt;&lt; <span class="number">6</span>) | l;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="comment">// 迭代至下三个数 (每个数作 6 bit 计算)</span></span><br><span class="line">		++i;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="comment"># encode</span></span><br><span class="line">base64.b64encode(<span class="string">&quot;Duzou&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># decode</span></span><br><span class="line">base64.b64decode(<span class="string">&quot;RHV6b3VfMXNfczBfaDRuZHNPbWU=&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="bash"><a href="#bash" class="headerlink" title="bash"></a>bash</h1><h2 id="加密-Encode-1"><a href="#加密-Encode-1" class="headerlink" title="加密 - Encode"></a>加密 - Encode</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> Duzou | base64</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意，bash 的 echo 会默认加一个回车在末尾</p>
+</blockquote>
+<h2 id="解密-Decode-1"><a href="#解密-Decode-1" class="headerlink" title="解密 - Decode"></a>解密 - Decode</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> RHV6b3VfMXNfczBfaDRuZHNPbWU= | base64 -d</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="在线网站"><a href="#在线网站" class="headerlink" title="在线网站"></a>在线网站</h1><ul>
+<li><a target="_blank" rel="noopener" href="https://www.qqxiuzi.cn/bianma/base64.htm">https://www.qqxiuzi.cn/bianma/base64.htm</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/base64-note.html" title="base64 笔记">https://hasegawaazusa.github.io/base64-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+              <a href="/tags/base64/" rel="tag"># base64</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/rc4-note.html" rel="prev" title="rc4 笔记">
+                  <i class="fa fa-chevron-left"></i> rc4 笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">34k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">31 分钟</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
