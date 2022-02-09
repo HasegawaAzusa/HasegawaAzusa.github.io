@@ -1641,13 +1641,30 @@
 <p>它主要是为了避免多个线程同时访存同一全局变量或者静态变量时所导致的冲突，尤其是多个线程同时需要修改这一变量时。为了解决这个问题，我们可以通过TLS机制，为每一个使用该全局变量的线程都提供一个变量值的副本，每一个线程均可以独立地改变自己的副本，而不会和其它线程的副本冲突。从线程的角度看，就好像每一个线程都完全拥有该变量。而从全局变量的角度上来看，就好像一个全局变量被克隆成了多份副本，而每一份副本都可以被一个线程独立地改变。</p>
 <h1 id="WinAPI-反调试"><a href="#WinAPI-反调试" class="headerlink" title="WinAPI 反调试"></a>WinAPI 反调试</h1><p>在头文件 <code>windows.h</code> 中存在函数 <code>IsDebuggerPresent()</code></p>
 <p>当函数返回 <code>true</code> 代表检测到调试器，<code>false</code> 则代表未检测到调试器</p>
-<h1 id="利用-PEB-标志位"><a href="#利用-PEB-标志位" class="headerlink" title="利用 PEB 标志位"></a>利用 PEB 标志位</h1><p>WinAPI 实际上也是取 <code>PEB</code> 结构体中的 <code>BeingDebugged</code> 标志位</p>
+<p>相同功能的函数还有 <code>CheckRemoteDebuggerPresent()</code></p>
+<p>同时还可以通过 <code>FindWindow</code>、<code>EnumWindows</code>或是<code>GetForegroundWindow</code>粗暴查询主流调试器窗口名</p>
+<p>又或者通过 <code>CreateToolhelp32Snapshot</code>、<code>Process32First</code>和<code>Process32Next</code>查询所有的进程来排查主流调试器进程是否存在</p>
+<p>甚至可以通过判断父进程是否为<code>explorer.exe</code>来检查是否被调试，因为一般来说双击点开的程序的父进程都是<code>explorer.exe</code></p>
+<h1 id="利用-PEB-标志位"><a href="#利用-PEB-标志位" class="headerlink" title="利用 PEB 标志位"></a>利用 PEB 标志位</h1><p><code>IsDebuggerPresent()</code> 实际上也是取 <code>PEB</code> 结构体中的 <code>BeingDebugged</code> 标志位</p>
 <p>当调试器开始调试应用程序的时候，操作系统会将目标应用程序的 <code>PEB</code> 结构体中的 <code>BeingDebugged</code> 标志位置为 1</p>
-<p>而 FS[] 寄存器指向 <code>TEB</code> 结构体</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mov eax, fs:[30h]		; 取 PEB 首地址</span><br><span class="line">mov eax, [eax+2]		; 取 PEB 首地址偏移 2 的位置</span><br><span class="line">and eax, 0xff			; 只需要最低 2 位的 BeingDebugged</span><br></pre></td></tr></table></figure>
+<p>而 <code>FS[]</code> 寄存器指向 <code>TEB</code> 结构体</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mov eax, fs:[30h]		; 取 PEB 首地址</span><br><span class="line">mov eax, [eax+2]		; 取 PEB 首地址偏移 2 的位置</span><br><span class="line">and eax, 0xff			; 只需要低 2 位的 PEB-&gt;BeingDebugged</span><br></pre></td></tr></table></figure>
 
-<p>在 C++ 中可写为</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebuged</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> flag = <span class="literal">false</span>;</span><br><span class="line">    __asm &#123;</span><br><span class="line">        mov eax, fs:[<span class="number">30</span>h]</span><br><span class="line">        mov eax, [eax+<span class="number">2</span>]</span><br><span class="line">        <span class="keyword">and</span> eax, <span class="number">0xff</span></span><br><span class="line">        mov flag, eax</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>或者 (<code>NtGlobalFlag</code> 默认为 0 )</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mov eax, fs:[30h]		; 取 PEB 首地址</span><br><span class="line">mov eax, [eax+68h]		; 取 PEB 首地址偏移 68h 的位置，即 PEB-&gt;NtGlobalFlag</span><br></pre></td></tr></table></figure>
+
+<p>在 C++ 中可写为 (仅为示例)</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebugged</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> flag = <span class="literal">false</span>;</span><br><span class="line">    __asm &#123;</span><br><span class="line">        mov eax, fs:[<span class="number">30</span>h]</span><br><span class="line">        mov eax, [eax+<span class="number">2</span>]</span><br><span class="line">        <span class="keyword">and</span> eax, <span class="number">0xff</span></span><br><span class="line">        mov flag, eax</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="利用堆标志位"><a href="#利用堆标志位" class="headerlink" title="利用堆标志位"></a>利用堆标志位</h1><p>不同系统、不同版本可能不太一样，具体请查询微软官方文档。</p>
+<p>在Windows XP系统中，<code>ForceFlags</code>属性位于堆头部偏移量0x10处；在Windows 7系统中，对于32位的应用程序来说<code>ForceFlags</code>属性位于堆头部偏移量 0x44 处。</p>
+<p>利用 <code>PEB-&gt;ProcessHeap-&gt;Flags</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mov eax, fs:[30h]		; 取 PEB 首地址</span><br><span class="line">mov eax, [eax + 18h]	; 取 PEB 首地址偏移 18h 的位置，即 PEB-&gt;ProcessHeap</span><br><span class="line">mov eax, [eax + 0ch]	; 取 PEB-&gt;ProcessHeap 首地址偏移 0ch 的位置，即 PEB-&gt;ProcessHeap-&gt;Flags (默认为 2)</span><br></pre></td></tr></table></figure>
+
+<p>利用 <code>PEB-&gt;ProcessHeap-&gt;ForceFlags</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">mov eax, fs:[30h]		; 取 PEB 首地址</span><br><span class="line">mov eax, [eax + 18h]	; 取 PEB 首地址偏移 18h 的位置，即 PEB-&gt;ProcessHeap</span><br><span class="line">mov eax, [eax + 10h]	; 取 PEB-&gt;ProcessHeap 首地址偏移 0ch 的位置，即 PEB-&gt;ProcessHeap-&gt;ForceFlags</span><br></pre></td></tr></table></figure>
 
 
 
@@ -1657,7 +1674,46 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function">DWORD NTAPI <span class="title">NtQueryInformationProcess</span><span class="params">(HANDLE hProcess, ULONG InfoClass, PVOID Buffer, ULONG length, PULONG returnLen)</span></span>;</span><br></pre></td></tr></table></figure>
 
 <p>当我们需要使用时，以下 MSVC 代码可供参考：</p>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function">DWORD NTAPI <span class="title">NtQueryInformationProcess</span><span class="params">(HANDLE hProcess, ULONG InfoClass, PVOID Buffer, ULONG length, PULONG returnLen)</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib, <span class="meta-string">&quot;ntdll.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebuged</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HANDLE hDebugPort = <span class="literal">NULL</span>;	<span class="comment">// 调试端口</span></span><br><span class="line">    <span class="comment">// (HANDLE)-1 代表当前进程，其他均为查询是否被调试的固定参数</span></span><br><span class="line">	<span class="comment">// 如果正在被调试将返回 -1，否则返回 0</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">NtQueryInformationProcess</span>((HANDLE)<span class="number">-1</span>, <span class="number">7</span>, &amp;hDebugPort, <span class="built_in"><span class="keyword">sizeof</span></span>(HANDLE), <span class="literal">NULL</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> hDebugPort;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function">DWORD NTAPI <span class="title">NtQueryInformationProcess</span><span class="params">(HANDLE hProcess, ULONG InfoClass, PVOID Buffer, ULONG length, PULONG returnLen)</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib, <span class="meta-string">&quot;ntdll.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebugged</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HANDLE hDebugPort = <span class="literal">NULL</span>;	<span class="comment">// 调试端口</span></span><br><span class="line">    <span class="comment">// (HANDLE)-1 代表当前进程，其他均为查询是否被调试的固定参数</span></span><br><span class="line">	<span class="comment">// 如果正在被调试将返回 -1，否则返回 0</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">NtQueryInformationProcess</span>((HANDLE)<span class="number">-1</span>, <span class="number">7</span>, &amp;hDebugPort, <span class="built_in"><span class="keyword">sizeof</span></span>(HANDLE), <span class="literal">NULL</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> hDebugPort;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>CheckRemoteDebuggerPresent()</code> 实际上内部也调用了此函数</p>
+<h1 id="时间检测"><a href="#时间检测" class="headerlink" title="时间检测"></a>时间检测</h1><p>利用时间差判断是否代码停留时间过长，可判断是否在被动态调试，适合放在关键代码处运行，从某种意义上可以反制一定的调试手段</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebugged</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	DWORD start, end;</span><br><span class="line">	__asm</span><br><span class="line">	&#123;</span><br><span class="line">		rdtsc</span><br><span class="line">		mov start, eax</span><br><span class="line">		rdtsc</span><br><span class="line">		mov end, eax</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (end - start &gt; <span class="number">21</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 时间较长则视为在被调试</span></span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">keyFunction</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	DWORD start, end;</span><br><span class="line">	start = <span class="built_in">GetTickCount</span>();</span><br><span class="line"></span><br><span class="line">	<span class="comment">/**</span></span><br><span class="line"><span class="comment">	 * 部分代码</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line">	end = <span class="built_in">GetTickCount</span>();</span><br><span class="line">	<span class="keyword">if</span> (end - start &gt; <span class="number">100</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 如果运行时间大于理想时间，则说明在调试中</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">/**</span></span><br><span class="line"><span class="comment">		 * 其他代码</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="硬件断点检测"><a href="#硬件断点检测" class="headerlink" title="硬件断点检测"></a>硬件断点检测</h1><p>获取线程上下文，检测硬件断点，查看是否占用</p>
+<p>以下 MSVC 代码可供参考：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebugged</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	CONTEXT ctx;</span><br><span class="line">	ctx.ContextFlags = CONTEXT_ALL;</span><br><span class="line">	<span class="built_in">GetThreadContext</span>((HANDLE)<span class="number">-1</span>, &amp;ctx);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (ctx.Dr0 || ctx.Dr1 || ctx.Dr2 || ctx.Dr3)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="异常检测"><a href="#异常检测" class="headerlink" title="异常检测"></a>异常检测</h1><p>但当调试器捕获异常时，大多数调试器并不会立即将异常传递给被调试程序处理或是直接不传递。我们便可以将这种机制用来反调试。</p>
+<blockquote>
+<p>但以下代码不一定运行成功——时代在发展，科技在进步。</p>
+</blockquote>
+<h2 id="一个字节的-Interrupt-3-中断"><a href="#一个字节的-Interrupt-3-中断" class="headerlink" title="一个字节的 Interrupt 3 中断"></a>一个字节的 Interrupt 3 中断</h2><p>在所有会被调试器处理的异常中，interrupt 3 中断算是一个，它会生成一个单字节的断点。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebugged_Int3</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	__try</span><br><span class="line">	&#123;</span><br><span class="line">		__asm <span class="keyword">int</span> <span class="number">3</span></span><br><span class="line">	&#125;</span><br><span class="line">	__except (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="两个字节的-Interrupt-3-中断"><a href="#两个字节的-Interrupt-3-中断" class="headerlink" title="两个字节的 Interrupt 3 中断"></a>两个字节的 Interrupt 3 中断</h2><p>使用 MSVC 内联汇编器的 <code>_emit</code> 伪指令可以生成一个两字节的interrupt 3指令。在测试的所有调试器中，只有 OnllyDbg 调试器识别这个异常。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebugged_Int3_2Bytes</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	__try</span><br><span class="line">	&#123;</span><br><span class="line">		__asm</span><br><span class="line">		&#123;</span><br><span class="line">			__emit <span class="number">0xCD</span></span><br><span class="line">			__emit <span class="number">0x03</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	__except (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Interrupt-0x2D-中断"><a href="#Interrupt-0x2D-中断" class="headerlink" title="Interrupt 0x2D 中断"></a>Interrupt 0x2D 中断</h2><p>如果执行了interrupt 0x2D，Windows将抛出一个断点异常</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebugged_Int2d</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	__try</span><br><span class="line">	&#123;</span><br><span class="line">		__asm <span class="keyword">int</span> <span class="number">0x2d</span></span><br><span class="line">	&#125;</span><br><span class="line">	__except (<span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="GetLastError-检测"><a href="#GetLastError-检测" class="headerlink" title="GetLastError 检测"></a>GetLastError 检测</h2><p>当出现异常时，winapi 往往会通过 <code>GetLastError()</code> 函数获取错误原因，而我们也可以通过 <code>SetLastError()</code> 来报错</p>
+<p>其中 <code>OutputDebugString()</code> 函数用于在调试器中显示字符串，同时可以用来探测调试器是否存在。</p>
+<p>我们可以通过将错误码重置，当使用 <code>OutputDebugString()</code> 函数时，若不存在调试器，则会发生错误，错误码被重新设置；若存在调试器，则之后的错误码则会跟我们重置的错误码相同，以此便可以判断调试器存在。</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebugged</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	DWORD dwCode = <span class="number">10086</span>;</span><br><span class="line">	<span class="built_in">SetLastError</span>(dwCode);</span><br><span class="line">	<span class="built_in">OutputDebugString</span>(<span class="string">L&quot;hacker!&quot;</span>);</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">GetLastError</span>() == dwCode)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -1665,6 +1721,8 @@
 <figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 自定义 TLS 回调函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> NTAPI <span class="title">tls_callback</span><span class="params">(PVOID h, DWORD reason, PVOID pv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">IsDebuggerPresent</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">MessageBoxA</span>(<span class="literal">NULL</span>, <span class="string">&quot;hacker!&quot;</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断是 x86 还是 x64 系统</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _M_IX86</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span>  comment(linker, <span class="meta-string">&quot;/INCLUDE:__tls_used&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span>  comment(linker, <span class="meta-string">&quot;/INCLUDE:__tls_callback&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span>  comment(linker, <span class="meta-string">&quot;/INCLUDE:_tls_used&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span>  comment(linker, <span class="meta-string">&quot;/INCLUDE:_tls_callback&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个 TLS 区段</span></span><br><span class="line">EXTERN_C</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _M_X64</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> const_seg (<span class="meta-string">&quot;.CRT$XLB&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> data_seg (<span class="meta-string">&quot;.CRT$XLB&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">PIMAGE_TLS_CALLBACK _tls_callback[] = &#123; tls_callback, <span class="number">0</span> &#125;;</span><br><span class="line"><span class="comment">// 结束区段</span></span><br><span class="line">EXTERN_C</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _M_X64</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> const_seg (<span class="meta-string">&quot;.CRT$XLB&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> data_seg (<span class="meta-string">&quot;.CRT$XLB&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
 
 <p>我们可以在 TLS 回调函数中，进行我们的反调试手段，如加壳、加密等</p>
+<h1 id="内存校验"><a href="#内存校验" class="headerlink" title="内存校验"></a>内存校验</h1><p>将内存值进行 hash 得到哈希值 (如 CRC 算法等)，当内存区段数据被调试，或者是被补丁后，内存值经过同一哈希函数得到的哈希值会发生改变，可以此来判断是否被调试。</p>
+<h1 id="注册表查询检测"><a href="#注册表查询检测" class="headerlink" title="注册表查询检测"></a>注册表查询检测</h1><p>以下为调试器在注册表中的一个常用位置。<br>32位系统: <code>SOFTWARE\Microsoft\Windows NT\CurrentVersion\AeDebug</code><br>64位系统: <code>SOFTWARE\Wow6432Node\Microsoft\WindowsNT\CurrentVersion\AeDebug</code><br>该注册表项指定当应用程序发生错误时，触发哪一个调试器。默认情况下，它被设置为<code>Dr.Watson</code>。如果该这册表的键值被修改为<code>OllyDbg</code> 或是其他调试器名，则代码就可以确定它正在被调试。</p>
 <h1 id="对数据加密"><a href="#对数据加密" class="headerlink" title="对数据加密"></a>对数据加密</h1><p>在程序开始前，不将正确的数据显露出来</p>
 <p>当用以上技术<strong>并未</strong>检测到程序正在调试时，再将相应的数据进行解密</p>
 <p>可结合 TLS 回调函数等技术</p>
@@ -1684,14 +1742,7 @@
 
 
 
-
-
-
-
-
-
-
-
+<h1 id="攻击调试器漏洞"><a href="#攻击调试器漏洞" class="headerlink" title="攻击调试器漏洞"></a>攻击调试器漏洞</h1><p>与所有软件一样，调试器也存在漏洞，有时恶意代码编写者为了防止被调试，会攻击这些漏洞。</p>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -1706,12 +1757,13 @@
     <content><![CDATA[<h1 id="IsDebuggerPresent-绕过"><a href="#IsDebuggerPresent-绕过" class="headerlink" title="IsDebuggerPresent 绕过"></a>IsDebuggerPresent 绕过</h1><p><code>IsDebuggerPresent</code> 作为 winapi 函数，不可去符号表，在 ida 中可以通过导入表 (imports) 找到函数，然后通过以下几种手段绕过：</p>
 <ol>
 <li>调试时，修改函数返回值 (即修改 rax 寄存器值)</li>
-<li>将调用函数后的条件语句修改 (jz → jnz / jnz → jz)</li>
-<li>将相应代码区段 patch nop</li>
+<li>调试时，修改相应的内存 (内存窗口中查找 <code>fs:[30]</code> 位置，即 <code>PEB</code> 地址，偏移为 0x68 的位置即为 <code>BeingDebugged</code> )</li>
+<li>将调用函数后的条件语句修改 (<code>jz</code> → <code>jnz</code> / <code>jnz</code> → <code>jz</code>)</li>
+<li>将相应代码区段 patch <code>nop</code></li>
 <li>动态调试时，直接跳过函数运行</li>
 </ol>
 <h1 id="PEB-标志位绕过"><a href="#PEB-标志位绕过" class="headerlink" title="PEB 标志位绕过"></a>PEB 标志位绕过</h1><p>需要通过 ida 查找是否有涉及到 <code>fs</code> 寄存器的汇编代码</p>
-<p>然后再进行相应的操作，如 patch_nop 等。</p>
+<p>然后再进行相应的操作，如 patch <code>nop</code> 等。</p>
 <h1 id="自修改代码绕过"><a href="#自修改代码绕过" class="headerlink" title="自修改代码绕过"></a>自修改代码绕过</h1><p>如以下例题</p>
 <p><img src="/anti-anti-debug-note/473_af0_6f0.png" alt="ques"></p>
 <h2 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h2><p>通过 ida 静态分析，找到相应的修改算法，通过 ida python 逆向修改代码区段</p>

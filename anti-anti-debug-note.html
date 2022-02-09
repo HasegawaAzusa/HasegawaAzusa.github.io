@@ -31,7 +31,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hasegawaazusa.github.io/anti-anti-debug-note/473_af0_6f0.png">
 <meta property="article:published_time" content="2022-02-09T09:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-09T09:24:27.172Z">
+<meta property="article:modified_time" content="2022-02-09T09:52:55.185Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="anti-debug">
@@ -255,7 +255,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>515</span>
+      <span>576</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -277,12 +277,13 @@
         <h1 id="IsDebuggerPresent-绕过"><a href="#IsDebuggerPresent-绕过" class="headerlink" title="IsDebuggerPresent 绕过"></a>IsDebuggerPresent 绕过</h1><p><code>IsDebuggerPresent</code> 作为 winapi 函数，不可去符号表，在 ida 中可以通过导入表 (imports) 找到函数，然后通过以下几种手段绕过：</p>
 <ol>
 <li>调试时，修改函数返回值 (即修改 rax 寄存器值)</li>
-<li>将调用函数后的条件语句修改 (jz → jnz / jnz → jz)</li>
-<li>将相应代码区段 patch nop</li>
+<li>调试时，修改相应的内存 (内存窗口中查找 <code>fs:[30]</code> 位置，即 <code>PEB</code> 地址，偏移为 0x68 的位置即为 <code>BeingDebugged</code> )</li>
+<li>将调用函数后的条件语句修改 (<code>jz</code> → <code>jnz</code> / <code>jnz</code> → <code>jz</code>)</li>
+<li>将相应代码区段 patch <code>nop</code></li>
 <li>动态调试时，直接跳过函数运行</li>
 </ol>
 <h1 id="PEB-标志位绕过"><a href="#PEB-标志位绕过" class="headerlink" title="PEB 标志位绕过"></a>PEB 标志位绕过</h1><p>需要通过 ida 查找是否有涉及到 <code>fs</code> 寄存器的汇编代码</p>
-<p>然后再进行相应的操作，如 patch_nop 等。</p>
+<p>然后再进行相应的操作，如 patch <code>nop</code> 等。</p>
 <h1 id="自修改代码绕过"><a href="#自修改代码绕过" class="headerlink" title="自修改代码绕过"></a>自修改代码绕过</h1><p>如以下例题</p>
 <p><img src="/anti-anti-debug-note/473_af0_6f0.png" alt="ques"></p>
 <h2 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h2><p>通过 ida 静态分析，找到相应的修改算法，通过 ida python 逆向修改代码区段</p>
@@ -365,14 +366,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">42k</span>
+    <span title="站点总字数">45k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">38 分钟</span>
+    <span title="站点阅读时长">41 分钟</span>
   </span>
 </div>
 
