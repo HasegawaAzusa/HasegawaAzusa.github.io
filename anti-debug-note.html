@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关反调试的一些简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反调试笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/anti-debug-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关反调试的一些简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-09T06:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-09T09:03:02.448Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="anti-debug">
+<meta property="article:tag" content="debug">
+<meta property="article:tag" content="c++">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/anti-debug-note">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/anti-debug-note.html","path":"/anti-debug-note.html","title":"反调试笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>反调试笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">27</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">17</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8D%E8%B0%83%E8%AF%95%E6%8A%80%E6%9C%AF"><span class="nav-number">1.</span> <span class="nav-text">反调试技术</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows-%E5%89%8D%E7%BD%AE%E7%9F%A5%E8%AF%86"><span class="nav-number">2.</span> <span class="nav-text">Windows 前置知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TEB-%E7%BA%BF%E7%A8%8B%E7%8E%AF%E5%A2%83%E5%9D%97"><span class="nav-number">2.1.</span> <span class="nav-text">TEB 线程环境块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PEB-%E8%BF%9B%E7%A8%8B%E7%8E%AF%E5%A2%83%E5%9D%97"><span class="nav-number">2.2.</span> <span class="nav-text">PEB 进程环境块</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TLS-%E7%BA%BF%E7%A8%8B%E5%B1%80%E9%83%A8%E5%AD%98%E5%82%A8"><span class="nav-number">2.3.</span> <span class="nav-text">TLS 线程局部存储</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#WinAPI-%E5%8F%8D%E8%B0%83%E8%AF%95"><span class="nav-number">3.</span> <span class="nav-text">WinAPI 反调试</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%A9%E7%94%A8-PEB-%E6%A0%87%E5%BF%97%E4%BD%8D"><span class="nav-number">4.</span> <span class="nav-text">利用 PEB 标志位</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8-ntdll-%E5%87%BD%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">使用 ntdll 函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%88%A9%E7%94%A8-TLS-%E5%9B%9E%E8%B0%83"><span class="nav-number">6.</span> <span class="nav-text">利用 TLS 回调</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AF%B9%E6%95%B0%E6%8D%AE%E5%8A%A0%E5%AF%86"><span class="nav-number">7.</span> <span class="nav-text">对数据加密</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%87%AA%E4%BF%AE%E6%94%B9%E4%BB%A3%E7%A0%81"><span class="nav-number">8.</span> <span class="nav-text">自修改代码</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">qsDuzou's blog</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">27</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/anti-debug-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="qsDuzou's blog">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          反调试笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-09 14:00:00" itemprop="dateCreated datePublished" datetime="2022-02-09T14:00:00+08:00">2022-02-09</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关反调试的一些简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="反调试技术"><a href="#反调试技术" class="headerlink" title="反调试技术"></a>反调试技术</h1><p><strong>调试技术</strong>可以直接探查出程序运行的机制，程序作者为了隐藏程序底层机制而通过<strong>反调试技术</strong>来反制。</p>
+<p>对于一般的程序需要防止核心代码被调试逆向，软件或专利技术被破解；而病毒或恶意代码会隐藏自己的恶意行为防止被跟踪。</p>
+<p>所以对于<strong>反调试技术</strong>我们是有了解的必要的。</p>
+<h1 id="Windows-前置知识"><a href="#Windows-前置知识" class="headerlink" title="Windows 前置知识"></a>Windows 前置知识</h1><p>以下存在未公开结构体 (地址为 32 位，具体请参考微软官方文档)</p>
+<h2 id="TEB-线程环境块"><a href="#TEB-线程环境块" class="headerlink" title="TEB 线程环境块"></a>TEB 线程环境块</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">TEB</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    NT_TIB Tib;                             <span class="comment">/* 00h */</span></span><br><span class="line">    PVOID EnvironmentPointer;               <span class="comment">/* 1Ch */</span></span><br><span class="line">    CLIENT_ID Cid;                          <span class="comment">/* 20h */</span></span><br><span class="line">    PVOID ActiveRpcHandle;                  <span class="comment">/* 28h */</span></span><br><span class="line">    PVOID ThreadLocalStoragePointer;        <span class="comment">/* 2Ch */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> _<span class="title">PEB</span> *<span class="title">ProcessEnvironmentBlock</span>;</span>   <span class="comment">/* 30h */</span></span><br><span class="line">    ULONG LastErrorValue;                   <span class="comment">/* 34h */</span></span><br><span class="line">    ULONG CountOfOwnedCriticalSections;     <span class="comment">/* 38h */</span></span><br><span class="line">    PVOID CsrClientThread;                  <span class="comment">/* 3Ch */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> _<span class="title">W32THREAD</span>* <span class="title">Win32ThreadInfo</span>;</span>     <span class="comment">/* 40h */</span></span><br><span class="line">    ULONG User32Reserved[<span class="number">0x1A</span>];             <span class="comment">/* 44h */</span></span><br><span class="line">    ULONG UserReserved[<span class="number">5</span>];                  <span class="comment">/* ACh */</span></span><br><span class="line">    PVOID WOW32Reserved;                    <span class="comment">/* C0h */</span></span><br><span class="line">    LCID CurrentLocale;                     <span class="comment">/* C4h */</span></span><br><span class="line">    ULONG FpSoftwareStatusRegister;         <span class="comment">/* C8h */</span></span><br><span class="line">    PVOID SystemReserved1[<span class="number">0x36</span>];            <span class="comment">/* CCh */</span></span><br><span class="line">    LONG ExceptionCode;                     <span class="comment">/* 1A4h */</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> _<span class="title">ACTIVATION_CONTEXT_STACK</span> *<span class="title">ActivationContextStackPointer</span>;</span> <span class="comment">/* 1A8h */</span></span><br><span class="line">    UCHAR SpareBytes1[<span class="number">0x28</span>];                <span class="comment">/* 1ACh */</span></span><br><span class="line">    GDI_TEB_BATCH GdiTebBatch;              <span class="comment">/* 1D4h */</span></span><br><span class="line">    CLIENT_ID RealClientId;                 <span class="comment">/* 6B4h */</span></span><br><span class="line">    PVOID GdiCachedProcessHandle;           <span class="comment">/* 6BCh */</span></span><br><span class="line">    ULONG GdiClientPID;                     <span class="comment">/* 6C0h */</span></span><br><span class="line">    ULONG GdiClientTID;                     <span class="comment">/* 6C4h */</span></span><br><span class="line">    PVOID GdiThreadLocalInfo;               <span class="comment">/* 6C8h */</span></span><br><span class="line">    ULONG Win32ClientInfo[<span class="number">62</span>];              <span class="comment">/* 6CCh */</span></span><br><span class="line">    PVOID glDispatchTable[<span class="number">0xE9</span>];            <span class="comment">/* 7C4h */</span></span><br><span class="line">    ULONG glReserved1[<span class="number">0x1D</span>];                <span class="comment">/* B68h */</span></span><br><span class="line">    PVOID glReserved2;                      <span class="comment">/* BDCh */</span></span><br><span class="line">    PVOID glSectionInfo;                    <span class="comment">/* BE0h */</span></span><br><span class="line">    PVOID glSection;                        <span class="comment">/* BE4h */</span></span><br><span class="line">    PVOID glTable;                          <span class="comment">/* BE8h */</span></span><br><span class="line">    PVOID glCurrentRC;                      <span class="comment">/* BECh */</span></span><br><span class="line">    PVOID glContext;                        <span class="comment">/* BF0h */</span></span><br><span class="line">    NTSTATUS LastStatusValue;               <span class="comment">/* BF4h */</span></span><br><span class="line">    UNICODE_STRING StaticUnicodeString;     <span class="comment">/* BF8h */</span></span><br><span class="line">    WCHAR StaticUnicodeBuffer[<span class="number">0x105</span>];       <span class="comment">/* C00h */</span></span><br><span class="line">    PVOID DeallocationStack;                <span class="comment">/* E0Ch */</span></span><br><span class="line">    PVOID TlsSlots[<span class="number">0x40</span>];                   <span class="comment">/* E10h */</span></span><br><span class="line">    LIST_ENTRY TlsLinks;                    <span class="comment">/* F10h */</span></span><br><span class="line">    PVOID Vdm;                              <span class="comment">/* F18h */</span></span><br><span class="line">    PVOID ReservedForNtRpc;                 <span class="comment">/* F1Ch */</span></span><br><span class="line">    PVOID DbgSsReserved[<span class="number">0x2</span>];               <span class="comment">/* F20h */</span></span><br><span class="line">    ULONG HardErrorDisabled;                <span class="comment">/* F28h */</span></span><br><span class="line">    PVOID Instrumentation[<span class="number">14</span>];              <span class="comment">/* F2Ch */</span></span><br><span class="line">    PVOID SubProcessTag;                    <span class="comment">/* F64h */</span></span><br><span class="line">    PVOID EtwTraceData;                     <span class="comment">/* F68h */</span></span><br><span class="line">    PVOID WinSockData;                      <span class="comment">/* F6Ch */</span></span><br><span class="line">    ULONG GdiBatchCount;                    <span class="comment">/* F70h */</span></span><br><span class="line">    BOOLEAN InDbgPrint;                     <span class="comment">/* F74h */</span></span><br><span class="line">    BOOLEAN FreeStackOnTermination;         <span class="comment">/* F75h */</span></span><br><span class="line">    BOOLEAN HasFiberData;                   <span class="comment">/* F76h */</span></span><br><span class="line">    UCHAR IdealProcessor;                   <span class="comment">/* F77h */</span></span><br><span class="line">    ULONG GuaranteedStackBytes;             <span class="comment">/* F78h */</span></span><br><span class="line">    PVOID ReservedForPerf;                  <span class="comment">/* F7Ch */</span></span><br><span class="line">    PVOID ReservedForOle;                   <span class="comment">/* F80h */</span></span><br><span class="line">    ULONG WaitingOnLoaderLock;              <span class="comment">/* F84h */</span></span><br><span class="line">    ULONG SparePointer1;                    <span class="comment">/* F88h */</span></span><br><span class="line">    ULONG SoftPatchPtr1;                    <span class="comment">/* F8Ch */</span></span><br><span class="line">    ULONG SoftPatchPtr2;                    <span class="comment">/* F90h */</span></span><br><span class="line">    PVOID *TlsExpansionSlots;               <span class="comment">/* F94h */</span></span><br><span class="line">    ULONG ImpersionationLocale;             <span class="comment">/* F98h */</span></span><br><span class="line">    ULONG IsImpersonating;                  <span class="comment">/* F9Ch */</span></span><br><span class="line">    PVOID NlsCache;                         <span class="comment">/* FA0h */</span></span><br><span class="line">    PVOID pShimData;                        <span class="comment">/* FA4h */</span></span><br><span class="line">    ULONG HeapVirualAffinity;               <span class="comment">/* FA8h */</span></span><br><span class="line">    PVOID CurrentTransactionHandle;         <span class="comment">/* FACh */</span></span><br><span class="line">    PTEB_ACTIVE_FRAME ActiveFrame;          <span class="comment">/* FB0h */</span></span><br><span class="line">    PVOID FlsData;                          <span class="comment">/* FB4h */</span></span><br><span class="line">    UCHAR SafeThunkCall;                    <span class="comment">/* FB8h */</span></span><br><span class="line">    UCHAR BooleanSpare[<span class="number">3</span>];                  <span class="comment">/* FB9h */</span></span><br><span class="line">&#125; TEB, *PTEB;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="PEB-进程环境块"><a href="#PEB-进程环境块" class="headerlink" title="PEB 进程环境块"></a>PEB 进程环境块</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> _<span class="title">PEB</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    UCHAR InheritedAddressSpace; 			<span class="comment">/*  00h */</span></span><br><span class="line">    UCHAR ReadImageFileExecOptions; 		<span class="comment">/*  01h */</span></span><br><span class="line">    UCHAR BeingDebugged; 			        <span class="comment">/*  02h */</span></span><br><span class="line">    UCHAR Spare; 			                <span class="comment">/*  03h */</span></span><br><span class="line">    PVOID Mutant; 		                	<span class="comment">/*  04h */</span></span><br><span class="line">    PVOID ImageBaseAddress; 	    		<span class="comment">/*  08h */</span></span><br><span class="line">    PPEB_LDR_DATA Ldr; 		               	<span class="comment">/*  0Ch */</span></span><br><span class="line">    PRTL_USER_PROCESS_PARAMETERS ProcessParameters; 			<span class="comment">/*  10h */</span></span><br><span class="line">    PVOID SubSystemData; 		           	<span class="comment">/*  14h */</span></span><br><span class="line">    PVOID ProcessHeap; 			            <span class="comment">/*  18h */</span></span><br><span class="line">    PVOID FastPebLock; 		            	<span class="comment">/*  1Ch */</span></span><br><span class="line">    PPEBLOCKROUTINE FastPebLockRoutine; 	<span class="comment">/*  20h */</span></span><br><span class="line">    PPEBLOCKROUTINE FastPebUnlockRoutine;	<span class="comment">/*  24h */</span></span><br><span class="line">    ULONG EnvironmentUpdateCount; 			<span class="comment">/*  28h */</span></span><br><span class="line">    PVOID* KernelCallbackTable; 			<span class="comment">/*  2Ch */</span></span><br><span class="line">    PVOID EventLogSection; 		        	<span class="comment">/*  30h */</span></span><br><span class="line">    PVOID EventLog; 		            	<span class="comment">/*  34h */</span></span><br><span class="line">    PPEB_FREE_BLOCK FreeList; 		    	<span class="comment">/*  38h */</span></span><br><span class="line">    ULONG TlsExpansionCounter; 		    	<span class="comment">/*  3Ch */</span></span><br><span class="line">    PVOID TlsBitmap; 			            <span class="comment">/*  40h */</span></span><br><span class="line">    ULONG TlsBitmapBits[<span class="number">0x2</span>]; 		    	<span class="comment">/*  44h */</span></span><br><span class="line">    PVOID ReadOnlySharedMemoryBase; 		<span class="comment">/*  4Ch */</span></span><br><span class="line">    PVOID ReadOnlySharedMemoryHeap; 		<span class="comment">/*  50h */</span></span><br><span class="line">    PVOID* ReadOnlyStaticServerData; 		<span class="comment">/*  54h */</span></span><br><span class="line">    PVOID AnsiCodePageData; 		    	<span class="comment">/*  58h */</span></span><br><span class="line">    PVOID OemCodePageData; 		        	<span class="comment">/*  5Ch */</span></span><br><span class="line">    PVOID UnicodeCaseTableData; 			<span class="comment">/*  60h */</span></span><br><span class="line">    ULONG NumberOfProcessors; 		    	<span class="comment">/*  64h */</span></span><br><span class="line">    ULONG NtGlobalFlag; 		        	<span class="comment">/*  68h */</span></span><br><span class="line">    UCHAR Spare2[<span class="number">0x4</span>]; 		            	<span class="comment">/*  6Ch */</span></span><br><span class="line">    LARGE_INTEGER CriticalSectionTimeout; 	<span class="comment">/*  70h */</span></span><br><span class="line">    ULONG HeapSegmentReserve; 		    	<span class="comment">/*  78h */</span></span><br><span class="line">    ULONG HeapSegmentCommit; 		    	<span class="comment">/*  7Ch */</span></span><br><span class="line">    ULONG HeapDeCommitTotalFreeThreshold; 	<span class="comment">/*  80h */</span></span><br><span class="line">    ULONG HeapDeCommitFreeBlockThreshold; 	<span class="comment">/*  84h */</span></span><br><span class="line">    ULONG NumberOfHeaps; 		        	<span class="comment">/*  88h */</span></span><br><span class="line">    ULONG MaximumNumberOfHeaps; 			<span class="comment">/*  8Ch */</span></span><br><span class="line">    PVOID** ProcessHeaps; 			        <span class="comment">/*  90h */</span></span><br><span class="line">    PVOID GdiSharedHandleTable; 			<span class="comment">/*  94h */</span></span><br><span class="line">    PVOID ProcessStarterHelper; 			<span class="comment">/*  98h */</span></span><br><span class="line">    PVOID GdiDCAttributeList; 		    	<span class="comment">/*  9Ch */</span></span><br><span class="line">    PVOID LoaderLock; 		            	<span class="comment">/*  A0h */</span></span><br><span class="line">    ULONG OSMajorVersion; 			        <span class="comment">/*  A4h */</span></span><br><span class="line">    ULONG OSMinorVersion; 			        <span class="comment">/*  A8h */</span></span><br><span class="line">    ULONG OSBuildNumber; 			        <span class="comment">/*  ACh */</span></span><br><span class="line">    ULONG OSPlatformId; 			        <span class="comment">/*  B0h */</span></span><br><span class="line">    ULONG ImageSubSystem; 			        <span class="comment">/*  B4h */</span></span><br><span class="line">    ULONG ImageSubSystemMajorVersion; 		<span class="comment">/*  B8h */</span></span><br><span class="line">    ULONG ImageSubSystemMinorVersion; 		<span class="comment">/*  C0h */</span></span><br><span class="line">    ULONG GdiHandleBuffer[<span class="number">0x22</span>]; 			<span class="comment">/*  C4h */</span></span><br><span class="line">    PVOID ProcessWindowStation; 			<span class="comment">/*  ??? */</span></span><br><span class="line">&#125; PEB, *PPEB;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="TLS-线程局部存储"><a href="#TLS-线程局部存储" class="headerlink" title="TLS 线程局部存储"></a>TLS 线程局部存储</h2><p>线程局部存储用来将数据与一个正在执行的指定线程关联起来。</p>
+<p>它主要是为了避免多个线程同时访存同一全局变量或者静态变量时所导致的冲突，尤其是多个线程同时需要修改这一变量时。为了解决这个问题，我们可以通过TLS机制，为每一个使用该全局变量的线程都提供一个变量值的副本，每一个线程均可以独立地改变自己的副本，而不会和其它线程的副本冲突。从线程的角度看，就好像每一个线程都完全拥有该变量。而从全局变量的角度上来看，就好像一个全局变量被克隆成了多份副本，而每一份副本都可以被一个线程独立地改变。</p>
+<h1 id="WinAPI-反调试"><a href="#WinAPI-反调试" class="headerlink" title="WinAPI 反调试"></a>WinAPI 反调试</h1><p>在头文件 <code>windows.h</code> 中存在函数 <code>IsDebuggerPresent()</code></p>
+<p>当函数返回 <code>true</code> 代表检测到调试器，<code>false</code> 则代表未检测到调试器</p>
+<h1 id="利用-PEB-标志位"><a href="#利用-PEB-标志位" class="headerlink" title="利用 PEB 标志位"></a>利用 PEB 标志位</h1><p>WinAPI 实际上也是取 <code>PEB</code> 结构体中的 <code>BeingDebugged</code> 标志位</p>
+<p>当调试器开始调试应用程序的时候，操作系统会将目标应用程序的 <code>PEB</code> 结构体中的 <code>BeingDebugged</code> 标志位置为 1</p>
+<p>而 FS[] 寄存器指向 <code>TEB</code> 结构体</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mov eax, fs:[30h]		; 取 PEB 首地址</span><br><span class="line">mov eax, [eax+2]		; 取 PEB 首地址偏移 2 的位置</span><br><span class="line">and eax, 0xff			; 只需要最低 2 位的 BeingDebugged</span><br></pre></td></tr></table></figure>
+
+<p>在 C++ 中可写为</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebuged</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> flag = <span class="literal">false</span>;</span><br><span class="line">    __asm &#123;</span><br><span class="line">        mov eax, fs:[<span class="number">30</span>h]</span><br><span class="line">        mov eax, [eax+<span class="number">2</span>]</span><br><span class="line">        <span class="keyword">and</span> eax, <span class="number">0xff</span></span><br><span class="line">        mov flag, eax</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> flag;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="使用-ntdll-函数"><a href="#使用-ntdll-函数" class="headerlink" title="使用 ntdll 函数"></a>使用 ntdll 函数</h1><p>无论是 <code>kernel32.dll</code> 还是 <code>user32.dll</code>，始终会通过 <code>ntdll.dll</code> 中的函数与驱动层取得联系</p>
+<p>其中 <code>ntdll.dll</code> 存在一个<strong>未导出函数</strong> <code>NtQueryInformationProcess()</code> 可供查询调试端口</p>
+<p>定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function">DWORD NTAPI <span class="title">NtQueryInformationProcess</span><span class="params">(HANDLE hProcess, ULONG InfoClass, PVOID Buffer, ULONG length, PULONG returnLen)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>当我们需要使用时，以下 MSVC 代码可供参考：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">extern</span> <span class="string">&quot;C&quot;</span> <span class="function">DWORD NTAPI <span class="title">NtQueryInformationProcess</span><span class="params">(HANDLE hProcess, ULONG InfoClass, PVOID Buffer, ULONG length, PULONG returnLen)</span></span>;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> comment(lib, <span class="meta-string">&quot;ntdll.lib&quot;</span>)</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">isDebuged</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	HANDLE hDebugPort = <span class="literal">NULL</span>;	<span class="comment">// 调试端口</span></span><br><span class="line">    <span class="comment">// (HANDLE)-1 代表当前进程，其他均为查询是否被调试的固定参数</span></span><br><span class="line">	<span class="comment">// 如果正在被调试将返回 -1，否则返回 0</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">NtQueryInformationProcess</span>((HANDLE)<span class="number">-1</span>, <span class="number">7</span>, &amp;hDebugPort, <span class="built_in"><span class="keyword">sizeof</span></span>(HANDLE), <span class="literal">NULL</span>))</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> hDebugPort;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="利用-TLS-回调"><a href="#利用-TLS-回调" class="headerlink" title="利用 TLS 回调"></a>利用 TLS 回调</h1><p>以下 MSVC 代码可供参考：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 自定义 TLS 回调函数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> NTAPI <span class="title">tls_callback</span><span class="params">(PVOID h, DWORD reason, PVOID pv)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">IsDebuggerPresent</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">MessageBoxA</span>(<span class="literal">NULL</span>, <span class="string">&quot;hacker!&quot;</span>, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 判断是 x86 还是 x64 系统</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _M_IX86</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span>  comment(linker, <span class="meta-string">&quot;/INCLUDE:__tls_used&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span>  comment(linker, <span class="meta-string">&quot;/INCLUDE:__tls_callback&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span>  comment(linker, <span class="meta-string">&quot;/INCLUDE:_tls_used&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span>  comment(linker, <span class="meta-string">&quot;/INCLUDE:_tls_callback&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个 TLS 区段</span></span><br><span class="line">EXTERN_C</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _M_X64</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> const_seg (<span class="meta-string">&quot;.CRT$XLB&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> data_seg (<span class="meta-string">&quot;.CRT$XLB&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">PIMAGE_TLS_CALLBACK _tls_callback[] = &#123; tls_callback, <span class="number">0</span> &#125;;</span><br><span class="line"><span class="comment">// 结束区段</span></span><br><span class="line">EXTERN_C</span><br><span class="line"><span class="meta">#<span class="meta-keyword">ifdef</span> _M_X64</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> const_seg (<span class="meta-string">&quot;.CRT$XLB&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> data_seg (<span class="meta-string">&quot;.CRT$XLB&quot;</span>)</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+
+<p>我们可以在 TLS 回调函数中，进行我们的反调试手段，如加壳、加密等</p>
+<h1 id="对数据加密"><a href="#对数据加密" class="headerlink" title="对数据加密"></a>对数据加密</h1><p>在程序开始前，不将正确的数据显露出来</p>
+<p>当用以上技术<strong>并未</strong>检测到程序正在调试时，再将相应的数据进行解密</p>
+<p>可结合 TLS 回调函数等技术</p>
+<p>以下代码仅供参考：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">char</span> secret[<span class="number">256</span>] = &#123; <span class="number">0x54</span>, <span class="number">0x65</span>, <span class="number">0x6a</span>, <span class="number">0x7f</span>, <span class="number">0x65</span>, <span class="number">0x4f</span>, <span class="number">0x21</span>, <span class="number">0x63</span>, <span class="number">0x4f</span>, <span class="number">0x78</span>, <span class="number">0x24</span>, <span class="number">0x7e</span>, <span class="number">0x74</span>, <span class="number">0x63</span>, <span class="number">0x20</span>, <span class="number">0x7d</span>, <span class="number">0x75</span> &#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">IsDebuggerPresent</span>())</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">memcpy</span>(secret, <span class="string">&quot;hacker!&quot;</span>, <span class="number">8</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; <span class="number">17</span>; ++i)</span><br><span class="line">		&#123;</span><br><span class="line">			secret[i] ^= <span class="number">0x10</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="built_in">puts</span>(secret);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h1 id="自修改代码"><a href="#自修改代码" class="headerlink" title="自修改代码"></a>自修改代码</h1><p>将想要加密的 <code>.text</code> 代码区段进行加密</p>
+<blockquote>
+<p>注意，需要使用 <code>PE Editor</code> 等软件将软件的 <code>.text</code> 代码区段改为可写</p>
+</blockquote>
+<p>当程序运行时再进行解密，可以在一定程度上反动态调试</p>
+<p>可结合 TLS 回调函数等技术</p>
+<p>以下代码仅供参考：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">functionA</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">functionB</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (<span class="built_in">IsDebuggerPresent</span>())</span><br><span class="line">	&#123;</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		LPBYTE start = (LPBYTE)functionA;</span><br><span class="line">		LPBYTE end = (LPBYTE)functionB;</span><br><span class="line">		<span class="keyword">while</span> (start != end)</span><br><span class="line">		&#123;</span><br><span class="line">			*start ^= <span class="number">0x66</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="built_in">functionA</span>();</span><br><span class="line">	<span class="built_in">functionB</span>();</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/anti-debug-note.html" title="反调试笔记">https://hasegawaazusa.github.io/anti-debug-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/anti-debug/" rel="tag"># anti-debug</a>
+              <a href="/tags/debug/" rel="tag"># debug</a>
+              <a href="/tags/c/" rel="tag"># c++</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/base64-note.html" rel="prev" title="base64 笔记">
+                  <i class="fa fa-chevron-left"></i> base64 笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">41k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">37 分钟</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+
+</body>
+</html>
