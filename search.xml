@@ -1700,4 +1700,33 @@
         <tag>c++</tag>
       </tags>
   </entry>
+  <entry>
+    <title>逆向中反制反调试手段笔记</title>
+    <url>//anti-anti-debug-note.html</url>
+    <content><![CDATA[<h1 id="IsDebuggerPresent-绕过"><a href="#IsDebuggerPresent-绕过" class="headerlink" title="IsDebuggerPresent 绕过"></a>IsDebuggerPresent 绕过</h1><p><code>IsDebuggerPresent</code> 作为 winapi 函数，不可去符号表，在 ida 中可以通过导入表 (imports) 找到函数，然后通过以下几种手段绕过：</p>
+<ol>
+<li>调试时，修改函数返回值 (即修改 rax 寄存器值)</li>
+<li>将调用函数后的条件语句修改 (jz → jnz / jnz → jz)</li>
+<li>将相应代码区段 patch nop</li>
+<li>动态调试时，直接跳过函数运行</li>
+</ol>
+<h1 id="PEB-标志位绕过"><a href="#PEB-标志位绕过" class="headerlink" title="PEB 标志位绕过"></a>PEB 标志位绕过</h1><p>需要通过 ida 查找是否有涉及到 <code>fs</code> 寄存器的汇编代码</p>
+<p>然后再进行相应的操作，如 patch_nop 等。</p>
+<h1 id="自修改代码绕过"><a href="#自修改代码绕过" class="headerlink" title="自修改代码绕过"></a>自修改代码绕过</h1><p>如以下例题</p>
+<p><img src="/anti-anti-debug-note/473_af0_6f0.png" alt="ques"></p>
+<h2 id="静态分析"><a href="#静态分析" class="headerlink" title="静态分析"></a>静态分析</h2><p>通过 ida 静态分析，找到相应的修改算法，通过 ida python 逆向修改代码区段</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">judge=<span class="number">0x600B00</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">182</span>):</span><br><span class="line">    addr=<span class="number">0x600B00</span>+i</span><br><span class="line">    byte=get_bytes(addr,<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 获取指定地址的指定字节数</span></span><br><span class="line">    byte=<span class="built_in">ord</span>(byte)^<span class="number">0xC</span></span><br><span class="line">    <span class="comment"># 打patch修改字节 </span></span><br><span class="line">    patch_byte(addr,byte)</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="动态分析"><a href="#动态分析" class="headerlink" title="动态分析"></a>动态分析</h2><p>通过 ida 或是 ollydbg 等动态调试器，在解密代码后下断点，可以直接将其自修改后的程序导出，但会存在数据可能发生错误的问题。</p>
+<p>最好将对应自修改后的代码与之前的代码进行结合分析。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>anti-debug</tag>
+        <tag>c</tag>
+        <tag>re</tag>
+      </tags>
+  </entry>
 </search>
