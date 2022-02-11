@@ -1414,7 +1414,7 @@ Customization</a></p>
 <ul>
 <li><code>ZZ</code> → 整数环</li>
 <li><code>QQ</code> → 有理数环</li>
-<li><code>Zmod(p)</code> → p为素数，定义在<span class="math inline">\(Zp\)</span>上的环</li>
+<li><code>Zmod(p)</code> → p为素数，定义在<span class="math inline">\(Z_p\)</span>上的环</li>
 </ul></li>
 <li><p>矩阵声明</p>
 <ul>
@@ -1475,10 +1475,7 @@ Ax=B
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 系数矩阵</span></span><br><span class="line">A = matrix(<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">A[<span class="number">0</span>, <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">A[<span class="number">1</span>, <span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 常数向量</span></span><br><span class="line">B = vector([<span class="number">3</span>, <span class="number">9</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得到未知数向量</span></span><br><span class="line">x = A \ B</span><br></pre></td></tr></table></figure>
 <h1 id="一次同余式">一次同余式</h1>
 <p>求解一次同余式即求解 <span class="math display">\[
-Ax
-\equiv
-B\;
-(mod\;m)
+Ax\equiv B\ (mod\ m)
 \]</span> 在 sagemath 中引入环后，同理高斯消元法：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m = <span class="number">2</span></span><br><span class="line"><span class="comment"># 系数矩阵</span></span><br><span class="line">A = matrix(Zmod(m), <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">A[<span class="number">0</span>, <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">A[<span class="number">1</span>, <span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 常数向量</span></span><br><span class="line">B = vector([<span class="number">3</span>, <span class="number">9</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得到未知数向量</span></span><br><span class="line">x = A \ B</span><br></pre></td></tr></table></figure>
 ]]></content>
@@ -2108,11 +2105,188 @@ B\;
     <content><![CDATA[<h1 id="ecc-简介">ECC 简介</h1>
 <p>椭圆曲线密码学(Elliptic Curve Cryptography，
 ECC)，又称<strong>椭圆曲线密码体制</strong>、<strong>椭圆曲线加密算法</strong>等。椭圆曲线加密算法在比特币、目前的二代居民身份证和区块链领域有着广泛的应用。</p>
+<p>在很多情况中，ECC在性能(更少的计算量)和带宽(更短的签名和密钥)上都比RSA和离散对数(DL)方案更具有优势。</p>
 <p>ECC椭圆曲线加密，它的安全性基于椭圆曲线上的离散对数问题。</p>
-<p>ECC椭圆曲线函数为： <span class="math display">\[
-y^2=x^3+ax+b\;
-(mod\;p)
+<h1 id="ecc-原理">ECC 原理</h1>
+<h2 id="ecc-常用椭圆曲线定义">ECC 常用椭圆曲线定义</h2>
+<blockquote>
+<p><span class="math inline">\(Z_p\ (p&gt;3)\)</span>
+上的椭圆曲线指满足以下条件的所有对 <span class="math inline">\((x, y)\in
+Zp\)</span> 的集合 <span class="math display">\[
+y^2\equiv x^3+ax+b\ mod\ p
+\]</span> 以及一个无穷大的虚数点<span class="math inline">\(\partial\)</span>，其中 <span class="math display">\[
+a,b\in Z_p
+\]</span> 并且满足条件 <span class="math inline">\(4a^3+27b^2\neq 0\
+mod\ p\)</span>。</p>
+</blockquote>
+<p>密码学应用感兴趣的时定义中给出的基于<strong>素数域</strong>的曲线。如果在<span class="math inline">\(Zp\)</span>上画出这个椭圆曲线，则得到的从远处看不像是一条曲线。</p>
+<h2 id="求解-e_pab">求解 <span class="math inline">\(E_p(a,b)\)</span></h2>
+<p>设 <span class="math inline">\(E_p(a,b)\)</span>
+表示椭圆曲线上的点集： <span class="math display">\[
+\{(x,y)|0\leq x\leq p,0\leq y\leq p, 且x,y均为整数 \}
+\]</span> 求 <span class="math inline">\(E_p(a,b)\)</span>
+点集步骤：</p>
+<ol type="1">
+<li>对每一个 <span class="math inline">\(x(0\leq x&lt;p\
+且x为整数)\)</span>，计算 <span class="math inline">\(x^3+ax+b\ (mod\
+p)\)</span></li>
+<li>决定以上求得的值在<span class="math inline">\(mod\
+p\)</span>下是否有平方根，计算 <span class="math inline">\(y^2\ (mod\
+p)\)</span>
+<ul>
+<li>如果没有，则求曲线上没有与这一相对应的点</li>
+<li>如果有，则求出两个平方根</li>
+</ul></li>
+</ol>
+<p>以下是求解的 python 实现</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_points</span>(<span class="params">p, a, b</span>):</span></span><br><span class="line">    <span class="keyword">return</span> [(x, y) <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(p) <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(p) <span class="keyword">if</span> (y*y - (x*x*x + a*x + b)) % p == <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h2 id="椭圆曲线上的群操作">椭圆曲线上的群操作</h2>
+<p>设点 <span class="math inline">\(P=(x_1,y_1)\)</span> 和 <span class="math inline">\(Q=(x_2,y_2)\)</span>，我们需要计算第三个点<span class="math inline">\(R\)</span>的坐标，使得 <span class="math display">\[
+P+Q=R\\
+(x_1,y_1)+(x_2,y_2)=(x_3,y_3)
+\]</span>
+在这里我们只关注<strong>素数域</strong>上的加法法则，得到以下表达式
+<span class="math display">\[
+x_3=s^2-x_1-x_2\ mod\ p\\
+y_3=s(x_1-x_3)-y_1\ mod\ p
+\]</span> ​ 其中 <span class="math display">\[
+s=\begin{cases}
+\frac{y_2-y_1}{x_2-x_1}mod\ p;\ 当P\neq Q(相异点相加)\\
+\frac{3x_1^2+a}{2y_1}mod\ p;\ 当P=Q(相同点相加)
+\end{cases}
+\]</span> 在相异点加法中，参数<span class="math inline">\(s\)</span>指的是经过<span class="math inline">\(P\)</span>和<span class="math inline">\(Q\)</span>的直线的斜率；而在相同点加法中，参数<span class="math inline">\(s\)</span>指的是经过点<span class="math inline">\(P\)</span>的切线的斜率。</p>
+<h2 id="ecdlp-椭圆曲线离散对数">ECDLP 椭圆曲线离散对数</h2>
+<p>首先已知存在定理：</p>
+<blockquote>
+<p>曲线上的点<span class="math inline">\(\partial\)</span>一起构成了循环子群。在某些条件下，椭圆曲线上的所有点可以形成一个循环群。</p>
+</blockquote>
+<p>在建立 <span class="math inline">\(DL\)</span>
+密码体制时，知道群的阶至关重要，我们可以根据 <strong>Hasse's
+定理</strong>了解它的大概数量：</p>
+<blockquote>
+<p>给定一个椭圆曲线<span class="math inline">\(Ep\)</span>，曲线上点的个数表示为<span class="math inline">\(\#E\)</span>，并且在以下范围内： <span class="math display">\[
+p+1-2\sqrt{p}\leq \#E\leq p+1+2\sqrt{p}
 \]</span></p>
+</blockquote>
+<p><strong>Hasse's 定理</strong>也称为<strong>Hasse's
+边界</strong>，它说明了点的个数大概在素数<span class="math inline">\(p\)</span>的范围内。这个结论具有非常大的实用性。例如，如果需要一个拥有<span class="math inline">\(2^{160}\)</span>个元素的椭圆曲线，我们必须使用一个长度大约为
+160 位的素数。</p>
+<p>以下给出椭圆曲线离散对数问题(ECDLP)的定义：</p>
+<blockquote>
+<p>给定一个椭圆曲线<span class="math inline">\(E\)</span>，考虑本原<span class="math inline">\(P\)</span>和另一个元素<span class="math inline">\(Q\)</span>。则 <span class="math inline">\(DL\)</span> 问题是找到整数<span class="math inline">\(k\ (1\leq k\leq \#E)\)</span>，满足： <span class="math display">\[
+kP=Q
+\]</span></p>
+</blockquote>
+<p>其中，椭圆曲线加密的数学原理：</p>
+<blockquote>
+<p>点<span class="math inline">\(P\)</span>称为基点 (base point)；<span class="math inline">\(k\)</span>为私有密钥 (private key)；<span class="math inline">\(Q\)</span>为公开密钥 (public key)</p>
+<ul>
+<li>若给定<span class="math inline">\(k\)</span>和<span class="math inline">\(P\)</span>，根据加法法则，计算<span class="math inline">\(Q\)</span>很容易。</li>
+<li>但给定<span class="math inline">\(P\)</span>和<span class="math inline">\(Q\)</span>，求<span class="math inline">\(k\)</span>非常困难 (实际应用 ECC 时，素数<span class="math inline">\(p\)</span>会取得非常大，穷举出<span class="math inline">\(k\)</span>将十分困难)</li>
+</ul>
+</blockquote>
+<h2 id="基于椭圆曲线的-diffie-hellman-密钥交换">基于椭圆曲线的
+Diffie-Hellman 密钥交换</h2>
+<p>首先我们必须统一域参数，即实现所需要的合适的椭圆曲线以及曲线上的一个本原元：</p>
+<p><strong>ECDH 域参数</strong></p>
+<blockquote>
+<ul>
+<li>选择一个素数<span class="math inline">\(p\)</span>和椭圆曲线</li>
+</ul>
+<p><span class="math display">\[
+E:y^2\equiv x^3+ax+b\ mod\ P
+\]</span></p>
+<ul>
+<li>选择一个本原元<span class="math inline">\(P=(x_p,y_p)\)</span></li>
+</ul>
+<p>素数<span class="math inline">\(p\)</span>、由系数<span class="math inline">\(a\)</span>和<span class="math inline">\(b\)</span>给出的曲线以及本原元<span class="math inline">\(P\)</span>都是域参数。</p>
+</blockquote>
+<p>请注意：实际上找到一个合适的椭圆曲线是一项比较困难的任务。</p>
+<p><strong>椭圆曲线 Diffie-Hellman 密钥交换 (ECDH)</strong></p>
+<blockquote>
+<p>对于 <strong>Alice</strong>：</p>
+<p>​ 选择 <span class="math inline">\(k_{prA}=a\in
+\{2,3,...,\#E-1\}\)</span></p>
+<p>​ 计算 <span class="math inline">\(k_{pubA}=aP=A=(x_A,y_A)\)</span></p>
+<p>对于 <strong>Bob</strong>：</p>
+<p>​ 选择 <span class="math inline">\(k_{prB}=b\in
+\{2,3,...,\#E-1\}\)</span></p>
+<p>​ 计算 <span class="math inline">\(k_{pubB}=bP=B=(x_B,y_B)\)</span></p>
+<p>交换 <strong>Alice</strong> 和 <strong>Bob</strong> 的密钥 <span class="math inline">\(A,B\)</span></p>
+<p>对于 <strong>Alice</strong> 来说：</p>
+<p>​ 计算 <span class="math inline">\(aB=T_{AB}\)</span></p>
+<p>对于 <strong>Bob</strong> 来说：</p>
+<p>​ 计算 <span class="math inline">\(bA=T_{AB}\)</span></p>
+<p>故 <strong>Alice</strong> 和 <strong>Bob</strong>
+之间的联合密钥：<span class="math inline">\(T_{AB}=(x_{AB},
+y_{AB})\)</span></p>
+</blockquote>
+<h2 id="elgamal-加密算法">ElGamal 加密算法</h2>
+<h3 id="密钥生成">密钥生成</h3>
+<p>选择一个素数<span class="math inline">\(p\)</span>以及两个小于<span class="math inline">\(p\)</span>的随机数<span class="math inline">\(g\)</span>和<span class="math inline">\(x\)</span>，计算 <span class="math display">\[
+y=g^x\ mod\ p
+\]</span> 以<span class="math inline">\((y,g,p)\)</span>作为公开密钥
+(public key)，<span class="math inline">\(x\)</span>作为私有密钥
+(private key)</p>
+<h3 id="加密">加密</h3>
+<p>明文消息为<span class="math inline">\(m\)</span>，随机选取一个与<span class="math inline">\(p-1\)</span>互素的整数<span class="math inline">\(k\)</span>，计算 <span class="math display">\[
+c_1=g^k\ mod\ p\\
+c_2=my^k\ mod\ p
+\]</span> 密文为<span class="math inline">\(C=(c_1,c_2)\)</span></p>
+<h3 id="解密">解密</h3>
+<p><span class="math display">\[
+m=\frac{c_2}{c_1}mod\ p
+\]</span></p>
+<p>因为 <span class="math display">\[
+\frac{c_2}{c_1}mod\ p=\frac{my^k}{g^{kx}}mod\ p=\frac{my^k}{y^k}mod\
+p=m\ mod\ p
+\]</span></p>
+<h2 id="ec-elgamal">EC ElGamal</h2>
+<h3 id="密钥生成-1">密钥生成</h3>
+<p>选一条素数域椭圆曲线，得 <span class="math inline">\(E_p(a,b)\)</span>，将明文信息<span class="math inline">\(m\)</span>嵌入到曲线上的点<span class="math inline">\(P_m\)</span>，再对点<span class="math inline">\(P_m\)</span>做加密变换。</p>
+<p>取 <span class="math inline">\(E_p(a,b)\)</span> 的一个生成元<span class="math inline">\(G\)</span>，<span class="math inline">\(E_p(a,b)\)</span>和<span class="math inline">\(G\)</span>作为公开参数。用户A选 <span class="math display">\[
+n_A作为密钥(private\ key)，以P_A=n_AG作为公钥(public\ key)
+\]</span></p>
+<h3 id="加密-1">加密</h3>
+<p>用户B向用户A发送消息<span class="math inline">\(P_m\)</span>，选取一个随机正整数<span class="math inline">\(k\)</span>，产生以下点对作为密文： <span class="math display">\[
+C_m=\{kG,P_m+kP_A\}
+\]</span></p>
+<h3 id="解密-1">解密</h3>
+<p>以密文对中的第二个点减去自己的密钥与第一个点的点乘，即 <span class="math display">\[
+P_m+kP_A-n_AkG=P_m+k(n_AG)-n_AkG=P_m
+\]</span></p>
+<h1 id="eccsagemath-实现">ECC&amp;sagemath 实现</h1>
+<h2 id="加密-2">加密</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取素数 p, a, b</span></span><br><span class="line">p = random_prime(<span class="number">1</span> &lt;&lt; <span class="number">257</span>, <span class="literal">False</span>, <span class="number">1</span> &lt;&lt; <span class="number">256</span>)</span><br><span class="line">a = random_prime(<span class="number">1</span> &lt;&lt; <span class="number">257</span>, <span class="literal">False</span>, <span class="number">1</span> &lt;&lt; <span class="number">256</span>)</span><br><span class="line">b = random_prime(<span class="number">1</span> &lt;&lt; <span class="number">257</span>, <span class="literal">False</span>, <span class="number">1</span> &lt;&lt; <span class="number">256</span>)</span><br><span class="line"><span class="comment"># 构造在素数p域上的椭圆曲线</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line"><span class="comment"># 假设 m 点为我们的明文</span></span><br><span class="line">m = E.random_point()</span><br><span class="line"><span class="comment"># 获取基点</span></span><br><span class="line">G = E.random_point()</span><br><span class="line"><span class="comment"># 得到私钥 k</span></span><br><span class="line">k = random_prime(<span class="number">1</span> &lt;&lt; <span class="number">257</span>, <span class="literal">False</span>, <span class="number">1</span> &lt;&lt; <span class="number">256</span>)</span><br><span class="line"><span class="comment"># 得到公钥</span></span><br><span class="line">K = k * G</span><br><span class="line"><span class="comment"># 使用随机整数 r 进行加密，得到密文 c1, c2</span></span><br><span class="line">r = random_prime(<span class="number">1</span> &lt;&lt; <span class="number">257</span>, <span class="literal">False</span>, <span class="number">1</span> &lt;&lt; <span class="number">256</span>)</span><br><span class="line">c1 = m + r*K</span><br><span class="line">c2 = r*G</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;p = <span class="subst">&#123;p&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;a = <span class="subst">&#123;a&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;b = <span class="subst">&#123;b&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;k = <span class="subst">&#123;k&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;c1 = <span class="subst">&#123;c1&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;c2 = <span class="subst">&#123;c2&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;m = <span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>Output</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p = <span class="number">128793297744506472538564656403224353239237790297856868063135293480657949718107</span></span><br><span class="line">a = <span class="number">169525633276763035731120099301596679606634597125967649372511273475112363403657</span></span><br><span class="line">b = <span class="number">198042220010210729246139661419765709873418351966965680886669963511628185483527</span></span><br><span class="line">k = <span class="number">206223544016520338020994485092105731388506670455347138071664112683983647251049</span></span><br><span class="line">c1 = (<span class="number">120774540425763335415920992448661415223098467838556300826760573949754740635371</span> : <span class="number">31715597141680277543788087553074283575900846707702192323467421200922884354981</span> : <span class="number">1</span>)</span><br><span class="line">c2 = (<span class="number">25578971254124014433500544217127701457691693095066572228632002958021823241423</span> : <span class="number">105137323155370344541775539884363939121440305371187190617792029879165314583114</span> : <span class="number">1</span>)</span><br><span class="line">m = (<span class="number">52087445795594278491856078932932443344636991761169005384048985847142638285440</span> : <span class="number">15902591507684804608199095029425478914739638495574120728111164694188566421928</span> : <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="解密-2">解密</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 构造在素数p域上的椭圆曲线</span></span><br><span class="line">p = <span class="number">128793297744506472538564656403224353239237790297856868063135293480657949718107</span></span><br><span class="line">a = <span class="number">169525633276763035731120099301596679606634597125967649372511273475112363403657</span></span><br><span class="line">b = <span class="number">198042220010210729246139661419765709873418351966965680886669963511628185483527</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line"><span class="comment"># 私钥</span></span><br><span class="line">k = <span class="number">206223544016520338020994485092105731388506670455347138071664112683983647251049</span></span><br><span class="line"><span class="comment"># 密文点对</span></span><br><span class="line">c1 = E(<span class="number">120774540425763335415920992448661415223098467838556300826760573949754740635371</span>, <span class="number">31715597141680277543788087553074283575900846707702192323467421200922884354981</span>)</span><br><span class="line">c2 = E(<span class="number">25578971254124014433500544217127701457691693095066572228632002958021823241423</span>, <span class="number">105137323155370344541775539884363939121440305371187190617792029879165314583114</span>)</span><br><span class="line"><span class="comment"># 解密</span></span><br><span class="line">m = c1-k*c2</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;m = <span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>Output</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m = (<span class="number">52087445795594278491856078932932443344636991761169005384048985847142638285440</span> : <span class="number">15902591507684804608199095029425478914739638495574120728111164694188566421928</span> : <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="eccpython-实现">ECC&amp;Python 实现</h1>
+<h2 id="生成-ecc-密钥">生成 ECC 密钥</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> ECC</span><br><span class="line"></span><br><span class="line"><span class="comment">#生成ECC密钥</span></span><br><span class="line">key = ECC.generate(curve=<span class="string">&#x27;NIST P-256&#x27;</span>) <span class="comment">#使用椭圆曲线NIST P-256</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#输出密钥（包括私钥k，基点G）</span></span><br><span class="line"><span class="built_in">print</span>(key)</span><br><span class="line"></span><br><span class="line"><span class="comment">#公钥（point_x，point_y是基点G的坐标）</span></span><br><span class="line"><span class="built_in">print</span>(key.public_key())</span><br><span class="line"></span><br><span class="line"><span class="comment">#椭圆曲线</span></span><br><span class="line"><span class="built_in">print</span>(key.curve)</span><br><span class="line"></span><br><span class="line"><span class="comment">#私钥k</span></span><br><span class="line"><span class="built_in">print</span>(key.d)</span><br><span class="line"></span><br><span class="line"><span class="comment">#导出为pem密钥文件</span></span><br><span class="line"><span class="built_in">print</span>(key.export_key(<span class="built_in">format</span>=<span class="string">&#x27;PEM&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入密钥文件</span></span><br><span class="line">key = ECC.import_key(f.read())</span><br></pre></td></tr></table></figure>
+<h2 id="查询公开椭圆曲线参数">查询公开椭圆曲线参数</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> fastecdsa.curve <span class="keyword">as</span> curve</span><br><span class="line"></span><br><span class="line"><span class="comment">#P-384的a</span></span><br><span class="line">curve.P384.a</span><br><span class="line"></span><br><span class="line"><span class="comment">#P-384的b</span></span><br><span class="line">curve.P384.b</span><br><span class="line"></span><br><span class="line"><span class="comment">#P-384的p</span></span><br><span class="line">curve.P384.p</span><br></pre></td></tr></table></figure>
+<h1 id="ecc已公开椭圆曲线参数">ECC已公开椭圆曲线参数</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#NIST P-256（Secp256r1）</span></span><br><span class="line"><span class="comment">#p = 2^224(2^32 − 1) + 2^192 + 2^96 − 1</span></span><br><span class="line">p = <span class="number">115792089210356248762697446949407573530086143415290314195533631308867097853951</span></span><br><span class="line">a = <span class="number">115792089210356248762697446949407573530086143415290314195533631308867097853948</span></span><br><span class="line">b = <span class="number">41058363725152142129326129780047268409114441015993725554835256314039467401291</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Secp256k1（比特币使用）</span></span><br><span class="line"><span class="comment">#p = 2^256 − 2^32 − 2^9 − 2^8 − 2^7 − 2^6 − 2^4 − 1 = 2^256 – 2^32 – 977 </span></span><br><span class="line">p = <span class="number">115792089237316195423570985008687907853269984665640564039457584007908834671663</span></span><br><span class="line">a = <span class="number">0</span></span><br><span class="line">b = <span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#NIST P-384</span></span><br><span class="line"><span class="comment">#p = 2^384 – 2^128 – 2^96 + 2^32 – 1</span></span><br><span class="line">p = <span class="number">39402006196394479212279040100143613805079739270465446667948293404245721771496870329047266088258938001861606973112319</span></span><br><span class="line">a = -<span class="number">3</span></span><br><span class="line">b = <span class="number">27580193559959705877849011840389048093056905856361568521428707301988689241309860865136260764883745107765439761230575</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#NIST P-521</span></span><br><span class="line">p = <span class="number">6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151</span></span><br><span class="line">a = -<span class="number">3</span></span><br><span class="line">b = <span class="number">1093849038073734274511112390766805569936207598951683748994586394495953116150735016013708737573759623248592132296706313309438452531591012912142327488478985984</span></span><br></pre></td></tr></table></figure>
+<h1 id="ecc-求解">ECC 求解</h1>
+<h2 id="普通明文映射">普通明文映射</h2>
+<p>task.sage</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> getPrime</span><br><span class="line"><span class="keyword">from</span> libnum <span class="keyword">import</span> s2n</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> flag</span><br><span class="line"></span><br><span class="line">p = getPrime(<span class="number">256</span>)</span><br><span class="line">a = getPrime(<span class="number">256</span>)</span><br><span class="line">b = getPrime(<span class="number">256</span>)</span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line">m = E.random_point()</span><br><span class="line">G = E.random_point()</span><br><span class="line">k = getPrime(<span class="number">256</span>)</span><br><span class="line">K = k * G</span><br><span class="line">r = getPrime(<span class="number">256</span>)</span><br><span class="line">c1 = m + r * K</span><br><span class="line">c2 = r * G</span><br><span class="line">cipher_left = s2n(flag[:<span class="built_in">len</span>(flag)//<span class="number">2</span>]) * m[<span class="number">0</span>]</span><br><span class="line">cipher_right = s2n(flag[<span class="built_in">len</span>(flag)//<span class="number">2</span>:]) * m[<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;p = <span class="subst">&#123;p&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;a = <span class="subst">&#123;a&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;b = <span class="subst">&#123;b&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;k = <span class="subst">&#123;k&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;E = <span class="subst">&#123;E&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;c1 = <span class="subst">&#123;c1&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;c2 = <span class="subst">&#123;c2&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;cipher_left = <span class="subst">&#123;cipher_left&#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;cipher_right = <span class="subst">&#123;cipher_right&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>output.txt</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p = <span class="number">74997021559434065975272431626618720725838473091721936616560359000648651891507</span></span><br><span class="line">a = <span class="number">61739043730332859978236469007948666997510544212362386629062032094925353519657</span></span><br><span class="line">b = <span class="number">87821782818477817609882526316479721490919815013668096771992360002467657827319</span></span><br><span class="line">k = <span class="number">93653874272176107584459982058527081604083871182797816204772644509623271061231</span></span><br><span class="line">E = Elliptic Curve defined by y^<span class="number">2</span> = x^<span class="number">3</span> + <span class="number">61739043730332859978236469007948666997510544212362386629062032094925353519657</span>*x + <span class="number">12824761259043751634610094689861000765081341921946160155432001001819005935812</span> over Finite Field of size <span class="number">74997021559434065975272431626618720725838473091721936616560359000648651891507</span></span><br><span class="line">c1 = (<span class="number">14455613666211899576018835165132438102011988264607146511938249744871964946084</span> : <span class="number">25506582570581289714612640493258299813803157561796247330693768146763035791942</span> : <span class="number">1</span>)</span><br><span class="line">c2 = (<span class="number">37554871162619456709183509122673929636457622251880199235054734523782483869931</span> : <span class="number">71392055540616736539267960989304287083629288530398474590782366384873814477806</span> : <span class="number">1</span>)</span><br><span class="line">cipher_left = <span class="number">68208062402162616009217039034331142786282678107650228761709584478779998734710</span></span><br><span class="line">cipher_right = <span class="number">27453988545002384546706933590432585006240439443312571008791835203660152890619</span></span><br></pre></td></tr></table></figure>
+<p>exp.sage</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p = <span class="number">74997021559434065975272431626618720725838473091721936616560359000648651891507</span></span><br><span class="line">a = <span class="number">61739043730332859978236469007948666997510544212362386629062032094925353519657</span></span><br><span class="line">b = <span class="number">87821782818477817609882526316479721490919815013668096771992360002467657827319</span></span><br><span class="line">k = <span class="number">93653874272176107584459982058527081604083871182797816204772644509623271061231</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line">c1 = E(<span class="number">14455613666211899576018835165132438102011988264607146511938249744871964946084</span>, <span class="number">25506582570581289714612640493258299813803157561796247330693768146763035791942</span>)</span><br><span class="line">c2 = E(<span class="number">37554871162619456709183509122673929636457622251880199235054734523782483869931</span>, <span class="number">71392055540616736539267960989304287083629288530398474590782366384873814477806</span>)</span><br><span class="line">cipher_left = <span class="number">68208062402162616009217039034331142786282678107650228761709584478779998734710</span></span><br><span class="line">cipher_right = <span class="number">27453988545002384546706933590432585006240439443312571008791835203660152890619</span></span><br><span class="line">m = c1 - k*c2</span><br><span class="line">cipher_left = cipher_left * inverse_mod(<span class="built_in">int</span>(m[<span class="number">0</span>]), p) % p</span><br><span class="line">cipher_right = cipher_right * inverse_mod(<span class="built_in">int</span>(m[<span class="number">1</span>]), p) % p</span><br><span class="line"><span class="built_in">print</span>(cipher_left, cipher_right)</span><br></pre></td></tr></table></figure>
+<h2 id="离散对数问题">离散对数问题</h2>
+<blockquote>
+<p>以下使用 sagemath，数据量不能太大</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1234577</span></span><br><span class="line">b = <span class="number">3213242</span></span><br><span class="line">p = <span class="number">7654319</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line"><span class="comment"># 生成元</span></span><br><span class="line">G = E(<span class="number">5234568</span>, <span class="number">2287747</span>)</span><br><span class="line"><span class="comment"># k = 1584718</span></span><br><span class="line"><span class="comment"># K = k*G</span></span><br><span class="line"><span class="comment"># 公钥</span></span><br><span class="line">K = E(<span class="number">2366653</span>, <span class="number">1424308</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，自动选择bsgs或Pohlig Hellman算法</span></span><br><span class="line">discrete_log(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard rho算法</span></span><br><span class="line">discrete_log_rho(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard Lambda算法，能够确定所求值在某一小范围时效率较高</span></span><br><span class="line">discrete_log_lambda(K,G,(<span class="number">1500000</span>,<span class="number">2000000</span>),operation=<span class="string">&#x27;+&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="查看-ecc-的-pem-密钥文件信息">查看 ECC 的 pem 密钥文件信息</h2>
+<p>使用 openssl</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#查看ECC私钥信息</span></span><br><span class="line">openssl ec -<span class="keyword">in</span> p384-key.pem -text -noout</span><br><span class="line"><span class="comment">#查看ECC公钥信息</span></span><br><span class="line">openssl ec -pubin -<span class="keyword">in</span> public.pem -text -noout</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>crypto</tag>
