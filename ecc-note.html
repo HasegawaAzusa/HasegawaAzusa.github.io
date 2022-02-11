@@ -30,7 +30,7 @@
 <meta property="og:description" content="ECC 加密算法的简要笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-11T05:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-11T09:32:21.420Z">
+<meta property="article:modified_time" content="2022-02-11T13:58:56.627Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="crypto">
 <meta property="article:tag" content="sagemath">
@@ -92,7 +92,7 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">33</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">22</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -166,7 +166,7 @@ Diffie-Hellman 密钥交换</span></a></li><li class="nav-item nav-level-2"><a c
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-count">23</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -414,7 +414,7 @@ p=m\ mod\ p
 <h2 id="ec-elgamal">EC ElGamal</h2>
 <h3 id="密钥生成-1">密钥生成</h3>
 <p>选一条素数域椭圆曲线，得 <span class="math inline">\(E_p(a,b)\)</span>，将明文信息<span class="math inline">\(m\)</span>嵌入到曲线上的点<span class="math inline">\(P_m\)</span>，再对点<span class="math inline">\(P_m\)</span>做加密变换。</p>
-<p>取 <span class="math inline">\(E_p(a,b)\)</span> 的一个生成元<span class="math inline">\(G\)</span>，<span class="math inline">\(E_p(a,b)\)</span>和<span class="math inline">\(G\)</span>作为公开参数。用户A选 <span class="math display">\[
+<p>取 <span class="math inline">\(E_p(a,b)\)</span> 的一个生成元<span class="math inline">\(G\)</span>，<span class="math inline">\(E_p(a,b)\)</span>和<span class="math inline">\(G\)</span>作为公开参数。用户A选则随机整数 <span class="math display">\[
 n_A作为密钥(private\ key)，以P_A=n_AG作为公钥(public\ key)
 \]</span></p>
 <h3 id="加密-1">加密</h3>
@@ -532,14 +532,14 @@ P_m+kP_A-n_AkG=P_m+k(n_AG)-n_AkG=P_m
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">64k</span>
+    <span title="站点总字数">65k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">58 分钟</span>
+    <span title="站点阅读时长">59 分钟</span>
   </span>
 </div>
 
