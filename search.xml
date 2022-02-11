@@ -677,8 +677,16 @@
 
 <p>在正文中输入关于页内容即可</p>
 <blockquote>
-<p>记得添加进入方式</p>
+<p>记得在添加进入方式</p>
 </blockquote>
+<h2 id="hexo-添加-404-页面"><a href="#hexo-添加-404-页面" class="headerlink" title="hexo 添加 404 页面"></a>hexo 添加 404 页面</h2><p>在博客根目录下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page 404</span><br></pre></td></tr></table></figure>
+
+<p>在 Front-matter 中添加：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">/404</span></span><br></pre></td></tr></table></figure>
+
+<p>在正文中输入你需要的内容即可</p>
+<p>如果需要其他自定义页面，可以使用 <code>layout</code> 参数</p>
 <h1 id="hexo-配置详解"><a href="#hexo-配置详解" class="headerlink" title="hexo 配置详解"></a>hexo 配置详解</h1><h2 id="hexo-博文头-Front-matter"><a href="#hexo-博文头-Front-matter" class="headerlink" title="hexo 博文头 - Front-matter"></a>hexo 博文头 - Front-matter</h2><table>
 <thead>
 <tr>
@@ -887,382 +895,480 @@
   <entry>
     <title>NexT 笔记</title>
     <url>//next-note.html</url>
-    <content><![CDATA[<p>本文以 <code>hexo/</code> 指代博客根目录；以 <code>next/</code> 指代 NexT 主题根目录 (<code>hexo/node_modules/hexo-theme-next/</code>) 。</p>
-<h1 id="NexT-技巧"><a href="#NexT-技巧" class="headerlink" title="NexT 技巧"></a>NexT 技巧</h1><h2 id="阅读全文-Read-More"><a href="#阅读全文-Read-More" class="headerlink" title="阅读全文 - Read More"></a>阅读全文 - Read More</h2><p>在<code>.md</code>博文内容文件中使用<code>&lt;!-- more --&gt;</code>，在生成文章时会自动保留截断标志<code>&lt;!-- more --&gt;</code>以上的内容，并生成**阅读全文(Read More)**按钮：</p>
-<p><img src="/next-note/readmore.png" alt="readmore"></p>
+    <content><![CDATA[<p>本文以 <code>hexo/</code> 指代博客根目录；以 <code>next/</code> 指代
+NexT 主题根目录 (<code>hexo/node_modules/hexo-theme-next/</code>) 。</p>
+<h1 id="next-技巧">NexT 技巧</h1>
+<h2 id="阅读全文---read-more">阅读全文 - Read More</h2>
+<p>在<code>.md</code>博文内容文件中使用<code>&lt;!-- more --&gt;</code>，在生成文章时会自动保留截断标志<code>&lt;!-- more --&gt;</code>以上的内容，并生成<strong>阅读全文(Read
+More)</strong>按钮：</p>
+<figure>
+<img src="/next-note/readmore.png" alt="readmore">
+<figcaption aria-hidden="true">readmore</figcaption>
+</figure>
 <blockquote>
-<p>注意：如果该方法会被[博文摘要配置 - Preamble Text](#博文摘要配置 - Preamble Text)覆盖</p>
+<p>注意：如果该方法会被<a href="#博文摘要配置%20-%20Preamble%20Text">博文摘要配置 - Preamble
+Text</a>覆盖</p>
 </blockquote>
-<h2 id="进度条-Pace"><a href="#进度条-Pace" class="headerlink" title="进度条 - Pace"></a>进度条 - Pace</h2><ul>
+<h2 id="进度条---pace">进度条 - Pace</h2>
+<ul>
 <li><p><strong>NexT 配置</strong></p>
 <ul>
-<li><p><code>color</code> → 进度条的颜色 (英文单词)</p>
-</li>
+<li><p><code>color</code> → 进度条的颜色 (英文单词)</p></li>
 <li><p><code>theme</code> → 主题配置 (<a href="https://codebyzach.github.io/pace/">themes</a>)</p>
 <table>
+<colgroup>
+<col style="width: 21%">
+<col style="width: 78%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>theme name</th>
 <th>theme effect</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td>Minimal</td>
 <td><img src="/next-note/Minimal.png" alt="Minimal" style="zoom: 67%;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td>Flash</td>
 <td><img src="/next-note/Flash.png" alt="Flash" style="zoom: 67%;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Barber Shop</td>
 <td><img src="/next-note/Barber Shop.png" alt="Barber Shop" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td>Mac OSX</td>
 <td><img src="/next-note/Mac OSX.png" alt="Mac OSX" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Fill Left</td>
 <td><img src="/next-note/Fill Left.png" alt="Fill Left" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td>Flat Top</td>
 <td><img src="/next-note/Flat Top.png" alt="Flat Top" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Big Counter</td>
 <td><img src="/next-note/Big Counter.png" alt="Big Counter" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td>Corner Indicator</td>
 <td><img src="/next-note/Corner Indicator.png" alt="Corner Indicator" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Bounce</td>
 <td><img src="/next-note/Bounce.png" alt="Bounce" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td>Loading Bar</td>
 <td><img src="/next-note/Loading Bar.png" alt="Loading Bar" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Center Circle</td>
 <td><img src="/next-note/Center Circle.png" alt="Center Circle" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td>Center Atom</td>
 <td><img src="/next-note/Center Atom.png" alt="Center Atom" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="odd">
 <td>Center Radar</td>
 <td><img src="/next-note/Center Radar.png" alt="Center Radar" style="zoom:67%;"></td>
 </tr>
-<tr>
+<tr class="even">
 <td>Center Simple</td>
 <td><img src="/next-note/Center Simple.png" alt="Center Simple" style="zoom:67%;"></td>
 </tr>
-</tbody></table>
-</li>
+</tbody>
+</table></li>
 </ul>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">pace:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">  <span class="comment"># All available colors:</span></span><br><span class="line">  <span class="comment"># black | blue | green | orange | pink | purple | red | silver | white | yellow</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">blue</span></span><br><span class="line">  <span class="comment"># All available themes:</span></span><br><span class="line">  <span class="comment"># big-counter | bounce | barber-shop | center-atom | center-circle | center-radar | center-simple | corner-indicator | fill-left | flat-top | flash | loading-bar | mac-osx | material | minimal</span></span><br><span class="line">  <span class="attr">theme:</span> <span class="string">minimal</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h1 id="NexT-服务、插件配置-Adding-Plugins"><a href="#NexT-服务、插件配置-Adding-Plugins" class="headerlink" title="NexT 服务、插件配置 - Adding Plugins"></a>NexT 服务、插件配置 - Adding Plugins</h1><p>可以使用以下了解插件</p>
+<h2 id="数学公式---math-equations">数学公式 - Math Equations</h2>
+<p>以下启用 <code>mathjax + hexo-renderer-pandoc</code></p>
 <ul>
-<li>第三方服务 <a href="https://theme-next.js.org/docs/third-party-services/">https://theme-next.js.org/docs/third-party-services/</a></li>
-<li>Tag 插件（更合适的排版样式） <a href="https://theme-next.js.org/docs/tag-plugins/">https://theme-next.js.org/docs/tag-plugins/</a></li>
+<li><p>next 配置文件：</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Math Formulas Render Support</span></span><br><span class="line"><span class="attr">math:</span></span><br><span class="line">  <span class="comment"># Default (false) will load mathjax / katex script on demand.</span></span><br><span class="line">  <span class="comment"># That is it only render those page which has `mathjax: true` in front-matter.</span></span><br><span class="line">  <span class="comment"># If you set it to true, it will load mathjax / katex script EVERY PAGE.</span></span><br><span class="line">  <span class="attr">every_page:</span> <span class="literal">false</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">mathjax:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">    <span class="comment"># Available values: none | ams | all</span></span><br><span class="line">    <span class="attr">tags:</span> <span class="string">none</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">katex:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">false</span></span><br><span class="line">    <span class="comment"># See: https://github.com/KaTeX/KaTeX/tree/master/contrib/copy-tex</span></span><br><span class="line">    <span class="attr">copy_tex:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>建议按需手动在 front-matter 中设置 mathjax: true</p>
+</blockquote></li>
+</ul>
+<p>然后我们卸载原来的渲染器<code>hexo-renderer-marked</code>，然后安装<code>hexo-renderer-pandoc</code>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm un hexo-renderer-marked --save</span><br><span class="line">npm install hexo-renderer-pandoc --save</span><br></pre></td></tr></table></figure>
+<p>与此同时，我们需要安装 pandoc</p>
+<p>进入 https://github.com/jgm/pandoc/releases
+选择最新版下载并进行安装</p>
+<figure>
+<img src="/next-note/pandoc-asset.png" alt="pandoc-asset">
+<figcaption aria-hidden="true">pandoc-asset</figcaption>
+</figure>
+<p>重启后我们便可正常使用 pandoc 公式渲染器</p>
+<p>接下来我们在需要使用 mathjax 的页面，配置 front-matter 中
+<code>mathjax: true</code> 即可达到想要的效果</p>
+<p>更多自定义请参考 https://github.com/wzpan/hexo-renderer-pandoc</p>
+<h1 id="next-服务插件配置---adding-plugins">NexT 服务、插件配置 - Adding
+Plugins</h1>
+<p>可以使用以下了解插件</p>
+<ul>
+<li>第三方服务 https://theme-next.js.org/docs/third-party-services/</li>
+<li>Tag 插件（更合适的排版样式）
+https://theme-next.js.org/docs/tag-plugins/</li>
 <li><a href="/hexo-plugins-note.html">本站</a></li>
 </ul>
-<h1 id="NexT-博文头-Front-matter"><a href="#NexT-博文头-Front-matter" class="headerlink" title="NexT 博文头 - Front-matter"></a>NexT 博文头 - Front-matter</h1><table>
+<h1 id="next-博文头---front-matter">NexT 博文头 - Front-matter</h1>
+<table>
+<colgroup>
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 44%">
+<col style="width: 33%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>参数</th>
 <th>类型</th>
 <th>意义</th>
 <th>默认值</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td><code>author</code></td>
 <td><code>string</code></td>
 <td>博文作者</td>
 <td>站点配置<code>_config.yml</code>的<code>author</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>post_link</code></td>
 <td><code>string</code></td>
 <td>发布链接 (相对路径)</td>
 <td>None</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>description</code></td>
 <td><code>string</code></td>
 <td>简介</td>
 <td>None</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>direction</code></td>
 <td><code>string</code></td>
 <td>有效值： <code>rtl</code></td>
 <td>None</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>header</code></td>
 <td><code>boolean</code></td>
 <td>是否在索引页展示标题</td>
 <td><code>true</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>mathjax</code></td>
 <td><code>boolean</code></td>
 <td>是否支持 MathJax</td>
 <td><code>math.every_page</code> in <code>_config.yml</code></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>sidebar</code></td>
 <td><code>boolean</code></td>
 <td>侧边栏是否显示</td>
-<td>Depends on <code>sidebar.display</code> in <code>_config.yml</code></td>
+<td>Depends on <code>sidebar.display</code> in
+<code>_config.yml</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>copyright</code></td>
 <td><code>boolean</code></td>
-<td>是否在版权页显示<code>theme.creative_commons.license</code> 同时启用<code>theme.creative_commons.post</code></td>
+<td>是否在版权页显示<code>theme.creative_commons.license</code>
+同时启用<code>theme.creative_commons.post</code></td>
 <td><code>true</code></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>sticky</code></td>
 <td><code>number</code></td>
 <td>置顶该帖子 (需要插件 <a href="https://github.com/hexojs/hexo-generator-index">hexo-generator-index</a>)</td>
 <td>0</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>quicklink</code></td>
 <td><code>object</code> (1)</td>
 <td>快速链接</td>
 <td>From <code>_config.yml</code></td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>reward_settings</code></td>
 <td><code>object</code> (1)</td>
 <td>捐赠设置</td>
 <td>From <code>_config.yml</code></td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>toc</code></td>
 <td><code>object</code> (1)</td>
 <td>文章目录 TOC</td>
 <td>From <code>_config.yml</code></td>
 </tr>
-</tbody></table>
-<h1 id="NexT-主题配置"><a href="#NexT-主题配置" class="headerlink" title="NexT 主题配置"></a>NexT 主题配置</h1><p>NexT 主题配置文件为<code>hexo/node_modules/hexo-theme-next/_config.yml</code></p>
-<h2 id="缓存设置-Cache-Support"><a href="#缓存设置-Cache-Support" class="headerlink" title="缓存设置 - Cache Support"></a>缓存设置 - Cache Support</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cache:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>				<span class="comment"># 允许缓存内容生成</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="最小化生成设置-Minify-Support"><a href="#最小化生成设置-Minify-Support" class="headerlink" title="最小化生成设置 - Minify Support"></a>最小化生成设置 - Minify Support</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">minify:</span> <span class="literal">true</span>				<span class="comment"># 删除 hexo 不必要文件</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="排版方案设置-Choosing-Scheme"><a href="#排版方案设置-Choosing-Scheme" class="headerlink" title="排版方案设置 - Choosing Scheme"></a>排版方案设置 - Choosing Scheme</h2><ul>
+</tbody>
+</table>
+<h1 id="next-主题配置">NexT 主题配置</h1>
+<p>NexT
+主题配置文件为<code>hexo/node_modules/hexo-theme-next/_config.yml</code></p>
+<h2 id="缓存设置---cache-support">缓存设置 - Cache Support</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cache:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>				<span class="comment"># 允许缓存内容生成</span></span><br></pre></td></tr></table></figure>
+<h2 id="最小化生成设置---minify-support">最小化生成设置 - Minify
+Support</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">minify:</span> <span class="literal">true</span>				<span class="comment"># 删除 hexo 不必要文件</span></span><br></pre></td></tr></table></figure>
+<h2 id="排版方案设置---choosing-scheme">排版方案设置 - Choosing
+Scheme</h2>
+<ul>
 <li><strong><code>Muse</code></strong> → 黑白主调，大量留白</li>
-<li><strong><code>Mist</code></strong> → 更紧凑的 Muse 版本，具有整洁的单列视图</li>
-<li><strong><code>Pisces</code></strong> → 双栏排版，小家碧玉似的清新</li>
-<li><strong><code>Gemini</code></strong> → 类似 Pisces，有明显的柱状块，有阴影，显得更敏感的视野</li>
+<li><strong><code>Mist</code></strong> → 更紧凑的 Muse
+版本，具有整洁的单列视图</li>
+<li><strong><code>Pisces</code></strong> →
+双栏排版，小家碧玉似的清新</li>
+<li><strong><code>Gemini</code></strong> → 类似
+Pisces，有明显的柱状块，有阴影，显得更敏感的视野</li>
 </ul>
-<h2 id="黑夜模式-Dark-Mode"><a href="#黑夜模式-Dark-Mode" class="headerlink" title="黑夜模式 - Dark Mode"></a>黑夜模式 - Dark Mode</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">darkmode:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="网站图标配置-Configuring-Favicon"><a href="#网站图标配置-Configuring-Favicon" class="headerlink" title="网站图标配置 - Configuring Favicon"></a>网站图标配置 - Configuring Favicon</h2><p>默认情况下，NexT 使用 <code>next/source/images</code> 文件夹中的图片作为网站图标</p>
+<h2 id="黑夜模式---dark-mode">黑夜模式 - Dark Mode</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">darkmode:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure>
+<h2 id="网站图标配置---configuring-favicon">网站图标配置 - Configuring
+Favicon</h2>
+<p>默认情况下，NexT 使用 <code>next/source/images</code>
+文件夹中的图片作为网站图标</p>
 <p>可以直接更改其中的图片来变更网站图标（名字不能改变）</p>
-<p>最好是通过更改配置中的 <strong><code>favicon</code></strong> 参数进行更改网站图标配置</p>
+<p>最好是通过更改配置中的 <strong><code>favicon</code></strong>
+参数进行更改网站图标配置</p>
 <blockquote>
-<p>图片资源路径为相对路径，默认在 <code>hexo/source/</code> 和 <code>next/source/</code> 文件夹中搜索</p>
+<p>图片资源路径为相对路径，默认在 <code>hexo/source/</code> 和
+<code>next/source/</code> 文件夹中搜索</p>
 </blockquote>
 <blockquote>
-<p>可以使用 <a href="https://realfavicongenerator.net/">Favicon Generator</a> 自动化生成网站图标</p>
+<p>可以使用 <a href="https://realfavicongenerator.net/">Favicon
+Generator</a> 自动化生成网站图标</p>
 </blockquote>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">favicon:</span></span><br><span class="line">  <span class="attr">small:</span> <span class="string">/images/favicon-16x16-next.png</span></span><br><span class="line">  <span class="attr">medium:</span> <span class="string">/images/favicon-32x32-next.png</span></span><br><span class="line">  <span class="attr">apple_touch_icon:</span> <span class="string">/images/apple-touch-icon-next.png</span></span><br><span class="line">  <span class="attr">safari_pinned_tab:</span> <span class="string">/images/logo.svg</span></span><br><span class="line">  <span class="comment">#android_manifest: /manifest.json</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="自定义-Logo-设置-Custom-Logo-Support"><a href="#自定义-Logo-设置-Custom-Logo-Support" class="headerlink" title="自定义 Logo 设置 - Custom Logo Support"></a>自定义 Logo 设置 - Custom Logo Support</h2><blockquote>
+<h2 id="自定义-logo-设置---custom-logo-support">自定义 Logo 设置 -
+Custom Logo Support</h2>
+<blockquote>
 <p>Scheme Mist 排版方案不支持自定义 Logo</p>
 </blockquote>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">custom_logo:</span> <span class="comment">#/uploads/custom-logo.jpg</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="版权协议配置-Creative-Commons"><a href="#版权协议配置-Creative-Commons" class="headerlink" title="版权协议配置 - Creative Commons"></a>版权协议配置 - Creative Commons</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Creative Commons 4.0 International License.</span></span><br><span class="line"><span class="comment"># See: https://creativecommons.org/about/cclicenses/</span></span><br><span class="line"><span class="attr">creative_commons:</span></span><br><span class="line">  <span class="comment"># Available values: by | by-nc | by-nc-nd | by-nc-sa | by-nd | by-sa | cc-zero</span></span><br><span class="line">  <span class="attr">license:</span> <span class="string">by-nc-sa</span></span><br><span class="line">  <span class="comment"># Available values: big | small</span></span><br><span class="line">  <span class="attr">size:</span> <span class="string">small</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">post:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># You can set a language value if you prefer a translated version of CC license, e.g. deed.zh</span></span><br><span class="line">  <span class="comment"># CC licenses are available in 39 languages, you can find the specific and correct abbreviation you need on https://creativecommons.org</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">deed.zh</span></span><br></pre></td></tr></table></figure>
-
+<h2 id="版权协议配置---creative-commons">版权协议配置 - Creative
+Commons</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Creative Commons 4.0 International License.</span></span><br><span class="line"><span class="comment"># See: https://creativecommons.org/about/cclicenses/</span></span><br><span class="line"><span class="attr">creative_commons:</span></span><br><span class="line">  <span class="comment"># Available values: by | by-nc | by-nc-nd | by-nc-sa | by-nd | by-sa | cc-zero</span></span><br><span class="line">  <span class="attr">license:</span> <span class="string">by-nc-sa</span></span><br><span class="line">  <span class="comment"># Available values: big | small</span></span><br><span class="line">  <span class="attr">size:</span> <span class="string">small</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">post:</span> <span class="literal">true</span></span><br><span class="line">  <span class="comment"># You can set a language value if you prefer a translated version of CC license, e.g. deed.zh</span></span><br><span class="line">  <span class="comment"># CC licenses are available in 39 languages, you can find the specific and correct abbreviation you need on https://creativecommons.org</span></span><br><span class="line">  <span class="attr">language:</span> <span class="string">deed.zh</span></span><br></pre></td></tr></table></figure>
 <blockquote>
-<p>配置参考：<a href="https://creativecommons.org/">https://creativecommons.org</a></p>
+<p>配置参考：https://creativecommons.org</p>
 </blockquote>
-<h2 id="菜单、分类页配置-Configuring-Menu-Items"><a href="#菜单、分类页配置-Configuring-Menu-Items" class="headerlink" title="菜单、分类页配置 - Configuring Menu Items"></a>菜单、分类页配置 - Configuring Menu Items</h2><p>菜单设置项的格式 <strong><code>Key: /link/ || icon</code></strong> 包含 3 个值：</p>
+<h2 id="菜单分类页配置---configuring-menu-items">菜单、分类页配置 -
+Configuring Menu Items</h2>
+<p>菜单设置项的格式 <strong><code>Key: /link/ || icon</code></strong>
+包含 3 个值：</p>
 <ul>
 <li><p><strong><code>Key</code></strong></p>
-<p><code>Key</code> → 菜单项的名称（<code>home</code>、<code>archives</code>等）。<br>如果找到此菜单的翻译语言，则将加载此翻译；如果没有，<code>Key</code> 将使用名称。</p>
-</li>
+<p><code>Key</code> →
+菜单项的名称（<code>home</code>、<code>archives</code>等）。
+如果找到此菜单的翻译语言，则将加载此翻译；如果没有，<code>Key</code>
+将使用名称。</p></li>
 <li><p><strong><code>link</code></strong></p>
-<p><code>link</code> → 指向网站内相对 url 的目标链接</p>
-</li>
+<p><code>link</code> → 指向网站内相对 url 的目标链接</p></li>
 <li><p><strong><code>icon</code></strong></p>
-<p><code>icon</code> → Font Awesome 图标的名称。图标的名称可以在 <a href="https://fontawesome.com/">Font Awesome</a> 中找到。</p>
-</li>
+<p><code>icon</code> → Font Awesome 图标的名称。图标的名称可以在 <a href="https://fontawesome.com/">Font Awesome</a> 中找到。</p></li>
 </ul>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br></pre></td></tr></table></figure>
-
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">menu_settings:</span></span><br><span class="line">  <span class="attr">icons:</span> <span class="literal">true</span>				<span class="comment"># 启用菜单项图标</span></span><br><span class="line">  <span class="attr">badges:</span> <span class="literal">true</span>				<span class="comment"># 启用计数</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="侧边栏样式-Sidebar-Style"><a href="#侧边栏样式-Sidebar-Style" class="headerlink" title="侧边栏样式 - Sidebar Style"></a>侧边栏样式 - Sidebar Style</h2><p>侧边栏样式配置包括 <code>position</code>, <code>width</code>, <code>display</code>, <code>padding</code> 和 <code>offset</code></p>
+<h2 id="侧边栏样式---sidebar-style">侧边栏样式 - Sidebar Style</h2>
+<p>侧边栏样式配置包括 <code>position</code>, <code>width</code>,
+<code>display</code>, <code>padding</code> 和 <code>offset</code></p>
 <ul>
 <li><p><strong><code>position</code></strong></p>
 <p>更改侧边栏位置：</p>
 <ul>
 <li><strong><code>left</code></strong> → 放置在屏幕左侧。</li>
 <li><strong><code>right</code></strong> → 放置在屏幕右侧。</li>
-</ul>
-</li>
+</ul></li>
 <li><p><strong><code>width</code></strong></p>
-<p>以像素为单位，指定侧边栏宽度</p>
-</li>
+<p>以像素为单位，指定侧边栏宽度</p></li>
 <li><p><strong><code>display</code></strong></p>
 <p>侧边栏出现的条件：</p>
 <ul>
-<li><strong><code>post</code></strong> → 仅在有索引的帖子中显示侧边栏。</li>
+<li><strong><code>post</code></strong> →
+仅在有索引的帖子中显示侧边栏。</li>
 <li><strong><code>always</code></strong> → 在所有页面中显示侧边栏。</li>
-<li><strong><code>hide</code></strong> → 在所有页面中隐藏（但可以由用户手动打开）。</li>
+<li><strong><code>hide</code></strong> →
+在所有页面中隐藏（但可以由用户手动打开）。</li>
 <li><strong><code>remove</code></strong> → 完全删除侧边栏。</li>
-</ul>
-</li>
+</ul></li>
 <li><p><strong><code>padding</code></strong></p>
-<p>以像素为单位，指定侧边栏填充量</p>
-</li>
+<p>以像素为单位，指定侧边栏填充量</p></li>
 <li><p><strong><code>offset</code></strong></p>
-<p>一像素为单位，指定菜单栏偏移量</p>
-</li>
+<p>一像素为单位，指定菜单栏偏移量</p></li>
 </ul>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">sidebar:</span></span><br><span class="line">  <span class="attr">position:</span> <span class="string">left</span></span><br><span class="line">  <span class="attr">display:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">padding:</span> <span class="number">18</span></span><br><span class="line">  <span class="attr">offset:</span> <span class="number">12</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="侧边栏头像设置-Configuring-Avatar"><a href="#侧边栏头像设置-Configuring-Avatar" class="headerlink" title="侧边栏头像设置 - Configuring Avatar"></a>侧边栏头像设置 - Configuring Avatar</h2><blockquote>
-<p>图片资源路径为相对路径，默认在<strong>博客根目录</strong>下的**<code>./source/</code><strong>和</strong>NexT主题根目录<strong>下的</strong><code>./source/</code>**文件夹中搜索</p>
+<h2 id="侧边栏头像设置---configuring-avatar">侧边栏头像设置 -
+Configuring Avatar</h2>
+<blockquote>
+<p>图片资源路径为相对路径，默认在<strong>博客根目录</strong>下的<strong><code>./source/</code></strong>和<strong>NexT主题根目录</strong>下的<strong><code>./source/</code></strong>文件夹中搜索</p>
 </blockquote>
 <p>头像图片的尺寸不影响显示（固定尺寸显示），但图片的清晰程度影响</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">avatar:</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">/images/avatar.gif</span>		<span class="comment"># 头像相对路径</span></span><br><span class="line">  <span class="attr">rounded:</span> <span class="literal">true</span>					<span class="comment"># 是否取圆头像</span></span><br><span class="line">  <span class="attr">rotated:</span> <span class="literal">false</span>				<span class="comment"># 指针 focus 头像时，是否旋转一周</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="侧边栏网站状态-Sidebar-Site-State"><a href="#侧边栏网站状态-Sidebar-Site-State" class="headerlink" title="侧边栏网站状态 - Sidebar Site State"></a>侧边栏网站状态 - Sidebar Site State</h2><p>与 [菜单、分类页配置 - Configuring Menu Items](#菜单、分类页配置 - Configuring Menu Items) 配置中的 <code>menu_settings.badges</code> 冲突</p>
+<h2 id="侧边栏网站状态---sidebar-site-state">侧边栏网站状态 - Sidebar
+Site State</h2>
+<p>与 <a href="#菜单、分类页配置%20-%20Configuring%20Menu%20Items">菜单、分类页配置
+- Configuring Menu Items</a> 配置中的 <code>menu_settings.badges</code>
+冲突</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">site_state:</span> <span class="literal">true</span>				<span class="comment"># 启用计数</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="侧边栏社交链接-Sidebar-Social-Links"><a href="#侧边栏社交链接-Sidebar-Social-Links" class="headerlink" title="侧边栏社交链接 - Sidebar Social Links"></a>侧边栏社交链接 - Sidebar Social Links</h2><p>侧边栏社交链接的格式 <strong><code>Name: link || icon</code></strong> 包含 3 个值：</p>
+<h2 id="侧边栏社交链接---sidebar-social-links">侧边栏社交链接 - Sidebar
+Social Links</h2>
+<p>侧边栏社交链接的格式 <strong><code>Name: link || icon</code></strong>
+包含 3 个值：</p>
 <ul>
 <li><p><strong><code>Name</code></strong></p>
-<p><code>Name</code> → 会被显示的社交网站名称（<code>Github</code>、<code>Google</code>等）。</p>
-</li>
+<p><code>Name</code> →
+会被显示的社交网站名称（<code>Github</code>、<code>Google</code>等）。</p></li>
 <li><p><strong><code>link</code></strong></p>
-<p><code>link</code> → 社交主页的完整地址。</p>
-</li>
+<p><code>link</code> → 社交主页的完整地址。</p></li>
 <li><p><strong><code>icon</code></strong></p>
-<p><code>icon</code> → Font Awesome 图标的名称。图标的名称可以在<a href="https://fontawesome.com/">Font Awesome</a>中找到。</p>
-</li>
+<p><code>icon</code> → Font Awesome 图标的名称。图标的名称可以在<a href="https://fontawesome.com/">Font Awesome</a>中找到。</p></li>
 </ul>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="comment">#GitHub: https://github.com/yourname || fab fa-github</span></span><br><span class="line">  <span class="comment">#Google: https://plus.google.com/yourname || fab fa-google</span></span><br></pre></td></tr></table></figure>
-
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">social_icons:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>					<span class="comment"># 启用社交图标</span></span><br><span class="line">  <span class="attr">icons_only:</span> <span class="literal">false</span>				<span class="comment"># 启用不带有名称的社交图标</span></span><br><span class="line">  <span class="attr">transition:</span> <span class="literal">false</span>				<span class="comment"># 启用具有过渡效果的社交图标</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="侧边栏-Blogrolls-配置-Sidebar-Blogrolls"><a href="#侧边栏-Blogrolls-配置-Sidebar-Blogrolls" class="headerlink" title="侧边栏 Blogrolls 配置 - Sidebar Blogrolls"></a>侧边栏 Blogrolls 配置 - Sidebar Blogrolls</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">links_settings:</span></span><br><span class="line">  <span class="attr">icon:</span> <span class="string">fa</span> <span class="string">fa-globe</span>				<span class="comment"># Font Awesome 图标的名称</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">Links</span>					<span class="comment"># 默认值</span></span><br><span class="line">  <span class="attr">layout:</span> <span class="string">block</span>					<span class="comment"># 布局方式 (block | inline)</span></span><br></pre></td></tr></table></figure>
-
-<p>如果**<code>links</code>**没有参数，不显示 <strong>Blogrolls</strong></p>
+<h2 id="侧边栏-blogrolls-配置---sidebar-blogrolls">侧边栏 Blogrolls 配置
+- Sidebar Blogrolls</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">links_settings:</span></span><br><span class="line">  <span class="attr">icon:</span> <span class="string">fa</span> <span class="string">fa-globe</span>				<span class="comment"># Font Awesome 图标的名称</span></span><br><span class="line">  <span class="attr">title:</span> <span class="string">Links</span>					<span class="comment"># 默认值</span></span><br><span class="line">  <span class="attr">layout:</span> <span class="string">block</span>					<span class="comment"># 布局方式 (block | inline)</span></span><br></pre></td></tr></table></figure>
+<p>如果<strong><code>links</code></strong>没有参数，不显示
+<strong>Blogrolls</strong></p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">links:</span></span><br><span class="line">  <span class="attr">Google:</span> <span class="string">https://www.google.com</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="侧边栏文章目录-Sidebar-TOC-Table-of-Contents"><a href="#侧边栏文章目录-Sidebar-TOC-Table-of-Contents" class="headerlink" title="侧边栏文章目录 - Sidebar TOC (Table of Contents)"></a>侧边栏文章目录 - Sidebar TOC (Table of Contents)</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">toc:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>					<span class="comment"># 自动生成 TOC</span></span><br><span class="line">  <span class="attr">number:</span> <span class="literal">true</span>					<span class="comment"># 自动生成 TOC 序号</span></span><br><span class="line">  <span class="attr">wrap:</span> <span class="literal">false</span>					<span class="comment"># 目录名宽度大于侧边栏宽度时，自动换行</span></span><br><span class="line">  <span class="attr">expand_all:</span> <span class="literal">false</span>				<span class="comment"># 显示所有级别的目录，而不是当前级别的</span></span><br><span class="line">  <span class="attr">max_depth:</span> <span class="number">6</span>					<span class="comment"># 目录最大深度</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="页脚配置-Site-Footer-Setting"><a href="#页脚配置-Site-Footer-Setting" class="headerlink" title="页脚配置 - Site Footer Setting"></a>页脚配置 - Site Footer Setting</h2><h3 id="网站开始时间-Site-Start-Time"><a href="#网站开始时间-Site-Start-Time" class="headerlink" title="网站开始时间 - Site Start Time"></a>网站开始时间 - Site Start Time</h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">since:</span> <span class="number">2022</span>					<span class="comment"># 开始年份   @ 2022 - 当前年份</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="页脚图标-Site-Footer-Icon"><a href="#页脚图标-Site-Footer-Icon" class="headerlink" title="页脚图标 - Site Footer Icon"></a>页脚图标 - Site Footer Icon</h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">icon:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">fa</span> <span class="string">fa-user</span>			<span class="comment"># Font Awesome 图标的名称。</span></span><br><span class="line">    <span class="attr">animated:</span> <span class="literal">true</span>				<span class="comment"># 图标动画化</span></span><br><span class="line">    <span class="attr">color:</span> <span class="string">&#x27;ff0000&#x27;</span>				<span class="comment"># 图标颜色</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="网站版权名称-Site-Copyright-Name"><a href="#网站版权名称-Site-Copyright-Name" class="headerlink" title="网站版权名称 - Site Copyright Name"></a>网站版权名称 - Site Copyright Name</h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">copyright:</span> [<span class="string">name</span>]				<span class="comment"># 空白默认使用站点配置下的 author</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="网站平台信息-Site-Platform-Information"><a href="#网站平台信息-Site-Platform-Information" class="headerlink" title="网站平台信息 - Site Platform Information"></a>网站平台信息 - Site Platform Information</h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">powered:</span> <span class="literal">false</span>				<span class="comment"># 是否显示网站框架</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="网站备案信息-Site-Beian-Information"><a href="#网站备案信息-Site-Beian-Information" class="headerlink" title="网站备案信息 - Site Beian Information"></a>网站备案信息 - Site Beian Information</h3><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">beian:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span>				<span class="comment"># 是否显示以下信息</span></span><br><span class="line">    <span class="attr">icp:</span> <span class="string">京ICP备</span> <span class="number">1234567890</span><span class="string">号-1</span></span><br><span class="line">    <span class="attr">gongan_id:</span> <span class="number">1234567890</span></span><br><span class="line">    <span class="attr">gongan_num:</span> <span class="string">京公网安备</span> <span class="number">1234567890</span><span class="string">号</span></span><br><span class="line">    <span class="attr">gongan_icon_url:</span> <span class="string">/uploads/beian.png</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="博文摘要配置-Preamble-Text"><a href="#博文摘要配置-Preamble-Text" class="headerlink" title="博文摘要配置 - Preamble Text"></a>博文摘要配置 - Preamble Text</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">excerpt_description:</span> <span class="literal">true</span>		<span class="comment"># 使用 description 的内容作为 Read More 的摘要。</span></span><br><span class="line"><span class="attr">read_more_btn:</span> <span class="literal">true</span>				<span class="comment"># 显示 Read More 按钮</span></span><br><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line">	<span class="attr">enable:</span> <span class="literal">true</span>				<span class="comment"># 若不开启且 description 为空则使用全文做摘要</span></span><br><span class="line">	<span class="attr">length:</span> <span class="number">150</span>					<span class="comment"># 摘要长度</span></span><br></pre></td></tr></table></figure>
-
+<h2 id="侧边栏文章目录---sidebar-toc-table-of-contents">侧边栏文章目录 -
+Sidebar TOC (Table of Contents)</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">toc:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>					<span class="comment"># 自动生成 TOC</span></span><br><span class="line">  <span class="attr">number:</span> <span class="literal">true</span>					<span class="comment"># 自动生成 TOC 序号</span></span><br><span class="line">  <span class="attr">wrap:</span> <span class="literal">false</span>					<span class="comment"># 目录名宽度大于侧边栏宽度时，自动换行</span></span><br><span class="line">  <span class="attr">expand_all:</span> <span class="literal">false</span>				<span class="comment"># 显示所有级别的目录，而不是当前级别的</span></span><br><span class="line">  <span class="attr">max_depth:</span> <span class="number">6</span>					<span class="comment"># 目录最大深度</span></span><br></pre></td></tr></table></figure>
+<h2 id="页脚配置---site-footer-setting">页脚配置 - Site Footer
+Setting</h2>
+<h3 id="网站开始时间---site-start-time">网站开始时间 - Site Start
+Time</h3>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">since:</span> <span class="number">2022</span>					<span class="comment"># 开始年份   @ 2022 - 当前年份</span></span><br></pre></td></tr></table></figure>
+<h3 id="页脚图标---site-footer-icon">页脚图标 - Site Footer Icon</h3>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">icon:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">fa</span> <span class="string">fa-user</span>			<span class="comment"># Font Awesome 图标的名称。</span></span><br><span class="line">    <span class="attr">animated:</span> <span class="literal">true</span>				<span class="comment"># 图标动画化</span></span><br><span class="line">    <span class="attr">color:</span> <span class="string">&#x27;ff0000&#x27;</span>				<span class="comment"># 图标颜色</span></span><br></pre></td></tr></table></figure>
+<h3 id="网站版权名称---site-copyright-name">网站版权名称 - Site
+Copyright Name</h3>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">copyright:</span> [<span class="string">name</span>]				<span class="comment"># 空白默认使用站点配置下的 author</span></span><br></pre></td></tr></table></figure>
+<h3 id="网站平台信息---site-platform-information">网站平台信息 - Site
+Platform Information</h3>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">powered:</span> <span class="literal">false</span>				<span class="comment"># 是否显示网站框架</span></span><br></pre></td></tr></table></figure>
+<h3 id="网站备案信息---site-beian-information">网站备案信息 - Site Beian
+Information</h3>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">footer:</span></span><br><span class="line">  <span class="attr">beian:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span>				<span class="comment"># 是否显示以下信息</span></span><br><span class="line">    <span class="attr">icp:</span> <span class="string">京ICP备</span> <span class="number">1234567890</span><span class="string">号-1</span></span><br><span class="line">    <span class="attr">gongan_id:</span> <span class="number">1234567890</span></span><br><span class="line">    <span class="attr">gongan_num:</span> <span class="string">京公网安备</span> <span class="number">1234567890</span><span class="string">号</span></span><br><span class="line">    <span class="attr">gongan_icon_url:</span> <span class="string">/uploads/beian.png</span></span><br></pre></td></tr></table></figure>
+<h2 id="博文摘要配置---preamble-text">博文摘要配置 - Preamble Text</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">excerpt_description:</span> <span class="literal">true</span>		<span class="comment"># 使用 description 的内容作为 Read More 的摘要。</span></span><br><span class="line"><span class="attr">read_more_btn:</span> <span class="literal">true</span>				<span class="comment"># 显示 Read More 按钮</span></span><br><span class="line"><span class="attr">auto_excerpt:</span></span><br><span class="line">	<span class="attr">enable:</span> <span class="literal">true</span>				<span class="comment"># 若不开启且 description 为空则使用全文做摘要</span></span><br><span class="line">	<span class="attr">length:</span> <span class="number">150</span>					<span class="comment"># 摘要长度</span></span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>注意：该配置会与 <code>&lt;!-- more --&gt;</code> 产生冲突</p>
 </blockquote>
 <blockquote>
 <p>front-matter: description</p>
 </blockquote>
-<h2 id="发布信息配置-Post-Meta-Display"><a href="#发布信息配置-Post-Meta-Display" class="headerlink" title="发布信息配置 - Post Meta Display"></a>发布信息配置 - Post Meta Display</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_meta:</span></span><br><span class="line">  <span class="attr">item_text:</span> <span class="literal">true</span>				<span class="comment"># 显示描述文本</span></span><br><span class="line">  <span class="attr">created_at:</span> <span class="literal">true</span>				<span class="comment"># 显示创建时间</span></span><br><span class="line">  <span class="attr">updated_at:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span>				<span class="comment"># 显示更新时间</span></span><br><span class="line">    <span class="attr">another_day:</span> <span class="literal">true</span>			<span class="comment"># 显示更新日</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="literal">true</span>				<span class="comment"># 显示分类</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="文末标签图标-Tag-Icon"><a href="#文末标签图标-Tag-Icon" class="headerlink" title="文末标签图标 - Tag Icon"></a>文末标签图标 - Tag Icon</h2><p>默认情况下，博文末尾存在以#开头的标签超链接。</p>
+<h2 id="发布信息配置---post-meta-display">发布信息配置 - Post Meta
+Display</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_meta:</span></span><br><span class="line">  <span class="attr">item_text:</span> <span class="literal">true</span>				<span class="comment"># 显示描述文本</span></span><br><span class="line">  <span class="attr">created_at:</span> <span class="literal">true</span>				<span class="comment"># 显示创建时间</span></span><br><span class="line">  <span class="attr">updated_at:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span>				<span class="comment"># 显示更新时间</span></span><br><span class="line">    <span class="attr">another_day:</span> <span class="literal">true</span>			<span class="comment"># 显示更新日</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="literal">true</span>				<span class="comment"># 显示分类</span></span><br></pre></td></tr></table></figure>
+<h2 id="文末标签图标---tag-icon">文末标签图标 - Tag Icon</h2>
+<p>默认情况下，博文末尾存在以#开头的标签超链接。</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">tag_icon:</span> <span class="literal">true</span>					<span class="comment"># 开启标签图标</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="捐赠、打赏配置-Donate-Settings"><a href="#捐赠、打赏配置-Donate-Settings" class="headerlink" title="捐赠、打赏配置 - Donate Settings"></a>捐赠、打赏配置 - Donate Settings</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">reward_settings:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 开启捐赠链接 (默认在所有博文下显示)</span></span><br><span class="line">  <span class="attr">animation:</span> <span class="literal">false</span>				<span class="comment"># 是否开启动画效果</span></span><br><span class="line">  <span class="attr">comment:</span> <span class="string">&#x27;&#x27;</span>					<span class="comment"># 捐赠注释</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 收款码</span></span><br><span class="line"><span class="attr">reward:</span></span><br><span class="line">  <span class="comment">#wechatpay: /images/wechatpay.png	</span></span><br><span class="line">  <span class="comment">#alipay: /images/alipay.png</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="关注-Follow-Me"><a href="#关注-Follow-Me" class="headerlink" title="关注 - Follow Me"></a>关注 - Follow Me</h2><blockquote>
-<p>参数参考[侧边栏社交链接 - Sidebar Social Links](#侧边栏社交链接 - Sidebar Social Links)</p>
+<h2 id="捐赠打赏配置---donate-settings">捐赠、打赏配置 - Donate
+Settings</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">reward_settings:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 开启捐赠链接 (默认在所有博文下显示)</span></span><br><span class="line">  <span class="attr">animation:</span> <span class="literal">false</span>				<span class="comment"># 是否开启动画效果</span></span><br><span class="line">  <span class="attr">comment:</span> <span class="string">&#x27;&#x27;</span>					<span class="comment"># 捐赠注释</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 收款码</span></span><br><span class="line"><span class="attr">reward:</span></span><br><span class="line">  <span class="comment">#wechatpay: /images/wechatpay.png	</span></span><br><span class="line">  <span class="comment">#alipay: /images/alipay.png</span></span><br></pre></td></tr></table></figure>
+<h2 id="关注---follow-me">关注 - Follow Me</h2>
+<blockquote>
+<p>参数参考<a href="#侧边栏社交链接%20-%20Sidebar%20Social%20Links">侧边栏社交链接 -
+Sidebar Social Links</a></p>
 </blockquote>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">follow_me:</span></span><br><span class="line">  <span class="comment">#Twitter: https://twitter.com/username || fab fa-twitter</span></span><br><span class="line">  <span class="comment">#Telegram: https://t.me/channel_name || fab fa-telegram</span></span><br><span class="line">  <span class="comment">#WeChat: /images/wechat_channel.jpg || fab fa-weixin</span></span><br><span class="line">  <span class="comment">#RSS: /atom.xml || fa fa-rss</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="博文编辑配置-Post-Edit"><a href="#博文编辑配置-Post-Edit" class="headerlink" title="博文编辑配置 - Post Edit"></a>博文编辑配置 - Post Edit</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_edit:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 是否允许在存储库直接浏览和编辑源代码</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="博文导航配置-Post-Navigation"><a href="#博文导航配置-Post-Navigation" class="headerlink" title="博文导航配置 - Post Navigation"></a>博文导航配置 - Post Navigation</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_navigation:</span> <span class="string">left</span>			<span class="comment"># 上一章、下一章 (left | right | false)</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="CDN配置-Preconnect"><a href="#CDN配置-Preconnect" class="headerlink" title="CDN配置 - Preconnect"></a>CDN配置 - Preconnect</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">preconnect:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="文本对齐方式-Text-Align"><a href="#文本对齐方式-Text-Align" class="headerlink" title="文本对齐方式 - Text Align"></a>文本对齐方式 - Text Align</h2><table>
+<h2 id="博文编辑配置---post-edit">博文编辑配置 - Post Edit</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_edit:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 是否允许在存储库直接浏览和编辑源代码</span></span><br><span class="line">  <span class="attr">url:</span> <span class="string">https://github.com/user-name/repo-name/tree/branch-name/subdirectory-name/</span></span><br></pre></td></tr></table></figure>
+<h2 id="博文导航配置---post-navigation">博文导航配置 - Post
+Navigation</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">post_navigation:</span> <span class="string">left</span>			<span class="comment"># 上一章、下一章 (left | right | false)</span></span><br></pre></td></tr></table></figure>
+<h2 id="cdn配置---preconnect">CDN配置 - Preconnect</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">preconnect:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h2 id="文本对齐方式---text-align">文本对齐方式 - Text Align</h2>
+<table>
+<colgroup>
+<col style="width: 18%">
+<col style="width: 81%">
+</colgroup>
 <thead>
-<tr>
+<tr class="header">
 <th>值</th>
 <th>Effect</th>
 </tr>
 </thead>
-<tbody><tr>
+<tbody>
+<tr class="odd">
 <td><code>start</code></td>
-<td>The same as <code>left</code> if direction is left-to-right and <code>right</code> if direction is right-to-left.</td>
+<td>The same as <code>left</code> if direction is left-to-right and
+<code>right</code> if direction is right-to-left.</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>end</code></td>
-<td>The same as <code>right</code> if direction is left-to-right and <code>left</code> if direction is right-to-left.</td>
+<td>The same as <code>right</code> if direction is left-to-right and
+<code>left</code> if direction is right-to-left.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>left</code></td>
-<td>The inline contents are aligned to the left edge of the line box.</td>
+<td>The inline contents are aligned to the left edge of the line
+box.</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>right</code></td>
-<td>The inline contents are aligned to the right edge of the line box.</td>
+<td>The inline contents are aligned to the right edge of the line
+box.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>center</code></td>
 <td>The inline contents are centered within the line box.</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>justify</code></td>
-<td>The inline contents are justified. Text should be spaced to line up its left and right edges to the left and right edges of the line box, except for the last line.</td>
+<td>The inline contents are justified. Text should be spaced to line up
+its left and right edges to the left and right edges of the line box,
+except for the last line.</td>
 </tr>
-<tr>
+<tr class="odd">
 <td><code>justify-all</code></td>
-<td>Same as <code>justify</code>, but also forces the last line to be justified.</td>
+<td>Same as <code>justify</code>, but also forces the last line to be
+justified.</td>
 </tr>
-<tr>
+<tr class="even">
 <td><code>match-parent</code></td>
-<td>Similar to <code>inherit</code>, but the values <code>start</code> and <code>end</code> are calculated according to the parent’s direction and are replaced by the appropriate <code>left</code> or <code>right</code> value.</td>
+<td>Similar to <code>inherit</code>, but the values <code>start</code>
+and <code>end</code> are calculated according to the parent's direction
+and are replaced by the appropriate <code>left</code> or
+<code>right</code> value.</td>
 </tr>
-</tbody></table>
+</tbody>
+</table>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">text_align:</span></span><br><span class="line">  <span class="attr">desktop:</span> <span class="string">justify</span>				<span class="comment"># 桌面端</span></span><br><span class="line">  <span class="attr">mobile:</span> <span class="string">justify</span>				<span class="comment"># 移动端</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="移动端适配-Mobile-Devices-Adaptation"><a href="#移动端适配-Mobile-Devices-Adaptation" class="headerlink" title="移动端适配 - Mobile Devices Adaptation"></a>移动端适配 - Mobile Devices Adaptation</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">mobile_layout_economy:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="主题颜色-Theme-Color"><a href="#主题颜色-Theme-Color" class="headerlink" title="主题颜色 - Theme Color"></a>主题颜色 - Theme Color</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme_color:</span></span><br><span class="line">  <span class="attr">light:</span> <span class="string">&quot;#222&quot;</span></span><br><span class="line">  <span class="attr">dark:</span> <span class="string">&quot;#222&quot;</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="正文滚动条-Body-Scrollbar"><a href="#正文滚动条-Body-Scrollbar" class="headerlink" title="正文滚动条 - Body Scrollbar"></a>正文滚动条 - Body Scrollbar</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">body_scrollbar:</span></span><br><span class="line">  <span class="attr">overlay:</span> <span class="literal">false</span>				<span class="comment"># 是否使用正文滚动条 (会覆盖浏览器默认样式)</span></span><br><span class="line">  <span class="attr">stable:</span> <span class="literal">false</span>					<span class="comment"># 是否固定滚动条</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="代码样式-Codeblock-Style"><a href="#代码样式-Codeblock-Style" class="headerlink" title="代码样式 - Codeblock Style"></a>代码样式 - Codeblock Style</h2><p>NexT使用<a href="https://highlightjs.org/">Highlight.js</a>和<a href="https://prismjs.com/">Prism</a>进行语法高亮</p>
-<p>可以预先使用<a href="https://theme-next.js.org/highlight/">NexT Highlight Theme Preview</a>查看配置效果</p>
+<h2 id="移动端适配---mobile-devices-adaptation">移动端适配 - Mobile
+Devices Adaptation</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">mobile_layout_economy:</span> <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+<h2 id="主题颜色---theme-color">主题颜色 - Theme Color</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">theme_color:</span></span><br><span class="line">  <span class="attr">light:</span> <span class="string">&quot;#222&quot;</span></span><br><span class="line">  <span class="attr">dark:</span> <span class="string">&quot;#222&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="正文滚动条---body-scrollbar">正文滚动条 - Body Scrollbar</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">body_scrollbar:</span></span><br><span class="line">  <span class="attr">overlay:</span> <span class="literal">false</span>				<span class="comment"># 是否使用正文滚动条 (会覆盖浏览器默认样式)</span></span><br><span class="line">  <span class="attr">stable:</span> <span class="literal">false</span>					<span class="comment"># 是否固定滚动条</span></span><br></pre></td></tr></table></figure>
+<h2 id="代码样式---codeblock-style">代码样式 - Codeblock Style</h2>
+<p>NexT使用<a href="https://highlightjs.org/">Highlight.js</a>和<a href="https://prismjs.com/">Prism</a>进行语法高亮</p>
+<p>可以预先使用<a href="https://theme-next.js.org/highlight/">NexT
+Highlight Theme Preview</a>查看配置效果</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">codeblock:</span></span><br><span class="line">  <span class="attr">theme:</span></span><br><span class="line">    <span class="attr">light:</span> <span class="string">default</span></span><br><span class="line">    <span class="attr">dark:</span> <span class="string">tomorrow-night</span></span><br><span class="line">  <span class="attr">prism:</span></span><br><span class="line">    <span class="attr">light:</span> <span class="string">prism</span></span><br><span class="line">    <span class="attr">dark:</span> <span class="string">prism-dark</span></span><br><span class="line">  <span class="attr">copy_button:</span></span><br><span class="line">    <span class="attr">enable:</span> <span class="literal">true</span>				<span class="comment"># 启用代码一键复制按钮</span></span><br><span class="line">    <span class="attr">style:</span>						<span class="comment"># 代码框样式 (default | flat | mac)</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="快速回顶-Back-To-Top"><a href="#快速回顶-Back-To-Top" class="headerlink" title="快速回顶 - Back To Top"></a>快速回顶 - Back To Top</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">back2top:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>					<span class="comment"># 启用快速回顶按钮</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">false</span>				<span class="comment"># 按钮嵌入侧边栏</span></span><br><span class="line">  <span class="attr">scrollpercent:</span> <span class="literal">false</span>			<span class="comment"># 按钮嵌入滚动条</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="阅读进度-Reading-Progress"><a href="#阅读进度-Reading-Progress" class="headerlink" title="阅读进度 - Reading Progress"></a>阅读进度 - Reading Progress</h2><figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">reading_progress:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>					<span class="comment"># 是否启用阅读进度提示</span></span><br><span class="line">  <span class="attr">start_at:</span> <span class="string">left</span>				<span class="comment"># 从左开始还是从右开始加载 (left | right)</span></span><br><span class="line">  <span class="attr">position:</span> <span class="string">top</span>					<span class="comment"># 位置在哪 (top | bottom)</span></span><br><span class="line">  <span class="attr">reversed:</span> <span class="literal">false</span>				<span class="comment"># (从满到无 | 从无到满)</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">&quot;#37c6c0&quot;</span>				<span class="comment"># 进度条颜色</span></span><br><span class="line">  <span class="attr">height:</span> <span class="string">2px</span>					<span class="comment"># 进度条粗细</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="书签-Bookmark"><a href="#书签-Bookmark" class="headerlink" title="书签 - Bookmark"></a>书签 - Bookmark</h2><p>书签标记后，下一次进入网站自动跳转到用户上一次浏览的地方</p>
+<h2 id="快速回顶---back-to-top">快速回顶 - Back To Top</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">back2top:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>					<span class="comment"># 启用快速回顶按钮</span></span><br><span class="line">  <span class="attr">sidebar:</span> <span class="literal">false</span>				<span class="comment"># 按钮嵌入侧边栏</span></span><br><span class="line">  <span class="attr">scrollpercent:</span> <span class="literal">false</span>			<span class="comment"># 按钮嵌入滚动条</span></span><br></pre></td></tr></table></figure>
+<h2 id="阅读进度---reading-progress">阅读进度 - Reading Progress</h2>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">reading_progress:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span>					<span class="comment"># 是否启用阅读进度提示</span></span><br><span class="line">  <span class="attr">start_at:</span> <span class="string">left</span>				<span class="comment"># 从左开始还是从右开始加载 (left | right)</span></span><br><span class="line">  <span class="attr">position:</span> <span class="string">top</span>					<span class="comment"># 位置在哪 (top | bottom)</span></span><br><span class="line">  <span class="attr">reversed:</span> <span class="literal">false</span>				<span class="comment"># (从满到无 | 从无到满)</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">&quot;#37c6c0&quot;</span>				<span class="comment"># 进度条颜色</span></span><br><span class="line">  <span class="attr">height:</span> <span class="string">2px</span>					<span class="comment"># 进度条粗细</span></span><br></pre></td></tr></table></figure>
+<h2 id="书签---bookmark">书签 - Bookmark</h2>
+<p>书签标记后，下一次进入网站自动跳转到用户上一次浏览的地方</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">bookmark:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 开启书签</span></span><br><span class="line">  <span class="attr">color:</span> <span class="string">&quot;#222&quot;</span>					<span class="comment"># 书签的颜色</span></span><br><span class="line">  <span class="attr">save:</span> <span class="string">auto</span>					<span class="comment"># 是否自动保存书签 (auto | manual)</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="字体配置-Fonts-Customization"><a href="#字体配置-Fonts-Customization" class="headerlink" title="字体配置 - Fonts Customization"></a>字体配置 - Fonts Customization</h2><p><strong>NexT</strong> 提供了 5 种特定的字体设置：</p>
+<h2 id="字体配置---fonts-customization">字体配置 - Fonts
+Customization</h2>
+<p><strong>NexT</strong> 提供了 5 种特定的字体设置：</p>
 <ul>
 <li><strong>Global Font</strong>: 整个网站的基本字体</li>
 <li><strong>Title Font</strong>: 网站标题的字体</li>
@@ -1273,7 +1379,8 @@
 <blockquote>
 <p>如果字体不可用，会回退到 NexT 主题默认的字体</p>
 </blockquote>
-<p>详情请参考 <a href="https://theme-next.js.org/docs/theme-settings/miscellaneous.html#Fonts-Customization">Fonts Customization</a></p>
+<p>详情请参考 <a href="https://theme-next.js.org/docs/theme-settings/miscellaneous.html#Fonts-Customization">Fonts
+Customization</a></p>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -1298,16 +1405,17 @@
   <entry>
     <title>sagemath 方程求解笔记</title>
     <url>//sagemath-equation-note.html</url>
-    <content><![CDATA[<p><a href="https://sagecell.sagemath.org/">sagemath 在线运行网站</a></p>
+    <content><![CDATA[<p><a href="https://sagecell.sagemath.org/">sagemath
+在线运行网站</a></p>
 <p><a href="https://www.lainme.com/doku.php/topic/sage/chapter_02/section_08">线性代数中文文档</a></p>
-<h1 id="矩阵操作"><a href="#矩阵操作" class="headerlink" title="矩阵操作"></a>矩阵操作</h1><ul>
+<h1 id="矩阵操作">矩阵操作</h1>
+<ul>
 <li><p>环</p>
 <ul>
 <li><code>ZZ</code> → 整数环</li>
 <li><code>QQ</code> → 有理数环</li>
-<li><code>Zmod(p)</code> → p为素数，定义在$Zp$上的环</li>
-</ul>
-</li>
+<li><code>Zmod(p)</code> → p为素数，定义在<span class="math inline">\(Zp\)</span>上的环</li>
+</ul></li>
 <li><p>矩阵声明</p>
 <ul>
 <li><p>完整定义</p>
@@ -1316,24 +1424,21 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 默认矩阵元素为 0</span></span><br><span class="line">mt = matrix(ZZ, <span class="number">3</span>, <span class="number">2</span>)</span><br></pre></td></tr></table></figure></li>
 <li><p>缺省定义</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 对应生成在有理数环上的 3列 矩阵</span></span><br><span class="line">mt = matrix(QQ, <span class="number">3</span>, <span class="built_in">range</span>(<span class="number">6</span>))</span><br><span class="line"><span class="comment"># 对应生成在有理数环上的列矩阵</span></span><br><span class="line">mt = matrix(QQ, <span class="built_in">range</span>(<span class="number">6</span>))</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
+</ul></li>
 <li><p>添加行</p>
 <ul>
 <li><p>在末尾添加一行</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mt = mt.stack(vector([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br></pre></td></tr></table></figure></li>
 <li><p>在指定行插入一行</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 行号, 元素</span></span><br><span class="line">mt = mt.insert_row(<span class="number">1</span>, vector([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]))</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
+</ul></li>
 <li><p>修改元素值</p>
 <ul>
 <li><p>修改单值 (类似修改二维数组)</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将第 3 行第 4 列的值修改为 1</span></span><br><span class="line">mt[<span class="number">2</span>, <span class="number">3</span>] = <span class="number">1</span></span><br></pre></td></tr></table></figure></li>
 <li><p>修改一行的值</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将第 3 行的值依次修改为列表中的值</span></span><br><span class="line">mt[<span class="number">2</span>] = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
+</ul></li>
 <li><p>求秩</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mt.rank()</span><br></pre></td></tr></table></figure></li>
 <li><p>求行数、列数</p>
@@ -1346,49 +1451,36 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将矩阵的环改为 ZZ</span></span><br><span class="line">mt.change_ring(ZZ)</span><br></pre></td></tr></table></figure></li>
 <li><p>求解线性方程和线性相关组</p>
 <ul>
-<li><p>求解 $Ax=B$</p>
+<li><p>求解 <span class="math inline">\(Ax=B\)</span></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = A.solve_right(B)</span><br><span class="line">x = A.inverse() * B</span><br><span class="line">x = A \ B</span><br></pre></td></tr></table></figure></li>
-<li><p>求解 $xA=B$</p>
+<li><p>求解 <span class="math inline">\(xA=B\)</span></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = A.solve_left(B)</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
+</ul></li>
 <li><p>寻找线性相关的行向量</p>
 <ul>
-<li><p>满足 $xA=0$</p>
+<li><p>满足 <span class="math inline">\(xA=0\)</span></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = A.left_kernel()</span><br></pre></td></tr></table></figure></li>
-<li><p>满足 $Ax=0$</p>
+<li><p>满足 <span class="math inline">\(Ax=0\)</span></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x = A.right_kernel()</span><br></pre></td></tr></table></figure></li>
-<li><p>找 $x$ 中指定行向量</p>
+<li><p>找 <span class="math inline">\(x\)</span> 中指定行向量</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 解 x 中的第 1 行</span></span><br><span class="line">x.gen(<span class="number">0</span>)</span><br></pre></td></tr></table></figure></li>
 <li><p>求最短正交基 (LLL格基约简算法)</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mt.LLL()</span><br></pre></td></tr></table></figure></li>
+</ul></li>
 </ul>
-</li>
-</ul>
-<h1 id="高斯消元法"><a href="#高斯消元法" class="headerlink" title="高斯消元法"></a>高斯消元法</h1><p>高斯消元法求解多元一次方程，即求解<br>$$<br>Ax=B<br>$$<br>利用 sagemath 的矩阵运算轻松求解：</p>
+<h1 id="高斯消元法">高斯消元法</h1>
+<p>高斯消元法求解多元一次方程，即求解 <span class="math display">\[
+Ax=B
+\]</span> 利用 sagemath 的矩阵运算轻松求解：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 系数矩阵</span></span><br><span class="line">A = matrix(<span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">A[<span class="number">0</span>, <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">A[<span class="number">1</span>, <span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 常数向量</span></span><br><span class="line">B = vector([<span class="number">3</span>, <span class="number">9</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得到未知数向量</span></span><br><span class="line">x = A \ B</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="一次同余式"><a href="#一次同余式" class="headerlink" title="一次同余式"></a>一次同余式</h1><p>求解一次同余式即求解<br>$$<br>Ax\equiv B(mod;m)<br>$$<br>在 sagemath 中引入环后，同理高斯消元法：</p>
+<h1 id="一次同余式">一次同余式</h1>
+<p>求解一次同余式即求解 <span class="math display">\[
+Ax
+\equiv
+B\;
+(mod\;m)
+\]</span> 在 sagemath 中引入环后，同理高斯消元法：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">m = <span class="number">2</span></span><br><span class="line"><span class="comment"># 系数矩阵</span></span><br><span class="line">A = matrix(Zmod(m), <span class="number">2</span>, <span class="number">2</span>)</span><br><span class="line">A[<span class="number">0</span>, <span class="number">1</span>] = <span class="number">1</span></span><br><span class="line">A[<span class="number">1</span>, <span class="number">0</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 常数向量</span></span><br><span class="line">B = vector([<span class="number">3</span>, <span class="number">9</span>])</span><br><span class="line"></span><br><span class="line"><span class="comment"># 得到未知数向量</span></span><br><span class="line">x = A \ B</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -2008,6 +2100,24 @@
       <tags>
         <tag>note</tag>
         <tag>volatility3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ECC 笔记</title>
+    <url>//ecc-note.html</url>
+    <content><![CDATA[<h1 id="ecc-简介">ECC 简介</h1>
+<p>椭圆曲线密码学(Elliptic Curve Cryptography，
+ECC)，又称<strong>椭圆曲线密码体制</strong>、<strong>椭圆曲线加密算法</strong>等。椭圆曲线加密算法在比特币、目前的二代居民身份证和区块链领域有着广泛的应用。</p>
+<p>ECC椭圆曲线加密，它的安全性基于椭圆曲线上的离散对数问题。</p>
+<p>ECC椭圆曲线函数为： <span class="math display">\[
+y^2=x^3+ax+b\;
+(mod\;p)
+\]</span></p>
+]]></content>
+      <tags>
+        <tag>crypto</tag>
+        <tag>sagemath</tag>
+        <tag>ecc</tag>
       </tags>
   </entry>
 </search>
