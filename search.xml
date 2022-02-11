@@ -1781,4 +1781,233 @@
         <tag>re</tag>
       </tags>
   </entry>
+  <entry>
+    <title>hgame misc week4 题目 - 摆烂</title>
+    <url>//wp/hgame-bailan.html</url>
+    <content><![CDATA[<h1 id="题目描述"><a href="#题目描述" class="headerlink" title="题目描述"></a>题目描述</h1><p>题名：摆烂</p>
+<p>描述：CTF 好难啊</p>
+<p>附件：</p>
+<p>链接：<a href="https://pan.baidu.com/s/1ox2iQPBUMmcJy3FtFYOAEw">https://pan.baidu.com/s/1ox2iQPBUMmcJy3FtFYOAEw</a><br>提取码：flag</p>
+<h1 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h1><p>一开始打开压缩包发现是加密的，便先用 010editor 打开查看文件二进制</p>
+<p>结果 010editor 直接一个先手报错，不由得往下查看文件格式如何出错，最后可在文件末尾发现关键文件签名<code>89504E47</code>即特征<code>‰PNG</code></p>
+<p>将文件末尾的 png 图提取出来，得到一个不存在伪加密的压缩包和图片</p>
+<p><img src="/wp/hgame-bailan/bailan.png" alt="bailan"></p>
+<p>压缩包丢进 ARCHPR 暴力破解，我们接着分析这张分离出来的图片</p>
+<p>用 010editor 检查发现这张图片存在<code>acTL</code>、<code>fcTL</code>和<code>fdTL</code>数据块，便知道这张图片为 APNG 格式，即 PNG 动图</p>
+<p>我们使用 <a href="https://products.aspose.app/imaging/zh-hans/image-view">https://products.aspose.app/imaging/zh-hans/image-view</a> 在线分离帧，得到下面两张图片</p>
+<p><img src="/wp/hgame-bailan/bailan_page_0.png" alt="bailan_page_0"></p>
+<p><img src="/wp/hgame-bailan/bailan_page_1.png" alt="bailan_page_1"></p>
+<p>我们使用 Stegsolve.jar 分别查看，并且使用 image combiner 功能混合图片，其中 xor 时发现两张图片不太一样，但并未探查出什么结果</p>
+<p>不由得想到了盲水印 (bwm)，我们使用 <a href="https://github.com/chishaxie/BlindWaterMark">https://github.com/chishaxie/BlindWaterMark</a> 工具对两张图片进行盲水印提取 (<code>python .\bwm.py .\bailan_page_0.png .\bailan_page_1.png hui.png</code>)，得到下面这张图片</p>
+<p><img src="/wp/hgame-bailan/hui.png" alt="hui"></p>
+<p>手读可得一串密码：4C*9wfg976</p>
+<p>这时候可想而知 ARCHPR 没有那么高效，密码还未破解到这位数，输入密码可解压压缩包得到四张二维码拼图</p>
+<p>猜测它们来自一张二维码，其中发现 <code>CTF.png</code> 这张图片与其他图片 dpi 不太一样，且二维码拼图保留着白边。</p>
+<p>最终根据白边和 dpi 关系，将二维码拼凑完整 (有些对齐失败无伤大雅)</p>
+<p><img src="/wp/hgame-bailan/barcode.png" alt="barcode"></p>
+<p>扫描得到一串汉字：</p>
+<blockquote>
+<p>在这种困难的抉择下，本人思来想去‌‌‌‌‍‬‬‌，寝食难安。 既然如此‌‌‌‌‍‬‍﻿， 亚伯拉罕·林肯在不经意间这样说过，你活了多少岁不算什么‌‌‌‌‍‬‌‍，‌‌‌‌‍‬﻿‍重要的是你是如何度过这些岁月的。‌‌‌‌‍‬‍‍这启发了我，‌‌‌‌‍﻿‬﻿ CTF‌‌‌‌‌﻿‌‍好难，到底应该如何实现。‌‌‌‌‍‍﻿﻿‌‌‌‌‍‍‍﻿ ‌‌‌‌‌﻿‍‌‌‌‌‌‍‬﻿‬总结的来说‌‌‌‌‍‍‍‌‌‌‌‌‍‍﻿﻿， ‌‌‌‌‍‍‍‌‌‌‌‌‌﻿‌‌‌‌‌‌‍‍﻿﻿‌‌‌‌‍﻿‌‌我们都知道‌‌‌‌‌﻿‌‍‌‌‌‌‍‌‌‍，只要有意义‌‌‌‌‍﻿‬‍，‌‌‌‌‍‍﻿﻿那么就必须慎重考虑‌‌‌‌‍﻿‌‬。‌‌‌‌‌﻿‌‌‌‌‌‌‍‍‍‌‌‌‌‌‍﻿‍‌ 我认为， 每个人都不得不面对这些问题‌‌‌‌‍‬‍‍。‌‌‌‌‍‬﻿‬ 在面对这种问题时，‌‌‌‌‍﻿﻿‍ CTF好难，到底应该如何实现。</p>
+</blockquote>
+<p>复制进 vscode 后发现存在一些非法 unicode 字符，猜测为0宽字符加密，使用网站 <a href="http://330k.github.io/misc_tools/unicode_steganography.html">http://330k.github.io/misc_tools/unicode_steganography.html</a> 解密最终得到我们心心念念的 flag</p>
+]]></content>
+      <tags>
+        <tag>hgame</tag>
+        <tag>wp</tag>
+        <tag>misc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>文件头笔记</title>
+    <url>//file-header-note.html</url>
+    <content><![CDATA[<table>
+<thead>
+<tr>
+<th>文件类型</th>
+<th>文件头</th>
+<th>特征值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JPEG (jpg)</td>
+<td>FFD8FF</td>
+<td>ÿØÿà</td>
+</tr>
+<tr>
+<td>PNG (png)</td>
+<td>89504E47</td>
+<td>PNG</td>
+</tr>
+<tr>
+<td>GIF (gif)</td>
+<td>47494638</td>
+<td>GIF89a</td>
+</tr>
+<tr>
+<td>ZIP  Archive (zip)</td>
+<td>504B0304</td>
+<td>PK</td>
+</tr>
+<tr>
+<td>TIFF (tif)</td>
+<td>49492A00</td>
+<td>II*</td>
+</tr>
+<tr>
+<td>Windows Bitmap (bmp)</td>
+<td>424D</td>
+<td>BM</td>
+</tr>
+<tr>
+<td>RAR Archive (rar)</td>
+<td>52617221</td>
+<td>Rar!</td>
+</tr>
+<tr>
+<td>Wave (wav)</td>
+<td>57415645</td>
+<td>WAVE</td>
+</tr>
+<tr>
+<td>AVI (avi)</td>
+<td>41564920</td>
+<td>AVI</td>
+</tr>
+<tr>
+<td>MPEG (mpg) 音频数据和视频数据</td>
+<td>000001BA</td>
+<td></td>
+</tr>
+<tr>
+<td>MPEG (mpg) 视频数据</td>
+<td>000001B3</td>
+<td></td>
+</tr>
+<tr>
+<td>7Z</td>
+<td>377ABCAF271C</td>
+<td>7z¼¯’</td>
+</tr>
+<tr>
+<td>CAD (dwg)</td>
+<td>41433130</td>
+<td>AC10</td>
+</tr>
+<tr>
+<td>Adobe Photoshop (psd)</td>
+<td>38425053</td>
+<td>8BPS</td>
+</tr>
+<tr>
+<td>Rich Text Format (rtf)</td>
+<td>7B5C727466</td>
+<td>{\rtf</td>
+</tr>
+<tr>
+<td>XML (xml)</td>
+<td>3C3F786D6C</td>
+<td>&lt;?xml</td>
+</tr>
+<tr>
+<td>Email [thorough only] (eml)</td>
+<td>44656C69766572792D646174653A</td>
+<td>Delivery-date:</td>
+</tr>
+<tr>
+<td>Outlook Express (dbx)</td>
+<td>CFAD12FEC5FD746F</td>
+<td></td>
+</tr>
+<tr>
+<td>Outlook (pst)</td>
+<td>2142444E</td>
+<td>!BDN</td>
+</tr>
+<tr>
+<td>MS Word/Excel (xls / doc)</td>
+<td>D0CF11E0</td>
+<td></td>
+</tr>
+<tr>
+<td>MS Access (mdb)</td>
+<td>5374616E64617264204A</td>
+<td>Standard J</td>
+</tr>
+<tr>
+<td>WordPerfect(wpd)</td>
+<td>FF575043</td>
+<td>ÿWPC</td>
+</tr>
+<tr>
+<td>Adobe Acrobat (pdf)</td>
+<td>255044462D312E</td>
+<td>%PDF</td>
+</tr>
+<tr>
+<td>Quicken (qdf)</td>
+<td>AC9EBD8F</td>
+<td></td>
+</tr>
+<tr>
+<td>Windows Password (pwl)</td>
+<td>E3828596</td>
+<td></td>
+</tr>
+<tr>
+<td>Real Audio (ram)</td>
+<td>2E7261FD</td>
+<td>.raý</td>
+</tr>
+<tr>
+<td>Real Media (rm)</td>
+<td>2E524D46</td>
+<td>.RMF</td>
+</tr>
+<tr>
+<td>Quicktime (mov)</td>
+<td>6D6F6F76</td>
+<td>moov</td>
+</tr>
+<tr>
+<td>Windows Media (asf)</td>
+<td>3026B2758E66CF11</td>
+<td></td>
+</tr>
+<tr>
+<td>MIDI (mid)</td>
+<td>4D546864</td>
+<td>MThd</td>
+</tr>
+<tr>
+<td>Win PE</td>
+<td>4D5A</td>
+<td>MZ</td>
+</tr>
+<tr>
+<td>ELF</td>
+<td>7F 45 4C 46</td>
+<td>.ELF</td>
+</tr>
+<tr>
+<td>VMDK</td>
+<td>4B 44 4D</td>
+<td>KDM</td>
+</tr>
+<tr>
+<td>Java-class</td>
+<td>CA FE BA BE</td>
+<td>Êþº¾</td>
+</tr>
+<tr>
+<td>Postscript (eps / ps)</td>
+<td>252150532D41646F6265</td>
+<td>%!PS-Adobe</td>
+</tr>
+</tbody></table>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>file</tag>
+      </tags>
+  </entry>
 </search>
