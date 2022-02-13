@@ -93,8 +93,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">33</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -152,7 +152,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">Git的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Git%E7%9A%84User%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">Git的User配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8SSH%E6%96%B9%E5%BC%8F%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5Github"><span class="nav-number">1.2.</span> <span class="nav-text">使用SSH方式远程连接Github</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#git%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">Git的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E7%9A%84user%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">Git的User配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8ssh%E6%96%B9%E5%BC%8F%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5github"><span class="nav-number">1.2.</span> <span class="nav-text">使用SSH方式远程连接Github</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -167,13 +167,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -254,7 +254,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>522</span>
+      <span>524</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -273,36 +273,43 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="Git的使用"><a href="#Git的使用" class="headerlink" title="Git的使用"></a>Git的使用</h1><h2 id="Git的User配置"><a href="#Git的User配置" class="headerlink" title="Git的User配置"></a>Git的User配置</h2><p>打开 **Git Bash **(使用命令行也可以)</p>
+        <h1 id="git的使用">Git的使用</h1>
+<h2 id="git的user配置">Git的User配置</h2>
+<p>打开 <strong>Git Bash </strong>(使用命令行也可以)</p>
 <p>配置全局 <code>name</code></p>
 <blockquote>
-<p>**Github **用户名</p>
+<p><strong>Github </strong>用户名</p>
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name name</span><br></pre></td></tr></table></figure>
-
 <p>配置全局 <code>email</code></p>
 <blockquote>
 <p><strong>Github</strong> 邮箱</p>
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.email email</span><br></pre></td></tr></table></figure>
-
 <p>以我的Github账户为例：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name HasegawaAzusa</span><br><span class="line">git config --global user.email xxx@qq.com</span><br></pre></td></tr></table></figure>
-
-<h2 id="使用SSH方式远程连接Github"><a href="#使用SSH方式远程连接Github" class="headerlink" title="使用SSH方式远程连接Github"></a>使用SSH方式远程连接Github</h2><p>打开<strong>Git Bash</strong>(使用命令行也可以)</p>
+<h2 id="使用ssh方式远程连接github">使用SSH方式远程连接Github</h2>
+<p>打开<strong>Git Bash</strong>(使用命令行也可以)</p>
 <p>先在本地生成对应邮箱的<strong>SSH RSA公钥密钥</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-
 <p>使用<strong>默认生成路径</strong>，<strong>默认空key</strong></p>
-<p>前往 <code>~/.ssh</code> 目录下寻找密钥（其中默认**<code>id_rsa</code><strong>是密钥信息，</strong><code>id_rsa.pub</code>**为公钥信息）</p>
-<p>在 <strong>Github</strong> 中新建 <strong>SSH keys (Github - Settings - SSH and GPG keys - New SSH key)</strong></p>
-<p><code>Title</code> 任意，<code>Key</code> 填入<strong>公钥信息</strong> (<code>id_rsa.pub</code> 文件内容)</p>
-<p><img src="/git-note/sshkeys.png" alt="sshkeys"></p>
+<p>前往 <code>~/.ssh</code>
+目录下寻找密钥（其中默认<strong><code>id_rsa</code></strong>是密钥信息，<strong><code>id_rsa.pub</code></strong>为公钥信息）</p>
+<p>在 <strong>Github</strong> 中新建 <strong>SSH keys (Github - Settings
+- SSH and GPG keys - New SSH key)</strong></p>
+<p><code>Title</code> 任意，<code>Key</code>
+填入<strong>公钥信息</strong> (<code>id_rsa.pub</code> 文件内容)</p>
+<figure>
+<img src="/git-note/sshkeys.png" alt="sshkeys">
+<figcaption aria-hidden="true">sshkeys</figcaption>
+</figure>
 <p>输入以下，验证是否连接成功</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
-
 <p>成功结果如下</p>
-<p><img src="/git-note/success.png" alt="success"></p>
+<figure>
+<img src="/git-note/success.png" alt="success">
+<figcaption aria-hidden="true">success</figcaption>
+</figure>
 <blockquote>
 <p><a href="/ssh-note.html#ssh-keygen">ssh-keygen参数详解</a></p>
 <p><a href="ssh-note.html#ssh">ssh参数详解</a></p>
@@ -381,14 +388,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">65k</span>
+    <span title="站点总字数">66k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">59 分钟</span>
+    <span title="站点阅读时长">1:01</span>
   </span>
 </div>
 

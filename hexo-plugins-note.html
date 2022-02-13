@@ -92,8 +92,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">33</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -151,7 +151,11 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-%E6%8F%92%E4%BB%B6-hexo-word-counter"><span class="nav-number">1.</span> <span class="nav-text">hexo 插件 - hexo-word-counter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-%E6%8F%92%E4%BB%B6-hexo-generator-searchdb"><span class="nav-number">2.</span> <span class="nav-text">hexo 插件 - hexo-generator-searchdb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-%E6%8F%92%E4%BB%B6-hexo-all-minifier"><span class="nav-number">3.</span> <span class="nav-text">hexo 插件 - hexo-all-minifier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#NexT-%E6%8F%92%E4%BB%B6-hexo-related-popular-posts"><span class="nav-number">4.</span> <span class="nav-text">NexT 插件 - hexo-related-popular-posts</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-%E6%8F%92%E4%BB%B6---hexo-word-counter"><span class="nav-number">1.</span> <span class="nav-text">hexo 插件 -
+hexo-word-counter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-%E6%8F%92%E4%BB%B6---hexo-generator-searchdb"><span class="nav-number">2.</span> <span class="nav-text">hexo 插件 -
+hexo-generator-searchdb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hexo-%E6%8F%92%E4%BB%B6---hexo-all-minifier"><span class="nav-number">3.</span> <span class="nav-text">hexo 插件 -
+hexo-all-minifier</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#next-%E6%8F%92%E4%BB%B6---hexo-related-popular-posts"><span class="nav-number">4.</span> <span class="nav-text">NexT 插件 -
+hexo-related-popular-posts</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -166,13 +170,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -272,7 +276,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h2 id="hexo-插件-hexo-word-counter"><a href="#hexo-插件-hexo-word-counter" class="headerlink" title="hexo 插件 - hexo-word-counter"></a>hexo 插件 - <code>hexo-word-counter</code></h2><p>实现字数统计与阅读时间预估功能</p>
+        <h2 id="hexo-插件---hexo-word-counter">hexo 插件 -
+<code>hexo-word-counter</code></h2>
+<p>实现字数统计与阅读时间预估功能</p>
 <ul>
 <li><p><strong>安装指令</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-word-counter --save</span><br></pre></td></tr></table></figure></li>
@@ -281,14 +287,16 @@
 <li><p><strong>NexT 主题配置</strong></p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">separated_meta:</span> <span class="literal">true</span>			<span class="comment"># 字数和阅读时间是否分行显示</span></span><br><span class="line">  <span class="attr">item_text_total:</span> <span class="literal">true</span>			<span class="comment"># 页脚是否显示字数和阅读时间 (默认不显示)</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="hexo-插件-hexo-generator-searchdb"><a href="#hexo-插件-hexo-generator-searchdb" class="headerlink" title="hexo 插件 - hexo-generator-searchdb"></a>hexo 插件 - <code>hexo-generator-searchdb</code></h2><p>实现本地搜索功能</p>
+<h2 id="hexo-插件---hexo-generator-searchdb">hexo 插件 -
+<code>hexo-generator-searchdb</code></h2>
+<p>实现本地搜索功能</p>
 <ul>
 <li><p><strong>安装指令</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure></li>
 <li><p><strong>hexo 配置</strong></p>
 <ul>
 <li><code>path</code> → 搜索记录文件</li>
-<li><code>field</code>  → 搜索内容</li>
+<li><code>field</code> → 搜索内容</li>
 <li><code>format</code> → 搜索后缀</li>
 <li><code>limit</code> → 最大搜索限制</li>
 </ul>
@@ -296,14 +304,18 @@
 <li><p><strong>NexT 主题配置</strong></p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">trigger:</span> <span class="string">auto</span>					<span class="comment"># 是否无视回车自动搜索 (auto | maual)</span></span><br><span class="line">  <span class="attr">top_n_per_article:</span> <span class="number">1</span>			<span class="comment"># 每个搜索展示几个结果</span></span><br><span class="line">  <span class="attr">unescape:</span> <span class="literal">false</span>				<span class="comment"># 读取内容</span></span><br><span class="line">  <span class="attr">preload:</span> <span class="literal">false</span>				<span class="comment"># 预读取页面内容</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="hexo-插件-hexo-all-minifier"><a href="#hexo-插件-hexo-all-minifier" class="headerlink" title="hexo 插件 - hexo-all-minifier"></a>hexo 插件 - <code>hexo-all-minifier</code></h2><p>可以对html、css、js、images进行压缩，即把重复的代码合并，把多余的空格去掉，用算法对images进行压缩，加快网页加载速度。</p>
+<h2 id="hexo-插件---hexo-all-minifier">hexo 插件 -
+<code>hexo-all-minifier</code></h2>
+<p>可以对html、css、js、images进行压缩，即把重复的代码合并，把多余的空格去掉，用算法对images进行压缩，加快网页加载速度。</p>
 <ul>
 <li><p><strong>安装指令</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-all-minifier --save</span><br></pre></td></tr></table></figure></li>
 <li><p><strong>hexo 配置</strong></p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">html_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">ignore_error:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">css_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;*.min.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">js_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;*.min.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">image_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">interlaced:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">multipass:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">optimizationLevel:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">pngquant:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">progressive:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure></li>
 </ul>
-<h2 id="NexT-插件-hexo-related-popular-posts"><a href="#NexT-插件-hexo-related-popular-posts" class="headerlink" title="NexT 插件 - hexo-related-popular-posts"></a>NexT 插件 - <code>hexo-related-popular-posts</code></h2><p>实现热门相关帖子功能</p>
+<h2 id="next-插件---hexo-related-popular-posts">NexT 插件 -
+<code>hexo-related-popular-posts</code></h2>
+<p>实现热门相关帖子功能</p>
 <ul>
 <li><p><strong>安装指令</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-related-popular-posts --save</span><br></pre></td></tr></table></figure></li>
@@ -386,14 +398,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">65k</span>
+    <span title="站点总字数">66k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">59 分钟</span>
+    <span title="站点阅读时长">1:01</span>
   </span>
 </div>
 

@@ -93,8 +93,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">33</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -152,7 +152,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">错误分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E5%A4%8D%E9%94%99%E8%AF%AF"><span class="nav-number">2.</span> <span class="nav-text">修复错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-hexo-%E7%9A%84%E7%AB%99%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">修改 hexo 的站点配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E6%AF%8F%E7%AF%87%E6%96%87%E7%AB%A0%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE-permalink"><span class="nav-number">2.2.</span> <span class="nav-text">为每篇文章手动配置 permalink</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">错误分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E5%A4%8D%E9%94%99%E8%AF%AF"><span class="nav-number">2.</span> <span class="nav-text">修复错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-hexo-%E7%9A%84%E7%AB%99%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">修改 hexo 的站点配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E6%AF%8F%E7%AF%87%E6%96%87%E7%AB%A0%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE-permalink"><span class="nav-number">2.2.</span> <span class="nav-text">为每篇文章手动配置
+permalink</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -167,13 +168,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -254,7 +255,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>328</span>
+      <span>305</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -273,24 +274,31 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="错误分析"><a href="#错误分析" class="headerlink" title="错误分析"></a>错误分析</h1><p>hexo-asset-image 无法识别 hexo 默认的永久链接 (<code>permalink</code>) 时，导致无法自动生成静态资源文件夹路径</p>
-<p><img src="/errors/hexo-image-link-error/update-link-error.png" alt="update-link-error"></p>
-<h1 id="修复错误"><a href="#修复错误" class="headerlink" title="修复错误"></a>修复错误</h1><p>有以下两种解决方案：</p>
-<ol>
+        <h1 id="错误分析">错误分析</h1>
+<p>hexo-asset-image 无法识别 hexo 默认的永久链接
+(<code>permalink</code>) 时，导致无法自动生成静态资源文件夹路径</p>
+<figure>
+<img src="/errors/hexo-image-link-error/update-link-error.png" alt="update-link-error">
+<figcaption aria-hidden="true">update-link-error</figcaption>
+</figure>
+<h1 id="修复错误">修复错误</h1>
+<p>有以下两种解决方案：</p>
+<ol type="1">
 <li>修改 hexo 的站点配置文件</li>
 <li>为每篇文章手动配置 <code>permalink</code></li>
 </ol>
 <blockquote>
 <p>建议两者一起使用</p>
 </blockquote>
-<h2 id="修改-hexo-的站点配置文件"><a href="#修改-hexo-的站点配置文件" class="headerlink" title="修改 hexo 的站点配置文件"></a>修改 hexo 的站点配置文件</h2><p>将 <code>URL</code> 配置中的 <code>permalink</code> 参数置空或改为英文文件夹名 (详细配置请参考<a href="/hexo-note.html#%E7%BD%91%E5%9D%80-URL">网址-URL</a>)</p>
+<h2 id="修改-hexo-的站点配置文件">修改 hexo 的站点配置文件</h2>
+<p>将 <code>URL</code> 配置中的 <code>permalink</code>
+参数置空或改为英文文件夹名 (详细配置请参考<a href="/hexo-note.html#网址-URL">网址-URL</a>)</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permalink:</span> </span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="为每篇文章手动配置-permalink"><a href="#为每篇文章手动配置-permalink" class="headerlink" title="为每篇文章手动配置 permalink"></a>为每篇文章手动配置 <code>permalink</code></h2><p>在你的博文的 <code>Front-matter</code> 中添加 <code>permalink</code> 参数 (详细配置请参考[Front-matter](/hexo-note.html#hexo 博文头 - Front-matter))</p>
+<h2 id="为每篇文章手动配置-permalink">为每篇文章手动配置
+<code>permalink</code></h2>
+<p>在你的博文的 <code>Front-matter</code> 中添加 <code>permalink</code>
+参数 (详细配置请参考<a href="/hexo-note.html#hexo%20博文头%20-%20Front-matter">Front-matter</a>)</p>
 <figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">/project/index.html</span></span><br></pre></td></tr></table></figure>
-
 
     </div>
 
@@ -366,14 +374,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">65k</span>
+    <span title="站点总字数">66k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">59 分钟</span>
+    <span title="站点阅读时长">1:01</span>
   </span>
 </div>
 

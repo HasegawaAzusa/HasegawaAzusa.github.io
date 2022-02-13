@@ -91,8 +91,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">33</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -165,13 +165,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -271,15 +271,24 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="z3-简介"><a href="#z3-简介" class="headerlink" title="z3 简介"></a>z3 简介</h1><p>z3 是 Microsoft Research 开发的一个定理证明器，支持位向量、布尔值、数组、浮点数、字符串和其他数据类型，可以用来自动化证明定理、线性规划求解和方程求解。</p>
+        <h1 id="z3-简介">z3 简介</h1>
+<p>z3 是 Microsoft Research
+开发的一个定理证明器，支持位向量、布尔值、数组、浮点数、字符串和其他数据类型，可以用来自动化证明定理、线性规划求解和方程求解。</p>
 <p>但方程求解效率过低，不建议使用 z3 求解方程 (少量未知数可以使用)。</p>
-<h1 id="z3-安装"><a href="#z3-安装" class="headerlink" title="z3 安装"></a>z3 安装</h1><p>可以使用 pip 进行安装</p>
+<h1 id="z3-安装">z3 安装</h1>
+<p>可以使用 pip 进行安装</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install z3-solver</span><br></pre></td></tr></table></figure>
-
-<p>若出现 pip 安装超时或安装失败的情况，请在 <a target="_blank" rel="noopener" href="https://github.com/Z3Prover/z3/releases">https://github.com/Z3Prover/z3/releases</a> 中下载 <code>release</code> 版本包。</p>
-<p>这里以 Windows 为例，下载 <code>z3-x64-win.zip</code> 后解压在合适的目录中。</p>
-<p>然后将解压目录下的 <code>./bin</code> 目录添加进入环境变量 <code>Path</code> ；解压目录下的 <code>./bin/python</code> 添加进入环境变量 <code>PYTHONPATH</code> 即可。</p>
-<h1 id="z3-使用"><a href="#z3-使用" class="headerlink" title="z3 使用"></a>z3 使用</h1><h2 id="求解过程"><a href="#求解过程" class="headerlink" title="求解过程"></a>求解过程</h2><ol>
+<p>若出现 pip 安装超时或安装失败的情况，请在
+https://github.com/Z3Prover/z3/releases 中下载 <code>release</code>
+版本包。</p>
+<p>这里以 Windows 为例，下载 <code>z3-x64-win.zip</code>
+后解压在合适的目录中。</p>
+<p>然后将解压目录下的 <code>./bin</code> 目录添加进入环境变量
+<code>Path</code> ；解压目录下的 <code>./bin/python</code>
+添加进入环境变量 <code>PYTHONPATH</code> 即可。</p>
+<h1 id="z3-使用">z3 使用</h1>
+<h2 id="求解过程">求解过程</h2>
+<ol type="1">
 <li>定义若干某种类型的未知数</li>
 <li>创建求解器 <code>Solver()</code></li>
 <li>添加约束条件 <code>add()</code></li>
@@ -287,16 +296,12 @@
 <li>创建解决问题后的模型对象 <code>model()</code></li>
 <li>得到解</li>
 </ol>
-<h2 id="定义若干某种类型的未知数"><a href="#定义若干某种类型的未知数" class="headerlink" title="定义若干某种类型的未知数"></a>定义若干某种类型的未知数</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">x = Int(<span class="string">&#x27;x&#x27;</span>)				<span class="comment"># 创建数据类型为整数的未知数</span></span><br><span class="line">y = Real(<span class="string">&#x27;y&#x27;</span>)				<span class="comment"># 创建数据类型为实数的未知数</span></span><br><span class="line">z = BitVec(<span class="string">&#x27;z&#x27;</span>, <span class="number">64</span>)			<span class="comment"># 创建数据类型为 64 位向量的未知数 (通常用于求解位运算问题)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建数据类型为整数的三个未知数</span></span><br><span class="line"><span class="comment"># 同理存在 Reals, BitVecs 等</span></span><br><span class="line">x, y, z = Ints(<span class="string">&#x27;x y z&#x27;</span>)</span><br><span class="line"><span class="comment"># 以上 &#x27;x&#x27;, &#x27;y&#x27;, &#x27;z&#x27; 均为 z3 内部的未知数名，可更改，但不能重复</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="二元一次方程求解"><a href="#二元一次方程求解" class="headerlink" title="二元一次方程求解"></a>二元一次方程求解</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义若干某种类型的未知数</span></span><br><span class="line">x, y = Ints(<span class="string">&#x27;x y&#x27;</span>)</span><br><span class="line"><span class="comment"># 创建求解器</span></span><br><span class="line">s = Solver()</span><br><span class="line"><span class="comment"># 添加约束条件</span></span><br><span class="line">s.add(x+<span class="number">3</span>*y == <span class="number">4</span>)</span><br><span class="line">s.add(<span class="number">3</span>*x+y == <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 以上两行代码可以归并成一行代码 s.add(x+3*y == 4, 3*x+y == 4)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 判断是否问题有解，有解则返回 sat ；无解则返回 unsat</span></span><br><span class="line"><span class="keyword">if</span> s.check() == sat:</span><br><span class="line">    <span class="comment"># 创建解决问题后的模型对象</span></span><br><span class="line">    m = s.model()</span><br><span class="line">    <span class="comment"># 获得 x 未知数对应的模型值</span></span><br><span class="line">    varX = m[x]</span><br><span class="line">    <span class="comment"># 输出</span></span><br><span class="line">    <span class="built_in">print</span>(varX)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;unsat!&quot;</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="位运算求解"><a href="#位运算求解" class="headerlink" title="位运算求解"></a>位运算求解</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义若干某种类型的未知数</span></span><br><span class="line">x = BitVec(<span class="string">&#x27;x&#x27;</span>, <span class="number">64</span>)</span><br><span class="line"><span class="comment"># 创建求解器</span></span><br><span class="line">s = Solver()</span><br><span class="line"><span class="comment"># 添加约束条件</span></span><br><span class="line">s.add(x ^ <span class="number">0xff</span> == <span class="number">0x12</span>)</span><br><span class="line"><span class="comment"># 判断是否问题有解，有解则返回 sat ；无解则返回 unsat</span></span><br><span class="line"><span class="keyword">if</span> s.check() == sat:</span><br><span class="line">    <span class="comment"># 创建解决问题后的模型对象</span></span><br><span class="line">    m = s.model()</span><br><span class="line">    <span class="comment"># 获得 x 未知数对应的模型值</span></span><br><span class="line">    varX = m[x]</span><br><span class="line">    <span class="comment"># 输出</span></span><br><span class="line">    <span class="built_in">print</span>(varX)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;unsat!&quot;</span>)</span><br></pre></td></tr></table></figure>
-
+<h2 id="定义若干某种类型的未知数">定义若干某种类型的未知数</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">x = Int(<span class="string">&#x27;x&#x27;</span>)				<span class="comment"># 创建数据类型为整数的未知数</span></span><br><span class="line">y = Real(<span class="string">&#x27;y&#x27;</span>)				<span class="comment"># 创建数据类型为实数的未知数</span></span><br><span class="line">z = BitVec(<span class="string">&#x27;z&#x27;</span>, <span class="number">64</span>)			<span class="comment"># 创建数据类型为 64 位向量的未知数 (通常用于求解位运算问题)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建数据类型为整数的三个未知数</span></span><br><span class="line"><span class="comment"># 同理存在 Reals, BitVecs 等</span></span><br><span class="line">x, y, z = Ints(<span class="string">&#x27;x y z&#x27;</span>)</span><br><span class="line"><span class="comment"># 以上 &#x27;x&#x27;, &#x27;y&#x27;, &#x27;z&#x27; 均为 z3 内部的未知数名，可更改，但不能重复</span></span><br></pre></td></tr></table></figure>
+<h2 id="二元一次方程求解">二元一次方程求解</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义若干某种类型的未知数</span></span><br><span class="line">x, y = Ints(<span class="string">&#x27;x y&#x27;</span>)</span><br><span class="line"><span class="comment"># 创建求解器</span></span><br><span class="line">s = Solver()</span><br><span class="line"><span class="comment"># 添加约束条件</span></span><br><span class="line">s.add(x+<span class="number">3</span>*y == <span class="number">4</span>)</span><br><span class="line">s.add(<span class="number">3</span>*x+y == <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 以上两行代码可以归并成一行代码 s.add(x+3*y == 4, 3*x+y == 4)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 判断是否问题有解，有解则返回 sat ；无解则返回 unsat</span></span><br><span class="line"><span class="keyword">if</span> s.check() == sat:</span><br><span class="line">    <span class="comment"># 创建解决问题后的模型对象</span></span><br><span class="line">    m = s.model()</span><br><span class="line">    <span class="comment"># 获得 x 未知数对应的模型值</span></span><br><span class="line">    varX = m[x]</span><br><span class="line">    <span class="comment"># 输出</span></span><br><span class="line">    <span class="built_in">print</span>(varX)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;unsat!&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="位运算求解">位运算求解</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义若干某种类型的未知数</span></span><br><span class="line">x = BitVec(<span class="string">&#x27;x&#x27;</span>, <span class="number">64</span>)</span><br><span class="line"><span class="comment"># 创建求解器</span></span><br><span class="line">s = Solver()</span><br><span class="line"><span class="comment"># 添加约束条件</span></span><br><span class="line">s.add(x ^ <span class="number">0xff</span> == <span class="number">0x12</span>)</span><br><span class="line"><span class="comment"># 判断是否问题有解，有解则返回 sat ；无解则返回 unsat</span></span><br><span class="line"><span class="keyword">if</span> s.check() == sat:</span><br><span class="line">    <span class="comment"># 创建解决问题后的模型对象</span></span><br><span class="line">    m = s.model()</span><br><span class="line">    <span class="comment"># 获得 x 未知数对应的模型值</span></span><br><span class="line">    varX = m[x]</span><br><span class="line">    <span class="comment"># 输出</span></span><br><span class="line">    <span class="built_in">print</span>(varX)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;unsat!&quot;</span>)</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -372,14 +377,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">65k</span>
+    <span title="站点总字数">66k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">59 分钟</span>
+    <span title="站点阅读时长">1:01</span>
   </span>
 </div>
 

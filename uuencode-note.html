@@ -91,8 +91,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">33</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">23</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">35</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">24</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -150,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#UUEncode-%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">UUEncode 原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#C-%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">C++ 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-Encode"><span class="nav-number">2.1.</span> <span class="nav-text">加密 - Encode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-Decode"><span class="nav-number">2.2.</span> <span class="nav-text">解密 - Decode</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">Python 实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E7%BD%91%E7%AB%99"><span class="nav-number">4.</span> <span class="nav-text">在线网站</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#uuencode-%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">UUEncode 原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#c-%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">C++ 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86---encode"><span class="nav-number">2.1.</span> <span class="nav-text">加密 - Encode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86---decode"><span class="nav-number">2.2.</span> <span class="nav-text">解密 - Decode</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">Python 实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9C%A8%E7%BA%BF%E7%BD%91%E7%AB%99"><span class="nav-number">4.</span> <span class="nav-text">在线网站</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -165,13 +165,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">24</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">33</span>
+        <span class="site-state-item-count">35</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -271,24 +271,21 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="UUEncode-原理"><a href="#UUEncode-原理" class="headerlink" title="UUEncode 原理"></a>UUEncode 原理</h1><p>Uuencode是二进制信息和文字信息之间的转换编码，也就是机器和人眼识读的转换。Uuencode编码方案常见于电子邮件信息的传输，目前已被多用途互联网邮件扩展（MIME）大量取代。</p>
-<p>Uuencode将输入文字以每三个字节为单位进行编码，如此重复进行。如果最后剩下的文字少于三个字节，不够的部份用零补齐。这三个字节共有24个Bit，以6-bit为单位分为4个群组，每个群组以十进制来表示所出现的数值只会落在0到63之间。将每个数加上32，所产生的结果刚好落在ASCII字符集中可打印字符（32-空白…95-底线）的范围之中。</p>
+        <h1 id="uuencode-原理">UUEncode 原理</h1>
+<p>Uuencode是二进制信息和文字信息之间的转换编码，也就是机器和人眼识读的转换。Uuencode编码方案常见于电子邮件信息的传输，目前已被多用途互联网邮件扩展（MIME）大量取代。</p>
+<p>Uuencode将输入文字以每三个字节为单位进行编码，如此重复进行。如果最后剩下的文字少于三个字节，不够的部份用零补齐。这三个字节共有24个Bit，以6-bit为单位分为4个群组，每个群组以十进制来表示所出现的数值只会落在0到63之间。将每个数加上32，所产生的结果刚好落在ASCII字符集中可打印字符（32-空白...95-底线）的范围之中。</p>
 <p>Uuencode编码每60个将输出为独立的一行（相当于45个输入字节），每行的开头会加上长度字符，除了最后一行之外，长度字符都应该是“M”这个ASCII字符（77=32+45），最后一行的长度字符为32+剩下的字节数目这个ASCII字符。</p>
 <p>Uuencode编码与base64编码类似，但base64将0~63之间的数字通过查表换字符，而Uuencode编码是直接将这个数字加上32转换为可打印字符。</p>
-<h1 id="C-实现"><a href="#C-实现" class="headerlink" title="C++ 实现"></a>C++ 实现</h1><h2 id="加密-Encode"><a href="#加密-Encode" class="headerlink" title="加密 - Encode"></a>加密 - Encode</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">encode</span><span class="params">(<span class="keyword">const</span> string&amp; plain)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;有机会再实现&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="解密-Decode"><a href="#解密-Decode" class="headerlink" title="解密 - Decode"></a>解密 - Decode</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">decode</span><span class="params">(<span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;有机会再实现&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uu</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 uuencode 将 in_file 文件编码为 out_file 文件。</span></span><br><span class="line"><span class="comment"># 经过 uuencoded 编码的文件将具有指定 name 和 mode 作为解码该文件默认结果的标头。</span></span><br><span class="line"><span class="comment"># 默认值会相应地从 in_file 或 &#x27;-&#x27; 以及 0o666 中提取。</span></span><br><span class="line"><span class="comment"># 如果 backtick 为真值，零会用 &#x27;`&#x27; 而不是空格来表示。</span></span><br><span class="line">uu.encode(in_file, out_file, mode=<span class="literal">None</span>, *, backtick=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用此函数会解码 uuencod 编码的 in_file 文件并将结果放入 out_file 文件。</span></span><br><span class="line"><span class="comment"># 如果 out_file 是一个路径名称，mode 会在必须创建文件时用于设置权限位。</span></span><br><span class="line"><span class="comment"># out_file 和 mode 的默认值会从 uuencode 标头中提取。</span></span><br><span class="line"><span class="comment"># 但是，如果标头中指定的文件已存在，则会引发 uu.Error。</span></span><br><span class="line">uu.decode(in_file, out_file=<span class="literal">None</span>, mode=<span class="literal">None</span>, quiet=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-
-
-
-<h1 id="在线网站"><a href="#在线网站" class="headerlink" title="在线网站"></a>在线网站</h1><ul>
-<li><a target="_blank" rel="noopener" href="https://www.qqxiuzi.cn/bianma/uuencode.php">https://www.qqxiuzi.cn/bianma/uuencode.php</a></li>
+<h1 id="c-实现">C++ 实现</h1>
+<h2 id="加密---encode">加密 - Encode</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">encode</span><span class="params">(<span class="keyword">const</span> string&amp; plain)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;有机会再实现&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解密---decode">解密 - Decode</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">string <span class="title">decode</span><span class="params">(<span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;有机会再实现&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="python-实现">Python 实现</h1>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> uu</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 uuencode 将 in_file 文件编码为 out_file 文件。</span></span><br><span class="line"><span class="comment"># 经过 uuencoded 编码的文件将具有指定 name 和 mode 作为解码该文件默认结果的标头。</span></span><br><span class="line"><span class="comment"># 默认值会相应地从 in_file 或 &#x27;-&#x27; 以及 0o666 中提取。</span></span><br><span class="line"><span class="comment"># 如果 backtick 为真值，零会用 &#x27;`&#x27; 而不是空格来表示。</span></span><br><span class="line">uu.encode(in_file, out_file, mode=<span class="literal">None</span>, *, backtick=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用此函数会解码 uuencod 编码的 in_file 文件并将结果放入 out_file 文件。</span></span><br><span class="line"><span class="comment"># 如果 out_file 是一个路径名称，mode 会在必须创建文件时用于设置权限位。</span></span><br><span class="line"><span class="comment"># out_file 和 mode 的默认值会从 uuencode 标头中提取。</span></span><br><span class="line"><span class="comment"># 但是，如果标头中指定的文件已存在，则会引发 uu.Error。</span></span><br><span class="line">uu.decode(in_file, out_file=<span class="literal">None</span>, mode=<span class="literal">None</span>, quiet=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="在线网站">在线网站</h1>
+<ul>
+<li>https://www.qqxiuzi.cn/bianma/uuencode.php</li>
 </ul>
 
     </div>
@@ -365,14 +362,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">65k</span>
+    <span title="站点总字数">66k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">59 分钟</span>
+    <span title="站点阅读时长">1:01</span>
   </span>
 </div>
 
