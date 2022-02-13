@@ -1,47 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>逆向中反制反调试手段笔记</title>
-    <url>//anti-anti-debug-note.html</url>
-    <content><![CDATA[<h1 id="isdebuggerpresent-绕过">IsDebuggerPresent 绕过</h1>
-<p><code>IsDebuggerPresent</code> 作为 winapi 函数，不可去符号表，在 ida
-中可以通过导入表 (imports) 找到函数，然后通过以下几种手段绕过：</p>
-<ol type="1">
-<li>调试时，修改函数返回值 (即修改 rax 寄存器值)</li>
-<li>调试时，修改相应的内存 (内存窗口中查找 <code>fs:[30]</code> 位置，即
-<code>PEB</code> 地址，偏移为 0x68 的位置即为 <code>BeingDebugged</code>
-)</li>
-<li>将调用函数后的条件语句修改 (<code>jz</code> → <code>jnz</code> /
-<code>jnz</code> → <code>jz</code>)</li>
-<li>将相应代码区段 patch <code>nop</code></li>
-<li>动态调试时，直接跳过函数运行</li>
-</ol>
-<h1 id="peb-标志位绕过">PEB 标志位绕过</h1>
-<p>需要通过 ida 查找是否有涉及到 <code>fs</code> 寄存器的汇编代码</p>
-<p>然后再进行相应的操作，如 patch <code>nop</code> 等。</p>
-<h1 id="自修改代码绕过">自修改代码绕过</h1>
-<p>如以下例题</p>
-<figure>
-<img src="/anti-anti-debug-note/473_af0_6f0.png" alt="ques">
-<figcaption aria-hidden="true">ques</figcaption>
-</figure>
-<h2 id="静态分析">静态分析</h2>
-<p>通过 ida 静态分析，找到相应的修改算法，通过 ida python
-逆向修改代码区段</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">judge=<span class="number">0x600B00</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">182</span>):</span><br><span class="line">    addr=<span class="number">0x600B00</span>+i</span><br><span class="line">    byte=get_bytes(addr,<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 获取指定地址的指定字节数</span></span><br><span class="line">    byte=<span class="built_in">ord</span>(byte)^<span class="number">0xC</span></span><br><span class="line">    <span class="comment"># 打patch修改字节 </span></span><br><span class="line">    patch_byte(addr,byte)</span><br></pre></td></tr></table></figure>
-<h2 id="动态分析">动态分析</h2>
-<p>通过 ida 或是 ollydbg
-等动态调试器，在解密代码后下断点，可以直接将其自修改后的程序导出，但会存在数据可能发生错误的问题。</p>
-<p>最好将对应自修改后的代码与之前的代码进行结合分析。</p>
-]]></content>
-      <tags>
-        <tag>note</tag>
-        <tag>anti-debug</tag>
-        <tag>c</tag>
-        <tag>re</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>反调试笔记</title>
     <url>//anti-debug-note.html</url>
     <content><![CDATA[<h1 id="反调试技术">反调试技术</h1>
@@ -177,40 +136,125 @@ OnllyDbg 调试器识别这个异常。</p>
       </tags>
   </entry>
   <entry>
-    <title>base64 笔记</title>
-    <url>//base64-note.html</url>
-    <content><![CDATA[<h1 id="base64-原理">Base64 原理</h1>
-<p>Base64编码是使用64个可打印ASCII字符（A-Z、a-z、0-9、+、/）将任意字节序列数据编码成ASCII字符串，另有“=”符号用作后缀用途。</p>
-<p>Base64将输入字符串按字节切分，取得每个字节对应的二进制值（若不足8比特则高位补0），然后将这些二进制数值串联起来，再按照6比特一组进行切分（因为2^6=64），最后一组若不足6比特则末尾补0。将每组二进制值转换成十进制，然后在上述表格中找到对应的符号并串联起来就是Base64编码结果。</p>
-<p>由于二进制数据是按照8比特一组进行传输，因此Base64按照6比特一组切分的二进制数据必须是24比特的倍数（6和8的最小公倍数）。24比特就是3个字节，若原字节序列数据长度不是3的倍数时且剩下1个输入数据，则在编码结果后加2个=；若剩下2个输入数据，则在编码结果后加1个=。</p>
-<p>完整的Base64定义可见RFC1421和RFC2045。因为Base64算法是将3个字节原数据编码为4个字节新数据，所以Base64编码后的数据比原始数据略长，为原来的4/3。在电子邮件中，根据RFC822规定，每76个字符，还需要加上一个回车换行。可以估算编码后数据长度大约为原长的135.1%。</p>
-<p>Base64可用于任意数据的底层二进制数据编码，以应用于只能传输ASCII字符的场合。不过最常用于文本数据的处理传输，例如在MIME格式的电子邮件中，Base64可以用来编码邮件内容，方便在不同语言计算机间传输而不乱码，注意是传输而不是显示，例如在西欧地区计算机上使用UTF-8编码即可正常显示中文（安装有对应字库），但是它未必能正常传输中文，这时转换为Base64便无此顾虑。</p>
-<p>Base64编码若无特别说明，通常约定非ASCII字符按照UTF-8字符集进行编码处理。</p>
-<p>base64编码编码Uuencode编码类似，但base64将0~63之间的数字通过查表换字符，所以可能存在不用默认表而用另一个表进行base64编码加密</p>
-<h1 id="c-实现">C++ 实现</h1>
-<h2 id="加密---encode">加密 - Encode</h2>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">encode</span><span class="params">(<span class="keyword">const</span> string&amp; plain)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 转码表</span></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">char</span> table[] = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span>;</span><br><span class="line">	<span class="comment">// 计算加密字符数</span></span><br><span class="line">	<span class="keyword">size_t</span> count = plain.<span class="built_in">size</span>() / <span class="number">3</span>;</span><br><span class="line">	<span class="keyword">size_t</span> remain = plain.<span class="built_in">size</span>() % <span class="number">3</span>;</span><br><span class="line">	<span class="function">string <span class="title">result</span><span class="params">(count * <span class="number">4</span> + (remain ? <span class="number">4</span> : <span class="number">0</span>), <span class="number">0</span>)</span></span>;</span><br><span class="line">	<span class="keyword">size_t</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (i != count)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 3 bytes 为一组进行加密</span></span><br><span class="line">		<span class="comment">// 取第一个 byte 的前 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span>] = table[plain[i * <span class="number">3</span>] &gt;&gt; <span class="number">2</span>];</span><br><span class="line">		<span class="comment">// 取第一个 byte 的后 2 位与第二个 byte 的前 4 位组合</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">1</span>] = table[((plain[i * <span class="number">3</span>] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>) | (plain[i * <span class="number">3</span> + <span class="number">1</span>] &gt;&gt; <span class="number">4</span>)];</span><br><span class="line">		<span class="comment">// 取第二个 byte 的后 4 位与第三个 byte 的前 2 位组合</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">2</span>] = table[((plain[i * <span class="number">3</span> + <span class="number">1</span>] &amp; <span class="number">0xf</span>) &lt;&lt; <span class="number">2</span>) | (plain[i * <span class="number">3</span> + <span class="number">2</span>] &gt;&gt; <span class="number">6</span>)];</span><br><span class="line">		<span class="comment">// 取第三个 byte 的后 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">3</span>] = table[plain[i * <span class="number">3</span> + <span class="number">2</span>] &amp; <span class="number">0x3f</span>];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 迭代至下一个 3 bytes</span></span><br><span class="line">		++i;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 若多出 1 byte</span></span><br><span class="line">	<span class="keyword">if</span> (remain == <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 取 byte 前 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span>] = table[plain[i * <span class="number">3</span>] &gt;&gt; <span class="number">2</span>];</span><br><span class="line">		<span class="comment">// 取 byte 后 2 位，剩余 4 位补 0</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">1</span>] = table[(plain[i * <span class="number">3</span>] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>];</span><br><span class="line">		<span class="comment">// 剩余补 &#x27;=&#x27; 凑满 4 的倍数长度</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">2</span>] = result[i * <span class="number">4</span> + <span class="number">3</span>] = <span class="string">&#x27;=&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 若多出 2 bytes</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 取第一个 byte 前 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span>] = table[plain[i * <span class="number">3</span>] &gt;&gt; <span class="number">2</span>];</span><br><span class="line">		<span class="comment">// 取第一个 byte 的后 2 位与第二个 byte 的前 4 位组合</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">1</span>] = table[((plain[i * <span class="number">3</span>] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>) | (plain[i * <span class="number">3</span> + <span class="number">1</span>] &gt;&gt; <span class="number">4</span>)];</span><br><span class="line">		<span class="comment">// 取第二个 byte 的后 4 位，剩余 2 位补 0</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">2</span>] = table[(plain[i * <span class="number">3</span> + <span class="number">1</span>] &amp; <span class="number">0xf</span>) &lt;&lt; <span class="number">2</span>];</span><br><span class="line">		<span class="comment">// 剩余补 &#x27;=&#x27; 凑满 4 的倍数长度</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">3</span>] = <span class="string">&#x27;=&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解密---decode">解密 - Decode</h2>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">decode</span><span class="params">(<span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 映射表</span></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">char</span> table[] = &#123;</span><br><span class="line">		<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">62</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">63</span>,</span><br><span class="line">		<span class="number">52</span>, <span class="number">53</span>, <span class="number">54</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">57</span>, <span class="number">58</span>, <span class="number">59</span>, <span class="number">60</span>, <span class="number">61</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>,</span><br><span class="line">		<span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">25</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">33</span>, <span class="number">34</span>, <span class="number">35</span>, <span class="number">36</span>, <span class="number">37</span>, <span class="number">38</span>, <span class="number">39</span>, <span class="number">40</span>,</span><br><span class="line">		<span class="number">41</span>, <span class="number">42</span>, <span class="number">43</span>, <span class="number">44</span>, <span class="number">45</span>, <span class="number">46</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">49</span>, <span class="number">50</span>, <span class="number">51</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span></span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> string <span class="title">bad</span><span class="params">(<span class="string">&quot;decode bad!&quot;</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 如果长度不是 4 的倍数，则返回 bad 字符串</span></span><br><span class="line">	<span class="keyword">if</span> ((code.<span class="built_in">size</span>() &amp; <span class="number">0x3</span>) != <span class="number">0</span>) <span class="keyword">return</span> bad;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 计算解密字符</span></span><br><span class="line">	<span class="keyword">size_t</span> count = code.<span class="built_in">size</span>() / <span class="number">4</span>;</span><br><span class="line">	<span class="function">string <span class="title">result</span><span class="params">(count * <span class="number">3</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">	<span class="keyword">size_t</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">char</span> h, l;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (i != count)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 以 4 bytes 为一组进行解密</span></span><br><span class="line">		<span class="comment">// 取映射表对应数 (每个数作 6 bit 计算)</span></span><br><span class="line">		h = table[code[i * <span class="number">4</span>]];</span><br><span class="line">		l = table[code[i * <span class="number">4</span> + <span class="number">1</span>]];</span><br><span class="line">		<span class="comment">// 若一组中前两个字符不在 base64 加密字符范围，则返回 bad 字符串</span></span><br><span class="line">		<span class="keyword">if</span> (h == <span class="number">64</span> || l == <span class="number">64</span>) <span class="keyword">return</span> bad;</span><br><span class="line">		<span class="comment">// 将第一个数的前 4 bit 与第二个数的前 4 bit 组合</span></span><br><span class="line">		result[i * <span class="number">3</span>] = (h &lt;&lt; <span class="number">2</span>) | (l &gt;&gt; <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 取映射表对应数</span></span><br><span class="line">		h = table[code[i * <span class="number">4</span> + <span class="number">2</span>]];</span><br><span class="line">		<span class="comment">// 若一组中第三个数不在 base64 加密字符范围，则说明为 &#x27;=&#x27;，即解密结束 (严格来说需判断是否为&#x27;=&#x27;)</span></span><br><span class="line">		<span class="keyword">if</span> (h != <span class="number">64</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// 将第二个数的前 2 bit 与第三个数的前 4 bit 组合</span></span><br><span class="line">			result[i * <span class="number">3</span> + <span class="number">1</span>] = (l &lt;&lt; <span class="number">4</span>) | (h &gt;&gt; <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">			<span class="comment">// 取映射表对应数</span></span><br><span class="line">			l = table[code[i * <span class="number">4</span> + <span class="number">3</span>]];</span><br><span class="line">			<span class="keyword">if</span> (l != <span class="number">64</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">// 将第三个数的前 2 bit 与第二个数的 6 bit 组合</span></span><br><span class="line">				result[i * <span class="number">3</span> + <span class="number">2</span>] = (h &lt;&lt; <span class="number">6</span>) | l;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 迭代至下三个数 (每个数作 6 bit 计算)</span></span><br><span class="line">		++i;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="python-实现">Python 实现</h1>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="comment"># encode</span></span><br><span class="line">base64.b64encode(<span class="string">&quot;Duzou&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># decode</span></span><br><span class="line">base64.b64decode(<span class="string">&quot;RHV6b3VfMXNfczBfaDRuZHNPbWU=&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h1 id="bash">bash</h1>
-<h2 id="加密---encode-1">加密 - Encode</h2>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> Duzou | base64</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>注意，bash 的 echo 会默认加一个回车在末尾</p>
-</blockquote>
-<h2 id="解密---decode-1">解密 - Decode</h2>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> RHV6b3VfMXNfczBfaDRuZHNPbWU= | base64 -d</span><br></pre></td></tr></table></figure>
-<h1 id="在线网站">在线网站</h1>
+    <title>arnold cat 变换 (猫脸变换)</title>
+    <url>//arnold-cat-note.html</url>
+    <content><![CDATA[<h1 id="猫脸变换简述">猫脸变换简述</h1>
+<p>利用Arnold变换（又称猫脸变换）可以对图像进行置乱，使得原本有意义的图像变成一张无意义的图像。该变换可以在其它图像处理前对图像做预处理，例如在数字盲水印嵌入前对水印进行置乱。也可以用于普通的图像加密。</p>
+<p>通常一次Arnold变换达不到理想效果，需要对图像进行连续多次的变换。Arnold变换具有周期性，即对图像连续进行Arnold变换，最终又能得到原图像。变换的周期和图像的尺寸有关。</p>
+<p>当图像是一张<strong>方形的图像</strong>时，Arnold变换存在<strong>逆变换</strong>。经过N次Arnold变换后的数据可以通过N次逆变换恢复数据。</p>
+<p>Arnold变换不仅可以用于图像置乱，也可以用于其它数据的置乱和加密。</p>
+<h1 id="原理">原理</h1>
+<p><strong>置乱的实质是新位置与旧位置的映射，且该映射是一一对应的。</strong></p>
+<p>下图是一次猫脸变换的示意图：</p>
+<figure>
+<img src="/arnold-cat-note/cat.png" alt="cat">
+<figcaption aria-hidden="true">cat</figcaption>
+</figure>
+<ol type="1">
+<li>先在 (a) 原图上做水平方向的错切</li>
+<li>然后在 (b) 的基础上再做一次竖直方向的错切</li>
+<li>对图像求模，即<strong>切割回填</strong>操作，便得到变换后的图像</li>
+</ol>
+<h1 id="公式">公式</h1>
+<p>其中，<span class="math inline">\(a\)</span>和<span class="math inline">\(b\)</span>为给定参数，<span class="math inline">\(N\)</span>为图片大小 (默认图片为正方形)</p>
+<h2 id="arnold-变换">Arnold 变换</h2>
 <ul>
-<li>https://www.qqxiuzi.cn/bianma/base64.htm</li>
+<li><p>矩阵公式 <span class="math display">\[
+\left(\begin{matrix}
+x&#39;\\
+y&#39;
+\end{matrix}\right)=
+\left[\begin{matrix}
+1&amp;a\\
+b&amp;ab+1
+\end{matrix}\right]
+\left(\begin{matrix}
+x\\
+y
+\end{matrix}\right)
+mod(N)
+\]</span></p></li>
+<li><p>行列式公式 <span class="math display">\[
+\begin{cases}
+x&#39;=(x+ay)mod(N)\\
+y&#39;=(bx+(ab+1)y)mod(N)
+\end{cases}
+\]</span></p></li>
 </ul>
+<h2 id="arnold-逆变换">Arnold 逆变换</h2>
+<ul>
+<li><p>矩阵公式 <span class="math display">\[
+\left(\begin{matrix}
+x\\
+y
+\end{matrix}\right)=
+\left[\begin{matrix}
+ab+1&amp;-a\\
+-b&amp;1
+\end{matrix}\right]
+\left(\begin{matrix}
+x&#39;\\
+y&#39;
+\end{matrix}\right)
+mod(N)
+\]</span></p></li>
+<li><p>行列式公式 <span class="math display">\[
+\begin{cases}
+x=((ab+1)x&#39;-ay&#39;)mod(N)\\
+y=(-bx&#39;+y)mod(N)
+\end{cases}
+\]</span></p></li>
+</ul>
+<h1 id="python-实现">Python 实现</h1>
+<p>以下借助了 Pillow 库实现功能</p>
+<p>其中<span class="math inline">\(a、b\)</span>为给定参数，<span class="math inline">\(N\)</span>为置乱次数
+(shuffle_times)，<code>reverse</code> 为是否倒置变换
+(可能会出现变换倒置的问题)</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Anrold 变换</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arnold</span>(<span class="params"><span class="built_in">input</span>, output, a, b, N, reverse=<span class="literal">False</span></span>):</span></span><br><span class="line">    before = Image.<span class="built_in">open</span>(<span class="built_in">input</span>)</span><br><span class="line">    weight, height = before.size</span><br><span class="line">    <span class="keyword">assert</span> weight == height</span><br><span class="line">    bfdata = before.load()</span><br><span class="line">    after = Image.new(before.mode, before.size)</span><br><span class="line">    afdata = after.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(weight):</span><br><span class="line">                nx = (x + b * y) % weight</span><br><span class="line">                ny = ((a * x) + (a * b + <span class="number">1</span>) * y) % weight</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    afdata[ny, nx] = bfdata[y, x]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    afdata[nx, ny] = bfdata[x, y]</span><br><span class="line">    </span><br><span class="line">    after.save(output, before.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Anrold 逆变换</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rearnold</span>(<span class="params"><span class="built_in">input</span>, output, a, b, N, reverse=<span class="literal">False</span></span>):</span></span><br><span class="line">    before = Image.<span class="built_in">open</span>(<span class="built_in">input</span>)</span><br><span class="line">    weight, height = before.size</span><br><span class="line">    <span class="keyword">assert</span> weight == height</span><br><span class="line">    bfdata = before.load()</span><br><span class="line">    after = Image.new(before.mode, before.size)</span><br><span class="line">    afdata = after.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(weight):</span><br><span class="line">                nx = ((a * b + <span class="number">1</span>) * x + (-b) * y) % height</span><br><span class="line">                ny = (y + (-a) * x) % weight</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    afdata[ny, nx] = bfdata[y, x]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    afdata[nx, ny] = bfdata[x, y]</span><br><span class="line">    </span><br><span class="line">    after.save(output, before.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line">arnold(<span class="string">&quot;before.png&quot;</span>, <span class="string">&quot;encode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br><span class="line">rearnold(<span class="string">&quot;encode.png&quot;</span>, <span class="string">&quot;decode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>note</tag>
-        <tag>crypto</tag>
-        <tag>base64</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>逆向中反制反调试手段笔记</title>
+    <url>//anti-anti-debug-note.html</url>
+    <content><![CDATA[<h1 id="isdebuggerpresent-绕过">IsDebuggerPresent 绕过</h1>
+<p><code>IsDebuggerPresent</code> 作为 winapi 函数，不可去符号表，在 ida
+中可以通过导入表 (imports) 找到函数，然后通过以下几种手段绕过：</p>
+<ol type="1">
+<li>调试时，修改函数返回值 (即修改 rax 寄存器值)</li>
+<li>调试时，修改相应的内存 (内存窗口中查找 <code>fs:[30]</code> 位置，即
+<code>PEB</code> 地址，偏移为 0x68 的位置即为 <code>BeingDebugged</code>
+)</li>
+<li>将调用函数后的条件语句修改 (<code>jz</code> → <code>jnz</code> /
+<code>jnz</code> → <code>jz</code>)</li>
+<li>将相应代码区段 patch <code>nop</code></li>
+<li>动态调试时，直接跳过函数运行</li>
+</ol>
+<h1 id="peb-标志位绕过">PEB 标志位绕过</h1>
+<p>需要通过 ida 查找是否有涉及到 <code>fs</code> 寄存器的汇编代码</p>
+<p>然后再进行相应的操作，如 patch <code>nop</code> 等。</p>
+<h1 id="自修改代码绕过">自修改代码绕过</h1>
+<p>如以下例题</p>
+<figure>
+<img src="/anti-anti-debug-note/473_af0_6f0.png" alt="ques">
+<figcaption aria-hidden="true">ques</figcaption>
+</figure>
+<h2 id="静态分析">静态分析</h2>
+<p>通过 ida 静态分析，找到相应的修改算法，通过 ida python
+逆向修改代码区段</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">judge=<span class="number">0x600B00</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">182</span>):</span><br><span class="line">    addr=<span class="number">0x600B00</span>+i</span><br><span class="line">    byte=get_bytes(addr,<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 获取指定地址的指定字节数</span></span><br><span class="line">    byte=<span class="built_in">ord</span>(byte)^<span class="number">0xC</span></span><br><span class="line">    <span class="comment"># 打patch修改字节 </span></span><br><span class="line">    patch_byte(addr,byte)</span><br></pre></td></tr></table></figure>
+<h2 id="动态分析">动态分析</h2>
+<p>通过 ida 或是 ollydbg
+等动态调试器，在解密代码后下断点，可以直接将其自修改后的程序导出，但会存在数据可能发生错误的问题。</p>
+<p>最好将对应自修改后的代码与之前的代码进行结合分析。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>anti-debug</tag>
+        <tag>c</tag>
+        <tag>re</tag>
       </tags>
   </entry>
   <entry>
@@ -411,6 +455,43 @@ OnllyDbg 调试器识别这个异常。</p>
       <tags>
         <tag>note</tag>
         <tag>file</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>base64 笔记</title>
+    <url>//base64-note.html</url>
+    <content><![CDATA[<h1 id="base64-原理">Base64 原理</h1>
+<p>Base64编码是使用64个可打印ASCII字符（A-Z、a-z、0-9、+、/）将任意字节序列数据编码成ASCII字符串，另有“=”符号用作后缀用途。</p>
+<p>Base64将输入字符串按字节切分，取得每个字节对应的二进制值（若不足8比特则高位补0），然后将这些二进制数值串联起来，再按照6比特一组进行切分（因为2^6=64），最后一组若不足6比特则末尾补0。将每组二进制值转换成十进制，然后在上述表格中找到对应的符号并串联起来就是Base64编码结果。</p>
+<p>由于二进制数据是按照8比特一组进行传输，因此Base64按照6比特一组切分的二进制数据必须是24比特的倍数（6和8的最小公倍数）。24比特就是3个字节，若原字节序列数据长度不是3的倍数时且剩下1个输入数据，则在编码结果后加2个=；若剩下2个输入数据，则在编码结果后加1个=。</p>
+<p>完整的Base64定义可见RFC1421和RFC2045。因为Base64算法是将3个字节原数据编码为4个字节新数据，所以Base64编码后的数据比原始数据略长，为原来的4/3。在电子邮件中，根据RFC822规定，每76个字符，还需要加上一个回车换行。可以估算编码后数据长度大约为原长的135.1%。</p>
+<p>Base64可用于任意数据的底层二进制数据编码，以应用于只能传输ASCII字符的场合。不过最常用于文本数据的处理传输，例如在MIME格式的电子邮件中，Base64可以用来编码邮件内容，方便在不同语言计算机间传输而不乱码，注意是传输而不是显示，例如在西欧地区计算机上使用UTF-8编码即可正常显示中文（安装有对应字库），但是它未必能正常传输中文，这时转换为Base64便无此顾虑。</p>
+<p>Base64编码若无特别说明，通常约定非ASCII字符按照UTF-8字符集进行编码处理。</p>
+<p>base64编码编码Uuencode编码类似，但base64将0~63之间的数字通过查表换字符，所以可能存在不用默认表而用另一个表进行base64编码加密</p>
+<h1 id="c-实现">C++ 实现</h1>
+<h2 id="加密---encode">加密 - Encode</h2>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">encode</span><span class="params">(<span class="keyword">const</span> string&amp; plain)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 转码表</span></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">char</span> table[] = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span>;</span><br><span class="line">	<span class="comment">// 计算加密字符数</span></span><br><span class="line">	<span class="keyword">size_t</span> count = plain.<span class="built_in">size</span>() / <span class="number">3</span>;</span><br><span class="line">	<span class="keyword">size_t</span> remain = plain.<span class="built_in">size</span>() % <span class="number">3</span>;</span><br><span class="line">	<span class="function">string <span class="title">result</span><span class="params">(count * <span class="number">4</span> + (remain ? <span class="number">4</span> : <span class="number">0</span>), <span class="number">0</span>)</span></span>;</span><br><span class="line">	<span class="keyword">size_t</span> i = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (i != count)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 3 bytes 为一组进行加密</span></span><br><span class="line">		<span class="comment">// 取第一个 byte 的前 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span>] = table[plain[i * <span class="number">3</span>] &gt;&gt; <span class="number">2</span>];</span><br><span class="line">		<span class="comment">// 取第一个 byte 的后 2 位与第二个 byte 的前 4 位组合</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">1</span>] = table[((plain[i * <span class="number">3</span>] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>) | (plain[i * <span class="number">3</span> + <span class="number">1</span>] &gt;&gt; <span class="number">4</span>)];</span><br><span class="line">		<span class="comment">// 取第二个 byte 的后 4 位与第三个 byte 的前 2 位组合</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">2</span>] = table[((plain[i * <span class="number">3</span> + <span class="number">1</span>] &amp; <span class="number">0xf</span>) &lt;&lt; <span class="number">2</span>) | (plain[i * <span class="number">3</span> + <span class="number">2</span>] &gt;&gt; <span class="number">6</span>)];</span><br><span class="line">		<span class="comment">// 取第三个 byte 的后 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">3</span>] = table[plain[i * <span class="number">3</span> + <span class="number">2</span>] &amp; <span class="number">0x3f</span>];</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 迭代至下一个 3 bytes</span></span><br><span class="line">		++i;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 若多出 1 byte</span></span><br><span class="line">	<span class="keyword">if</span> (remain == <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 取 byte 前 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span>] = table[plain[i * <span class="number">3</span>] &gt;&gt; <span class="number">2</span>];</span><br><span class="line">		<span class="comment">// 取 byte 后 2 位，剩余 4 位补 0</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">1</span>] = table[(plain[i * <span class="number">3</span>] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>];</span><br><span class="line">		<span class="comment">// 剩余补 &#x27;=&#x27; 凑满 4 的倍数长度</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">2</span>] = result[i * <span class="number">4</span> + <span class="number">3</span>] = <span class="string">&#x27;=&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 若多出 2 bytes</span></span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 取第一个 byte 前 6 位</span></span><br><span class="line">		result[i * <span class="number">4</span>] = table[plain[i * <span class="number">3</span>] &gt;&gt; <span class="number">2</span>];</span><br><span class="line">		<span class="comment">// 取第一个 byte 的后 2 位与第二个 byte 的前 4 位组合</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">1</span>] = table[((plain[i * <span class="number">3</span>] &amp; <span class="number">0x3</span>) &lt;&lt; <span class="number">4</span>) | (plain[i * <span class="number">3</span> + <span class="number">1</span>] &gt;&gt; <span class="number">4</span>)];</span><br><span class="line">		<span class="comment">// 取第二个 byte 的后 4 位，剩余 2 位补 0</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">2</span>] = table[(plain[i * <span class="number">3</span> + <span class="number">1</span>] &amp; <span class="number">0xf</span>) &lt;&lt; <span class="number">2</span>];</span><br><span class="line">		<span class="comment">// 剩余补 &#x27;=&#x27; 凑满 4 的倍数长度</span></span><br><span class="line">		result[i * <span class="number">4</span> + <span class="number">3</span>] = <span class="string">&#x27;=&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解密---decode">解密 - Decode</h2>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">decode</span><span class="params">(<span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="comment">// 映射表</span></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">char</span> table[] = &#123;</span><br><span class="line">		<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">62</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">63</span>,</span><br><span class="line">		<span class="number">52</span>, <span class="number">53</span>, <span class="number">54</span>, <span class="number">55</span>, <span class="number">56</span>, <span class="number">57</span>, <span class="number">58</span>, <span class="number">59</span>, <span class="number">60</span>, <span class="number">61</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>, <span class="number">11</span>, <span class="number">12</span>, <span class="number">13</span>, <span class="number">14</span>,</span><br><span class="line">		<span class="number">15</span>, <span class="number">16</span>, <span class="number">17</span>, <span class="number">18</span>, <span class="number">19</span>, <span class="number">20</span>, <span class="number">21</span>, <span class="number">22</span>, <span class="number">23</span>, <span class="number">24</span>, <span class="number">25</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>,</span><br><span class="line">		<span class="number">64</span>, <span class="number">26</span>, <span class="number">27</span>, <span class="number">28</span>, <span class="number">29</span>, <span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">33</span>, <span class="number">34</span>, <span class="number">35</span>, <span class="number">36</span>, <span class="number">37</span>, <span class="number">38</span>, <span class="number">39</span>, <span class="number">40</span>,</span><br><span class="line">		<span class="number">41</span>, <span class="number">42</span>, <span class="number">43</span>, <span class="number">44</span>, <span class="number">45</span>, <span class="number">46</span>, <span class="number">47</span>, <span class="number">48</span>, <span class="number">49</span>, <span class="number">50</span>, <span class="number">51</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span>, <span class="number">64</span></span><br><span class="line">	&#125;;</span><br><span class="line">	<span class="function"><span class="keyword">static</span> string <span class="title">bad</span><span class="params">(<span class="string">&quot;decode bad!&quot;</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 如果长度不是 4 的倍数，则返回 bad 字符串</span></span><br><span class="line">	<span class="keyword">if</span> ((code.<span class="built_in">size</span>() &amp; <span class="number">0x3</span>) != <span class="number">0</span>) <span class="keyword">return</span> bad;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 计算解密字符</span></span><br><span class="line">	<span class="keyword">size_t</span> count = code.<span class="built_in">size</span>() / <span class="number">4</span>;</span><br><span class="line">	<span class="function">string <span class="title">result</span><span class="params">(count * <span class="number">3</span>, <span class="number">0</span>)</span></span>;</span><br><span class="line">	<span class="keyword">size_t</span> i = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">char</span> h, l;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">while</span> (i != count)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">// 以 4 bytes 为一组进行解密</span></span><br><span class="line">		<span class="comment">// 取映射表对应数 (每个数作 6 bit 计算)</span></span><br><span class="line">		h = table[code[i * <span class="number">4</span>]];</span><br><span class="line">		l = table[code[i * <span class="number">4</span> + <span class="number">1</span>]];</span><br><span class="line">		<span class="comment">// 若一组中前两个字符不在 base64 加密字符范围，则返回 bad 字符串</span></span><br><span class="line">		<span class="keyword">if</span> (h == <span class="number">64</span> || l == <span class="number">64</span>) <span class="keyword">return</span> bad;</span><br><span class="line">		<span class="comment">// 将第一个数的前 4 bit 与第二个数的前 4 bit 组合</span></span><br><span class="line">		result[i * <span class="number">3</span>] = (h &lt;&lt; <span class="number">2</span>) | (l &gt;&gt; <span class="number">4</span>);</span><br><span class="line"></span><br><span class="line">		<span class="comment">// 取映射表对应数</span></span><br><span class="line">		h = table[code[i * <span class="number">4</span> + <span class="number">2</span>]];</span><br><span class="line">		<span class="comment">// 若一组中第三个数不在 base64 加密字符范围，则说明为 &#x27;=&#x27;，即解密结束 (严格来说需判断是否为&#x27;=&#x27;)</span></span><br><span class="line">		<span class="keyword">if</span> (h != <span class="number">64</span>)</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// 将第二个数的前 2 bit 与第三个数的前 4 bit 组合</span></span><br><span class="line">			result[i * <span class="number">3</span> + <span class="number">1</span>] = (l &lt;&lt; <span class="number">4</span>) | (h &gt;&gt; <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">			<span class="comment">// 取映射表对应数</span></span><br><span class="line">			l = table[code[i * <span class="number">4</span> + <span class="number">3</span>]];</span><br><span class="line">			<span class="keyword">if</span> (l != <span class="number">64</span>)</span><br><span class="line">			&#123;</span><br><span class="line">				<span class="comment">// 将第三个数的前 2 bit 与第二个数的 6 bit 组合</span></span><br><span class="line">				result[i * <span class="number">3</span> + <span class="number">2</span>] = (h &lt;&lt; <span class="number">6</span>) | l;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">				<span class="keyword">break</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span></span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 迭代至下三个数 (每个数作 6 bit 计算)</span></span><br><span class="line">		++i;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="python-实现">Python 实现</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"></span><br><span class="line"><span class="comment"># encode</span></span><br><span class="line">base64.b64encode(<span class="string">&quot;Duzou&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># decode</span></span><br><span class="line">base64.b64decode(<span class="string">&quot;RHV6b3VfMXNfczBfaDRuZHNPbWU=&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="bash">bash</h1>
+<h2 id="加密---encode-1">加密 - Encode</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> Duzou | base64</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意，bash 的 echo 会默认加一个回车在末尾</p>
+</blockquote>
+<h2 id="解密---decode-1">解密 - Decode</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> RHV6b3VfMXNfczBfaDRuZHNPbWU= | base64 -d</span><br></pre></td></tr></table></figure>
+<h1 id="在线网站">在线网站</h1>
+<ul>
+<li>https://www.qqxiuzi.cn/bianma/base64.htm</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
+        <tag>base64</tag>
       </tags>
   </entry>
   <entry>
@@ -659,6 +740,72 @@ P_m+kP_A-n_AkG=P_m+k(n_AG)-n_AkG=P_m
       </tags>
   </entry>
   <entry>
+    <title>鬼脚图笔记</title>
+    <url>//guijiao-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>鬼脚图，又称画鬼脚，在日本称作阿弥陀签（あみだくじ），是一种游戏，也是一种简易决策方法，常被拿作抽签或者决定分配组合。</p>
+<p>体现了决策中的唯一性、公平性、奇偶性。是一种简单的决策游戏，但因为在现实生活中有更为简单的决策游戏，即剪刀、石头、布相对于画鬼脚更为简单，所以一般不常见到。</p>
+<h1 id="画法">画法</h1>
+<p>在竖线的一端分别写上参与人，将需分配的事物或工作分成与人数的同等分后分别写在另一端。然后在每两个竖线相隔的区域，每个人任意的画上横线。每个人画横线的条数一般不限，但横线间不可交叉且横线不可横跨穿过两个间隔。</p>
+<p>如下图中，A、B、C、D为参与人，1、2、3、4为要抽签的事物：</p>
+<figure>
+<img src="/guijiao-note/start.png" alt="start">
+<figcaption aria-hidden="true">start</figcaption>
+</figure>
+<p>随后人们在竖线之间画上随机的横线，千万不可重合交叉：</p>
+<figure>
+<img src="/guijiao-note/process.png" alt="process">
+<figcaption aria-hidden="true">process</figcaption>
+</figure>
+<h1 id="玩法">玩法</h1>
+<p>每个人从自己的名字直走，遇到横线则拐弯。</p>
+<p>以下以A为例子：</p>
+<figure>
+<img src="/guijiao-note/play.png" alt="play">
+<figcaption aria-hidden="true">play</figcaption>
+</figure>
+<p>不难看出，实际上无论是从上面出发还是从下面出发，结果是不变的。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo-asset-image：update link as:--&gt;/.io//xxx.png</title>
+    <url>//errors/hexo-image-link-error.html</url>
+    <content><![CDATA[<h1 id="错误分析">错误分析</h1>
+<p>hexo-asset-image 无法识别 hexo 默认的永久链接
+(<code>permalink</code>) 时，导致无法自动生成静态资源文件夹路径</p>
+<figure>
+<img src="/errors/hexo-image-link-error/update-link-error.png" alt="update-link-error">
+<figcaption aria-hidden="true">update-link-error</figcaption>
+</figure>
+<h1 id="修复错误">修复错误</h1>
+<p>有以下两种解决方案：</p>
+<ol type="1">
+<li>修改 hexo 的站点配置文件</li>
+<li>为每篇文章手动配置 <code>permalink</code></li>
+</ol>
+<blockquote>
+<p>建议两者一起使用</p>
+</blockquote>
+<h2 id="修改-hexo-的站点配置文件">修改 hexo 的站点配置文件</h2>
+<p>将 <code>URL</code> 配置中的 <code>permalink</code>
+参数置空或改为英文文件夹名 (详细配置请参考<a href="/hexo-note.html#网址-URL">网址-URL</a>)</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">permalink:</span> </span><br></pre></td></tr></table></figure>
+<h2 id="为每篇文章手动配置-permalink">为每篇文章手动配置
+<code>permalink</code></h2>
+<p>在你的博文的 <code>Front-matter</code> 中添加 <code>permalink</code>
+参数 (详细配置请参考<a href="/hexo-note.html#hexo%20博文头%20-%20Front-matter">Front-matter</a>)</p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">/project/index.html</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>error</tag>
+        <tag>hexo</tag>
+        <tag>hexo-asset-image</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>有关条形码的认识</title>
     <url>//barcode-note.html</url>
     <content><![CDATA[<h1 id="条形码分类">条形码分类</h1>
@@ -766,41 +913,6 @@ ASCII 集。</p>
       </tags>
   </entry>
   <entry>
-    <title>hexo-asset-image：update link as:--&gt;/.io//xxx.png</title>
-    <url>//errors/hexo-image-link-error.html</url>
-    <content><![CDATA[<h1 id="错误分析">错误分析</h1>
-<p>hexo-asset-image 无法识别 hexo 默认的永久链接
-(<code>permalink</code>) 时，导致无法自动生成静态资源文件夹路径</p>
-<figure>
-<img src="/errors/hexo-image-link-error/update-link-error.png" alt="update-link-error">
-<figcaption aria-hidden="true">update-link-error</figcaption>
-</figure>
-<h1 id="修复错误">修复错误</h1>
-<p>有以下两种解决方案：</p>
-<ol type="1">
-<li>修改 hexo 的站点配置文件</li>
-<li>为每篇文章手动配置 <code>permalink</code></li>
-</ol>
-<blockquote>
-<p>建议两者一起使用</p>
-</blockquote>
-<h2 id="修改-hexo-的站点配置文件">修改 hexo 的站点配置文件</h2>
-<p>将 <code>URL</code> 配置中的 <code>permalink</code>
-参数置空或改为英文文件夹名 (详细配置请参考<a href="/hexo-note.html#网址-URL">网址-URL</a>)</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">permalink:</span> </span><br></pre></td></tr></table></figure>
-<h2 id="为每篇文章手动配置-permalink">为每篇文章手动配置
-<code>permalink</code></h2>
-<p>在你的博文的 <code>Front-matter</code> 中添加 <code>permalink</code>
-参数 (详细配置请参考<a href="/hexo-note.html#hexo%20博文头%20-%20Front-matter">Front-matter</a>)</p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">/project/index.html</span></span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>error</tag>
-        <tag>hexo</tag>
-        <tag>hexo-asset-image</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hgame misc week4 题目 - 摆烂</title>
     <url>//wp/hgame-bailan.html</url>
     <content><![CDATA[<h1 id="题目描述">题目描述</h1>
@@ -869,6 +981,63 @@ http://330k.github.io/misc_tools/unicode_steganography.html
         <tag>hgame</tag>
         <tag>wp</tag>
         <tag>misc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo 插件笔记</title>
+    <url>//hexo-plugins-note.html</url>
+    <content><![CDATA[<h2 id="hexo-插件---hexo-word-counter">hexo 插件 -
+<code>hexo-word-counter</code></h2>
+<p>实现字数统计与阅读时间预估功能</p>
+<ul>
+<li><p><strong>安装指令</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-word-counter --save</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>hexo 配置</strong></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">symbols:</span> <span class="literal">true</span>					<span class="comment"># 显示博文字数</span></span><br><span class="line">  <span class="attr">time:</span> <span class="literal">true</span>					<span class="comment"># 显示预计阅读时间</span></span><br><span class="line">  <span class="attr">total_symbols:</span> <span class="literal">true</span>			<span class="comment"># 在页脚显示总字数</span></span><br><span class="line">  <span class="attr">total_time:</span> <span class="literal">true</span>				<span class="comment"># 在页脚显示总阅读时间</span></span><br><span class="line">  <span class="attr">awl:</span> <span class="number">4</span>						<span class="comment"># 平均字长 (用于计算)</span></span><br><span class="line">  <span class="attr">wpm:</span> <span class="number">275</span>						<span class="comment"># 每分钟阅读的平均字数 (用于计算)</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>NexT 主题配置</strong></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">separated_meta:</span> <span class="literal">true</span>			<span class="comment"># 字数和阅读时间是否分行显示</span></span><br><span class="line">  <span class="attr">item_text_total:</span> <span class="literal">true</span>			<span class="comment"># 页脚是否显示字数和阅读时间 (默认不显示)</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="hexo-插件---hexo-generator-searchdb">hexo 插件 -
+<code>hexo-generator-searchdb</code></h2>
+<p>实现本地搜索功能</p>
+<ul>
+<li><p><strong>安装指令</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>hexo 配置</strong></p>
+<ul>
+<li><code>path</code> → 搜索记录文件</li>
+<li><code>field</code> → 搜索内容</li>
+<li><code>format</code> → 搜索后缀</li>
+<li><code>limit</code> → 最大搜索限制</li>
+</ul>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>NexT 主题配置</strong></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">trigger:</span> <span class="string">auto</span>					<span class="comment"># 是否无视回车自动搜索 (auto | maual)</span></span><br><span class="line">  <span class="attr">top_n_per_article:</span> <span class="number">1</span>			<span class="comment"># 每个搜索展示几个结果</span></span><br><span class="line">  <span class="attr">unescape:</span> <span class="literal">false</span>				<span class="comment"># 读取内容</span></span><br><span class="line">  <span class="attr">preload:</span> <span class="literal">false</span>				<span class="comment"># 预读取页面内容</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="hexo-插件---hexo-all-minifier">hexo 插件 -
+<code>hexo-all-minifier</code></h2>
+<p>可以对html、css、js、images进行压缩，即把重复的代码合并，把多余的空格去掉，用算法对images进行压缩，加快网页加载速度。</p>
+<ul>
+<li><p><strong>安装指令</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-all-minifier --save</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>hexo 配置</strong></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">html_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">ignore_error:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">css_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;*.min.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">js_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;*.min.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">image_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">interlaced:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">multipass:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">optimizationLevel:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">pngquant:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">progressive:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="next-插件---hexo-related-popular-posts">NexT 插件 -
+<code>hexo-related-popular-posts</code></h2>
+<p>实现热门相关帖子功能</p>
+<ul>
+<li><p><strong>安装指令</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-related-popular-posts --save</span><br></pre></td></tr></table></figure></li>
+<li><p><strong>NexT 主题配置</strong></p>
+<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">related_posts:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 是否开启插件</span></span><br><span class="line">  <span class="attr">title:</span>						<span class="comment"># related-popular-posts 的名字 (默认使用相关文章)</span></span><br><span class="line">  <span class="attr">display_in_home:</span> <span class="literal">false</span>		<span class="comment"># 是否在首页使用相关/热门帖子</span></span><br><span class="line">  <span class="attr">params:</span></span><br><span class="line">    <span class="attr">maxCount:</span> <span class="number">5</span>					<span class="comment"># 最大显示</span></span><br><span class="line">    <span class="comment">#PPMixingRate: 0.0			# 热门与相关的混合比例</span></span><br><span class="line">    <span class="comment">#isDate: false				# 是否显示日期</span></span><br><span class="line">    <span class="comment">#isImage: false				# 是否显示图像</span></span><br><span class="line">    <span class="comment">#isExcerpt: false			# 是否显示摘录</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>hexo</tag>
+        <tag>NexT</tag>
+        <tag>plugins</tag>
       </tags>
   </entry>
   <entry>
@@ -1157,63 +1326,6 @@ format</h3>
       </tags>
   </entry>
   <entry>
-    <title>hexo 插件笔记</title>
-    <url>//hexo-plugins-note.html</url>
-    <content><![CDATA[<h2 id="hexo-插件---hexo-word-counter">hexo 插件 -
-<code>hexo-word-counter</code></h2>
-<p>实现字数统计与阅读时间预估功能</p>
-<ul>
-<li><p><strong>安装指令</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-word-counter --save</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>hexo 配置</strong></p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">symbols:</span> <span class="literal">true</span>					<span class="comment"># 显示博文字数</span></span><br><span class="line">  <span class="attr">time:</span> <span class="literal">true</span>					<span class="comment"># 显示预计阅读时间</span></span><br><span class="line">  <span class="attr">total_symbols:</span> <span class="literal">true</span>			<span class="comment"># 在页脚显示总字数</span></span><br><span class="line">  <span class="attr">total_time:</span> <span class="literal">true</span>				<span class="comment"># 在页脚显示总阅读时间</span></span><br><span class="line">  <span class="attr">awl:</span> <span class="number">4</span>						<span class="comment"># 平均字长 (用于计算)</span></span><br><span class="line">  <span class="attr">wpm:</span> <span class="number">275</span>						<span class="comment"># 每分钟阅读的平均字数 (用于计算)</span></span><br></pre></td></tr></table></figure></li>
-<li><p><strong>NexT 主题配置</strong></p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">symbols_count_time:</span></span><br><span class="line">  <span class="attr">separated_meta:</span> <span class="literal">true</span>			<span class="comment"># 字数和阅读时间是否分行显示</span></span><br><span class="line">  <span class="attr">item_text_total:</span> <span class="literal">true</span>			<span class="comment"># 页脚是否显示字数和阅读时间 (默认不显示)</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="hexo-插件---hexo-generator-searchdb">hexo 插件 -
-<code>hexo-generator-searchdb</code></h2>
-<p>实现本地搜索功能</p>
-<ul>
-<li><p><strong>安装指令</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-generator-searchdb --save</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>hexo 配置</strong></p>
-<ul>
-<li><code>path</code> → 搜索记录文件</li>
-<li><code>field</code> → 搜索内容</li>
-<li><code>format</code> → 搜索后缀</li>
-<li><code>limit</code> → 最大搜索限制</li>
-</ul>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Local search</span></span><br><span class="line"><span class="attr">search:</span></span><br><span class="line">  <span class="attr">path:</span> <span class="string">search.xml</span></span><br><span class="line">  <span class="attr">field:</span> <span class="string">post</span></span><br><span class="line">  <span class="attr">format:</span> <span class="string">html</span></span><br><span class="line">  <span class="attr">limit:</span> <span class="number">10000</span></span><br></pre></td></tr></table></figure></li>
-<li><p><strong>NexT 主题配置</strong></p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">local_search:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">trigger:</span> <span class="string">auto</span>					<span class="comment"># 是否无视回车自动搜索 (auto | maual)</span></span><br><span class="line">  <span class="attr">top_n_per_article:</span> <span class="number">1</span>			<span class="comment"># 每个搜索展示几个结果</span></span><br><span class="line">  <span class="attr">unescape:</span> <span class="literal">false</span>				<span class="comment"># 读取内容</span></span><br><span class="line">  <span class="attr">preload:</span> <span class="literal">false</span>				<span class="comment"># 预读取页面内容</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="hexo-插件---hexo-all-minifier">hexo 插件 -
-<code>hexo-all-minifier</code></h2>
-<p>可以对html、css、js、images进行压缩，即把重复的代码合并，把多余的空格去掉，用算法对images进行压缩，加快网页加载速度。</p>
-<ul>
-<li><p><strong>安装指令</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-all-minifier --save</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>hexo 配置</strong></p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">html_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">ignore_error:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line"></span><br><span class="line"><span class="attr">css_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;*.min.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">js_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">mangle:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">output:</span></span><br><span class="line">  <span class="attr">compress:</span></span><br><span class="line">  <span class="attr">exclude:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&#x27;*.min.js&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">image_minifier:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">true</span></span><br><span class="line">  <span class="attr">interlaced:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">multipass:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">optimizationLevel:</span> <span class="number">2</span></span><br><span class="line">  <span class="attr">pngquant:</span> <span class="literal">false</span></span><br><span class="line">  <span class="attr">progressive:</span> <span class="literal">false</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h2 id="next-插件---hexo-related-popular-posts">NexT 插件 -
-<code>hexo-related-popular-posts</code></h2>
-<p>实现热门相关帖子功能</p>
-<ul>
-<li><p><strong>安装指令</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-related-popular-posts --save</span><br></pre></td></tr></table></figure></li>
-<li><p><strong>NexT 主题配置</strong></p>
-<figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">related_posts:</span></span><br><span class="line">  <span class="attr">enable:</span> <span class="literal">false</span>					<span class="comment"># 是否开启插件</span></span><br><span class="line">  <span class="attr">title:</span>						<span class="comment"># related-popular-posts 的名字 (默认使用相关文章)</span></span><br><span class="line">  <span class="attr">display_in_home:</span> <span class="literal">false</span>		<span class="comment"># 是否在首页使用相关/热门帖子</span></span><br><span class="line">  <span class="attr">params:</span></span><br><span class="line">    <span class="attr">maxCount:</span> <span class="number">5</span>					<span class="comment"># 最大显示</span></span><br><span class="line">    <span class="comment">#PPMixingRate: 0.0			# 热门与相关的混合比例</span></span><br><span class="line">    <span class="comment">#isDate: false				# 是否显示日期</span></span><br><span class="line">    <span class="comment">#isImage: false				# 是否显示图像</span></span><br><span class="line">    <span class="comment">#isExcerpt: false			# 是否显示摘录</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>note</tag>
-        <tag>hexo</tag>
-        <tag>NexT</tag>
-        <tag>plugins</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>hgame-ezrsa</title>
     <url>//hgame/ezrsa.html</url>
     <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extendedGCD</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    <span class="comment">#a*xi + b*yi = ri</span></span><br><span class="line">    <span class="keyword">if</span> b == <span class="number">0</span>:         </span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>, <span class="number">0</span>, a     </span><br><span class="line">    <span class="keyword">else</span>:         </span><br><span class="line">        x, y, q = extendedGCD(b, a % b) </span><br><span class="line">        <span class="comment"># q = gcd(a, b) = gcd(b, a%b)         </span></span><br><span class="line">        x, y = y, (x - (a // b) * y)         </span><br><span class="line">        <span class="keyword">return</span> x, y, q</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">computeD</span>(<span class="params">fn, e</span>):</span></span><br><span class="line">    (x, y, r) = extendedGCD(fn, e)</span><br><span class="line">    <span class="comment">#y maybe &lt; 0, so convert it</span></span><br><span class="line">    <span class="keyword">if</span> y &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> fn + y</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fastExpMod</span>(<span class="params">b,e,c</span>):</span></span><br><span class="line">    result = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> e != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">if</span> (e &amp; <span class="number">1</span>) == <span class="number">1</span>:</span><br><span class="line">            result = (result * b) % c</span><br><span class="line">        e &gt;&gt;= <span class="number">1</span></span><br><span class="line">        b = (b * b ) % c</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">l = [(<span class="number">12433</span>, <span class="number">149</span>, <span class="number">197</span>, <span class="number">104</span>), (<span class="number">8147</span>, <span class="number">131</span>, <span class="number">167</span>, <span class="number">6633</span>), (<span class="number">10687</span>, <span class="number">211</span>, <span class="number">197</span>, <span class="number">35594</span>), (<span class="number">19681</span>, <span class="number">131</span>, <span class="number">211</span>, <span class="number">15710</span>), (<span class="number">33577</span>, <span class="number">251</span>, <span class="number">211</span>, <span class="number">38798</span>), (<span class="number">30241</span>, <span class="number">157</span>, <span class="number">251</span>, <span class="number">35973</span>), (<span class="number">293</span>, <span class="number">211</span>, <span class="number">157</span>, <span class="number">31548</span>), (<span class="number">26459</span>, <span class="number">179</span>, <span class="number">149</span>, <span class="number">4778</span>), (<span class="number">27479</span>, <span class="number">149</span>, <span class="number">223</span>, <span class="number">32728</span>), (<span class="number">9029</span>, <span class="number">223</span>, <span class="number">137</span>, <span class="number">20696</span>), (<span class="number">4649</span>, <span class="number">149</span>, <span class="number">151</span>, <span class="number">13418</span>), (<span class="number">11783</span>, <span class="number">223</span>, <span class="number">251</span>, <span class="number">14239</span>), (<span class="number">13537</span>, <span class="number">179</span>, <span class="number">137</span>, <span class="number">11702</span>), (<span class="number">3835</span>, <span class="number">167</span>, <span class="number">139</span>, <span class="number">20051</span>), (<span class="number">30983</span>, <span class="number">149</span>, <span class="number">227</span>, <span class="number">23928</span>), (<span class="number">17581</span>, <span class="number">157</span>, <span class="number">131</span>, <span class="number">5855</span>), (<span class="number">35381</span>, <span class="number">223</span>, <span class="number">179</span>, <span class="number">37774</span>), (<span class="number">2357</span>, <span class="number">151</span>, <span class="number">223</span>, <span class="number">1849</span>), (<span class="number">22649</span>, <span class="number">211</span>, <span class="number">229</span>, <span class="number">7348</span>), (<span class="number">1151</span>, <span class="number">179</span>, <span class="number">223</span>, <span class="number">17982</span>), (<span class="number">8431</span>, <span class="number">251</span>, <span class="number">163</span>, <span class="number">30226</span>), (<span class="number">38501</span>, <span class="number">193</span>, <span class="number">211</span>, <span class="number">30559</span>), (<span class="number">14549</span>, <span class="number">211</span>, <span class="number">151</span>, <span class="number">21143</span>), (<span class="number">24781</span>, <span class="number">239</span>, <span class="number">241</span>, <span class="number">45604</span>), (<span class="number">8051</span>, <span class="number">179</span>, <span class="number">131</span>, <span class="number">7994</span>), (<span class="number">863</span>, <span class="number">181</span>, <span class="number">131</span>, <span class="number">11493</span>), (<span class="number">1117</span>, <span class="number">239</span>, <span class="number">157</span>, <span class="number">12579</span>), (<span class="number">7561</span>, <span class="number">149</span>, <span class="number">199</span>, <span class="number">8960</span>), (<span class="number">19813</span>, <span class="number">239</span>, <span class="number">229</span>, <span class="number">53463</span>), (<span class="number">4943</span>, <span class="number">131</span>, <span class="number">157</span>, <span class="number">14606</span>), (<span class="number">29077</span>, <span class="number">191</span>, <span class="number">181</span>, <span class="number">33446</span>), (<span class="number">18583</span>, <span class="number">211</span>, <span class="number">163</span>, <span class="number">31800</span>), (<span class="number">30643</span>, <span class="number">173</span>, <span class="number">191</span>, <span class="number">27293</span>), (<span class="number">11617</span>, <span class="number">223</span>, <span class="number">251</span>, <span class="number">13448</span>), (<span class="number">19051</span>, <span class="number">191</span>, <span class="number">151</span>, <span class="number">21676</span>), (<span class="number">18367</span>, <span class="number">179</span>, <span class="number">157</span>, <span class="number">14139</span>), (<span class="number">18861</span>, <span class="number">149</span>, <span class="number">191</span>, <span class="number">5139</span>), (<span class="number">9581</span>, <span class="number">211</span>, <span class="number">193</span>, <span class="number">25595</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> l:</span><br><span class="line">    e = i[<span class="number">0</span>]</span><br><span class="line">    p = i[<span class="number">1</span>]</span><br><span class="line">    q = i[<span class="number">2</span>]</span><br><span class="line">    c = i[<span class="number">3</span>]</span><br><span class="line">    n = p * q</span><br><span class="line">    fn = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">    d = computeD(fn, e)</span><br><span class="line">    m = fastExpMod(c, d, n)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(m), end=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
@@ -1430,29 +1542,6 @@ format</h3>
         <tag>note</tag>
         <tag>latex</tag>
         <tag>math</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>powershell：尝试新的跨平台 PowerShell https://aka.ms/pscore6</title>
-    <url>//errors/pscore6-error.html</url>
-    <content><![CDATA[<h1 id="错误分析">错误分析</h1>
-<p>powershell 版本过老，提示更新</p>
-<figure>
-<img src="/errors/pscore6-error/pserror.png" alt="pserror">
-<figcaption aria-hidden="true">pserror</figcaption>
-</figure>
-<h1 id="修复错误">修复错误</h1>
-<p>进入 https://github.com/PowerShell/PowerShell/releases/
-寻找合适的版本 (推荐最新版) 进行下载并安装</p>
-<figure>
-<img src="/errors/pscore6-error/psreleases.png" alt="psreleases">
-<figcaption aria-hidden="true">psreleases</figcaption>
-</figure>
-]]></content>
-      <tags>
-        <tag>error</tag>
-        <tag>powershell</tag>
-        <tag>windows</tag>
       </tags>
   </entry>
   <entry>
@@ -2032,6 +2121,153 @@ Customization</a></p>
       </tags>
   </entry>
   <entry>
+    <title>piet 编程语言笔记</title>
+    <url>//piet-note.html</url>
+    <content><![CDATA[<h1 id="piet-语言简述">Piet 语言简述</h1>
+<p>Piet 是一种非常深奥的编程语言，使用颜色编写代码。由David
+Morgan-Mar，其方案是位图，看起来像抽象艺术设计。编译指导图像周围移动，从一个连续颜色的区域下的一个“指针”。通过一个地区的指针退出时的程序进行。</p>
+<h1 id="piet-语言编程">Piet 语言编程</h1>
+<p>我们可以使用 https://gabriellesc.github.io/piet/ 编写 Piet</p>
+<h1 id="piet-语言运行">Piet 语言运行</h1>
+<p>Piet 拥有解释器和编译器，其中</p>
+<ul>
+<li><p>Windows 平台解释器</p>
+<p>使用 Mike Tolly 所编写的 npiet，下载链接如下：</p>
+<p>https://www.bertnase.de/npiet/npiet-1.3a-win32.zip</p>
+<p>有关 npiet 的简介跟用法可以查看：</p>
+<p>https://www.bertnase.de/npiet</p>
+<p>或是使用命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npiet.exe -h</span><br></pre></td></tr></table></figure></li>
+<li><p>Linux 平台解释器</p>
+<p>https://github.com/JensBouman/Piet_interpreter</p>
+<p>该解释器带有使用 <code>tkinter</code> 库编写的 GUI</p>
+<p>用 git 克隆或通过 github 下载源码后，直接运行 <code>main.py</code>
+即可</p>
+<p>但该解释器编写于 python3，且依赖
+<code>pillow</code>、<code>numpy</code> 和 <code>pygubu</code>
+库，可以使用以下指令进行安装</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip3 install pillow</span><br><span class="line">pip3 install numpy</span><br><span class="line">pip3 install pygubu</span><br></pre></td></tr></table></figure>
+<p>可以使用以下命令了解用法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 ./main.py -h</span><br></pre></td></tr></table></figure></li>
+<li><p>全平台翻译器</p>
+<p>https://github.com/boothby/repiet</p>
+<p>该翻译器可以将 piet 语言的 PNG、GIF 图片翻译为 C、C++、Python、piet
+和 repiet 语言 (如果不指定会默认翻译为 Python)</p>
+<p>该翻译器使用 python3，可以直接使用以下指令获取</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pip3 install repiet</span><br></pre></td></tr></table></figure>
+<p>更多用法可查看 github 主页和使用以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">repiet.exe -h</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>piet</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>汉字拼音加密笔记</title>
+    <url>//pinyin-encode-note</url>
+    <content><![CDATA[<h1 id="原理">原理</h1>
+<p>汉字拼音有多种表示法，为了让算法可逆，我们使用声调风格为拼音音调以数字形式加在拼音末尾处的格式。</p>
+<blockquote>
+<p>如 <code>聪</code> 表示为 <code>cong1</code></p>
+</blockquote>
+<p>我们使用 Python3 中的 <code>pypinyin</code> 包，借用其中的
+<code>pypinyin.lazy_pinyin()</code> 函数快捷获取汉字拼音。</p>
+<blockquote>
+<p>示例：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt;&gt;&gt; from pypinyin import lazy_pinyin</span><br><span class="line">&gt;&gt;&gt; lazy_pinyin(<span class="string">&quot;独奏&quot;</span>, style=8)</span><br><span class="line">[<span class="string">&#x27;du2&#x27;</span>, <span class="string">&#x27;zou4&#x27;</span>]</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>然后我们将每个拼音的 ascii 码加起来，得到总和模 128
+便可得到每个汉字所对应的 ascii 码明文。</p>
+<blockquote>
+<p>如 <code>独</code> 的拼音为 <code>'du2'</code>，所对应的 ascii
+码明文为 11</p>
+</blockquote>
+<p>这样我们便得到了每个明文可以对应的汉字，其中按理来说，每个 ascii
+明文所对应的汉字应该是多个的。</p>
+<p>有关 <code>pypinyin</code> 库的用法可查阅它们的 github
+主页和官方文档：</p>
+<p>https://github.com/mozillazg/python-pinyin</p>
+<p>https://pypinyin.readthedocs.io/zh_CN/master/</p>
+<h1 id="代码">代码</h1>
+<p>这里只给出解密代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pypinyin</span><br><span class="line"></span><br><span class="line">l = <span class="string">&#x27;夺旗赛好难啊&#x27;</span></span><br><span class="line">d = [pypinyin.lazy_pinyin(i, pypinyin.Style.TONE3) <span class="keyword">for</span> i <span class="keyword">in</span> l]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> d[<span class="number">0</span>]:</span><br><span class="line">    a = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> i:</span><br><span class="line">        a += <span class="built_in">ord</span>(j)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(a % <span class="number">128</span>), end=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ps 图像缩放功能笔记</title>
+    <url>//ps-distort-note.html</url>
+    <content><![CDATA[<h1 id="最邻近插值算法-nearest-neighbor-interpolation">最邻近插值算法
+(nearest neighbor interpolation)</h1>
+<p>最邻近插值算法是将目标图像各点的像素值设为源图像中与其最近的点。算法优点在与简单、速度快。</p>
+<p>如果是图像放大，算法会将空白数据处采用最邻近的原像素填充。</p>
+<p>如果是图像缩小，算法会选取最小像素块中的中心像素，而舍弃周围像素。</p>
+<h1 id="ps-中的邻近采样">PS 中的邻近采样</h1>
+<p>打开图片，点击 <code>图像-图像大小</code>，勾选 <code>重新采样</code>
+后，采样算法选择
+<code>邻近</code>，然后自由输入想要缩放到的大小即可。</p>
+<p>一般默认期望为等比例缩放，若不为等比例缩放，邻近采样可能达不到想要的效果。</p>
+<h2 id="操作示例">操作示例</h2>
+<p>操作以下面这张图进行示例：</p>
+<figure>
+<img src="/ps-distort-note/before.png" alt="before">
+<figcaption aria-hidden="true">before</figcaption>
+</figure>
+<p>打开图片后，选择 <code>图像-图像大小</code></p>
+<figure>
+<img src="/ps-distort-note/setting.png" alt="setting">
+<figcaption aria-hidden="true">setting</figcaption>
+</figure>
+<p>我们因为是想要图片中的有颜色的像素点组成的图像，我们便使用
+<code>邻近</code>
+采样，将除了有颜色的像素点周围的像素舍弃，计算得到每5个像素中心便存在一个有颜色的像素点，即大小从
+215x215 变更为 43x43</p>
+<figure>
+<img src="/ps-distort-note/setting2.png" alt="setting2">
+<figcaption aria-hidden="true">setting2</figcaption>
+</figure>
+<p>最后生成我们需求的图片：</p>
+<figure>
+<img src="/ps-distort-note/after.png" alt="after">
+<figcaption aria-hidden="true">after</figcaption>
+</figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>misc</tag>
+        <tag>photoshop</tag>
+        <tag>distort</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>powershell：尝试新的跨平台 PowerShell https://aka.ms/pscore6</title>
+    <url>//errors/pscore6-error.html</url>
+    <content><![CDATA[<h1 id="错误分析">错误分析</h1>
+<p>powershell 版本过老，提示更新</p>
+<figure>
+<img src="/errors/pscore6-error/pserror.png" alt="pserror">
+<figcaption aria-hidden="true">pserror</figcaption>
+</figure>
+<h1 id="修复错误">修复错误</h1>
+<p>进入 https://github.com/PowerShell/PowerShell/releases/
+寻找合适的版本 (推荐最新版) 进行下载并安装</p>
+<figure>
+<img src="/errors/pscore6-error/psreleases.png" alt="psreleases">
+<figcaption aria-hidden="true">psreleases</figcaption>
+</figure>
+]]></content>
+      <tags>
+        <tag>error</tag>
+        <tag>powershell</tag>
+        <tag>windows</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>rc4 笔记</title>
     <url>//rc4-note.html</url>
     <content><![CDATA[<h1 id="rc4-原理">RC4 原理</h1>
@@ -2165,32 +2401,6 @@ mn\)</span></p>
         <tag>note</tag>
         <tag>crypto</tag>
         <tag>rsa</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>uuencode 笔记</title>
-    <url>//uuencode-note.html</url>
-    <content><![CDATA[<h1 id="uuencode-原理">UUEncode 原理</h1>
-<p>Uuencode是二进制信息和文字信息之间的转换编码，也就是机器和人眼识读的转换。Uuencode编码方案常见于电子邮件信息的传输，目前已被多用途互联网邮件扩展（MIME）大量取代。</p>
-<p>Uuencode将输入文字以每三个字节为单位进行编码，如此重复进行。如果最后剩下的文字少于三个字节，不够的部份用零补齐。这三个字节共有24个Bit，以6-bit为单位分为4个群组，每个群组以十进制来表示所出现的数值只会落在0到63之间。将每个数加上32，所产生的结果刚好落在ASCII字符集中可打印字符（32-空白...95-底线）的范围之中。</p>
-<p>Uuencode编码每60个将输出为独立的一行（相当于45个输入字节），每行的开头会加上长度字符，除了最后一行之外，长度字符都应该是“M”这个ASCII字符（77=32+45），最后一行的长度字符为32+剩下的字节数目这个ASCII字符。</p>
-<p>Uuencode编码与base64编码类似，但base64将0~63之间的数字通过查表换字符，而Uuencode编码是直接将这个数字加上32转换为可打印字符。</p>
-<h1 id="c-实现">C++ 实现</h1>
-<h2 id="加密---encode">加密 - Encode</h2>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">encode</span><span class="params">(<span class="keyword">const</span> string&amp; plain)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;有机会再实现&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="解密---decode">解密 - Decode</h2>
-<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">decode</span><span class="params">(<span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;有机会再实现&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="python-实现">Python 实现</h1>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> uu</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 uuencode 将 in_file 文件编码为 out_file 文件。</span></span><br><span class="line"><span class="comment"># 经过 uuencoded 编码的文件将具有指定 name 和 mode 作为解码该文件默认结果的标头。</span></span><br><span class="line"><span class="comment"># 默认值会相应地从 in_file 或 &#x27;-&#x27; 以及 0o666 中提取。</span></span><br><span class="line"><span class="comment"># 如果 backtick 为真值，零会用 &#x27;`&#x27; 而不是空格来表示。</span></span><br><span class="line">uu.encode(in_file, out_file, mode=<span class="literal">None</span>, *, backtick=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用此函数会解码 uuencod 编码的 in_file 文件并将结果放入 out_file 文件。</span></span><br><span class="line"><span class="comment"># 如果 out_file 是一个路径名称，mode 会在必须创建文件时用于设置权限位。</span></span><br><span class="line"><span class="comment"># out_file 和 mode 的默认值会从 uuencode 标头中提取。</span></span><br><span class="line"><span class="comment"># 但是，如果标头中指定的文件已存在，则会引发 uu.Error。</span></span><br><span class="line">uu.decode(in_file, out_file=<span class="literal">None</span>, mode=<span class="literal">None</span>, quiet=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
-<h1 id="在线网站">在线网站</h1>
-<ul>
-<li>https://www.qqxiuzi.cn/bianma/uuencode.php</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>note</tag>
-        <tag>crypto</tag>
-        <tag>uuencode</tag>
       </tags>
   </entry>
   <entry>
@@ -2480,6 +2690,32 @@ RSA</strong>公钥和私钥文件。</p>
       <tags>
         <tag>error</tag>
         <tag>volatility3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>uuencode 笔记</title>
+    <url>//uuencode-note.html</url>
+    <content><![CDATA[<h1 id="uuencode-原理">UUEncode 原理</h1>
+<p>Uuencode是二进制信息和文字信息之间的转换编码，也就是机器和人眼识读的转换。Uuencode编码方案常见于电子邮件信息的传输，目前已被多用途互联网邮件扩展（MIME）大量取代。</p>
+<p>Uuencode将输入文字以每三个字节为单位进行编码，如此重复进行。如果最后剩下的文字少于三个字节，不够的部份用零补齐。这三个字节共有24个Bit，以6-bit为单位分为4个群组，每个群组以十进制来表示所出现的数值只会落在0到63之间。将每个数加上32，所产生的结果刚好落在ASCII字符集中可打印字符（32-空白...95-底线）的范围之中。</p>
+<p>Uuencode编码每60个将输出为独立的一行（相当于45个输入字节），每行的开头会加上长度字符，除了最后一行之外，长度字符都应该是“M”这个ASCII字符（77=32+45），最后一行的长度字符为32+剩下的字节数目这个ASCII字符。</p>
+<p>Uuencode编码与base64编码类似，但base64将0~63之间的数字通过查表换字符，而Uuencode编码是直接将这个数字加上32转换为可打印字符。</p>
+<h1 id="c-实现">C++ 实现</h1>
+<h2 id="加密---encode">加密 - Encode</h2>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">encode</span><span class="params">(<span class="keyword">const</span> string&amp; plain)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;有机会再实现&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="解密---decode">解密 - Decode</h2>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">string <span class="title">decode</span><span class="params">(<span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;有机会再实现&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="python-实现">Python 实现</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> uu</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 uuencode 将 in_file 文件编码为 out_file 文件。</span></span><br><span class="line"><span class="comment"># 经过 uuencoded 编码的文件将具有指定 name 和 mode 作为解码该文件默认结果的标头。</span></span><br><span class="line"><span class="comment"># 默认值会相应地从 in_file 或 &#x27;-&#x27; 以及 0o666 中提取。</span></span><br><span class="line"><span class="comment"># 如果 backtick 为真值，零会用 &#x27;`&#x27; 而不是空格来表示。</span></span><br><span class="line">uu.encode(in_file, out_file, mode=<span class="literal">None</span>, *, backtick=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 调用此函数会解码 uuencod 编码的 in_file 文件并将结果放入 out_file 文件。</span></span><br><span class="line"><span class="comment"># 如果 out_file 是一个路径名称，mode 会在必须创建文件时用于设置权限位。</span></span><br><span class="line"><span class="comment"># out_file 和 mode 的默认值会从 uuencode 标头中提取。</span></span><br><span class="line"><span class="comment"># 但是，如果标头中指定的文件已存在，则会引发 uu.Error。</span></span><br><span class="line">uu.decode(in_file, out_file=<span class="literal">None</span>, mode=<span class="literal">None</span>, quiet=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="在线网站">在线网站</h1>
+<ul>
+<li>https://www.qqxiuzi.cn/bianma/uuencode.php</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
+        <tag>uuencode</tag>
       </tags>
   </entry>
   <entry>
