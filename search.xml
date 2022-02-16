@@ -147,8 +147,8 @@ OnllyDbg 调试器识别这个异常。</p>
 <p><strong>置乱的实质是新位置与旧位置的映射，且该映射是一一对应的。</strong></p>
 <p>下图是一次猫脸变换的示意图：</p>
 <figure>
-<img src="/arnold-cat-note/cat.png" alt="cat">
-<figcaption aria-hidden="true">cat</figcaption>
+<img src="/arnold-cat-note/cat.png" alt="猫脸变换图解">
+<figcaption aria-hidden="true">猫脸变换图解</figcaption>
 </figure>
 <ol type="1">
 <li>先在 (a) 原图上做水平方向的错切</li>
@@ -3257,6 +3257,203 @@ https://github.com/Z3Prover/z3/releases 中下载 <code>release</code>
         <tag>note</tag>
         <tag>python</tag>
         <tag>z3</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>有关 C/C++ 的异常处理方式笔记</title>
+    <url>//cexception-note.html</url>
+    <content><![CDATA[<h1 id="c-的异常处理">C 的异常处理</h1>
+<p>在 C 语言中最常使用 <code>setjmp.h</code> 库处理我们的异常。</p>
+<p>最简单的异常处理，我们会使用其中的两个函数：<code>setjmp</code> 和
+<code>longjmp</code></p>
+<h2 id="jmp_buf-数组"><code>jmp_buf</code> 数组</h2>
+<p><code>jmp_buf</code> 在 MSVC 中被定义为 <code>DWORD</code> 数组。</p>
+<p><code>jmp_buf</code> 被用来保存跳转现场，即用来保存当前调用的
+ESP、EIP、EBP、EBX、EDI、ESI 等寄存器和标志位的信息。</p>
+<h2 id="setjmp-函数"><code>setjmp</code> 函数</h2>
+<p><code>setjmp</code> 需要接收一个 <code>jmp_buf</code>
+数组指针，将这个时候调用 <code>setjmp</code> 时的寄存器状态保存在
+<code>jmp_buf</code> 里，然后返回 <code>0</code>
+代表跳转点设置成功。</p>
+<p>当 <code>long_jmp</code> 被调用后，会让 <code>setjmp</code>
+函数返回一个值代表此次运行为跳转运行。</p>
+<p>代码示例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">jmp_buf jb;</span><br><span class="line">setjmp(jb);</span><br></pre></td></tr></table></figure>
+<h2 id="long_jmp-函数"><code>long_jmp</code> 函数</h2>
+<p><code>long_jmp</code> 需要接收一个 <code>jmp_buf</code>
+数组指针和一个自定义 <code>int</code> 类型信息 (会作为跳转后
+<code>set_jmp</code> 的返回值)。</p>
+<p>它会根据传入的 <code>jmp_buf</code>
+数组还原寄存器信息，即跳转到上一次调用 <code>set_jmp(jmp_buf)</code>
+的时刻，然后将传入的 <code>int</code> 类型值作为 <code>set_jmp</code>
+的返回值返回。</p>
+<blockquote>
+<p>注意非必要不要传 <code>0</code>，否则无法分辨 <code>set_jmp</code>
+是跳转回来的还是正常运行的。</p>
+</blockquote>
+<p>代码示例：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line">longjmp(jb, <span class="number">-1</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="完整示例">完整示例</h2>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;setjmp.h&gt;</span></span></span><br><span class="line"></span><br><span class="line">jmp_buf jb;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">calc</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (x == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		longjmp(jb, <span class="number">1</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (x == <span class="number">10</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		longjmp(jb, <span class="number">2</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">10</span> / x;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> num;</span><br><span class="line">	<span class="keyword">int</span> msg;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;Pls. input a number to calc: &quot;</span>);</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;num);</span><br><span class="line"></span><br><span class="line">	msg = setjmp(jb);</span><br><span class="line">	<span class="keyword">if</span> (msg == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;the value is %d.\n&quot;</span>, calc(num));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (msg == <span class="number">1</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;number can not be 0...\n&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (msg == <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;calc() do not like 10...\n&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;I do not know what happened...\n&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="c-的异常处理-1">C++ 的异常处理</h1>
+<p>在 C++ 中最常使用 C++ 标准所提供的 <code>try - catch - throw</code>
+异常处理模块来处理我们的异常。</p>
+<h2 id="try---catch-块"><code>try - catch</code> 块</h2>
+<p><code>try</code> 块中的代码被称为保护代码，后面通常跟着一个或多个
+<code>catch</code> 块。</p>
+<p><code>catch</code> 块跟在 <code>try</code>
+块后面，用于捕获异常。可以指定想要捕捉的异常类型，这是由 catch
+关键字后的括号内的异常声明决定的。</p>
+<p>代码示例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">// 保护代码</span></span><br><span class="line">&#125;<span class="built_in"><span class="keyword">catch</span></span>( ExceptionName e1 )</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">// catch 块</span></span><br><span class="line">&#125;<span class="built_in"><span class="keyword">catch</span></span>( ExceptionName e2 )</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">// catch 块</span></span><br><span class="line">&#125;<span class="built_in"><span class="keyword">catch</span></span>( ExceptionName eN )</span><br><span class="line">&#123;</span><br><span class="line">   <span class="comment">// catch 块</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="throw-语句"><code>throw</code> 语句</h2>
+<p>当问题出现时，程序会抛出一个异常。这是通过使用 <code>throw</code>
+关键字来完成的。</p>
+<p>其中 <code>throw</code> 后跟着的信息与 <code>catch</code>
+的接收有关。(即 <code>throw</code> 什么就 <code>catch</code> 什么)</p>
+<p>代码示例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">division</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   <span class="keyword">if</span>( b == <span class="number">0</span> )</span><br><span class="line">   &#123;</span><br><span class="line">      <span class="keyword">throw</span> <span class="string">&quot;Division by zero condition!&quot;</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">return</span> (a/b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="完整示例-1">完整示例</h2>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">double</span> <span class="title">division</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (b == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="string">&quot;Division by zero condition!&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> (a / b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> x = <span class="number">50</span>;</span><br><span class="line">	<span class="keyword">int</span> y = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">double</span> z = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">try</span> &#123;</span><br><span class="line">		z = <span class="built_in">division</span>(x, y);</span><br><span class="line">		cout &lt;&lt; z &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in"><span class="keyword">catch</span></span> (<span class="keyword">const</span> <span class="keyword">char</span>* msg) &#123;</span><br><span class="line">		cerr &lt;&lt; msg &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="标准异常">标准异常</h2>
+<p>C++ 提供了一系列标准的异常，定义在 <code>&lt;exception&gt;</code>
+中，我们可以在程序中使用这些标准的异常。它们是以父子类层次结构组织起来的，如下所示：</p>
+<figure>
+<img src="/cexception-note/exceptions_in_cpp.png" alt="C++ 异常的层次结构">
+<figcaption aria-hidden="true">C++ 异常的层次结构</figcaption>
+</figure>
+<p>下表是对上面层次结构中出现的每个异常的说明：</p>
+<table>
+<colgroup>
+<col style="width: 28%">
+<col style="width: 71%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">异常</th>
+<th style="text-align: left;">描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong><code>std::exception</code></strong></td>
+<td style="text-align: left;">该异常是所有标准 C++ 异常的父类。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>std::bad_alloc</code></td>
+<td style="text-align: left;">该异常可以通过 <code>new</code>
+抛出。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>std::bad_cast</code></td>
+<td style="text-align: left;">该异常可以通过 <code>dynamic_cast</code>
+抛出。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>std::bad_exception</code></td>
+<td style="text-align: left;">这在处理 C++
+程序中无法预期的异常时非常有用。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>std::bad_typeid</code></td>
+<td style="text-align: left;">该异常可以通过 <code>typeid</code>
+抛出。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><strong><code>std::logic_error</code></strong></td>
+<td style="text-align: left;">理论上可以通过读取代码来检测到的异常。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>std::domain_error</code></td>
+<td style="text-align: left;">当使用了一个无效的数学域时，会抛出该异常。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>std::invalid_argument</code></td>
+<td style="text-align: left;">当使用了无效的参数时，会抛出该异常。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>std::length_error</code></td>
+<td style="text-align: left;">当创建了太长的 std::string
+时，会抛出该异常。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>std::out_of_range</code></td>
+<td style="text-align: left;">该异常可以通过方法抛出，例如
+<code>std::vector</code> 和
+<code>std::bitset&lt;&gt;::operator[]()</code>。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><strong><code>std::runtime_error</code></strong></td>
+<td style="text-align: left;">理论上不可以通过读取代码来检测到的异常。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>std::overflow_error</code></td>
+<td style="text-align: left;">当发生数学上溢时，会抛出该异常。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><code>std::range_error</code></td>
+<td style="text-align: left;">当尝试存储超出范围的值时，会抛出该异常。</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><code>std::underflow_error</code></td>
+<td style="text-align: left;">当发生数学下溢时，会抛出该异常。</td>
+</tr>
+</tbody>
+</table>
+<p>同时我们也可以自定义异常，代码示例：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;exception&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里可以不继承 exception 来创建自己的异常标准。</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">MyException</span> :</span> <span class="keyword">public</span> exception</span><br><span class="line">&#123;</span><br><span class="line">	<span class="function"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="title">what</span><span class="params">()</span> <span class="keyword">const</span> <span class="title">throw</span> <span class="params">()</span></span></span><br><span class="line"><span class="function">	</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;C++ Exception&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">try</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="built_in">MyException</span>();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in"><span class="keyword">catch</span></span> (MyException&amp; e)</span><br><span class="line">	&#123;</span><br><span class="line">		std::cout &lt;&lt; <span class="string">&quot;MyException caught&quot;</span> &lt;&lt; std::endl;</span><br><span class="line">		std::cout &lt;&lt; e.<span class="built_in">what</span>() &lt;&lt; std::endl;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in"><span class="keyword">catch</span></span> (std::exception&amp; e)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="comment">//其他的错误</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="windows-seh-结构化异常处理机制">Windows SEH
+结构化异常处理机制</h1>
+<p>Windows SEH
+结构化异常处理机制核心是由系统维护的一个单向链表，链表中保存每个异常处理函数的指针。</p>
+<p>调用机制类似 C++ 的异常处理：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">__try</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 保护代码</span></span><br><span class="line">&#125;</span><br><span class="line">__except ()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 异常处理后的内容块</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中 <code>__except</code> 需要一个宏定义常量，通常是
+<code>EXCEPTION_CONTINUE_EXECUTION</code>、<code>EXCEPTION_EXECUTE_HANDLER</code>
+和 <code>EXCEPTION_CONTINUE_SEARCH</code>。</p>
+<table>
+<colgroup>
+<col style="width: 33%">
+<col style="width: 66%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>宏定义常量</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>EXCEPTION_CONTINUE_EXECUTION</code></td>
+<td>异常处理完毕，程序继续正常运行异常出现处的下一条指令</td>
+</tr>
+<tr class="even">
+<td><code>EXCEPTION_EXECUTE_HANDLER</code></td>
+<td>异常处理完毕，但是直接执行 <code>__except</code> 块的内容</td>
+</tr>
+<tr class="odd">
+<td><code>EXCEPTION_CONTINUE_SEARCH</code></td>
+<td>异常无法处理，告诉 Windows 寻找下一个异常处理函数来处理异常</td>
+</tr>
+</tbody>
+</table>
+<p>这里我们通常通过函数实现：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;windows.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">ExceptionFilter</span><span class="params">(<span class="keyword">int</span> nRet)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (nRet == <span class="number">0</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">return</span> EXCEPTION_EXECUTE_HANDLER;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> EXCEPTION_CONTINUE_SEARCH;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> x = <span class="number">50</span>;</span><br><span class="line">	<span class="keyword">int</span> y = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">double</span> z = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	cout &lt;&lt; <span class="string">&quot;Pls. input a number: &quot;</span>;</span><br><span class="line">	cin &gt;&gt; y;</span><br><span class="line"></span><br><span class="line">	__try &#123;</span><br><span class="line">		z = x / y;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;the value is &quot;</span> &lt;&lt; z &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	__except (<span class="built_in">ExceptionFilter</span>(y)) &#123;</span><br><span class="line">		cout &lt;&lt; <span class="string">&quot;could not div 0&quot;</span> &lt;&lt; endl;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中我们可以通过 <code>GetExceptionCode()</code>
+来获取系统所抛出的异常。</p>
+<p>在 ida 中我们可以观察到，<code>__excpet</code> 被分析为：</p>
+<figure>
+<img src="/cexception-note/ida_view.png" alt="ida_view">
+<figcaption aria-hidden="true">ida_view</figcaption>
+</figure>
+<h1 id="windows-veh-向量化异常处理机制">Windows VEH
+向量化异常处理机制</h1>
+<p>Windows VEH 向量化异常处理机制</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>c</tag>
+        <tag>re</tag>
       </tags>
   </entry>
 </search>
