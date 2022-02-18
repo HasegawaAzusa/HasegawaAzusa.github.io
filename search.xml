@@ -3456,4 +3456,445 @@ ESP、EIP、EBP、EBX、EDI、ESI 等寄存器和标志位的信息。</p>
         <tag>re</tag>
       </tags>
   </entry>
+  <entry>
+    <title>PNG有关iDOT块的笔记</title>
+    <url>//png-idot-note.html</url>
+    <content><![CDATA[<h1 id="idot-块简述">iDOT 块简述</h1>
+<p>这是 Apple 为了 PNG 解码速度而做的一个优化 。苹果为了让 PNG
+格式的图片可以并行解码并且兼容原本的 PNG
+标准，把图片内容分为<strong>前半</strong>与<strong>后半</strong>两部分，并把像素流分为多个
+IDAT 块，然后在 PNG 文件里添加了一个 iDOT
+辅助块，其中记录了<strong>前半</strong>与<strong>后半</strong>的分隔位置（<strong>后半</strong>数据相对
+iDOT 块的偏移值）和解压后的像素高度，这样用 Apple 的 PNG 编码器编码的
+PNG 图片用 Apple 自家的 PNG 解码器解码就可以分为 2
+个并行的过程，以此充分利用多核性能，同时这样的 PNG
+图片也能被普通解码器解码。</p>
+<h1 id="在不同设备上显示不同">在不同设备上显示不同</h1>
+<p>如果说我们让顺序解压的数据与并行解压后把数据拼一起的内容不一样，那么就可能出现在不同设备上显示不同的结果。</p>
+<p>实现的原理非常的巧妙，就是通过利用 <code>zlib</code>
+的非压缩块特性：非压缩块标识可以在压缩数据中指定一块区域在解压时忽略掉它。如果把非压缩块标识放到<strong>上半</strong>的末尾,而把被标记的数据放到<strong>下半</strong>的起始，当单独解压<strong>下半</strong>时数据不会被忽略，而<strong>上半</strong>和<strong>下半</strong>连在一起解压时，这些数据就会被忽略，这样就可以让数据在并行压缩被用到而顺序压缩时被忽略。</p>
+<p>这个技巧相当的巧妙以至于 Apple 也没有想到，在 Apple
+系统（MacOS、iOS）只要利用了系统的 PNG 解码器的软件都会受到影响（MacOS
+上 Chrome 浏览器自带 PNG 解码器所以不受影响）。</p>
+<p>我们可以使用 https://github.com/DavidBuchanan314/ambiguous-png-packer
+来生成显示不同的图片。</p>
+<p>当然，如果想要查看不同设备的图片，那么最好的方法当然是拥有一部<strong>苹果手机</strong>。</p>
+]]></content>
+      <tags>
+        <tag>png</tag>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>png 图片格式笔记</title>
+    <url>//png-note.html</url>
+    <content><![CDATA[<h1 id="前文">前文</h1>
+<p>PNG
+是一种采用无损压缩算法的位图格式，其设计目的是试图替代GIF和TIFF文件格式，同时增加一些GIF文件格式所不具备的特性。PNG
+使用从LZ77派生的无损数据压缩算法，原则上会使用 <code>zlib.deflate</code>
+将每个数据块的内容进行压缩。</p>
+<p>按照标准可以把所有数据存储在一个大的 IDAT 块中，也可以分割存储在多个
+IDAT
+块中，这原本是为了编码解码时可控内存占用量而设计的，但没有考虑到并行解码，也就是说在对每一个
+IDAT 块解压前并不会知道到其中包含了多少像素 。</p>
+<p>而与此同时，PNG 也支持动图，即 APNG 格式。</p>
+<p>APNG（Animated Portable Network Graphics）是一个基于PNG（Portable
+Network Graphics）的位图动画格式，扩展方法类似主要用于网页的GIF
+89a，仍对传统PNG保留向下兼容。第1帧是标准的单幅PNG图像，因此只支持原版PNG的软件能正常显示第1帧。剩余的动画帧和帧速数据储存在符合原版PNG标准的扩展数据块里。</p>
+<p>但目前来说 Chrome 59、Edge 12、Firefox 3、Opera 46 和 Safari 8
+可以查看 APNG，但 Google 并不是很推崇 APNG 格式（他们比较推崇 webp
+格式）。</p>
+<p>我们可以使用 https://products.aspose.app/imaging/zh-hans/image-view
+分离 APNG 的每一帧位图。</p>
+<h1 id="signature---文件签名">Signature - 文件签名</h1>
+<p>PNG Signature 大小为 8 bytes</p>
+<p>十六进制描述为 <code>89 50 4E 47 0D 0A 1A 0A</code></p>
+<p>文件特征为 <code>‰PNG</code></p>
+<h1 id="chunk---数据块">Chunk - 数据块</h1>
+<table>
+<colgroup>
+<col style="width: 30%">
+<col style="width: 10%">
+<col style="width: 58%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>名称</strong></th>
+<th><strong>字节数</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Length (长度)</td>
+<td>4</td>
+<td>指定数据块中数据域的长度，其长度不超过 (<span class="math inline">\(2^{31}－1\)</span>) 字节</td>
+</tr>
+<tr class="even">
+<td>Chunk Type Code (数据块类型码)</td>
+<td>4</td>
+<td>数据块类型码由 ASCII 字母 (A-Z 和 a-z) 组成</td>
+</tr>
+<tr class="odd">
+<td>Chunk Data (数据块数据)</td>
+<td>Length</td>
+<td>存储按照 Chunk Type Code 指定的数据</td>
+</tr>
+<tr class="even">
+<td>CRC (循环冗余检测)</td>
+<td>4</td>
+<td>存储用来检测是否有错误的循环冗余码</td>
+</tr>
+</tbody>
+</table>
+<p>PNG 被分为一个个 Chunk，每个 Chunk
+有相同的格式，但存放着不同的数据。</p>
+<h2 id="png-数据块">PNG 数据块</h2>
+<table>
+<colgroup>
+<col style="width: 17%">
+<col style="width: 27%">
+<col style="width: 15%">
+<col style="width: 12%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>数据块符号</strong></th>
+<th><strong>数据块名称</strong></th>
+<th><strong>多数据块</strong></th>
+<th><strong>可选否</strong></th>
+<th><strong>位置限制</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>IHDR</code></td>
+<td>文件头数据块</td>
+<td>否</td>
+<td>否</td>
+<td>第一块</td>
+</tr>
+<tr class="even">
+<td><code>cHRM</code></td>
+<td>基色和白色点数据块</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>PLTE</code>和<code>IDAT</code>之前</td>
+</tr>
+<tr class="odd">
+<td><code>gAMA</code></td>
+<td>图像γ数据块</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>PLTE</code>和<code>IDAT</code>之前</td>
+</tr>
+<tr class="even">
+<td><code>sBIT</code></td>
+<td>样本有效位数据块</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>PLTE</code>和<code>IDAT</code>之前</td>
+</tr>
+<tr class="odd">
+<td><code>PLTE</code></td>
+<td>调色板数据块</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>IDAT</code>之前</td>
+</tr>
+<tr class="even">
+<td><code>bKGD</code></td>
+<td>背景颜色数据块</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>PLTE</code>之后<code>IDAT</code>之前</td>
+</tr>
+<tr class="odd">
+<td><code>hIST</code></td>
+<td>图像直方图数据块</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>PLTE</code>之后<code>IDAT</code>之前</td>
+</tr>
+<tr class="even">
+<td><code>tRNS</code></td>
+<td>图像透明数据块</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>PLTE</code>之后<code>IDAT</code>之前</td>
+</tr>
+<tr class="odd">
+<td><code>oFFs</code></td>
+<td>(专用公共数据块)</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>IDAT</code>之前</td>
+</tr>
+<tr class="even">
+<td><code>pHYs</code></td>
+<td>物理像素尺寸数据块</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>IDAT</code>之前</td>
+</tr>
+<tr class="odd">
+<td><code>sCAL</code></td>
+<td>(专用公共数据块)</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>IDAT</code>之前</td>
+</tr>
+<tr class="even">
+<td><code>IDAT</code></td>
+<td>图像数据块</td>
+<td>是</td>
+<td>否</td>
+<td>与其他<code>IDAT</code>连续</td>
+</tr>
+<tr class="odd">
+<td><code>tIME</code></td>
+<td>图像最后修改时间数据块</td>
+<td>否</td>
+<td>是</td>
+<td>无限制</td>
+</tr>
+<tr class="even">
+<td><code>tEXt</code></td>
+<td>文本信息数据块</td>
+<td>是</td>
+<td>是</td>
+<td>无限制</td>
+</tr>
+<tr class="odd">
+<td><code>zTXt</code></td>
+<td>压缩文本数据块</td>
+<td>是</td>
+<td>是</td>
+<td>无限制</td>
+</tr>
+<tr class="even">
+<td><code>fRAc</code></td>
+<td>(专用公共数据块)</td>
+<td>是</td>
+<td>是</td>
+<td>无限制</td>
+</tr>
+<tr class="odd">
+<td><code>gIFg</code></td>
+<td>(专用公共数据块)</td>
+<td>是</td>
+<td>是</td>
+<td>无限制</td>
+</tr>
+<tr class="even">
+<td><code>gIFt</code></td>
+<td>(专用公共数据块)</td>
+<td>是</td>
+<td>是</td>
+<td>无限制</td>
+</tr>
+<tr class="odd">
+<td><code>gIFx</code></td>
+<td>(专用公共数据块)</td>
+<td>是</td>
+<td>是</td>
+<td>无限制</td>
+</tr>
+<tr class="even">
+<td><code>IEND</code></td>
+<td>图像结束数据</td>
+<td>否</td>
+<td>否</td>
+<td>最后一个数据块</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>详情可查询 https://www.w3.org/TR/PNG/</p>
+</blockquote>
+<h2 id="apng-数据块">APNG 数据块</h2>
+<table>
+<colgroup>
+<col style="width: 22%">
+<col style="width: 22%">
+<col style="width: 19%">
+<col style="width: 16%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>数据块符号</strong></th>
+<th><strong>数据块名称</strong></th>
+<th><strong>多数据块</strong></th>
+<th><strong>可选否</strong></th>
+<th><strong>位置限制</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>acTL</code></td>
+<td>动画控制块</td>
+<td>否</td>
+<td>否</td>
+<td><code>IHDR</code>之后</td>
+</tr>
+<tr class="even">
+<td><code>fcTL</code></td>
+<td>帧控制块</td>
+<td>否</td>
+<td>否</td>
+<td><code>IHDR</code>之后</td>
+</tr>
+<tr class="odd">
+<td><code>fdAT</code></td>
+<td>帧数据块</td>
+<td>否</td>
+<td>否</td>
+<td><code>IHDR</code>之后</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>详情可查询 https://wiki.mozilla.org/APNG_Specification</p>
+</blockquote>
+<h2 id="ios-特有的数据块">IOS 特有的数据块</h2>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 28%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>数据块符号</strong></th>
+<th><strong>数据块名称</strong></th>
+<th><strong>多数据块</strong></th>
+<th><strong>可选否</strong></th>
+<th><strong>位置限制</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>iDOT</code></td>
+<td>并行解析数据块</td>
+<td>否</td>
+<td>是</td>
+<td><code>IHDR</code>之后<code>IDAT</code>之前</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>Apple 并未公开</p>
+</blockquote>
+<h2 id="ihdr">IHDR</h2>
+<table>
+<colgroup>
+<col style="width: 24%">
+<col style="width: 12%">
+<col style="width: 63%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>域的名称</strong></th>
+<th><strong>字节数</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Width</code></td>
+<td>4</td>
+<td>图像宽度，以像素为单位</td>
+</tr>
+<tr class="even">
+<td><code>Height</code></td>
+<td>4</td>
+<td>图像高度，以像素为单位</td>
+</tr>
+<tr class="odd">
+<td><code>Bit depth</code></td>
+<td>1</td>
+<td>图像深度，详情查看下表</td>
+</tr>
+<tr class="even">
+<td><code>Color type</code></td>
+<td>1</td>
+<td>颜色类型，详情查看下表</td>
+</tr>
+<tr class="odd">
+<td><code>Compression method</code></td>
+<td>1</td>
+<td>压缩方法 (LZ77派生算法，原则上默认为 <code>zlib.deflate</code>)</td>
+</tr>
+<tr class="even">
+<td><code>Filter method</code></td>
+<td>1</td>
+<td>滤波器方法</td>
+</tr>
+<tr class="odd">
+<td><code>Interlace method</code></td>
+<td>1</td>
+<td>隔行扫描方法：0则表示非隔行扫描 ；1则表示 Adam7</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>Color type 值</th>
+<th>含义</th>
+<th>Bit depth 值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>灰度图像</td>
+<td>1，2，4，8 或 16</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>真彩色图像</td>
+<td>8 或 16</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>索引彩色图像</td>
+<td>1，2，4 或 8</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>带<span class="math inline">\(\alpha\)</span>通道数据的灰度图像</td>
+<td>8 或 16</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>带<span class="math inline">\(\alpha\)</span>通道数据的真彩色图像</td>
+<td>8 或 16</td>
+</tr>
+</tbody>
+</table>
+<h2 id="iend">IEND</h2>
+<p>一般来说，IEND 数据块的长度总是 0，十六进制描述总是：</p>
+<p><code>00 00 00 00 49 45 4E 44 AE 42 60 82</code></p>
+<h2 id="idot">iDOT</h2>
+<p>这是 Apple 为了 PNG 解码速度而做的一个优化 。苹果为了让 PNG
+格式的图片可以并行解码并且兼容原本的 PNG
+标准，把图片内容分为<strong>前半</strong>与<strong>后半</strong>两部分，并把像素流分为多个
+IDAT 块，然后在 PNG 文件里添加了一个 iDOT
+辅助块，其中记录了<strong>前半</strong>与<strong>后半</strong>的分隔位置（<strong>后半</strong>数据相对
+iDOT 块的偏移值）和解压后的像素高度，这样用 Apple 的 PNG 编码器编码的
+PNG 图片用 Apple 自家的 PNG 解码器解码就可以分为 2
+个并行的过程，以此充分利用多核性能，同时这样的 PNG
+图片也能被普通解码器解码。</p>
+<p>但其存在一个 bug，详情可以查看文章：<a href="/png-idot-note.html">PNG有关iDOT块的笔记</a></p>
+]]></content>
+      <tags>
+        <tag>png</tag>
+        <tag>note</tag>
+      </tags>
+  </entry>
 </search>
