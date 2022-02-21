@@ -210,7 +210,7 @@ y=(-bx&#39;+y)mod(N)
 <p>其中<span class="math inline">\(a、b\)</span>为给定参数，<span class="math inline">\(N\)</span>为置乱次数
 (shuffle_times)，<code>reverse</code> 为是否倒置变换
 (可能会出现变换倒置的问题)</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Anrold 变换</span></span><br><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arnold</span>(<span class="params"><span class="built_in">input</span>, output, a, b, N, reverse=<span class="literal">False</span></span>):</span></span><br><span class="line">    before = Image.<span class="built_in">open</span>(<span class="built_in">input</span>)</span><br><span class="line">    weight, height = before.size</span><br><span class="line">    <span class="keyword">assert</span> weight == height</span><br><span class="line">    bfdata = before.load()</span><br><span class="line">    after = Image.new(before.mode, before.size)</span><br><span class="line">    afdata = after.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(weight):</span><br><span class="line">                nx = (x + b * y) % weight</span><br><span class="line">                ny = ((a * x) + (a * b + <span class="number">1</span>) * y) % weight</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    afdata[ny, nx] = bfdata[y, x]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    afdata[nx, ny] = bfdata[x, y]</span><br><span class="line">    </span><br><span class="line">    after.save(output, before.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Anrold 逆变换</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rearnold</span>(<span class="params"><span class="built_in">input</span>, output, a, b, N, reverse=<span class="literal">False</span></span>):</span></span><br><span class="line">    before = Image.<span class="built_in">open</span>(<span class="built_in">input</span>)</span><br><span class="line">    weight, height = before.size</span><br><span class="line">    <span class="keyword">assert</span> weight == height</span><br><span class="line">    bfdata = before.load()</span><br><span class="line">    after = Image.new(before.mode, before.size)</span><br><span class="line">    afdata = after.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(weight):</span><br><span class="line">                nx = ((a * b + <span class="number">1</span>) * x + (-b) * y) % height</span><br><span class="line">                ny = (y + (-a) * x) % weight</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    afdata[ny, nx] = bfdata[y, x]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    afdata[nx, ny] = bfdata[x, y]</span><br><span class="line">    </span><br><span class="line">    after.save(output, before.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line">arnold(<span class="string">&quot;before.png&quot;</span>, <span class="string">&quot;encode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br><span class="line">rearnold(<span class="string">&quot;encode.png&quot;</span>, <span class="string">&quot;decode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment"># Anrold 变换</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arnold</span>(<span class="params"><span class="built_in">input</span>, output, a, b, N, reverse=<span class="literal">False</span></span>):</span></span><br><span class="line">    before = Image.<span class="built_in">open</span>(<span class="built_in">input</span>)</span><br><span class="line">    weight, height = before.size</span><br><span class="line">    bfdata = before.load()</span><br><span class="line">    after = Image.new(before.mode, before.size)</span><br><span class="line">    afdata = after.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(weight):</span><br><span class="line">                nx = (x + b * y) % height</span><br><span class="line">                ny = ((a * x) + (a * b + <span class="number">1</span>) * y) % weight</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    afdata[ny, nx] = bfdata[y, x]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    afdata[nx, ny] = bfdata[x, y]</span><br><span class="line">    </span><br><span class="line">    after.save(output, before.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Anrold 逆变换</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rearnold</span>(<span class="params"><span class="built_in">input</span>, output, a, b, N, reverse=<span class="literal">False</span></span>):</span></span><br><span class="line">    before = Image.<span class="built_in">open</span>(<span class="built_in">input</span>)</span><br><span class="line">    weight, height = before.size</span><br><span class="line">    bfdata = before.load()</span><br><span class="line">    after = Image.new(before.mode, before.size)</span><br><span class="line">    afdata = after.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(weight):</span><br><span class="line">                nx = ((a * b + <span class="number">1</span>) * x + (-b) * y) % height</span><br><span class="line">                ny = (y + (-a) * x) % weight</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    afdata[ny, nx] = bfdata[y, x]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    afdata[nx, ny] = bfdata[x, y]</span><br><span class="line">    </span><br><span class="line">    after.save(output, before.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line">arnold(<span class="string">&quot;before.png&quot;</span>, <span class="string">&quot;encode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br><span class="line">rearnold(<span class="string">&quot;encode.png&quot;</span>, <span class="string">&quot;decode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -3478,7 +3478,16 @@ PNG 图片用 Apple 自家的 PNG 解码器解码就可以分为 2
 上 Chrome 浏览器自带 PNG 解码器所以不受影响）。</p>
 <p>我们可以使用 https://github.com/DavidBuchanan314/ambiguous-png-packer
 来生成显示不同的图片。</p>
+<blockquote>
+<p>在现实生成网站：https://moonvy.com/apps/PNGemini/</p>
+</blockquote>
 <p>当然，如果想要查看不同设备的图片，那么最好的方法当然是拥有一部<strong>苹果手机</strong>。</p>
+<p><strong>特征</strong>：会出现一些杂乱无章的像素线条，这不是技术问题，而是因为原理上是拼接和不解压数据，所以只要是这种构造的图片，都会出现一些像素线条。</p>
+<p>如下图：</p>
+<figure>
+<img src="/png-idot-note/男神.png" alt="男神">
+<figcaption aria-hidden="true">男神</figcaption>
+</figure>
 ]]></content>
       <tags>
         <tag>png</tag>
@@ -3895,6 +3904,149 @@ PNG 图片用 Apple 自家的 PNG 解码器解码就可以分为 2
       <tags>
         <tag>png</tag>
         <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>字节序笔记</title>
+    <url>//endian-note.html</url>
+    <content><![CDATA[<h1 id="字节序简述">字节序简述</h1>
+<p>字节序，即<strong>字节的存储顺序</strong>，而计算机硬件有两种存储数据的方式：大端字节序
+(big-endian) 和 小端字节序 (little endian)。</p>
+<p>一般来说，计算机硬件的存储方式都是<strong>小端字节序</strong>；</p>
+<p>而网络数据包为了可读性更高，会选择<strong>大端字节序</strong>。</p>
+<p>从地址低端向地址高端，小端字节序是将多字节数据按<strong>从低位到高位</strong>的顺序存储；而大端字节序是将多字节数据按<strong>从高位到低位</strong>的顺序存储。</p>
+<p>例如 <code>0x01234567</code> 的两种字节序存储方式如下图：</p>
+<figure>
+<img src="/endian-note/字节序.png" alt="0x01234567的字节序">
+<figcaption aria-hidden="true">0x01234567的字节序</figcaption>
+</figure>
+<p>一般来说，只有在数据交换和读取数据的时候才需要注意字节序，例如
+PowerPC 的数据转换成 Windows
+下的数据的时候需要注意字节序问题；或是数据包数据的转换 (比如说C语言里的
+<code>htons</code> 函数可以将主机字节顺序转变成网络字节顺序)。</p>
+<h1 id="c-实现">C++ 实现</h1>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function">WORD <span class="title">littleEndianToWord</span><span class="params">(<span class="keyword">const</span> BYTE* a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (a[<span class="number">0</span>] &lt;&lt; <span class="number">8</span>) | (a[<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">DWORD <span class="title">littleEndianToDword</span><span class="params">(<span class="keyword">const</span> BYTE* a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (a[<span class="number">0</span>] &lt;&lt; <span class="number">24</span>) | (a[<span class="number">1</span>] &lt;&lt; <span class="number">16</span>) | (a[<span class="number">2</span>] &lt;&lt; <span class="number">8</span>) | (a[<span class="number">3</span>]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对于大端字节序转储，在C++中直接使用强制类型转换即可。</p>
+</blockquote>
+<h1 id="python-实现">python 实现</h1>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">littleEndianToDword</span>(<span class="params">a</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(<span class="built_in">str</span>(a[<span class="number">0</span>])+<span class="built_in">str</span>(a[<span class="number">1</span>])+<span class="built_in">str</span>(a[<span class="number">2</span>])+<span class="built_in">str</span>(a[<span class="number">3</span>]), <span class="number">16</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">bigEndianToDword</span>(<span class="params">a</span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(<span class="built_in">str</span>(a[-<span class="number">1</span>])+<span class="built_in">str</span>(a[-<span class="number">2</span>])+<span class="built_in">str</span>(a[-<span class="number">3</span>])+<span class="built_in">str</span>(a[-<span class="number">4</span>]), <span class="number">16</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ctf-flag 笔记</title>
+    <url>//flag-note.html</url>
+    <content><![CDATA[<h1 id="flag-简述">flag 简述</h1>
+<p>flag 英文单词愿意为旗帜，在 CTF
+比赛中是我们的目标，通常以一串字符串的形式存在，满足正则表达式：<code>flag&#123;.*&#125;</code></p>
+<p>其中不一定以 flag 开头，可能是以比赛名称开头，例如
+<code>TQLCTF&#123;.*&#125;</code>；也有可能是以某个组织的名称开头，例如
+<code>BUUCTF&#123;.*&#125;</code></p>
+<p>而且 flag
+又分为<strong>动态flag</strong>和<strong>静态flag</strong>，记得最好不要去提交他人的
+flag 哦！</p>
+<h1 id="flag-转义器">flag 转义器</h1>
+<p>自己手写的简单的 flag 转义器，一是为了方便自己认读
+flag，二是为了方便自己写的 flag 像 flag。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">table = (<span class="string">&#x27;Aa4@&#x27;</span>, <span class="string">&#x27;Bb8&#x27;</span>, <span class="string">&#x27;Cc&#x27;</span>, <span class="string">&#x27;Dd&#x27;</span>, <span class="string">&#x27;Ee3&#x27;</span>, <span class="string">&#x27;Ff&#x27;</span>, <span class="string">&#x27;Gg69&#x27;</span>, <span class="string">&#x27;Hh&#x27;</span>, <span class="string">&#x27;Ii&#x27;</span>, <span class="string">&#x27;Jj&#x27;</span>, <span class="string">&#x27;Kk&#x27;</span>, <span class="string">&#x27;Ll1&#x27;</span>, <span class="string">&#x27;Mm&#x27;</span>, <span class="string">&#x27;Nn&#x27;</span>, <span class="string">&#x27;Oo0&#x27;</span>, <span class="string">&#x27;Pp&#x27;</span>, <span class="string">&#x27;Qq&#x27;</span>, </span><br><span class="line"><span class="string">&#x27;Rr&#x27;</span>, <span class="string">&#x27;Ss5$&#x27;</span>, <span class="string">&#x27;Tt7&#x27;</span>, <span class="string">&#x27;Uu&#x27;</span>, <span class="string">&#x27;Vv&#x27;</span>, <span class="string">&#x27;Ww&#x27;</span>, <span class="string">&#x27;Xx&#x27;</span>, <span class="string">&#x27;Yy&#x27;</span>, <span class="string">&#x27;Zz2&#x27;</span>)</span><br><span class="line">alpha = <span class="string">&quot;abcdefghijklmnopqrstuvwxyz&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">findalpha</span>(<span class="params">ch</span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(table)):</span><br><span class="line">        <span class="keyword">if</span> ch <span class="keyword">in</span> table[i]:</span><br><span class="line">            <span class="keyword">return</span> alpha[i]</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">flag2plain</span>(<span class="params">flag : <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span></span><br><span class="line">    start = flag.index(<span class="string">&#x27;&#123;&#x27;</span>)</span><br><span class="line">    plain = flag[:start+<span class="number">1</span>]</span><br><span class="line">    flag = flag[start+<span class="number">1</span>:-<span class="number">1</span>]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> flag:</span><br><span class="line">        c = findalpha(i)</span><br><span class="line">        <span class="keyword">if</span> c:</span><br><span class="line">            plain += c</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            plain += i</span><br><span class="line">    <span class="keyword">return</span> plain+<span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">plain2flag</span>(<span class="params">plain : <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span></span><br><span class="line">    random.seed(plain.encode())</span><br><span class="line">    start = plain.index(<span class="string">&#x27;&#123;&#x27;</span>)</span><br><span class="line">    flag = plain[:start+<span class="number">1</span>]</span><br><span class="line">    plain = <span class="built_in">str</span>.lower(plain[start+<span class="number">1</span>:-<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> plain:</span><br><span class="line">        <span class="keyword">if</span> i <span class="keyword">in</span> alpha:</span><br><span class="line">            idx = alpha.index(i)</span><br><span class="line">            k = random.randrange(<span class="number">0</span>, <span class="built_in">len</span>(table[idx]))</span><br><span class="line">            flag += table[idx][k]</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            flag += i</span><br><span class="line">    <span class="keyword">return</span> flag+<span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">s = plain2flag(<span class="string">&quot;flag&#123;This_is_flag&#125;&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(s)</span><br><span class="line">s = flag2plain(s)</span><br><span class="line"><span class="built_in">print</span>(s)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>ctf</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>栅栏密码笔记</title>
+    <url>//rail-fence-cipher-note.html</url>
+    <content><![CDATA[<h1 id="普通栅栏算法">普通栅栏算法</h1>
+<h2 id="加密算法描述">加密算法描述</h2>
+<ol type="1">
+<li><p>现有明文 <code>Thi5_1s_a_fl4g</code>，对其进行两两分组得到：</p>
+<p><code>Th</code>、<code>i5</code>、<code>_1</code>、<code>s_</code>、<code>a_</code>、<code>fl</code>、<code>4g</code></p></li>
+<li><p>然后取每组的第 1 个字符连成第一段，每组的第 2
+个字符连成第二段，最后得到：</p>
+<p><code>Ti_saf4</code>、<code>h51__lg</code></p></li>
+<li><p>将以上多段组合起来，得到密文：</p>
+<p><code>Ti_saf4h51__lg</code></p></li>
+</ol>
+<p>从以上可以看出，普通栅栏算法当明文过于简单、分组个数较小和加密轮数低时，容易被直接破解。</p>
+<h2 id="解密算法描述">解密算法描述</h2>
+<ol type="1">
+<li><p>现有密文
+<code>Ti_saf4h51__lg</code>，已知加密时是两两分组，我们便将其分为两段
+(或者理解为密文长度为 10，加密用的是因数 2 进行分组，则解密使用因数 5
+进行分组)：</p>
+<p><code>Ti_saf4</code>、<code>h51__lg</code></p></li>
+<li><p>然后取每组的第 1 个字符连成第一段，每组的第 2
+个字符连成第二段，最后得到：</p>
+<p><code>Th</code>、<code>i5</code>、<code>_1</code>、<code>s_</code>、<code>a_</code>、<code>fl</code>、<code>4g</code></p></li>
+<li><p>将以上多段组合起来，得到明文：</p>
+<p><code>Thi5_1s_a_fl4g</code></p></li>
+</ol>
+<p>从以上可以看出，普通栅栏算法可以采用同一个函数进行加解密，只是投入的密钥不相同。</p>
+<h2 id="算法定义">算法定义</h2>
+<p>通过以上算法描述，我们可以做出以下简单定义：</p>
+<blockquote>
+<p>将明文分成 <span class="math inline">\(k\)</span> 组，取每一组的第
+<span class="math inline">\(n\)</span>
+个字符连成一段，最后再将各段连接得到密文。</p>
+</blockquote>
+<p>同时可知栅栏密码本质上是一个换位密码，并不改变明文信息，只改变明文顺序，理论上复杂度只取决于<strong>明文字长</strong>、<strong>分组个数</strong>和<strong>加密轮数</strong>。</p>
+<p>栅栏算法可以如下定义，其中<span class="math inline">\(m\)</span>为明文，<span class="math inline">\(c\)</span>为密文，<span class="math inline">\(length\)</span>为明文（密文）长度，<span class="math inline">\(F(x,y)\)</span>为普通栅栏算法： <span class="math display">\[
+length=pq(p,q\in\Z)\\
+c=F(m,p)\\
+m=F(c,q)
+\]</span> 以上我们可以称<span class="math inline">\(p\)</span>为私钥
+(private key)，而<span class="math inline">\(q\)</span>为公钥 (public
+key)</p>
+<h2 id="算法实现">算法实现</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">railfence</span>(<span class="params">data:<span class="built_in">str</span>, key:<span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>.join(data[i::key] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(key))</span><br></pre></td></tr></table></figure>
+<p>其中我们也可以实现对密文进行爆破的算法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">railfence</span>(<span class="params">data:<span class="built_in">str</span>, key:<span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>.join(data[i::key] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(key))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取 x 的所有因数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factor</span>(<span class="params">x:<span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, math.floor(math.sqrt(x))):</span><br><span class="line">        <span class="keyword">if</span> x % i == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">yield</span> i</span><br><span class="line">            <span class="keyword">yield</span> x // i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack</span>(<span class="params">data:<span class="built_in">str</span>, needkeys:<span class="built_in">bool</span>=<span class="literal">False</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> needkeys:</span><br><span class="line">        facs = [i <span class="keyword">for</span> i <span class="keyword">in</span> factor(<span class="built_in">len</span>(data))]</span><br><span class="line">        <span class="keyword">return</span> facs, [railfence(data, i) <span class="keyword">for</span> i <span class="keyword">in</span> facs]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> [railfence(data, i) <span class="keyword">for</span> i <span class="keyword">in</span> factor(<span class="built_in">len</span>(data))]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_crack</span>(<span class="params">data:<span class="built_in">str</span></span>):</span></span><br><span class="line">    keys, msg = crack(data, <span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">for</span> k, m <span class="keyword">in</span> <span class="built_in">zip</span>(keys, msg):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;k&#125;</span>栏: <span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">print_crack(<span class="string">&quot;Ti_saf4h51__lg&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="密钥栅栏算法">密钥栅栏算法</h1>
+<h2 id="加密算法描述-1">加密算法描述</h2>
+<ol type="1">
+<li><p>现有明文
+<code>Thi5_1s_a_fl4g</code>，对其每七个为一组分组得到：</p>
+<p><code>Thi5_1s</code>、<code>_a_fl4g</code></p></li>
+<li><p>然后取每组的第 1 个字符连成第一段，每组的第 2
+个字符连成第二段，最后得到：</p>
+<p><code>T_</code>、<code>ha</code>、<code>i_</code>、<code>5f</code>、<code>_l</code>、<code>14</code>、<code>sg</code></p></li>
+<li><p>密钥即是组合顺序，现有密钥
+<code>3127645</code>，则组合的密文为：</p>
+<p><code>i_T_hasg145f_l</code></p></li>
+</ol>
+<p>可以看出，相比起普通栅栏算法，更难看出明文原本的顺序，但始终受制于<strong>明文字长</strong>、<strong>分组个数</strong>和<strong>加密轮数</strong>，与密钥复杂度不呈现相关性。</p>
+<h2 id="解密算法描述-1">解密算法描述</h2>
+<ol type="1">
+<li><p>现有密文 <code>i_T_hasg145f_l</code>，按照密钥
+<code>3127645</code> 还原各段：</p>
+<p><code>T_</code>、<code>ha</code>、<code>i_</code>、<code>5f</code>、<code>_l</code>、<code>14</code>、<code>sg</code></p></li>
+<li><p>然后取每段的第 1 个字符连成第一组，每段的第 2
+个字符连成第二组，最后得到：</p>
+<p><code>Thi5_1s</code>、<code>_a_fl4g</code></p></li>
+<li><p>将以上多段组合起来，得到明文：</p>
+<p><code>Thi5_1s_a_fl4g</code></p></li>
+</ol>
+<p>可以看出，相比起普通栅栏算法，还原明文时受制于密钥，如果不掌握密钥恢复的可能性将大大降低。</p>
+<h2 id="算法实现-1">算法实现</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">railfence_plus_encode</span>(<span class="params">data:<span class="built_in">str</span>, key:<span class="built_in">list</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>.join([data[i::<span class="built_in">len</span>(key)] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(key))][i-<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> key)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">railfence_plus_decode</span>(<span class="params">data:<span class="built_in">str</span>, key:<span class="built_in">list</span></span>):</span></span><br><span class="line">    k = <span class="built_in">len</span>(data)//<span class="built_in">len</span>(key)</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>.join([data[key.index(i+<span class="number">1</span>)*k + j] <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(k) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(key))])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(railfence_plus_encode(<span class="string">&quot;Thi5_1s_a_fl4g&quot;</span>, [<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">4</span>,<span class="number">5</span>]))</span><br><span class="line"><span class="built_in">print</span>(railfence_plus_decode(<span class="string">&quot;i_T_hasg145f_l&quot;</span>, [<span class="number">3</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">7</span>,<span class="number">6</span>,<span class="number">4</span>,<span class="number">5</span>]))</span><br></pre></td></tr></table></figure>
+<p>理论上，我们可以对密文进行爆破，仅需得到密钥的全排列即可 (可以使用
+<code>itertools.permutations</code>)</p>
+<h1 id="w型栅栏算法">W型栅栏算法</h1>
+<h2 id="算法描述">算法描述</h2>
+<p>将明文按w型排列，然后将每一行的字母依次连起来组成密文，行数就是密钥。</p>
+<p>解密则同样画出这个w型图案，将每一列的字母依次连接起来组成明文。</p>
+<p>W型栅栏密码的密钥不只是密文长度的因数，任何小于密文长度大于1的整数都有可能。</p>
+<h2 id="算法实现-2">算法实现</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 获取 w 型矩阵</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">railfence_w</span>(<span class="params">data:<span class="built_in">str</span>, key:<span class="built_in">int</span></span>):</span></span><br><span class="line">    mat = [[<span class="literal">None</span>]*<span class="built_in">len</span>(data) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(key)]</span><br><span class="line">    row = <span class="number">0</span></span><br><span class="line">    upflag = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">        mat[row][col] = data[col]</span><br><span class="line">        <span class="keyword">if</span> row == key-<span class="number">1</span>:</span><br><span class="line">            upflag = <span class="literal">True</span></span><br><span class="line">        <span class="keyword">if</span> row == <span class="number">0</span>:</span><br><span class="line">            upflag = <span class="literal">False</span></span><br><span class="line">        <span class="keyword">if</span> upflag:</span><br><span class="line">            row -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            row += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> mat</span><br><span class="line"></span><br><span class="line"><span class="comment"># 加密</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">railfence_w_encode</span>(<span class="params">data, key</span>):</span></span><br><span class="line">    mat = railfence_w(data, key)</span><br><span class="line">    msg = []</span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> <span class="built_in">range</span>(key):</span><br><span class="line">        <span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">            <span class="keyword">if</span> mat[row][col] != <span class="literal">None</span>:</span><br><span class="line">                msg.append(mat[row][col])</span><br><span class="line">    <span class="keyword">return</span> mat, msg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解密</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">railfence_w_decode</span>(<span class="params">data, key</span>):</span></span><br><span class="line">    mat = railfence_w(data, key)</span><br><span class="line">    sub = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> row <span class="keyword">in</span> <span class="built_in">range</span>(key):</span><br><span class="line">        <span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">            <span class="keyword">if</span> mat[row][col] != <span class="literal">None</span>:</span><br><span class="line">                mat[row][col] = data[sub]</span><br><span class="line">                sub += <span class="number">1</span></span><br><span class="line">    msg = []</span><br><span class="line">    <span class="keyword">for</span> col <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(data)):</span><br><span class="line">        <span class="keyword">for</span> row <span class="keyword">in</span> <span class="built_in">range</span>(key):</span><br><span class="line">            <span class="keyword">if</span> mat[row][col] != <span class="literal">None</span>:</span><br><span class="line">                msg.append(mat[row][col])</span><br><span class="line">    <span class="keyword">return</span> mat, msg</span><br><span class="line"></span><br><span class="line"><span class="comment"># 爆破算法</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_w</span>(<span class="params">data:<span class="built_in">str</span>, needkeys:<span class="built_in">bool</span>=<span class="literal">False</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> needkeys:</span><br><span class="line">        keys = [i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="built_in">len</span>(data))]</span><br><span class="line">        <span class="keyword">return</span> keys, [<span class="string">&#x27;&#x27;</span>.join(railfence_w_decode(data, k)[<span class="number">1</span>]) <span class="keyword">for</span> k <span class="keyword">in</span> keys]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> [<span class="string">&#x27;&#x27;</span>.join(railfence_w_decode(data, k)[<span class="number">1</span>]) <span class="keyword">for</span> k <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, <span class="built_in">len</span>(data))]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_crack_w</span>(<span class="params">data:<span class="built_in">str</span></span>):</span></span><br><span class="line">    keys, msg = crack_w(data, <span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">for</span> k, m <span class="keyword">in</span> <span class="built_in">zip</span>(keys, msg):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;k&#125;</span>栏: <span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">print_crack_w(<span class="string">&quot;ccehgyaefnpeoobe&#123;lcirg&#125;epriec_ora_g&quot;</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
       </tags>
   </entry>
 </search>
