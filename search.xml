@@ -3476,10 +3476,10 @@ PNG 图片用 Apple 自家的 PNG 解码器解码就可以分为 2
 <p>这个技巧相当的巧妙以至于 Apple 也没有想到，在 Apple
 系统（MacOS、iOS）只要利用了系统的 PNG 解码器的软件都会受到影响（MacOS
 上 Chrome 浏览器自带 PNG 解码器所以不受影响）。</p>
-<p>我们可以使用 https://github.com/DavidBuchanan314/ambiguous-png-packer
+<p>我们可以使用 <a href="https://github.com/DavidBuchanan314/ambiguous-png-packer">https://github.com/DavidBuchanan314/ambiguous-png-packer</a>
 来生成显示不同的图片。</p>
 <blockquote>
-<p>在现实生成网站：https://moonvy.com/apps/PNGemini/</p>
+<p>在现实生成网站：<a href="https://moonvy.com/apps/PNGemini/">https://moonvy.com/apps/PNGemini/</a></p>
 </blockquote>
 <p>当然，如果想要查看不同设备的图片，那么最好的方法当然是拥有一部<strong>苹果手机</strong>。</p>
 <p><strong>特征</strong>：会出现一些杂乱无章的像素线条，这不是技术问题，而是因为原理上是拼接和不解压数据，所以只要是这种构造的图片，都会出现一些像素线条。</p>
@@ -4047,6 +4047,107 @@ key)</p>
       <tags>
         <tag>note</tag>
         <tag>crypto</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>sagemath 入门笔记</title>
+    <url>//sagemath-get-started.html</url>
+    <content><![CDATA[<h1 id="sagemath-简述">Sagemath 简述</h1>
+<p>Sage（或称SageMath）是在GPL协议下发布的开源数学软件，并且整合了许多已有的开源软件包到一个基于Python的统一界面下。其目标是创造一个Magma,
+Maple, Mathematica 和 Matlab 的开源替代品。</p>
+<p>Sage
+包含了从线性代数、微积分，到密码学、数值计算、组合数学、群论、图论、数论等各种初高等数学的计算功能。</p>
+<p>虽然 Sage 想要取代 Matlab，但使用上还是有一定的局限性。</p>
+<p>现在的 Sage 版本是基于 Python3 的。</p>
+<h1 id="sagemath-安装">Sagemath 安装</h1>
+<p>在 <a href="https://www.sagemath.org/download.html">https://www.sagemath.org/download.html</a>
+中选择相应的安装程序下载并安装。</p>
+<h2 id="windows-sage">Windows &amp; Sage</h2>
+<p>Sage 不在官网中提供 Windows 的二进制文件下载，需要在其 github
+官方发布页中下载：</p>
+<p><a href="https://github.com/sagemath/sage-windows/releases">https://github.com/sagemath/sage-windows/releases</a></p>
+<p>选择自己需要的版本，下载：</p>
+<figure>
+<img src="/sagemath-get-started/Sage%20Assets.png" alt="Sage Assets">
+<figcaption aria-hidden="true">Sage Assets</figcaption>
+</figure>
+<figure>
+<img src="/sagemath-get-started/Sage%20Setup.png" alt="Sage Setup">
+<figcaption aria-hidden="true">Sage Setup</figcaption>
+</figure>
+<p>安装过程中特别注意 <code>home directory</code> 的选择，这将决定 Sage
+Shell 的初始工作目录：</p>
+<figure>
+<img src="/sagemath-get-started/sagehome.png" alt="sagehome">
+<figcaption aria-hidden="true">sagehome</figcaption>
+</figure>
+<p>还有 <code>Destination Location</code> 即安装目录：</p>
+<figure>
+<img src="/sagemath-get-started/sagedestination.png" alt="sagedestination">
+<figcaption aria-hidden="true">sagedestination</figcaption>
+</figure>
+<p>其他选项可以按默认配置进行。</p>
+<h1 id="sagemath-使用">Sagemath 使用</h1>
+<p>现在在 Sage <code>home directory</code> 目录下编写一个
+<code>.sage</code> 脚本：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&quot;hello world&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>我们打开 <code>SageMath 9.3 Shell</code>，输入 <code>ls</code>
+可以查看到我们刚刚编写的脚本文件：</p>
+<figure>
+<img src="/sagemath-get-started/Sage%20Shell%20-%20ls.png" alt="Sage Shell - ls">
+<figcaption aria-hidden="true">Sage Shell - ls</figcaption>
+</figure>
+<p>使用指令 <code>sage hello.sage</code> 尝试运行我们的脚本：</p>
+<figure>
+<img src="/sagemath-get-started/Sage%20Shell%20-%20helloworld.png" alt="Sage Shell - helloworld">
+<figcaption aria-hidden="true">Sage Shell - helloworld</figcaption>
+</figure>
+<p>成功运行即可！</p>
+<p>同时我们也可以使用另一种方式运行我们的脚本：交互式 Shell</p>
+<p>我们运行
+<code>SageMath 9.3</code>，第一次运行可能加载较慢，如下图所示：</p>
+<figure>
+<img src="/sagemath-get-started/Sage%20Console.png" alt="Sage Console">
+<figcaption aria-hidden="true">Sage Console</figcaption>
+</figure>
+<p>其是基于 iPython 而定制的交互式 Shell，我们可以使用 Sage 内置函数
+<code>load(filepath)</code> 来运行我们的脚本：</p>
+<figure>
+<img src="/sagemath-get-started/Sage%20Console%20-%20load.png" alt="Sage Console - load">
+<figcaption aria-hidden="true">Sage Console - load</figcaption>
+</figure>
+<p>如果对于一些运算量较大的脚本，我们可以使用 Sagecell
+在线运行我们的脚本得到结果：</p>
+<p><a href="https://sagecell.sagemath.org/">https://sagecell.sagemath.org/</a></p>
+<h1 id="sage-windows-python3.7">Sage-windows &amp; Python3.7</h1>
+<p>Sage-windows 实际上是基于 Cygwin 运行的 Python3.7 脚本。</p>
+<p>想要使用 Python3.7 的其他包，我们需要手动使用 <code>pip3</code>
+进行安装，但这里提供一个更加快捷的方式：找到本地的 Python3
+根目录，将根目录下的 <code>Lib\site-packages</code> 文件夹复制后粘贴到
+Sage 根目录下的 <code>runtime\lib\python3.7\site-packages</code></p>
+<p>这样相当于快速重新安装一遍已有的 Python
+库，但推荐更稳妥的方式还是自己手动重新安装一遍所需要的库 (一般 Sage
+已经安装了绝大多数需要使用到的库了)。</p>
+<p>然后我们再在 <code>SageMath 9.3 Console</code> 中运行以下脚本：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pkg_resources</span><br><span class="line"><span class="keyword">from</span> subprocess <span class="keyword">import</span> call</span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> packages <span class="keyword">in</span> [dist.project_name <span class="keyword">for</span> dist <span class="keyword">in</span> pkg_resources.working_set]:</span><br><span class="line">    call(<span class="string">&quot;pip3 install --upgrade &quot;</span> + <span class="string">&#x27;&#x27;</span>.join(packages), shell=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>以便快速更新所有脚本。</p>
+<h2 id="sagemath-console">SageMath Console</h2>
+<p><code>SageMath Console</code> 可以认为是 Sagemath 的一个交互式
+iPython。</p>
+<h2 id="sagemath-shell">SageMath Shell</h2>
+<p><code>SageMath Shell</code> 可以认为是基于 Windows 的 Cygwin
+运行的一个终端，内置了许多有用的软件。</p>
+<h2 id="sagemath-notebook">SageMath Notebook</h2>
+<p><code>SageMath Notebook</code> 是一个基于 <strong>jupyter</strong>
+的交互式 web 终端，打开后会开启一个本地 web 服务器方便使用 Sage。</p>
+<p>具体的使用可以参考文章：<a href="https://zhuanlan.zhihu.com/p/297736314">https://zhuanlan.zhihu.com/p/297736314</a></p>
+<h1 id="sagemath-更多">SageMath 更多</h1>
+<p>更多有关 SageMath 的知识可以查看本博客带有 <code>sagemath</code>
+标签的文章。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>sagemath</tag>
       </tags>
   </entry>
 </search>
