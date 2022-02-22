@@ -210,7 +210,7 @@ y=(-bx&#39;+y)mod(N)
 <p>其中<span class="math inline">\(a、b\)</span>为给定参数，<span class="math inline">\(N\)</span>为置乱次数
 (shuffle_times)，<code>reverse</code> 为是否倒置变换
 (可能会出现变换倒置的问题)</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment"># Anrold 变换</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arnold</span>(<span class="params"><span class="built_in">input</span>, output, a, b, N, reverse=<span class="literal">False</span></span>):</span></span><br><span class="line">    before = Image.<span class="built_in">open</span>(<span class="built_in">input</span>)</span><br><span class="line">    weight, height = before.size</span><br><span class="line">    bfdata = before.load()</span><br><span class="line">    after = Image.new(before.mode, before.size)</span><br><span class="line">    afdata = after.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(weight):</span><br><span class="line">                nx = (x + b * y) % height</span><br><span class="line">                ny = ((a * x) + (a * b + <span class="number">1</span>) * y) % weight</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    afdata[ny, nx] = bfdata[y, x]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    afdata[nx, ny] = bfdata[x, y]</span><br><span class="line">    </span><br><span class="line">    after.save(output, before.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Anrold 逆变换</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rearnold</span>(<span class="params"><span class="built_in">input</span>, output, a, b, N, reverse=<span class="literal">False</span></span>):</span></span><br><span class="line">    before = Image.<span class="built_in">open</span>(<span class="built_in">input</span>)</span><br><span class="line">    weight, height = before.size</span><br><span class="line">    bfdata = before.load()</span><br><span class="line">    after = Image.new(before.mode, before.size)</span><br><span class="line">    afdata = after.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(weight):</span><br><span class="line">                nx = ((a * b + <span class="number">1</span>) * x + (-b) * y) % height</span><br><span class="line">                ny = (y + (-a) * x) % weight</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    afdata[ny, nx] = bfdata[y, x]</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    afdata[nx, ny] = bfdata[x, y]</span><br><span class="line">    </span><br><span class="line">    after.save(output, before.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line">arnold(<span class="string">&quot;before.png&quot;</span>, <span class="string">&quot;encode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br><span class="line">rearnold(<span class="string">&quot;encode.png&quot;</span>, <span class="string">&quot;decode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment"># Anrold 变换</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">infile: 输入图像路径</span></span><br><span class="line"><span class="string">outfile: 输出图像路径</span></span><br><span class="line"><span class="string">a: Anrold 变换参数</span></span><br><span class="line"><span class="string">b: Anrold 变换参数</span></span><br><span class="line"><span class="string">N: 置乱次数 (shuffle_times)</span></span><br><span class="line"><span class="string">reverse: 是否逆变换</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arnold</span>(<span class="params">infile:<span class="built_in">str</span>, outfile:<span class="built_in">str</span>=<span class="literal">None</span>, a:<span class="built_in">int</span>=<span class="number">1</span>, b:<span class="built_in">int</span>=<span class="number">1</span>, N:<span class="built_in">int</span>=<span class="number">1</span>, reverse:<span class="built_in">bool</span>=<span class="literal">False</span></span>):</span></span><br><span class="line">    inimg = Image.<span class="built_in">open</span>(infile)</span><br><span class="line">    width, height = inimg.size</span><br><span class="line">    indata = inimg.load()</span><br><span class="line">    outimg = Image.new(inimg.mode, inimg.size)</span><br><span class="line">    outdata = outimg.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    nx = ((a * b + <span class="number">1</span>) * x - a * y) % width</span><br><span class="line">                    ny = (y - b * x) % height</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    nx = (x + a * y) % width</span><br><span class="line">                    ny = (b * x + (a * b + <span class="number">1</span>) * y) % height</span><br><span class="line">                outdata[nx, ny] = indata[x, y]</span><br><span class="line">    </span><br><span class="line">    outimg.save(outfile <span class="keyword">if</span> outfile <span class="keyword">else</span> <span class="string">&quot;arnold_&quot;</span>+infile, inimg.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line">arnold(<span class="string">&quot;before.png&quot;</span>, <span class="string">&quot;encode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br><span class="line">arnold(<span class="string">&quot;encode.png&quot;</span>, <span class="string">&quot;decode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>, <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -4148,6 +4148,362 @@ iPython。</p>
       <tags>
         <tag>note</tag>
         <tag>sagemath</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pwntools 笔记</title>
+    <url>//pwntools-note.html</url>
+    <content><![CDATA[<h1 id="pwntools-简述">Pwntools 简述</h1>
+<p>Pwntools 是一个 CTF 框架和漏洞利用开发库。</p>
+<p>它是用 Python
+编写的，专为快速原型设计和开发而设计，旨在使漏洞利用编写尽可能简单。</p>
+<p>我们可以使用 pip 包管理工具安装 <code>pwntools</code>：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip3 install pwntools</span><br></pre></td></tr></table></figure>
+<p>pwntools 需要及时使用最新版，我们可以使用以下命令对 pwntools
+更新：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 -m pip install --upgrade pwntools</span><br></pre></td></tr></table></figure>
+<h1 id="pwntools-详解">Pwntools 详解</h1>
+<h2 id="pwntools-模块索引"><code>pwntools</code> 模块索引</h2>
+<table>
+<colgroup>
+<col style="width: 31%">
+<col style="width: 68%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>模块名称</th>
+<th>模块功能</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>pwnlib.adb</code></td>
+<td>adb 调试桥的封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.args</code></td>
+<td>包含命令行参数的一些配置 (包含这个包后会自动从命令行中获取参数)</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.asm</code></td>
+<td>通过 capstone 进行汇编的编译和反编译等功能的封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.atexception</code></td>
+<td>包含未处理异常的回调函数</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.atexit</code></td>
+<td>atexit 的替代品</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.constants</code></td>
+<td>头文件宏定义的封装，可以通过这个模块直接获取系统宏定义常数</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.config</code></td>
+<td>Pwntools 配置变量</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.context</code></td>
+<td>包含运行时变量，上下文管理器</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.dynelf</code></td>
+<td>通过内存 leak 数据自动化定位程序中函数位置</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.encoders</code></td>
+<td>Shellcode 编码工具封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.elf.config</code></td>
+<td>elf 核心配置</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.elf.corefile</code></td>
+<td>elf 核心文件转储功能</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.elf.elf</code></td>
+<td>elf 文件操作封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.exception</code></td>
+<td>Pwnlib 异常</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.filepointer</code></td>
+<td>FILE* 结构体封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.filesystem</code></td>
+<td>通过 SSH 为本地文件系统和远程文件系统上的路径提供 Python2
+的兼容接口</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.flag</code></td>
+<td>CTF Flag 管理</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.fmtstr</code></td>
+<td>格式化字符串漏洞利用封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.gdb</code></td>
+<td>GDB 调试封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.libcdb</code></td>
+<td>Libc 数据库，可以通过一些信息查找对应的地址</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.log</code></td>
+<td>日志库，跟 Pwntools 的操作</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.memleak</code></td>
+<td>内存泄漏管理工具</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.qemu</code></td>
+<td>QEMU 适用工具封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.replacements</code></td>
+<td>一些标准函数的替代品</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.rop.ret2dlresolve</code></td>
+<td>提供缓冲区溢出利用的负载自动化生成工具</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.rop.rop</code></td>
+<td>ROP 生成工具，可以直接生成 32 位 ROP</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.rop.srop</code></td>
+<td>Sigreturn 相关的利用封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.runner</code></td>
+<td>Shellcode 运行封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.shellcraft</code></td>
+<td>Shellcode 生成工具</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.shellcraft.aarch64</code></td>
+<td>Shellcode for AArch64</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.shellcraft.amd64</code></td>
+<td>Shellcode for AMD64</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.shellcraft.arm</code></td>
+<td>Shellcode for ARM</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.shellcraft.common</code></td>
+<td>Shellcode 所有架构的基本利用</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.shellcraft.i386</code></td>
+<td>Shellcode for Intel 80386</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.shellcraft.mips</code></td>
+<td>Shellcode for MIPS</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.shellcraft.thumb</code></td>
+<td>Shellcode for Thumb Mode</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.term</code></td>
+<td>终端处理封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.timeout</code></td>
+<td>超时处理封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.tubes</code></td>
+<td>套接字、SSH 等 IO 封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.tubes.buffer</code></td>
+<td>IO 缓冲封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.tubes.process</code></td>
+<td>IO 进程封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.tubes.serialtube</code></td>
+<td>IO 串行端口封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.tubes.sock</code></td>
+<td>套接字封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.tubes.ssh</code></td>
+<td>SSH 封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.ui</code></td>
+<td>UI 封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.update</code></td>
+<td>更新 Pwntools</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.useragents</code></td>
+<td>useragent 生成封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.util.crc</code></td>
+<td>计算一系列 CRC 的封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.util.cyclic</code></td>
+<td>一些序列生成器的封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.util.fiddling</code></td>
+<td>编码封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.util.getdents</code></td>
+<td>Linux 二进制目录处理</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.util.hashes</code></td>
+<td>哈希散列函数封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.util.iters</code></td>
+<td>itertools 的扩展</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.util.lists</code></td>
+<td>对 list 的操作封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.util.misc</code></td>
+<td>一些没办法分类的杂项函数封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.util.net</code></td>
+<td>网络交互封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.util.packing</code></td>
+<td>压缩操作封装</td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.util.proc</code></td>
+<td>与 <code>/proc/</code> 相关的进程操作封装</td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.util.safeeval</code></td>
+<td>安全的 <code>eval()</code></td>
+</tr>
+<tr class="even">
+<td><code>pwnlib.util.sh_string</code></td>
+<td>Shell 字符串 <code>eval()</code></td>
+</tr>
+<tr class="odd">
+<td><code>pwnlib.util.web</code></td>
+<td>web 网络交互工具</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>推荐使用 <code>from pwn import *</code> 将以上各功能模块直接导入</p>
+</blockquote>
+<h1 id="pwntools-与服务器">Pwntools 与服务器</h1>
+<p>使用 Pwntools 与服务器进行交互，需要利用 <code>pwnlib.tubes</code>
+库，方便起见可以直接 <code>from pwn import *</code> 导入所有模块。</p>
+<h2 id="建立连接">建立连接</h2>
+<p>建立连接我们需要使用 <code>remote</code> 类，它的构造函数需要接收域名
+(host) 和 端口 (port) 来跟服务器建立 TCP 或 UDP 连接，相当于 Linux 中的
+<code>nc</code> 指令。</p>
+<p>其他参数请参考官方文档 <a href="http://docs.pwntools.com/en/latest/tubes.html">http://docs.pwntools.com/en/latest/tubes.html</a></p>
+<p>使用示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">io = pwn.remote(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">8888</span>)</span><br><span class="line">client = pwn.remote(<span class="string">&quot;Localhost&quot;</span>, <span class="number">8888</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="接收数据">接收数据</h2>
+<ul>
+<li><p><code>recv(numb, timeout)</code></p>
+<p><code>numb</code> → 接收的字节数；有默认值</p>
+<p><code>timeout</code> → 接收时限，单位秒，超时则中断接收；有默认值</p>
+<p><code>@returns</code> → 返回一个保存所接收数据的 <code>bytes</code>
+数组</p>
+<p>如果不给参数，默认返回缓冲区数据</p>
+<p>使用示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 接收所有数据 (但只是缓冲区内容)</span></span><br><span class="line">data = io.recv()</span><br><span class="line"><span class="comment"># 接收 1024 字节数据</span></span><br><span class="line">data = io.recv(<span class="number">1024</span>)</span><br><span class="line"><span class="comment"># 接收 1 秒数据</span></span><br><span class="line">data = io.recv(timeout=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 接收 1024 字节数据，如果超时则直接返回</span></span><br><span class="line">data = io.recv(<span class="number">1024</span>, timeout=<span class="number">1</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p><code>recvall(timeout)</code></p>
+<p><code>timeout</code> → 接收时限，单位秒，超时则中断接收；默认
+forever</p>
+<p><code>@returns</code> → 返回一个保存所接收数据的 <code>bytes</code>
+数组</p>
+<p>使用示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 接收所有数据，直到 socket 关闭</span></span><br><span class="line">data = io.recvall()</span><br><span class="line"><span class="comment"># 接收 1 秒数据</span></span><br><span class="line">data = io.recvall(timeout=<span class="number">1</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p><code>recvline(keepends, timeout)</code></p>
+<p><code>keepends</code> → 接收数据是否保留回车；默认保留</p>
+<p><code>timeout</code> → 接收时限，单位秒，超时则中断接收；有默认值</p>
+<p><code>@returns</code> → 返回一个保存所接收数据的 <code>bytes</code>
+数组</p>
+<p>使用示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 接收一行数据 (但含有&#x27;\n&#x27;)</span></span><br><span class="line">data = io.recvline()</span><br><span class="line"><span class="comment"># 接收一行数据 (不含有&#x27;\n&#x27;)</span></span><br><span class="line">data = io.recvline(<span class="literal">False</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p><code>recvuntil(delims, drop, timeout)</code></p>
+<p><code>delims</code> → 接收中止标志</p>
+<p><code>drop</code> → 是否丢弃中止标志；默认不丢弃</p>
+<p><code>timeout</code> → 接收时限，单位秒，超时则中断接收；有默认值</p>
+<p><code>@returns</code> → 返回一个保存所接收数据的 <code>bytes</code>
+数组</p>
+<p>使用示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">接收数据直到接收到 &#x27;start&#x27; 后结束，字符串中包含 &#x27;start&#x27;</span></span><br><span class="line"><span class="string">比如缓冲区中存在数据 &#x27;the game is started!&#x27;</span></span><br><span class="line"><span class="string">那么函数会返回 b&#x27;the game is start&#x27;，缓冲区为 &#x27;ed!&#x27;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">data = io.recvuntil(<span class="string">&#x27;start&#x27;</span>)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">接收数据直到接收到 &#x27;start&#x27; 后结束，字符串中不包含 &#x27;start&#x27;</span></span><br><span class="line"><span class="string">比如缓冲区中存在数据 &#x27;the game is started!&#x27;</span></span><br><span class="line"><span class="string">那么函数会返回 b&#x27;the game is &#x27;，而缓冲区为 &#x27;ed!&#x27;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line">data = io.recvuntil(<span class="string">&#x27;start&#x27;</span>, <span class="literal">True</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="发送数据">发送数据</h2>
+<ul>
+<li><p><code>send(data)</code></p>
+<p><code>data</code> → 发送的 bytes 数组</p>
+<p>使用示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 发送数据，但不包含&#x27;\n&#x27;</span></span><br><span class="line">io.send(<span class="string">&#x27;hey!&#x27;</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p><code>sendline(data)</code></p>
+<p><code>data</code> → 发送的 bytes 数组，默认值为换行符</p>
+<p>使用示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 发送数据，且包含换行符</span></span><br><span class="line">io.sendline(<span class="string">&#x27;hey!&#x27;</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p><code>sendthen(delim, data, timeout)</code></p>
+<p><code>delims</code> → 接收中止标志</p>
+<p><code>data</code> → 发送的 bytes 数组</p>
+<p><code>timeout</code> → 接收时限，单位秒，超时则中断接收；有默认值</p>
+<p><code>@returns</code> → 返回一个保存所接收数据的 <code>bytes</code>
+数组</p>
+<p><code>sendlinethen</code> 同理</p>
+<p>使用示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 发送数据&#x27;hey!&#x27;，然后 io.recvuntil(&#x27;how are u?&#x27;)</span></span><br><span class="line">data = io.sendthen(<span class="string">&#x27;how are u?&#x27;</span>, <span class="string">&#x27;hey!&#x27;</span>)</span><br><span class="line"><span class="comment"># 发送数据&#x27;hey!&#x27;，然后 io.recvuntil(&#x27;how are u?&#x27;, 1)</span></span><br><span class="line">data = io.sendthen(<span class="string">&#x27;how are u?&#x27;</span>, <span class="string">&#x27;hey!&#x27;</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure></li>
+<li><p><code>sendafter(delim, data, timeout)</code></p>
+<p><code>delims</code> → 接收中止标志</p>
+<p><code>data</code> → 发送的 bytes 数组</p>
+<p><code>timeout</code> → 接收时限，单位秒，超时则中断接收；有默认值</p>
+<p><code>@returns</code> → 返回一个保存所接收数据的 <code>bytes</code>
+数组</p>
+<p><code>sendlinethen</code> 同理</p>
+<p>使用示例：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># io.recvuntil(&#x27;how are u?&#x27;)，然后接收数据&#x27;I am fine.&#x27;</span></span><br><span class="line">data = io.sendafter(<span class="string">&#x27;how are u?&#x27;</span>, <span class="string">&#x27;I am fine.&#x27;</span>)</span><br><span class="line"><span class="comment"># io.recvuntil(&#x27;how are u?&#x27;, 1)，然后接收数据&#x27;I am fine.&#x27;</span></span><br><span class="line">data = io.sendafter(<span class="string">&#x27;how are u?&#x27;</span>, <span class="string">&#x27;hey!&#x27;</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="完整示例">完整示例</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 与 127.0.0.1:8888 建立tcp连接</span></span><br><span class="line">io = remote(<span class="string">&quot;127.0.0.1&quot;</span>, <span class="number">8888</span>)</span><br><span class="line"><span class="comment"># 接收一行数据(例如 b&#x27;how are u?\n&#x27;)并解码为str类型</span></span><br><span class="line">msg = io.recvline().decode()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;recv: <span class="subst">&#123;msg&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 发送一行数据(即发送 b&#x27;I am fine. are u?\n&#x27;)</span></span><br><span class="line">io.sendline(<span class="string">&quot;I am fine. are u?&quot;</span>.encode())</span><br><span class="line"><span class="comment"># 接收一行数据(例如 b&#x27;I am fine, too.\n&#x27;)并解码为str类型</span></span><br><span class="line">msg = io.recvline().decode()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;recv: <span class="subst">&#123;msg&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 当接收的数据不是 &quot;goobye!&quot; 的时候循环</span></span><br><span class="line"><span class="keyword">while</span> msg != <span class="string">&quot;goodbye!&quot;</span>:</span><br><span class="line">    <span class="comment"># 发送一行数据(即发送 b&#x27;baka!\n&#x27;)</span></span><br><span class="line">    io.sendline(<span class="string">&quot;baka!&quot;</span>.encode())</span><br><span class="line">    <span class="comment"># 接收一行数据(例如 b&#x27;???\n&#x27;)并解码为str类型</span></span><br><span class="line">    msg = io.recvline().decode()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;recv: <span class="subst">&#123;msg&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结束连接</span></span><br><span class="line">io.close()</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>pwn</tag>
       </tags>
   </entry>
 </search>
