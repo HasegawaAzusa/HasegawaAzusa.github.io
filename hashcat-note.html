@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="hashcat 的使用笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hashcat 使用笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/hashcat-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="hashcat 的使用笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-23T07:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-23T09:37:38.950Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="crypto">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/hashcat-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/hashcat-note.html","path":"/hashcat-note.html","title":"hashcat 使用笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>hashcat 使用笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">41</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">39</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hashcat-%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">Hashcat 简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">常用参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#a-%E7%A0%B4%E8%A7%A3%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">-a 破解模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A9%E7%A0%81%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="nav-number">2.2.</span> <span class="nav-text">掩码字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hash-id-%E5%AF%B9%E7%85%A7%E8%A1%A8"><span class="nav-number">2.3.</span> <span class="nav-text">hash id 对照表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E6%BC%94%E7%A4%BA"><span class="nav-number">3.</span> <span class="nav-text">实例演示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%97%E5%85%B8%E8%BF%9B%E8%A1%8C%E7%88%86%E7%A0%B4"><span class="nav-number">3.1.</span> <span class="nav-text">使用字典进行爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8C%87%E5%AE%9A%E5%AD%97%E7%AC%A6%E9%9B%86%E7%88%86%E7%A0%B4"><span class="nav-number">3.2.</span> <span class="nav-text">使用指定字符集爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%97%E5%85%B8%E6%8E%A9%E7%A0%81%E8%BF%9B%E8%A1%8C%E7%88%86%E7%A0%B4"><span class="nav-number">3.3.</span> <span class="nav-text">使用字典+掩码进行爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8E%A9%E7%A0%81%E5%AD%97%E5%85%B8%E8%BF%9B%E8%A1%8C%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.4.</span> <span class="nav-text">使用掩码+字典进行破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql4.15%E7%9A%84-password-%E5%87%BD%E6%95%B0"><span class="nav-number">3.5.</span> <span class="nav-text">Mysql4.1&#x2F;5的 PASSWORD
+函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sha512crypt-6-sha512-unix%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.6.</span> <span class="nav-text">sha512crypt \(6\), SHA512 (Unix)破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows-nt-hashlm-hash%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.7.</span> <span class="nav-text">Windows NT-hash，LM-hash破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mssql-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.8.</span> <span class="nav-text">mssql 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wordpress-%E5%AF%86%E7%A0%81-hash-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.9.</span> <span class="nav-text">wordpress 密码 hash 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#discuz-%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81-hash-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.10.</span> <span class="nav-text">discuz 用户密码 hash 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rar-%E5%8E%8B%E7%BC%A9%E5%8C%85%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.11.</span> <span class="nav-text">RAR 压缩包密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zip-%E5%8E%8B%E7%BC%A9%E5%8C%85%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.12.</span> <span class="nav-text">ZIP 压缩包密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#office-%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.13.</span> <span class="nav-text">office 密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wifi-%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.14.</span> <span class="nav-text">WIFI 密码破解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE"><span class="nav-number">4.</span> <span class="nav-text">使用建议</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">39</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">41</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/hashcat-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          hashcat 使用笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-23 15:00:00" itemprop="dateCreated datePublished" datetime="2022-02-23T15:00:00+08:00">2022-02-23</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>16k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>15 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">hashcat 的使用笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="hashcat-简述">Hashcat 简述</h1>
+<p>Hashcat 是自称世界上最快的密码恢复工具。</p>
+<p>在 Debian 系的 Linux 中可以使用 <code>apt install hashcat</code>
+获取。</p>
+<p>支持 hashcat 的散列算法有 Microsoft LM 哈希，MD4，MD5，SHA系列，Unix
+加密格式，MySQL 和 Cisco PIX 等。</p>
+<p>同时也支持多种计算核心：GPU、CPU、APU、DSP、FPGA、Coprocessor</p>
+<p>破解需要一定等待时间，若时间太长，我们可以按 s 键查看破解进度；p
+键暂停；r 键继续破解；q 键退出破解。</p>
+<h1 id="常用参数">常用参数</h1>
+<table>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>-m</td>
+<td>指定哈希类型，不指定默认为 md5</td>
+</tr>
+<tr class="even">
+<td>-a</td>
+<td>指定破解模式</td>
+</tr>
+<tr class="odd">
+<td>-V</td>
+<td>查看版本信息</td>
+</tr>
+<tr class="even">
+<td>-o</td>
+<td>将输出结果储存到指定文件</td>
+</tr>
+<tr class="odd">
+<td>--force</td>
+<td>忽略警告</td>
+</tr>
+<tr class="even">
+<td>--show</td>
+<td>仅显示破解的hash密码和对应的明文</td>
+</tr>
+<tr class="odd">
+<td>--remove</td>
+<td>从源文件中删除破解成功的hash</td>
+</tr>
+<tr class="even">
+<td>--username</td>
+<td>忽略hash表中的用户名</td>
+</tr>
+<tr class="odd">
+<td>-b</td>
+<td>测试计算机破解速度和相关硬件信息</td>
+</tr>
+<tr class="even">
+<td>-O</td>
+<td>限制密码长度</td>
+</tr>
+<tr class="odd">
+<td>-T</td>
+<td>设置线程数</td>
+</tr>
+<tr class="even">
+<td>-r</td>
+<td>使用规则文件</td>
+</tr>
+<tr class="odd">
+<td>-1 / -2 / -3</td>
+<td>自定义字符集</td>
+</tr>
+<tr class="even">
+<td>-i</td>
+<td>启用增量破解模式</td>
+</tr>
+<tr class="odd">
+<td>--increment-min</td>
+<td>设置密码最小长度</td>
+</tr>
+<tr class="even">
+<td>--increment-max</td>
+<td>设置密码最大长度</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a-破解模式">-a 破解模式</h2>
+<table>
+<thead>
+<tr class="header">
+<th>-a 参数</th>
+<th>攻击模式</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>Straight（字段破解）</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>Combination（组合破解）</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Brute-force（掩码暴力破解）</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>Hybrid Wordlist + Mask（字典+掩码破解）</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>Hybrid Mask + Wordlist（掩码+字典破解）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="掩码字符集">掩码字符集</h2>
+<table>
+<thead>
+<tr class="header">
+<th>掩码字符集</th>
+<th>指代</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>?l</td>
+<td>代表小写字母</td>
+</tr>
+<tr class="even">
+<td>?u</td>
+<td>代表大写字母</td>
+</tr>
+<tr class="odd">
+<td>?d</td>
+<td>代表数字</td>
+</tr>
+<tr class="even">
+<td>?h</td>
+<td>常见小写子目录和数字</td>
+</tr>
+<tr class="odd">
+<td>?H</td>
+<td>常见大写字母和数字</td>
+</tr>
+<tr class="even">
+<td>?s</td>
+<td>代表特殊字符</td>
+</tr>
+<tr class="odd">
+<td>?a</td>
+<td>代表大小写字母、数字以及特殊字符</td>
+</tr>
+<tr class="even">
+<td>?b</td>
+<td>0x00-0xff</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>同时支持自定义字符集，即</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -1 abc123 ?1?1?1</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h2 id="hash-id-对照表">hash id 对照表</h2>
+<table>
+<colgroup>
+<col style="width: 5%">
+<col style="width: 53%">
+<col style="width: 41%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Name</th>
+<th>Category</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>900</td>
+<td>MD4</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>MD5</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>5100</td>
+<td>Half MD5</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>100</td>
+<td>SHA1</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>1300</td>
+<td>SHA2-224</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>1400</td>
+<td>SHA2-256</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>10800</td>
+<td>SHA2-384</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>1700</td>
+<td>SHA2-512</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>17300</td>
+<td>SHA3-224</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>17400</td>
+<td>SHA3-256</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>17500</td>
+<td>SHA3-384</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>17600</td>
+<td>SHA3-512</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>17700</td>
+<td>Keccak-224</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>17800</td>
+<td>Keccak-256</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>17900</td>
+<td>Keccak-384</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>18000</td>
+<td>Keccak-512</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>600</td>
+<td>BLAKE2b-512</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>10100</td>
+<td>SipHash</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>6000</td>
+<td>RIPEMD-160</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>6100</td>
+<td>Whirlpool</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>6900</td>
+<td>GOST R 34.11-94</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>11700</td>
+<td>GOST R 34.11-2012 (Streebog) 256-bit, big-endian</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="odd">
+<td>11800</td>
+<td>GOST R 34.11-2012 (Streebog) 512-bit, big-endian</td>
+<td>Raw Hash</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>md5(<span class="math inline">\(pass.\)</span>salt)</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="odd">
+<td>20</td>
+<td>md5(<span class="math inline">\(salt.\)</span>pass)</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="even">
+<td>30</td>
+<td>md5(utf16le(<span class="math inline">\(pass).\)</span>salt)</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="odd">
+<td>40</td>
+<td>md5(<span class="math inline">\(salt.utf16le(\)</span>pass))</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="even">
+<td>3800</td>
+<td>md5(<span class="math inline">\(salt.\)</span>pass.<span class="math inline">\(salt) | Raw Hash, Salted and/or Iterated | | 3710
+| md5(\)</span>salt.md5(<span class="math inline">\(pass)) | Raw Hash,
+Salted and/or Iterated | | 4010 | md5(\)</span>salt.md5(<span class="math inline">\(salt.\)</span>pass))</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="odd">
+<td>4110</td>
+<td>md5(<span class="math inline">\(salt.md5(\)</span>pass.<span class="math inline">\(salt)) | Raw Hash, Salted and/or Iterated | | 2600
+| md5(md5(\)</span>pass))</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="even">
+<td>3910</td>
+<td>md5(md5(<span class="math inline">\(pass).md5(\)</span>salt))</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="odd">
+<td>4300</td>
+<td>md5(strtoupper(md5(<span class="math inline">\(pass))) | Raw Hash,
+Salted and/or Iterated | | 4400 | md5(sha1(\)</span>pass))</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="even">
+<td>110</td>
+<td>sha1(<span class="math inline">\(pass.\)</span>salt)</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="odd">
+<td>120</td>
+<td>sha1(<span class="math inline">\(salt.\)</span>pass)</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="even">
+<td>130</td>
+<td>sha1(utf16le(<span class="math inline">\(pass).\)</span>salt)</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="odd">
+<td>140</td>
+<td>sha1(<span class="math inline">\(salt.utf16le(\)</span>pass))</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="even">
+<td>4500</td>
+<td>sha1(sha1(<span class="math inline">\(pass)) | Raw Hash, Salted
+and/or Iterated | | 4520 | sha1(\)</span>salt.sha1(<span class="math inline">\(pass)) | Raw Hash, Salted and/or Iterated | | 4700
+| sha1(md5(\)</span>pass))</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="odd">
+<td>4900</td>
+<td>sha1(<span class="math inline">\(salt.\)</span>pass.<span class="math inline">\(salt) | Raw Hash, Salted and/or Iterated | | 14400
+| sha1(CX) | Raw Hash, Salted and/or Iterated | | 1410 |
+sha256(\)</span>pass.<span class="math inline">\(salt) | Raw Hash,
+Salted and/or Iterated | | 1420 | sha256(\)</span>salt.<span class="math inline">\(pass) | Raw Hash, Salted and/or Iterated | | 1430
+| sha256(utf16le(\)</span>pass).<span class="math inline">\(salt) | Raw
+Hash, Salted and/or Iterated | | 1440 |
+sha256(\)</span>salt.utf16le(<span class="math inline">\(pass)) | Raw
+Hash, Salted and/or Iterated | | 1710 | sha512(\)</span>pass.<span class="math inline">\(salt) | Raw Hash, Salted and/or Iterated | | 1720
+| sha512(\)</span>salt.<span class="math inline">\(pass) | Raw Hash,
+Salted and/or Iterated | | 1730 | sha512(utf16le(\)</span>pass).<span class="math inline">\(salt) | Raw Hash, Salted and/or Iterated | | 1740
+| sha512(\)</span>salt.utf16le($pass))</td>
+<td>Raw Hash, Salted and/or Iterated</td>
+</tr>
+<tr class="even">
+<td>50</td>
+<td>HMAC-MD5 (key = $pass)</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="odd">
+<td>60</td>
+<td>HMAC-MD5 (key = $salt)</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="even">
+<td>150</td>
+<td>HMAC-SHA1 (key = $pass)</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="odd">
+<td>160</td>
+<td>HMAC-SHA1 (key = $salt)</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="even">
+<td>1450</td>
+<td>HMAC-SHA256 (key = $pass)</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="odd">
+<td>1460</td>
+<td>HMAC-SHA256 (key = $salt)</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="even">
+<td>1750</td>
+<td>HMAC-SHA512 (key = $pass)</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="odd">
+<td>1760</td>
+<td>HMAC-SHA512 (key = $salt)</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="even">
+<td>11750</td>
+<td>HMAC-Streebog-256 (key = $pass), big-endian</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="odd">
+<td>11760</td>
+<td>HMAC-Streebog-256 (key = $salt), big-endian</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="even">
+<td>11850</td>
+<td>HMAC-Streebog-512 (key = $pass), big-endian</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="odd">
+<td>11860</td>
+<td>HMAC-Streebog-512 (key = $salt), big-endian</td>
+<td>Raw Hash, Authenticated</td>
+</tr>
+<tr class="even">
+<td>14000</td>
+<td>DES (PT = $salt, key = $pass)</td>
+<td>Raw Cipher, Known-Plaintext attack</td>
+</tr>
+<tr class="odd">
+<td>14100</td>
+<td>3DES (PT = $salt, key = $pass)</td>
+<td>Raw Cipher, Known-Plaintext attack</td>
+</tr>
+<tr class="even">
+<td>14900</td>
+<td>Skip32 (PT = $salt, key = $pass)</td>
+<td>Raw Cipher, Known-Plaintext attack</td>
+</tr>
+<tr class="odd">
+<td>15400</td>
+<td>ChaCha20</td>
+<td>Raw Cipher, Known-Plaintext attack</td>
+</tr>
+<tr class="even">
+<td>400</td>
+<td>phpass</td>
+<td>Generic KDF</td>
+</tr>
+<tr class="odd">
+<td>8900</td>
+<td>scrypt</td>
+<td>Generic KDF</td>
+</tr>
+<tr class="even">
+<td>11900</td>
+<td>PBKDF2-HMAC-MD5</td>
+<td>Generic KDF</td>
+</tr>
+<tr class="odd">
+<td>12000</td>
+<td>PBKDF2-HMAC-SHA1</td>
+<td>Generic KDF</td>
+</tr>
+<tr class="even">
+<td>10900</td>
+<td>PBKDF2-HMAC-SHA256</td>
+<td>Generic KDF</td>
+</tr>
+<tr class="odd">
+<td>12100</td>
+<td>PBKDF2-HMAC-SHA512</td>
+<td>Generic KDF</td>
+</tr>
+<tr class="even">
+<td>23</td>
+<td>Skype</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>2500</td>
+<td>WPA-EAPOL-PBKDF2</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>2501</td>
+<td>WPA-EAPOL-PMK</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>16800</td>
+<td>WPA-PMKID-PBKDF2</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>16801</td>
+<td>WPA-PMKID-PMK</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>4800</td>
+<td>iSCSI CHAP authentication, MD5(CHAP)</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>5300</td>
+<td>IKE-PSK MD5</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>5400</td>
+<td>IKE-PSK SHA1</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>5500</td>
+<td>NetNTLMv1</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>5500</td>
+<td>NetNTLMv1+ESS</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>5600</td>
+<td>NetNTLMv2</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>7300</td>
+<td>IPMI2 RAKP HMAC-SHA1</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>7500</td>
+<td>Kerberos 5 AS-REQ Pre-Auth etype 23</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>8300</td>
+<td>DNSSEC (NSEC3)</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>10200</td>
+<td>CRAM-MD5</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>11100</td>
+<td>PostgreSQL CRAM (MD5)</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>11200</td>
+<td>MySQL CRAM (SHA1)</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>11400</td>
+<td>SIP digest authentication (MD5)</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>13100</td>
+<td>Kerberos 5 TGS-REP etype 23</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>16100</td>
+<td>TACACS+</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>16500</td>
+<td>JWT (JSON Web Token)</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="odd">
+<td>18200</td>
+<td>Kerberos 5 AS-REP etype 23</td>
+<td>Network Protocols</td>
+</tr>
+<tr class="even">
+<td>121</td>
+<td>SMF (Simple Machines Forum) &gt; v1.1</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>400</td>
+<td>phpBB3 (MD5)</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>2611</td>
+<td>vBulletin &lt; v3.8.5</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>2711</td>
+<td>vBulletin &gt;= v3.8.5</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>2811</td>
+<td>MyBB 1.2+</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>2811</td>
+<td>IPB2+ (Invision Power Board)</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>8400</td>
+<td>WBB3 (Woltlab Burning Board)</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>Joomla &lt; 2.5.18</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>400</td>
+<td>Joomla &gt;= 2.5.18 (MD5)</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>400</td>
+<td>WordPress (MD5)</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>2612</td>
+<td>PHPS</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>7900</td>
+<td>Drupal7</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>21</td>
+<td>osCommerce</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>21</td>
+<td>xt:Commerce</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>11000</td>
+<td>PrestaShop</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>124</td>
+<td>Django (SHA-1)</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>10000</td>
+<td>Django (PBKDF2-SHA256)</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>16000</td>
+<td>Tripcode</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>3711</td>
+<td>MediaWiki B type</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>13900</td>
+<td>OpenCart</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>4521</td>
+<td>Redmine</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>4522</td>
+<td>PunBB</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="even">
+<td>12001</td>
+<td>Atlassian (PBKDF2-HMAC-SHA1)</td>
+<td>Forums, CMS, E-Commerce, Frameworks</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>PostgreSQL</td>
+<td>Database Server</td>
+</tr>
+<tr class="even">
+<td>131</td>
+<td>MSSQL (2000)</td>
+<td>Database Server</td>
+</tr>
+<tr class="odd">
+<td>132</td>
+<td>MSSQL (2005)</td>
+<td>Database Server</td>
+</tr>
+<tr class="even">
+<td>1731</td>
+<td>MSSQL (2012, 2014)</td>
+<td>Database Server</td>
+</tr>
+<tr class="odd">
+<td>200</td>
+<td>MySQL323</td>
+<td>Database Server</td>
+</tr>
+<tr class="even">
+<td>300</td>
+<td>MySQL4.1/MySQL5</td>
+<td>Database Server</td>
+</tr>
+<tr class="odd">
+<td>3100</td>
+<td>Oracle H: Type (Oracle 7+)</td>
+<td>Database Server</td>
+</tr>
+<tr class="even">
+<td>112</td>
+<td>Oracle S: Type (Oracle 11+)</td>
+<td>Database Server</td>
+</tr>
+<tr class="odd">
+<td>12300</td>
+<td>Oracle T: Type (Oracle 12+)</td>
+<td>Database Server</td>
+</tr>
+<tr class="even">
+<td>8000</td>
+<td>Sybase ASE</td>
+<td>Database Server</td>
+</tr>
+<tr class="odd">
+<td>141</td>
+<td>Episerver 6.x &lt; .NET 4</td>
+<td>HTTP, SMTP, LDAP Server</td>
+</tr>
+<tr class="even">
+<td>1441</td>
+<td>Episerver 6.x &gt;= .NET 4</td>
+<td>HTTP, SMTP, LDAP Server</td>
+</tr>
+<tr class="odd">
+<td>1600</td>
+<td>Apache <span class="math inline">\(apr1\)</span> MD5, md5apr1, MD5
+(APR)</td>
+<td>HTTP, SMTP, LDAP Server</td>
+</tr>
+<tr class="even">
+<td>12600</td>
+<td>ColdFusion 10+</td>
+<td>HTTP, SMTP, LDAP Server</td>
+</tr>
+<tr class="odd">
+<td>1421</td>
+<td>hMailServer</td>
+<td>HTTP, SMTP, LDAP Server</td>
+</tr>
+<tr class="even">
+<td>101</td>
+<td>nsldap, SHA-1(Base64), Netscape LDAP SHA</td>
+<td>HTTP, SMTP, LDAP Server</td>
+</tr>
+<tr class="odd">
+<td>111</td>
+<td>nsldaps, SSHA-1(Base64), Netscape LDAP SSHA</td>
+<td>HTTP, SMTP, LDAP Server</td>
+</tr>
+<tr class="even">
+<td>1411</td>
+<td>SSHA-256(Base64), LDAP {SSHA256}</td>
+<td>HTTP, SMTP, LDAP Server</td>
+</tr>
+<tr class="odd">
+<td>1711</td>
+<td>SSHA-512(Base64), LDAP {SSHA512}</td>
+<td>HTTP, SMTP, LDAP Server</td>
+</tr>
+<tr class="even">
+<td>16400</td>
+<td>CRAM-MD5 Dovecot</td>
+<td>HTTP, SMTP, LDAP Server</td>
+</tr>
+<tr class="odd">
+<td>15000</td>
+<td>FileZilla Server &gt;= 0.9.55</td>
+<td>FTP Server</td>
+</tr>
+<tr class="even">
+<td>11500</td>
+<td>CRC32</td>
+<td>Checksums</td>
+</tr>
+<tr class="odd">
+<td>3000</td>
+<td>LM</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>1000</td>
+<td>NTLM</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>1100</td>
+<td>Domain Cached Credentials (DCC), MS Cache</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>2100</td>
+<td>Domain Cached Credentials 2 (DCC2), MS Cache 2</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>15300</td>
+<td>DPAPI masterkey file v1</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>15900</td>
+<td>DPAPI masterkey file v2</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>12800</td>
+<td>MS-AzureSync PBKDF2-HMAC-SHA256</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>1500</td>
+<td>descrypt, DES (Unix), Traditional DES</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>12400</td>
+<td>BSDi Crypt, Extended DES</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>500</td>
+<td>md5crypt, MD5 (Unix), Cisco-IOS <span class="math inline">\(1\)</span> (MD5)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>3200</td>
+<td>bcrypt <span class="math inline">\(2*\)</span>, Blowfish (Unix)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>7400</td>
+<td>sha256crypt <span class="math inline">\(5\)</span>, SHA256
+(Unix)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>1800</td>
+<td>sha512crypt <span class="math inline">\(6\)</span>, SHA512
+(Unix)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>122</td>
+<td>macOS v10.4, MacOS v10.5, MacOS v10.6</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>1722</td>
+<td>macOS v10.7</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>7100</td>
+<td>macOS v10.8+ (PBKDF2-SHA512)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>6300</td>
+<td>AIX {smd5}</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>6700</td>
+<td>AIX {ssha1}</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>6400</td>
+<td>AIX {ssha256}</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>6500</td>
+<td>AIX {ssha512}</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>2400</td>
+<td>Cisco-PIX MD5</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>2410</td>
+<td>Cisco-ASA MD5</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>500</td>
+<td>Cisco-IOS <span class="math inline">\(1\)</span> (MD5)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>5700</td>
+<td>Cisco-IOS type 4 (SHA256)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>9200</td>
+<td>Cisco-IOS <span class="math inline">\(8\)</span>
+(PBKDF2-SHA256)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>9300</td>
+<td>Cisco-IOS <span class="math inline">\(9\)</span> (scrypt)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>22</td>
+<td>Juniper NetScreen/SSG (ScreenOS)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>501</td>
+<td>Juniper IVE</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>15100</td>
+<td>Juniper/NetBSD sha1crypt</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>7000</td>
+<td>FortiGate (FortiOS)</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>5800</td>
+<td>Samsung Android Password/PIN</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>13800</td>
+<td>Windows Phone 8+ PIN/password</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>8100</td>
+<td>Citrix NetScaler</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>8500</td>
+<td>RACF</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>7200</td>
+<td>GRUB 2</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>9900</td>
+<td>Radmin2</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="odd">
+<td>125</td>
+<td>ArubaOS</td>
+<td>Operating Systems</td>
+</tr>
+<tr class="even">
+<td>7700</td>
+<td>SAP CODVN B (BCODE)</td>
+<td>Enterprise Application Software (EAS)</td>
+</tr>
+<tr class="odd">
+<td>7701</td>
+<td>SAP CODVN B (BCODE) via RFC_READ_TABLE</td>
+<td>Enterprise Application Software (EAS)</td>
+</tr>
+<tr class="even">
+<td>7800</td>
+<td>SAP CODVN F/G (PASSCODE)</td>
+<td>Enterprise Application Software (EAS)</td>
+</tr>
+<tr class="odd">
+<td>7801</td>
+<td>SAP CODVN F/G (PASSCODE) via RFC_READ_TABLE</td>
+<td>Enterprise Application Software (EAS)</td>
+</tr>
+<tr class="even">
+<td>10300</td>
+<td>SAP CODVN H (PWDSALTEDHASH) iSSHA-1</td>
+<td>Enterprise Application Software (EAS)</td>
+</tr>
+<tr class="odd">
+<td>8600</td>
+<td>Lotus Notes/Domino 5</td>
+<td>Enterprise Application Software (EAS)</td>
+</tr>
+<tr class="even">
+<td>8700</td>
+<td>Lotus Notes/Domino 6</td>
+<td>Enterprise Application Software (EAS)</td>
+</tr>
+<tr class="odd">
+<td>9100</td>
+<td>Lotus Notes/Domino 8</td>
+<td>Enterprise Application Software (EAS)</td>
+</tr>
+<tr class="even">
+<td>133</td>
+<td>PeopleSoft</td>
+<td>Enterprise Application Software (EAS)</td>
+</tr>
+<tr class="odd">
+<td>13500</td>
+<td>PeopleSoft PS_TOKEN</td>
+<td>Enterprise Application Software (EAS)</td>
+</tr>
+<tr class="even">
+<td>11600</td>
+<td>7-Zip</td>
+<td>Archives</td>
+</tr>
+<tr class="odd">
+<td>12500</td>
+<td>RAR3-hp</td>
+<td>Archives</td>
+</tr>
+<tr class="even">
+<td>13000</td>
+<td>RAR5</td>
+<td>Archives</td>
+</tr>
+<tr class="odd">
+<td>13200</td>
+<td>AxCrypt</td>
+<td>Archives</td>
+</tr>
+<tr class="even">
+<td>13300</td>
+<td>AxCrypt in-memory SHA1</td>
+<td>Archives</td>
+</tr>
+<tr class="odd">
+<td>13600</td>
+<td>WinZip</td>
+<td>Archives</td>
+</tr>
+<tr class="even">
+<td>14700</td>
+<td>iTunes backup &lt; 10.0</td>
+<td>Backup</td>
+</tr>
+<tr class="odd">
+<td>14800</td>
+<td>iTunes backup &gt;= 10.0</td>
+<td>Backup</td>
+</tr>
+<tr class="even">
+<td>62XY</td>
+<td>TrueCrypt</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>X</td>
+<td>1 = PBKDF2-HMAC-RIPEMD160</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>X</td>
+<td>2 = PBKDF2-HMAC-SHA512</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>X</td>
+<td>3 = PBKDF2-HMAC-Whirlpool</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>X</td>
+<td>4 = PBKDF2-HMAC-RIPEMD160 + boot-mode</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>1 = XTS 512 bit pure AES</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>1 = XTS 512 bit pure Serpent</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>1 = XTS 512 bit pure Twofish</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>2 = XTS 1024 bit pure AES</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>2 = XTS 1024 bit pure Serpent</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>2 = XTS 1024 bit pure Twofish</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>2 = XTS 1024 bit cascaded AES-Twofish</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>2 = XTS 1024 bit cascaded Serpent-AES</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>2 = XTS 1024 bit cascaded Twofish-Serpent</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>3 = XTS 1536 bit all</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>8800</td>
+<td>Android FDE &lt;= 4.3</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>12900</td>
+<td>Android FDE (Samsung DEK)</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>12200</td>
+<td>eCryptfs</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>137XY</td>
+<td>VeraCrypt</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>X</td>
+<td>1 = PBKDF2-HMAC-RIPEMD160</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>X</td>
+<td>2 = PBKDF2-HMAC-SHA512</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>X</td>
+<td>3 = PBKDF2-HMAC-Whirlpool</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>X</td>
+<td>4 = PBKDF2-HMAC-RIPEMD160 + boot-mode</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>X</td>
+<td>5 = PBKDF2-HMAC-SHA256</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>X</td>
+<td>6 = PBKDF2-HMAC-SHA256 + boot-mode</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>X</td>
+<td>7 = PBKDF2-HMAC-Streebog-512</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>1 = XTS 512 bit pure AES</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>1 = XTS 512 bit pure Serpent</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>1 = XTS 512 bit pure Twofish</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>1 = XTS 512 bit pure Camellia</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>1 = XTS 512 bit pure Kuznyechik</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>2 = XTS 1024 bit pure AES</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>2 = XTS 1024 bit pure Serpent</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>2 = XTS 1024 bit pure Twofish</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>2 = XTS 1024 bit pure Camellia</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>2 = XTS 1024 bit pure Kuznyechik</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>2 = XTS 1024 bit cascaded AES-Twofish</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>2 = XTS 1024 bit cascaded Camellia-Kuznyechik</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>2 = XTS 1024 bit cascaded Camellia-Serpent</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>2 = XTS 1024 bit cascaded Kuznyechik-AES</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>2 = XTS 1024 bit cascaded Kuznyechik-Twofish</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>2 = XTS 1024 bit cascaded Serpent-AES</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>Y</td>
+<td>2 = XTS 1024 bit cascaded Twofish-Serpent</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>Y</td>
+<td>3 = XTS 1536 bit all</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>14600</td>
+<td>LUKS</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>16700</td>
+<td>FileVault 2</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="even">
+<td>18300</td>
+<td>Apple File System (APFS)</td>
+<td>Full-Disk Encryption (FDE)</td>
+</tr>
+<tr class="odd">
+<td>9700</td>
+<td>MS Office &lt;= 2003 $0/$1, MD5 + RC4</td>
+<td>Documents</td>
+</tr>
+<tr class="even">
+<td>9710</td>
+<td>MS Office &lt;= 2003 $0/$1, MD5 + RC4, collider #1</td>
+<td>Documents</td>
+</tr>
+<tr class="odd">
+<td>9720</td>
+<td>MS Office &lt;= 2003 $0/$1, MD5 + RC4, collider #2</td>
+<td>Documents</td>
+</tr>
+<tr class="even">
+<td>9800</td>
+<td>MS Office &lt;= 2003 $3/$4, SHA1 + RC4</td>
+<td>Documents</td>
+</tr>
+<tr class="odd">
+<td>9810</td>
+<td>MS Office &lt;= 2003 $3, SHA1 + RC4, collider #1</td>
+<td>Documents</td>
+</tr>
+<tr class="even">
+<td>9820</td>
+<td>MS Office &lt;= 2003 $3, SHA1 + RC4, collider #2</td>
+<td>Documents</td>
+</tr>
+<tr class="odd">
+<td>9400</td>
+<td>MS Office 2007</td>
+<td>Documents</td>
+</tr>
+<tr class="even">
+<td>9500</td>
+<td>MS Office 2010</td>
+<td>Documents</td>
+</tr>
+<tr class="odd">
+<td>9600</td>
+<td>MS Office 2013</td>
+<td>Documents</td>
+</tr>
+<tr class="even">
+<td>10400</td>
+<td>PDF 1.1 - 1.3 (Acrobat 2 - 4)</td>
+<td>Documents</td>
+</tr>
+<tr class="odd">
+<td>10410</td>
+<td>PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #1</td>
+<td>Documents</td>
+</tr>
+<tr class="even">
+<td>10420</td>
+<td>PDF 1.1 - 1.3 (Acrobat 2 - 4), collider #2</td>
+<td>Documents</td>
+</tr>
+<tr class="odd">
+<td>10500</td>
+<td>PDF 1.4 - 1.6 (Acrobat 5 - 8)</td>
+<td>Documents</td>
+</tr>
+<tr class="even">
+<td>10600</td>
+<td>PDF 1.7 Level 3 (Acrobat 9)</td>
+<td>Documents</td>
+</tr>
+<tr class="odd">
+<td>10700</td>
+<td>PDF 1.7 Level 8 (Acrobat 10 - 11)</td>
+<td>Documents</td>
+</tr>
+<tr class="even">
+<td>16200</td>
+<td>Apple Secure Notes</td>
+<td>Documents</td>
+</tr>
+<tr class="odd">
+<td>9000</td>
+<td>Password Safe v2</td>
+<td>Password Managers</td>
+</tr>
+<tr class="even">
+<td>5200</td>
+<td>Password Safe v3</td>
+<td>Password Managers</td>
+</tr>
+<tr class="odd">
+<td>6800</td>
+<td>LastPass + LastPass sniffed</td>
+<td>Password Managers</td>
+</tr>
+<tr class="even">
+<td>6600</td>
+<td>1Password, agilekeychain</td>
+<td>Password Managers</td>
+</tr>
+<tr class="odd">
+<td>8200</td>
+<td>1Password, cloudkeychain</td>
+<td>Password Managers</td>
+</tr>
+<tr class="even">
+<td>11300</td>
+<td>Bitcoin/Litecoin wallet.dat</td>
+<td>Password Managers</td>
+</tr>
+<tr class="odd">
+<td>12700</td>
+<td>Blockchain, My Wallet</td>
+<td>Password Managers</td>
+</tr>
+<tr class="even">
+<td>15200</td>
+<td>Blockchain, My Wallet, V2</td>
+<td>Password Managers</td>
+</tr>
+<tr class="odd">
+<td>16600</td>
+<td>Electrum Wallet (Salt-Type 1-3)</td>
+<td>Password Managers</td>
+</tr>
+<tr class="even">
+<td>13400</td>
+<td>KeePass 1 (AES/Twofish) and KeePass 2 (AES)</td>
+<td>Password Managers</td>
+</tr>
+<tr class="odd">
+<td>15500</td>
+<td>JKS Java Key Store Private Keys (SHA1)</td>
+<td>Password Managers</td>
+</tr>
+<tr class="even">
+<td>15600</td>
+<td>Ethereum Wallet, PBKDF2-HMAC-SHA256</td>
+<td>Password Managers</td>
+</tr>
+<tr class="odd">
+<td>15700</td>
+<td>Ethereum Wallet, SCRYPT</td>
+<td>Password Managers</td>
+</tr>
+<tr class="even">
+<td>16300</td>
+<td>Ethereum Pre-Sale Wallet, PBKDF2-HMAC-SHA256</td>
+<td>Password Managers</td>
+</tr>
+<tr class="odd">
+<td>16900</td>
+<td>Ansible Vault</td>
+<td>Password Managers</td>
+</tr>
+<tr class="even">
+<td>18100</td>
+<td>TOTP (HMAC-SHA1)</td>
+<td>One-Time Passwords</td>
+</tr>
+<tr class="odd">
+<td>99999</td>
+<td>Plaintext</td>
+<td>Plaintext</td>
+</tr>
+</tbody>
+</table>
+<h1 id="实例演示">实例演示</h1>
+<h2 id="使用字典进行爆破">使用字典进行爆破</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 0 0192023a7bbd73250516f069df18b500 password.txt --force</span><br></pre></td></tr></table></figure>
+<h2 id="使用指定字符集爆破">使用指定字符集爆破</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 63a9f0ea7bb98050796b649e85481845 ?l?l?l?l --force</span><br></pre></td></tr></table></figure>
+<h2 id="使用字典掩码进行爆破">使用字典+掩码进行爆破</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 6 1844156d4166d94387f1a4ad031ca5fa password.txt ?d?d?d --force</span><br></pre></td></tr></table></figure>
+<h2 id="使用掩码字典进行破解">使用掩码+字典进行破解</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 7 f8def8bcecb2e7925a2b42d60d202deb ?d?d password.txt --force</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意 hashcat 优先选择的规则不一样</p>
+</blockquote>
+<h2 id="mysql4.15的-password-函数">Mysql4.1/5的 <code>PASSWORD</code>
+函数</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 300 --force 6BB4837EB74329105EE4568DDA7DC67ED2CA2AD9 ?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
+<h2 id="sha512crypt-6-sha512-unix破解">sha512crypt <span class="math inline">\(6\)</span>, SHA512 (Unix)破解</h2>
+<p>可以通过 <code>cat /etc/shadow</code> 获取</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 1800 --force $6$mxuA5cdy<span class="variable">$XZRk0CvnPFqOgVopqiPEFAFK72SogKVwwwp7gWaUOb7b6tVwfCpcSUsCEk64ktLLYmzyew</span>/xd0O0hPG/yrm2X. ?l?l?l?l</span><br></pre></td></tr></table></figure>
+<p>不需要整理用户名，可以使用 <code>--username</code> 参数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 1800 --force qiyou:$6$QDq75ki3<span class="variable">$jsKm7qTDHz</span>/xBob0kF1Lp170Cgg0i5Tslf3JW/sm9k9Q916mBTyilU3PoOsbRdxV8TAmzvdgNjrCuhfg3jKMY1 ?l?l?l?l?l --username</span><br></pre></td></tr></table></figure>
+<h2 id="windows-nt-hashlm-hash破解">Windows NT-hash，LM-hash破解</h2>
+<p>可以用 saminside 获取 NT-hash 或 LM-hash 的值</p>
+<ul>
+<li><p>NT-hash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat64.exe -a 3 -m 1000 209C6174DA490CAEB422F3FA5A7AE634 ?l?l?l?l?l</span><br></pre></td></tr></table></figure></li>
+<li><p>LM-hash</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat64.exe -a 3 -m 3000 F0D412BD764FFE81AAD3B435B51404EE ?l?l?l?l?l</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="mssql-破解">mssql 破解</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 132 --force 0x01008c8006c224f71f6bf0036f78d863c3c4ff53f8c3c48edafb ?l?l?l?l?l?d?d?d</span><br></pre></td></tr></table></figure>
+<h2 id="wordpress-密码-hash-破解">wordpress 密码 hash 破解</h2>
+<p>具体加密脚本在<code>./wp-includes/class-phpass.php</code>的<code>HashPassword</code>函数</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 400 --force $P<span class="variable">$BYEYcHEj3vDhV1lwGBv6rpxurKOEWY</span>/ ?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
+<h2 id="discuz-用户密码-hash-破解">discuz 用户密码 hash 破解</h2>
+<p>其密码加密方式 <code>md5(md5($pass).$salt)</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 2611 --force 14e1b600b1fd579f47433b88e8d85291: ?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
+<h2 id="rar-压缩包密码破解">RAR 压缩包密码破解</h2>
+<p>先用 rar2john 获取 RAR 文件 hash 值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; rar2john 1.rar</span><br><span class="line">1.rar:$rar5$16$639e9ce8344c680da12e8bdd4346a6a3$15$a2b056a21a9836d8d48c2844d171b73d$8<span class="variable">$04a52d2224ad082e</span></span><br></pre></td></tr></table></figure>
+<p>然后再使用 hashcat 爆破</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 13000 --force $rar5$16$639e9ce8344c680da12e8bdd4346a6a3$15$a2b056a21a9836d8d48c2844d171b73d$8<span class="variable">$04a52d2224ad082e</span> ?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
+<p>注意到</p>
+<table>
+<colgroup>
+<col style="width: 9%">
+<col style="width: 9%">
+<col style="width: 81%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>-m 参数</th>
+<th>类型</th>
+<th>示例 hash</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>12500</td>
+<td>RAR3-hp</td>
+<td><span class="math inline">\(RAR3\)</span><em>0</em>45109af8ab5f297a*adbf6c5385d7a40373e8f77d7b89d317</td>
+</tr>
+<tr class="even">
+<td>13000</td>
+<td>RAR5</td>
+<td>$rar5$16$74575567518807622265582327032280<span class="math inline">\(15\)</span>f8b4064de34ac02ecabfe</td>
+</tr>
+</tbody>
+</table>
+<h2 id="zip-压缩包密码破解">ZIP 压缩包密码破解</h2>
+<p>先用 zip2john 获取 RAR 文件 hash 值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; zip2john.exe 1.zip</span><br><span class="line">1.zip:$zip2$*0*3*0*554bb43ff71cb0cac76326f292119dfd*ff23*5*24b28885ee*d4fe362bb1e91319ab53*$/zip2$:::::1.zip-1.txt</span><br></pre></td></tr></table></figure>
+<p>然后再使用 hashcat 爆破</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 13600 $zip2$*0*3*0*554bb43ff71cb0cac76326f292119dfd*ff23*5*24b28885ee*d4fe362bb1e91319ab53*$/zip2$ --force ?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
+<h2 id="office-密码破解">office 密码破解</h2>
+<p>先用 zip2john 获取 RAR 文件 hash 值</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; python office2john.py 11.docx</span><br><span class="line">11.docx:$office$*2013*100000*256*16*e4a3eb62e8d3576f861f9eded75e0525*9eeb35f0849a7800d48113440b4bbb9c*577f8d8b2e1c5f60fed76e62327b38d28f25230f6c7dfd66588d9ca8097aabb9</span><br></pre></td></tr></table></figure>
+<p>然后再使用 hashcat 爆破</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 9600 $office$*2013*100000*256*16*e4a3eb62e8d3576f861f9eded75e0525*9eeb35f0849a7800d48113440b4bbb9c*577f8d8b2e1c5f60fed76e62327b38d28f25230f6c7dfd66588d9ca8097aabb9 --force ?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
+<h2 id="wifi-密码破解">WIFI 密码破解</h2>
+<p>首先先把握手包转化为 hccapx 格式</p>
+<blockquote>
+<p>现在最新版的 hashcat 只支持 hccapx 格式了，以前的 hccap
+格式已经不支持了</p>
+</blockquote>
+<p>可以使用 <a target="_blank" rel="noopener" href="https://hashcat.net/cap2hccapx/">https://hashcat.net/cap2hccapx/</a>
+进行转换</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 2500 1.hccapx 1391040?d?d?d?d</span><br></pre></td></tr></table></figure>
+<h1 id="使用建议">使用建议</h1>
+<ol type="1">
+<li><p>对于破解过的hash值，用<code>hashcat64.exe hash --show</code>查看结果</p></li>
+<li><p>所有的hash破解结果都在hashcat.potfile文件中</p></li>
+<li><p>如果破解的时间太长，可以按s键可以查看破解的状态，p键暂停，r键继续破解，q键退出破解。</p></li>
+<li><p>在使用GPU模式进行破解时，可以使用-O参数自动进行优化</p></li>
+<li><p>在实际破解中的建议，如果我们盲目的去破解，会占用我们大量的时间和资源</p>
+<ol type="1">
+<li>首先走一遍常用的弱口令字典</li>
+<li>组合密码，如：zhang1999，用姓氏和出生年组合，当然也可以用其它的组合，这里举个例子而已</li>
+<li>把常用的掩码组合整理起来放在masks中的.hcmask文件中，然后让它自动加载破解</li>
+<li>如果实在不行，你可以尝试低位数的所有组合去跑，不过不建议太高位数的组合去破解，因为如果对方设置的密码很复杂的话，到头来你密码没有破解到，却浪费了大量的时间和资源，得不偿失</li>
+</ol></li>
+<li><p>Hashcat 参数优化</p>
+<ol type="1">
+<li><p>Workload tuning 负载调优</p>
+<p>该参数支持的值有1,8,40,80,160，可以让GPU发挥最大性能</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--gpu-accel 160</span><br></pre></td></tr></table></figure></li>
+<li><p>Gpu loops 负载微调</p>
+<p>该参数支持的值的范围是8-1024（有些算法只支持到1000），可以让GPU发挥最大性能。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--gpu-loops 1024</span><br></pre></td></tr></table></figure></li>
+<li><p>Segment size 字典缓存大小</p>
+<p>该参数是设置内存缓存的大小，作用是将字典放入内存缓存以加快字典破解速度，默认为32MB，可以根据自身内存情况进行设置，当然是越大越块了。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--segment-size 512</span><br></pre></td></tr></table></figure></li>
+</ol></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/hashcat-note.html" title="hashcat 使用笔记">https://hasegawaazusa.github.io/hashcat-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/linux-passwd-note.html" rel="prev" title="有关 linux 密码存储方式的分析笔记">
+                  <i class="fa fa-chevron-left"></i> 有关 linux 密码存储方式的分析笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">133k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:01</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
