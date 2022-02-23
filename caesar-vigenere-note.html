@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="凯撒加密和维吉尼亚加密的算法简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="凯撒加密和维吉尼亚加密的笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/caesar-vigenere-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="凯撒加密和维吉尼亚加密的算法简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/caesar-vigenere-note/vigenere%20table.png">
+<meta property="article:published_time" content="2022-02-23T15:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-23T17:10:55.836Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="crypto">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/caesar-vigenere-note/vigenere%20table.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/caesar-vigenere-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/caesar-vigenere-note.html","path":"/caesar-vigenere-note.html","title":"凯撒加密和维吉尼亚加密的笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>凯撒加密和维吉尼亚加密的笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">42</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">41</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%AF%E6%92%92%E5%8A%A0%E5%AF%86"><span class="nav-number">1.</span> <span class="nav-text">凯撒加密</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.2.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.3.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%B4%E5%90%89%E5%B0%BC%E4%BA%9A%E5%8A%A0%E5%AF%86"><span class="nav-number">2.</span> <span class="nav-text">维吉尼亚加密</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0-1"><span class="nav-number">2.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%8F%E8%BF%B0-1"><span class="nav-number">2.2.</span> <span class="nav-text">描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-1"><span class="nav-number">2.3.</span> <span class="nav-text">实现</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">41</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/caesar-vigenere-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          凯撒加密和维吉尼亚加密的笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-23 23:00:00" itemprop="dateCreated datePublished" datetime="2022-02-23T23:00:00+08:00">2022-02-23</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">凯撒加密和维吉尼亚加密的算法简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="凯撒加密">凯撒加密</h1>
+<h2 id="简述">简述</h2>
+<p>在密码学中，恺撒密码是一种最简单且最广为人知的加密技术。它是一种替换加密的技术，明文中的所有字母都在字母表上向后（或向前）按照一个固定数目进行偏移后被替换成密文。例，当偏移量是3的时候，所有的字母A将被替换成D，B变成E，以此类推。这个加密方法是以恺撒的名字命名的，当年恺撒曾用此方法与其将军们进行联系。恺撒密码通常被作为其他更复杂的加密方法中的一个步骤。恺撒密码还在现代的ROT13系统中被应用。但是和所有的利用字母表进行替换的加密技术一样，凯撒密码的密度是很低的，只需简单地统计字频就可以破译。</p>
+<p>需要注意的是，凯撒加密只对二十六个字母（要么都是大写，要么都是小写）有效。</p>
+<h2 id="描述">描述</h2>
+<p>设 <span class="math inline">\(k\)</span> 为密钥 (key)，字符串 <span class="math inline">\(m\)</span> 为明文，<span class="math inline">\(c\)</span> 为密文，则加密算法为 <span class="math display">\[
+c_i=E(m_i,k)
+\]</span> 其中函数 <span class="math inline">\(E\)</span> 的算法为，令
+<span class="math inline">\(m_i\)</span> 向右偏移 <span class="math inline">\(k\)</span> 位，在
+<code>ABCDEFGHIJKLMNOPQRSTUVWXYZ</code> 字母环中移动，即 <span class="math display">\[
+E(m_i,k)=(m_i+k)\ mod\ 26
+\]</span> 解密算法为 <span class="math display">\[
+m_i=D(c_i,k)
+\]</span> 其中函数 <span class="math inline">\(D\)</span> 的算法为，令
+<span class="math inline">\(c_i\)</span> 向左偏移 k 位，在
+<code>ABCDEFGHIJKLMNOPQRSTUVWXYZ</code> 字母环中移动，即 <span class="math display">\[
+D(c_i,k)=(c_i-k)\ mod\ 26
+\]</span></p>
+<h2 id="实现">实现</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里只处理大写</span></span><br><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">CaesarChar</span><span class="params">(<span class="keyword">char</span> ch, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (ch - <span class="string">&#x27;A&#x27;</span> + k) % <span class="number">26</span> + <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">CaesarEncoder</span><span class="params">(<span class="keyword">const</span> string&amp; plain, <span class="keyword">int</span> key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">string <span class="title">result</span><span class="params">(plain)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">char</span>&amp; i : result)</span><br><span class="line">	&#123;</span><br><span class="line">		i = <span class="built_in">CaesarChar</span>(i, key);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">CaesarDecoder</span><span class="params">(<span class="keyword">const</span> string&amp; code, <span class="keyword">int</span> key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">string <span class="title">result</span><span class="params">(code)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">char</span>&amp; i : result)</span><br><span class="line">	&#123;</span><br><span class="line">		i = <span class="built_in">CaesarChar</span>(i, -key);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对于凯撒加密有十分简单的爆破方法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对凯撒加密的单个字符爆破 key</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">CaesarCharKeyCracker</span><span class="params">(<span class="keyword">char</span> plainChar, <span class="keyword">char</span> codeChar)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> diff = codeChar - plainChar;</span><br><span class="line">	<span class="keyword">return</span> diff &lt; <span class="number">0</span> ? diff + <span class="number">26</span> : diff;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对凯撒加密的字符串爆破 key，会核验是否满足凯撒加密</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">CaesarStringKeyCracker</span><span class="params">(<span class="keyword">const</span> string&amp; plain, <span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> diff = <span class="built_in">CaesarCharKeyCracker</span>(plain[<span class="number">0</span>], code[<span class="number">0</span>]);</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; plain.<span class="built_in">size</span>(); ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (diff != <span class="built_in">CaesarCharKeyCracker</span>(plain[i], code[i]))</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="comment">// 说明极有可能不是凯撒加密</span></span><br><span class="line">			<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> diff;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对凯撒加密后的字符串爆破密钥 1~25 并返回结果</span></span><br><span class="line"><span class="function">vector&lt;string&gt; <span class="title">CaesarCracker</span><span class="params">(<span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	vector&lt;string&gt; result;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">26</span>; ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		result.<span class="built_in">push_back</span>(<span class="built_in">CaesarDecoder</span>(code, i));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 返回密钥从 1~25 的解密结果</span></span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>爆破算法使用 python 编写则是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CaesarCracker</span>(<span class="params">code:<span class="built_in">str</span></span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, <span class="number">26</span>):</span><br><span class="line">        <span class="keyword">yield</span> <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">map</span>(<span class="keyword">lambda</span> x : <span class="built_in">chr</span>((<span class="built_in">ord</span>(x) - <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>) - i) % <span class="number">26</span> + <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>)) <span class="keyword">if</span> <span class="built_in">str</span>.isalpha(x) <span class="keyword">else</span> x, code))</span><br></pre></td></tr></table></figure>
+<h1 id="维吉尼亚加密">维吉尼亚加密</h1>
+<h2 id="简述-1">简述</h2>
+<p>在单一恺撒密码的基础上，法国外交家布莱斯·德·维吉尼亚（Blaise de
+Vigenère）发明了一种方法来对同一条信息中的不同字母用不同的密码进行加密。这样，同样的E在一个位置可能被M所取代，而在另一个位置的E则有可能以K的面目出现。这样，就可以防止任何人利用频率分析法解密该条信息。</p>
+<p>维吉尼亚密码引入了“密钥”的概念，即根据密钥来决定用哪一行的密表来进行替换，以此来对抗字频统计。</p>
+<figure>
+<img src="/caesar-vigenere-note/vigenere%20table.png" alt="vigenere table">
+<figcaption aria-hidden="true">vigenere table</figcaption>
+</figure>
+<h2 id="描述-1">描述</h2>
+<p>与凯撒加密不同，维吉尼亚的密钥是一个只含有二十六个字母的字符串 <span class="math inline">\(key\)</span>，同理明文为 <span class="math inline">\(m\)</span>，密文为 <span class="math inline">\(c\)</span>，则加密算法为 <span class="math display">\[
+c_i=E(m_i,key_i)
+\]</span> 其中函数 <span class="math inline">\(E\)</span>
+的算法为，在维吉尼亚表中，横行为 <span class="math inline">\(m_i\)</span> 的字符，纵行为 <span class="math inline">\(key_i\)</span>
+的字符，选择对应的表中字符为加密字符。</p>
+<p>解密算法为 <span class="math display">\[
+m_i=D(c_i,key_i)
+\]</span> 其中函数 <span class="math inline">\(D\)</span>
+的算法为，在维吉尼亚表中，纵行为 <span class="math inline">\(key_i\)</span> 的字符，查找 <span class="math inline">\(key_i\)</span> 对应横行中的字符 <span class="math inline">\(c_i\)</span>，所对应的上方横行字符即为明文字符。</p>
+<p>实际上就相当于每一个字符都拥有自己的 key 进行凯撒加密</p>
+<h2 id="实现-1">实现</h2>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 这里只处理大写</span></span><br><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">CaesarChar</span><span class="params">(<span class="keyword">char</span> ch, <span class="keyword">int</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> (ch - <span class="string">&#x27;A&#x27;</span> + k) % <span class="number">26</span> + <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里只处理大写</span></span><br><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">VigenereCharEncoder</span><span class="params">(<span class="keyword">char</span> ch, <span class="keyword">char</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">CaesarChar</span>(ch, k - <span class="string">&#x27;A&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 这里只处理大写</span></span><br><span class="line"><span class="function"><span class="keyword">char</span> <span class="title">VigenereCharDecoder</span><span class="params">(<span class="keyword">char</span> ch, <span class="keyword">char</span> k)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">CaesarChar</span>(ch, -(<span class="keyword">int</span>)(k - <span class="string">&#x27;A&#x27;</span>));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">VigenereStringEncoder</span><span class="params">(<span class="keyword">const</span> string&amp; plain, <span class="keyword">const</span> string&amp; key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">string <span class="title">result</span><span class="params">(plain)</span></span>;</span><br><span class="line">	<span class="keyword">size_t</span> c = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">char</span>&amp; i : result)</span><br><span class="line">	&#123;</span><br><span class="line">		i = <span class="built_in">VigenereCharEncoder</span>(i, key[c]);</span><br><span class="line">		++c;</span><br><span class="line">		<span class="keyword">if</span> (c == key.<span class="built_in">size</span>())</span><br><span class="line">		&#123;</span><br><span class="line">			c -= key.<span class="built_in">size</span>();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">VigenereStringDecoder</span><span class="params">(<span class="keyword">const</span> string&amp; code, <span class="keyword">const</span> string&amp; key)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">string <span class="title">result</span><span class="params">(code)</span></span>;</span><br><span class="line">	<span class="keyword">size_t</span> c = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">char</span>&amp; i : result)</span><br><span class="line">	&#123;</span><br><span class="line">		i = <span class="built_in">VigenereCharDecoder</span>(i, key[c]);</span><br><span class="line">		++c;</span><br><span class="line">		<span class="keyword">if</span> (c == key.<span class="built_in">size</span>())</span><br><span class="line">		&#123;</span><br><span class="line">			c -= key.<span class="built_in">size</span>();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中对维吉尼亚密钥的爆破算法为</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 对凯撒加密的单个字符爆破 key</span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">CaesarCharKeyCracker</span><span class="params">(<span class="keyword">char</span> plainChar, <span class="keyword">char</span> codeChar)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> diff = codeChar - plainChar;</span><br><span class="line">	<span class="keyword">return</span> diff &lt; <span class="number">0</span> ? diff + <span class="number">26</span> : diff;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">string <span class="title">VigenereKeyCracker</span><span class="params">(<span class="keyword">const</span> string&amp; plain, <span class="keyword">const</span> string&amp; code)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">string <span class="title">key</span><span class="params">(plain)</span></span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; plain.<span class="built_in">size</span>(); ++i)</span><br><span class="line">	&#123;</span><br><span class="line">		key[i] = <span class="built_in">CaesarCharKeyCracker</span>(plain[i], code[i]) + <span class="string">&#x27;A&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> key;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>爆破密钥的算法使用 python 编写则是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">VigenereKeyCracker</span>(<span class="params">plain:<span class="built_in">str</span>, code:<span class="built_in">str</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">chr</span>((<span class="built_in">ord</span>(i) - <span class="built_in">ord</span>(j)) % <span class="number">26</span> + <span class="built_in">ord</span>(<span class="string">&#x27;A&#x27;</span>)) <span class="keyword">if</span> <span class="built_in">str</span>.isalpha(i) <span class="keyword">else</span> <span class="string">&#x27;&#x27;</span> <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">zip</span>(plain, code))</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/caesar-vigenere-note.html" title="凯撒加密和维吉尼亚加密的笔记">https://hasegawaazusa.github.io/caesar-vigenere-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/ntfs-streams-note.html" rel="prev" title="ntfs 数据流笔记">
+                  <i class="fa fa-chevron-left"></i> ntfs 数据流笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">139k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:06</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
