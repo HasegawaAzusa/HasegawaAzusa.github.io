@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="BlowFish 加密解密算法的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BlowFish 算法笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/blowfish-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="BlowFish 加密解密算法的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/blowfish-note/blowfish%20流程图.png">
+<meta property="article:published_time" content="2022-02-24T06:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-24T09:53:32.594Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="crypto">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/blowfish-note/blowfish%20流程图.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/blowfish-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/blowfish-note.html","path":"/blowfish-note.html","title":"BlowFish 算法笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BlowFish 算法笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">42</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">42</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#blowfish-%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">BlowFish 简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#blowfish-%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">BlowFish 描述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">密钥预处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5-key"><span class="nav-number">2.1.1.</span> <span class="nav-text">密钥 Key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p-box"><span class="nav-number">2.1.2.</span> <span class="nav-text">P-box</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#s-box"><span class="nav-number">2.1.3.</span> <span class="nav-text">S-box</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E7%BB%88%E5%A4%84%E7%90%86"><span class="nav-number">2.1.4.</span> <span class="nav-text">最终处理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E8%A7%A3%E5%AF%86"><span class="nav-number">2.2.</span> <span class="nav-text">加解密</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AE%E5%87%BD%E6%95%B0"><span class="nav-number">2.2.1.</span> <span class="nav-text">轮函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.2.2.</span> <span class="nav-text">加密算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.2.3.</span> <span class="nav-text">解密算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#blowfish-c-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">BlowFish &amp; C++ 实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#blowfish-%E4%BC%98%E5%8A%A3"><span class="nav-number">4.</span> <span class="nav-text">BlowFish 优劣</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">4.1.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">4.2.</span> <span class="nav-text">缺点</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">42</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">42</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/blowfish-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BlowFish 算法笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-24 14:00:00" itemprop="dateCreated datePublished" datetime="2022-02-24T14:00:00+08:00">2022-02-24</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">BlowFish 加密解密算法的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="blowfish-简述">BlowFish 简述</h1>
+<p>BlowFish 算法基于 Feistel 网络，加密函数迭代执行 16 轮，分组长度为 64
+位，密钥长度可以从 32 位到 448
+位。算法由两部分组成，密钥扩展部分和数据加密部分，密钥扩展部分将最长最长为
+448 位的密钥转化成共 4168 字节长度的子密钥数组，其中，数据加密由一个 16
+轮的 Feistel
+网络完成，每轮由一个密钥相关置换和一个密钥与数据相关的替换组成。</p>
+<figure>
+<img src="/blowfish-note/blowfish%20流程图.png" alt="blowfish 流程图">
+<figcaption aria-hidden="true">blowfish 流程图</figcaption>
+</figure>
+<h1 id="blowfish-描述">BlowFish 描述</h1>
+<h2 id="密钥预处理">密钥预处理</h2>
+<p>BlowFish 算法子密钥在加密前预计算产生。</p>
+<p>主要涉及到 P-box 和 S-box。</p>
+<h3 id="密钥-key">密钥 Key</h3>
+<p>密钥 Key 是 32bits 到 448bits 的可变长度，即 1 到 14 个
+<code>DWORD</code> 数字，即 Key 数组最大为
+<code>DWORD Key[14]</code>。</p>
+<p>接下来使用 <code>Key[i]</code> 表示第 <code>i</code> 个可变密钥。</p>
+<h3 id="p-box">P-box</h3>
+<p>P-box 也可以被称作密钥数组，由 18 个 32bits 的密钥组成，即数组
+<code>DWORD P_box[18]</code></p>
+<p>我们首先要使用随机数对数组进行初始化，而常用的方法是使用常量 <span class="math inline">\(\pi\)</span> 的小数部分，将其直接转化为 32bits 位
+<code>DWORD</code> 数进行赋值，如</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">P_box[<span class="number">0</span>] = <span class="number">0x76a301d3</span>;</span><br><span class="line">P_box[<span class="number">1</span>] = <span class="number">0xbc452aef</span>;</span><br><span class="line">...</span><br><span class="line">P_box[<span class="number">17</span>] = <span class="number">0xd7acc4a5</span>;</span><br></pre></td></tr></table></figure>
+<p>之后让 P-box 与 Key 数组的每一个值进行异或，即
+<code>P_box[i] ^= Key[i]</code>。</p>
+<p>当超过 Key 数组的长度时，则重复使用 Key 的值进行异或，直到 P-box
+中的元素全部异或完成。</p>
+<p>如此我们便得到了新的 P-box。</p>
+<h3 id="s-box">S-box</h3>
+<p>在密码学中，S-box 的全称为
+substitution-box，即替换盒子，可以将输入替换成不同的输出，换句话说，可以将
+n bits 的输入转换为 m bits 的输出。</p>
+<p>在 BlowFish 中，S-box 是动态生成的，负责将 8bits 的输入转换为 32bits
+的输出。</p>
+<p>故 S-box 的大小为 <code>DWORD S_box[4][256]</code>。</p>
+<p>常用的方法是，使用常量 <span class="math inline">\(\pi\)</span>
+的小数部分，将其直接转化为 32bits 位 <code>DWORD</code> 数对 S-box
+进行初始化，通常接在 P-box 后面进行初始化。</p>
+<h3 id="最终处理">最终处理</h3>
+<p>通过以上，得到初始化的 P-box 与 S-box。</p>
+<p>按照以下步骤对 P-box 进行处理：</p>
+<ol type="1">
+<li>取全为 0 的 64bits，使用 P-box 和 S-box 数组，对其进行 BlowFish
+加密，生成第一个 64bits</li>
+<li>将生成的 64bits 作为新的 <code>P_box[0]</code> 和
+<code>P_box[1]</code>，再将这 64bits 作为输入，得到新的
+<code>P_box[2]</code> 和 <code>P_box[3]</code></li>
+<li>同理反复步骤 2，最终生成所有 P-box 数组的元素。</li>
+<li>同理反复步骤 2、3，最终生成所有 S-box 数组的元素 (使用
+<code>P-box[16]</code> 和 <code>P-box[17]</code> 作为输入)。</li>
+</ol>
+<h2 id="加解密">加解密</h2>
+<p>BlowFish 由 16 轮的 Fistel 网络组成，输入是一个 64bits 的数据元素
+X，将 X 分为两个 32bits 部分，为 XL 与 XH。</p>
+<h3 id="轮函数">轮函数</h3>
+<p>轮函数使用代码描述即为</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 轮函数</span></span><br><span class="line"><span class="function">DWORD <span class="title">Feistel</span><span class="params">(DWORD x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	DWORD h = S[<span class="number">0</span>][x &gt;&gt; <span class="number">24</span>] + S[<span class="number">1</span>][x &gt;&gt; <span class="number">16</span> &amp; <span class="number">0xff</span>];</span><br><span class="line">	<span class="keyword">return</span> (h ^ S[<span class="number">2</span>][x &gt;&gt; <span class="number">8</span> &amp; <span class="number">0xff</span>]) + S[<span class="number">3</span>][x &amp; <span class="number">0xff</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="加密算法">加密算法</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">encrypt</span><span class="params">(DWORD&amp; XL, DWORD&amp; XR)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">16</span>; i += <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		XL ^= P[i];</span><br><span class="line">		XR ^= <span class="built_in">Feistel</span>(XL);</span><br><span class="line">		XR ^= P[i + <span class="number">1</span>];</span><br><span class="line">		XL ^= <span class="built_in">Feistel</span>(XR);</span><br><span class="line">	&#125;</span><br><span class="line">	XL ^= P[<span class="number">16</span>];</span><br><span class="line">	XR ^= P[<span class="number">17</span>];</span><br><span class="line">	<span class="built_in">swap</span>(XL, XR);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="解密算法">解密算法</h3>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decrypt</span><span class="params">(DWORD&amp; XL, DWORD&amp; XR)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">16</span>; i &gt; <span class="number">0</span>; i -= <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		XL ^= P[i + <span class="number">1</span>];</span><br><span class="line">		XR ^= <span class="built_in">Feistel</span>(XL);</span><br><span class="line">		XR ^= P[i];</span><br><span class="line">		XL ^= <span class="built_in">Feistel</span>(XR);</span><br><span class="line">	&#125;</span><br><span class="line">	XL ^= P[<span class="number">1</span>];</span><br><span class="line">	XR ^= P[<span class="number">0</span>];</span><br><span class="line">	<span class="built_in">swap</span>(XL, XR);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="blowfish-c-实现">BlowFish &amp; C++ 实现</h1>
+<p>请查看 <a target="_blank" rel="noopener" href="https://github.com/HasegawaAzusa/BlowFish">https://github.com/HasegawaAzusa/BlowFish</a></p>
+<p>代码堪堪能运行而已，仅作示例和理解。</p>
+<h1 id="blowfish-优劣">BlowFish 优劣</h1>
+<h2 id="优点">优点</h2>
+<p>从上面的流程可以看出，blowfish在生成最终的K数组和S-box需要耗费一定的时间，但是一旦生成完毕，或者说密钥不变的情况下，blowfish还是很快速的一种分组加密方法。</p>
+<p>每个新的密钥都需要进行大概4
+KB文本的预处理，和其他分组密码算法相比，这个会很慢。</p>
+<p>那么慢有没有好处呢？</p>
+<p>当然有，因为对于一个正常应用来说，是不会经常更换密钥的。所以预处理只会生成一次。在后面使用的时候就会很快了。</p>
+<p>而对于恶意攻击者来说，每次尝试新的密钥都需要进行漫长的预处理，所以对攻击者来说要破解blowfish算法是非常不划算的。所以blowfish是可以抵御字典攻击的。</p>
+<h2 id="缺点">缺点</h2>
+<p>Blowfish使用64位块大小（与AES的128位块大小相比）使它容易受到生日攻击，特别是在HTTPS这样的环境中。
+2016年，SWEET32攻击演示了如何利用生日攻击对64位块大小的密码执行纯文本恢复（即解密密文）。</p>
+<p>因为blowfish的块只有64bits，比较小，所以GnuPG项目建议不要使用Blowfish来加密大于4
+GB的文件。</p>
+<p>除此之外，Blowfish如果只进行一轮加密的话，容易受到反射性弱键的已知明文攻击。
+但是我们的实现中使用的是16轮加密，所以不容易受到这种攻击。但是Blowfish的发明人布鲁斯·施耐尔（Bruce
+Schneier）还是建议大家迁移到Blowfish的继承者Twofish去。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/blowfish-note.html" title="BlowFish 算法笔记">https://hasegawaazusa.github.io/blowfish-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/caesar-vigenere-note.html" rel="prev" title="凯撒加密和维吉尼亚加密的笔记">
+                  <i class="fa fa-chevron-left"></i> 凯撒加密和维吉尼亚加密的笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">141k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:08</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

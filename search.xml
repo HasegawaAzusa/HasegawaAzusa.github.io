@@ -6425,4 +6425,96 @@ m_i=D(c_i,key_i)
         <tag>crypto</tag>
       </tags>
   </entry>
+  <entry>
+    <title>BlowFish 算法笔记</title>
+    <url>//blowfish-note.html</url>
+    <content><![CDATA[<h1 id="blowfish-简述">BlowFish 简述</h1>
+<p>BlowFish 算法基于 Feistel 网络，加密函数迭代执行 16 轮，分组长度为 64
+位，密钥长度可以从 32 位到 448
+位。算法由两部分组成，密钥扩展部分和数据加密部分，密钥扩展部分将最长最长为
+448 位的密钥转化成共 4168 字节长度的子密钥数组，其中，数据加密由一个 16
+轮的 Feistel
+网络完成，每轮由一个密钥相关置换和一个密钥与数据相关的替换组成。</p>
+<figure>
+<img src="/blowfish-note/blowfish%20流程图.png" alt="blowfish 流程图">
+<figcaption aria-hidden="true">blowfish 流程图</figcaption>
+</figure>
+<h1 id="blowfish-描述">BlowFish 描述</h1>
+<h2 id="密钥预处理">密钥预处理</h2>
+<p>BlowFish 算法子密钥在加密前预计算产生。</p>
+<p>主要涉及到 P-box 和 S-box。</p>
+<h3 id="密钥-key">密钥 Key</h3>
+<p>密钥 Key 是 32bits 到 448bits 的可变长度，即 1 到 14 个
+<code>DWORD</code> 数字，即 Key 数组最大为
+<code>DWORD Key[14]</code>。</p>
+<p>接下来使用 <code>Key[i]</code> 表示第 <code>i</code> 个可变密钥。</p>
+<h3 id="p-box">P-box</h3>
+<p>P-box 也可以被称作密钥数组，由 18 个 32bits 的密钥组成，即数组
+<code>DWORD P_box[18]</code></p>
+<p>我们首先要使用随机数对数组进行初始化，而常用的方法是使用常量 <span class="math inline">\(\pi\)</span> 的小数部分，将其直接转化为 32bits 位
+<code>DWORD</code> 数进行赋值，如</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line">P_box[<span class="number">0</span>] = <span class="number">0x76a301d3</span>;</span><br><span class="line">P_box[<span class="number">1</span>] = <span class="number">0xbc452aef</span>;</span><br><span class="line">...</span><br><span class="line">P_box[<span class="number">17</span>] = <span class="number">0xd7acc4a5</span>;</span><br></pre></td></tr></table></figure>
+<p>之后让 P-box 与 Key 数组的每一个值进行异或，即
+<code>P_box[i] ^= Key[i]</code>。</p>
+<p>当超过 Key 数组的长度时，则重复使用 Key 的值进行异或，直到 P-box
+中的元素全部异或完成。</p>
+<p>如此我们便得到了新的 P-box。</p>
+<h3 id="s-box">S-box</h3>
+<p>在密码学中，S-box 的全称为
+substitution-box，即替换盒子，可以将输入替换成不同的输出，换句话说，可以将
+n bits 的输入转换为 m bits 的输出。</p>
+<p>在 BlowFish 中，S-box 是动态生成的，负责将 8bits 的输入转换为 32bits
+的输出。</p>
+<p>故 S-box 的大小为 <code>DWORD S_box[4][256]</code>。</p>
+<p>常用的方法是，使用常量 <span class="math inline">\(\pi\)</span>
+的小数部分，将其直接转化为 32bits 位 <code>DWORD</code> 数对 S-box
+进行初始化，通常接在 P-box 后面进行初始化。</p>
+<h3 id="最终处理">最终处理</h3>
+<p>通过以上，得到初始化的 P-box 与 S-box。</p>
+<p>按照以下步骤对 P-box 进行处理：</p>
+<ol type="1">
+<li>取全为 0 的 64bits，使用 P-box 和 S-box 数组，对其进行 BlowFish
+加密，生成第一个 64bits</li>
+<li>将生成的 64bits 作为新的 <code>P_box[0]</code> 和
+<code>P_box[1]</code>，再将这 64bits 作为输入，得到新的
+<code>P_box[2]</code> 和 <code>P_box[3]</code></li>
+<li>同理反复步骤 2，最终生成所有 P-box 数组的元素。</li>
+<li>同理反复步骤 2、3，最终生成所有 S-box 数组的元素 (使用
+<code>P-box[16]</code> 和 <code>P-box[17]</code> 作为输入)。</li>
+</ol>
+<h2 id="加解密">加解密</h2>
+<p>BlowFish 由 16 轮的 Fistel 网络组成，输入是一个 64bits 的数据元素
+X，将 X 分为两个 32bits 部分，为 XL 与 XH。</p>
+<h3 id="轮函数">轮函数</h3>
+<p>轮函数使用代码描述即为</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 轮函数</span></span><br><span class="line"><span class="function">DWORD <span class="title">Feistel</span><span class="params">(DWORD x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	DWORD h = S[<span class="number">0</span>][x &gt;&gt; <span class="number">24</span>] + S[<span class="number">1</span>][x &gt;&gt; <span class="number">16</span> &amp; <span class="number">0xff</span>];</span><br><span class="line">	<span class="keyword">return</span> (h ^ S[<span class="number">2</span>][x &gt;&gt; <span class="number">8</span> &amp; <span class="number">0xff</span>]) + S[<span class="number">3</span>][x &amp; <span class="number">0xff</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="加密算法">加密算法</h3>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">encrypt</span><span class="params">(DWORD&amp; XL, DWORD&amp; XR)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">16</span>; i += <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		XL ^= P[i];</span><br><span class="line">		XR ^= <span class="built_in">Feistel</span>(XL);</span><br><span class="line">		XR ^= P[i + <span class="number">1</span>];</span><br><span class="line">		XL ^= <span class="built_in">Feistel</span>(XR);</span><br><span class="line">	&#125;</span><br><span class="line">	XL ^= P[<span class="number">16</span>];</span><br><span class="line">	XR ^= P[<span class="number">17</span>];</span><br><span class="line">	<span class="built_in">swap</span>(XL, XR);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="解密算法">解密算法</h3>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">decrypt</span><span class="params">(DWORD&amp; XL, DWORD&amp; XR)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">16</span>; i &gt; <span class="number">0</span>; i -= <span class="number">2</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		XL ^= P[i + <span class="number">1</span>];</span><br><span class="line">		XR ^= <span class="built_in">Feistel</span>(XL);</span><br><span class="line">		XR ^= P[i];</span><br><span class="line">		XL ^= <span class="built_in">Feistel</span>(XR);</span><br><span class="line">	&#125;</span><br><span class="line">	XL ^= P[<span class="number">1</span>];</span><br><span class="line">	XR ^= P[<span class="number">0</span>];</span><br><span class="line">	<span class="built_in">swap</span>(XL, XR);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="blowfish-c-实现">BlowFish &amp; C++ 实现</h1>
+<p>请查看 <a href="https://github.com/HasegawaAzusa/BlowFish">https://github.com/HasegawaAzusa/BlowFish</a></p>
+<p>代码堪堪能运行而已，仅作示例和理解。</p>
+<h1 id="blowfish-优劣">BlowFish 优劣</h1>
+<h2 id="优点">优点</h2>
+<p>从上面的流程可以看出，blowfish在生成最终的K数组和S-box需要耗费一定的时间，但是一旦生成完毕，或者说密钥不变的情况下，blowfish还是很快速的一种分组加密方法。</p>
+<p>每个新的密钥都需要进行大概4
+KB文本的预处理，和其他分组密码算法相比，这个会很慢。</p>
+<p>那么慢有没有好处呢？</p>
+<p>当然有，因为对于一个正常应用来说，是不会经常更换密钥的。所以预处理只会生成一次。在后面使用的时候就会很快了。</p>
+<p>而对于恶意攻击者来说，每次尝试新的密钥都需要进行漫长的预处理，所以对攻击者来说要破解blowfish算法是非常不划算的。所以blowfish是可以抵御字典攻击的。</p>
+<h2 id="缺点">缺点</h2>
+<p>Blowfish使用64位块大小（与AES的128位块大小相比）使它容易受到生日攻击，特别是在HTTPS这样的环境中。
+2016年，SWEET32攻击演示了如何利用生日攻击对64位块大小的密码执行纯文本恢复（即解密密文）。</p>
+<p>因为blowfish的块只有64bits，比较小，所以GnuPG项目建议不要使用Blowfish来加密大于4
+GB的文件。</p>
+<p>除此之外，Blowfish如果只进行一轮加密的话，容易受到反射性弱键的已知明文攻击。
+但是我们的实现中使用的是16轮加密，所以不容易受到这种攻击。但是Blowfish的发明人布鲁斯·施耐尔（Bruce
+Schneier）还是建议大家迁移到Blowfish的继承者Twofish去。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
+      </tags>
+  </entry>
 </search>
