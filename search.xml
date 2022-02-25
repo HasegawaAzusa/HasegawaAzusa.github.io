@@ -6640,14 +6640,19 @@ k_{16}\)</span>。(上一次的输出为下一次的输入)</p>
 </blockquote>
 <p>因为 <span class="math inline">\(C_0=C_{16}\)</span> 和 <span class="math inline">\(D_0=D_{16}\)</span>，因此我们可以在第一次置换后，直接得到
 <span class="math inline">\(k_{16}\)</span>。 <span class="math display">\[
+\begin{align}
 k_{16}&amp;=PC-2(C_{16},D_{16})\\
 &amp;=PC-2(C_0,D_0)\\
 &amp;=PC-2(PC-1(k))
-\]</span> 而计算 <span class="math inline">\(k_{15}\)</span>
-时，需要中间变量 <span class="math inline">\(C_{15}\)</span> 和 <span class="math inline">\(D_{15}\)</span>，而这两个变量都可以由 <span class="math inline">\(C_{16}\)</span> 和 <span class="math inline">\(D_{16}\)</span> 经过循环右移得到： <span class="math display">\[
+\end{align}
+\]</span></p>
+<p>而计算 <span class="math inline">\(k_{15}\)</span> 时，需要中间变量
+<span class="math inline">\(C_{15}\)</span> 和 <span class="math inline">\(D_{15}\)</span>，而这两个变量都可以由 <span class="math inline">\(C_{16}\)</span> 和 <span class="math inline">\(D_{16}\)</span> 经过循环右移得到： <span class="math display">\[
+\begin{align}
 k_{15}&amp;=PC-2(C_{15},D_{15})\\
 &amp;=PC-2(RS_2(C_{16},RS_2(D_{16})))\\
 &amp;=PC-2(RS_2(C_0),RS_2(D_0))
+\end{align}
 \]</span> 同理，后面的轮密钥 <span class="math inline">\(k_{14},k_{13},\cdots,k_1\)</span>
 都是通过类似的方式右移得到的。</p>
 <p>在解密模式中，每个轮密钥向右移动的位数为：</p>
