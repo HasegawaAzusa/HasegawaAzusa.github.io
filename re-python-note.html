@@ -22,30 +22,30 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="z3&amp;python 的用法简要笔记">
+<meta name="description" content="有关 pyinstaller 打包的 exe、pyc、pyd 的逆向笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="z3 使用笔记">
-<meta property="og:url" content="https://hasegawaazusa.github.io/z3-note.html">
+<meta property="og:title" content="python 逆向笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/re-python-note.html">
 <meta property="og:site_name" content="独奏の小屋">
-<meta property="og:description" content="z3&amp;python 的用法简要笔记">
+<meta property="og:description" content="有关 pyinstaller 打包的 exe、pyc、pyd 的逆向笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-02-02T06:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-03T09:33:54.322Z">
+<meta property="article:published_time" content="2022-02-26T10:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-26T13:45:00.098Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
+<meta property="article:tag" content="re">
 <meta property="article:tag" content="python">
-<meta property="article:tag" content="z3">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://hasegawaazusa.github.io/z3-note.html">
+<link rel="canonical" href="https://hasegawaazusa.github.io/re-python-note.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/z3-note.html","path":"/z3-note.html","title":"z3 使用笔记"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/re-python-note.html","path":"/re-python-note.html","title":"python 逆向笔记"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>z3 使用笔记 | 独奏の小屋</title>
+<title>python 逆向笔记 | 独奏の小屋</title>
   
 
 
@@ -150,7 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#z3-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">z3 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#z3-%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">z3 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#z3-%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">z3 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E8%A7%A3%E8%BF%87%E7%A8%8B"><span class="nav-number">3.1.</span> <span class="nav-text">求解过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E8%8B%A5%E5%B9%B2%E6%9F%90%E7%A7%8D%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%9C%AA%E7%9F%A5%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">定义若干某种类型的未知数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%85%83%E4%B8%80%E6%AC%A1%E6%96%B9%E7%A8%8B%E6%B1%82%E8%A7%A3"><span class="nav-number">3.3.</span> <span class="nav-text">二元一次方程求解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%8D%E8%BF%90%E7%AE%97%E6%B1%82%E8%A7%A3"><span class="nav-number">3.4.</span> <span class="nav-text">位运算求解</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#pyc-%E6%96%87%E4%BB%B6"><span class="nav-number">1.</span> <span class="nav-text">PYC 文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#pycodeobject"><span class="nav-number">1.1.</span> <span class="nav-text">PyCodeObject</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pyobject_head"><span class="nav-number">1.2.</span> <span class="nav-text">PyObject_HEAD</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E7%BC%96%E8%AF%91"><span class="nav-number">1.3.</span> <span class="nav-text">反编译</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8D%E5%8F%8D%E7%BC%96%E8%AF%91"><span class="nav-number">1.4.</span> <span class="nav-text">反反编译</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E9%AD%94%E6%9C%AF%E5%A4%B4"><span class="nav-number">1.4.1.</span> <span class="nav-text">更改魔术头</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#exe-%E6%96%87%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">EXE 文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pyd-%E6%96%87%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">PYD 文件</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -218,7 +218,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/z3-note.html">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/re-python-note.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -231,7 +231,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          z3 使用笔记
+          python 逆向笔记
         </h1>
 
         <div class="post-meta-container">
@@ -242,7 +242,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-02-02 14:00:00" itemprop="dateCreated datePublished" datetime="2022-02-02T14:00:00+08:00">2022-02-02</time>
+      <time title="创建时间：2022-02-26 18:00:00" itemprop="dateCreated datePublished" datetime="2022-02-26T18:00:00+08:00">2022-02-26</time>
     </span>
 
   
@@ -252,18 +252,18 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>1.9k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
-            <div class="post-description">z3&python 的用法简要笔记</div>
+            <div class="post-description">有关 pyinstaller 打包的 exe、pyc、pyd 的逆向笔记</div>
         </div>
       </header>
 
@@ -271,37 +271,106 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="z3-简介">z3 简介</h1>
-<p>z3 是 Microsoft Research
-开发的一个定理证明器，支持位向量、布尔值、数组、浮点数、字符串和其他数据类型，可以用来自动化证明定理、线性规划求解和方程求解。</p>
-<p>但方程求解效率过低，不建议使用 z3 求解方程 (少量未知数可以使用)。</p>
-<h1 id="z3-安装">z3 安装</h1>
-<p>可以使用 pip 进行安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install z3-solver</span><br></pre></td></tr></table></figure>
-<p>若出现 pip 安装超时或安装失败的情况，请在
-https://github.com/Z3Prover/z3/releases 中下载 <code>release</code>
-版本包。</p>
-<p>这里以 Windows 为例，下载 <code>z3-x64-win.zip</code>
-后解压在合适的目录中。</p>
-<p>然后将解压目录下的 <code>./bin</code> 目录添加进入环境变量
-<code>Path</code> ；解压目录下的 <code>./bin/python</code>
-添加进入环境变量 <code>PYTHONPATH</code> 即可。</p>
-<h1 id="z3-使用">z3 使用</h1>
-<h2 id="求解过程">求解过程</h2>
-<ol type="1">
-<li>定义若干某种类型的未知数</li>
-<li>创建求解器 <code>Solver()</code></li>
-<li>添加约束条件 <code>add()</code></li>
-<li>进行检查问题是否有解 <code>check()</code></li>
-<li>创建解决问题后的模型对象 <code>model()</code></li>
-<li>得到解</li>
-</ol>
-<h2 id="定义若干某种类型的未知数">定义若干某种类型的未知数</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">x = Int(<span class="string">&#x27;x&#x27;</span>)				<span class="comment"># 创建数据类型为整数的未知数</span></span><br><span class="line">y = Real(<span class="string">&#x27;y&#x27;</span>)				<span class="comment"># 创建数据类型为实数的未知数</span></span><br><span class="line">z = BitVec(<span class="string">&#x27;z&#x27;</span>, <span class="number">64</span>)			<span class="comment"># 创建数据类型为 64 位向量的未知数 (通常用于求解位运算问题)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建数据类型为整数的三个未知数</span></span><br><span class="line"><span class="comment"># 同理存在 Reals, BitVecs 等</span></span><br><span class="line">x, y, z = Ints(<span class="string">&#x27;x y z&#x27;</span>)</span><br><span class="line"><span class="comment"># 以上 &#x27;x&#x27;, &#x27;y&#x27;, &#x27;z&#x27; 均为 z3 内部的未知数名，可更改，但不能重复</span></span><br></pre></td></tr></table></figure>
-<h2 id="二元一次方程求解">二元一次方程求解</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义若干某种类型的未知数</span></span><br><span class="line">x, y = Ints(<span class="string">&#x27;x y&#x27;</span>)</span><br><span class="line"><span class="comment"># 创建求解器</span></span><br><span class="line">s = Solver()</span><br><span class="line"><span class="comment"># 添加约束条件</span></span><br><span class="line">s.add(x+<span class="number">3</span>*y == <span class="number">4</span>)</span><br><span class="line">s.add(<span class="number">3</span>*x+y == <span class="number">4</span>)</span><br><span class="line"><span class="comment"># 以上两行代码可以归并成一行代码 s.add(x+3*y == 4, 3*x+y == 4)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 判断是否问题有解，有解则返回 sat ；无解则返回 unsat</span></span><br><span class="line"><span class="keyword">if</span> s.check() == sat:</span><br><span class="line">    <span class="comment"># 创建解决问题后的模型对象</span></span><br><span class="line">    m = s.model()</span><br><span class="line">    <span class="comment"># 获得 x 未知数对应的模型值</span></span><br><span class="line">    varX = m[x]</span><br><span class="line">    <span class="comment"># 输出</span></span><br><span class="line">    <span class="built_in">print</span>(varX)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;unsat!&quot;</span>)</span><br></pre></td></tr></table></figure>
-<h2 id="位运算求解">位运算求解</h2>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> z3 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="comment"># 定义若干某种类型的未知数</span></span><br><span class="line">x = BitVec(<span class="string">&#x27;x&#x27;</span>, <span class="number">64</span>)</span><br><span class="line"><span class="comment"># 创建求解器</span></span><br><span class="line">s = Solver()</span><br><span class="line"><span class="comment"># 添加约束条件</span></span><br><span class="line">s.add(x ^ <span class="number">0xff</span> == <span class="number">0x12</span>)</span><br><span class="line"><span class="comment"># 判断是否问题有解，有解则返回 sat ；无解则返回 unsat</span></span><br><span class="line"><span class="keyword">if</span> s.check() == sat:</span><br><span class="line">    <span class="comment"># 创建解决问题后的模型对象</span></span><br><span class="line">    m = s.model()</span><br><span class="line">    <span class="comment"># 获得 x 未知数对应的模型值</span></span><br><span class="line">    varX = m[x]</span><br><span class="line">    <span class="comment"># 输出</span></span><br><span class="line">    <span class="built_in">print</span>(varX)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;unsat!&quot;</span>)</span><br></pre></td></tr></table></figure>
+        <h1 id="pyc-文件">PYC 文件</h1>
+<p>pyc 文件是 python 在编译过程中出现的主要中间过程文件。pyc
+文件是二进制的，类似 java 的字节码，可以由 python 虚拟机直接执行的。</p>
+<h2 id="pycodeobject">PyCodeObject</h2>
+<p>实际上，pyc 文件就是 PyCodeObject 对象在硬盘上的保存形式。</p>
+<p>而 PyCodeObject 的结构如下：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    PyObject_HEAD</span><br><span class="line">    <span class="keyword">int</span> co_argcount;        <span class="comment">/* 位置参数个数 */</span></span><br><span class="line">    <span class="keyword">int</span> co_nlocals;         <span class="comment">/* 局部变量个数 */</span></span><br><span class="line">    <span class="keyword">int</span> co_stacksize;       <span class="comment">/* 栈大小 */</span></span><br><span class="line">    <span class="keyword">int</span> co_flags;   </span><br><span class="line">    PyObject *co_code;      <span class="comment">/* 字节码指令序列 */</span></span><br><span class="line">    PyObject *co_consts;    <span class="comment">/* 所有常量集合 */</span></span><br><span class="line">    PyObject *co_names;     <span class="comment">/* 所有符号名称集合 */</span></span><br><span class="line">    PyObject *co_varnames;  <span class="comment">/* 局部变量名称集合 */</span></span><br><span class="line">    PyObject *co_freevars;  <span class="comment">/* 闭包用的的变量名集合 */</span></span><br><span class="line">    PyObject *co_cellvars;  <span class="comment">/* 内部嵌套函数引用的变量名集合 */</span></span><br><span class="line">    <span class="comment">/* The rest doesn’t count for hash/cmp */</span></span><br><span class="line">    PyObject *co_filename;  <span class="comment">/* 代码所在文件名 */</span></span><br><span class="line">    PyObject *co_name;      <span class="comment">/* 模块名|函数名|类名 */</span></span><br><span class="line">    <span class="keyword">int</span> co_firstlineno;     <span class="comment">/* 代码块在文件中的起始行号 */</span></span><br><span class="line">    PyObject *co_lnotab;    <span class="comment">/* 字节码指令和行号的对应关系 */</span></span><br><span class="line">    <span class="keyword">void</span> *co_zombieframe;   <span class="comment">/* for optimization only (see frameobject.c) */</span></span><br><span class="line">&#125; PyCodeObject;</span><br></pre></td></tr></table></figure>
+<h2 id="pyobject_head">PyObject_HEAD</h2>
+<p>不同的 Python 版本会有不同的
+PyObject_HEAD，以下是各版本的文件头：</p>
+<table>
+<thead>
+<tr class="header">
+<th>Python 版本</th>
+<th>十六进制文件头</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Python 2.7</td>
+<td><code>03f30d0a00000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.0</td>
+<td><code>3b0c0d0a00000000</code></td>
+</tr>
+<tr class="odd">
+<td>Python 3.1</td>
+<td><code>4f0c0d0a00000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.2</td>
+<td><code>6c0c0d0a00000000</code></td>
+</tr>
+<tr class="odd">
+<td>Python 3.3</td>
+<td><code>9e0c0d0a0000000000000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.4</td>
+<td><code>ee0c0d0a0000000000000000</code></td>
+</tr>
+<tr class="odd">
+<td>Python 3.5</td>
+<td><code>170d0d0a0000000000000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.6</td>
+<td><code>330d0d0a0000000000000000</code></td>
+</tr>
+<tr class="odd">
+<td>Python 3.7</td>
+<td><code>420d0d0a000000000000000000000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.8</td>
+<td><code>550d0d0a000000000000000000000000</code></td>
+</tr>
+<tr class="odd">
+<td>Python 3.9</td>
+<td><code>610d0d0a000000000000000000000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.10</td>
+<td><code>6f0d0d0a000000000000000000000000</code></td>
+</tr>
+</tbody>
+</table>
+<p>可以注意到，实际上有改变的只有开头的<strong>两个字节</strong>。</p>
+<h2 id="反编译">反编译</h2>
+<p>使用 uncompyle 可以将 pyc 文件完美反编译。<a target="_blank" rel="noopener" href="https://github.com/rocky/python-uncompyle6">uncompyle6
+Github主页</a></p>
+<p>可以直接使用 pip 包管理工具安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install uncompyle</span><br></pre></td></tr></table></figure>
+<p>而 uncompyle 用法如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uncompyle6 *.pyc</span><br></pre></td></tr></table></figure>
+<p>uncomyle6 会直接将反编译后的源码输出在标准输出中，推荐用法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uncompyle6 *.pyc &gt; filename</span><br></pre></td></tr></table></figure>
+<p>将源码输出到文件里面，比如说：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uncompyle6 test.pyc &gt; test.py</span><br></pre></td></tr></table></figure>
+<h2 id="反反编译">反反编译</h2>
+<h3 id="更改魔术头">更改魔术头</h3>
+<p>当想要保护我们的 pyc 文件不被反编译，最简单的做法就是更改魔术头，即
+PyObject_HEAD。</p>
+<p>可能是完全删除魔术头，也可能是修改为不是原生版本的魔术头，我们只需要根据情况添加或修改即可。</p>
+<p>有关魔术头可以直接参考 <a href="#PyObject_HEAD">PyObject_HEAD</a></p>
+<h1 id="exe-文件">EXE 文件</h1>
+<p>使用 PyInstaller 进行封装的 exe 可执行文件，可以使用 pyinstxtractor
+进行反编译。<a target="_blank" rel="noopener" href="https://github.com/extremecoders-re/pyinstxtractor">pyinstxtractor
+Github主页</a></p>
+<p>基本用法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 pyinstxtractor.py *.exe</span><br></pre></td></tr></table></figure>
+<p>pyinstxtractor 会将 exe 文件拆分回单独的 pyc 文件、pyd 文件，并且会在
+pyc 文件中加入当前 python 版本的魔术头
+(如果原代码版本不是所使用的版本，会有 warning 提示，需要注意)。</p>
+<h1 id="pyd-文件">PYD 文件</h1>
+<p>pyd 文件相当于 python 的运行时 dll，在 python 代码中可以直接使用
+<code>import</code> 将 pyd 文件当作模块导入。</p>
+<p>对于 pyd 的逆向，我们需要借助 ida 的 <code>attach</code>
+动态调试跟静态分析。</p>
 
     </div>
 
@@ -319,7 +388,7 @@ https://github.com/Z3Prover/z3/releases 中下载 <code>release</code>
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hasegawaazusa.github.io/z3-note.html" title="z3 使用笔记">https://hasegawaazusa.github.io/z3-note.html</a>
+      <a href="https://hasegawaazusa.github.io/re-python-note.html" title="python 逆向笔记">https://hasegawaazusa.github.io/re-python-note.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -329,21 +398,21 @@ https://github.com/Z3Prover/z3/releases 中下载 <code>release</code>
 
           <div class="post-tags">
               <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/re/" rel="tag"># re</a>
               <a href="/tags/python/" rel="tag"># python</a>
-              <a href="/tags/z3/" rel="tag"># z3</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/barcode-note.html" rel="prev" title="有关条形码的认识">
-                  <i class="fa fa-chevron-left"></i> 有关条形码的认识
+                <a href="/des-note.html" rel="prev" title="DES 算法笔记">
+                  <i class="fa fa-chevron-left"></i> DES 算法笔记
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/errors/pscore6-error.html" rel="next" title="powershell：尝试新的跨平台 PowerShell https://aka.ms/pscore6">
-                  powershell：尝试新的跨平台 PowerShell https://aka.ms/pscore6 <i class="fa fa-chevron-right"></i>
+                <a href="/png-steg-note.html" rel="next" title="PNG 图片隐写笔记">
+                  PNG 图片隐写笔记 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>

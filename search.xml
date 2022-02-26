@@ -3561,11 +3561,11 @@ Network Graphics）的位图动画格式，扩展方法类似主要用于网页�
 <h2 id="png-数据块">PNG 数据块</h2>
 <table>
 <colgroup>
-<col style="width: 17%">
-<col style="width: 27%">
-<col style="width: 15%">
+<col style="width: 14%">
+<col style="width: 22%">
 <col style="width: 12%">
-<col style="width: 27%">
+<col style="width: 10%">
+<col style="width: 40%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -3599,11 +3599,27 @@ Network Graphics）的位图动画格式，扩展方法类似主要用于网页�
 <td>在<code>PLTE</code>和<code>IDAT</code>之前</td>
 </tr>
 <tr class="even">
+<td><code>iCCP</code></td>
+<td>辅助数据块</td>
+<td>是</td>
+<td>是</td>
+<td>在<code>PLTE</code>之后<code>IDAT</code>之前
+(存在则无<code>sRGB</code>)</td>
+</tr>
+<tr class="odd">
 <td><code>sBIT</code></td>
 <td>样本有效位数据块</td>
 <td>否</td>
 <td>是</td>
 <td>在<code>PLTE</code>和<code>IDAT</code>之前</td>
+</tr>
+<tr class="even">
+<td><code>sRGB</code></td>
+<td>标准RPG颜色</td>
+<td>否</td>
+<td>是</td>
+<td>在<code>PLTE</code>之后<code>IDAT</code>之前
+(与<code>iCCP</code>冲突)</td>
 </tr>
 <tr class="odd">
 <td><code>PLTE</code></td>
@@ -6703,6 +6719,167 @@ k_{15}&amp;=PC-2(C_{15},D_{15})\\
       <tags>
         <tag>note</tag>
         <tag>crypto</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>python 逆向笔记</title>
+    <url>//re-python-note.html</url>
+    <content><![CDATA[<h1 id="pyc-文件">PYC 文件</h1>
+<p>pyc 文件是 python 在编译过程中出现的主要中间过程文件。pyc
+文件是二进制的，类似 java 的字节码，可以由 python 虚拟机直接执行的。</p>
+<h2 id="pycodeobject">PyCodeObject</h2>
+<p>实际上，pyc 文件就是 PyCodeObject 对象在硬盘上的保存形式。</p>
+<p>而 PyCodeObject 的结构如下：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    PyObject_HEAD</span><br><span class="line">    <span class="keyword">int</span> co_argcount;        <span class="comment">/* 位置参数个数 */</span></span><br><span class="line">    <span class="keyword">int</span> co_nlocals;         <span class="comment">/* 局部变量个数 */</span></span><br><span class="line">    <span class="keyword">int</span> co_stacksize;       <span class="comment">/* 栈大小 */</span></span><br><span class="line">    <span class="keyword">int</span> co_flags;   </span><br><span class="line">    PyObject *co_code;      <span class="comment">/* 字节码指令序列 */</span></span><br><span class="line">    PyObject *co_consts;    <span class="comment">/* 所有常量集合 */</span></span><br><span class="line">    PyObject *co_names;     <span class="comment">/* 所有符号名称集合 */</span></span><br><span class="line">    PyObject *co_varnames;  <span class="comment">/* 局部变量名称集合 */</span></span><br><span class="line">    PyObject *co_freevars;  <span class="comment">/* 闭包用的的变量名集合 */</span></span><br><span class="line">    PyObject *co_cellvars;  <span class="comment">/* 内部嵌套函数引用的变量名集合 */</span></span><br><span class="line">    <span class="comment">/* The rest doesn’t count for hash/cmp */</span></span><br><span class="line">    PyObject *co_filename;  <span class="comment">/* 代码所在文件名 */</span></span><br><span class="line">    PyObject *co_name;      <span class="comment">/* 模块名|函数名|类名 */</span></span><br><span class="line">    <span class="keyword">int</span> co_firstlineno;     <span class="comment">/* 代码块在文件中的起始行号 */</span></span><br><span class="line">    PyObject *co_lnotab;    <span class="comment">/* 字节码指令和行号的对应关系 */</span></span><br><span class="line">    <span class="keyword">void</span> *co_zombieframe;   <span class="comment">/* for optimization only (see frameobject.c) */</span></span><br><span class="line">&#125; PyCodeObject;</span><br></pre></td></tr></table></figure>
+<h2 id="pyobject_head">PyObject_HEAD</h2>
+<p>不同的 Python 版本会有不同的
+PyObject_HEAD，以下是各版本的文件头：</p>
+<table>
+<thead>
+<tr class="header">
+<th>Python 版本</th>
+<th>十六进制文件头</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Python 2.7</td>
+<td><code>03f30d0a00000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.0</td>
+<td><code>3b0c0d0a00000000</code></td>
+</tr>
+<tr class="odd">
+<td>Python 3.1</td>
+<td><code>4f0c0d0a00000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.2</td>
+<td><code>6c0c0d0a00000000</code></td>
+</tr>
+<tr class="odd">
+<td>Python 3.3</td>
+<td><code>9e0c0d0a0000000000000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.4</td>
+<td><code>ee0c0d0a0000000000000000</code></td>
+</tr>
+<tr class="odd">
+<td>Python 3.5</td>
+<td><code>170d0d0a0000000000000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.6</td>
+<td><code>330d0d0a0000000000000000</code></td>
+</tr>
+<tr class="odd">
+<td>Python 3.7</td>
+<td><code>420d0d0a000000000000000000000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.8</td>
+<td><code>550d0d0a000000000000000000000000</code></td>
+</tr>
+<tr class="odd">
+<td>Python 3.9</td>
+<td><code>610d0d0a000000000000000000000000</code></td>
+</tr>
+<tr class="even">
+<td>Python 3.10</td>
+<td><code>6f0d0d0a000000000000000000000000</code></td>
+</tr>
+</tbody>
+</table>
+<p>可以注意到，实际上有改变的只有开头的<strong>两个字节</strong>。</p>
+<h2 id="反编译">反编译</h2>
+<p>使用 uncompyle 可以将 pyc 文件完美反编译。<a href="https://github.com/rocky/python-uncompyle6">uncompyle6
+Github主页</a></p>
+<p>可以直接使用 pip 包管理工具安装：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip3 install uncompyle</span><br></pre></td></tr></table></figure>
+<p>而 uncompyle 用法如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">uncompyle6 *.pyc</span><br></pre></td></tr></table></figure>
+<p>uncomyle6 会直接将反编译后的源码输出在标准输出中，推荐用法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">uncompyle6 *.pyc &gt; filename</span><br></pre></td></tr></table></figure>
+<p>将源码输出到文件里面，比如说：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">uncompyle6 test.pyc &gt; test.py</span><br></pre></td></tr></table></figure>
+<h2 id="反反编译">反反编译</h2>
+<h3 id="更改魔术头">更改魔术头</h3>
+<p>当想要保护我们的 pyc 文件不被反编译，最简单的做法就是更改魔术头，即
+PyObject_HEAD。</p>
+<p>可能是完全删除魔术头，也可能是修改为不是原生版本的魔术头，我们只需要根据情况添加或修改即可。</p>
+<p>有关魔术头可以直接参考 <a href="#PyObject_HEAD">PyObject_HEAD</a></p>
+<h1 id="exe-文件">EXE 文件</h1>
+<p>使用 PyInstaller 进行封装的 exe 可执行文件，可以使用 pyinstxtractor
+进行反编译。<a href="https://github.com/extremecoders-re/pyinstxtractor">pyinstxtractor
+Github主页</a></p>
+<p>基本用法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 pyinstxtractor.py *.exe</span><br></pre></td></tr></table></figure>
+<p>pyinstxtractor 会将 exe 文件拆分回单独的 pyc 文件、pyd 文件，并且会在
+pyc 文件中加入当前 python 版本的魔术头
+(如果原代码版本不是所使用的版本，会有 warning 提示，需要注意)。</p>
+<h1 id="pyd-文件">PYD 文件</h1>
+<p>pyd 文件相当于 python 的运行时 dll，在 python 代码中可以直接使用
+<code>import</code> 将 pyd 文件当作模块导入。</p>
+<p>对于 pyd 的逆向，我们需要借助 ida 的 <code>attach</code>
+动态调试跟静态分析。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>re</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PNG 图片隐写笔记</title>
+    <url>//png-steg-note.html</url>
+    <content><![CDATA[<h1 id="png-隐写">PNG 隐写</h1>
+<h2 id="图片-ihdr-crc32-错误">图片 <code>IHDR</code> CRC32 错误</h2>
+<p>一般情况下这是因为宽度或者高度被篡改的缘故，可以使用以下代码对图片的宽度或者长度进行爆破：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_height</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    height = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">20</span>:<span class="number">24</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(height+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">20</span>] + h.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">24</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real height: <span class="subst">&#123;h&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_height_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;height is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_width</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    width = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">16</span>:<span class="number">20</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(width+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">16</span>] + w.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">20</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real width: <span class="subst">&#123;w&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_width_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;width is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line">filename = <span class="string">&#x27;false_height.png&#x27;</span></span><br><span class="line">crack_height(filename)</span><br></pre></td></tr></table></figure>
+<p><a href="https://adworld.xctf.org.cn/task/answer?type=misc&amp;number=1&amp;grade=1&amp;id=5432&amp;page=1">示例题目</a></p>
+]]></content>
+      <tags>
+        <tag>png</tag>
+        <tag>note</tag>
+        <tag>misc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>图片取证笔记</title>
+    <url>//picture-forensics-note.html</url>
+    <content><![CDATA[<h1 id="图片取证">图片取证</h1>
+<h2 id="简述">简述</h2>
+<p>图片取证主要包括隐写 (Steganography)，拼图，读图等。</p>
+<p>同时图片又有多种格式，包括但不限于 GIP, PNG, JPEG 等。</p>
+<h2 id="图片像素差异">图片像素差异</h2>
+<p>以下是提取差异像素的示例脚本，注意如果差异的像素是
+<code>white</code>，需要将 <code>diff</code>
+的初始颜色改为其他颜色。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">comparison = <span class="string">&quot;to.png&quot;</span></span><br><span class="line">target = <span class="string">&quot;to_do.png&quot;</span></span><br><span class="line"></span><br><span class="line">comparison = Image.<span class="built_in">open</span>(comparison)</span><br><span class="line">target = Image.<span class="built_in">open</span>(target)</span><br><span class="line">diff = Image.new(comparison.mode ,comparison.size, <span class="string">&#x27;white&#x27;</span>)</span><br><span class="line"></span><br><span class="line">dcomparison = comparison.load()</span><br><span class="line">dtarget = target.load()</span><br><span class="line">ddiff = diff.load()</span><br><span class="line"></span><br><span class="line">width, height = comparison.size</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">        <span class="keyword">if</span> dcomparison[w, h] != dtarget[w, h]:</span><br><span class="line">            ddiff[w, h] = dtarget[w, h]</span><br><span class="line"></span><br><span class="line">diff.save(<span class="string">&quot;diff.png&quot;</span>, comparison.<span class="built_in">format</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="盲水印">盲水印</h2>
+<p>主要是使用了 <a href="https://github.com/chishaxie/BlindWaterMark">BlindWaterMark</a>
+项目，使用方法：</p>
+<ul>
+<li><p>加盲水印</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 bwm.py encode 原图.png 水印图.png 输出.png</span><br></pre></td></tr></table></figure></li>
+<li><p>解盲水印</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 bwm.py encode 原图.png 盲水印图.png 输出.png</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>需要注意的是，盲水印项目要求</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">opencv-python==<span class="number">4.2</span><span class="number">.0</span><span class="number">.34</span></span><br><span class="line">matplotlib==<span class="number">2.1</span><span class="number">.1</span></span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>特别注意！！！</p>
+<p>程序 python2 和 python3 版本的加解密结果会有所不同，主要原因是
+python2 和 python3 random 的算法不同，如果要让 python3 兼容 python2 的
+random 算法请加 <code>--oldseed</code> 参数。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>misc</tag>
+        <tag>forensics</tag>
       </tags>
   </entry>
 </search>
