@@ -29,13 +29,16 @@
 <meta property="og:site_name" content="独奏の小屋">
 <meta property="og:description" content="有关图片取证的一些简要笔记">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/picture-forensics-note/montage%20横向拼接.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/picture-forensics-note/convert%20处理后.png">
 <meta property="article:published_time" content="2022-02-26T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-26T16:19:27.124Z">
+<meta property="article:modified_time" content="2022-03-04T10:26:44.858Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="misc">
 <meta property="article:tag" content="forensics">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/picture-forensics-note/montage%20横向拼接.png">
 
 
 <link rel="canonical" href="https://hasegawaazusa.github.io/picture-forensics-note.html">
@@ -91,8 +94,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">43</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">46</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">44</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">48</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -150,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E5%8F%96%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">图片取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E5%83%8F%E7%B4%A0%E5%B7%AE%E5%BC%82"><span class="nav-number">1.2.</span> <span class="nav-text">图片像素差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B2%E6%B0%B4%E5%8D%B0"><span class="nav-number">1.3.</span> <span class="nav-text">盲水印</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E5%8F%96%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">图片取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E5%83%8F%E7%B4%A0%E5%B7%AE%E5%BC%82"><span class="nav-number">1.2.</span> <span class="nav-text">图片像素差异</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%B2%E6%B0%B4%E5%8D%B0"><span class="nav-number">1.3.</span> <span class="nav-text">盲水印</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E6%8B%BC%E6%8E%A5"><span class="nav-number">1.4.</span> <span class="nav-text">图片拼接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%BC%E5%9B%BE"><span class="nav-number">1.5.</span> <span class="nav-text">拼图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E9%9A%90%E5%86%99%E6%8E%A2%E6%B5%8B"><span class="nav-number">1.6.</span> <span class="nav-text">自动化隐写探测</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#png-%E5%8F%96%E8%AF%81"><span class="nav-number">2.</span> <span class="nav-text">PNG 取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0-1"><span class="nav-number">2.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%BE%E7%89%87-ihdr-crc32-%E9%94%99%E8%AF%AF"><span class="nav-number">2.2.</span> <span class="nav-text">图片 IHDR CRC32 错误</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#gif-%E5%8F%96%E8%AF%81"><span class="nav-number">3.</span> <span class="nav-text">GIF 取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0-2"><span class="nav-number">3.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gif-%E5%88%86%E7%A6%BB"><span class="nav-number">3.2.</span> <span class="nav-text">GIF 分离</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -165,13 +168,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-count">48</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">43</span>
+        <span class="site-state-item-count">44</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -252,14 +255,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>883</span>
+      <span>4.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>4 分钟</span>
     </span>
 </div>
 
@@ -275,6 +278,7 @@
 <h2 id="简述">简述</h2>
 <p>图片取证主要包括隐写 (Steganography)，拼图，读图等。</p>
 <p>同时图片又有多种格式，包括但不限于 GIP, PNG, JPEG 等。</p>
+<p>以下的各种图片取证形式不限于单一格式。</p>
 <h2 id="图片像素差异">图片像素差异</h2>
 <p>以下是提取差异像素的示例脚本，注意如果差异的像素是
 <code>white</code>，需要将 <code>diff</code>
@@ -297,6 +301,124 @@
 <p>程序 python2 和 python3 版本的加解密结果会有所不同，主要原因是
 python2 和 python3 random 的算法不同，如果要让 python3 兼容 python2 的
 random 算法请加 <code>--oldseed</code> 参数。</p>
+<h2 id="图片拼接">图片拼接</h2>
+<p>实现对多张图片的拼接，我们可以使用 <code>montage</code> 软件 (Linux
+软件)。</p>
+<p>因为 <code>montage</code> 软件可以将图像平铺到可自定义的网格中。</p>
+<p>更多关于 <code>montage</code> 软件的使用可以查看：<a target="_blank" rel="noopener" href="https://imagemagick.org/">https://imagemagick.org/</a></p>
+<p><code>montage</code> 软件有以下操作：</p>
+<ul>
+<li>将图像平铺到网格中，自动调整大于网格单元大小的图像大小：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">montage &#123;&#123;image1.png&#125;&#125; &#123;&#123;image2.jpg&#125;&#125; &#123;&#123;imageN.png&#125;&#125; montage.jpg</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将图像平铺成网格，从最大的图像自动计算网格单元大小：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">montage &#123;&#123;image1.png&#125;&#125; &#123;&#123;image2.jpg&#125;&#125; &#123;&#123;imageN.png&#125;&#125; -geometry +0+0 montage.jpg</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在平铺之前设置网格单元大小并调整图像大小以适应它：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">montage &#123;&#123;image1.png&#125;&#125; &#123;&#123;image2.jpg&#125;&#125; &#123;&#123;imageN.png&#125;&#125; -geometry 640x480+0+0 montage.jpg</span><br></pre></td></tr></table></figure>
+<ul>
+<li>限制网格中的行数和列数，导致输入图像溢出到多个输出蒙太奇：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">montage &#123;&#123;image1.png&#125;&#125; &#123;&#123;image2.jpg&#125;&#125; &#123;&#123;imageN.png&#125;&#125; -geometry +0+0 -tile 2x3 montage_%d.jpg</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在平铺之前调整图像大小并裁剪图像以完全填充其网格单元：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">montage &#123;&#123;image1.png&#125;&#125; &#123;&#123;image2.jpg&#125;&#125; &#123;&#123;imageN.png&#125;&#125; -geometry +0+0 -resize 640x480^ -gravity center -crop 640x480+0+0 montage.jpg</span><br></pre></td></tr></table></figure>
+<p>例如我们想要横向拼接 <code>flag-0.png</code>、<code>flag-1.png</code>
+等图片，输出文件名为 <code>flag.png</code>，可以使用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">montage flag*.png -tile x1 -geometry +1+0 flag.png </span><br></pre></td></tr></table></figure>
+<p>最终获得间隔 1 个像素，横向拼接的图片：</p>
+<figure>
+<img src="/picture-forensics-note/montage%20横向拼接.png" alt="montage 横向拼接">
+<figcaption aria-hidden="true">montage 横向拼接</figcaption>
+</figure>
+<h2 id="拼图">拼图</h2>
+<p>拼图问题我们可以使用
+<code>gaps</code>，一个基于遗传算法的拼图求解器，具有块大小自动检测功能
+(最好使用 Linux 安装)。<a target="_blank" rel="noopener" href="https://github.com/nemanja-m/gaps">Gaps
+Github 主页</a></p>
+<p><code>gaps</code> 参数如下</p>
+<table>
+<thead>
+<tr class="header">
+<th>选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--image</code></td>
+<td>拼图路径</td>
+</tr>
+<tr class="even">
+<td><code>--size</code></td>
+<td>拼图大小 (以像素为单位)</td>
+</tr>
+<tr class="odd">
+<td><code>--generations</code></td>
+<td>遗传算法的代数</td>
+</tr>
+<tr class="even">
+<td><code>--population</code></td>
+<td>遗传算法中的人数</td>
+</tr>
+<tr class="odd">
+<td><code>--verbose</code></td>
+<td>在每一代之后显示最佳解决方案</td>
+</tr>
+<tr class="even">
+<td><code>--save</code></td>
+<td>将拼图结果另存为图像</td>
+</tr>
+</tbody>
+</table>
+<p>同时可以使用 <code>gaps --help</code> 获取更多帮助。</p>
+<p>如果没有明确提供 <code>--size</code> 参数，<code>gaps</code>
+会自动检测块的大小。</p>
+<h2 id="自动化隐写探测">自动化隐写探测</h2>
+<p>隐写工具 <code>zsteg</code> 可以检测 PNG 和 BMP 图片里的隐写数据，在
+Linux 里可以直接安装使用。<a target="_blank" rel="noopener" href="https://github.com/zed-0xff/zsteg">zsteg Github 主页</a></p>
+<p>目前，<code>zsteg</code> 支持检测：</p>
+<ul>
+<li>LSB steganography in PNG &amp; BMP</li>
+<li>zlib-compressed data</li>
+<li>OpenStego</li>
+<li>Camouflage 1.2.1</li>
+<li>LSB with The Eratosthenes set</li>
+</ul>
+<p>使用方法：scanf("%d, %d", &amp;a, &amp;b);</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zsteg 可疑图片.png</span><br></pre></td></tr></table></figure>
+<p>更多用法请使用 <code>zsteg -h</code> 或者查看 Github 主页。</p>
+<h1 id="png-取证">PNG 取证</h1>
+<h2 id="简述-1">简述</h2>
+<p>以下的各种图片取证形式仅限于 PNG 图片格式。</p>
+<h2 id="图片-ihdr-crc32-错误">图片 <code>IHDR</code> CRC32 错误</h2>
+<p>一般情况下这是因为宽度或者高度被篡改的缘故，可以使用以下代码对图片的宽度或者长度进行爆破：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_height</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    height = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">20</span>:<span class="number">24</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(height+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">20</span>] + h.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">24</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real height: <span class="subst">&#123;h&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_height_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;height is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_width</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    width = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">16</span>:<span class="number">20</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(width+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">16</span>] + w.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">20</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real width: <span class="subst">&#123;w&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_width_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;width is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line">filename = <span class="string">&#x27;false_height.png&#x27;</span></span><br><span class="line">crack_height(filename)</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://adworld.xctf.org.cn/task/answer?type=misc&amp;number=1&amp;grade=1&amp;id=5432&amp;page=1">示例题目</a></p>
+<h1 id="gif-取证">GIF 取证</h1>
+<h2 id="简述-2">简述</h2>
+<p>以下的各种图片取证形式仅限于 GIF 图片格式。</p>
+<h2 id="gif-分离">GIF 分离</h2>
+<p>如果需要对每一帧图片进行详细操作的话，最好使用 photoshop 打开 GIF
+图片，PS 会自动将 GIF 图片的每一帧转换为图层。</p>
+<p>也可以使用在线网站获取每一帧：<a target="_blank" rel="noopener" href="https://tu.sioe.cn/gj/fenjie/">https://tu.sioe.cn/gj/fenjie/</a></p>
+<p>但是最简单的获取 GIF 每一帧图片的方式，可以通过使用
+<code>convert</code> 软件 (Linux 软件)。</p>
+<p>有关 <code>convert</code> 软件更多详情可以查看 <a target="_blank" rel="noopener" href="https://imagemagick.org/">https://imagemagick.org/</a></p>
+<p>以下只介绍 <code>convert</code> 分离 GIF 每一帧的用法：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">convert target.gif 输出名.png</span><br></pre></td></tr></table></figure>
+<p>例如输入参数为
+<code>convert target.gif flag.png</code>，那么软件将会把
+<code>target.gif</code> 的每一帧转换为
+<code>flag-0.png</code>、<code>flag-1.png</code> 等等，如图所示：</p>
+<figure>
+<img src="/picture-forensics-note/convert%20处理后.png" alt="convert 处理后">
+<figcaption aria-hidden="true">convert 处理后</figcaption>
+</figure>
 
     </div>
 
@@ -332,11 +454,14 @@ random 算法请加 <code>--oldseed</code> 参数。</p>
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/png-steg-note.html" rel="prev" title="PNG 图片隐写笔记">
-                  <i class="fa fa-chevron-left"></i> PNG 图片隐写笔记
+                <a href="/re-python-note.html" rel="prev" title="python 逆向笔记">
+                  <i class="fa fa-chevron-left"></i> python 逆向笔记
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/post/image-forensics-note.html" rel="next" title="镜像取证笔记">
+                  镜像取证笔记 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -369,14 +494,14 @@ random 算法请加 <code>--oldseed</code> 参数。</p>
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">152k</span>
+    <span title="站点总字数">157k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:18</span>
+    <span title="站点阅读时长">2:23</span>
   </span>
 </div>
 

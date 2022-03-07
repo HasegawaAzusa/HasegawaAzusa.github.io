@@ -2260,6 +2260,12 @@ Morgan-Mar，其方案是位图，看起来像抽象艺术设计。编译指导�
 <img src="/errors/pscore6-error/psreleases.png" alt="psreleases">
 <figcaption aria-hidden="true">psreleases</figcaption>
 </figure>
+<blockquote>
+<p>可以按照以下步骤将 Powershell7 添加到鼠标右键选项中：</p>
+<p>保存以下代码在 <code>pwsh.reg</code> 文件中：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Windows Registry Editor Version 5.00</span><br><span class="line"></span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\Background\shell\pwsh7]</span><br><span class="line">@=&quot;在此处打开 Powershell7 窗口&quot;</span><br><span class="line">&quot;Extended&quot;=&quot;&quot;</span><br><span class="line">&quot;Icon&quot;=&quot;C:\Program Files\PowerShell\7\pwsh.exe&quot;</span><br><span class="line">&quot;ShowBasedOnVelocityId&quot;=dword:00639bc8</span><br><span class="line"></span><br><span class="line">[HKEY_CLASSES_ROOT\Directory\Background\shell\pwsh7\command]</span><br><span class="line">@=&quot;C:\Program Files\PowerShell\7\pwsh.exe -noexit -command Set-Location -literalPath &#x27;%V&#x27;&quot;</span><br></pre></td></tr></table></figure>
+<p>然后双击文件 <code>pwsh.reg</code> 即可</p>
+</blockquote>
 ]]></content>
       <tags>
         <tag>error</tag>
@@ -6832,27 +6838,13 @@ pyc 文件中加入当前 python 版本的魔术头
       </tags>
   </entry>
   <entry>
-    <title>PNG 图片隐写笔记</title>
-    <url>//png-steg-note.html</url>
-    <content><![CDATA[<h1 id="png-隐写">PNG 隐写</h1>
-<h2 id="图片-ihdr-crc32-错误">图片 <code>IHDR</code> CRC32 错误</h2>
-<p>一般情况下这是因为宽度或者高度被篡改的缘故，可以使用以下代码对图片的宽度或者长度进行爆破：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_height</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    height = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">20</span>:<span class="number">24</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(height+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">20</span>] + h.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">24</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real height: <span class="subst">&#123;h&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_height_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;height is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_width</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    width = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">16</span>:<span class="number">20</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(width+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">16</span>] + w.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">20</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real width: <span class="subst">&#123;w&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_width_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;width is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line">filename = <span class="string">&#x27;false_height.png&#x27;</span></span><br><span class="line">crack_height(filename)</span><br></pre></td></tr></table></figure>
-<p><a href="https://adworld.xctf.org.cn/task/answer?type=misc&amp;number=1&amp;grade=1&amp;id=5432&amp;page=1">示例题目</a></p>
-]]></content>
-      <tags>
-        <tag>png</tag>
-        <tag>note</tag>
-        <tag>misc</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>图片取证笔记</title>
     <url>//picture-forensics-note.html</url>
     <content><![CDATA[<h1 id="图片取证">图片取证</h1>
 <h2 id="简述">简述</h2>
 <p>图片取证主要包括隐写 (Steganography)，拼图，读图等。</p>
 <p>同时图片又有多种格式，包括但不限于 GIP, PNG, JPEG 等。</p>
+<p>以下的各种图片取证形式不限于单一格式。</p>
 <h2 id="图片像素差异">图片像素差异</h2>
 <p>以下是提取差异像素的示例脚本，注意如果差异的像素是
 <code>white</code>，需要将 <code>diff</code>
@@ -6875,11 +6867,270 @@ pyc 文件中加入当前 python 版本的魔术头
 <p>程序 python2 和 python3 版本的加解密结果会有所不同，主要原因是
 python2 和 python3 random 的算法不同，如果要让 python3 兼容 python2 的
 random 算法请加 <code>--oldseed</code> 参数。</p>
+<h2 id="图片拼接">图片拼接</h2>
+<p>实现对多张图片的拼接，我们可以使用 <code>montage</code> 软件 (Linux
+软件)。</p>
+<p>因为 <code>montage</code> 软件可以将图像平铺到可自定义的网格中。</p>
+<p>更多关于 <code>montage</code> 软件的使用可以查看：<a href="https://imagemagick.org/">https://imagemagick.org/</a></p>
+<p><code>montage</code> 软件有以下操作：</p>
+<ul>
+<li>将图像平铺到网格中，自动调整大于网格单元大小的图像大小：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">montage &#123;&#123;image1.png&#125;&#125; &#123;&#123;image2.jpg&#125;&#125; &#123;&#123;imageN.png&#125;&#125; montage.jpg</span><br></pre></td></tr></table></figure>
+<ul>
+<li>将图像平铺成网格，从最大的图像自动计算网格单元大小：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">montage &#123;&#123;image1.png&#125;&#125; &#123;&#123;image2.jpg&#125;&#125; &#123;&#123;imageN.png&#125;&#125; -geometry +0+0 montage.jpg</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在平铺之前设置网格单元大小并调整图像大小以适应它：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">montage &#123;&#123;image1.png&#125;&#125; &#123;&#123;image2.jpg&#125;&#125; &#123;&#123;imageN.png&#125;&#125; -geometry 640x480+0+0 montage.jpg</span><br></pre></td></tr></table></figure>
+<ul>
+<li>限制网格中的行数和列数，导致输入图像溢出到多个输出蒙太奇：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">montage &#123;&#123;image1.png&#125;&#125; &#123;&#123;image2.jpg&#125;&#125; &#123;&#123;imageN.png&#125;&#125; -geometry +0+0 -tile 2x3 montage_%d.jpg</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在平铺之前调整图像大小并裁剪图像以完全填充其网格单元：</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">montage &#123;&#123;image1.png&#125;&#125; &#123;&#123;image2.jpg&#125;&#125; &#123;&#123;imageN.png&#125;&#125; -geometry +0+0 -resize 640x480^ -gravity center -crop 640x480+0+0 montage.jpg</span><br></pre></td></tr></table></figure>
+<p>例如我们想要横向拼接 <code>flag-0.png</code>、<code>flag-1.png</code>
+等图片，输出文件名为 <code>flag.png</code>，可以使用如下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">montage flag*.png -tile x1 -geometry +1+0 flag.png </span><br></pre></td></tr></table></figure>
+<p>最终获得间隔 1 个像素，横向拼接的图片：</p>
+<figure>
+<img src="/picture-forensics-note/montage%20横向拼接.png" alt="montage 横向拼接">
+<figcaption aria-hidden="true">montage 横向拼接</figcaption>
+</figure>
+<h2 id="拼图">拼图</h2>
+<p>拼图问题我们可以使用
+<code>gaps</code>，一个基于遗传算法的拼图求解器，具有块大小自动检测功能
+(最好使用 Linux 安装)。<a href="https://github.com/nemanja-m/gaps">Gaps
+Github 主页</a></p>
+<p><code>gaps</code> 参数如下</p>
+<table>
+<thead>
+<tr class="header">
+<th>选项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>--image</code></td>
+<td>拼图路径</td>
+</tr>
+<tr class="even">
+<td><code>--size</code></td>
+<td>拼图大小 (以像素为单位)</td>
+</tr>
+<tr class="odd">
+<td><code>--generations</code></td>
+<td>遗传算法的代数</td>
+</tr>
+<tr class="even">
+<td><code>--population</code></td>
+<td>遗传算法中的人数</td>
+</tr>
+<tr class="odd">
+<td><code>--verbose</code></td>
+<td>在每一代之后显示最佳解决方案</td>
+</tr>
+<tr class="even">
+<td><code>--save</code></td>
+<td>将拼图结果另存为图像</td>
+</tr>
+</tbody>
+</table>
+<p>同时可以使用 <code>gaps --help</code> 获取更多帮助。</p>
+<p>如果没有明确提供 <code>--size</code> 参数，<code>gaps</code>
+会自动检测块的大小。</p>
+<h2 id="自动化隐写探测">自动化隐写探测</h2>
+<p>隐写工具 <code>zsteg</code> 可以检测 PNG 和 BMP 图片里的隐写数据，在
+Linux 里可以直接安装使用。<a href="https://github.com/zed-0xff/zsteg">zsteg Github 主页</a></p>
+<p>目前，<code>zsteg</code> 支持检测：</p>
+<ul>
+<li>LSB steganography in PNG &amp; BMP</li>
+<li>zlib-compressed data</li>
+<li>OpenStego</li>
+<li>Camouflage 1.2.1</li>
+<li>LSB with The Eratosthenes set</li>
+</ul>
+<p>使用方法：scanf("%d, %d", &amp;a, &amp;b);</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zsteg 可疑图片.png</span><br></pre></td></tr></table></figure>
+<p>更多用法请使用 <code>zsteg -h</code> 或者查看 Github 主页。</p>
+<h1 id="png-取证">PNG 取证</h1>
+<h2 id="简述-1">简述</h2>
+<p>以下的各种图片取证形式仅限于 PNG 图片格式。</p>
+<h2 id="图片-ihdr-crc32-错误">图片 <code>IHDR</code> CRC32 错误</h2>
+<p>一般情况下这是因为宽度或者高度被篡改的缘故，可以使用以下代码对图片的宽度或者长度进行爆破：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_height</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    height = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">20</span>:<span class="number">24</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(height+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">20</span>] + h.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">24</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real height: <span class="subst">&#123;h&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_height_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;height is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_width</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    width = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">16</span>:<span class="number">20</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(width+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">16</span>] + w.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">20</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real width: <span class="subst">&#123;w&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_width_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;width is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line">filename = <span class="string">&#x27;false_height.png&#x27;</span></span><br><span class="line">crack_height(filename)</span><br></pre></td></tr></table></figure>
+<p><a href="https://adworld.xctf.org.cn/task/answer?type=misc&amp;number=1&amp;grade=1&amp;id=5432&amp;page=1">示例题目</a></p>
+<h1 id="gif-取证">GIF 取证</h1>
+<h2 id="简述-2">简述</h2>
+<p>以下的各种图片取证形式仅限于 GIF 图片格式。</p>
+<h2 id="gif-分离">GIF 分离</h2>
+<p>如果需要对每一帧图片进行详细操作的话，最好使用 photoshop 打开 GIF
+图片，PS 会自动将 GIF 图片的每一帧转换为图层。</p>
+<p>也可以使用在线网站获取每一帧：<a href="https://tu.sioe.cn/gj/fenjie/">https://tu.sioe.cn/gj/fenjie/</a></p>
+<p>但是最简单的获取 GIF 每一帧图片的方式，可以通过使用
+<code>convert</code> 软件 (Linux 软件)。</p>
+<p>有关 <code>convert</code> 软件更多详情可以查看 <a href="https://imagemagick.org/">https://imagemagick.org/</a></p>
+<p>以下只介绍 <code>convert</code> 分离 GIF 每一帧的用法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">convert target.gif 输出名.png</span><br></pre></td></tr></table></figure>
+<p>例如输入参数为
+<code>convert target.gif flag.png</code>，那么软件将会把
+<code>target.gif</code> 的每一帧转换为
+<code>flag-0.png</code>、<code>flag-1.png</code> 等等，如图所示：</p>
+<figure>
+<img src="/picture-forensics-note/convert%20处理后.png" alt="convert 处理后">
+<figcaption aria-hidden="true">convert 处理后</figcaption>
+</figure>
 ]]></content>
       <tags>
         <tag>note</tag>
         <tag>misc</tag>
         <tag>forensics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git与CRLF笔记</title>
+    <url>//git-crlf-note.html</url>
+    <content><![CDATA[<h1 id="crlf-与-lf-简述">CRLF 与 LF 简述</h1>
+<ul>
+<li>CR → Carriage Return，对应ASCII中转义字符
+<code>\r</code>，十六进制为 <code>0D</code>，表示回车</li>
+<li>LF → Linefeed，对应ASCII中转义字符 <code>\n</code>，十六进制为
+<code>0A</code> 表示换行</li>
+<li>CRLF → Carriage Return &amp; Linefeed，<code>\r\n</code>，十六进制为
+<code>0D0A</code>，表示回车并换行</li>
+</ul>
+<p>实际上，这与不同的操作系统有关，Windows 平台下使用 CRLF
+表示换行；Unix/Linux/Mac OS X 平台下使用单字符 LF 表示换行；而 MacIntosh
+(即早期 Mac 操作系统) 采用 CR 表示换行。</p>
+<blockquote>
+<p>需要注意到的是，在 Windows 平台下，如果在命令行环境下打印
+<code>\r</code> 字符，会将光标前移到第一位。</p>
+</blockquote>
+<h1 id="git-与-crlf">Git 与 CRLF</h1>
+<p>我们知道 Git
+是版本管理工具，而跨平台开发也是经常性的事情。这个时候注意到，如果 Linux
+下的代码文件，被 Git 拉取到 Windows 平台下时，很可能出现 Windows
+平台下出现读取错误、编译错误等问题。</p>
+<p>所以 Git 提供了一个名为 <code>core.autocrlf</code>
+的配置，可以将换行结尾自动化转换。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global core.autocrlf  [<span class="literal">true</span> | input | <span class="literal">false</span>]</span><br><span class="line">git config --<span class="built_in">local</span> core.autocrlf  [<span class="literal">true</span> | input | <span class="literal">false</span>]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>true</code> → 提交新版本时，将所有换行结尾转换为
+CRLF；回退版本时，将所有换行结尾转换为 CRLF。</li>
+<li><code>input</code> → 提交新版本时，将所有换行结尾转换为
+CRLF；回退版本时，不转换。</li>
+<li><code>false</code> → 提交新版本和回退版本时，都不转换。</li>
+</ul>
+<p>但此项设置只针对 CRLF 和 LF 单一存在的文本文件。</p>
+<p>如果想要检查出 CRLF 和 LF 混合存在的文本文件，需要使用
+<code>core.safecrlf</code> 配置：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global core.safecrlf [<span class="literal">true</span> | <span class="literal">false</span> | warn]</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>true</code> → 禁止提交混合换行符的文本文件。</li>
+<li><code>false</code> → 不禁止提交混合换行符的文本文件。</li>
+<li><code>warn</code> → 提交混合换行符的文本文件时发出警告。</li>
+</ul>
+<p>一般来说在进行跨平台开发时，建议使用以下指令，防止发生换行符异常问题。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --<span class="built_in">local</span> core.autocrlf <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>git</tag>
+        <tag>windows</tag>
+        <tag>linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>镜像取证笔记</title>
+    <url>/post/image-forensics-note.html</url>
+    <content><![CDATA[<h1 id="镜像取证">镜像取证</h1>
+<p>活取证是在主机存活时发现系统被入侵,然后直接把机器的运行内存 dump
+下来，对运行内存进行分析，还原一些进程的中的信息。</p>
+<p>主要的工作包括但不限于</p>
+<ul>
+<li>抓取文件 metadata (元数据)</li>
+<li>创建时间线</li>
+<li>命令历史</li>
+<li>分析日志文件</li>
+<li>哈希摘要</li>
+<li>转存内存信息</li>
+</ul>
+<p>而死取证是对机器的磁盘做镜像之后进行分析，在关机后制作硬盘镜像，分析镜像（MBR硬盘分区,GPT全局分区表,LVM逻辑卷）是否存在病毒,木马等恶意程序。</p>
+<p>不管是那种取证方式都应尽量避免破环犯罪现场，例如通过内存转储工具对内存进行快照，通过磁盘克隆工具对磁盘进行克隆，方便后期的分析工作。</p>
+<h2 id="磁盘取证">磁盘取证</h2>
+<h3 id="ext-磁盘映像挂载">ext 磁盘映像挂载</h3>
+<p>在 Windows 中可以使用 <a href="http://www.chrysocome.net/explore2fs">explore2fs</a> 临时挂载 ext
+文件系统的磁盘映像，但是我们只可以看到未被删除的文件，同时也不可以进行写的操作。</p>
+<h3 id="ext3-ext4-磁盘映像恢复已删除文件">ext3 / ext4
+磁盘映像恢复已删除文件</h3>
+<p>我们可以使用 <code>extundelete</code> 软件恢复 ext3 / ext4
+磁盘映像下已经被删除的文件，但无法保证任何特定文件都能够被取消删除。</p>
+<p><code>extundelete</code> 是 Linux 的软件，例如 Debian
+系的发行版我们都可以直接使用 <code>apt install extundelete</code>
+安装此软件。</p>
+<p>只需使用以下简单命令便可以恢复已删除文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">extundelete disk-image --restore-all</span><br></pre></td></tr></table></figure>
+<h2 id="内存取证">内存取证</h2>
+<p>内存取证主要依赖于 <code>volatiliy</code> 工具，现在已经更新到
+python3 的版本了。</p>
+<p>具体有关 <code>volatiliy3</code> 的操作可以参考 <a href="/vol3-note.html">volatility3 使用笔记</a>。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>forensics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>rockstar 语言笔记</title>
+    <url>//rockstar-note.html</url>
+    <content><![CDATA[<h1 id="rockstar-简述">Rockstar 简述</h1>
+<p>Rockstar
+是一种动态类型的计算机编程语言，专为创建歌词程序而设计。Rockstar 深受
+1980 年代硬摇滚和力量民谣的抒情惯例的影响。</p>
+<p>Github 主页: <a href="https://github.com/RockstarLang/rockstar">https://github.com/RockstarLang/rockstar</a></p>
+<p>Rocky 是用 Java 编写的完全符合规范的 Rockstar
+实现，是目前唯一支持原始语言规范中描述的 DEC64 数字类型的 Rockstar
+实现。</p>
+<h1 id="rockstar-规范">rockstar 规范</h1>
+<p>rockstar 语言文件一般以 <code>.rock</code>
+作为文件后缀，但实质上是文本文件。</p>
+<p>公共变量由关键字 a，an，the，my
+或自行定义的特定变量名称之一组成，该名称必须仅包含小写ASCII字母 a-z
+。变量中允许出现空格。</p>
+<p>同时变量是动态类型的，不需要在使用前声明变量。</p>
+<p>语言里有所谓的代词，指代解析顺序所确定的最后一个被命名变量。关键字包含
+it，she，he，they，ze，hir，zie，zir，xe，xem，ve 和 ver。</p>
+<p>赋值和读取语句关键词包括 is，put in，give back ，listen
+等。为了保证语言的纯洁性，尽量不要使用阿拉伯数字。</p>
+<p>以下是<strong>语言用法示范</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">My heart is true</span><br></pre></td></tr></table></figure>
+<p>相当于说 My heart 被赋予布尔逻辑中的真值。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Put my heart in your hand</span><br></pre></td></tr></table></figure>
+<p>把 my heart 的值传递给变量 your hand。</p>
+<h1 id="rockstar-py">rockstar-py</h1>
+<p>rockstar-py 是 rockstar 用 python3 的一个实现。<a href="https://github.com/yyyyyyyan/rockstar-py">rockstar-py
+Github主页</a></p>
+<p>首先 rockstar-py 仅支持 python3.6 及以上版本，可以直接使用 pip
+包管理工具安装它：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip3 install rockstar-py</span><br></pre></td></tr></table></figure>
+<p>之后可以使用 <code>rockstar-py -h</code> 以获取更多帮助。</p>
+<p>以下仅为<strong>常用参数介绍</strong>：</p>
+<ul>
+<li><p>将 <code>fizz.rock</code> 文件翻译为 Python 文件
+<code>fizz.py</code></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rockstar-py -i fizz.rock -o fizz.py</span><br></pre></td></tr></table></figure></li>
+<li><p>直接运行 <code>fizz.rock</code> 文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">rockstar-py -i fizz.rock --<span class="built_in">exec</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>rockstar</tag>
       </tags>
   </entry>
 </search>
