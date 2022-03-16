@@ -1341,7 +1341,7 @@ format</h3>
   <entry>
     <title>latex 数学公式笔记</title>
     <url>//latex-math-note.html</url>
-    <content><![CDATA[<h1 id="希腊字母">希腊字母</h1>
+    <content><![CDATA[<h1 id="字母">字母</h1>
 <table style="width:100%;">
 <colgroup>
 <col style="width: 8%">
@@ -1489,19 +1489,19 @@ format</h3>
 </tbody>
 </table>
 <p>特别地还有</p>
-<table>
+<table style="width:100%;">
 <colgroup>
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 12%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 7%">
 <col style="width: 5%">
-<col style="width: 8%">
+<col style="width: 7%">
 <col style="width: 5%">
-<col style="width: 8%">
-<col style="width: 5%">
-<col style="width: 8%">
-<col style="width: 5%">
-<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
 <col style="width: 5%">
 </colgroup>
 <thead>
@@ -1524,19 +1524,276 @@ format</h3>
 <tr class="odd">
 <td><span class="math inline">\(\partial\)</span></td>
 <td><code>\partial</code></td>
+<td><span class="math inline">\(\infty\)</span></td>
+<td><code>\infty</code></td>
+<td><span class="math inline">\(\Z\)</span></td>
+<td><code>\Z</code></td>
+<td><span class="math inline">\(\R\)</span></td>
+<td><code>\R</code></td>
+<td><span class="math inline">\(\ell\)</span></td>
+<td><code>\ell</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h1 id="符号">符号</h1>
+<table>
+<colgroup>
+<col style="width: 20%">
+<col style="width: 39%">
+<col style="width: 39%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>name</th>
+<th>example</th>
+<th>effort</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(叉) 乘与除</td>
+<td><code>a\times b\div c</code></td>
+<td><span class="math inline">\(a\times b\div c\)</span></td>
+</tr>
+<tr class="even">
+<td>求模</td>
+<td><code>a\mod&#123;b&#125;+c\pmod&#123;m&#125;</code></td>
+<td><span class="math inline">\(a\mod{b}+c\pmod{m}\)</span></td>
+</tr>
+<tr class="odd">
+<td>点乘</td>
+<td><code>a\cdot b</code></td>
+<td><span class="math inline">\(a\cdot b\)</span></td>
+</tr>
+<tr class="even">
+<td>正负与负正</td>
+<td><code>\pm a\mp b</code></td>
+<td><span class="math inline">\(\pm a\mp b\)</span></td>
+</tr>
+<tr class="odd">
+<td>交集与并集</td>
+<td><code>A\cup B\cap C</code></td>
+<td><span class="math inline">\(A\cup B\cap C\)</span></td>
+</tr>
+<tr class="even">
+<td>逻辑运算</td>
+<td><code>p\bigvee q\bigwedge \lnot r</code></td>
+<td><span class="math inline">\(p\bigvee q\bigwedge \lnot
+r\)</span></td>
+</tr>
+<tr class="odd">
+<td>全称和特称</td>
+<td><code>\forall p\ \exists q</code></td>
+<td><span class="math inline">\(\forall p\ \exists q\)</span></td>
+</tr>
+<tr class="even">
+<td>上标与下标</td>
+<td><code>C^n_m</code></td>
+<td><span class="math inline">\(C^n_m\)</span></td>
+</tr>
+<tr class="odd">
+<td>分数</td>
+<td><code>\frac&#123;a&#125;&#123;b&#125;+\frac c2</code></td>
+<td><span class="math inline">\(\frac{a}{b}+\frac c2\)</span></td>
+</tr>
+<tr class="even">
+<td>开方</td>
+<td><code>\sqrt[3]&#123;5&#125;+\sqrt&#123;2&#125;</code></td>
+<td><span class="math inline">\(\sqrt[3]{5}+\sqrt{2}\)</span></td>
+</tr>
+<tr class="odd">
+<td>求和</td>
+<td><code>\sum&#123;p_i&#125;+\sum_&#123;i=1&#125;^&#123;n&#125;&#123;p_i&#125;\\</code></td>
+<td><span class="math inline">\(\sum{p_i}+\sum_{i=1}^{n}{p_i}\\\)</span></td>
+</tr>
+<tr class="even">
+<td>连乘</td>
+<td><code>\prod&#123;a_i&#125;+\prod_&#123;i=1&#125;^&#123;n&#125;a_i\\</code></td>
+<td><span class="math inline">\(\prod{a_i}+\prod_{i=1}^{n}a_i\\\)</span></td>
+</tr>
+<tr class="odd">
+<td>求导</td>
+<td><code>f'(x)</code></td>
+<td><span class="math inline">\(f&#39;(x)\)</span></td>
+</tr>
+<tr class="even">
+<td>趋近于</td>
+<td><code>x\to 0</code></td>
+<td><span class="math inline">\(x\to 0\)</span></td>
+</tr>
+<tr class="odd">
+<td>积分</td>
+<td><code>\int_a^b&#123;f(x)dx&#125;+\iint&#123;g(x)dx&#125;\\</code></td>
+<td><span class="math inline">\(\int_a^b{f(x)dx}+\iint{g(x)dx}\\\)</span></td>
+</tr>
+<tr class="even">
+<td>曲线积分</td>
+<td><code>\oint f(x)+\oiint g(x)\\</code></td>
+<td><span class="math inline">\(\oint f(x)+\oiint g(x)\\\)</span></td>
+</tr>
+<tr class="odd">
+<td>小于等于与大于等于</td>
+<td><code>a\leq b\geq c</code></td>
+<td><span class="math inline">\(a\leq b\geq c\)</span></td>
+</tr>
+<tr class="even">
+<td>远大于与远小于</td>
+<td><code>a\ll b\gg c</code></td>
+<td><span class="math inline">\(a\ll b\gg c\)</span></td>
+</tr>
+<tr class="odd">
+<td>恒等于与不等于</td>
+<td><code>a\equiv b\neq c</code></td>
+<td><span class="math inline">\(a\equiv b\neq c\)</span></td>
+</tr>
+<tr class="even">
+<td>约等于</td>
+<td><code>a\approx b</code></td>
+<td><span class="math inline">\(a\approx b\)</span></td>
+</tr>
+<tr class="odd">
+<td>可逆等号</td>
+<td><code>A\rightleftharpoons B+C</code></td>
+<td><span class="math inline">\(A\rightleftharpoons B+C\)</span></td>
+</tr>
+<tr class="even">
+<td>全等与相似</td>
+<td><code>A\cong B\simeq C</code></td>
+<td><span class="math inline">\(A\cong B\simeq C\)</span></td>
+</tr>
+<tr class="odd">
+<td>属于与不属于</td>
+<td><code>A\in B\notin C</code></td>
+<td><span class="math inline">\(A\in B\notin C\)</span></td>
+</tr>
+<tr class="even">
+<td>包含于</td>
+<td><code>A\subseteq B\supseteq C</code></td>
+<td><span class="math inline">\(A\subseteq B\supseteq C\)</span></td>
+</tr>
+<tr class="odd">
+<td>平行与垂直</td>
+<td><code>a\parallel b\perp c</code></td>
+<td><span class="math inline">\(a\parallel b\perp c\)</span></td>
+</tr>
+<tr class="even">
+<td>三角形</td>
+<td><code>\bigtriangleup ABC</code></td>
+<td><span class="math inline">\(\bigtriangleup ABC\)</span></td>
+</tr>
+<tr class="odd">
+<td>极限</td>
+<td><code>\lim_&#123;x\to 0&#125;f(x)\\</code></td>
+<td><span class="math inline">\(\lim_{x\to 0}f(x)\\\)</span></td>
+</tr>
+<tr class="even">
+<td>三角函数</td>
+<td><code>\sin x\cos x\tan x</code></td>
+<td><span class="math inline">\(\sin x\cos x\tan x\)</span></td>
+</tr>
+<tr class="odd">
+<td>各种省略号</td>
+<td><code>\cdots\ \ddots\ \vdots</code></td>
+<td><span class="math inline">\(\cdots\ \ddots\ \vdots\)</span></td>
+</tr>
+<tr class="even">
+<td>推导符号</td>
+<td><code>p\Rightarrow q\Leftrightarrow r</code></td>
+<td><span class="math inline">\(p\Rightarrow q\Leftrightarrow
+r\)</span></td>
+</tr>
+<tr class="odd">
 <td></td>
 <td></td>
 <td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+</tr>
+<tr class="even">
 <td></td>
 <td></td>
 <td></td>
 </tr>
 </tbody>
 </table>
+<p>需要注意的是，<strong>微分符号</strong>并无自带，可以使用宏定义创造：<code>\def\d&#123;\mathrm&#123;d&#125;&#125;</code></p>
+<p>然后使用 <code>\d</code> 便可输出正体 <code>d</code>，效果如下：
+<span class="math display">\[
+\def\d{\mathrm{d}}
+\d x
+\]</span></p>
+<h1 id="公式">公式</h1>
+<h2 id="矩阵">矩阵</h2>
+<p>使用 <code>\begin&#123;matrix&#125;</code> 与 <code>\end&#123;matrix&#125;</code>
+包含，使用 <code>&amp;</code> 空开矩阵元素，使用 <code>\\</code>
+进行换行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">1 &amp; 2 &amp; 3 \\</span><br><span class="line">4 &amp; 5 &amp; 6 \\</span><br><span class="line">7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下 <span class="math display">\[
+\begin{matrix}
+1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6 \\
+7 &amp; 8 &amp; 9
+\end{matrix}
+\]</span> 还可以这样写</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\left\&#123;</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right\&#125;</span><br><span class="line">&amp;&amp;&amp;</span><br><span class="line">\left[</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; \cdots &amp; n_1 \\</span><br><span class="line">  \vdots &amp; \ddots &amp; \vdots \\</span><br><span class="line">  m &amp; \cdots &amp; n_m</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right]</span><br><span class="line">&amp;&amp;&amp;</span><br><span class="line">\left(</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right)</span><br><span class="line">&amp;&amp;&amp;</span><br><span class="line">\left|</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">1 &amp; 2 &amp; 3 \\</span><br><span class="line">4 &amp; 5 &amp; 6 \\</span><br><span class="line">7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right|</span><br></pre></td></tr></table></figure>
+<p><span class="math display">\[
+\left\{
+\begin{matrix}
+  1 &amp; 2 &amp; 3 \\
+  4 &amp; 5 &amp; 6 \\
+  7 &amp; 8 &amp; 9
+\end{matrix}
+\right\}
+&amp;&amp;&amp;
+\left[
+\begin{matrix}
+  1 &amp; \cdots &amp; n_1 \\
+  \vdots &amp; \ddots &amp; \vdots \\
+  m &amp; \cdots &amp; n_m
+\end{matrix}
+\right]
+&amp;&amp;&amp;
+\left(
+\begin{matrix}
+  1 &amp; 2 &amp; 3 \\
+  4 &amp; 5 &amp; 6 \\
+  7 &amp; 8 &amp; 9
+\end{matrix}
+\right)
+&amp;&amp;&amp;
+\left|
+\begin{matrix}
+1 &amp; 2 &amp; 3 \\
+4 &amp; 5 &amp; 6 \\
+7 &amp; 8 &amp; 9
+\end{matrix}
+\right|
+\]</span></p>
+<p><strong>增广矩阵</strong>需要使用特殊的写法，即使用
+<code>\begin&#123;array&#125;&#123;cc|c&#125;</code> 和 <code>\end&#123;array&#125;</code>
+包含矩阵内容，其中 <code>c</code> 为占位符：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\left[</span><br><span class="line">\begin&#123;array&#125;&#123;cc|c&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;array&#125;</span><br><span class="line">\right]</span><br></pre></td></tr></table></figure>
+<p>效果如下 <span class="math display">\[
+\left[
+\begin{array}{cc|c}
+  1 &amp; 2 &amp; 3 \\
+  4 &amp; 5 &amp; 6 \\
+  7 &amp; 8 &amp; 9
+\end{array}
+\right]
+\]</span></p>
+<h2 id="方程组">方程组</h2>
+<p>使用 <code>\begin&#123;cases&#125;</code> 与 <code>\end&#123;cases&#125;</code>
+包含，使用 <code>\\</code> 进行换行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\begin&#123;cases&#125;</span><br><span class="line">x\equiv a_1\pmod&#123;m_1&#125;\\</span><br><span class="line">x\equiv a_2\pmod&#123;m_2&#125;\\</span><br><span class="line">\cdots\\</span><br><span class="line">x\equiv a_n\pmod&#123;m_n&#125;</span><br><span class="line">\end&#123;cases&#125;</span><br></pre></td></tr></table></figure>
+<p>效果如下 <span class="math display">\[
+\begin{cases}
+x\equiv a_1\pmod{m_1}\\
+x\equiv a_2\pmod{m_2}\\
+\cdots\\
+x\equiv a_n\pmod{m_n}
+\end{cases}
+\]</span></p>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -2375,10 +2632,10 @@ m=D(c)=c^d\ mod\ n
 <h2 id="数论模运算">数论模运算</h2>
 <h3 id="除法">除法</h3>
 <p><span class="math display">\[
-c=m*a\ mod\ n\\
+c=m\times a\ mod\ n\\
 \]</span></p>
 <p>对于上式，已知<span class="math inline">\(c,a,n\)</span>求<span class="math inline">\(m\)</span>，不能直接求<span class="math inline">\(c\div a\)</span>，需要将其转换为 <span class="math display">\[
-m=c*invert(a,n)\ mod\ n
+m=c\times invert(a,n)\ mod\ n
 \]</span> 即<span class="math inline">\(c\)</span>乘以<span class="math inline">\(a\)</span>对<span class="math inline">\(n\)</span>的逆元</p>
 <h3 id="负数次幂">负数次幂</h3>
 <p>若要求 <span class="math display">\[
@@ -2439,6 +2696,8 @@ c_1^xc_2^y(mod\ n)=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m\ (mod\ n)
 \]</span></p>
 <h3 id="实现">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">n = <span class="number">158052722013789461456896900244510199169216575693048895162538548356466884311543740968048825149608833390255268602486435690724338965409521812963337715301197225841194835534751041470231293288252951274190599189716955573428884560130364021535005115652592074445852835422027406556727605302404510264249211145063332337043</span></span><br><span class="line">e = [<span class="number">665213</span>, <span class="number">368273</span>]</span><br><span class="line">c = [<span class="number">16698617641888248664694980135332125531792692516788088682722832061393117609508765284473236240256421599515450690670639565968165473479697383505401285976148490839526672808730165847471005704945978274496508928460578173068717106075169723401049489389383596761956301440156581021583368058047939083755488885694261340425</span>, <span class="number">59192887933967939708054321952273893559113509451228797382728687616356609407020086787061368452871936378934964292805289941535766263083244529814852043063188312786173717046316177403357053871483983775362121186037776932260378728059531236711960979620603784044468207000654149190295060179235411429700710154759043236436</span>]</span><br><span class="line">s = gmpy2.gcdext(e[<span class="number">0</span>], e[<span class="number">1</span>])</span><br><span class="line">s1 = s[<span class="number">1</span>]</span><br><span class="line">s2 = s[<span class="number">2</span>]</span><br><span class="line"><span class="comment"># 求模反元素</span></span><br><span class="line"><span class="keyword">if</span> s1 &lt; <span class="number">0</span>:</span><br><span class="line">    s1 = -s1</span><br><span class="line">    c[<span class="number">0</span>] = gmpy2.invert(c[<span class="number">0</span>], n)</span><br><span class="line"><span class="keyword">elif</span> s2 &lt; <span class="number">0</span>:</span><br><span class="line">    s2 = -s2</span><br><span class="line">    c[<span class="number">1</span>] = gmpy2.invert(c[<span class="number">1</span>], n)</span><br><span class="line">m = <span class="built_in">pow</span>(c[<span class="number">0</span>], s1, n) * <span class="built_in">pow</span>(c[<span class="number">1</span>], s2, n) % n</span><br></pre></td></tr></table></figure>
+<p>还有一种简便解法</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> gcdext</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">n = <span class="number">0xa6241c28743fbbe4f2f67cee7121497f622fd81947af30f327fb028445b39c2d517ba7fdcb5f6ac9e6217205f8ec9576bdec7a0faef221c29291c784eed393cd95eb0d358d2a1a35dbff05d6fa0cc597f672dcfbeecbb14bd1462cb6ba4f465f30f22e595c36e6282c3e426831d30f0479ee18b870ab658a54571774d25d6875</span></span><br><span class="line">e1 = <span class="number">0x3045</span></span><br><span class="line">e2 = <span class="number">0xff4d</span></span><br><span class="line">c1 = <span class="number">0x5d1e39bc751108ec0a1397d79e63c013d238915d13380ae649e84d7d85ebcffbbc35ebb18d2218ccbc5409290dfa8a4847e5923c3420e83b1a9d7aa67190dc0d34711cce261665c64c28ed2834394d4b181926febf7eb685f9ce81f36c7fb72798da3a14a123287171d26e084948aab0fba81c53f10b5696fc291006254ee690</span></span><br><span class="line">c2 = <span class="number">0x3d90f2bec4fe02d8ce4cece3ddb6baed99337f7e6856eef255445741b5cfe378390f058679d70236e51be4746db4c207f274c40b092e24f8c155a0957867e84dca48e27980af488d2615a280c6eadec2f1d30b95653b1ee3135e2edff100dd2c529994f846722f811348b082d0bec7cfab579a4bd0ab789928b1bebed68d628f</span></span><br><span class="line">g, r, s = gcdext(e1, e2)</span><br><span class="line">m = <span class="built_in">pow</span>(c1, r, n) * <span class="built_in">pow</span>(c2, s, n) % n</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(m)))</span><br></pre></td></tr></table></figure>
 <h2 id="公约数攻击">公约数攻击</h2>
 <h3 id="特征-1">特征</h3>
 <p>多个n，均不相同，并且都是2048bit，4096bit级别，无法正面硬杠，并且明文都没什么联系，e也一般取65537。</p>
@@ -2573,6 +2832,80 @@ n\)</span>多项式<span class="math inline">\(f(x)\)</span>中，如果有一�
 n)的算法求出这些根。</p>
 <p>这个定理可以应用于 RSA 算法。如果<span class="math inline">\(e =
 3\)</span>并且在明文当中只有三分之二的比特是已知的，这种算法可以求出明文中所有的比特。</p>
+<h2 id="prime-power-rsa-using-two-decryption-exponents">Prime Power RSA
+using Two Decryption Exponents</h2>
+<h3 id="特征-7">特征</h3>
+<ul>
+<li><span class="math inline">\(N=p^rq\)</span></li>
+<li><span class="math inline">\(d_1\)</span> 和 <span class="math inline">\(d_2\)</span> 大部分高位相同，即 <span class="math inline">\(|d_1-d_2|\)</span> 很小</li>
+</ul>
+<h3 id="原理-8">原理</h3>
+<p>我们用到了以下定理：</p>
+<ul>
+<li><p><strong>定理一</strong></p>
+<blockquote>
+<p>设 <span class="math inline">\(N\)</span> 整除 <span class="math inline">\(p^u\)</span>，使得 <span class="math inline">\(p\geq N^\beta\ (0&lt;\beta\leq 1)\)</span></p>
+<p>设 <span class="math inline">\(f(x,y)\in\Z[x,y]\)</span>
+为齐次线性多项式</p>
+<p>然后，如果 <span class="math inline">\(\gamma1+\gamma2&lt;uv\beta^2\)</span>，那么我们可以在多项式时间内找到方程
+<span class="math inline">\(f(x,y)=0\mod{p^u},其中\gcd(x,y)=1,|x|&lt;N^{\gamma1},|y|&lt;N^{\gamma2}\)</span>
+所有的解 <span class="math inline">\((x,y)\)</span></p>
+</blockquote></li>
+<li><p><strong>定理二</strong></p>
+<blockquote>
+<p>设模数 <span class="math inline">\(N=p^rq\)</span>，私钥 <span class="math inline">\((d_1,d_2)\)</span>，如果 <span class="math inline">\(|d_1-d_2|&lt;N^{\frac{r(r-1)}{(r+1)^2}}\)</span>，那么我们可以在多项式时间内对
+<span class="math inline">\(N\)</span> 进行分解</p>
+</blockquote></li>
+</ul>
+<p>证明如下：</p>
+<p>假设 <span class="math inline">\(e_1d_1-k_1\phi(N)=1\)</span> 、<span class="math inline">\(e_2d_2-k_2\phi(N)=1\)</span> 且 <span class="math inline">\(e_1&gt;e_2\)</span></p>
+<p>因此 <span class="math inline">\(e_1d_1\equiv
+1\pmod{\phi(N)}\)</span>，<span class="math inline">\(e_2d_2\equiv
+1\pmod{\phi(N)}\)</span></p>
+<p>前一个式子乘以 <span class="math inline">\(e_2\)</span>，后一个式子乘以 <span class="math inline">\(e_1\)</span>，相减得到 <span class="math display">\[
+e_1e_2(d_1-d_2)\equiv e_2-e_1\pmod{\phi(N)}
+\]</span> 因为 <span class="math inline">\(\phi(N)=p^{r-1}(p-1)(q-1)\)</span>，故 <span class="math inline">\(e_1e_2(d_1-d_2)\equiv
+e_2-e_1\pmod{p^{r-1}}\)</span></p>
+<p>现在，只需考虑以下这个线性方程 <span class="math display">\[
+e_1e_2x-(e_2-e_1)\equiv 0\pmod{p^{r-1}}
+\]</span> 其中 <span class="math inline">\(d_1-d_2\)</span>
+是该方程的根。</p>
+<p>进一步假设 <span class="math inline">\(|d_1-d_2|&lt;N^\delta\)</span>，运用<strong>定理一</strong>，其中
+<span class="math inline">\(u=r,v=r-1\ 且\
+\beta=\frac{1}{r+1}\)</span>，可以推导出如果 <span class="math inline">\(\delta&lt;uv\beta^2=\frac{r(r-1)}{(r+1)^2}\)</span>，那么
+<span class="math inline">\(x=d_1-d_2\)</span>
+可在多项式时间内求解。</p>
+<p>也就是说如果 <span class="math inline">\(|d_1-d_2|&lt;N^{\frac{r(r-1)}{(r+1)^2}}\)</span>，可以在多项式时间内求解方程。</p>
+<p>通过计算 <span class="math display">\[
+\gcd(e_1e_2x-(e_2-e_1),N)=\gcd(p^{r-1}(p-1)(q-1)y,p^rq)=g
+\]</span> 可以确定 <span class="math inline">\(p\)</span>，因此将 <span class="math inline">\(N\)</span> 按如下情况分解：</p>
+<ul>
+<li>当 <span class="math inline">\(g=p^{r-1}\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r-1}}\)</span></li>
+<li>当 <span class="math inline">\(g=p^r\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r}}\)</span></li>
+<li>当 <span class="math inline">\(g=p^{r-1}q\)</span> 时，<span class="math inline">\(p=\frac{N}{g}\)</span></li>
+</ul>
+<h3 id="实例">实例</h3>
+<p>尝试求解 <span class="math inline">\(N=p^2q\)</span>，其中 <span class="math display">\[
+N = 6093253851486120878859471958399737725885946526553626219\\
+e1 = 2749600381847487389715964767235618802529675855606377411\\
+e2 = 3575081244952414009316396501512372226545892558898276551
+\]</span> 构建方程 <span class="math inline">\(f(x)=e_1e_2x-(e_2-e_1)\equiv
+0\pmod{p^{r-1}}\)</span> （我们可以将这个方程看作 <span class="math inline">\(g(x)=x-a\equiv 0\pmod{p^{r-1}}\)</span>，其中
+<span class="math inline">\(a\equiv
+(e_2-e_1)(e_1e_2)^{-1}\pmod{N}\)</span>）</p>
+<p>使用 <span class="math inline">\(m=8\)</span> 和 <span class="math inline">\(t=6\)</span>，我们构建一个维度为 <span class="math inline">\(\omega=9\)</span> 的格。</p>
+<p>应用 LLL 算法并接触第一个简化多项式，我们得到了解 <span class="math inline">\(x_0= 1826732340\)</span></p>
+<p>因此 <span class="math inline">\(\gcd(f(x_0),N)=p=1789386140116417697\)</span>，且最终
+<span class="math inline">\(q=\frac{N}{p^2}=1903010275819064491\)</span></p>
+<p>整个求解程序的运行时间使用现成的计算机是少于 4 秒的。</p>
+<p>最后我们可以恢复私钥 <span class="math inline">\((d_1,d_2)\)</span>。</p>
+<p>但是要注意到，如果 <span class="math inline">\(d_1\approx d_2\approx
+N^{0.99}\)</span>，且 Sarkar’s method 与存在范围 <span class="math inline">\(d&lt;N^{0.395}\)</span>，可能无法恢复私钥。</p>
+<h3 id="代码">代码</h3>
+<p><code>task.py</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> bytes_to_long, getPrime</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> msg</span><br><span class="line"><span class="keyword">from</span> sympy <span class="keyword">import</span> nextprime</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> invert</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;d3ctf&#123;&#x27;</span>+md5(msg).hexdigest()+<span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line">p = getPrime(<span class="number">256</span>)</span><br><span class="line">q = getPrime(<span class="number">256</span>)</span><br><span class="line"><span class="keyword">assert</span> p &gt; q</span><br><span class="line">n = p * q</span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">m = bytes_to_long(msg)</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br><span class="line"></span><br><span class="line">N = <span class="built_in">pow</span>(p, <span class="number">7</span>) * q</span><br><span class="line">phi = <span class="built_in">pow</span>(p, <span class="number">6</span>) * (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d1 = getPrime(<span class="number">2000</span>)</span><br><span class="line">d2 = nextprime(d1 + getPrime(<span class="number">1000</span>))</span><br><span class="line">e1 = invert(d1, phi)</span><br><span class="line">e2 = invert(d2, phi)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;c = <span class="subst">&#123;c&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;N = <span class="subst">&#123;N&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;e1 = <span class="subst">&#123;e1&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;e2 = <span class="subst">&#123;e2&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">c = 2420624631315473673388732074340410215657378096737020976722603529598864338532404224879219059105950005655100728361198499550862405660043591919681568611707967</span></span><br><span class="line"><span class="string">N = 1476751427633071977599571983301151063258376731102955975364111147037204614220376883752032253407881568290520059515340434632858734689439268479399482315506043425541162646523388437842149125178447800616137044219916586942207838674001004007237861470176454543718752182312318068466051713087927370670177514666860822341380494154077020472814706123209865769048722380888175401791873273850281384147394075054950169002165357490796510950852631287689747360436384163758289159710264469722036320819123313773301072777844457895388797742631541101152819089150281489897683508400098693808473542212963868834485233858128220055727804326451310080791</span></span><br><span class="line"><span class="string">e1 = 425735006018518321920113858371691046233291394270779139216531379266829453665704656868245884309574741300746121946724344532456337490492263690989727904837374279175606623404025598533405400677329916633307585813849635071097268989906426771864410852556381279117588496262787146588414873723983855041415476840445850171457530977221981125006107741100779529209163446405585696682186452013669643507275620439492021019544922913941472624874102604249376990616323884331293660116156782891935217575308895791623826306100692059131945495084654854521834016181452508329430102813663713333608459898915361745215871305547069325129687311358338082029</span></span><br><span class="line"><span class="string">e2 = 1004512650658647383814190582513307789549094672255033373245432814519573537648997991452158231923692387604945039180687417026069655569594454408690445879849410118502279459189421806132654131287284719070037134752526923855821229397612868419416851456578505341237256609343187666849045678291935806441844686439591365338539029504178066823886051731466788474438373839803448380498800384597878814991008672054436093542513518012957106825842251155935855375353004898840663429274565622024673235081082222394015174831078190299524112112571718817712276118850981261489528540025810396786605197437842655180663611669918785635193552649262904644919</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<p><code>exp.sage</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">r = <span class="number">7</span></span><br><span class="line"></span><br><span class="line">N = <span class="number">1476751427633071977599571983301151063258376731102955975364111147037204614220376883752032253407881568290520059515340434632858734689439268479399482315506043425541162646523388437842149125178447800616137044219916586942207838674001004007237861470176454543718752182312318068466051713087927370670177514666860822341380494154077020472814706123209865769048722380888175401791873273850281384147394075054950169002165357490796510950852631287689747360436384163758289159710264469722036320819123313773301072777844457895388797742631541101152819089150281489897683508400098693808473542212963868834485233858128220055727804326451310080791</span></span><br><span class="line"></span><br><span class="line">e1 = <span class="number">425735006018518321920113858371691046233291394270779139216531379266829453665704656868245884309574741300746121946724344532456337490492263690989727904837374279175606623404025598533405400677329916633307585813849635071097268989906426771864410852556381279117588496262787146588414873723983855041415476840445850171457530977221981125006107741100779529209163446405585696682186452013669643507275620439492021019544922913941472624874102604249376990616323884331293660116156782891935217575308895791623826306100692059131945495084654854521834016181452508329430102813663713333608459898915361745215871305547069325129687311358338082029</span></span><br><span class="line">e2 = <span class="number">1004512650658647383814190582513307789549094672255033373245432814519573537648997991452158231923692387604945039180687417026069655569594454408690445879849410118502279459189421806132654131287284719070037134752526923855821229397612868419416851456578505341237256609343187666849045678291935806441844686439591365338539029504178066823886051731466788474438373839803448380498800384597878814991008672054436093542513518012957106825842251155935855375353004898840663429274565622024673235081082222394015174831078190299524112112571718817712276118850981261489528540025810396786605197437842655180663611669918785635193552649262904644919</span></span><br><span class="line"></span><br><span class="line">c = <span class="number">2420624631315473673388732074340410215657378096737020976722603529598864338532404224879219059105950005655100728361198499550862405660043591919681568611707967</span></span><br><span class="line"></span><br><span class="line">x = polygen(Zmod(N))</span><br><span class="line">f = e1 * e2 * x - (e2 - e1)</span><br><span class="line">f = f.monic()</span><br><span class="line"></span><br><span class="line">roots = f.small_roots(beta=((r - <span class="number">1</span>) / (r + <span class="number">1</span>) - <span class="number">0.01</span>), epsilon=<span class="number">0.05</span>)</span><br><span class="line"></span><br><span class="line">res = gmpy2.iroot(gmpy2.gcd(<span class="built_in">int</span>(f(roots[<span class="number">0</span>])), N), r - <span class="number">1</span>)</span><br><span class="line"><span class="keyword">assert</span> res[<span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;p =&quot;</span>, res[<span class="number">0</span>])</span><br><span class="line">p = res[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">q = N // (p**<span class="number">7</span>)</span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = inverse(<span class="number">0x10001</span>, phi)</span><br><span class="line">msg = long_to_bytes(power_mod(c, d, n))</span><br><span class="line"><span class="built_in">print</span>(msg)</span><br><span class="line">flag = <span class="string">&#x27;d3ctf&#123;&#x27;</span> + md5(msg).hexdigest() + <span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -7131,6 +7464,214 @@ Github主页</a></p>
       <tags>
         <tag>note</tag>
         <tag>rockstar</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>中国剩余定理CRT笔记</title>
+    <url>//CRT-note.html</url>
+    <content><![CDATA[<h1 id="描述">描述</h1>
+<p>假设整数 <span class="math inline">\(m_1,m_2,\cdots,m_n\)</span>
+两两互素，则对于任意的整数 <span class="math inline">\(a_1,a_2,\cdots,a_n\)</span>，方程组 <span class="math display">\[
+\begin{cases}
+x\equiv a_1\pmod{m_1}\\
+x\equiv a_2\pmod{m_2}\\
+\cdots\\
+x\equiv a_n\pmod{m_n}
+\end{cases}
+\]</span> 都存在整数解，且若 <span class="math inline">\(X,Y\)</span>
+都满足该方程，则必有 <span class="math inline">\(X\equiv
+Y\pmod{N}\)</span>，其中 <span class="math inline">\(M=\prod_{i=1}^nm_i\\\)</span> 。</p>
+<p>具体而言，<span class="math inline">\(x\equiv
+\sum_{i=1}^na_i\times\frac{M}{m_i}\times\left[\left(\frac{M}{m_i}\right)^{-1}\right]_{m_i}\pmod{M}\\\)</span></p>
+<p>这便是<strong>中国剩余定理(Chinese remainder theorem,
+CRT)</strong></p>
+<p>求解可以使用以下步骤进行构造：</p>
+<ol type="1">
+<li><p>设 <span class="math inline">\(M=\prod_{i=1}^nm_i\\\)</span>，并设 <span class="math inline">\(M_i=\frac{M}{m_i}\)</span>，即除了 <span class="math inline">\(m_i\)</span> 以外 <span class="math inline">\(n-1\)</span> 个数的乘积</p></li>
+<li><p>设 <span class="math inline">\(t_i=M_i^{-1}\)</span>，即求 <span class="math inline">\(M_i\)</span> 对 <span class="math inline">\(m_i\)</span> 的模反元素</p></li>
+<li><p>那么方程组的通解即为 <span class="math display">\[
+x=kM+\sum_{i=1}^na_it_iM_i,k\in\Z
+\]</span> 在模 <span class="math inline">\(M\)</span>
+的环中，方程组仅有一个唯一整数解 <span class="math display">\[
+x=\sum_{i=1}^na_it_iM_i
+\]</span></p></li>
+</ol>
+<h1 id="实例">实例</h1>
+<p>以“物不知数”问题为例，运用中国剩余定理求解。</p>
+<p>在该问题中，线性同余方程组为 <span class="math display">\[
+\begin{cases}
+x\equiv 2\pmod{3}\\
+x\equiv 3\pmod{5}\\
+x\equiv 2\pmod{7}
+\end{cases}
+\]</span> 其中模数 <span class="math inline">\(m_1=3,m_2=5,m_3=7\)</span>，得到 <span class="math inline">\(M=105\)</span>，对应的 <span class="math inline">\(M_1=35,M_2=21,M_3=15\)</span>，从而得到逆元 <span class="math inline">\(t_1=2,t_2=1,t_3=1\)</span></p>
+<p>故得到基础解 <span class="math display">\[
+70=2\times 35\equiv
+\begin{cases}
+1\pmod{3}\\
+0\pmod{5}\\
+0\pmod{7}\\
+\end{cases},\
+21=2\times 35\equiv
+\begin{cases}
+0\pmod{3}\\
+1\pmod{5}\\
+0\pmod{7}\\
+\end{cases},\
+15=2\times 35\equiv
+\begin{cases}
+0\pmod{3}\\
+0\pmod{5}\\
+1\pmod{7}\\
+\end{cases}\\
+\]</span> 将 <span class="math inline">\(a_1,a_2,a_3\)</span>
+与基础解对应相乘并求和，得到方程组的解 <span class="math display">\[
+233=2\times 70+3\times 21+2\times 15\equiv
+\begin{cases}
+2\times1+3\times0+2\times0\equiv2\pmod3\\
+2\times0+3\times1+2\times0\equiv2\pmod5\\
+2\times0+3\times0+2\times1\equiv2\pmod7
+\end{cases}
+\]</span> 故方程组通解为 <span class="math display">\[
+x=233+k\times105,k\in\Z
+\]</span> 当 <span class="math inline">\(k=-2\)</span>
+时，有最小正整数解 <span class="math inline">\(x=23\)</span></p>
+<h1 id="扩展">扩展</h1>
+<p>中国剩余定理是适用于 <span class="math inline">\(m_i\)</span>
+两两互素的情况的，如果不互素，需要使用合并方程的思想来转换成两两互素后求解。</p>
+<p>证明如下</p>
+<p>首先仅考虑方程组中的两个方程 <span class="math display">\[
+\begin{cases}
+x\equiv a_1\pmod{m_1}\\
+x\equiv a_2\pmod{m_2}
+\end{cases}
+\]</span> 那么有 <span class="math display">\[
+x=k_1m_1+a_1\\
+x=k_2m_2+a_2\tag{*}
+\]</span> 即 <span class="math inline">\(k_1m_1+a_1=k_2m_2+a_2\)</span>，变形为 <span class="math inline">\(m_1k_1=(a_2-a_1)+k_2m_2\)</span>，最终得到 <span class="math display">\[
+m_1k_1=a_2-a_1\pmod{m_2}
+\]</span> 显然，想要有解，必有 <span class="math inline">\(\gcd(m_1,m_2)|(a_2-a_1)\)</span></p>
+<p>不妨设 <span class="math inline">\(d=\gcd(m_1,m_2),c=a_2-a_1\)</span>，则有 <span class="math display">\[
+\frac{k_1m_1}{d}=\frac{c}{d}\pmod{\frac{m_2}{d}}\\
+\Rightarrow
+k_1=\frac{c}{d}\times\left(\frac{m_1}{d}\right)^{-1}\pmod{\frac{m_2}{d}}
+\]</span> 令 <span class="math inline">\(K=\frac{c}{d}\times\left(\frac{m_1}{d}\right)^{-1}\\\)</span>，则
+<span class="math inline">\(k_1=y\frac{m_2}{d}+K\\\)</span></p>
+<p>代入方程 <span class="math inline">\((*)\)</span> 得 <span class="math display">\[
+\begin{aligned}
+x&amp;=m_1(y\frac{m_2}{d}+K)+a_1\\
+&amp;=m_1K+y\frac{m_1m_2}{d}+a_1
+\end{aligned}
+\]</span> 即 <span class="math display">\[
+x=m_1K+a_1\pmod{\frac{m_1m_2}{d}}
+\]</span> 即 <span class="math display">\[
+x\equiv a\pmod{m},其中\ a=m_1K+a_11,m=\frac{m_1m_2}{d}
+\]</span> 这样，就将方程组合并成为上面这个方程。</p>
+<p>最终，合并 <span class="math inline">\(k\)</span> 个方程的最小 <span class="math inline">\(x\)</span> 值为 <span class="math inline">\(a\mod
+m\)</span></p>
+<p>例如，因为 <span class="math display">\[
+84=2^2\times3\times7,160=2^5\times5,63=3^2\times7
+\]</span> 我们通过合并可得 <span class="math display">\[
+\begin{cases}
+x\equiv23\pmod{84}\\
+x\equiv7\pmod{160}\\
+x\equiv2\pmod{63}
+\end{cases}
+\ 与\
+\begin{cases}
+x\equiv7\pmod{2^5}\\
+x\equiv2\pmod{3^2}\\
+x\equiv7\pmod{5}\\
+x\equiv23\pmod{7}
+\end{cases}
+\ 同解
+\]</span></p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>Crypto</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>C语言和C++运算符保留字笔记</title>
+    <url>//c-reserved-word-note.html</url>
+    <content><![CDATA[<h1 id="c替代标记">C替代标记</h1>
+<h2 id="简述">简述</h2>
+<p>C替代标记指一批C语言常见运算符的可选拼写。它们实现为C标准库中iso646.h头文件内的一组宏定义。此标记作为C90标准的修正案于1995年增补。</p>
+<p>替代标记允许程序员使用C语言按位和逻辑运算符，原因是原先的标记在一些国际和非QWERTY键盘上很难输入。</p>
+<blockquote>
+<p><del>个人而言使用这些替代标记让我在 python 和 C++
+的切换中更加顺畅</del></p>
+</blockquote>
+<h2 id="c语言">C语言</h2>
+<p>在<code>iso646.h</code>中定义了11个宏：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">宏</th>
+<th style="text-align: center;">定义为</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>and</code></td>
+<td style="text-align: center;"><code>&amp;&amp;</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>and_eq</code></td>
+<td style="text-align: center;"><code>&amp;=</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>bitand</code></td>
+<td style="text-align: center;"><code>&amp;</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>bitor</code></td>
+<td style="text-align: center;"><code>|</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>compl</code></td>
+<td style="text-align: center;"><code>~</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>not</code></td>
+<td style="text-align: center;"><code>!</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>not_eq</code></td>
+<td style="text-align: center;"><code>!=</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>or</code></td>
+<td style="text-align: center;"><code>||</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>or_eq</code></td>
+<td style="text-align: center;"><code>|=</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>xor</code></td>
+<td style="text-align: center;"><code>^</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>xor_eq</code></td>
+<td style="text-align: center;"><code>^=</code></td>
+</tr>
+</tbody>
+</table>
+<p>在C语言中只需要包含头文件，即可使用这些关键字。</p>
+<p>示例程序：</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iso646.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = (<span class="number">10086</span>) <span class="keyword">and</span> (<span class="number">1024</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, a);</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="c">C++</h2>
+<p>在C++中，以上都为运算符关键字，无需包含头文件便可编译。</p>
+<p>为了兼容C语言，C++98标准提供了头文件<code>&lt;ciso646&gt;</code>，但实际上这是个空文件。</p>
+<p>实例程序：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = (<span class="number">10086</span>) <span class="built_in"><span class="keyword">and</span></span> (<span class="number">1024</span>);</span><br><span class="line">  std::cout &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>c++</tag>
+        <tag>c</tag>
       </tags>
   </entry>
 </search>

@@ -22,32 +22,30 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="hexo-asset-imgae 插件出现的静态图片资源链接重导向错误解决方案">
+<meta name="description" content="有关C语言和C++运算符保留字，即C替代标记的小小笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hexo-asset-image：update link as:--&gt;&#x2F;.io&#x2F;&#x2F;xxx.png">
-<meta property="og:url" content="https://hasegawaazusa.github.io/errors/hexo-image-link-error.html">
+<meta property="og:title" content="C语言和C++运算符保留字笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/c-reserved-word-note.html">
 <meta property="og:site_name" content="独奏の小屋">
-<meta property="og:description" content="hexo-asset-imgae 插件出现的静态图片资源链接重导向错误解决方案">
+<meta property="og:description" content="有关C语言和C++运算符保留字，即C替代标记的小小笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hasegawaazusa.github.io/errors/hexo-image-link-error/update-link-error.png">
-<meta property="article:published_time" content="2022-02-03T07:55:00.000Z">
-<meta property="article:modified_time" content="2022-02-03T08:12:49.913Z">
+<meta property="article:published_time" content="2022-03-16T05:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-16T06:42:11.734Z">
 <meta property="article:author" content="qsDuzou">
-<meta property="article:tag" content="error">
-<meta property="article:tag" content="hexo">
-<meta property="article:tag" content="hexo-asset-image">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="c++">
+<meta property="article:tag" content="c">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hasegawaazusa.github.io/errors/hexo-image-link-error/update-link-error.png">
 
 
-<link rel="canonical" href="https://hasegawaazusa.github.io/errors/hexo-image-link-error.html">
+<link rel="canonical" href="https://hasegawaazusa.github.io/c-reserved-word-note.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/errors/hexo-image-link-error.html","path":"/errors/hexo-image-link-error.html","title":"hexo-asset-image：update link as:-->/.io//xxx.png"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/c-reserved-word-note.html","path":"/c-reserved-word-note.html","title":"C语言和C++运算符保留字笔记"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>hexo-asset-image：update link as:-->/.io//xxx.png | 独奏の小屋</title>
+<title>C语言和C++运算符保留字笔记 | 独奏の小屋</title>
   
 
 
@@ -152,8 +150,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">错误分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E5%A4%8D%E9%94%99%E8%AF%AF"><span class="nav-number">2.</span> <span class="nav-text">修复错误</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9-hexo-%E7%9A%84%E7%AB%99%E7%82%B9%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">修改 hexo 的站点配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E6%AF%8F%E7%AF%87%E6%96%87%E7%AB%A0%E6%89%8B%E5%8A%A8%E9%85%8D%E7%BD%AE-permalink"><span class="nav-number">2.2.</span> <span class="nav-text">为每篇文章手动配置
-permalink</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#c%E6%9B%BF%E4%BB%A3%E6%A0%87%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">C替代标记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c%E8%AF%AD%E8%A8%80"><span class="nav-number">1.2.</span> <span class="nav-text">C语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#c"><span class="nav-number">1.3.</span> <span class="nav-text">C++</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -221,7 +218,7 @@ permalink</span></a></li></ol></li></ol></div>
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/errors/hexo-image-link-error.html">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/c-reserved-word-note.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -234,7 +231,7 @@ permalink</span></a></li></ol></li></ol></div>
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          hexo-asset-image：update link as:-->/.io//xxx.png
+          C语言和C++运算符保留字笔记
         </h1>
 
         <div class="post-meta-container">
@@ -245,7 +242,7 @@ permalink</span></a></li></ol></li></ol></div>
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-02-03 15:55:00" itemprop="dateCreated datePublished" datetime="2022-02-03T15:55:00+08:00">2022-02-03</time>
+      <time title="创建时间：2022-03-16 13:00:00" itemprop="dateCreated datePublished" datetime="2022-03-16T13:00:00+08:00">2022-03-16</time>
     </span>
 
   
@@ -255,7 +252,7 @@ permalink</span></a></li></ol></li></ol></div>
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>305</span>
+      <span>639</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -266,7 +263,7 @@ permalink</span></a></li></ol></li></ol></div>
     </span>
 </div>
 
-            <div class="post-description">hexo-asset-imgae 插件出现的静态图片资源链接重导向错误解决方案</div>
+            <div class="post-description">有关C语言和C++运算符保留字，即C替代标记的小小笔记</div>
         </div>
       </header>
 
@@ -274,31 +271,78 @@ permalink</span></a></li></ol></li></ol></div>
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="错误分析">错误分析</h1>
-<p>hexo-asset-image 无法识别 hexo 默认的永久链接
-(<code>permalink</code>) 时，导致无法自动生成静态资源文件夹路径</p>
-<figure>
-<img src="/errors/hexo-image-link-error/update-link-error.png" alt="update-link-error">
-<figcaption aria-hidden="true">update-link-error</figcaption>
-</figure>
-<h1 id="修复错误">修复错误</h1>
-<p>有以下两种解决方案：</p>
-<ol type="1">
-<li>修改 hexo 的站点配置文件</li>
-<li>为每篇文章手动配置 <code>permalink</code></li>
-</ol>
+        <h1 id="c替代标记">C替代标记</h1>
+<h2 id="简述">简述</h2>
+<p>C替代标记指一批C语言常见运算符的可选拼写。它们实现为C标准库中iso646.h头文件内的一组宏定义。此标记作为C90标准的修正案于1995年增补。</p>
+<p>替代标记允许程序员使用C语言按位和逻辑运算符，原因是原先的标记在一些国际和非QWERTY键盘上很难输入。</p>
 <blockquote>
-<p>建议两者一起使用</p>
+<p><del>个人而言使用这些替代标记让我在 python 和 C++
+的切换中更加顺畅</del></p>
 </blockquote>
-<h2 id="修改-hexo-的站点配置文件">修改 hexo 的站点配置文件</h2>
-<p>将 <code>URL</code> 配置中的 <code>permalink</code>
-参数置空或改为英文文件夹名 (详细配置请参考<a href="/hexo-note.html#网址-URL">网址-URL</a>)</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permalink:</span> </span><br></pre></td></tr></table></figure>
-<h2 id="为每篇文章手动配置-permalink">为每篇文章手动配置
-<code>permalink</code></h2>
-<p>在你的博文的 <code>Front-matter</code> 中添加 <code>permalink</code>
-参数 (详细配置请参考<a href="/hexo-note.html#hexo%20博文头%20-%20Front-matter">Front-matter</a>)</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">permalink:</span> <span class="string">/project/index.html</span></span><br></pre></td></tr></table></figure>
+<h2 id="c语言">C语言</h2>
+<p>在<code>iso646.h</code>中定义了11个宏：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">宏</th>
+<th style="text-align: center;">定义为</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>and</code></td>
+<td style="text-align: center;"><code>&amp;&amp;</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>and_eq</code></td>
+<td style="text-align: center;"><code>&amp;=</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>bitand</code></td>
+<td style="text-align: center;"><code>&amp;</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>bitor</code></td>
+<td style="text-align: center;"><code>|</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>compl</code></td>
+<td style="text-align: center;"><code>~</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>not</code></td>
+<td style="text-align: center;"><code>!</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>not_eq</code></td>
+<td style="text-align: center;"><code>!=</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>or</code></td>
+<td style="text-align: center;"><code>||</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>or_eq</code></td>
+<td style="text-align: center;"><code>|=</code></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>xor</code></td>
+<td style="text-align: center;"><code>^</code></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>xor_eq</code></td>
+<td style="text-align: center;"><code>^=</code></td>
+</tr>
+</tbody>
+</table>
+<p>在C语言中只需要包含头文件，即可使用这些关键字。</p>
+<p>示例程序：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iso646.h&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = (<span class="number">10086</span>) <span class="keyword">and</span> (<span class="number">1024</span>);</span><br><span class="line">  <span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>, a);</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="c">C++</h2>
+<p>在C++中，以上都为运算符关键字，无需包含头文件便可编译。</p>
+<p>为了兼容C语言，C++98标准提供了头文件<code>&lt;ciso646&gt;</code>，但实际上这是个空文件。</p>
+<p>实例程序：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> a = (<span class="number">10086</span>) <span class="built_in"><span class="keyword">and</span></span> (<span class="number">1024</span>);</span><br><span class="line">  std::cout &lt;&lt; a &lt;&lt; std::endl;</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -316,7 +360,7 @@ permalink</span></a></li></ol></li></ol></div>
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hasegawaazusa.github.io/errors/hexo-image-link-error.html" title="hexo-asset-image：update link as:--&gt;&#x2F;.io&#x2F;&#x2F;xxx.png">https://hasegawaazusa.github.io/errors/hexo-image-link-error.html</a>
+      <a href="https://hasegawaazusa.github.io/c-reserved-word-note.html" title="C语言和C++运算符保留字笔记">https://hasegawaazusa.github.io/c-reserved-word-note.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -325,22 +369,22 @@ permalink</span></a></li></ol></li></ol></div>
 </div>
 
           <div class="post-tags">
-              <a href="/tags/error/" rel="tag"># error</a>
-              <a href="/tags/hexo/" rel="tag"># hexo</a>
-              <a href="/tags/hexo-asset-image/" rel="tag"># hexo-asset-image</a>
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/c/" rel="tag"># c++</a>
+              <a href="/tags/c/" rel="tag"># c</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/errors/pscore6-error.html" rel="prev" title="powershell：尝试新的跨平台 PowerShell https://aka.ms/pscore6">
-                  <i class="fa fa-chevron-left"></i> powershell：尝试新的跨平台 PowerShell https://aka.ms/pscore6
+                <a href="/rockstar-note.html" rel="prev" title="rockstar 语言笔记">
+                  <i class="fa fa-chevron-left"></i> rockstar 语言笔记
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/sagemath-equation-note.html" rel="next" title="sagemath 方程求解笔记">
-                  sagemath 方程求解笔记 <i class="fa fa-chevron-right"></i>
+                <a href="/CRT-note.html" rel="next" title="中国剩余定理CRT笔记">
+                  中国剩余定理CRT笔记 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
