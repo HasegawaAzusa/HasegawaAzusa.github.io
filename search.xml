@@ -2659,6 +2659,7 @@ k=invert(c, n)^{-s}
 x\equiv b\ (mod\ m)\ 与\ x\equiv c\ (mod\ n)
 \]</span> 恰有一个解 <span class="math inline">\(0\leq x\leq
 mn\)</span></p>
+<p>详细内容可以在<a href="/CRT-note.html">这里</a>了解</p>
 <h1 id="rsapython-实现">RSA&amp;python 实现</h1>
 <h2 id="加密">加密</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p=<span class="number">447685307</span></span><br><span class="line">q=<span class="number">2037</span></span><br><span class="line">e=<span class="number">17</span></span><br><span class="line">m = <span class="number">904332399012</span></span><br><span class="line">n = p * q</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br></pre></td></tr></table></figure>
@@ -7586,6 +7587,9 @@ x\equiv23\pmod{7}
 \end{cases}
 \ 同解
 \]</span></p>
+<h1 id="代码">代码</h1>
+<p>对于 <span class="math inline">\(m_i\)</span> 互素的情况</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CRT</span>(<span class="params">alist, mlist</span>):</span></span><br><span class="line">    M = math.prod(mlist)</span><br><span class="line">    x = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> ai, mi <span class="keyword">in</span> <span class="built_in">zip</span>(alist, mlist):</span><br><span class="line">        Mi = M // mi</span><br><span class="line">        d, _, ti = gmpy2.gcdext(mi, Mi)</span><br><span class="line">        <span class="keyword">if</span> d != <span class="number">1</span>: <span class="keyword">raise</span> Exception(<span class="string">&quot;Input not palistrwise co-prime&quot;</span>)</span><br><span class="line">        x += ai * ti * Mi</span><br><span class="line">    <span class="keyword">return</span> x % M, M</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -7672,6 +7676,711 @@ x\equiv23\pmod{7}
         <tag>note</tag>
         <tag>c++</tag>
         <tag>c</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>归档工具笔记</title>
+    <url>//archiver-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>归档文件是由一个或多个计算机文件以及元数据组成的压缩文件。</p>
+<p><strong>归档的特点</strong></p>
+<ol type="1">
+<li>数据压缩</li>
+<li>加密</li>
+<li>文件连接</li>
+<li>自动提取</li>
+<li>自动安装</li>
+<li>源卷和媒体信息</li>
+<li>文件跨越</li>
+<li>校验和</li>
+<li>目录结构信息</li>
+<li>其他元数据（关于数据的数据）</li>
+<li>错误发现</li>
+</ol>
+<p><strong>应用领域</strong></p>
+<ol type="1">
+<li>将计算机文件系统与元数据一起存储。</li>
+<li>在本地传输文件有用。</li>
+<li>用于通过网络传输文件。</li>
+<li>软件包装应用。</li>
+</ol>
+<p>目的是使用时间换取空间。</p>
+<p>目前来说，有很多种归档工具，下面只介绍我所见过的归档工具。</p>
+<blockquote>
+<p>仅是略写，更多详细的使用方式请使用相应工具的帮助功能
+(<code>-h / -? / --help</code>)</p>
+</blockquote>
+<h1 id="ar">ar</h1>
+<h2 id="简述-1">简述</h2>
+<p><code>ar</code> 在 Linux 命令行中可以直接调用此工具。</p>
+<h2 id="特征">特征</h2>
+<p>文件开头含有 <code>!&lt;arch&gt;</code> 或者
+<code>!&lt;thin&gt;</code> (这是一种简化的压缩)。</p>
+<h2 id="命令">命令</h2>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>d</code></td>
+<td>从归档文件中删除文件</td>
+</tr>
+<tr class="even">
+<td><code>m[ab]</code></td>
+<td>在归档文件中移动文件</td>
+</tr>
+<tr class="odd">
+<td><code>p</code></td>
+<td>打印在归档文件中找到的文件</td>
+</tr>
+<tr class="even">
+<td><code>q[f]</code></td>
+<td>将文件快速追加到归档文件中</td>
+</tr>
+<tr class="odd">
+<td><code>r[ab][f][u]</code></td>
+<td>替换归档文件中已有的文件或加入新文件</td>
+</tr>
+<tr class="even">
+<td><code>s</code></td>
+<td>act as ranlib</td>
+</tr>
+<tr class="odd">
+<td><code>t</code></td>
+<td>显示归档文件的内容</td>
+</tr>
+<tr class="even">
+<td><code>x[o]</code></td>
+<td>从归档文件中提取文件 (解压)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="特定命令修饰符">特定命令修饰符</h2>
+<table>
+<thead>
+<tr class="header">
+<th>命令修饰符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>[a]</code></td>
+<td>将文件置于 [成员名] 之后</td>
+</tr>
+<tr class="even">
+<td><code>[b]</code></td>
+<td>将文件置于 [成员名] 之前 (于 <code>[i]</code> 相同)</td>
+</tr>
+<tr class="odd">
+<td><code>[D]</code></td>
+<td>use zero for timestamps and uids/gids</td>
+</tr>
+<tr class="even">
+<td><code>[U]</code></td>
+<td>use actual timestamps and uids/gids (default)</td>
+</tr>
+<tr class="odd">
+<td><code>[N]</code></td>
+<td>use instance <code>[count]</code> of name</td>
+</tr>
+<tr class="even">
+<td><code>[f]</code></td>
+<td>truncate inserted file names</td>
+</tr>
+<tr class="odd">
+<td><code>[P]</code></td>
+<td>在匹配时使用完整的路径名</td>
+</tr>
+<tr class="even">
+<td><code>[o]</code></td>
+<td>保留原来的日期</td>
+</tr>
+<tr class="odd">
+<td><code>[u]</code></td>
+<td>只替换比当前归档内容更新的文件</td>
+</tr>
+</tbody>
+</table>
+<h2 id="通用修饰符">通用修饰符</h2>
+<table>
+<thead>
+<tr class="header">
+<th>通用修饰符</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>[c]</code></td>
+<td>不在必须创建库的时候给出警告</td>
+</tr>
+<tr class="even">
+<td><code>[s]</code></td>
+<td>创建归档索引 (cf. ranlib)</td>
+</tr>
+<tr class="odd">
+<td><code>[S]</code></td>
+<td>不要创建符号表</td>
+</tr>
+<tr class="even">
+<td><code>[T]</code></td>
+<td>make a thin archive</td>
+</tr>
+<tr class="odd">
+<td><code>[v]</code></td>
+<td>输出较多信息</td>
+</tr>
+<tr class="even">
+<td><code>[V]</code></td>
+<td>显示版本号</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例">实例</h2>
+<ul>
+<li><p>打包文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ar rv output.bak a.c b.c</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ar rv output.bak *.c</span><br></pre></td></tr></table></figure></li>
+<li><p>显示打包文件内容</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ar t output.bak</span><br></pre></td></tr></table></figure></li>
+<li><p>解压文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ar x output.bak</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="bzip2">bzip2</h1>
+<h2 id="简述-2">简述</h2>
+<p><code>bzip2</code> 是一个优秀的压缩算法，在 Linux 中经常被使用。</p>
+<p>可以在 Linux 命令行中直接调用此工具。</p>
+<p>可以使用 Bandizip 来解压缩。</p>
+<h2 id="特征-1">特征</h2>
+<p>后缀是 <code>.bz2</code></p>
+<h2 id="命令-1">命令</h2>
+<table>
+<colgroup>
+<col style="width: 6%">
+<col style="width: 93%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-c</code></td>
+<td>将压缩与解压缩的结果送到标准输出</td>
+</tr>
+<tr class="even">
+<td><code>-d</code></td>
+<td>执行解压缩</td>
+</tr>
+<tr class="odd">
+<td><code>-f</code></td>
+<td>bzip2在压缩或解压缩时，若输出文件与现有文件同名，预设不会覆盖现有文件。若要覆盖。请使用此参数</td>
+</tr>
+<tr class="even">
+<td><code>-k</code></td>
+<td>bzip2在压缩或解压缩后，会删除原始文件。若要保留原始文件，请使用此参数</td>
+</tr>
+<tr class="odd">
+<td><code>-s</code></td>
+<td>降低程序执行时内存的使用量</td>
+</tr>
+<tr class="even">
+<td><code>-t</code></td>
+<td>测试 <code>.bz2</code> 压缩文件的完整性</td>
+</tr>
+<tr class="odd">
+<td><code>-v</code></td>
+<td>压缩或解压缩文件时，显示详细的信息</td>
+</tr>
+<tr class="even">
+<td><code>-z</code></td>
+<td>强制执行压缩</td>
+</tr>
+<tr class="odd">
+<td><code>-V</code></td>
+<td>显示版本信息</td>
+</tr>
+<tr class="even">
+<td><code>-#</code></td>
+<td>指定压缩比；默认是6；数字越大压缩比越大（1-9）</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例-1">实例</h2>
+<ul>
+<li><p>压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bzip2 filename</span><br></pre></td></tr></table></figure>
+<p>压缩会将原来的文件删除，然后输出
+<code>filename.bz2</code>，如果需要保留原文件请使用 <code>-k</code>
+。</p></li>
+<li><p>解压</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bzip2 -d filename</span><br></pre></td></tr></table></figure>
+<p>解压会将压缩包删除，然后如果 <code>filename</code> 里有后缀
+<code>.bz2</code>，则输出无后缀的文件；如果没有后缀，则输出同名文件。如果需要保留原文件请使用
+<code>-k</code> 。</p></li>
+</ul>
+<h1 id="cpio">cpio</h1>
+<h2 id="简述-3">简述</h2>
+<p><code>cpio</code> 是用来建立，还原备份档的工具程序，它可以加入，解开
+<code>cpio</code> 或 <code>tar</code> 备份档内的文件。</p>
+<h2 id="特征-2">特征</h2>
+<p>后缀是 <code>.cpio</code></p>
+<h2 id="命令-2">命令</h2>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-o</code></td>
+<td>指定运行为copy-out模式，即归档模式</td>
+</tr>
+<tr class="even">
+<td><code>-i</code></td>
+<td>指定运行为copy-in模式，即提取模式</td>
+</tr>
+<tr class="odd">
+<td><code>-p</code></td>
+<td>指定运行为copy-pass模式，即目录拷贝模式</td>
+</tr>
+<tr class="even">
+<td><code>-t</code></td>
+<td>列出归档文件中的文件列表</td>
+</tr>
+<tr class="odd">
+<td><code>-d</code></td>
+<td>当需要的时候自动创建目录</td>
+</tr>
+<tr class="even">
+<td><code>-v</code></td>
+<td>详细显示指令的执行过程</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例-2">实例</h2>
+<ul>
+<li><p>归档</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls | cpio -ov &gt; obj.cpio</span><br></pre></td></tr></table></figure>
+<p>将当前目录的文件归档到 <code>obj.cpio</code> 中</p></li>
+<li><p>提取</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cpio -idv &lt; obj.cpio</span><br></pre></td></tr></table></figure>
+<p>提取归档文件 <code>obj.cpio</code></p></li>
+</ul>
+<h1 id="gzip">gzip</h1>
+<h2 id="简述-4">简述</h2>
+<p><code>gzip</code> 的是标准的，广泛使用的文件压缩和解压工具。
+<code>gzip</code> 允许文件级联。</p>
+<p>可以直接在 Linux 命令行中调用此工具。</p>
+<p>可以使用 Bandizip 解压缩。</p>
+<h2 id="特征-3">特征</h2>
+<p>后缀为 <code>.gz</code></p>
+<h2 id="命令-3">命令</h2>
+<table>
+<colgroup>
+<col style="width: 6%">
+<col style="width: 93%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-c</code></td>
+<td>将输出写到标准输出上，并保留原有文件</td>
+</tr>
+<tr class="even">
+<td><code>-d</code></td>
+<td>将压缩文件解压</td>
+</tr>
+<tr class="odd">
+<td><code>-l</code></td>
+<td>对每个压缩文件，显示下列字段：<br>压缩文件的大小；未压缩文件的大小；压缩比；未压缩文件的名字</td>
+</tr>
+<tr class="even">
+<td><code>-r</code></td>
+<td>递归式地查找指定目录并压缩其中的所有文件或者是解压缩</td>
+</tr>
+<tr class="odd">
+<td><code>-t</code></td>
+<td>测试，检查压缩文件是否完整</td>
+</tr>
+<tr class="even">
+<td><code>-v</code></td>
+<td>对每一个压缩和解压的文件，显示文件名和压缩比</td>
+</tr>
+<tr class="odd">
+<td><code>-#</code></td>
+<td>指定压缩比（1-9），系统缺省值为 6。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例-3">实例</h2>
+<ul>
+<li><p>压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gzip filename</span><br></pre></td></tr></table></figure></li>
+<li><p>解压</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gzip -dv filename</span><br></pre></td></tr></table></figure></li>
+<li><p>列出压缩文件信息</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">gzip -l filename</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="lz4">lz4</h1>
+<h2 id="简述-5">简述</h2>
+<p><code>lz4</code> 在压缩率上略微逊色,
+但是在解压速度上有着惊人的优势。</p>
+<p>因为压缩时高效的多核利用，再加上惊艳的解压，<code>lz4</code>
+已经在非常多重要场合使用了</p>
+<h2 id="特征-4">特征</h2>
+<p>后缀为 <code>.lz4</code></p>
+<h2 id="命令-4">命令</h2>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-d</code></td>
+<td>解压缩（默认为 <code>.lz4</code> 扩展名）</td>
+</tr>
+<tr class="even">
+<td><code>-z</code></td>
+<td>强制压缩</td>
+</tr>
+<tr class="odd">
+<td><code>-f</code></td>
+<td>覆盖输出而不提示</td>
+</tr>
+<tr class="even">
+<td><code>-k</code></td>
+<td>保留源文件（默认）</td>
+</tr>
+<tr class="odd">
+<td><code>-v</code></td>
+<td>详细模式</td>
+</tr>
+<tr class="even">
+<td><code>-q</code></td>
+<td>取消警告；指定两次也可以取消错误</td>
+</tr>
+<tr class="odd">
+<td><code>-t</code></td>
+<td>测试压缩文件完整性</td>
+</tr>
+<tr class="even">
+<td><code>-m</code></td>
+<td>多个输入文件（表示自动输出文件名）</td>
+</tr>
+<tr class="odd">
+<td><code>-r</code></td>
+<td>在目录上递归操作（也设置为-m）</td>
+</tr>
+<tr class="even">
+<td><code>-l</code></td>
+<td>使用旧格式压缩（Linux内核压缩）</td>
+</tr>
+<tr class="odd">
+<td><code>-#</code></td>
+<td>压缩效率（1-9），默认为1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例-4">实例</h2>
+<ul>
+<li><p>压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lz4 filename</span><br></pre></td></tr></table></figure></li>
+<li><p>解压</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lz4 -d filename</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="lzip">lzip</h1>
+<h2 id="简述-6">简述</h2>
+<p><code>lzip</code> 是一个无损的数据压缩和解压缩工具，它采用的是 LZMA
+算法。</p>
+<p>可以使用 Bandizip 解压缩</p>
+<h2 id="特征-5">特征</h2>
+<p>后缀为 <code>.lz</code></p>
+<h2 id="实例-5">实例</h2>
+<ul>
+<li><p>压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lzip filename</span><br></pre></td></tr></table></figure></li>
+<li><p>解压</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lzip -d filename</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="lzma">lzma</h1>
+<h2 id="简述-7">简述</h2>
+<p>LZMA，（Lempel-Ziv-Markov
+chain-Algorithm的缩写），是一个Deflate和LZ77算法改良和优化后的压缩算法，开发者是Igor
+Pavlov，2001年被首次应用于7-Zip压缩工具中，是
+2001年以来得到发展的一个数据压缩算法。</p>
+<p>Linux 命令行中可以直接调用 <code>lzma</code> 工具。</p>
+<p>可以使用 Bandizip 解压缩。</p>
+<h2 id="特征-6">特征</h2>
+<p>后缀为 <code>.lzma</code></p>
+<h2 id="命令-5">命令</h2>
+<table>
+<colgroup>
+<col style="width: 6%">
+<col style="width: 93%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-d</code></td>
+<td>解压缩</td>
+</tr>
+<tr class="even">
+<td><code>-f</code></td>
+<td>强制解压/压缩，忽略一切问题，比如：目标文件已经存在，直接覆盖等</td>
+</tr>
+<tr class="odd">
+<td><code>-k</code></td>
+<td>不删除原始文件</td>
+</tr>
+<tr class="even">
+<td><code>-t</code></td>
+<td>测试，不解压</td>
+</tr>
+<tr class="odd">
+<td><code>-v</code></td>
+<td>显示进度等信息，</td>
+</tr>
+<tr class="even">
+<td><code>-z</code></td>
+<td>强制压缩</td>
+</tr>
+<tr class="odd">
+<td><code>-#</code></td>
+<td>压缩比（1-9），默认1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例-6">实例</h2>
+<ul>
+<li><p>压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lzma test.tar</span><br></pre></td></tr></table></figure>
+<p>默认删除文件，如果需要保留需要使用 <code>-k</code> 选项</p></li>
+<li><p>解压</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lzma -d test.tar.lzma</span><br></pre></td></tr></table></figure>
+<p>默认删除文件，如果需要保留需要使用 <code>-k</code> 选项</p></li>
+</ul>
+<h1 id="lzop">lzop</h1>
+<h2 id="简述-8">简述</h2>
+<p><code>lzop</code> 工具最适合在注重压缩速度的场合，压缩文件时会新建
+<code>.lzo</code> 文件，而原文件保持不变 (使用 <code>-U</code>
+选项除外)</p>
+<h2 id="特征-7">特征</h2>
+<p>后缀为 <code>.lzo</code></p>
+<h2 id="命令-6">命令</h2>
+<table>
+<colgroup>
+<col style="width: 6%">
+<col style="width: 93%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-d</code></td>
+<td>解压缩</td>
+</tr>
+<tr class="even">
+<td><code>-f</code></td>
+<td>强制解压/压缩，忽略一切问题，比如：目标文件已经存在，直接覆盖等</td>
+</tr>
+<tr class="odd">
+<td><code>-l</code></td>
+<td>列出压缩文件的信息</td>
+</tr>
+<tr class="even">
+<td><code>-U</code></td>
+<td>删除原始文件</td>
+</tr>
+<tr class="odd">
+<td><code>-t</code></td>
+<td>测试，不解压</td>
+</tr>
+<tr class="even">
+<td><code>-v</code></td>
+<td>显示进度等信息，</td>
+</tr>
+<tr class="odd">
+<td><code>-z</code></td>
+<td>强制压缩</td>
+</tr>
+<tr class="even">
+<td><code>-#</code></td>
+<td>压缩比（1-9），默认1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例-7">实例</h2>
+<ul>
+<li><p>压缩</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">lzop filename</span><br></pre></td></tr></table></figure></li>
+<li><p>解压</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lzop -dv filename.lzo</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="tar">tar</h1>
+<h2 id="简述-9">简述</h2>
+<p>Linux <code>tar</code>（英文全拼：tape archive
+）命令用于备份文件。</p>
+<p><code>tar</code>
+是用来建立，还原备份文件的工具程序，它可以加入，解开备份文件内的文件。</p>
+<p>可以使用 Bandizip 解压缩</p>
+<h2 id="特征-8">特征</h2>
+<p>后缀为 <code>.tar</code></p>
+<h2 id="命令-7">命令</h2>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-c</code></td>
+<td>建立一个压缩文件</td>
+</tr>
+<tr class="even">
+<td><code>-x</code></td>
+<td>将压缩文件解压</td>
+</tr>
+<tr class="odd">
+<td><code>-t</code></td>
+<td>查看压缩文件详细信息</td>
+</tr>
+<tr class="even">
+<td><code>-z</code></td>
+<td>是否需要用 <code>gzip</code> 压缩</td>
+</tr>
+<tr class="odd">
+<td><code>-j</code></td>
+<td>是否需要用 <code>bzip2</code> 压缩</td>
+</tr>
+<tr class="even">
+<td><code>-v</code></td>
+<td>显示详细信息</td>
+</tr>
+<tr class="odd">
+<td><code>-f</code></td>
+<td>指定档名</td>
+</tr>
+<tr class="even">
+<td><code>-p</code></td>
+<td>使用原文件的原来属性</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例-8">实例</h2>
+<ul>
+<li><p>打包</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -cvf test.tar test.txt</span><br></pre></td></tr></table></figure></li>
+<li><p>以 <code>gzip</code> 压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zcvf test.tar test.txt</span><br></pre></td></tr></table></figure></li>
+<li><p>以 <code>bzip2</code> 压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -jcvf test.tar test.txt</span><br></pre></td></tr></table></figure></li>
+<li><p>解压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zxvf test.tar</span><br></pre></td></tr></table></figure>
+<p>还可以指定压缩包内的某个文件打开</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tar -zxvf test.tar test.txt</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h1 id="xz">xz</h1>
+<h2 id="简述-10">简述</h2>
+<p><code>xz</code> 是一种压缩文件格式，采用LZMA SDK压缩，目标文件较
+<code>gzip</code> 压缩文件小。</p>
+<p>可以使用 Bandizip 解压缩。</p>
+<h2 id="特征-9">特征</h2>
+<p>文件后缀为 <code>.xz</code></p>
+<h2 id="命令-8">命令</h2>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-d</code></td>
+<td>解压缩</td>
+</tr>
+<tr class="even">
+<td><code>-z</code></td>
+<td>强制压缩</td>
+</tr>
+<tr class="odd">
+<td><code>-f</code></td>
+<td>覆盖输出而不提示</td>
+</tr>
+<tr class="even">
+<td><code>-k</code></td>
+<td>保留源文件（默认）</td>
+</tr>
+<tr class="odd">
+<td><code>-v</code></td>
+<td>详细模式</td>
+</tr>
+<tr class="even">
+<td><code>-q</code></td>
+<td>取消警告；指定两次也可以取消错误</td>
+</tr>
+<tr class="odd">
+<td><code>-t</code></td>
+<td>测试压缩文件完整性</td>
+</tr>
+<tr class="even">
+<td><code>-m</code></td>
+<td>多个输入文件（表示自动输出文件名）</td>
+</tr>
+<tr class="odd">
+<td><code>-r</code></td>
+<td>在目录上递归操作（也设置为-m）</td>
+</tr>
+<tr class="even">
+<td><code>-l</code></td>
+<td>使用旧格式压缩（Linux内核压缩）</td>
+</tr>
+<tr class="odd">
+<td><code>-#</code></td>
+<td>压缩效率（1-9），默认为6</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例-9">实例</h2>
+<ul>
+<li><p>压缩</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xz test.txt</span><br></pre></td></tr></table></figure></li>
+<li><p>解压</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">xz -d test.txt.xz</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
 </search>
