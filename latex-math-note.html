@@ -30,7 +30,7 @@
 <meta property="og:description" content="latex 数学公式格式的简要笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-13T06:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-16T13:35:17.199Z">
+<meta property="article:modified_time" content="2022-03-21T11:24:16.873Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="latex">
@@ -252,7 +252,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.3k</span>
+      <span>4.2k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -426,11 +426,11 @@
 <col style="width: 10%">
 <col style="width: 10%">
 <col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
 <col style="width: 5%">
 <col style="width: 7%">
 <col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 7%">
 <col style="width: 7%">
 <col style="width: 5%">
 </colgroup>
@@ -456,12 +456,12 @@
 <td><code>\partial</code></td>
 <td><span class="math inline">\(\infty\)</span></td>
 <td><code>\infty</code></td>
-<td><span class="math inline">\(\Z\)</span></td>
-<td><code>\Z</code></td>
-<td><span class="math inline">\(\R\)</span></td>
-<td><code>\R</code></td>
 <td><span class="math inline">\(\ell\)</span></td>
 <td><code>\ell</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 <td></td>
 <td></td>
 </tr>
@@ -470,9 +470,9 @@
 <h1 id="符号">符号</h1>
 <table>
 <colgroup>
-<col style="width: 20%">
-<col style="width: 39%">
-<col style="width: 39%">
+<col style="width: 16%">
+<col style="width: 41%">
+<col style="width: 41%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -535,13 +535,13 @@ r\)</span></td>
 </tr>
 <tr class="odd">
 <td>求和</td>
-<td><code>\sum&#123;p_i&#125;+\sum_&#123;i=1&#125;^&#123;n&#125;&#123;p_i&#125;\\</code></td>
-<td><span class="math inline">\(\sum{p_i}+\sum_{i=1}^{n}{p_i}\\\)</span></td>
+<td><code>\displaystyle\sum&#123;p_i&#125;+\sum_&#123;i=1&#125;^&#123;n&#125;&#123;p_i&#125;</code></td>
+<td><span class="math inline">\(\displaystyle\sum{p_i}+\sum_{i=1}^{n}{p_i}\)</span></td>
 </tr>
 <tr class="even">
 <td>连乘</td>
-<td><code>\prod&#123;a_i&#125;+\prod_&#123;i=1&#125;^&#123;n&#125;a_i\\</code></td>
-<td><span class="math inline">\(\prod{a_i}+\prod_{i=1}^{n}a_i\\\)</span></td>
+<td><code>\displaystyle\prod&#123;a_i&#125;+\prod_&#123;i=1&#125;^&#123;n&#125;a_i</code></td>
+<td><span class="math inline">\(\displaystyle\prod{a_i}+\prod_{i=1}^{n}a_i\)</span></td>
 </tr>
 <tr class="odd">
 <td>求导</td>
@@ -555,13 +555,13 @@ r\)</span></td>
 </tr>
 <tr class="odd">
 <td>积分</td>
-<td><code>\int_a^b&#123;f(x)dx&#125;+\iint&#123;g(x)dx&#125;\\</code></td>
-<td><span class="math inline">\(\int_a^b{f(x)dx}+\iint{g(x)dx}\\\)</span></td>
+<td><code>\int_a^b&#123;f(x)dx&#125;+\iint&#123;g(x)dx&#125;</code></td>
+<td><span class="math inline">\(\int_a^b{f(x)dx}+\iint{g(x)dx}\)</span></td>
 </tr>
 <tr class="even">
 <td>曲线积分</td>
-<td><code>\oint f(x)+\oiint g(x)\\</code></td>
-<td><span class="math inline">\(\oint f(x)+\oiint g(x)\\\)</span></td>
+<td><code>\oint f(x)+\oiint g(x)</code></td>
+<td><span class="math inline">\(\oint f(x)+\oiint g(x)\)</span></td>
 </tr>
 <tr class="odd">
 <td>小于等于与大于等于</td>
@@ -615,8 +615,9 @@ r\)</span></td>
 </tr>
 <tr class="odd">
 <td>极限</td>
-<td><code>\lim_&#123;x\to 0&#125;f(x)\\</code></td>
-<td><span class="math inline">\(\lim_{x\to 0}f(x)\\\)</span></td>
+<td><code>\displaystyle\lim_&#123;x\to 0&#125;f(x)</code></td>
+<td><span class="math inline">\(\displaystyle\lim_{x\to
+0}f(x)\)</span></td>
 </tr>
 <tr class="even">
 <td>三角函数</td>
@@ -665,7 +666,7 @@ r\)</span></td>
 7 &amp; 8 &amp; 9
 \end{matrix}
 \]</span> 还可以这样写</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">\left\&#123;</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right\&#125;</span><br><span class="line">&amp;&amp;&amp;</span><br><span class="line">\left[</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; \cdots &amp; n_1 \\</span><br><span class="line">  \vdots &amp; \ddots &amp; \vdots \\</span><br><span class="line">  m &amp; \cdots &amp; n_m</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right]</span><br><span class="line">&amp;&amp;&amp;</span><br><span class="line">\left(</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right)</span><br><span class="line">&amp;&amp;&amp;</span><br><span class="line">\left|</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">1 &amp; 2 &amp; 3 \\</span><br><span class="line">4 &amp; 5 &amp; 6 \\</span><br><span class="line">7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right|</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">\left\&#123;</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right\&#125;</span><br><span class="line">\left[</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; \cdots &amp; n_1 \\</span><br><span class="line">  \vdots &amp; \ddots &amp; \vdots \\</span><br><span class="line">  m &amp; \cdots &amp; n_m</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right]</span><br><span class="line">\left(</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right)</span><br><span class="line">\left|</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">1 &amp; 2 &amp; 3 \\</span><br><span class="line">4 &amp; 5 &amp; 6 \\</span><br><span class="line">7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right|</span><br></pre></td></tr></table></figure>
 <p><span class="math display">\[
 \left\{
 \begin{matrix}
@@ -674,7 +675,6 @@ r\)</span></td>
   7 &amp; 8 &amp; 9
 \end{matrix}
 \right\}
-&amp;&amp;&amp;
 \left[
 \begin{matrix}
   1 &amp; \cdots &amp; n_1 \\
@@ -682,7 +682,6 @@ r\)</span></td>
   m &amp; \cdots &amp; n_m
 \end{matrix}
 \right]
-&amp;&amp;&amp;
 \left(
 \begin{matrix}
   1 &amp; 2 &amp; 3 \\
@@ -690,7 +689,6 @@ r\)</span></td>
   7 &amp; 8 &amp; 9
 \end{matrix}
 \right)
-&amp;&amp;&amp;
 \left|
 \begin{matrix}
 1 &amp; 2 &amp; 3 \\

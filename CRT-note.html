@@ -30,7 +30,7 @@
 <meta property="og:description" content="中国剩余定理CRT的简要理解笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-16T13:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-17T00:42:36.031Z">
+<meta property="article:modified_time" content="2022-03-21T11:00:18.772Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="Crypto">
@@ -251,14 +251,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.7k</span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>3 分钟</span>
     </span>
 </div>
 
@@ -281,17 +281,18 @@ x\equiv a_n\pmod{m_n}
 \end{cases}
 \]</span> 都存在整数解，且若 <span class="math inline">\(X,Y\)</span>
 都满足该方程，则必有 <span class="math inline">\(X\equiv
-Y\pmod{N}\)</span>，其中 <span class="math inline">\(M=\prod_{i=1}^nm_i\\\)</span> 。</p>
+Y\pmod{N}\)</span>，其中 <span class="math inline">\(M=\displaystyle\prod_{i=1}^nm_i\)</span> 。</p>
 <p>具体而言，<span class="math inline">\(x\equiv
-\sum_{i=1}^na_i\times\frac{M}{m_i}\times\left[\left(\frac{M}{m_i}\right)^{-1}\right]_{m_i}\pmod{M}\\\)</span></p>
+\displaystyle\sum_{i=1}^na_i\times\frac{M}{m_i}\times\left[\left(\frac{M}{m_i}\right)^{-1}\right]_{m_i}\pmod{M}\\\)</span></p>
 <p>这便是<strong>中国剩余定理(Chinese remainder theorem,
 CRT)</strong></p>
 <p>求解可以使用以下步骤进行构造：</p>
 <ol type="1">
-<li><p>设 <span class="math inline">\(M=\prod_{i=1}^nm_i\\\)</span>，并设 <span class="math inline">\(M_i=\frac{M}{m_i}\)</span>，即除了 <span class="math inline">\(m_i\)</span> 以外 <span class="math inline">\(n-1\)</span> 个数的乘积</p></li>
+<li><p>设 <span class="math inline">\(M=\displaystyle\prod_{i=1}^nm_i\)</span>，并设
+<span class="math inline">\(M_i=\frac{M}{m_i}\)</span>，即除了 <span class="math inline">\(m_i\)</span> 以外 <span class="math inline">\(n-1\)</span> 个数的乘积</p></li>
 <li><p>设 <span class="math inline">\(t_i=M_i^{-1}\)</span>，即求 <span class="math inline">\(M_i\)</span> 对 <span class="math inline">\(m_i\)</span> 的模反元素</p></li>
 <li><p>那么方程组的通解即为 <span class="math display">\[
-x=kM+\sum_{i=1}^na_it_iM_i,k\in\Z
+x=kM+\sum_{i=1}^na_it_iM_i,k\in\mathrm{Z}
 \]</span> 在模 <span class="math inline">\(M\)</span>
 的环中，方程组仅有一个唯一整数解 <span class="math display">\[
 x=\sum_{i=1}^na_it_iM_i
@@ -334,7 +335,7 @@ x\equiv 2\pmod{7}
 2\times0+3\times0+2\times1\equiv2\pmod7
 \end{cases}
 \]</span> 故方程组通解为 <span class="math display">\[
-x=233+k\times105,k\in\Z
+x=233+k\times105,k\in\mathrm{Z}
 \]</span> 当 <span class="math inline">\(k=-2\)</span>
 时，有最小正整数解 <span class="math inline">\(x=23\)</span></p>
 <h1 id="扩展">扩展</h1>
@@ -356,8 +357,8 @@ m_1k_1=a_2-a_1\pmod{m_2}
 \frac{k_1m_1}{d}=\frac{c}{d}\pmod{\frac{m_2}{d}}\\
 \Rightarrow
 k_1=\frac{c}{d}\times\left(\frac{m_1}{d}\right)^{-1}\pmod{\frac{m_2}{d}}
-\]</span> 令 <span class="math inline">\(K=\frac{c}{d}\times\left(\frac{m_1}{d}\right)^{-1}\\\)</span>，则
-<span class="math inline">\(k_1=y\frac{m_2}{d}+K\\\)</span></p>
+\]</span> 令 <span class="math inline">\(K=\displaystyle\frac{c}{d}\times\left(\frac{m_1}{d}\right)^{-1}\)</span>，则
+<span class="math inline">\(k_1=y\displaystyle\frac{m_2}{d}+K\\\)</span></p>
 <p>代入方程 <span class="math inline">\((*)\)</span> 得 <span class="math display">\[
 \begin{aligned}
 x&amp;=m_1(y\frac{m_2}{d}+K)+a_1\\
@@ -366,7 +367,7 @@ x&amp;=m_1(y\frac{m_2}{d}+K)+a_1\\
 \]</span> 即 <span class="math display">\[
 x=m_1K+a_1\pmod{\frac{m_1m_2}{d}}
 \]</span> 即 <span class="math display">\[
-x\equiv a\pmod{m},其中\ a=m_1K+a_11,m=\frac{m_1m_2}{d}
+x\equiv a\pmod{m},\mathrm{其中}\ a=m_1K+a_11,m=\frac{m_1m_2}{d}
 \]</span> 这样，就将方程组合并成为上面这个方程。</p>
 <p>最终，合并 <span class="math inline">\(k\)</span> 个方程的最小 <span class="math inline">\(x\)</span> 值为 <span class="math inline">\(a\mod
 m\)</span></p>
@@ -378,14 +379,14 @@ x\equiv23\pmod{84}\\
 x\equiv7\pmod{160}\\
 x\equiv2\pmod{63}
 \end{cases}
-\ 与\
+\ \mathrm{与}\
 \begin{cases}
 x\equiv7\pmod{2^5}\\
 x\equiv2\pmod{3^2}\\
 x\equiv7\pmod{5}\\
 x\equiv23\pmod{7}
 \end{cases}
-\ 同解
+\ \mathrm{同解}
 \]</span></p>
 <h1 id="代码">代码</h1>
 <p>对于 <span class="math inline">\(m_i\)</span> 互素的情况</p>

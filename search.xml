@@ -1496,11 +1496,11 @@ format</h3>
 <col style="width: 10%">
 <col style="width: 10%">
 <col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
 <col style="width: 5%">
 <col style="width: 7%">
 <col style="width: 5%">
-<col style="width: 7%">
-<col style="width: 7%">
 <col style="width: 7%">
 <col style="width: 5%">
 </colgroup>
@@ -1526,12 +1526,12 @@ format</h3>
 <td><code>\partial</code></td>
 <td><span class="math inline">\(\infty\)</span></td>
 <td><code>\infty</code></td>
-<td><span class="math inline">\(\Z\)</span></td>
-<td><code>\Z</code></td>
-<td><span class="math inline">\(\R\)</span></td>
-<td><code>\R</code></td>
 <td><span class="math inline">\(\ell\)</span></td>
 <td><code>\ell</code></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
 <td></td>
 <td></td>
 </tr>
@@ -1540,9 +1540,9 @@ format</h3>
 <h1 id="符号">符号</h1>
 <table>
 <colgroup>
-<col style="width: 20%">
-<col style="width: 39%">
-<col style="width: 39%">
+<col style="width: 16%">
+<col style="width: 41%">
+<col style="width: 41%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1605,13 +1605,13 @@ r\)</span></td>
 </tr>
 <tr class="odd">
 <td>求和</td>
-<td><code>\sum&#123;p_i&#125;+\sum_&#123;i=1&#125;^&#123;n&#125;&#123;p_i&#125;\\</code></td>
-<td><span class="math inline">\(\sum{p_i}+\sum_{i=1}^{n}{p_i}\\\)</span></td>
+<td><code>\displaystyle\sum&#123;p_i&#125;+\sum_&#123;i=1&#125;^&#123;n&#125;&#123;p_i&#125;</code></td>
+<td><span class="math inline">\(\displaystyle\sum{p_i}+\sum_{i=1}^{n}{p_i}\)</span></td>
 </tr>
 <tr class="even">
 <td>连乘</td>
-<td><code>\prod&#123;a_i&#125;+\prod_&#123;i=1&#125;^&#123;n&#125;a_i\\</code></td>
-<td><span class="math inline">\(\prod{a_i}+\prod_{i=1}^{n}a_i\\\)</span></td>
+<td><code>\displaystyle\prod&#123;a_i&#125;+\prod_&#123;i=1&#125;^&#123;n&#125;a_i</code></td>
+<td><span class="math inline">\(\displaystyle\prod{a_i}+\prod_{i=1}^{n}a_i\)</span></td>
 </tr>
 <tr class="odd">
 <td>求导</td>
@@ -1625,13 +1625,13 @@ r\)</span></td>
 </tr>
 <tr class="odd">
 <td>积分</td>
-<td><code>\int_a^b&#123;f(x)dx&#125;+\iint&#123;g(x)dx&#125;\\</code></td>
-<td><span class="math inline">\(\int_a^b{f(x)dx}+\iint{g(x)dx}\\\)</span></td>
+<td><code>\int_a^b&#123;f(x)dx&#125;+\iint&#123;g(x)dx&#125;</code></td>
+<td><span class="math inline">\(\int_a^b{f(x)dx}+\iint{g(x)dx}\)</span></td>
 </tr>
 <tr class="even">
 <td>曲线积分</td>
-<td><code>\oint f(x)+\oiint g(x)\\</code></td>
-<td><span class="math inline">\(\oint f(x)+\oiint g(x)\\\)</span></td>
+<td><code>\oint f(x)+\oiint g(x)</code></td>
+<td><span class="math inline">\(\oint f(x)+\oiint g(x)\)</span></td>
 </tr>
 <tr class="odd">
 <td>小于等于与大于等于</td>
@@ -1685,8 +1685,9 @@ r\)</span></td>
 </tr>
 <tr class="odd">
 <td>极限</td>
-<td><code>\lim_&#123;x\to 0&#125;f(x)\\</code></td>
-<td><span class="math inline">\(\lim_{x\to 0}f(x)\\\)</span></td>
+<td><code>\displaystyle\lim_&#123;x\to 0&#125;f(x)</code></td>
+<td><span class="math inline">\(\displaystyle\lim_{x\to
+0}f(x)\)</span></td>
 </tr>
 <tr class="even">
 <td>三角函数</td>
@@ -1735,7 +1736,7 @@ r\)</span></td>
 7 &amp; 8 &amp; 9
 \end{matrix}
 \]</span> 还可以这样写</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\left\&#123;</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right\&#125;</span><br><span class="line">&amp;&amp;&amp;</span><br><span class="line">\left[</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; \cdots &amp; n_1 \\</span><br><span class="line">  \vdots &amp; \ddots &amp; \vdots \\</span><br><span class="line">  m &amp; \cdots &amp; n_m</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right]</span><br><span class="line">&amp;&amp;&amp;</span><br><span class="line">\left(</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right)</span><br><span class="line">&amp;&amp;&amp;</span><br><span class="line">\left|</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">1 &amp; 2 &amp; 3 \\</span><br><span class="line">4 &amp; 5 &amp; 6 \\</span><br><span class="line">7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right|</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\left\&#123;</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right\&#125;</span><br><span class="line">\left[</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; \cdots &amp; n_1 \\</span><br><span class="line">  \vdots &amp; \ddots &amp; \vdots \\</span><br><span class="line">  m &amp; \cdots &amp; n_m</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right]</span><br><span class="line">\left(</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right)</span><br><span class="line">\left|</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">1 &amp; 2 &amp; 3 \\</span><br><span class="line">4 &amp; 5 &amp; 6 \\</span><br><span class="line">7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right|</span><br></pre></td></tr></table></figure>
 <p><span class="math display">\[
 \left\{
 \begin{matrix}
@@ -1744,7 +1745,6 @@ r\)</span></td>
   7 &amp; 8 &amp; 9
 \end{matrix}
 \right\}
-&amp;&amp;&amp;
 \left[
 \begin{matrix}
   1 &amp; \cdots &amp; n_1 \\
@@ -1752,7 +1752,6 @@ r\)</span></td>
   m &amp; \cdots &amp; n_m
 \end{matrix}
 \right]
-&amp;&amp;&amp;
 \left(
 \begin{matrix}
   1 &amp; 2 &amp; 3 \\
@@ -1760,7 +1759,6 @@ r\)</span></td>
   7 &amp; 8 &amp; 9
 \end{matrix}
 \right)
-&amp;&amp;&amp;
 \left|
 \begin{matrix}
 1 &amp; 2 &amp; 3 \\
@@ -7481,17 +7479,18 @@ x\equiv a_n\pmod{m_n}
 \end{cases}
 \]</span> 都存在整数解，且若 <span class="math inline">\(X,Y\)</span>
 都满足该方程，则必有 <span class="math inline">\(X\equiv
-Y\pmod{N}\)</span>，其中 <span class="math inline">\(M=\prod_{i=1}^nm_i\\\)</span> 。</p>
+Y\pmod{N}\)</span>，其中 <span class="math inline">\(M=\displaystyle\prod_{i=1}^nm_i\)</span> 。</p>
 <p>具体而言，<span class="math inline">\(x\equiv
-\sum_{i=1}^na_i\times\frac{M}{m_i}\times\left[\left(\frac{M}{m_i}\right)^{-1}\right]_{m_i}\pmod{M}\\\)</span></p>
+\displaystyle\sum_{i=1}^na_i\times\frac{M}{m_i}\times\left[\left(\frac{M}{m_i}\right)^{-1}\right]_{m_i}\pmod{M}\\\)</span></p>
 <p>这便是<strong>中国剩余定理(Chinese remainder theorem,
 CRT)</strong></p>
 <p>求解可以使用以下步骤进行构造：</p>
 <ol type="1">
-<li><p>设 <span class="math inline">\(M=\prod_{i=1}^nm_i\\\)</span>，并设 <span class="math inline">\(M_i=\frac{M}{m_i}\)</span>，即除了 <span class="math inline">\(m_i\)</span> 以外 <span class="math inline">\(n-1\)</span> 个数的乘积</p></li>
+<li><p>设 <span class="math inline">\(M=\displaystyle\prod_{i=1}^nm_i\)</span>，并设
+<span class="math inline">\(M_i=\frac{M}{m_i}\)</span>，即除了 <span class="math inline">\(m_i\)</span> 以外 <span class="math inline">\(n-1\)</span> 个数的乘积</p></li>
 <li><p>设 <span class="math inline">\(t_i=M_i^{-1}\)</span>，即求 <span class="math inline">\(M_i\)</span> 对 <span class="math inline">\(m_i\)</span> 的模反元素</p></li>
 <li><p>那么方程组的通解即为 <span class="math display">\[
-x=kM+\sum_{i=1}^na_it_iM_i,k\in\Z
+x=kM+\sum_{i=1}^na_it_iM_i,k\in\mathrm{Z}
 \]</span> 在模 <span class="math inline">\(M\)</span>
 的环中，方程组仅有一个唯一整数解 <span class="math display">\[
 x=\sum_{i=1}^na_it_iM_i
@@ -7534,7 +7533,7 @@ x\equiv 2\pmod{7}
 2\times0+3\times0+2\times1\equiv2\pmod7
 \end{cases}
 \]</span> 故方程组通解为 <span class="math display">\[
-x=233+k\times105,k\in\Z
+x=233+k\times105,k\in\mathrm{Z}
 \]</span> 当 <span class="math inline">\(k=-2\)</span>
 时，有最小正整数解 <span class="math inline">\(x=23\)</span></p>
 <h1 id="扩展">扩展</h1>
@@ -7556,8 +7555,8 @@ m_1k_1=a_2-a_1\pmod{m_2}
 \frac{k_1m_1}{d}=\frac{c}{d}\pmod{\frac{m_2}{d}}\\
 \Rightarrow
 k_1=\frac{c}{d}\times\left(\frac{m_1}{d}\right)^{-1}\pmod{\frac{m_2}{d}}
-\]</span> 令 <span class="math inline">\(K=\frac{c}{d}\times\left(\frac{m_1}{d}\right)^{-1}\\\)</span>，则
-<span class="math inline">\(k_1=y\frac{m_2}{d}+K\\\)</span></p>
+\]</span> 令 <span class="math inline">\(K=\displaystyle\frac{c}{d}\times\left(\frac{m_1}{d}\right)^{-1}\)</span>，则
+<span class="math inline">\(k_1=y\displaystyle\frac{m_2}{d}+K\\\)</span></p>
 <p>代入方程 <span class="math inline">\((*)\)</span> 得 <span class="math display">\[
 \begin{aligned}
 x&amp;=m_1(y\frac{m_2}{d}+K)+a_1\\
@@ -7566,7 +7565,7 @@ x&amp;=m_1(y\frac{m_2}{d}+K)+a_1\\
 \]</span> 即 <span class="math display">\[
 x=m_1K+a_1\pmod{\frac{m_1m_2}{d}}
 \]</span> 即 <span class="math display">\[
-x\equiv a\pmod{m},其中\ a=m_1K+a_11,m=\frac{m_1m_2}{d}
+x\equiv a\pmod{m},\mathrm{其中}\ a=m_1K+a_11,m=\frac{m_1m_2}{d}
 \]</span> 这样，就将方程组合并成为上面这个方程。</p>
 <p>最终，合并 <span class="math inline">\(k\)</span> 个方程的最小 <span class="math inline">\(x\)</span> 值为 <span class="math inline">\(a\mod
 m\)</span></p>
@@ -7578,14 +7577,14 @@ x\equiv23\pmod{84}\\
 x\equiv7\pmod{160}\\
 x\equiv2\pmod{63}
 \end{cases}
-\ 与\
+\ \mathrm{与}\
 \begin{cases}
 x\equiv7\pmod{2^5}\\
 x\equiv2\pmod{3^2}\\
 x\equiv7\pmod{5}\\
 x\equiv23\pmod{7}
 \end{cases}
-\ 同解
+\ \mathrm{同解}
 \]</span></p>
 <h1 id="代码">代码</h1>
 <p>对于 <span class="math inline">\(m_i\)</span> 互素的情况</p>
