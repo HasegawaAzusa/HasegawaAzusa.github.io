@@ -8663,4 +8663,101 @@ tracker 服务器的地址，如果没有 tracker 服务器，文件中可能会
         <tag>torrent</tag>
       </tags>
   </entry>
+  <entry>
+    <title>快速幂笔记</title>
+    <url>//fast-power-note.html</url>
+    <content><![CDATA[<h1 id="快速幂">快速幂</h1>
+<h2 id="描述">描述</h2>
+<p>快速幂算法的核心思想是每一步都把指数分成两半，相应的底数做平方运算，这样就能将指数不断变小，同时循环次数降低，结果相同。</p>
+<p>例如 <span class="math inline">\(a^{11}=a^{2^0+2^1+2^2}\)</span></p>
+<p>很自然可以得到递归方程： <span class="math display">\[
+a^n=\begin{cases}
+a^{n-1}\cdot a,\mathrm{if\ a\ is\ odd}\\
+a^{\frac n2}\cdot a^{\frac n2},\mathrm{if\ a\ is\ even\ but\ not\ 0}\\
+1,\mathrm{if\ n=0}
+\end{cases}
+\]</span></p>
+<h2 id="c-实现">C++ 实现</h2>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 计算 base^exp</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Type&gt;</span></span><br><span class="line"><span class="function">Type <span class="title">fastPower</span><span class="params">(Type base, <span class="keyword">unsigned</span> <span class="keyword">int</span> exp)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">Type <span class="title">result</span><span class="params">(base)</span></span>;</span><br><span class="line">	<span class="keyword">while</span> (exp)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (exp &amp; <span class="number">1</span>)result = result * base;</span><br><span class="line">		base *= base;</span><br><span class="line">		exp &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 计算 base^exp%mod</span></span><br><span class="line"><span class="function"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Type&gt;</span></span><br><span class="line"><span class="function">Type <span class="title">fastPower</span><span class="params">(Type base, <span class="keyword">unsigned</span> <span class="keyword">int</span> exp, <span class="keyword">unsigned</span> <span class="keyword">int</span> mod)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="function">Type <span class="title">result</span><span class="params">(base)</span></span>;</span><br><span class="line">	<span class="keyword">while</span> (exp)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (exp &amp; <span class="number">1</span>)result = result * base % mod;</span><br><span class="line">		base = base * base % mod;</span><br><span class="line">		exp &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="矩阵快速幂">矩阵快速幂</h2>
+<p>特别地，实际上对于矩阵来说，也可以按照同样的道理进行快速幂计算。</p>
+<p>因为矩阵也满足线性运算，自然可以进行快速幂。例如 <span class="math display">\[
+\left(\left[
+\begin{matrix}
+1&amp;2\\
+3&amp;4
+\end{matrix}
+\right]\right)^{11}
+=
+\left(\left[
+\begin{matrix}
+1&amp;2\\
+3&amp;4
+\end{matrix}
+\right]\right)^{2^0+2^1+2^2}
+\]</span></p>
+<h1 id="应用">应用</h1>
+<h2 id="矩阵加速递推">矩阵加速递推</h2>
+<p>矩阵快速幂可以应用在加速递推上。</p>
+<p>例如对于斐波那契数列 <span class="math inline">\(f(n)=f(n-1)+f(n-2)\)</span>，当 <span class="math inline">\(n\)</span>
+较小时，我们可以通过递归或者循环得到数列值；但当 <span class="math inline">\(n\)</span> 较大时，使用递归或者循环效率就低了；当
+<span class="math inline">\(n\)</span>
+特别大时，不难发现如果用普通的算法几乎已经是无解了。</p>
+<p>但是，我们可以用另一种方法解决递推数列问题。</p>
+<p>我们构建一个 <span class="math inline">\(1\times2\)</span> 的答案矩阵
+<span class="math inline">\(F(n)\)</span>： <span class="math display">\[
+F(n)=\left[\begin{matrix}f(n)&amp;f(n-1)\end{matrix}\right]
+\]</span> 然后构造一个 <span class="math inline">\(2\times2\)</span>
+的累乘矩阵 <span class="math inline">\(base\)</span>： <span class="math display">\[
+base=\left[\begin{matrix}a&amp;b\\c&amp;d\end{matrix}\right]
+\]</span> 其中 <span class="math inline">\(a,b,c,d\)</span>
+均为未知数，需要我们构造后能够满足条件： <span class="math display">\[
+F(n)\times
+base=F(n+1)=\left[\begin{matrix}f(n+1)&amp;f(n)\end{matrix}\right]
+\]</span> 即 <span class="math display">\[
+\left[\begin{matrix}f(n)&amp;f(n-1)\end{matrix}\right]\times
+\left[\begin{matrix}a&amp;b\\c&amp;d\end{matrix}\right]=\left[\begin{matrix}af(n)+cf(n-1)&amp;bf(n)+df(n-1)\end{matrix}\right]=\left[\begin{matrix}f(n+1)&amp;f(n)\end{matrix}\right]
+\]</span> 可以推得累乘矩阵 <span class="math inline">\(base\)</span> 为
+<span class="math display">\[
+base=\left[\begin{matrix}1&amp;1\\1&amp;0\end{matrix}\right]
+\]</span> 那么我们就能够将斐波那契数列递推公式转换为含有矩阵的公式：
+<span class="math display">\[
+F(n+k)=F(n)\times base^k
+\]</span> 比如说我们取 <span class="math inline">\(n=2\)</span>，即
+<span class="math inline">\(F(n)=\left[\begin{matrix}f(2)&amp;f(1)\end{matrix}\right]=\left[\begin{matrix}1&amp;1\end{matrix}\right]\)</span></p>
+<p>那么我们要求 <span class="math inline">\(F(20)\)</span>，即为 <span class="math display">\[
+F(20)=F(2)*base^{18}
+\]</span> 通过矩阵快速幂我们可以快速得到 <span class="math inline">\(base^{18}\)</span> 的结果，最后再与 <span class="math inline">\(F(2)\)</span>
+矩阵相乘即可得到最终结果，将算法效率提高至 <span class="math inline">\(O(log\ n)\)</span></p>
+<h3 id="带常数项-k">带常数项 <span class="math inline">\(k\)</span></h3>
+<p>例如递推方程 <span class="math inline">\(f(n)=f(n-1)+f(n-2)+k\)</span>，求 <span class="math inline">\(f(n)\)</span></p>
+<p>构建常数项递推式：<span class="math inline">\(k_n=k_{n-1}+0\)</span></p>
+<p>常数项不可忽略，需要专门加一维来计算常数。</p>
+<p>故构建矩阵如下： <span class="math display">\[
+F(n)=\left[\begin{matrix}f(n)&amp;f(n-1)&amp;k\end{matrix}\right],\
+base=\left[\begin{matrix}1&amp;1&amp;0\\1&amp;0&amp;0\\1&amp;0&amp;1\end{matrix}\right]
+\]</span></p>
+<h3 id="带未知数项-n">带未知数项 <span class="math inline">\(n\)</span></h3>
+<p>例如递推方程 <span class="math inline">\(f(n)=f(n-1)+f(n-2)+n\)</span>，求 <span class="math inline">\(f(n)\)</span></p>
+<p>构建常数项递推式：<span class="math inline">\(n=(n-1)+1\)</span></p>
+<p>虽然 <span class="math inline">\(f(n)\)</span>
+的转移只有四项，但需要加多一维来辅助未知项 <span class="math inline">\(n\)</span> 的递推。</p>
+<p>故构建矩阵如下： <span class="math display">\[
+F(n)=\left[\begin{matrix}f(n)&amp;f(n-1)&amp;n&amp;1\end{matrix}\right],\
+base=\left[\begin{matrix}1&amp;1&amp;0&amp;0\\1&amp;0&amp;0&amp;0\\1&amp;0&amp;1&amp;0\\1&amp;0&amp;1&amp;1\end{matrix}\right]
+\]</span></p>
+<h3 id="求和">求和</h3>
+<p>例如递推方程 <span class="math inline">\(f(n)=f(n-1)+f(n-2)\)</span>，求 <span class="math inline">\(S(n)=\displaystyle\sum_{i=1}^nf(i)\)</span></p>
+<p>需要尝试将 <span class="math inline">\(S(n)\)</span> 放入矩阵与 <span class="math inline">\(f(n)\)</span> 一起递推。</p>
+<p><strong>前缀和的递推式</strong>为：<span class="math inline">\(S(n)=S(n-1)+f(n)\)</span></p>
+<p>故构建矩阵如下： <span class="math display">\[
+F(n)=\left[\begin{matrix}f(n)&amp;f(n-1)&amp;S(n-1)\end{matrix}\right],\
+base=\left[\begin{matrix}1&amp;1&amp;1\\1&amp;0&amp;0\\0&amp;0&amp;1\end{matrix}\right]
+\]</span></p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>math</tag>
+      </tags>
+  </entry>
 </search>
