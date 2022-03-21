@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关种子、种子文件磁力链接等的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="torrent笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/torrent-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关种子、种子文件磁力链接等的笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/torrent-note/关系图.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/torrent-note/bootstrap%20node.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/torrent-note/ping%20request.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/torrent-note/find_node%20request.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/torrent-note/get_peers%20request.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/torrent-note/announce_peer%20request.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/torrent-note/uTP-header.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/torrent-note/st_syn.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/torrent-note/handshake.png">
+<meta property="article:published_time" content="2022-03-21T02:00:00.000Z">
+<meta property="article:modified_time" content="2022-03-21T09:38:58.340Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="torrent">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/torrent-note/关系图.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/torrent-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/torrent-note.html","path":"/torrent-note.html","title":"torrent笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>torrent笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">46</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">52</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E6%96%87"><span class="nav-number">1.</span> <span class="nav-text">前文</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#bencoding-%E7%BC%96%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">Bencoding 编码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#seeds-peers-leechers"><span class="nav-number">3.</span> <span class="nav-text">Seeds &amp; Peers &amp; Leechers</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%8D%E5%AD%90%E6%96%87%E4%BB%B6%E4%B8%8E%E7%A3%81%E5%8A%9B%E9%93%BE%E6%8E%A5"><span class="nav-number">4.</span> <span class="nav-text">种子文件与磁力链接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#dht-%E7%BD%91%E7%BB%9C"><span class="nav-number">5.</span> <span class="nav-text">DHT 网络</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#krpc-%E5%8D%8F%E8%AE%AE"><span class="nav-number">6.</span> <span class="nav-text">KRPC 协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A7%8D%E5%AD%90%E6%96%87%E4%BB%B6%E6%A0%BC%E5%BC%8F"><span class="nav-number">7.</span> <span class="nav-text">种子文件格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#utp-%E5%8D%8F%E8%AE%AE"><span class="nav-number">8.</span> <span class="nav-text">uTP 协议</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#peer-wire%E5%8D%8F%E8%AE%AE"><span class="nav-number">9.</span> <span class="nav-text">Peer Wire协议</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">52</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">46</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/torrent-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          torrent笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-03-21 10:00:00" itemprop="dateCreated datePublished" datetime="2022-03-21T10:00:00+08:00">2022-03-21</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关种子、种子文件磁力链接等的笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="前文">前文</h1>
+<p>要理解下面的内容之前，首先要知道什么是 BitTorrent</p>
+<p>BitTorrent 是一种点对点（P2P, Peers to
+Peers）的通信协议，用于在互联网上分发大量的数据和电子文件，包括但不限于数字视频文件或者歌曲文件。</p>
+<p>而点对点（P2P, Peers to Peers）网络是指仅两台或多台 PC
+连接并共享资源而无需通过单独的服务器的用户网络。</p>
+<p>BitTorrent 协议可用于减少分发大文件对服务器和网络的影响。BitTorrent
+协议不是从单个源服务器下载文件，而是允许用户加入主机“群”（一群人下载和上传相同的文件），以同时从彼此下载和上传。</p>
+<p>使用 BitTorrent
+协议，几台基本计算机（例如家用计算机）可以取代大型服务器，同时有效地将文件分发给许多收件人。这种较低的带宽使用量还有助于防止给定区域的互联网流量大幅飙升，从而为所有用户保持更高的互联网速度，无论他们是否使用
+BitTorrent 协议。</p>
+<h1 id="bencoding-编码">Bencoding 编码</h1>
+<p>Bencoding 编码在 BitTorrent 协议中非常常见，更重要的是，BT
+种子文件本身就是一个该编码的字典。</p>
+<p>Bencoding 编码是一种非常简洁的数据格式，共支持 4 种不同的类型：</p>
+<ol type="1">
+<li><p>字符串</p>
+<p>格式为 <code>&lt;字符串长度&gt;:&lt;字符串&gt;</code>，例如
+<code>4:qsdz</code> 代表字符串 <code>qsdz</code></p></li>
+<li><p>整型</p>
+<p>格式为 <code>i&lt;值&gt;e</code>，例如 <code>i10086e</code> 代表整型
+<code>10086</code></p></li>
+<li><p>列表</p>
+<p>格式为 <code>l[data1][data2][...]e</code>，例如
+<code>l4:qsdz4:yydsi666ee</code> 可以拆分看作
+<code>l[4:qsdz][4:yyds][i666e]e</code>，即表示列表
+<code>[qsdz, yyds, 666]</code></p></li>
+<li><p>字典</p>
+<p>格式为 <code>d[key1][value2][...]e</code>，例如
+<code>d4:qsdzi666e4:yyds2:mee</code> 可以拆分看作
+<code>d[4:qsdz][i666e][4:yyds][2:me]e</code>，即表示字典
+<code>&#123;qsdz:666, yyds:me&#125;</code></p>
+<p>但是需要注意的是，字典的 key
+必须是字符串，并且需按照字母顺序排序。</p></li>
+</ol>
+<h1 id="seeds-peers-leechers">Seeds &amp; Peers &amp; Leechers</h1>
+<p><strong>Seed </strong>是一个在其客户端中打开 torrent
+文件的人（假设你正在尝试下载相同的文件），你和他们之间的唯一区别是他们已经下载了完整的文件并且现在正在<strong>播种</strong>，即正在<strong>共享</strong>给
+<strong>Peers</strong> 文件，但不从其他人那里下载文件的任何部分。</p>
+<p><strong>Leecher</strong>
+是那些同时进行下载和上传的人。如果用户开始共享他已经拥有的文件，并下载其他用户已经上传或正在上传
+torrent 文件的文件，他就成为了
+<strong>Leecher</strong>。显而易见，<strong>Leechers</strong>
+倾向于下载他们所没有的资源，共享他们已有的资源。</p>
+<p>理论上来说，<strong>播种</strong>的人越多，对种子文件的下载速度就会越快。当
+<strong>Leechers</strong>
+的文件下载完成，并且他们仍然没有从上传中删除该文件时，他们就会成为
+<strong>Seeds</strong>。</p>
+<figure>
+<img src="/torrent-note/关系图.png" alt="关系图">
+<figcaption aria-hidden="true">关系图</figcaption>
+</figure>
+<p>在上图中，中间的电脑即是 <strong>Seed</strong>，而其他的电脑是
+<strong>Peers</strong>。</p>
+<p><strong>Peer</strong>
+是在种子网络中同时下载和上传文件的人。文件是分块下载的，当一个用户下载了一些文件块后，他就会自动开始上传它。</p>
+<p>如果更多的人参与到种子网络中，文件的下载速度就会更快。当一个节点下载完毕并希望继续上传时，他就变成了
+<strong>Seed</strong>。</p>
+<h1 id="种子文件与磁力链接">种子文件与磁力链接</h1>
+<p>在很早的网络时代，下载都是简单的集中式客户端/服务器模式，一个或多个服务器支撑成千上万的客户端连接下载，不仅带宽遇到了瓶颈，而且太容易出现单点故障。这时
+P2P 被提出来解决这个问题，通过分布式提高网络资源的利用率。但是 P2P
+只是一个理念，真正将这个理念贯彻的还是 BitTorrent 协议。</p>
+<p>在 BitTorrent （简称
+BT）中，所有的资源被切成很小的一份文件块（<strong>pieces</strong>），在这个基础上，BitTorrent
+网络中的所有具有相同请求的用户可以相互传资源碎片，并且谁传得越多谁就能获得越多。</p>
+<p>而种子文件，就是拥有完整资源的人，根据 BitTorrent
+协议，生成的一个包含 Tracker 信息和文件信息的文本文件。</p>
+<p>Tracker 信息主要是BT下载中需要用到的 Tracker 服务器的地址和针对
+Tracker 服务器的设置，文件信息是根据对目标文件的计算生成的，计算结果根据
+BitTorrent 协议内的 Bencode
+规则进行编码。它的主要原理是需要把提供下载的文件虚拟分成大小相等的块，块大小必须为2k的整数次方（由于是虚拟分块，硬盘上并不产生各个块文件），并把每个块的索引信息和
+Hash
+验证码写入种子文件中；所以，种子文件就是被下载文件的<strong>索引</strong>。</p>
+<p>下载者要下载文件内容，需要先得到相应的种子文件，然后使用 BT
+客户端软件进行下载。 下载时，BT 客户端首先解析种子文件得到 Tracker
+地址，然后连接 Tracker 服务器。Tracker
+服务器回应下载者的请求，提供下载者其他下载者（包括发布者）的 IP。</p>
+<p>下载者再连接其他下载者，根据种子文件，两者分别告知对方自己已经有的块，然后交换对方所没有的数据。此时不需要其他服务器参与，分散了单个线路上的数据流量，因此减轻了服务器负担。
+下载者每得到一个块，需要算出下载块的 Hash
+验证码与种子文件中的对比，如果一样则说明块正确，不一样则需要重新下载这个块。</p>
+<p>与此同时，当拥有完整文件的用户越多，种子的寿命也就越长。</p>
+<p>综上所述，可以看出 Tracker
+服务器在BT网络中充当着非常重要的作用，和传统的客户端/服务器模式一样，Tracker
+服务器同样会存在单点故障问题。所以在BT技术的基础上，后来又衍生出 DHT
+网络和磁力链接技术，DHT 全称为分布式哈希表（Distributed Hash
+Table），是一种分布式存储方法。</p>
+<p>DHT 网络是 Tracker-less 的，不依赖于其他的 Tracker
+服务器。在这种情况下，每个客户端负责一个小范围的路由，并负责存储一小部分数据，从而实现整个
+DHT
+网络的寻址和存储。使用支持该技术的BT下载软件，用户无需连上Tracker就可以下载，因为软件会在
+DHT 网络中寻找下载同一文件的其他用户并与之通讯，开始下载任务。</p>
+<p>在网络中定位资源最简单的方法是URL（统一资源定位符），它是通过资源的位置来进行定位。而在DHT网络中，则是使用URN（统一资源名称）来进行定位，磁力链接就是基于文件内容的散列函数值来链接到特定文件，生成一个唯一的文件识别符，从而在DHT网络中定位并下载文件。</p>
+<p>磁力链接格式如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">magnet:?xt=urn:btih:e2467cbf021192c241367b892230dc1e05c0580e</span><br></pre></td></tr></table></figure>
+<p>其中 <code>urn</code> 为统一资源名称，<code>bith</code> 是
+<strong>BitTorrent Info Hash</strong> 的缩写，是 BitTorrent 使用的 Hash
+函数。</p>
+<p>实际上除了 <code>bith</code> 还可以是其他类型的 Hash
+函数，但主流仍然是 <code>bith</code>。</p>
+<p>通过这一串字符串，BT 工具就可以在 DHT 网络中定位下载文件。</p>
+<p>根据以上我们可以得知，种子的稳定性高，信息多，但不便于传播扩散；而磁力链接不稳定，可能在某时刻不能获取，但是很便于扩散。</p>
+<h1 id="dht-网络">DHT 网络</h1>
+<p>磁力链接的发明使得 P2P 客户端直接从 DHT
+网络中寻找资源，而不是传统的依赖于 Tracker 服务器，这样就避免了 Tracker
+服务器的单点故障问题，所以从 DHT 中获取的种子有时候也叫做
+<code>Trackerless torrent</code>。DHT
+网络是一种分布式的去中心化网络，每个加入 DHT
+网络的节点都要负责存储这个网络中的资源和其他成员的联系信息。</p>
+<p>DHT
+网络很像是六人定律，它通过用户与用户之间的联系和转移，最终得到我们的目标。</p>
+<p>如果一个新节点要加入到 DHT
+网络中，它必须要先认识一个人带你进去。这样的人我们把他叫做
+<code>bootstrap node</code>，常见的 <code>bootstrap node</code>
+有：<code>router.bittorrent.com</code>、<code>router.utorrent.com</code>、<code>router.bitcomet.com</code>、<code>dht.transmissionbt.com</code>
+等等。</p>
+<p>所以在一个 torrent 流量中，我们经常能看到一开始会有 DNS
+请求。例如下图</p>
+<figure>
+<img src="/torrent-note/bootstrap%20node.png" alt="bootstrap node">
+<figcaption aria-hidden="true">bootstrap node</figcaption>
+</figure>
+<h1 id="krpc-协议">KRPC 协议</h1>
+<p>DHT 建立在 UDP 之上，想要获取需要的 Peers 信息，首先要了解下
+<code>Kademlia</code> 的 <code>KRPC</code> 协议。 关于路由表和 Kademlia
+的介绍，可以参照官方文档。我们这里的重点在于如何根据磁力链接获取拥有该磁力链接对应的种子文件信息的
+Peers，所以只需要了解 <code>KRPC</code> 协议。 <code>KRPC</code>
+协议是由 Bencoding 编码组成的一个简单的 RPC
+结构，有4种请求：<code>ping</code>、<code>find_node</code>、<code>get_peers</code>
+和 <code>announce_peer</code>。</p>
+<ul>
+<li><code>ping</code> → 检测节点是否可达，请求包含一个参数
+<code>id</code>，代表该节点的 id。对应的回复也应该包含回复者的id。</li>
+<li><code>find_node</code> → 该请求包含两个参数 <code>id</code> 和
+<code>target</code>，<code>id</code> 为该节点的 id，<code>target</code>
+为要查询的 id。回复中应该包含被请求节点的路由表中距离
+<code>target</code> 最接近的 8 个 id。</li>
+<li><code>get_peers</code> → 该请求包含两个参数 <code>id</code> 和
+<code>infohash</code>，<code>id</code> 为该节点的
+id，<code>info_hash</code> 为种子文件的SHA1哈希值，也就是磁力链接的
+<code>btih</code> 值。如果被请求的节点有对应 <code>info_hash</code> 的
+<strong>peers</strong>，他将返回一个关键字
+<code>values</code>，这是一个列表类型的字符串。每一个字符串包含了
+<code>CompactIP-address/portinfo</code>
+格式的peers信息。如果被请求的节点没有这个 <code>infohash</code> 的
+<strong>peers</strong>，那么他将返回关键字
+<code>nodes</code>，这个关键字包含了被请求节点的路由表中离
+<code>info_hash</code> 最近的 K 个 <strong>nodes</strong>，使用
+<code>Compactnodeinfo</code> 格式回复。</li>
+<li><code>announce_peer</code> → 如果节点正在下载 torrent
+文件，则需要通知其他人你正在哪个端口进行下载，这样就可以分享给其他人，让其他人连接你进行下载。</li>
+</ul>
+<p>在 WireShark 中，可以查看 <code>BT-DHT</code> 协议查看这些请求：</p>
+<ul>
+<li><p><code>ping</code></p>
+<figure>
+<img src="/torrent-note/ping%20request.png" alt="ping request">
+<figcaption aria-hidden="true">ping request</figcaption>
+</figure></li>
+<li><p><code>find_node</code></p>
+<figure>
+<img src="/torrent-note/find_node%20request.png" alt="find_node request">
+<figcaption aria-hidden="true">find_node request</figcaption>
+</figure></li>
+<li><p><code>get_peers</code></p>
+<figure>
+<img src="/torrent-note/get_peers%20request.png" alt="get_peers request">
+<figcaption aria-hidden="true">get_peers request</figcaption>
+</figure></li>
+<li><p><code>announce_peer</code></p>
+<figure>
+<img src="/torrent-note/announce_peer%20request.png" alt="announce_peer request">
+<figcaption aria-hidden="true">announce_peer request</figcaption>
+</figure></li>
+</ul>
+<h1 id="种子文件格式">种子文件格式</h1>
+<p>BT种子文件整个是一个 Bencoding 编码字典格式，比较重要的
+<code>key</code> 有：</p>
+<ul>
+<li><code>announce</code> → tracker 服务器的地址</li>
+<li><code>announce-list</code> → 可选的 tracker 服务器地址</li>
+<li><code>creation date</code> → 文件创建时间</li>
+<li><code>created by</code> → 文件创建者</li>
+<li><code>info</code> → BT 种子文件的文件信息</li>
+</ul>
+<p>而 <code>info</code> 的 <code>value</code>
+会根据种子包含的是单文件还是多文件有所区别，以下是公共部分：</p>
+<ul>
+<li><code>piece length</code> → 每一数据块的长度</li>
+<li><code>pieces</code> → 所有数据块的 SHA1 校验值</li>
+</ul>
+<p>如果种子包含的是单文件，则还有以下 <code>key</code></p>
+<ul>
+<li><code>name</code> → 文件名称</li>
+<li><code>length</code> → 文件的长度</li>
+</ul>
+<p>如果包含的是多文件，则是以下 <code>key</code></p>
+<ul>
+<li><code>name</code> → 文件夹名称</li>
+<li><code>files</code> →
+文件列表，每个文件列表下面是包括每一个单文件的信息，文件信息是个字典</li>
+</ul>
+<p>而 <code>info</code> 中的内容是种子文件中的重中之重，在 DHT
+网络中保留的内容就是 <code>info</code> 字段的内容。</p>
+<p>而磁力链接中的 <code>infohash</code> 便是根据 <code>info</code>
+字段的内容计算的，<code>info</code> 字段的 <code>pieces</code>
+字段为每个数据块的校验值，作用便是验证下载的文件是否正确。</p>
+<p>要注意的是 <code>info</code>字段的下载也是分块的下载完成后使用
+<code>infohash</code> 进行校验。</p>
+<p>所以，我们可以知道，磁力链接下载文件分成两个步骤：</p>
+<ol type="1">
+<li>根据 <code>infohash</code> 下载种子文件的 <code>info</code>
+字段，注意到种子文件并不是必须的。</li>
+<li>再根据 <code>info</code>
+下载源文件，将每一个数据块进行校验，不一致则重新下载。</li>
+</ol>
+<p>需要注意的是，一般的种子文件会包含 <code>announce</code>，也就是
+tracker 服务器的地址，如果没有 tracker 服务器，文件中可能会包含
+<code>nodes</code>，<code>nodes</code> 是存有种子信息的
+<strong>peer</strong> 节点，这样的种子文件就是
+<code>trackerless torrent</code>。如果有 nodes 客户端直接从
+<code>nodes</code> 获取种子信息，而从 DHT 网络中下载下来的种子文件既没有
+<code>annouce</code> 也没有 <code>nodes</code>，客户端只能通过
+<code>info</code> 字段计算出 <code>hashinfo</code>，再从
+<code>bootstrap node</code> 节点开始在 DHT 网络中寻找种子信息。</p>
+<h1 id="utp-协议">uTP 协议</h1>
+<p><code>uTP</code> 是一个基于 UDP 的开放的 BT 点对点文件共享协议。</p>
+<p>在<code>uTP</code>协议出现之前，BT下载会占用网络中大量的链接，直接导致其它网络应用服务质量下载和网络的拥堵，因此有很多ISP都开始限制BT的下载。<code>uTP</code>减轻了网络延迟并解决了传统的基于TCP的BT协议所遇到的拥塞控制问题，提供可靠的有序的传送。</p>
+<p>一个有效的 <code>uTP</code> 数据包包含下面格式的报头：</p>
+<figure>
+<img src="/torrent-note/uTP-header.png" alt="uTP-header">
+<figcaption aria-hidden="true">uTP-header</figcaption>
+</figure>
+<p>其中，我们最为关心的是
+<code>type</code>、<code>connection id</code>、<code>seq_nr</code>和<code>ack_nr</code>
+这几个值。<code>type</code> 字段表示包类型，uTP的包类型有下面5种：</p>
+<ul>
+<li><code>ST_DATA</code> = 0 → 最重要的数据包，uTP
+就是使用该类型的包传送数据</li>
+<li><code>ST_FIN</code> = 1 → 关闭连接，这是 uTP
+连接的最后一个包，类似于 TCP 中的 FIN</li>
+<li><code>ST_STATE</code> = 2 →
+简单的应答包，表明已从对方收到了数据包，该包不包含任何数据，<code>seq_nr</code>
+值不变</li>
+<li><code>ST_RESET</code> = 3 → 终止连接，类似于 TCP 中的
+<code>RST</code></li>
+<li><code>ST_SYN</code> = 4 → 初始化连接，类似于 TCP 中的
+<code>SYN</code>，这是 uTP 连接的第一个包</li>
+</ul>
+<p>关于 <code>uTP</code> 协议的内容参考官方文档<a target="_blank" rel="noopener" href="http://www.bittorrent.org/beps/bep_0029.html">BEP-029</a>。</p>
+<p><code>uTP</code> 的一个很重要的特点是使用 <code>connection id</code>
+来标识一次连接，而不是每个包算一次连接。所以在分析 <code>ST_DATA</code>
+时，需要注意找所有 <code>connection id</code> 相同的数据包，然后按
+<code>seq_nr</code> 排序，<code>seq_nr</code> 应该是依次递增的（注意
+<code>ST_STATE</code> 包不会增加<code>seq_nr</code>值），如果发现两个
+<code>ST_DATA</code> 的 <code>seq_nr</code>
+值相同则说明后面那个报文是重复报文需要忽略掉，如果发现两个
+<code>ST_DATA</code> 的 <code>seq_nr</code>
+值不是连续的，中间差了一个或多个，则可能是由于网络原因发生了丢包现象，数据包将不可用。</p>
+<p>下图是一个简单的 <code>ST_SYN</code> 包：</p>
+<figure>
+<img src="/torrent-note/st_syn.png" alt="st_syn">
+<figcaption aria-hidden="true">st_syn</figcaption>
+</figure>
+<h1 id="peer-wire协议">Peer Wire协议</h1>
+<p><code>Peer Wire</code>
+协议是Peer之间的通信协议，通常由一个握手消息开始。握手消息的格式是这样的：<code>&lt;pstrlen&gt;&lt;pstr&gt;&lt;reserved&gt;&lt;info_hash&gt;&lt;peer_id&gt;</code>
+下面是一个握手报文的示例：</p>
+<figure>
+<img src="/torrent-note/handshake.png" alt="handshake">
+<figcaption aria-hidden="true">handshake</figcaption>
+</figure>
+<p>关于 <code>Peer Wire</code> 协议的详细内容，请参考<a target="_blank" rel="noopener" href="https://wiki.theory.org/BitTorrentSpecification">BitTorrent的规范</a>。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/torrent-note.html" title="torrent笔记">https://hasegawaazusa.github.io/torrent-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/torrent/" rel="tag"># torrent</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/archiver-note.html" rel="prev" title="归档工具笔记">
+                  <i class="fa fa-chevron-left"></i> 归档工具笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">181k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:44</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
