@@ -8672,8 +8672,8 @@ tracker 服务器的地址，如果没有 tracker 服务器，文件中可能会
 <p>例如 <span class="math inline">\(a^{11}=a^{2^0+2^1+2^2}\)</span></p>
 <p>很自然可以得到递归方程： <span class="math display">\[
 a^n=\begin{cases}
-a^{n-1}\cdot a,\mathrm{if\ a\ is\ odd}\\
-a^{\frac n2}\cdot a^{\frac n2},\mathrm{if\ a\ is\ even\ but\ not\ 0}\\
+a^{n-1}\cdot a,\mathrm{if\ n\ is\ odd}\\
+a^{\frac n2}\cdot a^{\frac n2},\mathrm{if\ n\ is\ even\ but\ not\ 0}\\
 1,\mathrm{if\ n=0}
 \end{cases}
 \]</span></p>
@@ -8689,7 +8689,7 @@ a^{\frac n2}\cdot a^{\frac n2},\mathrm{if\ a\ is\ even\ but\ not\ 0}\\
 \end{matrix}
 \right]\right)^{11}
 =
-\left(\left[
+\displaystyle\left(\left[
 \begin{matrix}
 1&amp;2\\
 3&amp;4
@@ -8758,6 +8758,57 @@ base=\left[\begin{matrix}1&amp;1&amp;1\\1&amp;0&amp;0\\0&amp;0&amp;1\end{matrix}
       <tags>
         <tag>note</tag>
         <tag>math</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>侧信道攻击笔记</title>
+    <url>//side-channel-attack-note.html</url>
+    <content><![CDATA[<h1 id="侧信道攻击">侧信道攻击</h1>
+<h2 id="简述">简述</h2>
+<p>侧信道攻击是基于从计算机系统中获得的信息的任何攻击，而不是算法本身的弱点（例如密码分析和软件错误）。时间信息、功耗、电磁泄漏甚至是声音都可以提供额外的信息来源，可以加以利用。</p>
+<p>Web 2.0应用程序和软件即服务（SaaS）的兴起显著增加了 Web
+侧信道攻击的可能性，即使 Web
+浏览器和服务器之间的传输是加密的，比如说盲注攻击。</p>
+<p>侧信道攻击一般类别包括：</p>
+<ul>
+<li>缓存攻击 →
+攻击基于攻击者监控受害者在共享物理系统（如在虚拟化环境或某种云服务中）进行的缓存访问的能力。</li>
+<li>定时攻击 →
+基于测量各种计算（例如，将攻击者的给定密码与受害者的未知密码进行比较）执行的时间的攻击。</li>
+<li>电源监控攻击 → 在计算过程中利用硬件不同功耗的攻击。</li>
+<li>电磁攻击 →
+基于泄露的电磁辐射的攻击，可以直接提供明文等信息。此类测量可用于使用与功率分析中的技术等效的技术来推断密码密钥，或者可用于非密码攻击。</li>
+<li>声学密码分析 →
+利用计算过程中产生的声音的攻击（类似于功率分析）。</li>
+<li>差分故障分析 → 通过在计算中引入故障来发现秘密。</li>
+<li>数据残留 → 敏感数据在被删除后被读取。</li>
+<li>软件发起的故障攻击 →
+目前是一种罕见的侧通道，Row_hammer是一个示例</li>
+<li>光学 →
+可以使用高分辨率相机或其他具有此类功能的设备，通过视觉记录来读取机密和敏感数据。</li>
+</ul>
+<p>在所有情况下，基本原则是由密码系统（在侧面）的操作引起的物理效应可以提供有关系统中秘密的有用的额外信息，例如，密码密钥、部分状态信息、完整或部分明文和等等。</p>
+<h2 id="定时攻击">定时攻击</h2>
+<h3 id="简述-1">简述</h3>
+<p>在定时攻击中，攻击者试图通过分析执行密码算法所花费的时间来破坏密码系统。因为计算机中的每个逻辑操作都需要时间来执行，并且时间可能因输入而异，所以通过精确测量每个操作的时间，攻击者可以回溯到输入。通过时间信息发现秘密可能比使用已知明文、密文对的密码分析要容易得多。有时，时序信息与密码分析相结合，以增加信息泄漏率。</p>
+<p>例如模幂运算中使用的平方和乘法算法的执行时间线性地取决于密钥中“1”位的数量。虽然“1”位的数量不足以使找到密钥变得容易，但使用相同的密钥和不同的输入重复执行可用于执行时序信息的统计相关性分析以完全恢复密钥，即使通过被动攻击者。</p>
+<p>但是需要注意到的是，观察到的时序测量通常包括噪声（来自诸如网络延迟、访问与访问之间的磁盘驱动器访问差异以及用于从传输错误中恢复的纠错技术等来源）。</p>
+<p>当然，定时攻击对许多加密算法是实用的，包括 RSA、ElGamal
+和数字签名算法。</p>
+<h3 id="实例">实例</h3>
+<p>假设我们有一个程序，有一个简单的不安全的密码验证函数：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">insecureStringCompare</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* a, <span class="keyword">const</span> <span class="keyword">char</span>* b, <span class="keyword">size_t</span> length)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; length; i++)</span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span> (a[i] != b[i])</span><br><span class="line">		&#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>程序需要输入一个 8 位数字 PIN，当输入长度不为 8 时，程序会提示
+<code>length error</code>。</p>
+<p>这个时候我们可以用定时攻击，脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pwn</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span>(<span class="params">PIN</span>):</span></span><br><span class="line">    io = pwn.process(<span class="string">&quot;./pin_checker&quot;</span>)</span><br><span class="line">    io.recvall()</span><br><span class="line">    start = time.time()</span><br><span class="line">    io.sendline(PIN.encode())</span><br><span class="line">    io.recvall()</span><br><span class="line">    end = time.time()</span><br><span class="line">    io.close()</span><br><span class="line">    <span class="keyword">return</span> end - start</span><br><span class="line"></span><br><span class="line">result = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">8</span>):</span><br><span class="line">    t = []</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line">        ret = run(result + <span class="built_in">str</span>(j) + <span class="string">&quot;0&quot;</span> * (<span class="number">7</span> - i))</span><br><span class="line">        t.append(ret)</span><br><span class="line">    result += <span class="built_in">str</span>(t.index(<span class="built_in">max</span>(t)))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;PIN: <span class="subst">&#123;result&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>通过对每个密码运行时间的不同，我们便可以不通过密码分析得到 PIN。</p>
+<p>同时如果需要对定时攻击进行防御，我们可以将比较函数稍稍修改：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">constantTimeStringCompare</span><span class="params">(<span class="keyword">const</span> <span class="keyword">char</span>* a, <span class="keyword">const</span> <span class="keyword">char</span>* b, <span class="keyword">size_t</span> length)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">int</span> result = <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span> (<span class="keyword">size_t</span> i = <span class="number">0</span>; i &lt; length; i++)</span><br><span class="line">		result &amp;= a[i] == b[i];</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个密码比较函数在时间上是安全的。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
       </tags>
   </entry>
 </search>

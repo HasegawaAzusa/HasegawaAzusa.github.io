@@ -30,7 +30,7 @@
 <meta property="og:description" content="快速幂的一个小笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-21T12:00:00.000Z">
-<meta property="article:modified_time" content="2022-03-21T16:57:05.660Z">
+<meta property="article:modified_time" content="2022-03-22T00:48:01.246Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="math">
@@ -91,7 +91,7 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">46</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">53</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">54</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -164,7 +164,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-count">54</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -276,8 +276,8 @@
 <p>例如 <span class="math inline">\(a^{11}=a^{2^0+2^1+2^2}\)</span></p>
 <p>很自然可以得到递归方程： <span class="math display">\[
 a^n=\begin{cases}
-a^{n-1}\cdot a,\mathrm{if\ a\ is\ odd}\\
-a^{\frac n2}\cdot a^{\frac n2},\mathrm{if\ a\ is\ even\ but\ not\ 0}\\
+a^{n-1}\cdot a,\mathrm{if\ n\ is\ odd}\\
+a^{\frac n2}\cdot a^{\frac n2},\mathrm{if\ n\ is\ even\ but\ not\ 0}\\
 1,\mathrm{if\ n=0}
 \end{cases}
 \]</span></p>
@@ -293,7 +293,7 @@ a^{\frac n2}\cdot a^{\frac n2},\mathrm{if\ a\ is\ even\ but\ not\ 0}\\
 \end{matrix}
 \right]\right)^{11}
 =
-\left(\left[
+\displaystyle\left(\left[
 \begin{matrix}
 1&amp;2\\
 3&amp;4
@@ -397,6 +397,9 @@ base=\left[\begin{matrix}1&amp;1&amp;1\\1&amp;0&amp;0\\0&amp;0&amp;1\end{matrix}
                 </a>
             </div>
             <div class="post-nav-item">
+                <a href="/side-channel-attack-note.html" rel="next" title="侧信道攻击笔记">
+                  侧信道攻击笔记 <i class="fa fa-chevron-right"></i>
+                </a>
             </div>
           </div>
     </footer>
@@ -429,14 +432,14 @@ base=\left[\begin{matrix}1&amp;1&amp;1\\1&amp;0&amp;0\\0&amp;0&amp;1\end{matrix}
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">184k</span>
+    <span title="站点总字数">186k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">2:47</span>
+    <span title="站点阅读时长">2:49</span>
   </span>
 </div>
 
