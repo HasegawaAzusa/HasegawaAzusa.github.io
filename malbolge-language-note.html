@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关malbolge这个奇怪编程语言的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="malbolge编程语言笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/malbolge-language-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关malbolge这个奇怪编程语言的笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/malbolge-language-note/crz.png">
+<meta property="article:published_time" content="2022-04-04T06:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-04T10:50:49.137Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="language">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/malbolge-language-note/crz.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/malbolge-language-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/malbolge-language-note.html","path":"/malbolge-language-note.html","title":"malbolge编程语言笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>malbolge编程语言笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">48</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">59</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1"><span class="nav-number">2.</span> <span class="nav-text">设计</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%84%E5%AD%98%E5%99%A8"><span class="nav-number">2.1.</span> <span class="nav-text">寄存器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E9%92%88%E7%AC%A6%E5%8F%B7"><span class="nav-number">2.2.</span> <span class="nav-text">指针符号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98"><span class="nav-number">2.3.</span> <span class="nav-text">内存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%87%E4%BB%A4"><span class="nav-number">2.4.</span> <span class="nav-text">指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%96%AF%E7%8B%82%E6%93%8D%E4%BD%9C-crazy-operation"><span class="nav-number">2.5.</span> <span class="nav-text">疯狂操作 (crazy operation)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86"><span class="nav-number">2.6.</span> <span class="nav-text">加密</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%E4%BB%A3%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">示例代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#hello-world"><span class="nav-number">3.1.</span> <span class="nav-text">Hello, World!</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E4%B8%8E%E8%BF%90%E8%A1%8C"><span class="nav-number">4.</span> <span class="nav-text">编辑与运行</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">59</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">48</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/malbolge-language-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          malbolge编程语言笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-04 14:00:00" itemprop="dateCreated datePublished" datetime="2022-04-04T14:00:00+08:00">2022-04-04</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关malbolge这个奇怪编程语言的笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="简述">简述</h1>
+<p>Malbolge 由 Ben Olmstead 于 1998
+年发明。这种晦涩语言被认为是最复杂的编程语言。</p>
+<p>据说 Malbolge 编程语言的作者从未使用该语言编写任何程序。Olmstead
+发明该语言近两年后，Malbolge 中的 hello world 代码才出现。</p>
+<p>这门编程语言使用反直觉的<strong>疯狂运算</strong> (crazy
+operation)，<strong>三基运算</strong> (base-three arithmetic)
+和<strong>自修改代码</strong> (self-altering code) 来运行程序。</p>
+<p>它的难度在早期的<strong>深奥语言</strong> (esoteric languages)
+之上，例如 Brainfuck 和 Befunge。</p>
+<h1 id="设计">设计</h1>
+<p>Malbolge 的实现基于三元虚拟机。</p>
+<blockquote>
+<p>在实现上，编译器停止执行 33-126 范围之外的数据
+(即仅对可见字符有效)</p>
+</blockquote>
+<h2 id="寄存器">寄存器</h2>
+<ul>
+<li><strong>a</strong> → 累加器 (accumulator)，用于写操作和标准 I/O</li>
+<li><strong>c</strong> → 代码指针 (code pointer)，指向当前指令</li>
+<li><strong>d</strong> → 数据指针 (data
+pointer)，自动递增，指向数据操作指令</li>
+</ul>
+<h2 id="指针符号">指针符号</h2>
+<ul>
+<li>寄存器 <strong>d</strong> 可以保存一个内存地址</li>
+<li><strong>[d]</strong> 是寄存器间接寻址 (register indirect)</li>
+<li><strong>[c]</strong> 是类似的</li>
+</ul>
+<h2 id="内存">内存</h2>
+<p>数据是以三进制形式保存的（包括内存地址）。</p>
+<p>不同的实现有不同的内存限制，存在无内存限制的版本 (Malbolge
+Unshackled)。</p>
+<h2 id="指令">指令</h2>
+<p>Malbolge 有八个指令，通过取值 <strong>[c]</strong>
+来确定要执行的指令，与 <strong>c</strong> 的值相加，得到的结果模
+94，得到虚拟机对应的操作指令：</p>
+<table>
+<colgroup>
+<col style="width: 14%">
+<col style="width: 22%">
+<col style="width: 63%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">([c] + c) % 94</th>
+<th style="text-align: center;">操作指令</th>
+<th style="text-align: center;">用途</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">jmp [d]</td>
+<td style="text-align: center;">将 <strong>[d]</strong> 值赋值给
+<strong>c</strong>。需要注意的是 <strong>c</strong>
+还是会自增，因此执行的下一条指令是 <strong>[d] + 1 (mod
+59049)</strong>。</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">out a</td>
+<td style="text-align: center;">以 ASCII 码的形式输出 <strong>a</strong>
+的值到屏幕</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">in a</td>
+<td style="text-align: center;">将输入字符以 ASCII 码的形式赋值给
+<strong>a</strong>。换行符为 10；EOF 标识符是 59048。</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">39</td>
+<td style="text-align: center;">rotr [d] mov a, [d]</td>
+<td style="text-align: center;">将 <strong>[d]</strong> 值旋转 (例如
+000211111<strong>2</strong> 变为
+<strong>2</strong>000211111)，并将结果保存在 <strong>[d]</strong> 和
+<strong>a</strong>。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">40</td>
+<td style="text-align: center;">mov d, [d]</td>
+<td style="text-align: center;">将 <strong>[d]</strong> 值赋值给
+<strong>d</strong>。</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">62</td>
+<td style="text-align: center;">crz [d], a mov a, [d]</td>
+<td style="text-align: center;">将<strong>[d]</strong>的值和<strong>a</strong>的值进行<strong>疯狂操作</strong>
+(crazy operation)，并将结果保存在 <strong>[d]</strong> 和
+<strong>a</strong>。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">68</td>
+<td style="text-align: center;">nop</td>
+<td style="text-align: center;">不做任何事。</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">end</td>
+<td style="text-align: center;">结束程序。</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">default</td>
+<td style="text-align: center;">nop</td>
+<td style="text-align: center;">不做任何事。但需要注意的是有部分
+Malbolge 实现不会接受这样的操作数。</td>
+</tr>
+</tbody>
+</table>
+<p>在执行每条指令后，有罪的指令 (guilty instruction)
+会被加密，以便下一次执行该指令的时候不会做相同的事，除非刚刚发生了一次跳转。然后，<strong>c</strong>
+和 <strong>d</strong> 的值都加 1 并执行下一条指令。</p>
+<h2 id="疯狂操作-crazy-operation">疯狂操作 (crazy operation)</h2>
+<p>对于两个输入的三进制数，使用下表来获取结果。</p>
+<p>例如 <strong>crz 0001112220, 0120120120</strong> 得到结果
+<strong>1001022211</strong></p>
+<figure>
+<img src="/malbolge-language-note/crz.png" alt="crz">
+<figcaption aria-hidden="true">crz</figcaption>
+</figure>
+<h2 id="加密">加密</h2>
+<p>执行指令后，<strong>[c]</strong>
+处的值（不添加任何内容）将替换为自身的值模
+94。然后，使用下表找到结果值对应加密值，将加密值赋值给
+<strong>[c]</strong>。</p>
+<table>
+<colgroup>
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Result</th>
+<th style="text-align: center;">Encrypted</th>
+<th style="text-align: center;">Result</th>
+<th style="text-align: center;">Encrypted</th>
+<th style="text-align: center;">Result</th>
+<th style="text-align: center;">Encrypted</th>
+<th style="text-align: center;">Result</th>
+<th style="text-align: center;">Encrypted</th>
+<th style="text-align: center;">Result</th>
+<th style="text-align: center;">Encrypted</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;">57</td>
+<td style="text-align: center;"><strong>19</strong></td>
+<td style="text-align: center;">108</td>
+<td style="text-align: center;"><strong>38</strong></td>
+<td style="text-align: center;">113</td>
+<td style="text-align: center;"><strong>57</strong></td>
+<td style="text-align: center;">91</td>
+<td style="text-align: center;"><strong>76</strong></td>
+<td style="text-align: center;">79</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">109</td>
+<td style="text-align: center;"><strong>20</strong></td>
+<td style="text-align: center;">125</td>
+<td style="text-align: center;"><strong>39</strong></td>
+<td style="text-align: center;">116</td>
+<td style="text-align: center;"><strong>58</strong></td>
+<td style="text-align: center;">37</td>
+<td style="text-align: center;"><strong>77</strong></td>
+<td style="text-align: center;">65</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;">60</td>
+<td style="text-align: center;"><strong>21</strong></td>
+<td style="text-align: center;">82</td>
+<td style="text-align: center;"><strong>40</strong></td>
+<td style="text-align: center;">121</td>
+<td style="text-align: center;"><strong>59</strong></td>
+<td style="text-align: center;">92</td>
+<td style="text-align: center;"><strong>78</strong></td>
+<td style="text-align: center;">49</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;">46</td>
+<td style="text-align: center;"><strong>22</strong></td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;"><strong>41</strong></td>
+<td style="text-align: center;">102</td>
+<td style="text-align: center;"><strong>60</strong></td>
+<td style="text-align: center;">51</td>
+<td style="text-align: center;"><strong>79</strong></td>
+<td style="text-align: center;">67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;">84</td>
+<td style="text-align: center;"><strong>23</strong></td>
+<td style="text-align: center;">111</td>
+<td style="text-align: center;"><strong>42</strong></td>
+<td style="text-align: center;">114</td>
+<td style="text-align: center;"><strong>61</strong></td>
+<td style="text-align: center;">100</td>
+<td style="text-align: center;"><strong>80</strong></td>
+<td style="text-align: center;">66</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;"><strong>24</strong></td>
+<td style="text-align: center;">107</td>
+<td style="text-align: center;"><strong>43</strong></td>
+<td style="text-align: center;">36</td>
+<td style="text-align: center;"><strong>62</strong></td>
+<td style="text-align: center;">76</td>
+<td style="text-align: center;"><strong>81</strong></td>
+<td style="text-align: center;">54</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>6</strong></td>
+<td style="text-align: center;">97</td>
+<td style="text-align: center;"><strong>25</strong></td>
+<td style="text-align: center;">78</td>
+<td style="text-align: center;"><strong>44</strong></td>
+<td style="text-align: center;">40</td>
+<td style="text-align: center;"><strong>63</strong></td>
+<td style="text-align: center;">43</td>
+<td style="text-align: center;"><strong>82</strong></td>
+<td style="text-align: center;">118</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>7</strong></td>
+<td style="text-align: center;">99</td>
+<td style="text-align: center;"><strong>26</strong></td>
+<td style="text-align: center;">58</td>
+<td style="text-align: center;"><strong>45</strong></td>
+<td style="text-align: center;">119</td>
+<td style="text-align: center;"><strong>64</strong></td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;"><strong>83</strong></td>
+<td style="text-align: center;">94</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>8</strong></td>
+<td style="text-align: center;">96</td>
+<td style="text-align: center;"><strong>27</strong></td>
+<td style="text-align: center;">35</td>
+<td style="text-align: center;"><strong>46</strong></td>
+<td style="text-align: center;">101</td>
+<td style="text-align: center;"><strong>65</strong></td>
+<td style="text-align: center;">59</td>
+<td style="text-align: center;"><strong>84</strong></td>
+<td style="text-align: center;">61</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: center;">117</td>
+<td style="text-align: center;"><strong>28</strong></td>
+<td style="text-align: center;">63</td>
+<td style="text-align: center;"><strong>47</strong></td>
+<td style="text-align: center;">52</td>
+<td style="text-align: center;"><strong>66</strong></td>
+<td style="text-align: center;">62</td>
+<td style="text-align: center;"><strong>85</strong></td>
+<td style="text-align: center;">73</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>10</strong></td>
+<td style="text-align: center;">89</td>
+<td style="text-align: center;"><strong>29</strong></td>
+<td style="text-align: center;">71</td>
+<td style="text-align: center;"><strong>48</strong></td>
+<td style="text-align: center;">123</td>
+<td style="text-align: center;"><strong>67</strong></td>
+<td style="text-align: center;">85</td>
+<td style="text-align: center;"><strong>86</strong></td>
+<td style="text-align: center;">95</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>11</strong></td>
+<td style="text-align: center;">42</td>
+<td style="text-align: center;"><strong>30</strong></td>
+<td style="text-align: center;">34</td>
+<td style="text-align: center;"><strong>49</strong></td>
+<td style="text-align: center;">87</td>
+<td style="text-align: center;"><strong>68</strong></td>
+<td style="text-align: center;">33</td>
+<td style="text-align: center;"><strong>87</strong></td>
+<td style="text-align: center;">48</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>12</strong></td>
+<td style="text-align: center;">77</td>
+<td style="text-align: center;"><strong>31</strong></td>
+<td style="text-align: center;">105</td>
+<td style="text-align: center;"><strong>50</strong></td>
+<td style="text-align: center;">80</td>
+<td style="text-align: center;"><strong>69</strong></td>
+<td style="text-align: center;">112</td>
+<td style="text-align: center;"><strong>88</strong></td>
+<td style="text-align: center;">47</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>13</strong></td>
+<td style="text-align: center;">75</td>
+<td style="text-align: center;"><strong>32</strong></td>
+<td style="text-align: center;">64</td>
+<td style="text-align: center;"><strong>51</strong></td>
+<td style="text-align: center;">41</td>
+<td style="text-align: center;"><strong>70</strong></td>
+<td style="text-align: center;">74</td>
+<td style="text-align: center;"><strong>89</strong></td>
+<td style="text-align: center;">56</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>14</strong></td>
+<td style="text-align: center;">39</td>
+<td style="text-align: center;"><strong>33</strong></td>
+<td style="text-align: center;">53</td>
+<td style="text-align: center;"><strong>52</strong></td>
+<td style="text-align: center;">72</td>
+<td style="text-align: center;"><strong>71</strong></td>
+<td style="text-align: center;">83</td>
+<td style="text-align: center;"><strong>90</strong></td>
+<td style="text-align: center;">124</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>15</strong></td>
+<td style="text-align: center;">88</td>
+<td style="text-align: center;"><strong>34</strong></td>
+<td style="text-align: center;">122</td>
+<td style="text-align: center;"><strong>53</strong></td>
+<td style="text-align: center;">45</td>
+<td style="text-align: center;"><strong>72</strong></td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;"><strong>91</strong></td>
+<td style="text-align: center;">106</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>16</strong></td>
+<td style="text-align: center;">126</td>
+<td style="text-align: center;"><strong>35</strong></td>
+<td style="text-align: center;">93</td>
+<td style="text-align: center;"><strong>54</strong></td>
+<td style="text-align: center;">90</td>
+<td style="text-align: center;"><strong>73</strong></td>
+<td style="text-align: center;">50</td>
+<td style="text-align: center;"><strong>92</strong></td>
+<td style="text-align: center;">115</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>17</strong></td>
+<td style="text-align: center;">120</td>
+<td style="text-align: center;"><strong>36</strong></td>
+<td style="text-align: center;">38</td>
+<td style="text-align: center;"><strong>55</strong></td>
+<td style="text-align: center;">110</td>
+<td style="text-align: center;"><strong>74</strong></td>
+<td style="text-align: center;">70</td>
+<td style="text-align: center;"><strong>93</strong></td>
+<td style="text-align: center;">98</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>18</strong></td>
+<td style="text-align: center;">68</td>
+<td style="text-align: center;"><strong>37</strong></td>
+<td style="text-align: center;">103</td>
+<td style="text-align: center;"><strong>56</strong></td>
+<td style="text-align: center;">44</td>
+<td style="text-align: center;"><strong>75</strong></td>
+<td style="text-align: center;">104</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<p>Lou Scheffer 对 Malbolge
+的密码分析提到了排列中的六个不同的循环。它们在这里列出：</p>
+<ul>
+<li>33 ⇒ 53 ⇒ 45 ⇒ 119 ⇒ 78 ⇒ 49 ⇒ 87 ⇒ 48 ⇒ 123 ⇒ 71 ⇒ 83 ⇒ 94 ⇒ 57 ⇒
+91 ⇒ 106 ⇒ 77 ⇒ 65 ⇒ 59 ⇒ 92 ⇒ 115 ⇒ 82 ⇒ 118 ⇒ 107 ⇒ 75 ⇒ 104 ⇒ 89 ⇒ 56
+⇒ 44 ⇒ 40 ⇒ 121 ⇒ 35 ⇒ 93 ⇒ 98 ⇒ 84 ⇒ 61 ⇒ 100 ⇒ 97 ⇒ 46 ⇒ 101 ⇒ 99 ⇒ 86
+⇒ 95 ⇒ 109 ⇒ 88 ⇒ 47 ⇒ 52 ⇒ 72 ⇒ 55 ⇒ 110 ⇒ 126 ⇒ 64 ⇒ 81 ⇒ 54 ⇒ 90 ⇒
+124 ⇒ 34 ⇒ 122 ⇒ 63 ⇒ 43 ⇒ 36 ⇒ 38 ⇒ 113 ⇒ 108 ⇒ 39 ⇒ 116 ⇒ 69 ⇒ 112 ⇒
+68 ⇒ 33 ...</li>
+<li>37 ⇒ 103 ⇒ 117 ⇒ 111 ⇒ 120 ⇒ 58 ⇒ 37 ...</li>
+<li>41 ⇒ 102 ⇒ 96 ⇒ 60 ⇒ 51 ⇒ 41 ...</li>
+<li>42 ⇒ 114 ⇒ 125 ⇒ 105 ⇒ 42 ...</li>
+<li>50 ⇒ 80 ⇒ 66 ⇒ 62 ⇒ 76 ⇒ 79 ⇒ 67 ⇒ 85 ⇒ 73 ⇒ 50 ...</li>
+<li>70 ⇒ 74 ⇒ 70 ...</li>
+</ul>
+<p>这些循环可用于创建每次执行不同操作并最终变得重复的循环。</p>
+<h1 id="示例代码">示例代码</h1>
+<h2 id="hello-world">Hello, World!</h2>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(=&lt;`#9]~6ZY327Uv4-QsqpMn&amp;+Ij&quot;&#x27;E%e&#123;Ab~w=_:]Kw%o44Uqp0/Q?xNvL:`H%c#DD2^WV&gt;gY;dts76qKJImZkj</span><br></pre></td></tr></table></figure>
+<h1 id="编辑与运行">编辑与运行</h1>
+<p>我们可以使用在线网站来编辑和运行我们的 malbolge 程序：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://malbolge.doleczek.pl/">https://malbolge.doleczek.pl/</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.tutorialspoint.com/execute_malbolge_online.php">https://www.tutorialspoint.com/execute_malbolge_online.php</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/malbolge-language-note.html" title="malbolge编程语言笔记">https://hasegawaazusa.github.io/malbolge-language-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/language/" rel="tag"># language</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/side-channel-attack-note.html" rel="prev" title="侧信道攻击笔记">
+                  <i class="fa fa-chevron-left"></i> 侧信道攻击笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/snow-note.html" rel="next" title="snow隐写笔记">
+                  snow隐写笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">192k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">2:55</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
