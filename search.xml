@@ -771,7 +771,7 @@ P_m+kP_A-n_AkG=P_m+k(n_AG)-n_AkG=P_m
       </tags>
   </entry>
   <entry>
-    <title>hexo-asset-image：update link as:--&gt;/.io//xxx.png</title>
+    <title>hexo-asset-image: update link as:--&gt;/.io//xxx.png</title>
     <url>//errors/hexo-image-link-error.html</url>
     <content><![CDATA[<h1 id="错误分析">错误分析</h1>
 <p>hexo-asset-image 无法识别 hexo 默认的永久链接
@@ -793,6 +793,9 @@ P_m+kP_A-n_AkG=P_m+k(n_AG)-n_AkG=P_m
 <p>将 <code>URL</code> 配置中的 <code>permalink</code>
 参数置空或改为英文文件夹名 (详细配置请参考<a href="/hexo-note.html#网址-URL">网址-URL</a>)</p>
 <figure class="highlight yml"><table><tr><td class="code"><pre><span class="line"><span class="attr">permalink:</span> </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>推荐使用 permalink: :title.html</p>
+</blockquote>
 <h2 id="为每篇文章手动配置-permalink">为每篇文章手动配置
 <code>permalink</code></h2>
 <p>在你的博文的 <code>Front-matter</code> 中添加 <code>permalink</code>
@@ -2500,7 +2503,7 @@ Morgan-Mar，其方案是位图，看起来像抽象艺术设计。编译指导�
       </tags>
   </entry>
   <entry>
-    <title>powershell：尝试新的跨平台 PowerShell https://aka.ms/pscore6</title>
+    <title>powershell: 尝试新的跨平台 PowerShell https://aka.ms/pscore6</title>
     <url>//errors/pscore6-error.html</url>
     <content><![CDATA[<h1 id="错误分析">错误分析</h1>
 <p>powershell 版本过老，提示更新</p>
@@ -2785,6 +2788,7 @@ last=CRT((c_1^{d_1},c_2^{d_2}),(q_1,q_2))
 d=invert(b,\varphi(q_1q_2))\\
 m^{ab}=kq_1q_2+last
 \]</span></p>
+<h2 id="section"></h2>
 <h2 id="简单填充攻击">简单填充攻击</h2>
 <h3 id="题目描述">题目描述</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> bytes_to_long</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> flag, n</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pad</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x + <span class="string">b&quot;\x00&quot;</span> * (<span class="number">128</span> - <span class="built_in">len</span>(x))</span><br><span class="line"></span><br><span class="line">flag = flag[<span class="number">7</span>:-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> <span class="built_in">len</span>(flag) == <span class="number">16</span></span><br><span class="line"></span><br><span class="line">flag = pad(flag)</span><br><span class="line"></span><br><span class="line">m = bytes_to_long(flag)</span><br><span class="line"></span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line"></span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;output.txt&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;n = <span class="subst">&#123;n&#125;</span>&quot;</span>, file=f)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;e = <span class="subst">&#123;e&#125;</span>&quot;</span>, file=f)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;c = <span class="subst">&#123;c&#125;</span>&quot;</span>, file=f)</span><br></pre></td></tr></table></figure>
@@ -7184,6 +7188,20 @@ pyc 文件中加入当前 python 版本的魔术头
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">comparison = <span class="string">&quot;to.png&quot;</span></span><br><span class="line">target = <span class="string">&quot;to_do.png&quot;</span></span><br><span class="line"></span><br><span class="line">comparison = Image.<span class="built_in">open</span>(comparison)</span><br><span class="line">target = Image.<span class="built_in">open</span>(target)</span><br><span class="line">diff = Image.new(comparison.mode ,comparison.size, <span class="string">&#x27;white&#x27;</span>)</span><br><span class="line"></span><br><span class="line">dcomparison = comparison.load()</span><br><span class="line">dtarget = target.load()</span><br><span class="line">ddiff = diff.load()</span><br><span class="line"></span><br><span class="line">width, height = comparison.size</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">        <span class="keyword">if</span> dcomparison[w, h] != dtarget[w, h]:</span><br><span class="line">            ddiff[w, h] = dtarget[w, h]</span><br><span class="line"></span><br><span class="line">diff.save(<span class="string">&quot;diff.png&quot;</span>, comparison.<span class="built_in">format</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="信息隐藏">信息隐藏</h2>
 <p>有一种可以将信息隐写在图片中的算法，使用<a href="https://stylesuxx.github.io/steganography/">在线解密网站</a>即可</p>
+<h2 id="逆字节序">逆字节序</h2>
+<p>有些图片可能将字节的十六进制形式逆序，例如 PNG
+图片的逆序会出现特征：</p>
+<ul>
+<li><p>IEND</p>
+<p><code>49 45 4E 44 AE 42 60 82</code> →
+<code>28 06 24 EA 44 E4 54 94</code></p></li>
+<li><p>SIG</p>
+<p><code>89 50 4E 47 0D 0A 1A 0A</code> →
+<code>A0 A1 A0 D0 74 E4 05 98</code></p></li>
+</ul>
+<p>明显特征：010Editor 会报错</p>
+<p>逆序脚本：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">infile = <span class="string">&#x27;ZmxhZzQK.png&#x27;</span></span><br><span class="line">outfile = <span class="string">&#x27;out.png&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(infile, <span class="string">&quot;rb&quot;</span>) <span class="keyword">as</span> fin:</span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(outfile, <span class="string">&quot;wb&quot;</span>) <span class="keyword">as</span> fout:</span><br><span class="line">        fout.write(<span class="built_in">bytes</span>.fromhex(fin.read().<span class="built_in">hex</span>()[::-<span class="number">1</span>]))</span><br></pre></td></tr></table></figure>
 <h2 id="盲水印">盲水印</h2>
 <p>主要是使用了 <a href="https://github.com/chishaxie/BlindWaterMark">BlindWaterMark</a>
 项目，使用方法：</p>
@@ -9506,6 +9524,185 @@ Decode 区域中的 Tweet 文本框中即可：</p>
       <tags>
         <tag>note</tag>
         <tag>forensics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Appcall类笔记</title>
+    <url>//appcall-note.html</url>
+    <content><![CDATA[<h1 id="appcall-简述">Appcall 简述</h1>
+<p>Appcall
+可以帮助我们在调试对象的上下文（过程中）调用某些函数，这在一些情况下是十分有用的，比如说：</p>
+<ul>
+<li>标识为加密函数的函数：加密/解密/散列函数</li>
+<li>显式调用不那么常用的函数：与其等待程序调用某个函数，不如直接调用</li>
+<li>改变程序逻辑：通过调用某些被调试函数，可以改变程序的逻辑和内部状态</li>
+<li>扩展你的程序：因为 Appcall
+可以在条件断点的条件表达式中使用，所以可以通过这种方式扩展应用程序</li>
+<li>Fuzzing 应用程序：在功能级别轻松地对程序进行模糊测试</li>
+<li>...</li>
+</ul>
+<h1 id="appcall-的工作原理">Appcall 的工作原理</h1>
+<p>给定一个具有正确原型的函数，Appcall 机制的工作方式如下：</p>
+<ol type="1">
+<li>保存当前线程上下文</li>
+<li>序列化参数（我们不为参数分配内存，我们使用被调试者的堆栈）</li>
+<li>修改有问题的输入寄存器</li>
+<li>将指令指针设置为要调用的函数的开头</li>
+<li>调整返回地址，使其指向我们有断点的特殊区域（我们将其称为<strong>控制断点</strong>）</li>
+<li>恢复程序并等待直到我们得到一个异常或控制断点（在上一步中插入）</li>
+<li>反序列化回输入（仅适用于通过引用传递的参数）并保存返回值</li>
+</ol>
+<p>在手动 Appcall
+的情况下，调试器模块将完成除最后两个步骤之外的所有步骤，从而使我们有机会以交互方式调试相关功能。</p>
+<h1 id="appcall-的使用">Appcall 的使用</h1>
+<p>根据 Appcall 的工作原理，我们可以知道要使用 Appcall 模块，首先需要让
+IDA 的调试器在运行中，即调试你目前正在逆向的程序。</p>
+<p>之后便可以通过 Appcall 提供的 api 来做我们想做的事情。</p>
+<blockquote>
+<p>需要注意，Appcall 类在 <code>ida_idd</code> 模块中，不过 ida python
+默认 import 该模块。</p>
+</blockquote>
+<h2 id="class-appcall"><code>class Appcall</code></h2>
+<h3 id="appcall.utf16s"><code>Appcall.UTF16(s)</code></h3>
+<p>接收一个字符串 <code>s</code>，将其转化为 UTF16 的字节流
+(<code>bytes</code>)</p>
+<h3 id="appcall.arraytype_name"><code>Appcall.array(type_name)</code></h3>
+<p>创建数组类型，但需要指定一个类型名字。</p>
+<p>返回值将是一个 <code>array</code> 对象。</p>
+<p>需要通过 <code>pack()</code> 和 <code>unpack()</code>
+来对这个数组对象操作。</p>
+<h3 id="appcall.bufferstrnone-size0-fillx00"><code>Appcall.buffer(str=None, size=0, fill='\x00')</code></h3>
+<p>创建一个字符串缓冲区，通常是作为可变字符串数组使用（引用传递）。</p>
+<p>接受一个字符串 <code>str</code>，一个缓冲区长度
+<code>size</code>，一个初始化元素 <code>fill</code>。</p>
+<p>如果不指定字符串，默认为空字符串；如果不指定缓冲区长度，默认字符串长度；如果不指定初始化填充元素，则默认为
+<code>\x00</code>。</p>
+<p>返回值将是一个 <code>byref</code> 对象。</p>
+<p>可以使用 <code>byref.value</code> 获取缓冲区内的字符串内容
+(<code>str</code>)。</p>
+<p>可以使用 <code>byref.size</code> 获取缓冲区大小
+(<code>int</code>)。</p>
+<h3 id="appcall.byrefval"><code>Appcall.byref(val)</code></h3>
+<p>创建一个不可变对象的引用，目前只支持 <code>int</code> 和
+<code>str</code>
+的引用类型，通常是作为不可变字符串数组使用（非引用传递）。</p>
+<p>可以使用 <code>byref.value</code> 获取缓冲区内的字符串内容
+(<code>int / str</code>)。</p>
+<h3 id="appcall.cleanup_appcalltid0"><code>Appcall.cleanup_appcall(tid=0)</code></h3>
+<p>与 IDC 的 <code>CleanupAppcall()</code>
+同理，作为还原上下文所用的函数。</p>
+<h3 id="appcall.int64val"><code>Appcall.int64(val)</code></h3>
+<p>创建一个 <code>int64</code> 对象，通常作为传递参数时使用。</p>
+<p>接收一个 <code>int</code> 初始值 <code>val</code>。</p>
+<h3 id="appcall.objkwds"><code>Appcall.obj(**kwds)</code></h3>
+<p>创建一个空对象，或者存在关键字参数的属性的对象。</p>
+<h3 id="appcall.protoname_or_ea-proto_or_tinfo-flagsnone"><code>Appcall.proto(name_or_ea, proto_or_tinfo, flags=None)</code></h3>
+<p>将所需要的原型实例化为 <code>appcall</code> (<code>callable</code>
+对象)。</p>
+<ul>
+<li><code>name_or_ea</code> → 函数名字符串或者函数地址（函数名将使用
+<code>LocByName()</code> 解析）</li>
+<li><code>proto_or_tinfo</code> → 函数原型字符串或者函数类型的
+<code>tinfo_t</code> 对象（可以使用 <code>get_tinfo()</code>
+函数获取）</li>
+</ul>
+<p>失败时，无法解析原型或者地址将会抛出异常；</p>
+<p>成功时将会返回 <code>callable</code> 对象。</p>
+<h3 id="appcall.typeobjtypedecl_or_tinfo-eanone"><code>Appcall.typeobj(typedecl_or_tinfo, ea=None)</code></h3>
+<p>返回一个类型的 Appcall 对象，可以传入 <code>tinfo_t</code>
+对象来获取。</p>
+<p>获取失败将会抛出 <code>ValueError</code> 异常。</p>
+<h3 id="appcall.unicodes"><code>Appcall.unicode(s)</code></h3>
+<p>接收一个字符串 <code>s</code>，将其转化为 Unicode 的字节流
+(<code>bytes</code>)。</p>
+<h3 id="appcall.valueofname-default0"><code>Appcall.valueof(name, default=0)</code></h3>
+<p>返回给定名称字符串 <code>name</code> 的数值。</p>
+<p>如果名称无法解析，则返回默认值 <code>default</code> 。</p>
+<h3 id="appcall.consts"><code>Appcall.Consts</code></h3>
+<p>实例变量，使用 <code>Appcall.Consts.CONST_NAME</code>
+来访问常量，<code>CONST_NAME</code> 因程序的设定变化。</p>
+<h3 id="appcall.function_name"><code>Appcall.FUNCTION_NAME</code></h3>
+<p>实例变量，可以如此使用直接调用对应函数，例如存在函数
+<code>int f(int x) &#123; return x + 5; &#125;</code></p>
+<p>我们可以通过 <code>result = Appcall.f(5)</code>
+来直接调用该函数。</p>
+<h2 id="class-appcall_array__type_name"><code>class Appcall_array__(type_name)</code></h2>
+<p>需要实例化的类，通过静态方法 <code>Appcall.array()</code> 获取。</p>
+<h3 id="array.packl"><code>array.pack(L)</code></h3>
+<p>将列表 (<code>list</code>) 或者元组 (<code>tuple</code>) 打包到
+<code>byref</code> 缓冲区中。</p>
+<h3 id="array.unpackbuf-as_listtrue"><code>array.unpack(buf, as_list=True)</code></h3>
+<p>将数组解包回列表或对象，即存入 <code>buf</code> 对象中。</p>
+<p><code>as_list</code> 如果为 <code>False</code>
+则将数组作为元组解包。</p>
+<h2 id="class-appcall_callable__"><code>class Appcall_callable__</code></h2>
+<p>使用自然语法发出 <code>appcall</code> 的助手类：</p>
+<p><code>appcall.FunctionNameInTheDatabase（参数，....）</code></p>
+<p>要么</p>
+<p><code>appcall["Function@8"](参数, ...)</code></p>
+<p>要么</p>
+<p><code>f8 = appcall["Function@8"] f8(arg1, arg2, ...)</code></p>
+<p>要么</p>
+<p><code>o = appcall.obj() i = byref(5) appcall.funcname(arg1, i, "hello", o)</code></p>
+<p>使用给定函数 <code>ea</code> 初始化 <code>appcall</code></p>
+<h3 id="appcall.ea"><code>appcall.ea</code></h3>
+<p>实例变量，返回与此对象关联的函数地址 <code>ea</code></p>
+<h3 id="appcall.fields"><code>appcall.fields</code></h3>
+<p>实例变量，返回字段名</p>
+<h3 id="appcall.size"><code>appcall.size</code></h3>
+<p>实例变量，返回类型大小</p>
+<h3 id="appcall.tif"><code>appcall.tif</code></h3>
+<p>实例变量，返回 <code>tinfo_t</code> 对象</p>
+<h3 id="appcall.type"><code>appcall.type</code></h3>
+<p>实例变量，返回类型字符串</p>
+<h2 id="class-appcall_consts__"><code>class Appcall_consts__</code></h2>
+<p><code>Appcall.Consts</code>
+是该类的实例化，专门用于通过属性访问检索常量。</p>
+<p>比如说存在常量 <code>static const int Wow = 5;</code></p>
+<p>那么我们可以通过 <code>Appcall.Consts.Wow</code> 来访问它。</p>
+<blockquote>
+<p>主要参考：<a href="https://www.hex-rays.com/products/ida/support/idapython_docs/ida_idd.html">https://www.hex-rays.com/products/ida/support/idapython_docs/ida_idd.html</a></p>
+</blockquote>
+<h1 id="appcall-使用实例">Appcall 使用实例</h1>
+<h2 id="调用函数">调用函数</h2>
+<p>比如说我们注意到存在一个解密函数：</p>
+<figure>
+<img src="/appcall-note/appcall_xdecrypt.gif" alt="静态分析结果">
+<figcaption aria-hidden="true">静态分析结果</figcaption>
+</figure>
+<p>我们可以直接使用 IDA Python 调用该函数直接解密：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">SizeOfBuffer = <span class="number">255</span></span><br><span class="line"><span class="comment"># 显式创建缓冲区为 byref 对象</span></span><br><span class="line">s_in = Appcall.byref(<span class="string">&quot;SomeEncryptedBuffer&quot;</span>) </span><br><span class="line"><span class="comment"># 缓冲区总是由引用返回</span></span><br><span class="line">s_out = Appcall.buffer(<span class="string">&quot;&quot;</span>, SizeOfBuffer) </span><br><span class="line"><span class="comment"># 调用被调试对象</span></span><br><span class="line">Appcall.decrypt_buffer(s_in, s_out, SizeOfBuffer) </span><br><span class="line"><span class="comment"># 打印结果</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;decrypted=&quot;</span>, s_out.value)</span><br></pre></td></tr></table></figure>
+<h2 id="注入库">注入库</h2>
+<p>要在调试对象中注入库，只需 <code>Appcall LoadLibrary()</code>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">loadlib = Appcall.proto(<span class="string">&quot;kernel32_LoadLibraryA&quot;</span>, <span class="string">&quot;int __stdcall loadlib(const char *fn);&quot;</span>) </span><br><span class="line">hmod = loadlib(<span class="string">&quot;dll_to_inject.dll&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="设置或获取最后一个错误">设置或获取最后一个错误</h2>
+<p>要检索最后一个错误值，我们可以从 TIB 手动解析它，也可以调用
+GetLastError() API：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">getlasterror = Appcall.proto(<span class="string">&quot;kernel32_GetLastError&quot;</span>, <span class="string">&quot;DWORD __stdcall GetLastError();&quot;</span>) </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;lasterror=&quot;</span>, getlasterror())</span><br></pre></td></tr></table></figure>
+<p>同样，我们可以做同样的事情来设置最后一个错误代码值：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">setlasterror = Appcall.proto(<span class="string">&quot;kernel32_SetLastError&quot;</span>, <span class="string">&quot;void __stdcall SetLastError(int dwErrCode);&quot;</span>) </span><br><span class="line">setlasterror(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="检索命令行值">检索命令行值</h2>
+<p>要检索程序的命令行，我们可以从 PEB 解析它，也可以调用
+GetCommandLineA() API：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">getcmdline = Appcall.proto(<span class="string">&quot;kernel32_GetCommandLineA&quot;</span>, <span class="string">&quot;const char *__stdcall getcmdline();&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;command line:&quot;</span>, getcmdline())</span><br></pre></td></tr></table></figure>
+<h2 id="设置重置事件">设置/重置事件</h2>
+<p>有时，被调试的程序在等待信号量或事件时可能会死锁。您可以手动释放信号量或发出事件信号。
+也可以杀死线程：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">releaseem = Appcall.proto(<span class="string">&quot;kernel32_ReleaseSemaphore&quot;</span>, </span><br><span class="line">  <span class="string">&quot;BOOL __stdcall ReleaseSemaphore(HANDLE hSemaphore, LONG lReleaseCount, LPLONG lpPreviousCount);&quot;</span>) </span><br><span class="line">resetevent = Appcall.proto(<span class="string">&quot;kernel32_SetEvent&quot;</span>, </span><br><span class="line">  <span class="string">&quot;BOOL __stdcall SetEvent(HANDLE hEvent);&quot;</span>) </span><br><span class="line">termthread = Appcall.proto(<span class="string">&quot;kernel32_TerminateThread&quot;</span>, </span><br><span class="line">  <span class="string">&quot;BOOL __stdcall TerminateThread(HANDLE hThread, DWORD dwExitCode);&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="更改被调试者的虚拟内存配置">更改被调试者的虚拟内存配置</h3>
+<p>可以更改内存页的保护。在下面的示例中，我们将 PE
+头页保护更改为执行/读/写（通常是只读的）：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">virtprot = Appcall.proto(<span class="string">&quot;kernel32_VirtualProtect&quot;</span>,</span><br><span class="line">  <span class="string">&quot;BOOL __stdcall VirtualProtect(LPVOID addr, DWORD sz, DWORD newprot, PDWORD oldprot);&quot;</span>)</span><br><span class="line">r = virtprot(<span class="number">0x400000</span>, <span class="number">0x1000</span>, Appcall.Consts.PAGE_EXECUTE_READWRITE, Appcall.byref(<span class="number">0</span>));</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;VirtualProtect returned:&quot;</span>, r)</span><br><span class="line">RefreshDebuggerMemory()</span><br></pre></td></tr></table></figure>
+<p>如果你需要分配一个新的内存页：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">virtalloc = Appcall.proto(<span class="string">&quot;kernel32_VirtualAlloc&quot;</span>,</span><br><span class="line">  <span class="string">&quot;int __stdcall VirtualAlloc(int addr, SIZE_T sz, DWORD alloctype, DWORD protect);&quot;</span>)</span><br><span class="line">m = virtualalloc(<span class="number">0</span>, Appcall.Consts.MEM_COMMIT, <span class="number">0x1000</span>, Appcall.Consts.PAGE_EXECUTE_READWRITE)</span><br><span class="line">RefreshDebuggerMemory()</span><br></pre></td></tr></table></figure>
+<h2 id="加载库并调用导出的函数">加载库并调用导出的函数</h2>
+<p>使用 Appcall
+还可以加载库、解析函数地址并调用它。让我们用一个例子来说明：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_appdata</span>():</span></span><br><span class="line">    hshell32 = loadlib(<span class="string">&quot;shell32.dll&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> hshell32 == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;failed to load shell32.dll&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;%x: shell32 loaded&quot;</span> % hshell32</span><br><span class="line">    <span class="comment"># 确保刷新调试器内存加载新库后</span></span><br><span class="line">    RefreshDebuggerMemory()</span><br><span class="line">    <span class="comment"># 解析函数地址</span></span><br><span class="line">    p = getprocaddr(hshell32, <span class="string">&quot;SHGetSpecialFolderPathA&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> p == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;shell32.SHGetSpecialFolderPathA() not found!&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="comment"># 创建原型</span></span><br><span class="line">    shgetspecialfolder = Appcall.proto(p,</span><br><span class="line">      <span class="string">&quot;BOOL SHGetSpecialFolderPath(HWND hwndOwner, LPSTR lpszPath, int nFolder, BOOL fCreate);&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;%x: SHGetSpecialFolderPath() resolved...&quot;</span></span><br><span class="line">    <span class="comment"># 创建缓冲区</span></span><br><span class="line">    buf = Appcall.buffer(<span class="string">&quot;\x00&quot;</span> * <span class="number">260</span>)</span><br><span class="line">    <span class="comment"># CSIDL_APPDATA  = 0x1A</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> shgetspecialfolder(<span class="number">0</span>, buf, <span class="number">0x1A</span>, <span class="number">0</span>):</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;SHGetSpecialFolderPath() failed!&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;AppData Path: &gt;%s&lt;&quot;</span> % Appcall.cstr(buf.value)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>idapython</tag>
       </tags>
   </entry>
 </search>

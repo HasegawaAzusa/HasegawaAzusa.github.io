@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="ida python的Appcall类笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Appcall类笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/appcall-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="ida python的Appcall类笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/appcall-note/appcall_xdecrypt.gif">
+<meta property="article:published_time" content="2022-04-07T13:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-07T15:16:35.987Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="idapython">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/appcall-note/appcall_xdecrypt.gif">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/appcall-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/appcall-note.html","path":"/appcall-note.html","title":"Appcall类笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Appcall类笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">49</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">60</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#appcall-%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">Appcall 简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#appcall-%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">Appcall 的工作原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#appcall-%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">Appcall 的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#class-appcall"><span class="nav-number">3.1.</span> <span class="nav-text">class Appcall</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.utf16s"><span class="nav-number">3.1.1.</span> <span class="nav-text">Appcall.UTF16(s)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.arraytype_name"><span class="nav-number">3.1.2.</span> <span class="nav-text">Appcall.array(type_name)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.bufferstrnone-size0-fillx00"><span class="nav-number">3.1.3.</span> <span class="nav-text">Appcall.buffer(str&#x3D;None, size&#x3D;0, fill&#x3D;&#39;\x00&#39;)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.byrefval"><span class="nav-number">3.1.4.</span> <span class="nav-text">Appcall.byref(val)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.cleanup_appcalltid0"><span class="nav-number">3.1.5.</span> <span class="nav-text">Appcall.cleanup_appcall(tid&#x3D;0)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.int64val"><span class="nav-number">3.1.6.</span> <span class="nav-text">Appcall.int64(val)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.objkwds"><span class="nav-number">3.1.7.</span> <span class="nav-text">Appcall.obj(**kwds)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.protoname_or_ea-proto_or_tinfo-flagsnone"><span class="nav-number">3.1.8.</span> <span class="nav-text">Appcall.proto(name_or_ea, proto_or_tinfo, flags&#x3D;None)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.typeobjtypedecl_or_tinfo-eanone"><span class="nav-number">3.1.9.</span> <span class="nav-text">Appcall.typeobj(typedecl_or_tinfo, ea&#x3D;None)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.unicodes"><span class="nav-number">3.1.10.</span> <span class="nav-text">Appcall.unicode(s)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.valueofname-default0"><span class="nav-number">3.1.11.</span> <span class="nav-text">Appcall.valueof(name, default&#x3D;0)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.consts"><span class="nav-number">3.1.12.</span> <span class="nav-text">Appcall.Consts</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.function_name"><span class="nav-number">3.1.13.</span> <span class="nav-text">Appcall.FUNCTION_NAME</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-appcall_array__type_name"><span class="nav-number">3.2.</span> <span class="nav-text">class Appcall_array__(type_name)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#array.packl"><span class="nav-number">3.2.1.</span> <span class="nav-text">array.pack(L)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#array.unpackbuf-as_listtrue"><span class="nav-number">3.2.2.</span> <span class="nav-text">array.unpack(buf, as_list&#x3D;True)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-appcall_callable__"><span class="nav-number">3.3.</span> <span class="nav-text">class Appcall_callable__</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.ea"><span class="nav-number">3.3.1.</span> <span class="nav-text">appcall.ea</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.fields"><span class="nav-number">3.3.2.</span> <span class="nav-text">appcall.fields</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.size"><span class="nav-number">3.3.3.</span> <span class="nav-text">appcall.size</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.tif"><span class="nav-number">3.3.4.</span> <span class="nav-text">appcall.tif</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#appcall.type"><span class="nav-number">3.3.5.</span> <span class="nav-text">appcall.type</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#class-appcall_consts__"><span class="nav-number">3.4.</span> <span class="nav-text">class Appcall_consts__</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#appcall-%E4%BD%BF%E7%94%A8%E5%AE%9E%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">Appcall 使用实例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E5%87%BD%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">调用函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E5%85%A5%E5%BA%93"><span class="nav-number">4.2.</span> <span class="nav-text">注入库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E6%88%96%E8%8E%B7%E5%8F%96%E6%9C%80%E5%90%8E%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF"><span class="nav-number">4.3.</span> <span class="nav-text">设置或获取最后一个错误</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A3%80%E7%B4%A2%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%80%BC"><span class="nav-number">4.4.</span> <span class="nav-text">检索命令行值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E9%87%8D%E7%BD%AE%E4%BA%8B%E4%BB%B6"><span class="nav-number">4.5.</span> <span class="nav-text">设置&#x2F;重置事件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E8%A2%AB%E8%B0%83%E8%AF%95%E8%80%85%E7%9A%84%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E9%85%8D%E7%BD%AE"><span class="nav-number">4.5.1.</span> <span class="nav-text">更改被调试者的虚拟内存配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E8%BD%BD%E5%BA%93%E5%B9%B6%E8%B0%83%E7%94%A8%E5%AF%BC%E5%87%BA%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-number">4.6.</span> <span class="nav-text">加载库并调用导出的函数</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">60</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">49</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/appcall-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Appcall类笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-07 21:00:00" itemprop="dateCreated datePublished" datetime="2022-04-07T21:00:00+08:00">2022-04-07</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">ida python的Appcall类笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="appcall-简述">Appcall 简述</h1>
+<p>Appcall
+可以帮助我们在调试对象的上下文（过程中）调用某些函数，这在一些情况下是十分有用的，比如说：</p>
+<ul>
+<li>标识为加密函数的函数：加密/解密/散列函数</li>
+<li>显式调用不那么常用的函数：与其等待程序调用某个函数，不如直接调用</li>
+<li>改变程序逻辑：通过调用某些被调试函数，可以改变程序的逻辑和内部状态</li>
+<li>扩展你的程序：因为 Appcall
+可以在条件断点的条件表达式中使用，所以可以通过这种方式扩展应用程序</li>
+<li>Fuzzing 应用程序：在功能级别轻松地对程序进行模糊测试</li>
+<li>...</li>
+</ul>
+<h1 id="appcall-的工作原理">Appcall 的工作原理</h1>
+<p>给定一个具有正确原型的函数，Appcall 机制的工作方式如下：</p>
+<ol type="1">
+<li>保存当前线程上下文</li>
+<li>序列化参数（我们不为参数分配内存，我们使用被调试者的堆栈）</li>
+<li>修改有问题的输入寄存器</li>
+<li>将指令指针设置为要调用的函数的开头</li>
+<li>调整返回地址，使其指向我们有断点的特殊区域（我们将其称为<strong>控制断点</strong>）</li>
+<li>恢复程序并等待直到我们得到一个异常或控制断点（在上一步中插入）</li>
+<li>反序列化回输入（仅适用于通过引用传递的参数）并保存返回值</li>
+</ol>
+<p>在手动 Appcall
+的情况下，调试器模块将完成除最后两个步骤之外的所有步骤，从而使我们有机会以交互方式调试相关功能。</p>
+<h1 id="appcall-的使用">Appcall 的使用</h1>
+<p>根据 Appcall 的工作原理，我们可以知道要使用 Appcall 模块，首先需要让
+IDA 的调试器在运行中，即调试你目前正在逆向的程序。</p>
+<p>之后便可以通过 Appcall 提供的 api 来做我们想做的事情。</p>
+<blockquote>
+<p>需要注意，Appcall 类在 <code>ida_idd</code> 模块中，不过 ida python
+默认 import 该模块。</p>
+</blockquote>
+<h2 id="class-appcall"><code>class Appcall</code></h2>
+<h3 id="appcall.utf16s"><code>Appcall.UTF16(s)</code></h3>
+<p>接收一个字符串 <code>s</code>，将其转化为 UTF16 的字节流
+(<code>bytes</code>)</p>
+<h3 id="appcall.arraytype_name"><code>Appcall.array(type_name)</code></h3>
+<p>创建数组类型，但需要指定一个类型名字。</p>
+<p>返回值将是一个 <code>array</code> 对象。</p>
+<p>需要通过 <code>pack()</code> 和 <code>unpack()</code>
+来对这个数组对象操作。</p>
+<h3 id="appcall.bufferstrnone-size0-fillx00"><code>Appcall.buffer(str=None, size=0, fill='\x00')</code></h3>
+<p>创建一个字符串缓冲区，通常是作为可变字符串数组使用（引用传递）。</p>
+<p>接受一个字符串 <code>str</code>，一个缓冲区长度
+<code>size</code>，一个初始化元素 <code>fill</code>。</p>
+<p>如果不指定字符串，默认为空字符串；如果不指定缓冲区长度，默认字符串长度；如果不指定初始化填充元素，则默认为
+<code>\x00</code>。</p>
+<p>返回值将是一个 <code>byref</code> 对象。</p>
+<p>可以使用 <code>byref.value</code> 获取缓冲区内的字符串内容
+(<code>str</code>)。</p>
+<p>可以使用 <code>byref.size</code> 获取缓冲区大小
+(<code>int</code>)。</p>
+<h3 id="appcall.byrefval"><code>Appcall.byref(val)</code></h3>
+<p>创建一个不可变对象的引用，目前只支持 <code>int</code> 和
+<code>str</code>
+的引用类型，通常是作为不可变字符串数组使用（非引用传递）。</p>
+<p>可以使用 <code>byref.value</code> 获取缓冲区内的字符串内容
+(<code>int / str</code>)。</p>
+<h3 id="appcall.cleanup_appcalltid0"><code>Appcall.cleanup_appcall(tid=0)</code></h3>
+<p>与 IDC 的 <code>CleanupAppcall()</code>
+同理，作为还原上下文所用的函数。</p>
+<h3 id="appcall.int64val"><code>Appcall.int64(val)</code></h3>
+<p>创建一个 <code>int64</code> 对象，通常作为传递参数时使用。</p>
+<p>接收一个 <code>int</code> 初始值 <code>val</code>。</p>
+<h3 id="appcall.objkwds"><code>Appcall.obj(**kwds)</code></h3>
+<p>创建一个空对象，或者存在关键字参数的属性的对象。</p>
+<h3 id="appcall.protoname_or_ea-proto_or_tinfo-flagsnone"><code>Appcall.proto(name_or_ea, proto_or_tinfo, flags=None)</code></h3>
+<p>将所需要的原型实例化为 <code>appcall</code> (<code>callable</code>
+对象)。</p>
+<ul>
+<li><code>name_or_ea</code> → 函数名字符串或者函数地址（函数名将使用
+<code>LocByName()</code> 解析）</li>
+<li><code>proto_or_tinfo</code> → 函数原型字符串或者函数类型的
+<code>tinfo_t</code> 对象（可以使用 <code>get_tinfo()</code>
+函数获取）</li>
+</ul>
+<p>失败时，无法解析原型或者地址将会抛出异常；</p>
+<p>成功时将会返回 <code>callable</code> 对象。</p>
+<h3 id="appcall.typeobjtypedecl_or_tinfo-eanone"><code>Appcall.typeobj(typedecl_or_tinfo, ea=None)</code></h3>
+<p>返回一个类型的 Appcall 对象，可以传入 <code>tinfo_t</code>
+对象来获取。</p>
+<p>获取失败将会抛出 <code>ValueError</code> 异常。</p>
+<h3 id="appcall.unicodes"><code>Appcall.unicode(s)</code></h3>
+<p>接收一个字符串 <code>s</code>，将其转化为 Unicode 的字节流
+(<code>bytes</code>)。</p>
+<h3 id="appcall.valueofname-default0"><code>Appcall.valueof(name, default=0)</code></h3>
+<p>返回给定名称字符串 <code>name</code> 的数值。</p>
+<p>如果名称无法解析，则返回默认值 <code>default</code> 。</p>
+<h3 id="appcall.consts"><code>Appcall.Consts</code></h3>
+<p>实例变量，使用 <code>Appcall.Consts.CONST_NAME</code>
+来访问常量，<code>CONST_NAME</code> 因程序的设定变化。</p>
+<h3 id="appcall.function_name"><code>Appcall.FUNCTION_NAME</code></h3>
+<p>实例变量，可以如此使用直接调用对应函数，例如存在函数
+<code>int f(int x) &#123; return x + 5; &#125;</code></p>
+<p>我们可以通过 <code>result = Appcall.f(5)</code>
+来直接调用该函数。</p>
+<h2 id="class-appcall_array__type_name"><code>class Appcall_array__(type_name)</code></h2>
+<p>需要实例化的类，通过静态方法 <code>Appcall.array()</code> 获取。</p>
+<h3 id="array.packl"><code>array.pack(L)</code></h3>
+<p>将列表 (<code>list</code>) 或者元组 (<code>tuple</code>) 打包到
+<code>byref</code> 缓冲区中。</p>
+<h3 id="array.unpackbuf-as_listtrue"><code>array.unpack(buf, as_list=True)</code></h3>
+<p>将数组解包回列表或对象，即存入 <code>buf</code> 对象中。</p>
+<p><code>as_list</code> 如果为 <code>False</code>
+则将数组作为元组解包。</p>
+<h2 id="class-appcall_callable__"><code>class Appcall_callable__</code></h2>
+<p>使用自然语法发出 <code>appcall</code> 的助手类：</p>
+<p><code>appcall.FunctionNameInTheDatabase（参数，....）</code></p>
+<p>要么</p>
+<p><code>appcall["Function@8"](参数, ...)</code></p>
+<p>要么</p>
+<p><code>f8 = appcall["Function@8"] f8(arg1, arg2, ...)</code></p>
+<p>要么</p>
+<p><code>o = appcall.obj() i = byref(5) appcall.funcname(arg1, i, "hello", o)</code></p>
+<p>使用给定函数 <code>ea</code> 初始化 <code>appcall</code></p>
+<h3 id="appcall.ea"><code>appcall.ea</code></h3>
+<p>实例变量，返回与此对象关联的函数地址 <code>ea</code></p>
+<h3 id="appcall.fields"><code>appcall.fields</code></h3>
+<p>实例变量，返回字段名</p>
+<h3 id="appcall.size"><code>appcall.size</code></h3>
+<p>实例变量，返回类型大小</p>
+<h3 id="appcall.tif"><code>appcall.tif</code></h3>
+<p>实例变量，返回 <code>tinfo_t</code> 对象</p>
+<h3 id="appcall.type"><code>appcall.type</code></h3>
+<p>实例变量，返回类型字符串</p>
+<h2 id="class-appcall_consts__"><code>class Appcall_consts__</code></h2>
+<p><code>Appcall.Consts</code>
+是该类的实例化，专门用于通过属性访问检索常量。</p>
+<p>比如说存在常量 <code>static const int Wow = 5;</code></p>
+<p>那么我们可以通过 <code>Appcall.Consts.Wow</code> 来访问它。</p>
+<blockquote>
+<p>主要参考：<a target="_blank" rel="noopener" href="https://www.hex-rays.com/products/ida/support/idapython_docs/ida_idd.html">https://www.hex-rays.com/products/ida/support/idapython_docs/ida_idd.html</a></p>
+</blockquote>
+<h1 id="appcall-使用实例">Appcall 使用实例</h1>
+<h2 id="调用函数">调用函数</h2>
+<p>比如说我们注意到存在一个解密函数：</p>
+<figure>
+<img src="/appcall-note/appcall_xdecrypt.gif" alt="静态分析结果">
+<figcaption aria-hidden="true">静态分析结果</figcaption>
+</figure>
+<p>我们可以直接使用 IDA Python 调用该函数直接解密：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">SizeOfBuffer = <span class="number">255</span></span><br><span class="line"><span class="comment"># 显式创建缓冲区为 byref 对象</span></span><br><span class="line">s_in = Appcall.byref(<span class="string">&quot;SomeEncryptedBuffer&quot;</span>) </span><br><span class="line"><span class="comment"># 缓冲区总是由引用返回</span></span><br><span class="line">s_out = Appcall.buffer(<span class="string">&quot;&quot;</span>, SizeOfBuffer) </span><br><span class="line"><span class="comment"># 调用被调试对象</span></span><br><span class="line">Appcall.decrypt_buffer(s_in, s_out, SizeOfBuffer) </span><br><span class="line"><span class="comment"># 打印结果</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;decrypted=&quot;</span>, s_out.value)</span><br></pre></td></tr></table></figure>
+<h2 id="注入库">注入库</h2>
+<p>要在调试对象中注入库，只需 <code>Appcall LoadLibrary()</code>：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">loadlib = Appcall.proto(<span class="string">&quot;kernel32_LoadLibraryA&quot;</span>, <span class="string">&quot;int __stdcall loadlib(const char *fn);&quot;</span>) </span><br><span class="line">hmod = loadlib(<span class="string">&quot;dll_to_inject.dll&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="设置或获取最后一个错误">设置或获取最后一个错误</h2>
+<p>要检索最后一个错误值，我们可以从 TIB 手动解析它，也可以调用
+GetLastError() API：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">getlasterror = Appcall.proto(<span class="string">&quot;kernel32_GetLastError&quot;</span>, <span class="string">&quot;DWORD __stdcall GetLastError();&quot;</span>) </span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;lasterror=&quot;</span>, getlasterror())</span><br></pre></td></tr></table></figure>
+<p>同样，我们可以做同样的事情来设置最后一个错误代码值：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">setlasterror = Appcall.proto(<span class="string">&quot;kernel32_SetLastError&quot;</span>, <span class="string">&quot;void __stdcall SetLastError(int dwErrCode);&quot;</span>) </span><br><span class="line">setlasterror(<span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="检索命令行值">检索命令行值</h2>
+<p>要检索程序的命令行，我们可以从 PEB 解析它，也可以调用
+GetCommandLineA() API：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">getcmdline = Appcall.proto(<span class="string">&quot;kernel32_GetCommandLineA&quot;</span>, <span class="string">&quot;const char *__stdcall getcmdline();&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;command line:&quot;</span>, getcmdline())</span><br></pre></td></tr></table></figure>
+<h2 id="设置重置事件">设置/重置事件</h2>
+<p>有时，被调试的程序在等待信号量或事件时可能会死锁。您可以手动释放信号量或发出事件信号。
+也可以杀死线程：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">releaseem = Appcall.proto(<span class="string">&quot;kernel32_ReleaseSemaphore&quot;</span>, </span><br><span class="line">  <span class="string">&quot;BOOL __stdcall ReleaseSemaphore(HANDLE hSemaphore, LONG lReleaseCount, LPLONG lpPreviousCount);&quot;</span>) </span><br><span class="line">resetevent = Appcall.proto(<span class="string">&quot;kernel32_SetEvent&quot;</span>, </span><br><span class="line">  <span class="string">&quot;BOOL __stdcall SetEvent(HANDLE hEvent);&quot;</span>) </span><br><span class="line">termthread = Appcall.proto(<span class="string">&quot;kernel32_TerminateThread&quot;</span>, </span><br><span class="line">  <span class="string">&quot;BOOL __stdcall TerminateThread(HANDLE hThread, DWORD dwExitCode);&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="更改被调试者的虚拟内存配置">更改被调试者的虚拟内存配置</h3>
+<p>可以更改内存页的保护。在下面的示例中，我们将 PE
+头页保护更改为执行/读/写（通常是只读的）：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">virtprot = Appcall.proto(<span class="string">&quot;kernel32_VirtualProtect&quot;</span>,</span><br><span class="line">  <span class="string">&quot;BOOL __stdcall VirtualProtect(LPVOID addr, DWORD sz, DWORD newprot, PDWORD oldprot);&quot;</span>)</span><br><span class="line">r = virtprot(<span class="number">0x400000</span>, <span class="number">0x1000</span>, Appcall.Consts.PAGE_EXECUTE_READWRITE, Appcall.byref(<span class="number">0</span>));</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;VirtualProtect returned:&quot;</span>, r)</span><br><span class="line">RefreshDebuggerMemory()</span><br></pre></td></tr></table></figure>
+<p>如果你需要分配一个新的内存页：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">virtalloc = Appcall.proto(<span class="string">&quot;kernel32_VirtualAlloc&quot;</span>,</span><br><span class="line">  <span class="string">&quot;int __stdcall VirtualAlloc(int addr, SIZE_T sz, DWORD alloctype, DWORD protect);&quot;</span>)</span><br><span class="line">m = virtualalloc(<span class="number">0</span>, Appcall.Consts.MEM_COMMIT, <span class="number">0x1000</span>, Appcall.Consts.PAGE_EXECUTE_READWRITE)</span><br><span class="line">RefreshDebuggerMemory()</span><br></pre></td></tr></table></figure>
+<h2 id="加载库并调用导出的函数">加载库并调用导出的函数</h2>
+<p>使用 Appcall
+还可以加载库、解析函数地址并调用它。让我们用一个例子来说明：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_appdata</span>():</span></span><br><span class="line">    hshell32 = loadlib(<span class="string">&quot;shell32.dll&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> hshell32 == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;failed to load shell32.dll&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;%x: shell32 loaded&quot;</span> % hshell32</span><br><span class="line">    <span class="comment"># 确保刷新调试器内存加载新库后</span></span><br><span class="line">    RefreshDebuggerMemory()</span><br><span class="line">    <span class="comment"># 解析函数地址</span></span><br><span class="line">    p = getprocaddr(hshell32, <span class="string">&quot;SHGetSpecialFolderPathA&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> p == <span class="number">0</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;shell32.SHGetSpecialFolderPathA() not found!&quot;</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="comment"># 创建原型</span></span><br><span class="line">    shgetspecialfolder = Appcall.proto(p,</span><br><span class="line">      <span class="string">&quot;BOOL SHGetSpecialFolderPath(HWND hwndOwner, LPSTR lpszPath, int nFolder, BOOL fCreate);&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span> <span class="string">&quot;%x: SHGetSpecialFolderPath() resolved...&quot;</span></span><br><span class="line">    <span class="comment"># 创建缓冲区</span></span><br><span class="line">    buf = Appcall.buffer(<span class="string">&quot;\x00&quot;</span> * <span class="number">260</span>)</span><br><span class="line">    <span class="comment"># CSIDL_APPDATA  = 0x1A</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> shgetspecialfolder(<span class="number">0</span>, buf, <span class="number">0x1A</span>, <span class="number">0</span>):</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;SHGetSpecialFolderPath() failed!&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="built_in">print</span> <span class="string">&quot;AppData Path: &gt;%s&lt;&quot;</span> % Appcall.cstr(buf.value)</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/appcall-note.html" title="Appcall类笔记">https://hasegawaazusa.github.io/appcall-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/idapython/" rel="tag"># idapython</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/mathematical-black-hole-note.html" rel="prev" title="数学黑洞笔记">
+                  <i class="fa fa-chevron-left"></i> 数学黑洞笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">198k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:01</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
