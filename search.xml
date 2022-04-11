@@ -2788,7 +2788,21 @@ last=CRT((c_1^{d_1},c_2^{d_2}),(q_1,q_2))
 d=invert(b,\varphi(q_1q_2))\\
 m^{ab}=kq_1q_2+last
 \]</span></p>
-<h2 id="section"></h2>
+<h2 id="pq-高位相同"><span class="math inline">\(p,q\)</span>
+高位相同</h2>
+<h3 id="特征-6">特征</h3>
+<p>已知 <span class="math inline">\(n\)</span>，其中 <span class="math inline">\(|p-q|\)</span> 较小，<span class="math inline">\(p,q\)</span> 数量位知道</p>
+<h3 id="实例">实例</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">nbits = <span class="number">1024</span></span><br><span class="line">p = getPrime(nbits // <span class="number">2</span>)</span><br><span class="line">q = next_prime(p + (<span class="number">1</span> &lt;&lt; <span class="built_in">int</span>(nbits * beta)))</span><br><span class="line">n = p * q</span><br></pre></td></tr></table></figure>
+<p>其中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">n = 122774778628333786198247673730199699244621671207929503475974934116435291656353398717362903500544713183492877018211738292001516168567879903073296829793548881467270228989482723510323780292947403861546283099122868428902480999485625751961457245487615479377459707992802193391975415447673215862245349068018710525679</span><br><span class="line">beta = 0.44</span><br></pre></td></tr></table></figure>
+<p>不妨看作 <span class="math inline">\(n=p\cdot(p+(1 &lt;&lt;
+int(nbits*beta)))\)</span>，则可以将 <span class="math inline">\(p\)</span> 的近似值求出来。</p>
+<p>这时再进行小范围的爆破即可。（这里需要注意到，近似值与真实值相比是要偏大的，需要使用
+<code>previous_prime</code> 函数）</p>
+<p>sagemath 脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">delta = (<span class="number">1</span> &lt;&lt; <span class="built_in">int</span>(nbits * beta))</span><br><span class="line">R = RealField(<span class="number">1000</span>)</span><br><span class="line">p = polygen(R)</span><br><span class="line">f = p * (p + delta) - n</span><br><span class="line">p = <span class="built_in">int</span>(f.roots()[<span class="number">1</span>][<span class="number">0</span>])</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span> n % p != <span class="number">0</span>:</span><br><span class="line">    p = previous_prime(p)</span><br></pre></td></tr></table></figure>
+<p>这样就将 <span class="math inline">\(p\)</span> 爆破出来了。</p>
 <h2 id="简单填充攻击">简单填充攻击</h2>
 <h3 id="题目描述">题目描述</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> bytes_to_long</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> flag, n</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">pad</span>(<span class="params">x</span>):</span></span><br><span class="line">    <span class="keyword">return</span> x + <span class="string">b&quot;\x00&quot;</span> * (<span class="number">128</span> - <span class="built_in">len</span>(x))</span><br><span class="line"></span><br><span class="line">flag = flag[<span class="number">7</span>:-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> <span class="built_in">len</span>(flag) == <span class="number">16</span></span><br><span class="line"></span><br><span class="line">flag = pad(flag)</span><br><span class="line"></span><br><span class="line">m = bytes_to_long(flag)</span><br><span class="line"></span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line"></span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br><span class="line"></span><br><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;output.txt&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;n = <span class="subst">&#123;n&#125;</span>&quot;</span>, file=f)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;e = <span class="subst">&#123;e&#125;</span>&quot;</span>, file=f)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;c = <span class="subst">&#123;c&#125;</span>&quot;</span>, file=f)</span><br></pre></td></tr></table></figure>
@@ -2804,7 +2818,7 @@ e = 65537 c =
 <h3 id="实现-9">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CRT</span>(<span class="params">r,d</span>):</span></span><br><span class="line">    M = <span class="number">1</span></span><br><span class="line">    l = <span class="built_in">len</span>(r)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,l):</span><br><span class="line">        M = d[i] * M</span><br><span class="line">    x = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,l):</span><br><span class="line">        md = M//d[i]</span><br><span class="line">        x = (x + gmpy2.invert(md, d[i])  * md *r[i] )%M</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(M+x% M)%M</span><br><span class="line"></span><br><span class="line">p = <span class="number">109935857933867829728985398563235455481120300859311421762540858762721955038310117609456763338082237907005937380873151279351831600225270995344096532750271070807051984097524900957809427861441436796934012393707770012556604479065826879107677002380580866325868240270494148512743861326447181476633546419262340100453</span></span><br><span class="line"></span><br><span class="line">e1 = <span class="number">15218928658178</span></span><br><span class="line">q1=<span class="number">127587319253436643569312142058559706815497211661083866592534217079310497260365307426095661281103710042392775453866174657404985539066741684196020137840472950102380232067786400322600902938984916355631714439668326671310160916766472897536055371474076089779472372913037040153356437528808922911484049460342088834871</span></span><br><span class="line">c1 =  <span class="number">262739975753930281690942784321252339035906196846340713237510382364557685379543498765074448825799342194332681181129770046075018122033421983227887719610112028230603166527303021036386350781414447347150383783816869784006598225583375458609586450854602862569022571672049158809874763812834044257419199631217527367046624888837755311215081173386523806086783266198390289097231168172692326653657393522561741947951887577156666663584249108899327053951891486355179939770150550995812478327735917006194574412518819299303783243886962455399783601229227718787081785391010424030509937403600351414176138124705168002288620664809270046124</span></span><br><span class="line">n1 = p*q1</span><br><span class="line"></span><br><span class="line">e2 = <span class="number">381791429275130</span></span><br><span class="line">q2 =  <span class="number">114401188227479584680884046151299704656920536168767132916589182357583461053336386996123783294932566567773695426689447410311969456458574731187512974868297092638677515283584994416382872450167046416573472658841627690987228528798356894803559278308702635288537653192098514966089168123710854679638671424978221959513</span></span><br><span class="line">c2 =  <span class="number">7395591129228876649030819616685821899204832684995757724924450812977470787822266387122334722132760470911599176362617225218345404468270014548817267727669872896838106451520392806497466576907063295603746660003188440170919490157250829308173310715318925771643105064882620746171266499859049038016902162599261409050907140823352990750298239508355767238575709803167676810456559665476121149766947851911064706646506705397091626648713684511780456955453552020460909638016134124590438425738826828694773960514221910109473941451471431637903182205738738109429736425025621308300895473186381826756650667842656050416299166317372707709596</span></span><br><span class="line">n2 = p*q2</span><br><span class="line"></span><br><span class="line">phi1=(p-<span class="number">1</span>)*(q1-<span class="number">1</span>)</span><br><span class="line">phi2=(p-<span class="number">1</span>)*(q2-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">xx1=gmpy2.gcd(e1,phi1) <span class="comment"># xx1=14</span></span><br><span class="line">xx2=gmpy2.gcd(e2,phi2) <span class="comment"># xx2=14</span></span><br><span class="line"></span><br><span class="line">d1=gmpy2.invert(e1//xx1,phi1)</span><br><span class="line">d2=gmpy2.invert(e2//xx2,phi2)</span><br><span class="line"></span><br><span class="line">nn=[]</span><br><span class="line">aa=[]</span><br><span class="line"></span><br><span class="line">nn.append(q1)</span><br><span class="line">nn.append(q2)</span><br><span class="line">a1=gmpy2.powmod(c1,d1,p*q1)%q1</span><br><span class="line">a2=gmpy2.powmod(c2,d2,p*q2)%q2</span><br><span class="line">aa.append(a1)</span><br><span class="line">aa.append(a2)</span><br><span class="line"></span><br><span class="line">last = CRT(aa,nn)</span><br><span class="line">new_e=<span class="number">7</span></span><br><span class="line">new_phi=(q1-<span class="number">1</span>)*(q2-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">new_d=gmpy2.invert(new_e,new_phi)</span><br><span class="line">m_2=gmpy2.powmod(last,new_d,q1*q2)</span><br><span class="line">m=gmpy2.iroot(m_2,<span class="number">2</span>)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
 <h2 id="rabin-攻击">Rabin 攻击</h2>
-<h3 id="特征-6">特征</h3>
+<h3 id="特征-7">特征</h3>
 <p><span class="math inline">\(e=2\)</span></p>
 <h3 id="原理-6">原理</h3>
 <ul>
@@ -2837,7 +2851,7 @@ n)的算法求出这些根。</p>
 3\)</span>并且在明文当中只有三分之二的比特是已知的，这种算法可以求出明文中所有的比特。</p>
 <h2 id="prime-power-rsa-using-two-decryption-exponents">Prime Power RSA
 using Two Decryption Exponents</h2>
-<h3 id="特征-7">特征</h3>
+<h3 id="特征-8">特征</h3>
 <ul>
 <li><span class="math inline">\(N=p^rq\)</span></li>
 <li><span class="math inline">\(d_1\)</span> 和 <span class="math inline">\(d_2\)</span> 大部分高位相同，即 <span class="math inline">\(|d_1-d_2|\)</span> 很小</li>
@@ -2887,7 +2901,7 @@ e_1e_2x-(e_2-e_1)\equiv 0\pmod{p^{r-1}}
 <li>当 <span class="math inline">\(g=p^r\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r}}\)</span></li>
 <li>当 <span class="math inline">\(g=p^{r-1}q\)</span> 时，<span class="math inline">\(p=\frac{N}{g}\)</span></li>
 </ul>
-<h3 id="实例">实例</h3>
+<h3 id="实例-1">实例</h3>
 <p>尝试求解 <span class="math inline">\(N=p^2q\)</span>，其中 <span class="math display">\[
 N = 6093253851486120878859471958399737725885946526553626219\\
 e1 = 2749600381847487389715964767235618802529675855606377411\\
@@ -6599,6 +6613,11 @@ Linux 内部文件中。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; python office2john.py 11.docx</span><br><span class="line">11.docx:$office$*2013*100000*256*16*e4a3eb62e8d3576f861f9eded75e0525*9eeb35f0849a7800d48113440b4bbb9c*577f8d8b2e1c5f60fed76e62327b38d28f25230f6c7dfd66588d9ca8097aabb9</span><br></pre></td></tr></table></figure>
 <p>然后再使用 hashcat 爆破</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hashcat -a 3 -m 9600 $office$*2013*100000*256*16*e4a3eb62e8d3576f861f9eded75e0525*9eeb35f0849a7800d48113440b4bbb9c*577f8d8b2e1c5f60fed76e62327b38d28f25230f6c7dfd66588d9ca8097aabb9 --force ?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
+<h2 id="keepass-爆破">Keepass 爆破</h2>
+<p>先用 zip2john 获取 RAR 文件 hash 值</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">&gt; keepass2john.exe .\clients.kdbx</span><br><span class="line">clients:$keepass$*2*9090908*0*f7d1170d7371a17281aa3f2a26c7388ca5725c21fcbc29d2ace56292eff8eb79*da67f7ac407dca58cbdf4470f411f0f816b93e09e691cc4fbe0d9ce4acaa28c0*706a344c94d1eb4d7e356d67c6b3189b*ef40e4466434309c67248c2ad1e6bb0d4319447268f862c53a196e4ca12e29a0*7ff7758edbc9b8cde051228494e36af1edd750edc398e84422268956dc942876</span><br></pre></td></tr></table></figure>
+<p>然后再使用 hashcat 爆破</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hashcat -a 3 -m 13400 $keepass$*2*9090908*0*f7d1170d7371a17281aa3f2a26c7388ca5725c21fcbc29d2ace56292eff8eb79*da67f7ac407dca58cbdf4470f411f0f816b93e09e691cc4fbe0d9ce4acaa28c0*706a344c94d1eb4d7e356d67c6b3189b*ef40e4466434309c67248c2ad1e6bb0d4319447268f862c53a196e4ca12e29a0*7ff7758edbc9b8cde051228494e36af1edd750edc398e84422268956dc942876 --force ?d?d?d?d</span><br></pre></td></tr></table></figure>
 <h2 id="wifi-密码破解">WIFI 密码破解</h2>
 <p>首先先把握手包转化为 hccapx 格式</p>
 <blockquote>
@@ -9703,6 +9722,533 @@ GetCommandLineA() API：</p>
       <tags>
         <tag>note</tag>
         <tag>idapython</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>crunch笔记</title>
+    <url>//crunch-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>Crunch
+是一种创建密码字典工具，按照指定的规则生成密码字典，可以灵活的制定自己的字典文件。</p>
+<p>使用 Crunch
+工具生成的密码可以输出到屏幕，保存到文件、或另一个程序。尤其是在渗透测试需要爆破的时候，字典的编排等直接影响到我们的爆破速度，对整个渗透测试流程起着十分重要的作用。</p>
+<p>在 Debian 系的 Linux 系统中可以使用 <code>apt install crunch</code>
+直接安装。</p>
+<p>也可以在 SourceForge 中获取资源 <a href="https://sourceforge.net/projects/crunch-wordlist/">https://sourceforge.net/projects/crunch-wordlist/</a>。</p>
+<h1 id="使用">使用</h1>
+<h2 id="语法">语法</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crunch &lt;min&gt; &lt;max&gt; [options]</span><br></pre></td></tr></table></figure>
+<h2 id="参数详解">参数详解</h2>
+<h3 id="必选参数">必选参数</h3>
+<ul>
+<li><code>min</code> → 设定最小字符串长度（必选）</li>
+<li><code>max</code> → 设定最大字符串长度（必选）</li>
+</ul>
+<h3 id="可选参数">可选参数</h3>
+<table>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-b</code></td>
+<td>指定文件输出的大小，避免字典文件过大</td>
+</tr>
+<tr class="even">
+<td><code>-c</code></td>
+<td>指定文件输出的行数，即包含密码的个数</td>
+</tr>
+<tr class="odd">
+<td><code>-d</code></td>
+<td>限制相同元素出现的次数</td>
+</tr>
+<tr class="even">
+<td><code>-e</code></td>
+<td>定义停止字符，即到该字符串就停止生成</td>
+</tr>
+<tr class="odd">
+<td><code>-f</code></td>
+<td>调用库文件（/etc/share/crunch/charset.lst）</td>
+</tr>
+<tr class="even">
+<td><code>-i</code></td>
+<td>改变输出格式，即 aaa,aab → aaa,baa</td>
+</tr>
+<tr class="odd">
+<td><code>-l</code></td>
+<td>通常与 <code>-t</code> 联合使用，表明该字符为实义字符</td>
+</tr>
+<tr class="even">
+<td><code>-m</code></td>
+<td>通常与 <code>-p</code> 搭配</td>
+</tr>
+<tr class="odd">
+<td><code>-o</code></td>
+<td>将密码保存到指定文件</td>
+</tr>
+<tr class="even">
+<td><code>-p</code></td>
+<td>指定元素以组合的方式进行</td>
+</tr>
+<tr class="odd">
+<td><code>-q</code></td>
+<td>读取密码文件，即读取 pass.txt</td>
+</tr>
+<tr class="even">
+<td><code>-r</code></td>
+<td>定义重某一字符串重新开始</td>
+</tr>
+<tr class="odd">
+<td><code>-s</code></td>
+<td>指定一个开始的字符，即从自己定义的密码 <code>xxxx</code> 开始</td>
+</tr>
+<tr class="even">
+<td><code>-t</code></td>
+<td>指定密码输出的格式</td>
+</tr>
+<tr class="odd">
+<td><code>-u</code></td>
+<td>禁止打印百分比（必须为最后一个选项）</td>
+</tr>
+<tr class="even">
+<td><code>-z</code></td>
+<td>压缩生成的字典文件，支持 gzip,bzip2,lzma,7z</td>
+</tr>
+</tbody>
+</table>
+<h3 id="通配符">通配符</h3>
+<ul>
+<li><code>%</code> → 代表数字</li>
+<li><code>^</code> → 代表特殊符号</li>
+<li><code>@</code> → 代表小写字母</li>
+<li><code>,</code> → 代表大写字母</li>
+</ul>
+<h1 id="实例">实例</h1>
+<ul>
+<li><p>生成一个字典文件，用自己指定的字符（默认为26个小写字母为元素的所有组合）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crunch 1 3 123</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/crunch-note/crunch1.png" alt="crunch1">
+<figcaption aria-hidden="true">crunch1</figcaption>
+</figure></li>
+<li><p>若字典中需要空格 <code>,;</code> 等用双引号来表示</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crunch 3 3 <span class="string">&quot;ab &quot;</span></span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/crunch-note/crunch2.png" alt="crunch2">
+<figcaption aria-hidden="true">crunch2</figcaption>
+</figure></li>
+<li><p>生成几个元素的组合（可以用于社工中收集的信息）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crunch 4 4 -p zhangsan 2018 0101 ..</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/crunch-note/crunch3.png" alt="crunch3">
+<figcaption aria-hidden="true">crunch3</figcaption>
+</figure></li>
+<li><p>生成指定的字符串（比如生成编号，手机号等）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crunch 9 9 -t 201800%%%</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/crunch-note/crunch4.png" alt="crunch4">
+<figcaption aria-hidden="true">crunch4</figcaption>
+</figure></li>
+<li><p>多种组合生成 3 个元素的组合，前三位为定义的字符串</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crunch 3 3 -t d@% -p aaa bbb</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/crunch-note/crunch5.png" alt="crunch5">
+<figcaption aria-hidden="true">crunch5</figcaption>
+</figure></li>
+<li><p>通过 <code>-l</code> 参数来使 <code>@,%^</code>
+等特殊字符输出</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crunch 7 7 -t p@ss,%^ -l a@aaaaa</span><br></pre></td></tr></table></figure></li>
+<li><p><code>-o</code> 参数也可使用 <code>&gt;&gt;</code> 来简化</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crunch 4 4 -d 2@ -t @@@% &gt;&gt; passwdlist.txt</span><br></pre></td></tr></table></figure></li>
+<li><p>调用密码库 <code>charset.lst</code> 中的 <code>hex-upper</code>
+项目字符，生成 4 位密码</p>
+<p><code>charset.lst</code> 文件在目录 <code>/usr/share/crunch/</code>
+中</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crunch 4 4 -f charset.lst hex-upper -t @@%% -l @xdd</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>amazing-rsa-algorithm-note</title>
+    <url>/post/amazing-rsa-algorithm-note.html</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>github action使用笔记</title>
+    <url>//github-action-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>Github Action 是什么？是 Github 推出的持续集成工具。</p>
+<p>持续集成是什么？简单说就是自动化的打包程序——如果是前端程序员，这样解释比较顺畅：</p>
+<p>每次提交代码到 Github 的仓库后，Github 都会自动创建一个虚拟机（Mac /
+Windows / Linux 任我们选），来执行一段或多段指令（由我们定），例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install</span><br><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+<p>所以 Action 功能其实就是对项目代码进行自动化测试，从而保证 push
+代码的正确性。利用 Action 功能，你可以选择 Github 提供的各种测试环境
+(windows, Linux, MaxOS) 运行你的项目。</p>
+<p>而我们集成 Github Action 的做法，就是在我们仓库的根目录下，创建一个
+<code>.github</code> 文件夹，里面放一个 <code>*.yaml</code> 文件——这个
+Yaml 文件就是我们配置 Github Action 所用的文件。</p>
+<p><strong>Github Action 的使用限制</strong></p>
+<ul>
+<li>每个 Workflow 中的 job 最多可以执行 6 个小时</li>
+<li>每个 Workflow 最多可以执行 72 小时</li>
+<li>每个 Workflow 中的 job 最多可以排队 24 小时</li>
+<li>在一个存储库的所有 Action 中，一个小时最多可以执行 1000 个 API
+请求</li>
+<li>并发工作数：Linux：20，Mac：5（专业版可以最多提高到 180 / 50）</li>
+</ul>
+<p>什么是 Workflow？Workflow 是由一个或多个 job
+组成的可配置的自动化过程。我们通过创建 YAML 文件来创建 Workflow
+配置。</p>
+<h1 id="workflow-配置">Workflow 配置</h1>
+<h2 id="名称">名称</h2>
+<p>使用 <code>name</code> 参数定义 Workflow 的名称，Github 在存储库的
+Action 页面上显示 Workflow 的名称。</p>
+<p>如果我们省略 <code>name</code>，则 Github
+会将其设置为相对于存储库根目录的工作流文件路径。</p>
+<p>例如：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Greeting</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">push</span></span><br></pre></td></tr></table></figure>
+<h2 id="触发器">触发器</h2>
+<p><code>on</code> 用来配置触发 Workflow 执行的 event
+名称，比如：<strong>每当我提交代码到 Github 上的时候</strong></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">//</span> <span class="string">单个事件</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">push</span></span><br><span class="line"></span><br><span class="line"><span class="string">//</span> <span class="string">多个事件</span></span><br><span class="line"><span class="attr">on:</span> [<span class="string">push</span>,<span class="string">pull_request</span>]</span><br></pre></td></tr></table></figure>
+<p>事件名称索引：<a href="https://docs.github.com/cn/actions/using-workflows/events-that-trigger-workflows">https://docs.github.com/cn/actions/using-workflows/events-that-trigger-workflows</a></p>
+<h2 id="job">job</h2>
+<p>首先要知道，一个 Workflow 由一个或多个 <code>job</code>
+构成，含义是一次持续集成的运行，可以完成多个任务。</p>
+<p>在 <code>jobs</code> 下定义的每一个 <code>id</code> 便与
+<code>job</code> 一一对应，同时 <code>job</code> 的 <code>name</code>
+属性用于显示在 Github 的 Action 页面中。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">my_first_job:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">first</span> <span class="string">job</span></span><br><span class="line">  <span class="attr">my_second_job:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">second</span> <span class="string">job</span></span><br></pre></td></tr></table></figure>
+<p>上面的 <code>my_first_job</code> 和 <code>my_second_job</code> 就是
+<code>job</code> 的 <code>id</code>。</p>
+<p>而我们也可以定义 <code>job</code> 的依赖，通过 <code>needs</code>
+属性配置。</p>
+<p>所谓依赖，即如果依赖的 <code>job</code> 失败，则会跳过所有需要该
+<code>job</code> 的 <code>job</code>。（类似执行的前置条件）</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">job1:</span></span><br><span class="line">  <span class="attr">job2:</span></span><br><span class="line">    <span class="attr">needs:</span> <span class="string">job1</span></span><br><span class="line">  <span class="attr">job3:</span></span><br><span class="line">    <span class="attr">needs:</span> [<span class="string">job1</span>, <span class="string">job2</span>]</span><br></pre></td></tr></table></figure>
+<p><code>jobs</code> 的输出，用于和 <code>needs</code> 打配合：可以在
+Action 页面中看到 <code>output</code></p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">job1:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="comment"># Map a step output to a job output</span></span><br><span class="line">    <span class="attr">outputs:</span></span><br><span class="line">      <span class="attr">output1:</span> <span class="string">$&#123;&#123;</span> <span class="string">steps.step1.outputs.test</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">output2:</span> <span class="string">$&#123;&#123;</span> <span class="string">steps.step2.outputs.test</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">step1</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">echo</span> <span class="string">&quot;::set-output name=test::hello&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">step2</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">echo</span> <span class="string">&quot;::set-output name=test::world&quot;</span></span><br><span class="line">  <span class="attr">job2:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">needs:</span> <span class="string">job1</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">echo</span> <span class="string">$&#123;&#123;needs.job1.outputs.output1&#125;&#125;</span> <span class="string">$&#123;&#123;needs.job1.outputs.output2&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>注意到上面的 <code>runs-on</code> 属性可以用于指定 <code>job</code>
+的运行环境，而 Github 上可用的运行环境有以下：</p>
+<figure>
+<img src="/github-action-note/runs-on-support.png" alt="runs-on-support">
+<figcaption aria-hidden="true">runs-on-support</figcaption>
+</figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">job1:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">macos-10.15</span></span><br><span class="line">  <span class="attr">job2:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">windows-2019</span></span><br></pre></td></tr></table></figure>
+<p>如果有必要的话，我们还可以定义常量（环境变量）</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">job1:</span></span><br><span class="line">    <span class="attr">env:</span></span><br><span class="line">      <span class="attr">HANDSOMEMAN:</span> <span class="string">qsdz</span></span><br></pre></td></tr></table></figure>
+<p>我们还可以使用 if 条件语句来组织 <code>job</code> 运行。</p>
+<p>每个 <code>job</code> 由多个 <code>step</code>
+构成，它会从上至下依次执行。</p>
+<p><strong>step 可以运行：</strong></p>
+<ol type="1">
+<li><strong>commands</strong>：命令行命令</li>
+<li><strong>setup tasks</strong>：环境配置命令（比如安装个 Node
+环境、安装个 Python 环境）</li>
+<li><strong>action</strong>（in your repository, in public repository,
+in Docker registry）：一段 Action</li>
+</ol>
+<p>每个 <code>step</code>
+都在自己的运行器环境中运行，并且可以访问工作空间和文件系统。</p>
+<p>因为每个 <code>step</code> 都在运行器环境中独立运行，所以
+<code>step</code>
+之间<strong>不会保留</strong>对<strong>环境变量</strong>的更改。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 定义 Workflow 的名字</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">Greeting</span></span><br><span class="line"><span class="comment"># 定义 Workflow 的触发器</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">push</span></span><br><span class="line"><span class="comment"># 定义 Workflow 的 job</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="comment"># 定义 job 的 id</span></span><br><span class="line">  <span class="attr">my-job:</span></span><br><span class="line">    <span class="comment"># 定义 job 的 name</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">Job</span></span><br><span class="line">    <span class="comment"># 定义 job 的运行环境</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="comment"># 定义 job 的运行步骤</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="comment"># 定义 step 的名称</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Print</span> <span class="string">a</span> <span class="string">greeting</span></span><br><span class="line">      <span class="comment"># 定义 step 的环境变量</span></span><br><span class="line">      <span class="attr">env:</span></span><br><span class="line">        <span class="attr">GREET:</span> <span class="string">Hello!</span></span><br><span class="line">        <span class="attr">MSG:</span> <span class="string">World!</span></span><br><span class="line">      <span class="comment"># 运行指令：输出环境变量</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">echo</span> <span class="string">$GREET</span> <span class="string">$MSG</span></span><br></pre></td></tr></table></figure>
+<p>而如果我们需要运行命令行命令，我们需要使用 <code>run</code> 参数</p>
+<p><code>run</code> 命令在默认状态下会启动一个没有登录的 shell
+来作为命令输入器。</p>
+<p>每个 <code>run</code> 命令都会启动一个新的
+shell，所以我们执行多行连续命令的时候需要写在同一个 <code>run</code>
+下：</p>
+<ul>
+<li>单行命令</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Dependencies</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">npm</span> <span class="string">install</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>多行命令</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Clean</span> <span class="string">install</span> <span class="string">dependencies</span> <span class="string">and</span> <span class="string">build</span></span><br><span class="line">  <span class="string">run：</span> <span class="string">|</span></span><br><span class="line"><span class="string">    npm ci</span></span><br><span class="line"><span class="string">    npm run build</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>working-directory</code> 关键字，我们可以指定 command
+的运行位置：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Clean</span> <span class="string">temp</span> <span class="string">directory</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">rm</span> <span class="string">-rf</span> <span class="string">*</span></span><br><span class="line">  <span class="attr">working-directory:</span> <span class="string">./temp</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>shell</code> 关键字，来指定特定的 shell：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">steps:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Display</span> <span class="string">the</span> <span class="string">path</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">echo</span> <span class="string">$PATH</span></span><br><span class="line">    <span class="attr">shell:</span> <span class="string">bash</span></span><br></pre></td></tr></table></figure>
+<p>下面是各个系统支持的 shell 类型：</p>
+<figure>
+<img src="/github-action-note/shell-support.png" alt="shell-support">
+<figcaption aria-hidden="true">shell-support</figcaption>
+</figure>
+<p>就是有时候，我们的代码可能编译环境有多个。比如 electron
+的程序，我们需要在 macos 上编译 dmg 压缩包，在 windows 上编译 exe
+可执行文件。</p>
+<p>这个时候，我们需要用到矩阵（<code>strategy</code>）这个功能。</p>
+<p>比如下面的代码，我们使用了矩阵指定了：<strong>2 个操作系统，3 个 node
+版本</strong>。</p>
+<p>这时候下面这段代码就会执行 6 次（2 个操作系统 x 3 个 node
+版本）。</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">runs-on:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.os</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">strategy:</span></span><br><span class="line">  <span class="attr">matrix:</span></span><br><span class="line">    <span class="attr">os:</span> [<span class="string">ubuntu-16.04</span>, <span class="string">ubuntu-18.04</span>]</span><br><span class="line">    <span class="attr">node:</span> [<span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>]</span><br><span class="line"><span class="attr">steps:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/setup-node@v1</span></span><br><span class="line">    <span class="attr">with:</span></span><br><span class="line">      <span class="attr">node-version:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.node</span> <span class="string">&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="action">Action</h2>
+<p>Action 其实就是命令，比如 Github 官方给了我们一些默认的命令：<a href="https://github.com/marketplace?type=actions&amp;query=actions">https://github.com/marketplace?type=actions&amp;query=actions</a></p>
+<p>比如最常用的，check-out 代码到 Workflow 工作区：<a href="https://github.com/marketplace/actions/checkout">https://github.com/marketplace/actions/checkout</a></p>
+<p>比如我们可以 check-out 仓库中最新的代码到 Workflow 的工作区：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">steps:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br></pre></td></tr></table></figure>
+<p>当然，我们还可以给它添加个名字：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">steps:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Check</span> <span class="string">out</span> <span class="string">Git</span> <span class="string">repository</span></span><br><span class="line">    <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br></pre></td></tr></table></figure>
+<p>也可以 Action 参数</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">steps:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/setup-node@v2-beta</span></span><br><span class="line">  <span class="attr">with:</span></span><br><span class="line">    <span class="attr">node-version:</span> <span class="string">&#x27;12&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>其中 <code>@v2</code> 和 <code>@v2-beta</code> 的意思都是 Action
+的版本。</p>
+<p>我们如果不带版本号的话，其实就是默认使用最新版本的了。</p>
+<p>但是 <strong>Github
+官方强烈要求我们带上版本号</strong>——这样子的话，我们就不会出现：<strong>写好一个
+Workflow，但是由于某个 Action 的作者一更新，我们的 Workflow
+就崩了的问题。</strong></p>
+<p>而 <code>with</code> 中是一些特殊的 Action
+所需要的参数，具体需要什么要在对应的 Action 官方页面中查看。</p>
+<blockquote>
+<p>有关更多请参考 <a href="https://docs.github.com/cn/actions/using-workflows/workflow-syntax-for-github-actions">https://docs.github.com/cn/actions/using-workflows/workflow-syntax-for-github-actions</a></p>
+</blockquote>
+<h1 id="实例">实例</h1>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Trigger</span> <span class="string">workflow</span> <span class="string">with</span> <span class="string">issue</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span> [<span class="string">issues</span>]</span><br><span class="line"><span class="attr">permissions:</span></span><br><span class="line">  <span class="attr">issues:</span> <span class="string">write</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">start:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">timeout-minutes:</span> <span class="number">2</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">echo</span> <span class="string">&quot;$<span class="template-variable">&#123;&#123; secrets.FLAG1 &#125;&#125;</span>&quot;</span> <span class="string">&gt;</span> <span class="string">flag</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">&#x27;echo &quot;$<span class="template-variable">&#123;&#123; github.event.issue.body &#125;&#125;</span>&quot; &gt; tmpfile&#x27;</span></span><br><span class="line">  <span class="attr">end:</span></span><br><span class="line">    <span class="attr">if:</span> <span class="string">$&#123;&#123;</span> <span class="string">always()</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">echo</span> <span class="string">https://api.github.com/repos/$&#123;&#123;github.repository&#125;&#125;/issues/$&#123;&#123;github.event.issue.number&#125;&#125;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        curl \</span></span><br><span class="line"><span class="string">        -X PATCH \</span></span><br><span class="line"><span class="string">        -H &quot;Authorization: token $&#123;&#123; github.token &#125;&#125;&quot; \</span></span><br><span class="line"><span class="string">        -H &quot;Accept: application/vnd.github.v3+json&quot; \</span></span><br><span class="line"><span class="string">        https://api.github.com/repos/$&#123;&#123;github.repository&#125;&#125;/issues/$&#123;&#123;github.event.issue.number&#125;&#125; \</span></span><br><span class="line"><span class="string">        -d &#x27;&#123;&quot;title&quot;:&quot;This is new title&quot;, &quot;body&quot;: &quot;action run finished&quot;&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Clean</span> <span class="string">the</span> <span class="string">logs</span> <span class="string">of</span> <span class="string">the</span> <span class="string">run</span></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="comment"># Allows you to run this workflow manually from the Actions tab</span></span><br><span class="line">  <span class="attr">workflow_run:</span> </span><br><span class="line">    <span class="attr">workflows:</span> [<span class="string">Trigger</span> <span class="string">workflow</span> <span class="string">with</span> <span class="string">issue</span>]</span><br><span class="line">    <span class="attr">types:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">completed</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A workflow run is made up of one or more jobs that can run sequentially or in parallel</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="comment"># This workflow contains a single job called &quot;build&quot;</span></span><br><span class="line">  <span class="attr">clean:</span></span><br><span class="line">    <span class="comment"># The type of runner that the job will run on</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Steps represent a sequence of tasks that will be executed as part of the job</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="comment"># Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/github-script@v6</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">script:</span> <span class="string">|</span></span><br><span class="line"><span class="string">            github.rest.actions.deleteWorkflowRun(&#123;</span></span><br><span class="line"><span class="string">              owner: context.repo.owner,</span></span><br><span class="line"><span class="string">              repo: context.repo.repo,</span></span><br><span class="line"><span class="string">              run_id: context.payload.workflow_run.id</span></span><br><span class="line"><span class="string">            &#125;)</span></span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>github</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>jenkins credentials笔记</title>
+    <url>//jenkins-credentials-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>Jenkins 是一个开源的、提供友好操作界面的持续集成(CI)工具，起源于
+Hudson（Hudson是商用的），主要用于持续、自动的构建/测试软件项目、监控外部任务的运行（这个比较抽象，暂且写上，不做解释）。Jenkins
+用 Java 语言编写，可在 Tomcat 等流行的 servlet
+容器中运行，也可独立运行。通常与版本管理工具(SCM)、构建工具结合使用。常用的版本控制工具有
+SVN、GIT，构建工具有 Maven、Ant、Gradle。</p>
+<p>凭证（cridential）是 Jenkins
+进行受限操作时的凭据。比如使用SSH登录远程机器时，用户名和密码或 SSH key
+就是凭证。而这些凭证不可能以明文写在 Jenkinsfile 中。Jenkins
+凭证管理指的就是对这些凭证进行管理。</p>
+<p>为了最大限度地提高安全性，在 Jenkins master
+节点上对凭证进行加密存储（通过 Jenkins 实例 ID
+加密），只有通过它们的凭证 ID 才能在 pipeline
+中使用，并且限制了将证书从一个 Jenkins 实例复制到另一个 Jenkins
+实例的能力。</p>
+<p>也因为所有的凭证都被存储在 Jenkins master 上，所以在 Jenkins master
+上最好不要执行任务，以免被 pipeline 非法读取出来，应该分配到 Jenkins
+agent 上执行 pipeline。</p>
+<h1 id="jenkins-凭证">Jenkins 凭证</h1>
+<p>目前 Jenkins 支持如下类型的凭证：</p>
+<ul>
+<li>Username with password</li>
+<li>GitHub App</li>
+<li>SSH Username with private key</li>
+<li>Secret file</li>
+<li>Secret text</li>
+<li>X.509 Client Certificate</li>
+<li>Certificate</li>
+</ul>
+<p>其中 Username with password 和 SSH Username with private key
+是应用最广泛的。</p>
+<p>Secret text 是一串需要保密的文本，比如 Github 的 token。</p>
+<p>Username with password 指用户和密码凭证。</p>
+<p>Secret file 指需要保密的文本文件。使用 Secret file 时，Jenkins
+会将文件复制到一个临时目录中，再将文件路径设置到一个变量中。构建结束后，所复制的
+Secret file 会被删除。</p>
+<p>SSH Username with private key 指一对SSH用户名和密钥。</p>
+<p>Jenkins 的凭据信息（类似 git 账号密码、用户账号密码、tomcat
+账号密码）以及服务器的密钥账号密码等信息 ，在 Jenkins
+服务器的本地都是有存储的，并且都进行了加密。</p>
+<p>Jenkins的相关凭据信息存储在
+<code>$&#123;JENKINS_HOME&#125;/credentials.xml</code>
+文件中，其中类似下面的就是密码密文：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;AQAAABAAAAAgQI+cpXwSulM5zcFv14L5eODWtRDiP1HBCY/zg8H3kTDE4swuJ+j5DiVg251XDjq+&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="jenkins-凭证破解">Jenkins 凭证破解</h1>
+<h2 id="普通破解">普通破解</h2>
+<p>Jenkins 的密码是使用
+<code>hudson.util.Secret.fromString("明文密码").getEncryptedValue()</code>
+加密的，而解密的话就需要使用
+<code>hudson.util.Secret.fromString("&#123;XXX=&#125;").getPlainText()</code>
+进行解密。</p>
+<p>用 Jenkins 的管理员账号登录，在系统管理列表中找到
+<code>Script Console</code> 这个选项，然后</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">println(hudson.util.Secret.fromString(<span class="string">&quot;&#123;AQAAABAAAAAgQI+cpXwSulM5zcFv14L5eODWtRDiP1HBCY/zg8H3kTDE4swuJ+j5DiVg251XDjq+&#125;&quot;</span>).getPlainText())</span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">println(hudson.util.Secret.decrypt(<span class="string">&quot;&#123;AQAAABAAAAAgQI+cpXwSulM5zcFv14L5eODWtRDiP1HBCY/zg8H3kTDE4swuJ+j5DiVg251XDjq+&#125;&quot;</span>))</span><br></pre></td></tr></table></figure>
+<p>点击运行按钮，解密后的明文密码就会打印出来。</p>
+<h2 id="jenkins-publish-over-ssh-破解">Jenkins publish over SSH
+破解</h2>
+<p>如果使用了 Jenkins publish over SSH，则相关的密码记录
+<code>$&#123;JENKINS_HOME&#125;/jenkins.plugins.publish_over_ssh.BapSshPublisherPlugin.xml</code>
+内。</p>
+<p>我们可以使用开源项目 <a href="https://github.com/rabbitmask/Jenkins_Credentials_Crack">https://github.com/rabbitmask/Jenkins_Credentials_Crack</a>
+进行凭证破解。</p>
+<h2 id="jenkins-credentials-解密和转储">Jenkins credentials
+解密和转储</h2>
+<p>使用项目 <a href="https://github.com/hoto/jenkins-credentials-decryptor">https://github.com/hoto/jenkins-credentials-decryptor</a>
+可以完成对 Jenkins 凭证的解密。</p>
+<p>我们需要知道Jenkins
+将加密的凭据存储在<code>credentials.xml</code>文件中或<code>config.xml</code>文件夹下。要解密它们，您需要<code>master.key</code>和<code>hudson.util.Secret</code>文件。</p>
+<p>所有文件都位于 Jenkins 主目录中：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="variable">$JENKINS_HOME</span>/credentials.xml </span><br><span class="line"><span class="variable">$JENKINS_HOME</span>/secrets/master.key</span><br><span class="line"><span class="variable">$JENKINS_HOME</span>/secrets/hudson.util.Secret</span><br><span class="line"><span class="variable">$JENKINS_HOME</span>/<span class="built_in">jobs</span>/example-folder/config.xml</span><br></pre></td></tr></table></figure>
+<p>我们需要从 release 中下载二进制构建（需要注意的是，暂时只支持
+Linux）</p>
+<p>之后使用指令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./jenkins-credentials-decryptor \</span><br><span class="line">  -m <span class="variable">$JENKINS_HOME</span>/secrets/master.key \</span><br><span class="line">  -s <span class="variable">$JENKINS_HOME</span>/secrets/hudson.util.Secret \</span><br><span class="line">  -c <span class="variable">$JENKINS_HOME</span>/credentials.xml \</span><br><span class="line">  -o json</span><br></pre></td></tr></table></figure>
+<p>即可将凭证以 json 形式输出在标准输出中。</p>
+<p><code>-o</code> 属性是可选的，默认为 <code>json</code>，可以指定为
+<code>text</code> 模式。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>John笔记</title>
+    <url>//john-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>一款免费、开源的暴力密码破解器，它有多平台版本，支持目前大多数的加密算法，如DES、MD4、MD5等。该软件破解密码方式简单而粗暴，理论上只要时间上面允许，该软件可以破译绝大多数用户密码。John
+the
+Ripper免费的开源软件，支持目前大多数的加密算法，如DES、MD4、MD5等。它支持多种不同类型的系统架构，包括Unix、Linux、Windows、DOS模式、BeOS和OpenVMS，主要目的是破解不够牢固的Unix/Linux系统密码。</p>
+<p>在 Debian 系的 Linux 中可以使用 <code>apt install john</code>
+获取。</p>
+<p>同时也可以在<a href="https://www.openwall.com/john/">官网</a>中获取原代码版本和发行版。</p>
+<p>需要注意的是，john 时常需要与 <code>*2john</code>
+软件配合使用，一般是将密码转换为 hash 值，而这类软件需要从<a href="https://www.openwall.com/john/">官网</a>中的发行版中获取。</p>
+<h1 id="安装">安装</h1>
+<p>在官网 <a href="https://www.openwall.com/john/">https://www.openwall.com/john/</a>
+中，我们可以选择 Windows 二进制版，里面已经包含了 <code>*2john</code> 和
+<code>john</code> 的二进制构建或者 python 脚本。</p>
+<p>如果是选择了下载源码，可能需要使用 make 指令自动化编译。</p>
+<p>一个小建议，将下载的 Windows 二进制版本文件夹中的 <code>run</code>
+文件夹（存放 <code>*2john</code> 和 <code>john</code> 的二进制构建或者
+python 脚本的文件夹）加入环境变量中，这样可以随时随地调用。</p>
+<h1 id="使用">使用</h1>
+<h2 id="破解模式">破解模式</h2>
+<p>John 支持<strong>四种</strong>密码破解模式：</p>
+<ol type="1">
+<li><strong>字典模式</strong> →
+在这种模式下，用户只需要提供字典和密码列表用于破解。</li>
+<li><strong>单一破解模式</strong> →
+这是john作者推荐的首选模式。John会使用登录名、全名和家庭通讯录作为候选密码。</li>
+<li><strong>递增模式</strong> →
+在该模式下john会尝试所有可能的密码组合。这是最具威力的一种。</li>
+<li><strong>外部模式</strong> → 在这种模式下，用户可以使用 john
+的外部破解模式。使用之前，需要创建一个名为
+(<code>list.external:mode</code>) 的配置文件，其中 mode
+由用户分配。</li>
+</ol>
+<h2 id="命令参数">命令参数</h2>
+<table>
+<colgroup>
+<col style="width: 26%">
+<col style="width: 73%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>–single</code></td>
+<td>single crack 模式，使用配置文件中的规则进行破解</td>
+</tr>
+<tr class="even">
+<td><code>–wordlist=FILE–stdin</code></td>
+<td>字典模式，从 FILE或标准输入中读取词汇</td>
+</tr>
+<tr class="odd">
+<td><code>–rules</code></td>
+<td>打开字典模式的词汇表切分规则</td>
+</tr>
+<tr class="even">
+<td><code>–incremental[=MODE]</code></td>
+<td>使用增量模式</td>
+</tr>
+<tr class="odd">
+<td><code>–external=MODE</code></td>
+<td>打开外部模式或单词过滤，使用 [List.External:MODE]
+节中定义的外部函数</td>
+</tr>
+<tr class="even">
+<td><code>–stdout[=LENGTH]</code></td>
+<td>不进行破解，仅仅把生成的、要测试是否为口令的词汇输出到标准输出上</td>
+</tr>
+<tr class="odd">
+<td><code>–restore[=NAME]</code></td>
+<td>恢复被中断的破解过程，从指定文件或默认为 $JOHN/john.rec
+的文件中读取破解过程的状态信息</td>
+</tr>
+<tr class="even">
+<td><code>–session=NAME</code></td>
+<td>将新的破解会话命名为
+NAME，该选项用于会话中断恢复和同时运行多个破解实例的情况</td>
+</tr>
+<tr class="odd">
+<td><code>–status[=NAME]</code></td>
+<td>显示会话状态</td>
+</tr>
+<tr class="even">
+<td><code>–make-charset=FILE</code></td>
+<td>生成一个字符集文件，覆盖 FILE 文件，用于增量模式</td>
+</tr>
+<tr class="odd">
+<td><code>–show</code></td>
+<td>显示已破解口令</td>
+</tr>
+<tr class="even">
+<td><code>–test</code></td>
+<td>进行基准测试</td>
+</tr>
+<tr class="odd">
+<td><code>–users=[-]LOGIN</code></td>
+<td>UID[,…]</td>
+</tr>
+<tr class="even">
+<td>–groups=[-]GID[,…]</td>
+<td>对指定用户组的账户进行破解，减号表示反向操作，说明对列出组之外的账户进行破解。</td>
+</tr>
+<tr class="odd">
+<td>–shells=[-]SHELL[,…]</td>
+<td>对使用指定 shell 的账户进行操作，减号表示反向操作</td>
+</tr>
+<tr class="even">
+<td>–salts=[-]COUNT</td>
+<td>至少对 COUNT 口令加载加盐，减号表示反向操作</td>
+</tr>
+<tr class="odd">
+<td>–format=NAME</td>
+<td>指定密文格式名称，为 DES/BSDI/MD5/BF/AFS/LM 之一</td>
+</tr>
+<tr class="even">
+<td>–save-memory=LEVEL</td>
+<td>设置内存节省模式，当内存不多时选用这个选项。 LEVEL取值在 1~3
+之间</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例">实例</h2>
+<ul>
+<li><p>使用字典爆破密码</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">john --wordlist=password.lst shadow0</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
       </tags>
   </entry>
 </search>

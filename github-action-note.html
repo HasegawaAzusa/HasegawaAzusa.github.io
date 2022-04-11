@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关github action的使用笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="github action使用笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/github-action-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关github action的使用笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/github-action-note/runs-on-support.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/github-action-note/shell-support.png">
+<meta property="article:published_time" content="2022-04-11T05:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-11T06:43:35.912Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="github">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/github-action-note/runs-on-support.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/github-action-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/github-action-note.html","path":"/github-action-note.html","title":"github action使用笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>github action使用笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">50</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">65</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#workflow-%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">Workflow 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8D%E7%A7%B0"><span class="nav-number">2.1.</span> <span class="nav-text">名称</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E5%99%A8"><span class="nav-number">2.2.</span> <span class="nav-text">触发器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#job"><span class="nav-number">2.3.</span> <span class="nav-text">job</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#action"><span class="nav-number">2.4.</span> <span class="nav-text">Action</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">实例</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">65</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">50</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/github-action-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          github action使用笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-04-11 13:00:00" itemprop="dateCreated datePublished" datetime="2022-04-11T13:00:00+08:00">2022-04-11</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关github action的使用笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="简述">简述</h1>
+<p>Github Action 是什么？是 Github 推出的持续集成工具。</p>
+<p>持续集成是什么？简单说就是自动化的打包程序——如果是前端程序员，这样解释比较顺畅：</p>
+<p>每次提交代码到 Github 的仓库后，Github 都会自动创建一个虚拟机（Mac /
+Windows / Linux 任我们选），来执行一段或多段指令（由我们定），例如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+<p>所以 Action 功能其实就是对项目代码进行自动化测试，从而保证 push
+代码的正确性。利用 Action 功能，你可以选择 Github 提供的各种测试环境
+(windows, Linux, MaxOS) 运行你的项目。</p>
+<p>而我们集成 Github Action 的做法，就是在我们仓库的根目录下，创建一个
+<code>.github</code> 文件夹，里面放一个 <code>*.yaml</code> 文件——这个
+Yaml 文件就是我们配置 Github Action 所用的文件。</p>
+<p><strong>Github Action 的使用限制</strong></p>
+<ul>
+<li>每个 Workflow 中的 job 最多可以执行 6 个小时</li>
+<li>每个 Workflow 最多可以执行 72 小时</li>
+<li>每个 Workflow 中的 job 最多可以排队 24 小时</li>
+<li>在一个存储库的所有 Action 中，一个小时最多可以执行 1000 个 API
+请求</li>
+<li>并发工作数：Linux：20，Mac：5（专业版可以最多提高到 180 / 50）</li>
+</ul>
+<p>什么是 Workflow？Workflow 是由一个或多个 job
+组成的可配置的自动化过程。我们通过创建 YAML 文件来创建 Workflow
+配置。</p>
+<h1 id="workflow-配置">Workflow 配置</h1>
+<h2 id="名称">名称</h2>
+<p>使用 <code>name</code> 参数定义 Workflow 的名称，Github 在存储库的
+Action 页面上显示 Workflow 的名称。</p>
+<p>如果我们省略 <code>name</code>，则 Github
+会将其设置为相对于存储库根目录的工作流文件路径。</p>
+<p>例如：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Greeting</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">push</span></span><br></pre></td></tr></table></figure>
+<h2 id="触发器">触发器</h2>
+<p><code>on</code> 用来配置触发 Workflow 执行的 event
+名称，比如：<strong>每当我提交代码到 Github 上的时候</strong></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">//</span> <span class="string">单个事件</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">push</span></span><br><span class="line"></span><br><span class="line"><span class="string">//</span> <span class="string">多个事件</span></span><br><span class="line"><span class="attr">on:</span> [<span class="string">push</span>,<span class="string">pull_request</span>]</span><br></pre></td></tr></table></figure>
+<p>事件名称索引：<a target="_blank" rel="noopener" href="https://docs.github.com/cn/actions/using-workflows/events-that-trigger-workflows">https://docs.github.com/cn/actions/using-workflows/events-that-trigger-workflows</a></p>
+<h2 id="job">job</h2>
+<p>首先要知道，一个 Workflow 由一个或多个 <code>job</code>
+构成，含义是一次持续集成的运行，可以完成多个任务。</p>
+<p>在 <code>jobs</code> 下定义的每一个 <code>id</code> 便与
+<code>job</code> 一一对应，同时 <code>job</code> 的 <code>name</code>
+属性用于显示在 Github 的 Action 页面中。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">my_first_job:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">first</span> <span class="string">job</span></span><br><span class="line">  <span class="attr">my_second_job:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">second</span> <span class="string">job</span></span><br></pre></td></tr></table></figure>
+<p>上面的 <code>my_first_job</code> 和 <code>my_second_job</code> 就是
+<code>job</code> 的 <code>id</code>。</p>
+<p>而我们也可以定义 <code>job</code> 的依赖，通过 <code>needs</code>
+属性配置。</p>
+<p>所谓依赖，即如果依赖的 <code>job</code> 失败，则会跳过所有需要该
+<code>job</code> 的 <code>job</code>。（类似执行的前置条件）</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">job1:</span></span><br><span class="line">  <span class="attr">job2:</span></span><br><span class="line">    <span class="attr">needs:</span> <span class="string">job1</span></span><br><span class="line">  <span class="attr">job3:</span></span><br><span class="line">    <span class="attr">needs:</span> [<span class="string">job1</span>, <span class="string">job2</span>]</span><br></pre></td></tr></table></figure>
+<p><code>jobs</code> 的输出，用于和 <code>needs</code> 打配合：可以在
+Action 页面中看到 <code>output</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">job1:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="comment"># Map a step output to a job output</span></span><br><span class="line">    <span class="attr">outputs:</span></span><br><span class="line">      <span class="attr">output1:</span> <span class="string">$&#123;&#123;</span> <span class="string">steps.step1.outputs.test</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">output2:</span> <span class="string">$&#123;&#123;</span> <span class="string">steps.step2.outputs.test</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">step1</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">echo</span> <span class="string">&quot;::set-output name=test::hello&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">id:</span> <span class="string">step2</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">echo</span> <span class="string">&quot;::set-output name=test::world&quot;</span></span><br><span class="line">  <span class="attr">job2:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">needs:</span> <span class="string">job1</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">echo</span> <span class="string">$&#123;&#123;needs.job1.outputs.output1&#125;&#125;</span> <span class="string">$&#123;&#123;needs.job1.outputs.output2&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<p>注意到上面的 <code>runs-on</code> 属性可以用于指定 <code>job</code>
+的运行环境，而 Github 上可用的运行环境有以下：</p>
+<figure>
+<img src="/github-action-note/runs-on-support.png" alt="runs-on-support">
+<figcaption aria-hidden="true">runs-on-support</figcaption>
+</figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">job1:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">macos-10.15</span></span><br><span class="line">  <span class="attr">job2:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">windows-2019</span></span><br></pre></td></tr></table></figure>
+<p>如果有必要的话，我们还可以定义常量（环境变量）</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">job1:</span></span><br><span class="line">    <span class="attr">env:</span></span><br><span class="line">      <span class="attr">HANDSOMEMAN:</span> <span class="string">qsdz</span></span><br></pre></td></tr></table></figure>
+<p>我们还可以使用 if 条件语句来组织 <code>job</code> 运行。</p>
+<p>每个 <code>job</code> 由多个 <code>step</code>
+构成，它会从上至下依次执行。</p>
+<p><strong>step 可以运行：</strong></p>
+<ol type="1">
+<li><strong>commands</strong>：命令行命令</li>
+<li><strong>setup tasks</strong>：环境配置命令（比如安装个 Node
+环境、安装个 Python 环境）</li>
+<li><strong>action</strong>（in your repository, in public repository,
+in Docker registry）：一段 Action</li>
+</ol>
+<p>每个 <code>step</code>
+都在自己的运行器环境中运行，并且可以访问工作空间和文件系统。</p>
+<p>因为每个 <code>step</code> 都在运行器环境中独立运行，所以
+<code>step</code>
+之间<strong>不会保留</strong>对<strong>环境变量</strong>的更改。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 定义 Workflow 的名字</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">Greeting</span></span><br><span class="line"><span class="comment"># 定义 Workflow 的触发器</span></span><br><span class="line"><span class="attr">on:</span> <span class="string">push</span></span><br><span class="line"><span class="comment"># 定义 Workflow 的 job</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="comment"># 定义 job 的 id</span></span><br><span class="line">  <span class="attr">my-job:</span></span><br><span class="line">    <span class="comment"># 定义 job 的 name</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">My</span> <span class="string">Job</span></span><br><span class="line">    <span class="comment"># 定义 job 的运行环境</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="comment"># 定义 job 的运行步骤</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="comment"># 定义 step 的名称</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Print</span> <span class="string">a</span> <span class="string">greeting</span></span><br><span class="line">      <span class="comment"># 定义 step 的环境变量</span></span><br><span class="line">      <span class="attr">env:</span></span><br><span class="line">        <span class="attr">GREET:</span> <span class="string">Hello!</span></span><br><span class="line">        <span class="attr">MSG:</span> <span class="string">World!</span></span><br><span class="line">      <span class="comment"># 运行指令：输出环境变量</span></span><br><span class="line">      <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line">        <span class="string">echo</span> <span class="string">$GREET</span> <span class="string">$MSG</span></span><br></pre></td></tr></table></figure>
+<p>而如果我们需要运行命令行命令，我们需要使用 <code>run</code> 参数</p>
+<p><code>run</code> 命令在默认状态下会启动一个没有登录的 shell
+来作为命令输入器。</p>
+<p>每个 <code>run</code> 命令都会启动一个新的
+shell，所以我们执行多行连续命令的时候需要写在同一个 <code>run</code>
+下：</p>
+<ul>
+<li>单行命令</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">Dependencies</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">npm</span> <span class="string">install</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>多行命令</li>
+</ul>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Clean</span> <span class="string">install</span> <span class="string">dependencies</span> <span class="string">and</span> <span class="string">build</span></span><br><span class="line">  <span class="string">run：</span> <span class="string">|</span></span><br><span class="line"><span class="string">    npm ci</span></span><br><span class="line"><span class="string">    npm run build</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>working-directory</code> 关键字，我们可以指定 command
+的运行位置：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Clean</span> <span class="string">temp</span> <span class="string">directory</span></span><br><span class="line">  <span class="attr">run:</span> <span class="string">rm</span> <span class="string">-rf</span> <span class="string">*</span></span><br><span class="line">  <span class="attr">working-directory:</span> <span class="string">./temp</span></span><br></pre></td></tr></table></figure>
+<p>使用 <code>shell</code> 关键字，来指定特定的 shell：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">steps:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Display</span> <span class="string">the</span> <span class="string">path</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">echo</span> <span class="string">$PATH</span></span><br><span class="line">    <span class="attr">shell:</span> <span class="string">bash</span></span><br></pre></td></tr></table></figure>
+<p>下面是各个系统支持的 shell 类型：</p>
+<figure>
+<img src="/github-action-note/shell-support.png" alt="shell-support">
+<figcaption aria-hidden="true">shell-support</figcaption>
+</figure>
+<p>就是有时候，我们的代码可能编译环境有多个。比如 electron
+的程序，我们需要在 macos 上编译 dmg 压缩包，在 windows 上编译 exe
+可执行文件。</p>
+<p>这个时候，我们需要用到矩阵（<code>strategy</code>）这个功能。</p>
+<p>比如下面的代码，我们使用了矩阵指定了：<strong>2 个操作系统，3 个 node
+版本</strong>。</p>
+<p>这时候下面这段代码就会执行 6 次（2 个操作系统 x 3 个 node
+版本）。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">runs-on:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.os</span> <span class="string">&#125;&#125;</span></span><br><span class="line"><span class="attr">strategy:</span></span><br><span class="line">  <span class="attr">matrix:</span></span><br><span class="line">    <span class="attr">os:</span> [<span class="string">ubuntu-16.04</span>, <span class="string">ubuntu-18.04</span>]</span><br><span class="line">    <span class="attr">node:</span> [<span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>]</span><br><span class="line"><span class="attr">steps:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/setup-node@v1</span></span><br><span class="line">    <span class="attr">with:</span></span><br><span class="line">      <span class="attr">node-version:</span> <span class="string">$&#123;&#123;</span> <span class="string">matrix.node</span> <span class="string">&#125;&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="action">Action</h2>
+<p>Action 其实就是命令，比如 Github 官方给了我们一些默认的命令：<a target="_blank" rel="noopener" href="https://github.com/marketplace?type=actions&amp;query=actions">https://github.com/marketplace?type=actions&amp;query=actions</a></p>
+<p>比如最常用的，check-out 代码到 Workflow 工作区：<a target="_blank" rel="noopener" href="https://github.com/marketplace/actions/checkout">https://github.com/marketplace/actions/checkout</a></p>
+<p>比如我们可以 check-out 仓库中最新的代码到 Workflow 的工作区：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">steps:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br></pre></td></tr></table></figure>
+<p>当然，我们还可以给它添加个名字：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">steps:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Check</span> <span class="string">out</span> <span class="string">Git</span> <span class="string">repository</span></span><br><span class="line">    <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br></pre></td></tr></table></figure>
+<p>也可以 Action 参数</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">steps:</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line"><span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/setup-node@v2-beta</span></span><br><span class="line">  <span class="attr">with:</span></span><br><span class="line">    <span class="attr">node-version:</span> <span class="string">&#x27;12&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>其中 <code>@v2</code> 和 <code>@v2-beta</code> 的意思都是 Action
+的版本。</p>
+<p>我们如果不带版本号的话，其实就是默认使用最新版本的了。</p>
+<p>但是 <strong>Github
+官方强烈要求我们带上版本号</strong>——这样子的话，我们就不会出现：<strong>写好一个
+Workflow，但是由于某个 Action 的作者一更新，我们的 Workflow
+就崩了的问题。</strong></p>
+<p>而 <code>with</code> 中是一些特殊的 Action
+所需要的参数，具体需要什么要在对应的 Action 官方页面中查看。</p>
+<blockquote>
+<p>有关更多请参考 <a target="_blank" rel="noopener" href="https://docs.github.com/cn/actions/using-workflows/workflow-syntax-for-github-actions">https://docs.github.com/cn/actions/using-workflows/workflow-syntax-for-github-actions</a></p>
+</blockquote>
+<h1 id="实例">实例</h1>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Trigger</span> <span class="string">workflow</span> <span class="string">with</span> <span class="string">issue</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span> [<span class="string">issues</span>]</span><br><span class="line"><span class="attr">permissions:</span></span><br><span class="line">  <span class="attr">issues:</span> <span class="string">write</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">start:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">timeout-minutes:</span> <span class="number">2</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">echo</span> <span class="string">&quot;$<span class="template-variable">&#123;&#123; secrets.FLAG1 &#125;&#125;</span>&quot;</span> <span class="string">&gt;</span> <span class="string">flag</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">&#x27;echo &quot;$<span class="template-variable">&#123;&#123; github.event.issue.body &#125;&#125;</span>&quot; &gt; tmpfile&#x27;</span></span><br><span class="line">  <span class="attr">end:</span></span><br><span class="line">    <span class="attr">if:</span> <span class="string">$&#123;&#123;</span> <span class="string">always()</span> <span class="string">&#125;&#125;</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">echo</span> <span class="string">https://api.github.com/repos/$&#123;&#123;github.repository&#125;&#125;/issues/$&#123;&#123;github.event.issue.number&#125;&#125;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">        curl \</span></span><br><span class="line"><span class="string">        -X PATCH \</span></span><br><span class="line"><span class="string">        -H &quot;Authorization: token $&#123;&#123; github.token &#125;&#125;&quot; \</span></span><br><span class="line"><span class="string">        -H &quot;Accept: application/vnd.github.v3+json&quot; \</span></span><br><span class="line"><span class="string">        https://api.github.com/repos/$&#123;&#123;github.repository&#125;&#125;/issues/$&#123;&#123;github.event.issue.number&#125;&#125; \</span></span><br><span class="line"><span class="string">        -d &#x27;&#123;&quot;title&quot;:&quot;This is new title&quot;, &quot;body&quot;: &quot;action run finished&quot;&#125;&#x27;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Clean</span> <span class="string">the</span> <span class="string">logs</span> <span class="string">of</span> <span class="string">the</span> <span class="string">run</span></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="comment"># Allows you to run this workflow manually from the Actions tab</span></span><br><span class="line">  <span class="attr">workflow_run:</span> </span><br><span class="line">    <span class="attr">workflows:</span> [<span class="string">Trigger</span> <span class="string">workflow</span> <span class="string">with</span> <span class="string">issue</span>]</span><br><span class="line">    <span class="attr">types:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">completed</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A workflow run is made up of one or more jobs that can run sequentially or in parallel</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="comment"># This workflow contains a single job called &quot;build&quot;</span></span><br><span class="line">  <span class="attr">clean:</span></span><br><span class="line">    <span class="comment"># The type of runner that the job will run on</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Steps represent a sequence of tasks that will be executed as part of the job</span></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="comment"># Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">uses:</span> <span class="string">actions/github-script@v6</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">script:</span> <span class="string">|</span></span><br><span class="line"><span class="string">            github.rest.actions.deleteWorkflowRun(&#123;</span></span><br><span class="line"><span class="string">              owner: context.repo.owner,</span></span><br><span class="line"><span class="string">              repo: context.repo.repo,</span></span><br><span class="line"><span class="string">              run_id: context.payload.workflow_run.id</span></span><br><span class="line"><span class="string">            &#125;)</span></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/github-action-note.html" title="github action使用笔记">https://hasegawaazusa.github.io/github-action-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/github/" rel="tag"># github</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/crunch-note.html" rel="prev" title="crunch笔记">
+                  <i class="fa fa-chevron-left"></i> crunch笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/jenkins-credentials-note.html" rel="next" title="jenkins credentials笔记">
+                  jenkins credentials笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">210k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:11</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
