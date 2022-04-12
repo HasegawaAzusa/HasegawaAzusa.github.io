@@ -10251,4 +10251,95 @@ NAME，该选项用于会话中断恢复和同时运行多个破解实例的情�
         <tag>crypto</tag>
       </tags>
   </entry>
+  <entry>
+    <title>paillier同态加密算法笔记</title>
+    <url>//paillier-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>同态加密，即原来在明文上的运算操作，经过同态加密后在密文上同样可以进行。一般有半同态和全同态加密之分：</p>
+<p>半同态加密（Partial Homomorphic Encryption,
+PHE）：只支持某些特定的运算法则 f ,PHE
+的优点是原理简单、易实现，缺点是仅支持一种运算(加法或乘法)；</p>
+<p>层次同态加密（Liveled HE，LHE）：一般支持有限次数的加密算法,LHE
+的优点是同时支持加法和乘法，并且因为出现时间比 PHE
+晚，所以技术更加成熟、一般效率比 FHE 要高很多、和 PHE 效率接近或高于
+PHE，缺点是支持的计算次数有限。</p>
+<p>全同态加密（Fully Homomorphic Encryption,
+FHE）：支持无限次的任意运算法则 f，FHE 有以下类别：基于理想格的 FHE
+方案、基于 LWE/RLWE 的 FHE 方案等等。FHE
+的优点是支持的算子多并且运算次数没有限制，缺点是效率很低，目前还无法支撑大规模的计算。</p>
+<p>第一个满足加法和乘法同态的同态加密方法直到 2009 年才由 Craig Gentry
+提出。目前来说，全同态加密算法性能较差，应用较少。比较常用的是半同态加密算法，实现方式有
+RSA （乘法同态）、Elgamal、Paillier （加法同态）等。</p>
+<p>而 Paillier 算法是同态加密算法的一种，是 Pascal paillier
+在1999年发明的概率公钥加密算法，该算法基于复合剩余类的困难问题，是一种满足加法的同态加密算法，已经广泛应用在加密信号处理或第三方数据处理领域。</p>
+<h1 id="paillier-算法">Paillier 算法</h1>
+<h2 id="算法描述">算法描述</h2>
+<ol type="1">
+<li>随机选择两个素数 <span class="math inline">\(p,q\)</span>，存在
+<span class="math inline">\(n=pq\)</span> 且满足 <span class="math inline">\(\gcd(n,\varphi(n))\)</span>，该条件保证 <span class="math inline">\(p,q\)</span> 长度相等</li>
+<li>计算 <span class="math inline">\(\lambda=\mathrm{lcm}(p-1,q-1)\)</span></li>
+<li>随机选择 <span class="math inline">\(g\in Z_{n^2}^*\)</span> 且满足
+<span class="math inline">\(\gcd(L(g^\lambda\mod{n^2}),n)=1\)</span>，其中
+<span class="math inline">\(L(x)=\displaystyle\frac{x-1}{n}\)</span>，那么
+<span class="math inline">\(g=n+1,\mu=(L(g^\lambda\mod{n^2})^{-1})\)</span></li>
+<li>公钥定义为 <span class="math inline">\((n,g)\)</span></li>
+<li>私钥定义为 <span class="math inline">\((\mu,\lambda)\)</span></li>
+</ol>
+<h2 id="加密过程">加密过程</h2>
+<p>对于任意明文 <span class="math inline">\(m\in
+Z_n\)</span>，任选一个随机数 <span class="math inline">\(r&lt;n\)</span>，加密过程为 <span class="math display">\[
+c=g^mr^n\pmod{n^2}
+\]</span></p>
+<h2 id="解密过程">解密过程</h2>
+<p>密文 <span class="math inline">\(c\in
+Z_{n^2}^*\)</span>，则解密过程为 <span class="math display">\[
+m=\mu
+L(c^\lambda\mod{n^2})\pmod{n}=\frac{L(c^\lambda\mod{n^2})}{L(g^\lambda\mod{n^2})}
+\]</span></p>
+<h2 id="正确性分析">正确性分析</h2>
+<p>因为 <span class="math inline">\((p-1)|\lambda,(q-1)|\lambda\)</span></p>
+<p>所以 <span class="math inline">\(\lambda=k_1(p-1)=k_2(q-1)\)</span>，其中 <span class="math inline">\(k_1,k_2\in Z\)</span></p>
+<p>由费马小定理可得 <span class="math inline">\(g^\lambda=g^{k_1(p-1)}\equiv
+1\pmod{p}\)</span>，故 <span class="math inline">\((g^\lambda-1)|p\)</span></p>
+<p>同理可得 <span class="math inline">\(g^\lambda=g^{k_2(q-1)}\equiv
+1\pmod{q},(g^\lambda-1)|q\)</span></p>
+<p>所以 <span class="math inline">\((g^\lambda-1)|pq\)</span>，即 <span class="math inline">\(g^\lambda\equiv 1\pmod{n}\)</span></p>
+<p>所以 <span class="math inline">\(g^\lambda\pmod{n^2}\equiv
+1\pmod{n}\)</span></p>
+<p>即 <span class="math inline">\(g^\lambda\pmod{n^2}=nk_g+1,k&lt;n\)</span></p>
+<p>所以 <span class="math inline">\(L(g^\lambda\pmod{n^2})=k_g\)</span></p>
+<p>而且有 <span class="math display">\[
+1+kn\equiv1+kn\pmod{n^2}\\
+(1+kn)^2\equiv1+2kn+(kn)^2\equiv1+2kn\pmod{n^2}\\
+(1+kn)^3\equiv1+3(kn)^2+3kn+(kn)^3\equiv1+3kn\pmod{n^2}\\
+\cdots
+\]</span> 观察可得（可以使用数学归纳法，实际上与二项式定理相关） <span class="math display">\[
+(1+kn)^m\equiv1+knm\pmod{n^2}
+\]</span> 所以 <span class="math display">\[
+g^{m\lambda}=(1+k_gn)^m\equiv1+k_gnm\pmod{n^2}\\
+r^{n\lambda}=(1+k_n)^n\equiv1+k_nn^2\pmod{n^2}\equiv1\pmod{n^2}
+\]</span> 则有 <span class="math inline">\(L(g^{m\lambda}r^{n\lambda}\pmod{n^2})=L(k_nnm+1)=mk_g\)</span></p>
+<p>又 <span class="math inline">\(L(g^\lambda\pmod{n^2})=k_g\)</span></p>
+<p>所以 <span class="math display">\[
+\frac{L(c^\lambda\mod{n^2})}{L(g^\lambda\mod{n^2})}=\frac{mk_g}{k_g}=m\pmod{n}
+\]</span> 证毕。</p>
+<h2 id="加法同态性质">加法同态性质</h2>
+<p>对于任意明文 <span class="math inline">\(m_1,m_2\in Z_n\)</span>
+和任意随机数 <span class="math inline">\(r_1,r_2\in
+Z_n^*\)</span>，对应密文 <span class="math inline">\(c_1=E(m_1,r_1),c_2=E(m_2,r_2)\)</span> 满足 <span class="math display">\[
+c_1\cdot c_2=E(m_1,r_1)\cdot E(m_2,r_2)=g^{m_1+m_2}\cdot (r_1\cdot
+r_2)^n\pmod{n^2}
+\]</span> 解密可得 <span class="math display">\[
+D(c_1,c_2)=D[E(m_1,r_1)\cdot E(m_2,r_2)\pmod{n^2}]=m_1+m_2\pmod{n}
+\]</span> 故结论为 <span class="math inline">\(c_1\cdot
+c_2=m_1+m_2\)</span></p>
+<p>即<strong>密文乘等于明文加</strong>。</p>
+<p>通过分析发现，密文乘时，含有的明文是在指数上相加的，所以解密后就可以得到明文相加结果。</p>
+<p>为什么叫加法同态呢？我们一般希望密文计算的结果和我们明文计算的结果相同，所以对于密文上是如何计算的不做要求。这时我们在明文上实现了加法的目的，就叫它加法同态。由此还扩展出了<strong>同态加和标量乘的性质</strong>。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
+      </tags>
+  </entry>
 </search>

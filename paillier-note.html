@@ -22,29 +22,29 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="有关 linux 密码保存方式的简要笔记">
+<meta name="description" content="有关paillier同态加密算法的简要笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="有关 linux 密码存储方式的分析笔记">
-<meta property="og:url" content="https://hasegawaazusa.github.io/linux-passwd-note.html">
+<meta property="og:title" content="paillier同态加密算法笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/paillier-note.html">
 <meta property="og:site_name" content="独奏の小屋">
-<meta property="og:description" content="有关 linux 密码保存方式的简要笔记">
+<meta property="og:description" content="有关paillier同态加密算法的简要笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2022-02-23T05:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-23T07:41:28.024Z">
+<meta property="article:published_time" content="2022-04-11T14:00:00.000Z">
+<meta property="article:modified_time" content="2022-04-12T03:28:15.798Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
-<meta property="article:tag" content="linux">
+<meta property="article:tag" content="crypto">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://hasegawaazusa.github.io/linux-passwd-note.html">
+<link rel="canonical" href="https://hasegawaazusa.github.io/paillier-note.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/linux-passwd-note.html","path":"/linux-passwd-note.html","title":"有关 linux 密码存储方式的分析笔记"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/paillier-note.html","path":"/paillier-note.html","title":"paillier同态加密算法笔记"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>有关 linux 密码存储方式的分析笔记 | 独奏の小屋</title>
+<title>paillier同态加密算法笔记 | 独奏の小屋</title>
   
 
 
@@ -149,7 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#linux-%E5%AF%86%E7%A0%81%E6%96%87%E4%BB%B6%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">Linux 密码文件简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#etcshadow-%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">&#x2F;etc&#x2F;shadow 格式详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9B%B4%E6%94%B9%E5%AF%86%E7%A0%81"><span class="nav-number">3.</span> <span class="nav-text">更改密码</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#paillier-%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">Paillier 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.1.</span> <span class="nav-text">算法描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E8%BF%87%E7%A8%8B"><span class="nav-number">2.2.</span> <span class="nav-text">加密过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86%E8%BF%87%E7%A8%8B"><span class="nav-number">2.3.</span> <span class="nav-text">解密过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E7%A1%AE%E6%80%A7%E5%88%86%E6%9E%90"><span class="nav-number">2.4.</span> <span class="nav-text">正确性分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E6%B3%95%E5%90%8C%E6%80%81%E6%80%A7%E8%B4%A8"><span class="nav-number">2.5.</span> <span class="nav-text">加法同态性质</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -217,7 +217,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/linux-passwd-note.html">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/paillier-note.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -230,7 +230,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          有关 linux 密码存储方式的分析笔记
+          paillier同态加密算法笔记
         </h1>
 
         <div class="post-meta-container">
@@ -241,7 +241,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-02-23 13:00:00" itemprop="dateCreated datePublished" datetime="2022-02-23T13:00:00+08:00">2022-02-23</time>
+      <time title="创建时间：2022-04-11 22:00:00" itemprop="dateCreated datePublished" datetime="2022-04-11T22:00:00+08:00">2022-04-11</time>
     </span>
 
   
@@ -251,18 +251,18 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.2k</span>
+      <span>2.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
-            <div class="post-description">有关 linux 密码保存方式的简要笔记</div>
+            <div class="post-description">有关paillier同态加密算法的简要笔记</div>
         </div>
       </header>
 
@@ -270,85 +270,88 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="linux-密码文件简述">Linux 密码文件简述</h1>
-<p>众所周知，Linux 有一套用户权限管理系统，但用户名跟密码需要存储在
-Linux 内部文件中。</p>
-<p>在 Unix 中，用户密码文件是存储在 <code>/etc/passwd</code>
-中的。但该文件允许所有用户读取，易导致用户密码泄露，因此 Linux
-系统将用户的密码信息从 <code>/etc/passwd</code>
-文件中分离出来，单独放到了 <code>/etc/shadow</code> 文件。</p>
-<p><code>/etc/shadow</code> 只有 root
-用户拥有读权限，其他用户没有任何权限，这样就保证了用户密码的安全性。</p>
-<p>Unix 系统的用户密码保存格式也可以参考本文章，只是将
-<code>/etc/passwd</code> 中的 <code>x</code> 变更为
-<code>/etc/shadow</code> 对应的密码而已。</p>
-<p>所以如果<strong>影子文件</strong>(<code>/etc/shadow</code>)
-的权限发生了改变，需要注意是否是<strong>恶意攻击</strong>。</p>
-<h1 id="etcshadow-格式详解"><code>/etc/shadow</code> 格式详解</h1>
-<p><code>/etc/shadow</code> 文件内容示例：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root:$6$kcgcu794R0VP3fDL$aYN8XUbtWvZ4QQtT2xVW.N2CgE3YLPdtnprAAtKZUgNdq8itUJEN6NoYQDarLUevcDCWrxMVId8b18ujwST1b0::0:99999:7:::</span><br></pre></td></tr></table></figure>
-<p>文件中每一行代表一个用户，采用 <code>:</code>
-作分隔符，一共被划分为九个字段：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name:password:last-change:min-age:max-age:warning:inactive:expire:blank</span><br></pre></td></tr></table></figure>
-<p>字段含义：</p>
-<table>
-<colgroup>
-<col style="width: 15%">
-<col style="width: 84%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>字段名</th>
-<th>字段含义</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>name</td>
-<td>登录名称，必须是有效用户名</td>
-</tr>
-<tr class="even">
-<td>password</td>
-<td>已加密密码，分为三个部分用$分隔，第一部分表示用哪种哈希算法；第二部分是用于加密哈希的salt；第三部分是已加密的哈希哈希算法。<br>第一部分：<br>1
-表示MD5；5 表示SHA-256；6
-表示SHA-512。<br>注意：在密码前，一个感叹号(<code>!</code>)代表该用户被锁定，可以在机器上转到改用户，但无法远程；两个感叹号(<code>!</code>)，表示没有设置密码</td>
-</tr>
-<tr class="odd">
-<td>last-change</td>
-<td>最近一次更改密码的日期，以距离1970/1/1的天数表示</td>
-</tr>
-<tr class="even">
-<td>min-age</td>
-<td>最小修改时间间隔，即密码更改后多少天内不能再次更改。0表示可以随时更改</td>
-</tr>
-<tr class="odd">
-<td>max-age</td>
-<td>密码有效期，必须在期限内修改密码</td>
-</tr>
-<tr class="even">
-<td>warning</td>
-<td>警告期，警告用户再过多少天密码将过期。0 表示不提供警告</td>
-</tr>
-<tr class="odd">
-<td>inactive</td>
-<td>宽限期，密码过期多少天仍然可以使用</td>
-</tr>
-<tr class="even">
-<td>expire</td>
-<td>帐号过期时间，以距离1970/1/1的天数表示。0 或空字符表示永不过期</td>
-</tr>
-<tr class="odd">
-<td>blank</td>
-<td>预留字段</td>
-</tr>
-</tbody>
-</table>
-<h1 id="更改密码">更改密码</h1>
-<p>可以在 <code>root</code> 账户下使用 <code>passwd 用户名</code>
-指令交互式更改指定用户名的密码。</p>
-<p>示例如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># passwd qsdz</span></span><br><span class="line">Enter new UNIX password:</span><br><span class="line">Retype new UNIX password:</span><br><span class="line">passwd: password updated successfully</span><br></pre></td></tr></table></figure>
-<p>其中，输入新密码的时候是<strong>无回显</strong>的</p>
+        <h1 id="简述">简述</h1>
+<p>同态加密，即原来在明文上的运算操作，经过同态加密后在密文上同样可以进行。一般有半同态和全同态加密之分：</p>
+<p>半同态加密（Partial Homomorphic Encryption,
+PHE）：只支持某些特定的运算法则 f ,PHE
+的优点是原理简单、易实现，缺点是仅支持一种运算(加法或乘法)；</p>
+<p>层次同态加密（Liveled HE，LHE）：一般支持有限次数的加密算法,LHE
+的优点是同时支持加法和乘法，并且因为出现时间比 PHE
+晚，所以技术更加成熟、一般效率比 FHE 要高很多、和 PHE 效率接近或高于
+PHE，缺点是支持的计算次数有限。</p>
+<p>全同态加密（Fully Homomorphic Encryption,
+FHE）：支持无限次的任意运算法则 f，FHE 有以下类别：基于理想格的 FHE
+方案、基于 LWE/RLWE 的 FHE 方案等等。FHE
+的优点是支持的算子多并且运算次数没有限制，缺点是效率很低，目前还无法支撑大规模的计算。</p>
+<p>第一个满足加法和乘法同态的同态加密方法直到 2009 年才由 Craig Gentry
+提出。目前来说，全同态加密算法性能较差，应用较少。比较常用的是半同态加密算法，实现方式有
+RSA （乘法同态）、Elgamal、Paillier （加法同态）等。</p>
+<p>而 Paillier 算法是同态加密算法的一种，是 Pascal paillier
+在1999年发明的概率公钥加密算法，该算法基于复合剩余类的困难问题，是一种满足加法的同态加密算法，已经广泛应用在加密信号处理或第三方数据处理领域。</p>
+<h1 id="paillier-算法">Paillier 算法</h1>
+<h2 id="算法描述">算法描述</h2>
+<ol type="1">
+<li>随机选择两个素数 <span class="math inline">\(p,q\)</span>，存在
+<span class="math inline">\(n=pq\)</span> 且满足 <span class="math inline">\(\gcd(n,\varphi(n))\)</span>，该条件保证 <span class="math inline">\(p,q\)</span> 长度相等</li>
+<li>计算 <span class="math inline">\(\lambda=\mathrm{lcm}(p-1,q-1)\)</span></li>
+<li>随机选择 <span class="math inline">\(g\in Z_{n^2}^*\)</span> 且满足
+<span class="math inline">\(\gcd(L(g^\lambda\mod{n^2}),n)=1\)</span>，其中
+<span class="math inline">\(L(x)=\displaystyle\frac{x-1}{n}\)</span>，那么
+<span class="math inline">\(g=n+1,\mu=(L(g^\lambda\mod{n^2})^{-1})\)</span></li>
+<li>公钥定义为 <span class="math inline">\((n,g)\)</span></li>
+<li>私钥定义为 <span class="math inline">\((\mu,\lambda)\)</span></li>
+</ol>
+<h2 id="加密过程">加密过程</h2>
+<p>对于任意明文 <span class="math inline">\(m\in
+Z_n\)</span>，任选一个随机数 <span class="math inline">\(r&lt;n\)</span>，加密过程为 <span class="math display">\[
+c=g^mr^n\pmod{n^2}
+\]</span></p>
+<h2 id="解密过程">解密过程</h2>
+<p>密文 <span class="math inline">\(c\in
+Z_{n^2}^*\)</span>，则解密过程为 <span class="math display">\[
+m=\mu
+L(c^\lambda\mod{n^2})\pmod{n}=\frac{L(c^\lambda\mod{n^2})}{L(g^\lambda\mod{n^2})}
+\]</span></p>
+<h2 id="正确性分析">正确性分析</h2>
+<p>因为 <span class="math inline">\((p-1)|\lambda,(q-1)|\lambda\)</span></p>
+<p>所以 <span class="math inline">\(\lambda=k_1(p-1)=k_2(q-1)\)</span>，其中 <span class="math inline">\(k_1,k_2\in Z\)</span></p>
+<p>由费马小定理可得 <span class="math inline">\(g^\lambda=g^{k_1(p-1)}\equiv
+1\pmod{p}\)</span>，故 <span class="math inline">\((g^\lambda-1)|p\)</span></p>
+<p>同理可得 <span class="math inline">\(g^\lambda=g^{k_2(q-1)}\equiv
+1\pmod{q},(g^\lambda-1)|q\)</span></p>
+<p>所以 <span class="math inline">\((g^\lambda-1)|pq\)</span>，即 <span class="math inline">\(g^\lambda\equiv 1\pmod{n}\)</span></p>
+<p>所以 <span class="math inline">\(g^\lambda\pmod{n^2}\equiv
+1\pmod{n}\)</span></p>
+<p>即 <span class="math inline">\(g^\lambda\pmod{n^2}=nk_g+1,k&lt;n\)</span></p>
+<p>所以 <span class="math inline">\(L(g^\lambda\pmod{n^2})=k_g\)</span></p>
+<p>而且有 <span class="math display">\[
+1+kn\equiv1+kn\pmod{n^2}\\
+(1+kn)^2\equiv1+2kn+(kn)^2\equiv1+2kn\pmod{n^2}\\
+(1+kn)^3\equiv1+3(kn)^2+3kn+(kn)^3\equiv1+3kn\pmod{n^2}\\
+\cdots
+\]</span> 观察可得（可以使用数学归纳法，实际上与二项式定理相关） <span class="math display">\[
+(1+kn)^m\equiv1+knm\pmod{n^2}
+\]</span> 所以 <span class="math display">\[
+g^{m\lambda}=(1+k_gn)^m\equiv1+k_gnm\pmod{n^2}\\
+r^{n\lambda}=(1+k_n)^n\equiv1+k_nn^2\pmod{n^2}\equiv1\pmod{n^2}
+\]</span> 则有 <span class="math inline">\(L(g^{m\lambda}r^{n\lambda}\pmod{n^2})=L(k_nnm+1)=mk_g\)</span></p>
+<p>又 <span class="math inline">\(L(g^\lambda\pmod{n^2})=k_g\)</span></p>
+<p>所以 <span class="math display">\[
+\frac{L(c^\lambda\mod{n^2})}{L(g^\lambda\mod{n^2})}=\frac{mk_g}{k_g}=m\pmod{n}
+\]</span> 证毕。</p>
+<h2 id="加法同态性质">加法同态性质</h2>
+<p>对于任意明文 <span class="math inline">\(m_1,m_2\in Z_n\)</span>
+和任意随机数 <span class="math inline">\(r_1,r_2\in
+Z_n^*\)</span>，对应密文 <span class="math inline">\(c_1=E(m_1,r_1),c_2=E(m_2,r_2)\)</span> 满足 <span class="math display">\[
+c_1\cdot c_2=E(m_1,r_1)\cdot E(m_2,r_2)=g^{m_1+m_2}\cdot (r_1\cdot
+r_2)^n\pmod{n^2}
+\]</span> 解密可得 <span class="math display">\[
+D(c_1,c_2)=D[E(m_1,r_1)\cdot E(m_2,r_2)\pmod{n^2}]=m_1+m_2\pmod{n}
+\]</span> 故结论为 <span class="math inline">\(c_1\cdot
+c_2=m_1+m_2\)</span></p>
+<p>即<strong>密文乘等于明文加</strong>。</p>
+<p>通过分析发现，密文乘时，含有的明文是在指数上相加的，所以解密后就可以得到明文相加结果。</p>
+<p>为什么叫加法同态呢？我们一般希望密文计算的结果和我们明文计算的结果相同，所以对于密文上是如何计算的不做要求。这时我们在明文上实现了加法的目的，就叫它加法同态。由此还扩展出了<strong>同态加和标量乘的性质</strong>。</p>
 
     </div>
 
@@ -366,7 +369,7 @@ Linux 内部文件中。</p>
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hasegawaazusa.github.io/linux-passwd-note.html" title="有关 linux 密码存储方式的分析笔记">https://hasegawaazusa.github.io/linux-passwd-note.html</a>
+      <a href="https://hasegawaazusa.github.io/paillier-note.html" title="paillier同态加密算法笔记">https://hasegawaazusa.github.io/paillier-note.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -376,21 +379,18 @@ Linux 内部文件中。</p>
 
           <div class="post-tags">
               <a href="/tags/note/" rel="tag"># note</a>
-              <a href="/tags/linux/" rel="tag"># linux</a>
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/pwntools-note.html" rel="prev" title="pwntools 笔记">
-                  <i class="fa fa-chevron-left"></i> pwntools 笔记
+                <a href="/jenkins-credentials-note.html" rel="prev" title="jenkins credentials笔记">
+                  <i class="fa fa-chevron-left"></i> jenkins credentials笔记
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/hashcat-note.html" rel="next" title="hashcat 使用笔记">
-                  hashcat 使用笔记 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
@@ -457,7 +457,7 @@ Linux 内部文件中。</p>
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 
