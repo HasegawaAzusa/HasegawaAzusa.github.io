@@ -30,7 +30,7 @@
 <meta property="og:description" content="RSA 相关的笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-11T13:30:00.000Z">
-<meta property="article:modified_time" content="2022-04-08T14:33:11.721Z">
+<meta property="article:modified_time" content="2022-04-30T09:56:12.644Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="crypto">
@@ -92,7 +92,7 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">50</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">66</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">68</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -154,7 +154,8 @@
 Attack)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81-4"><span class="nav-number">4.7.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-4"><span class="nav-number">4.7.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-5"><span class="nav-number">4.7.3.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dpdq-%E6%B3%84%E9%9C%B2"><span class="nav-number">4.8.</span> <span class="nav-text">\(dp\&amp;dq\)
 泄露</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81-5"><span class="nav-number">4.8.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-6"><span class="nav-number">4.8.2.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dp-%E6%B3%84%E9%9C%B2"><span class="nav-number">4.9.</span> <span class="nav-text">\(dp\) 泄露</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-7"><span class="nav-number">4.9.1.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#e%E4%B8%8Evarphin-%E4%B8%8D%E4%BA%92%E7%B4%A0"><span class="nav-number">4.10.</span> <span class="nav-text">\(e\)与\(\varphi(n)\) 不互素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-5"><span class="nav-number">4.10.1.</span> <span class="nav-text">原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pq-%E9%AB%98%E4%BD%8D%E7%9B%B8%E5%90%8C"><span class="nav-number">4.11.</span> <span class="nav-text">\(p,q\)
 高位相同</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81-6"><span class="nav-number">4.11.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">4.11.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E5%A1%AB%E5%85%85%E6%94%BB%E5%87%BB"><span class="nav-number">4.12.</span> <span class="nav-text">简单填充攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">4.12.1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-8"><span class="nav-number">4.12.2.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-9"><span class="nav-number">4.12.3.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rabin-%E6%94%BB%E5%87%BB"><span class="nav-number">4.13.</span> <span class="nav-text">Rabin 攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81-7"><span class="nav-number">4.13.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-6"><span class="nav-number">4.13.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0-10"><span class="nav-number">4.13.3.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#coppersmith-%E5%AE%9A%E7%90%86%E6%94%BB%E5%87%BB"><span class="nav-number">4.14.</span> <span class="nav-text">Coppersmith 定理攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-7"><span class="nav-number">4.14.1.</span> <span class="nav-text">原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#prime-power-rsa-using-two-decryption-exponents"><span class="nav-number">4.15.</span> <span class="nav-text">Prime Power RSA
-using Two Decryption Exponents</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81-8"><span class="nav-number">4.15.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-8"><span class="nav-number">4.15.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-1"><span class="nav-number">4.15.3.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.15.4.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li></ol></div>
+using Two Decryption Exponents</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81-8"><span class="nav-number">4.15.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-8"><span class="nav-number">4.15.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-1"><span class="nav-number">4.15.3.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.15.4.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pq-%E5%AD%98%E5%9C%A8%E7%9B%B8%E5%90%8C-module-%E6%94%BB%E5%87%BB"><span class="nav-number">4.16.</span> <span class="nav-text">\(p,q\) 存在相同 module 攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81-9"><span class="nav-number">4.16.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">4.16.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#e-%E8%BE%83%E5%B0%8F%E6%97%B6%E7%9A%84%E6%9C%89%E9%99%90%E5%9F%9F%E5%BC%80%E6%96%B9%E6%94%BB%E5%87%BB"><span class="nav-number">4.17.</span> <span class="nav-text">\(e\)
+较小时的有限域开方攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81-10"><span class="nav-number">4.17.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-9"><span class="nav-number">4.17.2.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="nav-number">4.17.3.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -169,7 +170,7 @@ using Two Decryption Exponents</span></a><ol class="nav-child"><li class="nav-it
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">66</span>
+          <span class="site-state-item-count">68</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -256,14 +257,14 @@ using Two Decryption Exponents</span></a><ol class="nav-child"><li class="nav-it
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>36k</span>
+      <span>37k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>32 分钟</span>
+      <span>33 分钟</span>
     </span>
 </div>
 
@@ -498,14 +499,14 @@ e = 65537 c =
 <p><span class="math inline">\(e=2\)</span></p>
 <h3 id="原理-6">原理</h3>
 <ul>
-<li><p>计算出<span class="math inline">\(m_p\)</span>和<span class="math inline">\(m_q\)</span>： <span class="math display">\[
-m_p=\sqrt{c}\ mod\ p
-m_q=\sqrt{c}\ mod\ q
+<li><p>计算出 <span class="math inline">\(m_p\)</span> 和<span class="math inline">\(m_q\)</span>： <span class="math display">\[
+m_p=\sqrt{c}\mod{p}\\
+m_q=\sqrt{c}\mod{q}
 \]</span></p></li>
-<li><p>利用扩展欧几里得算法计算出<span class="math inline">\(y_p\)</span>和<span class="math inline">\(y_q\)</span> <span class="math display">\[
+<li><p>利用扩展欧几里得算法计算出 <span class="math inline">\(y_p\)</span> 和 <span class="math inline">\(y_q\)</span> <span class="math display">\[
 y_p·p+y_q·q=1
 \]</span></p></li>
-<li><p>最后解得四个明文： <span class="math display">\[
+<li><p>然后解得四个明文： <span class="math display">\[
 a=(y_p·p·m_q+y_q·q·m_p)\ mod\ n\\
 b=n-a\\
 c=(y_p·p·m_q-y_q·q·m_p)\ mod\ n\\
@@ -599,6 +600,49 @@ N^{0.99}\)</span>，且 Sarkar’s method 与存在范围 <span class="math inli
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> bytes_to_long, getPrime</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> msg</span><br><span class="line"><span class="keyword">from</span> sympy <span class="keyword">import</span> nextprime</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> invert</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;d3ctf&#123;&#x27;</span>+md5(msg).hexdigest()+<span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line">p = getPrime(<span class="number">256</span>)</span><br><span class="line">q = getPrime(<span class="number">256</span>)</span><br><span class="line"><span class="keyword">assert</span> p &gt; q</span><br><span class="line">n = p * q</span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">m = bytes_to_long(msg)</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br><span class="line"></span><br><span class="line">N = <span class="built_in">pow</span>(p, <span class="number">7</span>) * q</span><br><span class="line">phi = <span class="built_in">pow</span>(p, <span class="number">6</span>) * (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d1 = getPrime(<span class="number">2000</span>)</span><br><span class="line">d2 = nextprime(d1 + getPrime(<span class="number">1000</span>))</span><br><span class="line">e1 = invert(d1, phi)</span><br><span class="line">e2 = invert(d2, phi)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;c = <span class="subst">&#123;c&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;N = <span class="subst">&#123;N&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;e1 = <span class="subst">&#123;e1&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;e2 = <span class="subst">&#123;e2&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">c = 2420624631315473673388732074340410215657378096737020976722603529598864338532404224879219059105950005655100728361198499550862405660043591919681568611707967</span></span><br><span class="line"><span class="string">N = 1476751427633071977599571983301151063258376731102955975364111147037204614220376883752032253407881568290520059515340434632858734689439268479399482315506043425541162646523388437842149125178447800616137044219916586942207838674001004007237861470176454543718752182312318068466051713087927370670177514666860822341380494154077020472814706123209865769048722380888175401791873273850281384147394075054950169002165357490796510950852631287689747360436384163758289159710264469722036320819123313773301072777844457895388797742631541101152819089150281489897683508400098693808473542212963868834485233858128220055727804326451310080791</span></span><br><span class="line"><span class="string">e1 = 425735006018518321920113858371691046233291394270779139216531379266829453665704656868245884309574741300746121946724344532456337490492263690989727904837374279175606623404025598533405400677329916633307585813849635071097268989906426771864410852556381279117588496262787146588414873723983855041415476840445850171457530977221981125006107741100779529209163446405585696682186452013669643507275620439492021019544922913941472624874102604249376990616323884331293660116156782891935217575308895791623826306100692059131945495084654854521834016181452508329430102813663713333608459898915361745215871305547069325129687311358338082029</span></span><br><span class="line"><span class="string">e2 = 1004512650658647383814190582513307789549094672255033373245432814519573537648997991452158231923692387604945039180687417026069655569594454408690445879849410118502279459189421806132654131287284719070037134752526923855821229397612868419416851456578505341237256609343187666849045678291935806441844686439591365338539029504178066823886051731466788474438373839803448380498800384597878814991008672054436093542513518012957106825842251155935855375353004898840663429274565622024673235081082222394015174831078190299524112112571718817712276118850981261489528540025810396786605197437842655180663611669918785635193552649262904644919</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
 <p><code>exp.sage</code></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">r = <span class="number">7</span></span><br><span class="line"></span><br><span class="line">N = <span class="number">1476751427633071977599571983301151063258376731102955975364111147037204614220376883752032253407881568290520059515340434632858734689439268479399482315506043425541162646523388437842149125178447800616137044219916586942207838674001004007237861470176454543718752182312318068466051713087927370670177514666860822341380494154077020472814706123209865769048722380888175401791873273850281384147394075054950169002165357490796510950852631287689747360436384163758289159710264469722036320819123313773301072777844457895388797742631541101152819089150281489897683508400098693808473542212963868834485233858128220055727804326451310080791</span></span><br><span class="line"></span><br><span class="line">e1 = <span class="number">425735006018518321920113858371691046233291394270779139216531379266829453665704656868245884309574741300746121946724344532456337490492263690989727904837374279175606623404025598533405400677329916633307585813849635071097268989906426771864410852556381279117588496262787146588414873723983855041415476840445850171457530977221981125006107741100779529209163446405585696682186452013669643507275620439492021019544922913941472624874102604249376990616323884331293660116156782891935217575308895791623826306100692059131945495084654854521834016181452508329430102813663713333608459898915361745215871305547069325129687311358338082029</span></span><br><span class="line">e2 = <span class="number">1004512650658647383814190582513307789549094672255033373245432814519573537648997991452158231923692387604945039180687417026069655569594454408690445879849410118502279459189421806132654131287284719070037134752526923855821229397612868419416851456578505341237256609343187666849045678291935806441844686439591365338539029504178066823886051731466788474438373839803448380498800384597878814991008672054436093542513518012957106825842251155935855375353004898840663429274565622024673235081082222394015174831078190299524112112571718817712276118850981261489528540025810396786605197437842655180663611669918785635193552649262904644919</span></span><br><span class="line"></span><br><span class="line">c = <span class="number">2420624631315473673388732074340410215657378096737020976722603529598864338532404224879219059105950005655100728361198499550862405660043591919681568611707967</span></span><br><span class="line"></span><br><span class="line">x = polygen(Zmod(N))</span><br><span class="line">f = e1 * e2 * x - (e2 - e1)</span><br><span class="line">f = f.monic()</span><br><span class="line"></span><br><span class="line">roots = f.small_roots(beta=((r - <span class="number">1</span>) / (r + <span class="number">1</span>) - <span class="number">0.01</span>), epsilon=<span class="number">0.05</span>)</span><br><span class="line"></span><br><span class="line">res = gmpy2.iroot(gmpy2.gcd(<span class="built_in">int</span>(f(roots[<span class="number">0</span>])), N), r - <span class="number">1</span>)</span><br><span class="line"><span class="keyword">assert</span> res[<span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;p =&quot;</span>, res[<span class="number">0</span>])</span><br><span class="line">p = res[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">q = N // (p**<span class="number">7</span>)</span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = inverse(<span class="number">0x10001</span>, phi)</span><br><span class="line">msg = long_to_bytes(power_mod(c, d, n))</span><br><span class="line"><span class="built_in">print</span>(msg)</span><br><span class="line">flag = <span class="string">&#x27;d3ctf&#123;&#x27;</span> + md5(msg).hexdigest() + <span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+<h2 id="pq-存在相同-module-攻击"><span class="math inline">\(p,q\)</span> 存在相同 module 攻击</h2>
+<h3 id="特征-9">特征</h3>
+<p><span class="math inline">\(p,q\)</span> 的生成需要借助某共同的
+module <span class="math inline">\(M\)</span> 进行生成</p>
+<h3 id="代码-1">代码</h3>
+<p>直接使用他人的脚本，roca 攻击：<a target="_blank" rel="noopener" href="https://github.com/jvdsn/crypto-attacks/blob/c26872bdac2e2d95c5be00e6e593c891c849f446/attacks/factorization/roca.py">https://github.com/jvdsn/crypto-attacks/blob/c26872bdac2e2d95c5be00e6e593c891c849f446/attacks/factorization/roca.py</a></p>
+<h2 id="e-较小时的有限域开方攻击"><span class="math inline">\(e\)</span>
+较小时的有限域开方攻击</h2>
+<h3 id="特征-10">特征</h3>
+<p><span class="math inline">\(e\)</span> 较小，比如说 10、50、100
+等等。</p>
+<p>或者 <span class="math inline">\(\gcd(e,
+\varphi(p))\neq1\)</span>，即 <span class="math inline">\(e\)</span> 与
+<span class="math inline">\(\varphi(p)\)</span> 不互素的情况。</p>
+<h3 id="原理-9">原理</h3>
+<p><span class="math inline">\(e\)</span>
+较小时，有限域开方速度较快。</p>
+<p>同时运用到了高次剩余的定理：</p>
+<p>对于同余式 <span class="math inline">\(X^n\equiv
+d\pmod{p}\)</span></p>
+<p>当 <span class="math inline">\(n|p-1\)</span> 时，满足 <span class="math display">\[
+d^{\frac{p-1}{n}}\equiv 1\pmod{p}
+\]</span> 才有解，此时解数为 <span class="math inline">\(n\)</span>；</p>
+<p>当 <span class="math inline">\(n\)</span> 无法整除 <span class="math inline">\(p-1\)</span>，满足 <span class="math display">\[
+d^{\frac{p-1}{k}}\equiv 1\pmod{p}
+\]</span> 其中 <span class="math inline">\(k=\gcd(n,p-1)\)</span>，此时解数为 <span class="math inline">\(k\)</span>。</p>
+<p>而我们需要求解的便是 <span class="math inline">\(m^e\equiv
+c\pmod{n}\)</span></p>
+<p>我们可以在 <span class="math inline">\(p,q\)</span>
+域中分别开方得到同余式组（加快求解速度） <span class="math display">\[
+\begin{cases}
+m_1=\sqrt[e]{c}\pmod{p}\\
+m_2=\sqrt[e]{c}\pmod{q}
+\end{cases}
+\]</span> 然后利用 CRT 得到 <span class="math display">\[
+\begin{cases}
+m_1=\sqrt[e]{c}\pmod{p}\\
+m_2=\sqrt[e]{c}\pmod{q}\\
+m=\sqrt[e]{c}\pmod{n}
+\end{cases}
+\]</span> 但因为有多解，所以需要进行验证。</p>
+<h3 id="代码-2">代码</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span>(<span class="params">p, q, e, c</span>):</span></span><br><span class="line">    P.&lt;x&gt;=PolynomialRing(Zmod(p),implementation=<span class="string">&#x27;NTL&#x27;</span>)</span><br><span class="line">    f=x^e-c</span><br><span class="line">    mps=f.monic().roots()</span><br><span class="line"></span><br><span class="line">    P.&lt;x&gt;=PolynomialRing(Zmod(q),implementation=<span class="string">&#x27;NTL&#x27;</span>)</span><br><span class="line">    g=x^e-c</span><br><span class="line">    mqs=g.monic().roots()</span><br><span class="line"></span><br><span class="line">    solution = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> mp <span class="keyword">in</span> mps:</span><br><span class="line">        x = <span class="built_in">int</span>(mp[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">for</span> mq <span class="keyword">in</span> mqs:</span><br><span class="line">            y = <span class="built_in">int</span>(mq[<span class="number">0</span>])</span><br><span class="line">            s = CRT([x, y], [p, q])</span><br><span class="line">            solution.append(s)</span><br><span class="line">    <span class="keyword">return</span> solution</span><br><span class="line"></span><br><span class="line">s = solve(p, q, e, c)</span><br><span class="line"><span class="built_in">print</span>(s)</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -674,14 +718,14 @@ N^{0.99}\)</span>，且 Sarkar’s method 与存在范围 <span class="math inli
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">213k</span>
+    <span title="站点总字数">226k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:14</span>
+    <span title="站点阅读时长">3:26</span>
   </span>
 </div>
 
