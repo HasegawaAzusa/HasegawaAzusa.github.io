@@ -9587,6 +9587,13 @@ Malbolge 实现不会接受这样的操作数。</td>
 <code>aK==</code> 的解码结果是一样的，但我们可以在里面隐藏四位数据。</p>
 <p>故有以下隐写提取代码：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">base64stegExtract</span>(<span class="params">bases: <span class="built_in">list</span>[<span class="built_in">str</span>], needBin: <span class="built_in">bool</span>=<span class="literal">False</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    base64隐写提取函数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        bases - base64数组</span></span><br><span class="line"><span class="string">        needBin - 是否直接返回所提取的二进制数据</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        提取出的数据</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    table = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span></span><br><span class="line">    code = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> base <span class="keyword">in</span> bases:</span><br><span class="line">        <span class="keyword">if</span> base.endswith(<span class="string">&#x27;==&#x27;</span>):</span><br><span class="line">            c = base[-<span class="number">3</span>]</span><br><span class="line">            code += <span class="built_in">bin</span>(table.find(c) &amp; <span class="number">0xF</span>)[<span class="number">2</span>:].zfill(<span class="number">4</span>)</span><br><span class="line">        <span class="keyword">elif</span> base.endswith(<span class="string">&#x27;=&#x27;</span>):</span><br><span class="line">            c = base[-<span class="number">2</span>]</span><br><span class="line">            code += <span class="built_in">bin</span>(table.find(c) &amp; <span class="number">0x3</span>)[<span class="number">2</span>:].zfill(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> needBin:</span><br><span class="line">        <span class="keyword">return</span> code</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(code) &lt; <span class="number">8</span>:</span><br><span class="line">        <span class="keyword">raise</span> <span class="string">&quot;所提取出来的数据不足8位！&quot;</span></span><br><span class="line">    msg = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(code), <span class="number">8</span>):</span><br><span class="line">        msg += <span class="built_in">chr</span>(<span class="built_in">int</span>(code[i:i+<span class="number">8</span>], <span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> msg</span><br></pre></td></tr></table></figure>
+<h1 id="ocr">OCR</h1>
+<p>有的时候图片所包含的文本太长，手读困难且短时间内无法快速识别，我们就需要使用到
+OCR（光学字符识别），可以帮我们有效提高时间效率。</p>
+<p>但需要注意的是，OCR
+往往只对印刷体和计算机字体有较高的识别率，但对手写体等可能并不能很好的识别，所以最好需要进行检查和纠错。</p>
+<p>可以使用 <a href="https://ocr.wdku.net/">https://ocr.wdku.net/</a>
+进行识别，免费支持精确的文字识别（相对来说误差率会更低一些）。</p>
 <h1 id="pyc-隐写">PYC 隐写</h1>
 <p>PYC
 隐写即剑龙隐写（Stegosaurus），因为该软件的名字翻译过来就是剑龙。</p>
@@ -9626,6 +9633,11 @@ Decode 区域中的 Tweet 文本框中即可：</p>
 <figcaption aria-hidden="true">tsm解密结果</figcaption>
 </figure>
 <h1 id="whitespace">Whitespace</h1>
+<p>WhiteSpace
+是一种只用空白字符（空格，TAB和回车）编程的语言，而其它可见字符统统会被当做注释对待。</p>
+<p>特点就是可以看到大量的空格和TAB相连的情况，具体可以参考<a href="/whitespace-note.html">此博客</a>。</p>
+<p>我们可以使用 <a href="https://vii5ard.github.io/whitespace/">https://vii5ard.github.io/whitespace/</a>
+进行运行和编辑 WhiteSpace 程序。</p>
 <h1 id="word-隐藏文字">Word 隐藏文字</h1>
 <p>Word 有许多排版方式，其中有一种字体效果是<strong>隐藏</strong>。</p>
 <p>对于这种情况可以直接使用 ctrl + A
@@ -10652,6 +10664,229 @@ y\rfloor,17))},2\right)\right\rfloor
 <h1 id="python实现">Python实现</h1>
 <p>与原公式不相同，做了一些修正</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> <span class="type">Literal</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tupper_self_referential_formula</span>(<span class="params">k: <span class="built_in">int</span>, width: <span class="built_in">int</span> = <span class="number">17</span>, height: <span class="built_in">int</span> = <span class="number">106</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Tupper self referential formula函数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        k - 用于迭代图像的k值</span></span><br><span class="line"><span class="string">        width - 图像的宽</span></span><br><span class="line"><span class="string">        height - 图像的高</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        类型是numpy.ndarray矩阵，里面只有0和1</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line">    rst = np.zeros((width, height))</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">f</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>) -&gt; <span class="built_in">int</span>:</span></span><br><span class="line">        y += k</span><br><span class="line">        a1 = <span class="number">2</span> ** (width * x + y % width)</span><br><span class="line">        a2 = (y // width) // a1</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> <span class="keyword">if</span> (a2 &amp; <span class="number">1</span>) == <span class="number">1</span> <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            rst[y, x] = f(x, y)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> rst[:, ::-<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tupper_to_str</span>(<span class="params">k: <span class="built_in">int</span>, width: <span class="built_in">int</span> = <span class="number">17</span>, height: <span class="built_in">int</span> = <span class="number">106</span>, show_black: <span class="built_in">str</span> = <span class="string">&quot;■&quot;</span>, show_white: <span class="built_in">str</span> = <span class="string">&quot;□&quot;</span></span>) -&gt; <span class="built_in">str</span>:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    生成Tupper self referential formula函数的字符画</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        k - 用于迭代图像的k值</span></span><br><span class="line"><span class="string">        width - 图像的宽</span></span><br><span class="line"><span class="string">        height - 图像的高</span></span><br><span class="line"><span class="string">        show_black - 字符画中的黑色方块</span></span><br><span class="line"><span class="string">        show_white - 字符画中的白色方块</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        字符画字符串</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    mat = tupper_self_referential_formula(k, width, height)</span><br><span class="line">    rst = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(width):</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(height):</span><br><span class="line">            <span class="keyword">if</span> mat[y, x] == <span class="number">1</span>:</span><br><span class="line">                rst += show_black</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                rst += show_white</span><br><span class="line">        rst += <span class="string">&#x27;\n&#x27;</span></span><br><span class="line">    <span class="keyword">return</span> rst</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">tupper_to_img</span>(<span class="params">k: <span class="built_in">int</span>, width: <span class="built_in">int</span> = <span class="number">17</span>, height: <span class="built_in">int</span> = <span class="number">106</span>, filename: <span class="built_in">str</span> = <span class="string">&#x27;tupper.png&#x27;</span>, origin: <span class="type">Literal</span>[<span class="string">&#x27;upper&#x27;</span>, <span class="string">&#x27;lower&#x27;</span>] = <span class="string">&#x27;upper&#x27;</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    生成Tupper self referential formula函数的字符画</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        k - 用于迭代图像的k值</span></span><br><span class="line"><span class="string">        width - 图像的宽</span></span><br><span class="line"><span class="string">        height - 图像的高</span></span><br><span class="line"><span class="string">        filename - 输出图像的文件名</span></span><br><span class="line"><span class="string">        origin - 输出图像的方式(upper或者lower)</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        类型是numpy.ndarray矩阵，里面只有0和1</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line">    rst = tupper_self_referential_formula(k, width, height)</span><br><span class="line">    plt.figure(figsize=(<span class="number">15</span>, <span class="number">10</span>))</span><br><span class="line">    plt.imshow(rst, origin=origin)</span><br><span class="line">    plt.savefig(filename)</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> rst</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">k = <span class="number">92898203278702907929705938676672021500394791427205757369123489204565300324859717082409892641951206664564991991489354661871425872649524078000948199832659815275909285198829276929014694628110159824930931595166203271443269827449505707655085842563682060910813942504507936625555735585913273575050118552353192682955310220323463465408645422334101446471078933149287336241772448338428740302833855616421538520769267636119285948674549756604384946996184385407505456168240123319785800909933214695711828013483981731933773017336944656397583872267126767778549745087854794302808950100966582558761224454242018467578959766617176016660101690140279961968740323327369347164623746391335756442566959352876706364265509834319910419399748338894746638758652286771979896573695823608678008814861640308571256880794312652055957150464513950305355055495262375870102898500643010471425931450046440860841589302890250456138060738689526283389256801969190204127358098408264204643882520969704221896973544620102494391269663693407573658064279947688509910028257209987991480259150865283245150325813888942058</span></span><br><span class="line"></span><br><span class="line">rst = tupper_to_str(k, <span class="number">22</span>, <span class="number">160</span>)</span><br><span class="line"><span class="built_in">print</span>(rst)</span><br><span class="line">tupper_to_img(k, <span class="number">22</span>, <span class="number">160</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>whitespace 编程语言</title>
+    <url>//whitespace-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>WhiteSpace
+是一种只用空白字符（空格，TAB和回车）编程的语言，而其它可见字符统统会被当做注释对待。</p>
+<p>它本身是个指令式、基于堆栈的语言。其程式运行在上的虚拟机器均有一个堆栈（Stack）和堆（Heap）。程序员可自由将整数推进堆栈中（只可以是整数，因为暂时并无浮点数或实数工具），同时也可以通过堆作为变量和数据结构的暂存区。</p>
+<p>借助这种语言，可以在满篇空白的代码中插入一篇文章，从而在看起来完全无关的文章中隐藏一段代码。</p>
+<h1 id="语法">语法</h1>
+<p>命令由一系列空格、制表位和换行符组成。所有其他字符都被忽略，因此可用于注释。例如，tab-space-space-space
+执行堆栈顶部两个元素的算术加法。</p>
+<p>命令的前一部分将被翻译为指令修改参数（IMP），IMP
+后面所跟随的是操作。</p>
+<p>IMP 指令集如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">IMP</th>
+<th style="text-align: center;">相应指令</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;">栈操作</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;">算术</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;">堆操作</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;">指令控制</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][LF]</code></td>
+<td style="text-align: center;">I/O</td>
+</tr>
+</tbody>
+</table>
+<p>IMP 所对应的操作集如下：</p>
+<table>
+<colgroup>
+<col style="width: 18%">
+<col style="width: 21%">
+<col style="width: 5%">
+<col style="width: 54%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">IMP</th>
+<th style="text-align: center;">命令</th>
+<th style="text-align: center;">参数</th>
+<th style="text-align: center;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;">数字</td>
+<td style="text-align: center;">将数字压入栈 (push)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[LF][Space]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">复制栈顶</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;">数字</td>
+<td style="text-align: center;">拷贝栈中的第n个（n由参数给出）数据到栈顶</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[LF][Tab]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">交换栈顶的两个值</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[LF][LF]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">丢弃栈顶</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[Tab][LF]</code></td>
+<td style="text-align: center;">数字</td>
+<td style="text-align: center;">保留栈顶的同时丢弃n个数据</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;"><code>[Space][Space]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">加法</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;"><code>[Space][Tab]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">减法</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;"><code>[Space][LF]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">乘法</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">除法</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">求模</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">保存到堆</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;"><code>[Tab]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">从堆中取出数据</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Space][Space]</code></td>
+<td style="text-align: center;">标签</td>
+<td style="text-align: center;">在该处设定一个跳转标签</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Space][Tab]</code></td>
+<td style="text-align: center;">标签</td>
+<td style="text-align: center;">调用子程序 (call)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Space][LF]</code></td>
+<td style="text-align: center;">标签</td>
+<td style="text-align: center;">跳转标签 (goto)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;">标签</td>
+<td style="text-align: center;">如果栈顶为0则跳转标签 (jz)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;">标签</td>
+<td style="text-align: center;">如果栈顶不为0则跳转标签 (jnz)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Tab][LF]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">结束子程序 (retn)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[LF][LF]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">结束程序 (exit)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">[<code>Tab][LF]</code></td>
+<td style="text-align: center;"><code>[Space</code>][Space]</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">输出栈顶字符 (printc)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[<code>Tab][LF]</code></td>
+<td style="text-align: center;"><code>[Space</code>][Tab]</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">输出栈顶数字 (printn)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][LF]</code></td>
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">读取字符放置栈顶</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[<code>Tab][LF]</code></td>
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">读取数字放置栈顶</td>
+</tr>
+</tbody>
+</table>
+<h2 id="数字">数字</h2>
+<p>数字由空格 (0) 和制表符 (1)
+组成，并以换行符终止。数字中的第一个空格/制表符表示数字的符号，如果是空格，则数字为正，如果是制表符，则数字为负。其余的尾随空格和制表符代表二进制数的其余部分。</p>
+<h2 id="标签">标签</h2>
+<p>标签只是以 <code>[LF]</code>
+结尾的空格和制表符列表。只有一个全局命名空间，因此所有标签都必须是唯一的。</p>
+<h1 id="编辑和运行">编辑和运行</h1>
+<p>我们可以在 <a href="https://vii5ard.github.io/whitespace/">https://vii5ard.github.io/whitespace/</a>
+中对 whitespace 进行编辑和运行，同时有着许多示例代码可供参考。</p>
+<p>在运行的时候，该网站 IDE 可以查看翻译的伪汇编代码（whitespace
+虚拟机字节码），并且可以时刻中断来查看堆栈情况，方便调试程序和观察代码运行。</p>
 ]]></content>
       <tags>
         <tag>note</tag>

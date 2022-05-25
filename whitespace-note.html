@@ -22,32 +22,28 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="简要的Git的使用笔记">
+<meta name="description" content="有关 whitespace 编程语言的简要笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Git的使用笔记">
-<meta property="og:url" content="https://hasegawaazusa.github.io/git-note.html">
+<meta property="og:title" content="whitespace 编程语言">
+<meta property="og:url" content="https://hasegawaazusa.github.io/whitespace-note.html">
 <meta property="og:site_name" content="独奏の小屋">
-<meta property="og:description" content="简要的Git的使用笔记">
+<meta property="og:description" content="有关 whitespace 编程语言的简要笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hasegawaazusa.github.io/git-note/sshkeys.png">
-<meta property="og:image" content="https://hasegawaazusa.github.io/git-note/success.png">
-<meta property="article:published_time" content="2022-01-30T11:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-02T06:21:21.752Z">
+<meta property="article:published_time" content="2022-05-25T15:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-25T16:05:27.210Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
-<meta property="article:tag" content="git">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hasegawaazusa.github.io/git-note/sshkeys.png">
 
 
-<link rel="canonical" href="https://hasegawaazusa.github.io/git-note.html">
+<link rel="canonical" href="https://hasegawaazusa.github.io/whitespace-note.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/git-note.html","path":"/git-note.html","title":"Git的使用笔记"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/whitespace-note.html","path":"/whitespace-note.html","title":"whitespace 编程语言"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Git的使用笔记 | 独奏の小屋</title>
+<title>whitespace 编程语言 | 独奏の小屋</title>
   
 
 
@@ -152,7 +148,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#git%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.</span> <span class="nav-text">Git的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#git%E7%9A%84user%E9%85%8D%E7%BD%AE"><span class="nav-number">1.1.</span> <span class="nav-text">Git的User配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8ssh%E6%96%B9%E5%BC%8F%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5github"><span class="nav-number">1.2.</span> <span class="nav-text">使用SSH方式远程连接Github</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%AD%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%97"><span class="nav-number">2.1.</span> <span class="nav-text">数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%87%E7%AD%BE"><span class="nav-number">2.2.</span> <span class="nav-text">标签</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E5%92%8C%E8%BF%90%E8%A1%8C"><span class="nav-number">3.</span> <span class="nav-text">编辑和运行</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -220,7 +216,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/git-note.html">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/whitespace-note.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -233,7 +229,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Git的使用笔记
+          whitespace 编程语言
         </h1>
 
         <div class="post-meta-container">
@@ -244,7 +240,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-01-30 19:00:00" itemprop="dateCreated datePublished" datetime="2022-01-30T19:00:00+08:00">2022-01-30</time>
+      <time title="创建时间：2022-05-25 23:00:00" itemprop="dateCreated datePublished" datetime="2022-05-25T23:00:00+08:00">2022-05-25</time>
     </span>
 
   
@@ -254,7 +250,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>524</span>
+      <span>1.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -265,7 +261,7 @@
     </span>
 </div>
 
-            <div class="post-description">简要的Git的使用笔记</div>
+            <div class="post-description">有关 whitespace 编程语言的简要笔记</div>
         </div>
       </header>
 
@@ -273,47 +269,221 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="git的使用">Git的使用</h1>
-<h2 id="git的user配置">Git的User配置</h2>
-<p>打开 <strong>Git Bash </strong>(使用命令行也可以)</p>
-<p>配置全局 <code>name</code></p>
-<blockquote>
-<p><strong>Github </strong>用户名</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name name</span><br></pre></td></tr></table></figure>
-<p>配置全局 <code>email</code></p>
-<blockquote>
-<p><strong>Github</strong> 邮箱</p>
-</blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.email email</span><br></pre></td></tr></table></figure>
-<p>以我的Github账户为例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name HasegawaAzusa</span><br><span class="line">git config --global user.email xxx@qq.com</span><br></pre></td></tr></table></figure>
-<h2 id="使用ssh方式远程连接github">使用SSH方式远程连接Github</h2>
-<p>打开<strong>Git Bash</strong>(使用命令行也可以)</p>
-<p>先在本地生成对应邮箱的<strong>SSH RSA公钥密钥</strong></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen -t rsa</span><br></pre></td></tr></table></figure>
-<p>使用<strong>默认生成路径</strong>，<strong>默认空key</strong></p>
-<p>前往 <code>~/.ssh</code>
-目录下寻找密钥（其中默认<strong><code>id_rsa</code></strong>是密钥信息，<strong><code>id_rsa.pub</code></strong>为公钥信息）</p>
-<p>在 <strong>Github</strong> 中新建 <strong>SSH keys (Github - Settings
-- SSH and GPG keys - New SSH key)</strong></p>
-<p><code>Title</code> 任意，<code>Key</code>
-填入<strong>公钥信息</strong> (<code>id_rsa.pub</code> 文件内容)</p>
-<figure>
-<img src="/git-note/sshkeys.png" alt="sshkeys">
-<figcaption aria-hidden="true">sshkeys</figcaption>
-</figure>
-<p>输入以下，验证是否连接成功</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh git@github.com</span><br></pre></td></tr></table></figure>
-<p>成功结果如下</p>
-<figure>
-<img src="/git-note/success.png" alt="success">
-<figcaption aria-hidden="true">success</figcaption>
-</figure>
-<blockquote>
-<p><a href="/ssh-note.html#ssh-keygen">ssh-keygen参数详解</a></p>
-<p><a href="ssh-note.html#ssh">ssh参数详解</a></p>
-</blockquote>
+        <h1 id="简述">简述</h1>
+<p>WhiteSpace
+是一种只用空白字符（空格，TAB和回车）编程的语言，而其它可见字符统统会被当做注释对待。</p>
+<p>它本身是个指令式、基于堆栈的语言。其程式运行在上的虚拟机器均有一个堆栈（Stack）和堆（Heap）。程序员可自由将整数推进堆栈中（只可以是整数，因为暂时并无浮点数或实数工具），同时也可以通过堆作为变量和数据结构的暂存区。</p>
+<p>借助这种语言，可以在满篇空白的代码中插入一篇文章，从而在看起来完全无关的文章中隐藏一段代码。</p>
+<h1 id="语法">语法</h1>
+<p>命令由一系列空格、制表位和换行符组成。所有其他字符都被忽略，因此可用于注释。例如，tab-space-space-space
+执行堆栈顶部两个元素的算术加法。</p>
+<p>命令的前一部分将被翻译为指令修改参数（IMP），IMP
+后面所跟随的是操作。</p>
+<p>IMP 指令集如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: center;">IMP</th>
+<th style="text-align: center;">相应指令</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;">栈操作</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;">算术</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;">堆操作</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;">指令控制</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][LF]</code></td>
+<td style="text-align: center;">I/O</td>
+</tr>
+</tbody>
+</table>
+<p>IMP 所对应的操作集如下：</p>
+<table>
+<colgroup>
+<col style="width: 18%">
+<col style="width: 21%">
+<col style="width: 5%">
+<col style="width: 54%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">IMP</th>
+<th style="text-align: center;">命令</th>
+<th style="text-align: center;">参数</th>
+<th style="text-align: center;">Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;">数字</td>
+<td style="text-align: center;">将数字压入栈 (push)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[LF][Space]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">复制栈顶</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;">数字</td>
+<td style="text-align: center;">拷贝栈中的第n个（n由参数给出）数据到栈顶</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[LF][Tab]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">交换栈顶的两个值</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[LF][LF]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">丢弃栈顶</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;"><code>[Tab][LF]</code></td>
+<td style="text-align: center;">数字</td>
+<td style="text-align: center;">保留栈顶的同时丢弃n个数据</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;"><code>[Space][Space]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">加法</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;"><code>[Space][Tab]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">减法</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;"><code>[Space][LF]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">乘法</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">除法</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">求模</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;"><code>[Space]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">保存到堆</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;"><code>[Tab]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">从堆中取出数据</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Space][Space]</code></td>
+<td style="text-align: center;">标签</td>
+<td style="text-align: center;">在该处设定一个跳转标签</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Space][Tab]</code></td>
+<td style="text-align: center;">标签</td>
+<td style="text-align: center;">调用子程序 (call)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Space][LF]</code></td>
+<td style="text-align: center;">标签</td>
+<td style="text-align: center;">跳转标签 (goto)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;">标签</td>
+<td style="text-align: center;">如果栈顶为0则跳转标签 (jz)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;">标签</td>
+<td style="text-align: center;">如果栈顶不为0则跳转标签 (jnz)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[Tab][LF]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">结束子程序 (retn)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><code>[LF]</code></td>
+<td style="text-align: center;"><code>[LF][LF]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">结束程序 (exit)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">[<code>Tab][LF]</code></td>
+<td style="text-align: center;"><code>[Space</code>][Space]</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">输出栈顶字符 (printc)</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[<code>Tab][LF]</code></td>
+<td style="text-align: center;"><code>[Space</code>][Tab]</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">输出栈顶数字 (printn)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><code>[Tab][LF]</code></td>
+<td style="text-align: center;"><code>[Tab][Space]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">读取字符放置栈顶</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">[<code>Tab][LF]</code></td>
+<td style="text-align: center;"><code>[Tab][Tab]</code></td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">读取数字放置栈顶</td>
+</tr>
+</tbody>
+</table>
+<h2 id="数字">数字</h2>
+<p>数字由空格 (0) 和制表符 (1)
+组成，并以换行符终止。数字中的第一个空格/制表符表示数字的符号，如果是空格，则数字为正，如果是制表符，则数字为负。其余的尾随空格和制表符代表二进制数的其余部分。</p>
+<h2 id="标签">标签</h2>
+<p>标签只是以 <code>[LF]</code>
+结尾的空格和制表符列表。只有一个全局命名空间，因此所有标签都必须是唯一的。</p>
+<h1 id="编辑和运行">编辑和运行</h1>
+<p>我们可以在 <a target="_blank" rel="noopener" href="https://vii5ard.github.io/whitespace/">https://vii5ard.github.io/whitespace/</a>
+中对 whitespace 进行编辑和运行，同时有着许多示例代码可供参考。</p>
+<p>在运行的时候，该网站 IDE 可以查看翻译的伪汇编代码（whitespace
+虚拟机字节码），并且可以时刻中断来查看堆栈情况，方便调试程序和观察代码运行。</p>
 
     </div>
 
@@ -331,7 +501,7 @@
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hasegawaazusa.github.io/git-note.html" title="Git的使用笔记">https://hasegawaazusa.github.io/git-note.html</a>
+      <a href="https://hasegawaazusa.github.io/whitespace-note.html" title="whitespace 编程语言">https://hasegawaazusa.github.io/whitespace-note.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -341,21 +511,17 @@
 
           <div class="post-tags">
               <a href="/tags/note/" rel="tag"># note</a>
-              <a href="/tags/git/" rel="tag"># git</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/hexo-plugins-note.html" rel="prev" title="hexo 插件笔记">
-                  <i class="fa fa-chevron-left"></i> hexo 插件笔记
+                <a href="/tupper-note.html" rel="prev" title="tupper公式（塔珀自指公式）">
+                  <i class="fa fa-chevron-left"></i> tupper公式（塔珀自指公式）
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/barcode-note.html" rel="next" title="有关条形码的认识">
-                  有关条形码的认识 <i class="fa fa-chevron-right"></i>
-                </a>
             </div>
           </div>
     </footer>
