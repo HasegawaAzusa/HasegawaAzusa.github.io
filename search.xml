@@ -1844,7 +1844,7 @@ Twister会在<span class="math inline">\([0,2^{k}-1]\)</span>的区间之间生�
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 提取</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extract</span>(<span class="params">self</span>):</span></span><br><span class="line">    <span class="keyword">if</span> self.state &gt;= self.n:</span><br><span class="line">        self.twist()</span><br><span class="line"></span><br><span class="line">    x = self.register[self.state]</span><br><span class="line">    x ^= x &gt;&gt; <span class="number">11</span></span><br><span class="line">    x ^= (x &lt;&lt; <span class="number">7</span>) &amp; self.b</span><br><span class="line">    x ^= (x &lt;&lt; <span class="number">15</span>) &amp; self.c</span><br><span class="line">    x ^= x &gt;&gt; <span class="number">18</span></span><br><span class="line"></span><br><span class="line">    self.state += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> self._int32(x)</span><br></pre></td></tr></table></figure>
 <h2 id="完整代码">完整代码</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MT19937</span>:</span></span><br><span class="line">    n = <span class="number">624</span></span><br><span class="line">    m = <span class="number">397</span></span><br><span class="line">    a = <span class="number">0x9908b0df</span></span><br><span class="line">    b = <span class="number">0x9d2c5680</span></span><br><span class="line">    c = <span class="number">0xefc60000</span></span><br><span class="line">    kInitOperand = <span class="number">0x6c078965</span></span><br><span class="line">    kMaxBits = <span class="number">0xffffffff</span></span><br><span class="line">    kUpperBits = <span class="number">0x80000000</span></span><br><span class="line">    kLowerBits = <span class="number">0x7fffffff</span></span><br><span class="line">    register = [<span class="number">0</span>] * n</span><br><span class="line">    state = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 将数字变为 32 位整数</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_int32</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        <span class="keyword">return</span> x &amp; <span class="number">0xffffffff</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 初始化寄存器状态</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">seed</span>(<span class="params">self, seed</span>):</span></span><br><span class="line">        self.register[<span class="number">0</span>] = seed</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, self.n):</span><br><span class="line">            self.register[i] = self._int32(self.kInitOperand *</span><br><span class="line">                    (self.register[i-<span class="number">1</span>] ^ self.register[i-<span class="number">1</span>] &gt;&gt; <span class="number">30</span>) + i)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, seed = <span class="literal">None</span></span>):</span></span><br><span class="line">        <span class="keyword">if</span> seed:</span><br><span class="line">            self.seed(seed)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 旋转</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">twist</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.n):</span><br><span class="line">            x = self._int32((self.register[i] &amp; self.kUpperBits) +</span><br><span class="line">                            (self.register[(i + <span class="number">1</span>) % self.n] &amp; self.kLowerBits))</span><br><span class="line">            self.register[i] = self.register[(i + self.m) % self.n] ^ (x &gt;&gt; <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> x &amp; <span class="number">1</span> != <span class="number">0</span>:</span><br><span class="line">                self.register[i] ^= self.a</span><br><span class="line">        self.state = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># 提取</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">extract</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">if</span> self.state &gt;= self.n:</span><br><span class="line">            self.twist()</span><br><span class="line"></span><br><span class="line">        x = self.register[self.state]</span><br><span class="line">        x ^= x &gt;&gt; <span class="number">11</span></span><br><span class="line">        x ^= (x &lt;&lt; <span class="number">7</span>) &amp; self.b</span><br><span class="line">        x ^= (x &lt;&lt; <span class="number">15</span>) &amp; self.c</span><br><span class="line">        x ^= x &gt;&gt; <span class="number">18</span></span><br><span class="line"></span><br><span class="line">        self.state += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> self._int32(x)</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__call__</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.extract()</span><br></pre></td></tr></table></figure>
-<h1 id="算法破解">算法破解</h1>
+<h1 id="状态破解">状态破解</h1>
 <p>梅森旋转算法的设计目的是优秀的伪随机数发生算法，而不是产生密码学上安全的随机数。从梅森旋转算法的结构上说，其提取算法
 <code>extract</code>
 完全基于二进制的按位异或；而二进制按位异或是可逆的，故而
@@ -7248,11 +7248,113 @@ pyc 文件中加入当前 python 版本的魔术头
 <p>图片取证主要包括隐写 (Steganography)，拼图，读图等。</p>
 <p>同时图片又有多种格式，包括但不限于 GIP, PNG, JPEG 等。</p>
 <p>以下的各种图片取证形式不限于单一格式。</p>
-<h2 id="lsb-隐写">lsb 隐写</h2>
-<h2 id="outguess">outguess</h2>
+<h2 id="gimp">gimp</h2>
+<p>gimp
+是一款开源图片编辑软件，它有个很特别的功能是从数据中读取图片，这可以导致如果你不了解某个数据是哪种图片类型时，其依旧可以正常显示图片内容（需要将后缀改成
+<code>.data</code>）。</p>
+<p>但需要注意的是，可能会产生一定的识别错误，比如说宽度识别错误等。</p>
+<h2 id="lsb-隐写">LSB 隐写</h2>
+<p><code>LSB</code> 的全称为
+<code>Least Significant Bit</code>，在二进制数中意为最低有效位。<code>LSB</code>
+位于二进制数的最右侧。</p>
+<p><code>MSB</code> 的全称为
+<code>Most Significant Bit</code>，在二进制数中属于最高有效位。<code>MSB</code>
+是最高加权位，若 <code>MSB=1</code> 则表示数据为负值；若
+<code>MSB=0</code> 则表示数据为正。</p>
+<p>加密流程即将数据转换为二进制后，将数据隐藏在最低有效位中。</p>
+<p>简单的解密脚本：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lsb</span>(<span class="params">im</span>):</span></span><br><span class="line">    im = np.array(im, dtype = np.uint8).flatten()</span><br><span class="line">    t = im &amp; <span class="number">0x1</span></span><br><span class="line">    <span class="keyword">return</span> t</span><br><span class="line">    <span class="comment"># 返回二进制字符串</span></span><br><span class="line">    <span class="comment"># return &#x27;&#x27;.join(map(str, t.tolist()))</span></span><br></pre></td></tr></table></figure>
+<p>同时也可以对不同的通道取值，例如这里对第二低有效位进行 LSB
+隐写提取：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lsb</span>(<span class="params">im</span>):</span></span><br><span class="line">    im = np.array(im, dtype = np.uint8).flatten()</span><br><span class="line">    t = im &amp; <span class="number">0x3</span></span><br><span class="line">    <span class="keyword">return</span> t</span><br><span class="line">    <span class="comment"># 返回二进制字符串</span></span><br><span class="line">    <span class="comment"># return &#x27;&#x27;.join(map(str, t.tolist()))</span></span><br></pre></td></tr></table></figure>
+<p>或者只对单个颜色信道进行 LSB 隐写提取，例如这里对 R 信道进行 LSB
+隐写提取：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">lsb</span>(<span class="params">im</span>):</span></span><br><span class="line">    im = np.array(im, dtype = np.uint8)[:, :, <span class="number">0</span>]</span><br><span class="line">    <span class="built_in">print</span>(im)</span><br><span class="line">    t = im &amp; <span class="number">0x1</span></span><br><span class="line">    <span class="keyword">return</span> t</span><br><span class="line">    <span class="comment"># 返回二进制字符串</span></span><br><span class="line">    <span class="comment"># return &#x27;&#x27;.join(map(str, t.tolist()))</span></span><br></pre></td></tr></table></figure>
 <h2 id="outsecret">outsecret</h2>
+<p>oursecret 是一款较老的软件，支持对 jpeg 和 bmp 的隐写。</p>
+<p>它可以隐写任何数据在图像中，并且可以完整提取出包含文件名的数据。</p>
+<p>需要使用密码进行数据提取和数据加密。</p>
+<h2 id="silenteye">silenteye</h2>
+<p>Silenteye 是一个利用 lsb
+对目标数据进行隐藏的软件（十分的老），图片格式支持 jpeg 和 bmp
+格式。</p>
+<p>直接拖拽目标文件，点击 <code>Decode</code>
+可以解密其中的隐藏数据。</p>
+<p>同时可能它会使用 AES 对数据进行加密，需要进行密码的填写。</p>
+<figure>
+<img src="/picture-forensics-note/silenteye%20encrypted.png" alt="silenteye encrypted">
+<figcaption aria-hidden="true">silenteye encrypted</figcaption>
+</figure>
 <h2 id="steghide">steghide</h2>
+<p>可以对常见的图片格式（如
+jpg）进行隐写和提取，同时也对部分音频格式支持隐写和提取。</p>
+<p>常常使用 <code>steghide info filename.jpg</code>
+对目标文件进行检测。</p>
+<p>如果想要明文使用密码提取文件隐写数据，可以使用以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">steghide extract -sf filename -p password</span><br></pre></td></tr></table></figure>
+<p>它会将隐写数据输出到文件当中。</p>
+<p>如果不知道密码，我们可以使用 shell 脚本对密码进行爆破：</p>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">bruteStegHide.sh</span> </span><br><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line"></span><br><span class="line">for line in `cat $2`;do</span><br><span class="line">    steghide extract -sf $1 -p $line &gt; /dev/null 2&gt;&amp;1</span><br><span class="line">    if [[ $? -eq 0 ]];then</span><br><span class="line">        echo &#x27;password is: &#x27;$line</span><br><span class="line">        exit</span><br><span class="line">    fi  </span><br><span class="line">done </span><br></pre></td></tr></table></figure>
+<p>使用方法为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">./bruteStegHide.sh test.jpg passwd.txt</span><br></pre></td></tr></table></figure>
+<p>如果感觉爆破速度太慢，可以尝试使用 <a href="https://github.com/RickdeJager/stegseek">Stegseek</a>
+这个开源软件对 steghide
+的密码进行爆破，该软件效率极高，更推荐使用该款软件。</p>
+<p>使用方法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stegseek stegofile.jpg [wordlist.txt]</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果不填写参数 <code>wordlist.txt</code> 将默认读取
+<code>/usr/share/wordlists/rockyou.txt</code></p>
+</blockquote>
+<p>或者使用爆破种子的方式无密码提取文件（如果无加密的话）：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">stegseek --seed stegofile.jpg</span><br></pre></td></tr></table></figure>
+<p>如果有加密的情况，也可以使用该方式来探测是否存在 steghide 隐写。</p>
+<h2 id="stegsolve">stegsolve</h2>
+<p>stegsolve.jar 是一款很优秀的 lsb/msb
+隐写取证工具，基本上可以让隐写无处遁形。</p>
+<p>使用方向键可以查看各个信道所隐藏的数据（以单色图形式显示），但该软件不支持缩放，对于过大的图片，可能无法查看全貌，所以最好养成每个角落都需要注意的习惯。</p>
+<p>Analyze 中的 Data Extract
+功能可以同时提取多个信道的数据进行查看和保存，但高亮堪忧，并不是很好查看。</p>
+<p>Analyze 中的 Stereogram Solver 功能可以将图片偏移叠加。</p>
+<p>Analyze 中的 Frame Browser 功能可以将 GIF
+图分解为多图层进行查看，优点是比 Ps
+的速度要快，缺点是只能看到显示，并不能像 Ps 一样进行微操。</p>
+<p>Analyze 中的 Image Combiner
+功能可以将两张图片进行叠加查看（以像素异或，像素加减等形式）。</p>
 <h2 id="zsteg">zsteg</h2>
+<p>zsteg 可以快速扫描出 bmp 和 png 等格式中的 lsb、msb
+隐写，但可能存在一定的误差，尤其是对于单信道文本隐藏而言，如果有不确定的情况建议使用
+stegsolve 进行查看和数据提取。</p>
+<p>zsteg 常用的参数有：</p>
+<table>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-a</code></td>
+<td>对所有信道所有可能进行全方面扫描</td>
+</tr>
+<tr class="even">
+<td><code>-E</code></td>
+<td>提取特定信道的数据</td>
+</tr>
+<tr class="odd">
+<td><code>-v</code></td>
+<td>提取出有效数据并显示出来</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>可以使用 <code>zsteg -h</code> 获取更多帮助</p>
+</blockquote>
+<p>通常也可以直接填写特定的信道名称来进行扫描，并不需要填写固定参数，如</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zsteg fname.png 2b,b,lsb,xy</span><br></pre></td></tr></table></figure>
+<p>或者如果想要查看提取出来的有效数据：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zsteg fname.png 2b,b,lsb,xy -v</span><br></pre></td></tr></table></figure>
 <h2 id="图片像素差异">图片像素差异</h2>
 <p>以下是提取差异像素的示例脚本，注意如果差异的像素是
 <code>white</code>，需要将 <code>diff</code>
@@ -7368,6 +7470,8 @@ Github 主页</a></p>
 <p>同时可以使用 <code>gaps --help</code> 获取更多帮助。</p>
 <p>如果没有明确提供 <code>--size</code> 参数，<code>gaps</code>
 会自动检测块的大小。</p>
+<p>并且最好需要对小图块的长和宽分别进行尝试。（一般来说会使用最小值）</p>
+<p>往往有时单次拼图得到的结果并不够好，可以进行多次拼图。</p>
 <h2 id="自动化隐写探测">自动化隐写探测</h2>
 <p>隐写工具 <code>zsteg</code> 可以检测 PNG 和 BMP 图片里的隐写数据，在
 Linux 里可以直接安装使用。<a href="https://github.com/zed-0xff/zsteg">zsteg Github 主页</a></p>
@@ -7397,6 +7501,19 @@ windows 软件，可以在 <a href="http://io.acad.athabascau.ca/~grizzlie/Comp6
 <p>点击 <code>open jpeg</code> 打开图片后，可选 <code>pass phrase</code>
 添加密码，然后点击 <code>hide</code> 或者 <code>seek</code>
 即可进行隐写和数据提取。</p>
+<h2 id="outguess">outguess</h2>
+<p>outguess 是一款开源的隐写软件，支持对 jpeg 的数据隐写。</p>
+<p>可以在 <a href="https://github.com/crorvick/outguess">Github
+主页</a>中获取软件，也可以在 Linux 中使用包管理软件进行安装。</p>
+<blockquote>
+<p><code>sudo apt install outguess</code></p>
+</blockquote>
+<p>outguess
+保留基于频率计数的统计信息，故一般的统计测试没有办法检测出通过该软件隐写的数据，故其隐写的隐蔽性极高。</p>
+<p>加密：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">outguess -k password -d hidden.txt in.jpg out.jpg</span><br></pre></td></tr></table></figure>
+<p>解密：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">outguess -k password -r out.jpg hidden.txt</span><br></pre></td></tr></table></figure>
 <h1 id="png-取证">PNG 取证</h1>
 <h2 id="简述-2">简述</h2>
 <p>以下的各种图片取证形式仅限于 PNG 图片格式。</p>
@@ -7503,6 +7620,11 @@ CRLF；回退版本时，不转换。</li>
 <p>而死取证是对机器的磁盘做镜像之后进行分析，在关机后制作硬盘镜像，分析镜像（MBR硬盘分区,GPT全局分区表,LVM逻辑卷）是否存在病毒,木马等恶意程序。</p>
 <p>不管是那种取证方式都应尽量避免破环犯罪现场，例如通过内存转储工具对内存进行快照，通过磁盘克隆工具对磁盘进行克隆，方便后期的分析工作。</p>
 <h2 id="磁盘取证">磁盘取证</h2>
+<h3 id="diskgenius">DiskGenius</h3>
+<p>DiskGenius 是一款国产收费软件，存在免费版可供使用。</p>
+<p>使用 DiskGenius
+可以自由对磁盘作许多操作，同时它也可以进行恢复数据、读取磁盘映像等操作。（需要注意的是，很多操作需要付费后才可使用）</p>
+<p>使用 DiskGenius 磁盘取证会更加方便。</p>
 <h3 id="ext-磁盘映像挂载">ext 磁盘映像挂载</h3>
 <p>在 Windows 中可以使用 <a href="http://www.chrysocome.net/explore2fs">explore2fs</a> 临时挂载 ext
 文件系统的磁盘映像，但是我们只可以看到未被删除的文件，同时也不可以进行写的操作。</p>
@@ -7515,6 +7637,18 @@ CRLF；回退版本时，不转换。</li>
 安装此软件。</p>
 <p>只需使用以下简单命令便可以恢复已删除文件。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">extundelete disk-image --restore-all</span><br></pre></td></tr></table></figure>
+<h3 id="ftk-imager">FTK Imager</h3>
+<p>FTK Imager
+是免费的一个挂载映像和导出映像的软件，可以使用其来挂载读取磁盘映像，但需要注意的是，由于是免费软件，仅支持基础的功能，但读取的数据较为原始，可以直接查看到删除和未使用的分区。</p>
+<p>相对来说，本人更推荐使用 DiskGenius。</p>
+<h3 id="veracrypt">veracrypt</h3>
+<p>Veracrypt 是一款基于 Truecrypt 的开源软件，同款竞品是微软的
+BitLocker，用于加密卷和映像，支持使用明文密码和文件来进行加密卷或映像。</p>
+<p>进行挂载加密卷或映像时，可以按照下图示例使用。</p>
+<figure>
+<img src="/post/image-forensics-note/veracrypt%20operation.gif" alt="veracrypt operation">
+<figcaption aria-hidden="true">veracrypt operation</figcaption>
+</figure>
 <h2 id="内存取证">内存取证</h2>
 <p>内存取证主要依赖于 <code>volatiliy</code> 工具，现在已经更新到
 python3 的版本了。</p>
@@ -9659,6 +9793,9 @@ Decode 区域中的 Tweet 文本框中即可：</p>
 <img src="/text-forensics-note/zero-width隐写解密.png" alt="zero-width隐写解密">
 <figcaption aria-hidden="true">zero-width隐写解密</figcaption>
 </figure>
+<p>该网站可以自由选择加解密参数，通常只用选择文本中存在的零宽字符。但缺点是该网站对零宽字符的支持过少。</p>
+<p>还可以使用网站：<a href="https://yuanfux.github.io/zero-width-web/">https://yuanfux.github.io/zero-width-web/</a></p>
+<p>该网站的优势是支持所有的零宽字符解密，但缺点是无法自由选择你想要的零宽字符。</p>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -10361,10 +10498,26 @@ NAME，该选项用于会话中断恢复和同时运行多个破解实例的情�
 </tbody>
 </table>
 <h2 id="实例">实例</h2>
+<p>一般来说，我们使用 John
+自带的脚本将加密文件转换为哈希值后再进行爆破</p>
 <ul>
 <li><p>使用字典爆破密码</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">john --wordlist=password.lst shadow0</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">john --wordlist=password.lst hash.txt</span><br></pre></td></tr></table></figure></li>
 </ul>
+<h1 id="注意">注意</h1>
+<p>Python 3.9 版本 xml 库将生成迭代器的函数删去，改为 <code>iter</code>
+获取，故一部分 John 脚本运行时会出现错误，故需要进行代码更改。</p>
+<h2 id="office2john.py-错误">office2john.py 错误</h2>
+<p>这是一个旧版本错误，在最新版本的 John 中已经修改。</p>
+<p>在第 2857 行中，<code>office2john.py</code> 使用
+<code>xml.etree.ElementTree</code> 对象进行读取操作，需要注意的是在
+Python3.9 版本以前，使用 <code>getiterator</code> 获取迭代器，而
+Python3.9 版本删去了这一函数，改为了使用 <code>iter</code>
+函数获取迭代器，故需要将此行进行变更。</p>
+<p>旧代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># old code</span></span><br><span class="line"><span class="keyword">for</span> node <span class="keyword">in</span> tree.getiterator(<span class="string">&#x27;&#123;http://schemas.microsoft.com/office/2006/keyEncryptor/password&#125;encryptedKey&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>需要更改为：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># new code</span></span><br><span class="line"><span class="keyword">for</span> node <span class="keyword">in</span> tree.<span class="built_in">iter</span>(<span class="string">&#x27;&#123;http://schemas.microsoft.com/office/2006/keyEncryptor/password&#125;encryptedKey&#x27;</span>)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -10890,6 +11043,128 @@ y\rfloor,17))},2\right)\right\rfloor
 ]]></content>
       <tags>
         <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>音频取证笔记</title>
+    <url>//audio-forensics-note.html</url>
+    <content><![CDATA[<h1 id="音频取证">音频取证</h1>
+<h2 id="简述">简述</h2>
+<p>音频同样也是一个可以隐写其他数据的数据格式，常见的例如 lsb 隐写。</p>
+<h2 id="deepsound">deepsound</h2>
+<p>DeepSound 支持 wave、flac、wma、ape 和音频 CD
+数据类型的隐写，并且可以保留文件名。</p>
+<p>可以使用 John 对其进行密码爆破。</p>
+<p>将音频拖入，再输入密码，即可提取出隐写的数据。</p>
+<h2 id="lsb-隐写">lsb 隐写</h2>
+<h1 id="wav-取证">WAV 取证</h1>
+<h2 id="silenteye">silenteye</h2>
+<p>silenteye 支持对 wav 格式的隐写。</p>
+<p>直接拖拽目标文件，点击 <code>Decode</code>
+可以解密其中的隐藏数据。</p>
+<p>同时可能它会使用 AES 对数据进行加密，需要进行密码的填写。</p>
+<figure>
+<img src="/audio-forensics-note/silenteye%20encrypted.png" alt="silenteye encrypted">
+<figcaption aria-hidden="true">silenteye encrypted</figcaption>
+</figure>
+<h2 id="wavsteg">WavSteg</h2>
+<p>一个开源项目，使用 LSB 技术进行隐写数据的 Python3 脚本。（<a href="https://github.com/ragibson/Steganography">Github 主页</a>）</p>
+<p>使用以下指令可以提取隐写数据，但缺点是要求大小精确。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">python3 WavSteg.py -r -s soundfile -o outputfile</span><br></pre></td></tr></table></figure>
+<h1 id="mp3-取证">MP3 取证</h1>
+<h2 id="mp3stego">Mp3stego</h2>
+<p>Mp3stego 是一款较老的支持 mp3 数据格式隐写的软件，可以在<a href="https://www.petitcolas.net/steganography/mp3stego/">此站点</a>下载并了解更多。</p>
+<p>它将需要隐写的数据加密后隐写进 mp3 文件中，故隐蔽性良好。</p>
+<p>使用以下命令可以提取隐写数据：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">decode -X -P password svega_stego.mp3</span><br></pre></td></tr></table></figure>
+<p>它将 <code>svega_stego.mp3</code> 解压为
+<code>svega_stego.mp3.pcm</code>
+并尝试提取隐藏信息，如果被解密则将保存在
+<code>svega_stego.mp3.txt</code> 中。</p>
+<p>加密命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">encode -E hidden_text.txt -P password svega.wav svega_stego.mp3</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>misc</tag>
+        <tag>forensics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>knapsack-note</title>
+    <url>//knapsack-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+]]></content>
+  </entry>
+  <entry>
+    <title>logistic混沌映射算法</title>
+    <url>//logistic-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>Logistic
+混沌映射算法是一种十分简单的算法，其函数是源于一个人口统计的动力学系统，系统方程形式如下：
+<span class="math display">\[
+X(k+1)=uX(k)[1-X(k)],\ (k=0,1,\dots,n)
+\]</span>
+由此可知其是一个非线性方程，当同时也是一个递推序列，当满足下述条件时，Logistic
+函数将工作于混沌状态： <span class="math display">\[
+\begin{cases}
+0&lt;X(0)&lt;1\\
+3.5699456\dots&lt;\mu\le4
+\end{cases}
+\]</span> 此时当确定一个 <span class="math inline">\(X(0)\)</span> 和
+<span class="math inline">\(\mu\)</span>
+时，我们将得到一个混沌序列。</p>
+<h1 id="图像置乱">图像置乱</h1>
+<h2 id="序列生成">序列生成</h2>
+<ol type="1">
+<li>首先我们需求一个 <span class="math inline">\(X_0\)</span> 和一个
+<span class="math inline">\(\mu\)</span>，带入方程进行迭代得到一个足够混乱的
+<span class="math inline">\(X(0)\)</span>；</li>
+<li>以该 <span class="math inline">\(X(0)\)</span> 再往下迭代，得到一个
+Logistic 序列。</li>
+</ol>
+<p>需要注意的是，往往我们会使迭代次数足够大，这样才能得到足够混乱的序列。</p>
+<p>再将序列归一化到 <span class="math inline">\((0,255)\)</span>
+区间内即可。</p>
+<h2 id="置乱">置乱</h2>
+<p>存在一个 <span class="math inline">\(M\times N\)</span>
+的图像，将其转化为 <span class="math inline">\(M\times N\)</span>
+的序列，与生成的 Logistic 序列进行异或，如此便完成了一次置乱。</p>
+<p>而因为其是通过异或进行置乱的，所以当我们对该序列再进行一次置乱，便可得到原图。</p>
+<h2 id="实现">实现</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">logistic</span>(<span class="params">im, x0: <span class="built_in">int</span>, mu: <span class="built_in">int</span>, times: <span class="built_in">int</span> = <span class="number">500</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Logistic图像置乱</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        im - Image.open获取的图像类</span></span><br><span class="line"><span class="string">        x0 - 初始密钥</span></span><br><span class="line"><span class="string">        mu - 初始密钥</span></span><br><span class="line"><span class="string">        times - 混沌系统的迭代次数</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        置乱完毕的Image图像类</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    width, height = im.size</span><br><span class="line">    im = np.array(im, dtype = np.uint8).flatten()</span><br><span class="line">    num = im.size</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(times):</span><br><span class="line">        x0 = mu * x0 * (<span class="number">1</span> - x0)</span><br><span class="line">    </span><br><span class="line">    E = np.empty(num, dtype = np.float64)</span><br><span class="line">    E[<span class="number">0</span>] = x0</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,num-<span class="number">1</span>):</span><br><span class="line">        E[i+<span class="number">1</span>] = mu * E[i] * (<span class="number">1</span>-E[i])</span><br><span class="line">    E = np.<span class="built_in">round</span>(E*<span class="number">255</span>).astype(np.uint8)</span><br><span class="line"></span><br><span class="line">    im = np.bitwise_xor(E, im)</span><br><span class="line">    im = im.reshape(width, height, -<span class="number">1</span>)</span><br><span class="line">    im = np.squeeze(im)</span><br><span class="line">    im = Image.fromarray(im)</span><br><span class="line">    <span class="keyword">return</span> im</span><br><span class="line"></span><br><span class="line">im = Image.<span class="built_in">open</span>(<span class="string">&quot;flag.png&quot;</span>)</span><br><span class="line"><span class="comment"># im = im.convert(&quot;L&quot;)</span></span><br><span class="line">x0 = <span class="number">0.43</span></span><br><span class="line">mu = <span class="number">3.9</span></span><br><span class="line"></span><br><span class="line">im_de = logistic(im, x0, mu)</span><br><span class="line">im_de.save(<span class="string">f&#x27;flagde.png&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>该实现可以应用于彩色图片和灰度图。</p>
+<p>同时我还实现了一个 Logistic 的迭代器：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LogisticRange</span>(<span class="params">x0: <span class="built_in">int</span>, mu: <span class="built_in">int</span>, limit: <span class="built_in">int</span>, times: <span class="built_in">int</span> = <span class="number">500</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Logistic序列有限迭代器</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        x0 - 初始密钥</span></span><br><span class="line"><span class="string">        mu - 初始密钥</span></span><br><span class="line"><span class="string">        limit - 序列上限</span></span><br><span class="line"><span class="string">        times - 混沌系统的迭代次数</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        序列值</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(times):</span><br><span class="line">        x0 = mu * x0 * (<span class="number">1</span> - x0)</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(limit):</span><br><span class="line">        <span class="keyword">yield</span> x0</span><br><span class="line">        x0 = mu * x0 * (<span class="number">1</span> - x0)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">LogisticCount</span>(<span class="params">x0: <span class="built_in">int</span>, mu: <span class="built_in">int</span>, times: <span class="built_in">int</span> = <span class="number">500</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Logistic序列无限迭代器</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        x0 - 初始密钥</span></span><br><span class="line"><span class="string">        mu - 初始密钥</span></span><br><span class="line"><span class="string">        times - 混沌系统的迭代次数</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        序列值</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(times):</span><br><span class="line">        x0 = mu * x0 * (<span class="number">1</span> - x0)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">yield</span> x0</span><br><span class="line">        x0 = mu * x0 * (<span class="number">1</span> - x0)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>qrcode-note</title>
+    <url>//qrcode-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+]]></content>
+  </entry>
+  <entry>
+    <title>螺旋加密笔记</title>
+    <url>//spiral-encrypt-note.html</url>
+    <content><![CDATA[<h1 id="算法详解">算法详解</h1>
+<p>螺旋矩阵即一个按顺时针顺序螺旋排序的正方形矩阵，呈现一个螺旋状，故称为螺旋矩阵。</p>
+<figure>
+<img src="/spiral-encrypt-note/spiral%20matrix.jpg" alt="spiral matrix">
+<figcaption aria-hidden="true">spiral matrix</figcaption>
+</figure>
+<p>螺旋式的迭代是算法上的问题，这里给出螺旋迭代的代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spiral</span>(<span class="params">row: <span class="built_in">int</span>, col: <span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    顺时针螺旋迭代器，返回一个键值对</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        row - 矩阵行数</span></span><br><span class="line"><span class="string">        col - 矩阵列数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        键值对 (i, j)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    left, right = <span class="number">0</span>, col</span><br><span class="line">    up, down = <span class="number">0</span>, row</span><br><span class="line">    x, y = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> left &lt; right <span class="keyword">and</span> up &lt; down:</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(left, right):</span><br><span class="line">            <span class="keyword">yield</span> y, x</span><br><span class="line">        up += <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(up, down):</span><br><span class="line">            <span class="keyword">yield</span> y, x</span><br><span class="line">        right -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(left, right)[::-<span class="number">1</span>]:</span><br><span class="line">            <span class="keyword">yield</span> y, x</span><br><span class="line">        down -= <span class="number">1</span></span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(up, down)[::-<span class="number">1</span>]:</span><br><span class="line">            <span class="keyword">yield</span> y, x</span><br><span class="line">        left += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spiralRange</span>(<span class="params">row: <span class="built_in">int</span>, col: <span class="built_in">int</span>, start: <span class="built_in">int</span> = <span class="number">0</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    顺时针螺旋序列生成器</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        row - 矩阵行数</span></span><br><span class="line"><span class="string">        col - 矩阵列数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        顺时针螺旋序列</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    r = [<span class="number">0</span>] * (row * col)</span><br><span class="line">    <span class="keyword">for</span> i, j <span class="keyword">in</span> spiral(row, col):</span><br><span class="line">        r[i * row + j] = start</span><br><span class="line">        start += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> r</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">spiralMat</span>(<span class="params">row: <span class="built_in">int</span>, col: <span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    顺时针螺旋矩阵生成器</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        row - 矩阵行数</span></span><br><span class="line"><span class="string">        col - 矩阵列数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        顺时针螺旋矩阵</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    r = <span class="built_in">list</span>(spiralRange(row, col))</span><br><span class="line">    mat = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(row):</span><br><span class="line">        mat.append(r[i*col:(i+<span class="number">1</span>)*col])</span><br><span class="line">    <span class="keyword">return</span> mat</span><br></pre></td></tr></table></figure>
+<p>加密序列的示例代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data = <span class="string">&#x27;ohhhhhhf5-410f3f969bl696&#125;6-a-1eb59ge1-4d3&#123;f9af107&#x27;</span></span><br><span class="line">size = <span class="built_in">len</span>(data)</span><br><span class="line">c = math.isqrt(size)</span><br><span class="line"><span class="built_in">print</span>(c, c*c, size)</span><br><span class="line">k = [<span class="string">&#x27;&#x27;</span>] * size</span><br><span class="line"><span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">enumerate</span>(spiralRange(c, c)):</span><br><span class="line">    k[j] = data[i]</span><br></pre></td></tr></table></figure>
+<p>解密序列的示例代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data = <span class="string">&#x27;ohhhhhhf5-410f3f969bl696&#125;6-a-1eb59ge1-4d3&#123;f9af107&#x27;</span></span><br><span class="line">size = <span class="built_in">len</span>(data)</span><br><span class="line">c = math.isqrt(size)</span><br><span class="line"><span class="built_in">print</span>(c, c*c, size)</span><br><span class="line">k = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> spiralRange(c, c):</span><br><span class="line">    k += data[i]</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>misc</tag>
       </tags>
   </entry>
 </search>

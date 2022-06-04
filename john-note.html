@@ -30,7 +30,7 @@
 <meta property="og:description" content="有关 John the Ripper 的一些笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-11T00:00:00.000Z">
-<meta property="article:modified_time" content="2022-04-11T01:20:00.751Z">
+<meta property="article:modified_time" content="2022-06-04T06:54:48.709Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="crypto">
@@ -91,7 +91,7 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">50</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">69</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">74</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -149,7 +149,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">破解模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">命令参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.3.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8"><span class="nav-number">3.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3%E6%A8%A1%E5%BC%8F"><span class="nav-number">3.1.</span> <span class="nav-text">破解模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E5%8F%82%E6%95%B0"><span class="nav-number">3.2.</span> <span class="nav-text">命令参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.3.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">4.</span> <span class="nav-text">注意</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#office2john.py-%E9%94%99%E8%AF%AF"><span class="nav-number">4.1.</span> <span class="nav-text">office2john.py 错误</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -164,7 +164,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -251,14 +251,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.5k</span>
+      <span>2.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -394,10 +394,26 @@ NAME，该选项用于会话中断恢复和同时运行多个破解实例的情�
 </tbody>
 </table>
 <h2 id="实例">实例</h2>
+<p>一般来说，我们使用 John
+自带的脚本将加密文件转换为哈希值后再进行爆破</p>
 <ul>
 <li><p>使用字典爆破密码</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">john --wordlist=password.lst shadow0</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">john --wordlist=password.lst hash.txt</span><br></pre></td></tr></table></figure></li>
 </ul>
+<h1 id="注意">注意</h1>
+<p>Python 3.9 版本 xml 库将生成迭代器的函数删去，改为 <code>iter</code>
+获取，故一部分 John 脚本运行时会出现错误，故需要进行代码更改。</p>
+<h2 id="office2john.py-错误">office2john.py 错误</h2>
+<p>这是一个旧版本错误，在最新版本的 John 中已经修改。</p>
+<p>在第 2857 行中，<code>office2john.py</code> 使用
+<code>xml.etree.ElementTree</code> 对象进行读取操作，需要注意的是在
+Python3.9 版本以前，使用 <code>getiterator</code> 获取迭代器，而
+Python3.9 版本删去了这一函数，改为了使用 <code>iter</code>
+函数获取迭代器，故需要将此行进行变更。</p>
+<p>旧代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># old code</span></span><br><span class="line"><span class="keyword">for</span> node <span class="keyword">in</span> tree.getiterator(<span class="string">&#x27;&#123;http://schemas.microsoft.com/office/2006/keyEncryptor/password&#125;encryptedKey&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>需要更改为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># new code</span></span><br><span class="line"><span class="keyword">for</span> node <span class="keyword">in</span> tree.<span class="built_in">iter</span>(<span class="string">&#x27;&#123;http://schemas.microsoft.com/office/2006/keyEncryptor/password&#125;encryptedKey&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
     </div>
 
@@ -472,14 +488,14 @@ NAME，该选项用于会话中断恢复和同时运行多个破解实例的情�
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">230k</span>
+    <span title="站点总字数">237k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:29</span>
+    <span title="站点阅读时长">3:36</span>
   </span>
 </div>
 

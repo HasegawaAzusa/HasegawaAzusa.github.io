@@ -29,12 +29,14 @@
 <meta property="og:site_name" content="独奏の小屋">
 <meta property="og:description" content="有关内存镜像和磁盘镜像(电子数据镜像)取证的简要笔记">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/post/image-forensics-note/veracrypt%20operation.gif">
 <meta property="article:published_time" content="2022-02-28T09:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-28T10:03:39.684Z">
+<meta property="article:modified_time" content="2022-06-04T07:56:59.813Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="forensics">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/post/image-forensics-note/veracrypt%20operation.gif">
 
 
 <link rel="canonical" href="https://hasegawaazusa.github.io/post/image-forensics-note.html">
@@ -91,7 +93,7 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">50</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">69</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">74</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -149,8 +151,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E5%8F%96%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">镜像取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%8F%96%E8%AF%81"><span class="nav-number">1.1.</span> <span class="nav-text">磁盘取证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ext-%E7%A3%81%E7%9B%98%E6%98%A0%E5%83%8F%E6%8C%82%E8%BD%BD"><span class="nav-number">1.1.1.</span> <span class="nav-text">ext 磁盘映像挂载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ext3-ext4-%E7%A3%81%E7%9B%98%E6%98%A0%E5%83%8F%E6%81%A2%E5%A4%8D%E5%B7%B2%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.2.</span> <span class="nav-text">ext3 &#x2F; ext4
-磁盘映像恢复已删除文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81"><span class="nav-number">1.2.</span> <span class="nav-text">内存取证</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%95%9C%E5%83%8F%E5%8F%96%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">镜像取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%8F%96%E8%AF%81"><span class="nav-number">1.1.</span> <span class="nav-text">磁盘取证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#diskgenius"><span class="nav-number">1.1.1.</span> <span class="nav-text">DiskGenius</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ext-%E7%A3%81%E7%9B%98%E6%98%A0%E5%83%8F%E6%8C%82%E8%BD%BD"><span class="nav-number">1.1.2.</span> <span class="nav-text">ext 磁盘映像挂载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ext3-ext4-%E7%A3%81%E7%9B%98%E6%98%A0%E5%83%8F%E6%81%A2%E5%A4%8D%E5%B7%B2%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.3.</span> <span class="nav-text">ext3 &#x2F; ext4
+磁盘映像恢复已删除文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ftk-imager"><span class="nav-number">1.1.4.</span> <span class="nav-text">FTK Imager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#veracrypt"><span class="nav-number">1.1.5.</span> <span class="nav-text">veracrypt</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E5%8F%96%E8%AF%81"><span class="nav-number">1.2.</span> <span class="nav-text">内存取证</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -165,7 +167,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">69</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -252,7 +254,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>632</span>
+      <span>1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -286,6 +288,11 @@
 <p>而死取证是对机器的磁盘做镜像之后进行分析，在关机后制作硬盘镜像，分析镜像（MBR硬盘分区,GPT全局分区表,LVM逻辑卷）是否存在病毒,木马等恶意程序。</p>
 <p>不管是那种取证方式都应尽量避免破环犯罪现场，例如通过内存转储工具对内存进行快照，通过磁盘克隆工具对磁盘进行克隆，方便后期的分析工作。</p>
 <h2 id="磁盘取证">磁盘取证</h2>
+<h3 id="diskgenius">DiskGenius</h3>
+<p>DiskGenius 是一款国产收费软件，存在免费版可供使用。</p>
+<p>使用 DiskGenius
+可以自由对磁盘作许多操作，同时它也可以进行恢复数据、读取磁盘映像等操作。（需要注意的是，很多操作需要付费后才可使用）</p>
+<p>使用 DiskGenius 磁盘取证会更加方便。</p>
 <h3 id="ext-磁盘映像挂载">ext 磁盘映像挂载</h3>
 <p>在 Windows 中可以使用 <a target="_blank" rel="noopener" href="http://www.chrysocome.net/explore2fs">explore2fs</a> 临时挂载 ext
 文件系统的磁盘映像，但是我们只可以看到未被删除的文件，同时也不可以进行写的操作。</p>
@@ -298,6 +305,18 @@
 安装此软件。</p>
 <p>只需使用以下简单命令便可以恢复已删除文件。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">extundelete disk-image --restore-all</span><br></pre></td></tr></table></figure>
+<h3 id="ftk-imager">FTK Imager</h3>
+<p>FTK Imager
+是免费的一个挂载映像和导出映像的软件，可以使用其来挂载读取磁盘映像，但需要注意的是，由于是免费软件，仅支持基础的功能，但读取的数据较为原始，可以直接查看到删除和未使用的分区。</p>
+<p>相对来说，本人更推荐使用 DiskGenius。</p>
+<h3 id="veracrypt">veracrypt</h3>
+<p>Veracrypt 是一款基于 Truecrypt 的开源软件，同款竞品是微软的
+BitLocker，用于加密卷和映像，支持使用明文密码和文件来进行加密卷或映像。</p>
+<p>进行挂载加密卷或映像时，可以按照下图示例使用。</p>
+<figure>
+<img src="/post/image-forensics-note/veracrypt%20operation.gif" alt="veracrypt operation">
+<figcaption aria-hidden="true">veracrypt operation</figcaption>
+</figure>
 <h2 id="内存取证">内存取证</h2>
 <p>内存取证主要依赖于 <code>volatiliy</code> 工具，现在已经更新到
 python3 的版本了。</p>
@@ -376,14 +395,14 @@ python3 的版本了。</p>
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">230k</span>
+    <span title="站点总字数">237k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">3:29</span>
+    <span title="站点阅读时长">3:36</span>
   </span>
 </div>
 
