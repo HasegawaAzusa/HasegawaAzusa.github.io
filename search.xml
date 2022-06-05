@@ -11167,4 +11167,323 @@ Logistic 序列。</li>
         <tag>misc</tag>
       </tags>
   </entry>
+  <entry>
+    <title>wav数据格式详解</title>
+    <url>//wav-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>WAV 文件是在 PC 机平台上很常见的、最经典的多媒体音频文件， 是
+WaveForm
+的简写，也称为波形文件，可直接存储声音波形，还原的波形曲线十分逼真。</p>
+<p>WAV 的特点如下：真实记录自然声波形，基本无数据压缩，数据量大。</p>
+<h1 id="文件结构">文件结构</h1>
+<p>WAV 文件遵循 RIFF
+规则，其内容以区块（chunk）为最小单位进行存储。WAV文件一般由3个区块组成：RIFF
+chunk、Format chunk 和 Data chunk。</p>
+<h2 id="chunk">CHUNK</h2>
+<p>每个 CHUNK 的格式都是：</p>
+<table>
+<thead>
+<tr class="header">
+<th><strong>名称</strong></th>
+<th><strong>字节数</strong></th>
+<th><strong>说明</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ID</td>
+<td>4</td>
+<td>标识</td>
+</tr>
+<tr class="even">
+<td>Size</td>
+<td>4</td>
+<td>该块的数据长度</td>
+</tr>
+<tr class="odd">
+<td>Data</td>
+<td>Size</td>
+<td>该块的数据</td>
+</tr>
+</tbody>
+</table>
+<p>以下是存在的 CHUNK 类型：</p>
+<table>
+<thead>
+<tr class="header">
+<th><strong>数据块符号</strong></th>
+<th><strong>数据块名称</strong></th>
+<th><strong>可选否</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>RIFF chunk</code></td>
+<td>文件头数据块</td>
+<td>否</td>
+</tr>
+<tr class="even">
+<td><code>Format chunk</code></td>
+<td>格式数据块</td>
+<td>否</td>
+</tr>
+<tr class="odd">
+<td><code>Data chunk</code></td>
+<td>波形数据块</td>
+<td>否</td>
+</tr>
+<tr class="even">
+<td><code>Fact chunk</code></td>
+<td></td>
+<td>是</td>
+</tr>
+<tr class="odd">
+<td><code>Cue points chunk</code></td>
+<td></td>
+<td>是</td>
+</tr>
+<tr class="even">
+<td><code>Playlist chunk</code></td>
+<td></td>
+<td>是</td>
+</tr>
+<tr class="odd">
+<td><code>Associated data list chunk</code></td>
+<td></td>
+<td>是</td>
+</tr>
+</tbody>
+</table>
+<h3 id="riff-chunk">RIFF chunk</h3>
+<table>
+<thead>
+<tr class="header">
+<th><strong>名称</strong></th>
+<th><strong>字节数</strong></th>
+<th><strong>端序</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ID</td>
+<td>4</td>
+<td>大端</td>
+<td>RIFF (0x52494646)</td>
+</tr>
+<tr class="even">
+<td>Size</td>
+<td>4</td>
+<td>小端</td>
+<td>fileSize - 8 (文件大小 - 8)</td>
+</tr>
+<tr class="odd">
+<td>Type</td>
+<td>4</td>
+<td>大端</td>
+<td>WAVE (0x57415645)</td>
+</tr>
+</tbody>
+</table>
+<p>当 Type 是 <code>WAVE</code>
+时，表示后面需要两个子块：<code>Format chunk</code> 和
+<code>Data chunk</code>。</p>
+<h3 id="format-chunk">Format chunk</h3>
+<table>
+<thead>
+<tr class="header">
+<th><strong>名称</strong></th>
+<th><strong>字节数</strong></th>
+<th><strong>端序</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ID</td>
+<td>4</td>
+<td>大端</td>
+<td>fmt (0x666D7420)</td>
+</tr>
+<tr class="even">
+<td>Size</td>
+<td>4</td>
+<td>小端</td>
+<td>16</td>
+</tr>
+<tr class="odd">
+<td>AudioFormat</td>
+<td>2</td>
+<td>小端</td>
+<td>音频格式</td>
+</tr>
+<tr class="even">
+<td>NumChannels</td>
+<td>2</td>
+<td>小端</td>
+<td>声道数 (1 or 2)</td>
+</tr>
+<tr class="odd">
+<td>SampleRate</td>
+<td>4</td>
+<td>小端</td>
+<td>采样率</td>
+</tr>
+<tr class="even">
+<td>ByteRate</td>
+<td>4</td>
+<td>小端</td>
+<td>每秒数据字节数</td>
+</tr>
+<tr class="odd">
+<td>BlockAlign</td>
+<td>2</td>
+<td>小端</td>
+<td>数据块对齐</td>
+</tr>
+<tr class="even">
+<td>BitsPerSample</td>
+<td>2</td>
+<td>小端</td>
+<td>采样位数 (8, 16 or 32)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>需要注意的是，ByteRate 和 BlockAlign
+是可以计算出来的，如果不满足公式可能导致读取文件错误：</p>
+<p>ByteRate = SampleRate * NumChannels * BitsPerSample / 8</p>
+<p>BlockAlign = NumChannels * BitsPerSample / 8</p>
+</blockquote>
+<p>BitsPerSample 代表的是采样位数，即接下来的 Data chunk
+中的每个波形数据有几个字节。</p>
+<h3 id="data-chunk">Data chunk</h3>
+<table>
+<thead>
+<tr class="header">
+<th><strong>名称</strong></th>
+<th><strong>字节数</strong></th>
+<th><strong>端序</strong></th>
+<th><strong>内容</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ID</td>
+<td>4</td>
+<td>大端</td>
+<td>data (0x64617461)</td>
+</tr>
+<tr class="even">
+<td>Size</td>
+<td>4</td>
+<td>小端</td>
+<td>N</td>
+</tr>
+<tr class="odd">
+<td>Data</td>
+<td>Size</td>
+<td>小端</td>
+<td>波形数据</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>需要注意的是，Size = ByteRate * seconds</p>
+</blockquote>
+<p>如果声道数为 2，即多声道音频，在 Data 中每次采样依次排列，即例如 8bit
+双声道的数据存放为：</p>
+<table>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>采样1</th>
+<th></th>
+<th>采样2</th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>声道1数据 (1 byte)</td>
+<td>声道2数据 (1 byte)</td>
+<td>声道1数据 (1 byte)</td>
+<td>声道2数据 (1 byte)</td>
+</tr>
+</tbody>
+</table>
+<h1 id="音频处理">音频处理</h1>
+<h2 id="python3wave">python3&amp;wave</h2>
+<p>这里使用 Python3 对 wav 文件进行处理。</p>
+<p>在 Python3 中自带一个 <code>wave</code> 模块支持对 wav
+格式的音频数据进行处理，结合 <code>numpy</code> 可以自由操作所有 wav
+的波形数据。</p>
+<p>常用的操作有：</p>
+<table>
+<colgroup>
+<col style="width: 37%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>函数</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>wave.open(filename, "r")</code></td>
+<td>打开一个音频文件，返回 <code>Wave_read</code> 对象</td>
+</tr>
+<tr class="even">
+<td><code>Wave_read.close()</code></td>
+<td>关闭一个 <code>Wave_read</code> 对象</td>
+</tr>
+<tr class="odd">
+<td><code>Wave_read.getnchannels()</code></td>
+<td>返回声道数量，1为单声道，2为立体声</td>
+</tr>
+<tr class="even">
+<td><code>Wave_read.getsampwidth()</code></td>
+<td>返回采样位数</td>
+</tr>
+<tr class="odd">
+<td><code>Wave_read.getframerate()</code></td>
+<td>返回采样频率</td>
+</tr>
+<tr class="even">
+<td><code>Wave_read.getnframes()</code></td>
+<td>返回音频总帧数</td>
+</tr>
+<tr class="odd">
+<td><code>Wave_read.readframes(n)</code></td>
+<td>读取 n 帧波形数据，如果参数为 -1 则读取所有</td>
+</tr>
+</tbody>
+</table>
+<p>将波形数据转化为成 <code>ndarray</code> 的示例代码：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> wave</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">f = wave.<span class="built_in">open</span>(<span class="string">&quot;attachment.wav&quot;</span>, <span class="string">&quot;r&quot;</span>)</span><br><span class="line">data = f.readframes(-<span class="number">1</span>)</span><br><span class="line">data = np.frombuffer(data, dtype = [np.uint8, np.uint16, np.uint32][f.getsampwidth() // <span class="number">2</span>])</span><br><span class="line">data.reshape(-<span class="number">1</span>, f.getnchannels())</span><br><span class="line">f.close()</span><br></pre></td></tr></table></figure>
+<h2 id="python3soundfile">python3&amp;soundfile</h2>
+<p>但这里更推荐使用第三方库
+<code>soundfile</code>，可以更轻松的将音频数据读取并转换为
+<code>ndarray</code>，示例代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data, samplerate = sf.read(<span class="string">&quot;attachment.wav&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(data)</span><br></pre></td></tr></table></figure>
+<p>其中，<code>samplerate</code> 是音频的采样率。</p>
+<p>但默认读取类型是 <code>float</code>，如果觉得不好看，可以通过
+<code>dtype</code> 参数控制输出的 <code>numpy</code> 数组的
+<code>dtype</code>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">data, samplerate = sf.read(<span class="string">&quot;attachment.wav&quot;</span>, dtype = np.int16)</span><br><span class="line"><span class="built_in">print</span>(data)</span><br></pre></td></tr></table></figure>
+<p>同时如果是多声道的音频文件，它将转换出多个 <code>ndarray</code>
+数组来保存不同声道的数据。</p>
+]]></content>
+      <tags>
+        <tag>misc</tag>
+        <tag>python</tag>
+      </tags>
+  </entry>
 </search>
