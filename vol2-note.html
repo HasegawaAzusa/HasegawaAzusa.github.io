@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="volatility2 内存镜像取证工具使用笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="volatility2 使用笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/vol2-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="volatility2 内存镜像取证工具使用笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-25T15:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-26T04:22:30.181Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="forensics">
+<meta property="article:tag" content="volatility">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/vol2-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/vol2-note.html","path":"/vol2-note.html","title":"volatility2 使用笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>volatility2 使用笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">52</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">80</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#volatility2-%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">volatility2 安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatility2-%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">volatility2 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E4%BB%B6%E6%98%8E%E7%BB%86"><span class="nav-number">2.2.</span> <span class="nav-text">插件明细</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#volatility2-%E6%8F%92%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">volatility2 插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mimikatz"><span class="nav-number">3.1.</span> <span class="nav-text">mimikatz</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/vol2-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          volatility2 使用笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-25 23:00:00" itemprop="dateCreated datePublished" datetime="2022-07-25T23:00:00+08:00">2022-07-25</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">volatility2 内存镜像取证工具使用笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="volatility2-安装">volatility2 安装</h1>
+<p>在 GitHub
+主页中可以直接获取源码：https://github.com/volatilityfoundation/volatility</p>
+<p>直接使用源码运行即可，同时在官网也可以获取到可直接运行的版本：https://www.volatilityfoundation.org/releases</p>
+<p>需要注意的是，volatility2 所需的运行环境为
+Python2，且存在一些依赖库。</p>
+<h1 id="volatility2-使用">volatility2 使用</h1>
+<h2 id="参数">参数</h2>
+<p>使用 <code>python2 vol.py -h</code> 可获取到帮助信息：</p>
+<blockquote>
+<p>Options: -h, --help list all available options and their default
+values. Default values may be set in the configuration file
+(/etc/volatilityrc) --conf-file=.volatilityrc User based configuration
+file -d, --debug Debug volatility --plugins=PLUGINS Additional plugin
+directories to use (semi-colon separated) --info Print information about
+all registered objects --cache-directory=C:\53124/.cache Directory where
+cache files are stored --cache Use caching --tz=TZ Sets the (Olson)
+timezone for displaying timestamps using pytz (if installed) or tzset -f
+FILENAME, --filename=FILENAME Filename to use when opening an image
+--profile=WinXPSP2x86 Name of the profile to load (use --info to see a
+list of supported profiles) -l LOCATION, --location=LOCATION A URN
+location from which to load an address space -w, --write Enable write
+support --dtb=DTB DTB Address --output=text Output in this format
+(support is module specific, see the Module Output Options below)
+--output-file=OUTPUT_FILE Write output in this file -v, --verbose
+Verbose information --shift=SHIFT Mac KASLR shift address
+--physical_shift=PHYSICAL_SHIFT Linux kernel physical shift address
+--virtual_shift=VIRTUAL_SHIFT Linux kernel virtual shift address -g
+KDBG, --kdbg=KDBG Specify a KDBG virtual address (Note: for 64-bit
+Windows 8 and above this is the address of KdCopyDataBlock) --force
+Force utilization of suspect profile -k KPCR, --kpcr=KPCR Specify a
+specific KPCR address --cookie=COOKIE Specify the address of
+nt!ObHeaderCookie (valid for Windows 10 only)</p>
+</blockquote>
+<p>一般来说常用的参数格式为：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 vol.py -f file.raw plugins [args]</span><br></pre></td></tr></table></figure>
+<p>例如获取内存镜像的环境信息：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 vol.py -f file.raw imageinfo</span><br></pre></td></tr></table></figure>
+<p>或者是转储文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 vol.py -f file.raw dumpfiles --dump-dir .</span><br></pre></td></tr></table></figure>
+<h2 id="插件明细">插件明细</h2>
+<table>
+<colgroup>
+<col style="width: 30%">
+<col style="width: 69%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>插件名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>amcache</td>
+<td>打印 AmCache 信息</td>
+</tr>
+<tr class="even">
+<td>apihooks</td>
+<td>检测进程和内核内存中的 API 钩子 (hooks)</td>
+</tr>
+<tr class="odd">
+<td>atoms</td>
+<td>打印会话和窗口站原子表</td>
+</tr>
+<tr class="even">
+<td>atomscan</td>
+<td>原子表池扫描器</td>
+</tr>
+<tr class="odd">
+<td>auditpol</td>
+<td>从 <code>HKLM\SECURITY\Policy\PolAdtEv</code> 打印审计策略</td>
+</tr>
+<tr class="even">
+<td>bigpools</td>
+<td>使用 <code>BigPagePoolScanner</code> 转储大页面池</td>
+</tr>
+<tr class="odd">
+<td>bioskbd</td>
+<td>从 <code>Real Mode</code> 内存中读取键盘缓冲区</td>
+</tr>
+<tr class="even">
+<td>cachedump</td>
+<td>从内存中转储缓存的域哈希值</td>
+</tr>
+<tr class="odd">
+<td>callbacks</td>
+<td>打印整个系统的回调和通知进程</td>
+</tr>
+<tr class="even">
+<td>clipboard</td>
+<td>提取 Windows 剪贴板的内容</td>
+</tr>
+<tr class="odd">
+<td>cmdline</td>
+<td>显示进程的命令行参数</td>
+</tr>
+<tr class="even">
+<td>cmdscan</td>
+<td>通过扫描 <code>_COMMAND_HISTORY</code> 提取命令历史记录</td>
+</tr>
+<tr class="odd">
+<td>connections</td>
+<td>打印开放的连接列表 [仅适用于Windows XP和2003]</td>
+</tr>
+<tr class="even">
+<td>connscan</td>
+<td>连接池中扫描 tcp 连接</td>
+</tr>
+<tr class="odd">
+<td>consoles</td>
+<td>通过扫描 <code>_CONSOLE_INFORMATION</code> 来提取命令历史记录</td>
+</tr>
+<tr class="even">
+<td>crashinfo</td>
+<td>转储崩溃转储信息</td>
+</tr>
+<tr class="odd">
+<td>deskscan</td>
+<td>标签 DESKTOP（台式机）的池扫描器</td>
+</tr>
+<tr class="even">
+<td>devicetree</td>
+<td>以树状图形式显示驱动</td>
+</tr>
+<tr class="odd">
+<td>dlldump</td>
+<td>从进程地址空间转储 DLL</td>
+</tr>
+<tr class="even">
+<td>dlllist</td>
+<td>打印每个进程的加载的 DLL 列表</td>
+</tr>
+<tr class="odd">
+<td>driverirp</td>
+<td>驱动程序 IRP 挂钩检测</td>
+</tr>
+<tr class="even">
+<td>drivermodule</td>
+<td>将驱动程序对象关联到内核模块</td>
+</tr>
+<tr class="odd">
+<td>driverscan</td>
+<td>驱动程序对象的池扫描程序</td>
+</tr>
+<tr class="even">
+<td>dumpcerts</td>
+<td>转储 RSA 的私有和公共 SSL 密钥</td>
+</tr>
+<tr class="odd">
+<td>dumpfiles</td>
+<td>提取内存映射和缓存文件</td>
+</tr>
+<tr class="even">
+<td>dumpregistry</td>
+<td>将注册表文件转储到磁盘</td>
+</tr>
+<tr class="odd">
+<td>editbox</td>
+<td>显示有关编辑控件的信息</td>
+</tr>
+<tr class="even">
+<td>envars</td>
+<td>显示进程环境变量</td>
+</tr>
+<tr class="odd">
+<td>eventhooks</td>
+<td>打印 Windows 事件挂钩的详细信息</td>
+</tr>
+<tr class="even">
+<td>evtlogs</td>
+<td>提取 Windows 事件日志（仅限 XP/2003）</td>
+</tr>
+<tr class="odd">
+<td>filescan</td>
+<td>输出所有文件对象</td>
+</tr>
+<tr class="even">
+<td>gahti</td>
+<td>转储 USER 句柄类型信息</td>
+</tr>
+<tr class="odd">
+<td>gditimers</td>
+<td>打印已安装的 GDI 计时器和回调</td>
+</tr>
+<tr class="even">
+<td>gdt</td>
+<td>显示全局描述符表</td>
+</tr>
+<tr class="odd">
+<td>getservicesids</td>
+<td>获取注册表中的服务名称并返回计算的SID</td>
+</tr>
+<tr class="even">
+<td>getsids</td>
+<td>打印属于每个进程的 SID</td>
+</tr>
+<tr class="odd">
+<td>handles</td>
+<td>打印每个进程的打开的句柄列表</td>
+</tr>
+<tr class="even">
+<td>hashdump</td>
+<td>从内存中转储密码哈希 (LM/NTLM)</td>
+</tr>
+<tr class="odd">
+<td>hibinfo</td>
+<td>转储休眠文件信息</td>
+</tr>
+<tr class="even">
+<td>hivedump</td>
+<td>转出注册表单元</td>
+</tr>
+<tr class="odd">
+<td>hivelist</td>
+<td>打印注册表配置单元列表。</td>
+</tr>
+<tr class="even">
+<td>hivescan</td>
+<td>注册表配置单元的池扫描器</td>
+</tr>
+<tr class="odd">
+<td>hpakextract</td>
+<td>从 HPAK 文件中提取物理内存</td>
+</tr>
+<tr class="even">
+<td>hpakinfo</td>
+<td>关于 HPAK 文件的信息</td>
+</tr>
+<tr class="odd">
+<td>idt</td>
+<td>显示中断描述符表</td>
+</tr>
+<tr class="even">
+<td>iehistory</td>
+<td>重建 Internet Explorer 缓存/历史</td>
+</tr>
+<tr class="odd">
+<td>imagecopy</td>
+<td>将物理地址空间复制为原始 DD 映像</td>
+</tr>
+<tr class="even">
+<td>imageinfo</td>
+<td>识别映像的信息</td>
+</tr>
+<tr class="odd">
+<td>impscan</td>
+<td>扫描对导入函数的调用</td>
+</tr>
+<tr class="even">
+<td>joblinks</td>
+<td>打印进程作业链接信息</td>
+</tr>
+<tr class="odd">
+<td>kdbgscan</td>
+<td>搜索并转储潜在的 KDBG 值</td>
+</tr>
+<tr class="even">
+<td>kpcrscan</td>
+<td>搜索并转储潜在的 KPCR 值</td>
+</tr>
+<tr class="odd">
+<td>ldrmodules</td>
+<td>检测未链接的 DLL</td>
+</tr>
+<tr class="even">
+<td>limeinfo</td>
+<td>转储 Lime 文件格式信息</td>
+</tr>
+<tr class="odd">
+<td>linux_apihooks</td>
+<td>检查用户区 apihooks 情况</td>
+</tr>
+<tr class="even">
+<td>linux_arp</td>
+<td>打印 ARP 表</td>
+</tr>
+<tr class="odd">
+<td>linux_aslr_shift</td>
+<td>自动检测 Linux ASLR shift</td>
+</tr>
+<tr class="even">
+<td>linux_banner</td>
+<td>打印 Linux 横幅信息</td>
+</tr>
+<tr class="odd">
+<td>linux_bash</td>
+<td>从 bash 进程内存中恢复 bash 历史记录</td>
+</tr>
+<tr class="even">
+<td>linux_bash_env</td>
+<td>恢复进程的动态环境变量</td>
+</tr>
+<tr class="odd">
+<td>linux_bash_hash</td>
+<td>从 bash 进程内存中恢复 bash 哈希表</td>
+</tr>
+<tr class="even">
+<td>linux_check_afinfo</td>
+<td>验证网络协议的操作函数指针</td>
+</tr>
+<tr class="odd">
+<td>linux_check_creds</td>
+<td>检查是否有任何进程共享凭证结构</td>
+</tr>
+<tr class="even">
+<td>linux_check_evt_arm</td>
+<td>检查异常向量表以查找系统调用表挂钩</td>
+</tr>
+<tr class="odd">
+<td>linux_check_fop</td>
+<td>检查文件操作结构以查找 rootkit 修改</td>
+</tr>
+<tr class="even">
+<td>linux_check_idt</td>
+<td>检查 IDT 是否已被更改</td>
+</tr>
+<tr class="odd">
+<td>linux_check_inline_kernel</td>
+<td>检查内联内核挂钩</td>
+</tr>
+<tr class="even">
+<td>linux_check_modules</td>
+<td>将模块列表与 sysfs 信息进行比较（如果可用）</td>
+</tr>
+<tr class="odd">
+<td>linux_check_syscall</td>
+<td>检查系统调用表是否已更改</td>
+</tr>
+<tr class="even">
+<td>linux_check_syscall_arm</td>
+<td>检查系统调用表是否已更改</td>
+</tr>
+<tr class="odd">
+<td>linux_check_tty</td>
+<td>检查 tty 设备的挂钩</td>
+</tr>
+<tr class="even">
+<td>linux_cpuinfo</td>
+<td>打印有关每个活动处理器的信息</td>
+</tr>
+<tr class="odd">
+<td>linux_dentry_cache</td>
+<td>从 dentry 缓存中收集文件</td>
+</tr>
+<tr class="even">
+<td>linux_dmesg</td>
+<td>收集 dmesg 缓冲区</td>
+</tr>
+<tr class="odd">
+<td>linux_dump_map</td>
+<td>将选定的内存映射写入磁盘</td>
+</tr>
+<tr class="even">
+<td>linux_dynamic_env</td>
+<td>恢复进程的动态环境变量</td>
+</tr>
+<tr class="odd">
+<td>linux_elfs</td>
+<td>在进程映射中查找 ELF 二进制文件</td>
+</tr>
+<tr class="even">
+<td>linux_enumerate_files</td>
+<td>列出文件系统缓存引用的文件</td>
+</tr>
+<tr class="odd">
+<td>linux_find_file</td>
+<td>列出并从内存中恢复文件</td>
+</tr>
+<tr class="even">
+<td>linux_getcwd</td>
+<td>列出每个进程的当前工作目录</td>
+</tr>
+<tr class="odd">
+<td>linux_hidden_modules</td>
+<td>雕刻内存以查找隐藏的内核模块</td>
+</tr>
+<tr class="even">
+<td>linux_ifconfig</td>
+<td>收集活动接口</td>
+</tr>
+<tr class="odd">
+<td>linux_info_regs</td>
+<td>就像 GDB 中的“信息寄存器”（它将打印出所有寄存器）</td>
+</tr>
+<tr class="even">
+<td>linux_iomem</td>
+<td>提供类似于 <code>/proc/iomem</code> 的输出</td>
+</tr>
+<tr class="odd">
+<td>linux_kernel_opened_files</td>
+<td>列出从内核中打开的文件</td>
+</tr>
+<tr class="even">
+<td>linux_keyboard_notifiers</td>
+<td>解析键盘通知程序调用链</td>
+</tr>
+<tr class="odd">
+<td>linux_ldrmodules</td>
+<td>将 proc maps 的输出与 libdl 中的库列表进行比较</td>
+</tr>
+<tr class="even">
+<td>linux_library_list</td>
+<td>列出加载到进程中的库</td>
+</tr>
+<tr class="odd">
+<td>linux_librarydump</td>
+<td>将进程内存中的共享库转储到磁盘</td>
+</tr>
+<tr class="even">
+<td>linux_list_raw</td>
+<td>列出具有混杂套接字的应用程序</td>
+</tr>
+<tr class="odd">
+<td>linux_lsmod</td>
+<td>收集加载的内核模块</td>
+</tr>
+<tr class="even">
+<td>linux_lsof</td>
+<td>列出文件描述符及其路径</td>
+</tr>
+<tr class="odd">
+<td>linux_malfind</td>
+<td>查找可疑进程映射</td>
+</tr>
+<tr class="even">
+<td>linux_memmap</td>
+<td>转储 linux 任务的内存映射</td>
+</tr>
+<tr class="odd">
+<td>linux_moddump</td>
+<td>提取加载的内核模块</td>
+</tr>
+<tr class="even">
+<td>linux_mount</td>
+<td>收集已安装的 fs/设备</td>
+</tr>
+<tr class="odd">
+<td>linux_mount_cache</td>
+<td>从 kmem_cache 收集已安装的 fs/驱动</td>
+</tr>
+<tr class="even">
+<td>linux_netfilter</td>
+<td>列出 Netfilter 钩子</td>
+</tr>
+<tr class="odd">
+<td>linux_netscan</td>
+<td>列出网络连接结构</td>
+</tr>
+<tr class="even">
+<td>linux_netstat</td>
+<td>列出打开的套接字</td>
+</tr>
+<tr class="odd">
+<td>linux_pidhashtable</td>
+<td>通过 PID 哈希表枚举进程</td>
+</tr>
+<tr class="even">
+<td>linux_pkt_queues</td>
+<td>将每个进程的数据包队列写入磁盘</td>
+</tr>
+<tr class="odd">
+<td>linux_plthook</td>
+<td>扫描 ELF 二进制文件的 PLT 以查找非需要图像的挂钩</td>
+</tr>
+<tr class="even">
+<td>linux_proc_maps</td>
+<td>收集进程内存映射</td>
+</tr>
+<tr class="odd">
+<td>linux_proc_maps_rb</td>
+<td>通过映射红黑树为 linux 收集 proc maps</td>
+</tr>
+<tr class="even">
+<td>linux_procdump</td>
+<td>将进程的可执行映像转储到磁盘</td>
+</tr>
+<tr class="odd">
+<td>linux_process_hollow</td>
+<td>检查进程空心的迹象</td>
+</tr>
+<tr class="even">
+<td>linux_psaux</td>
+<td>收集进程以及完整的命令行和开始时间</td>
+</tr>
+<tr class="odd">
+<td>linux_psenv</td>
+<td>收集进程及其静态环境变量</td>
+</tr>
+<tr class="even">
+<td>linux_pslist</td>
+<td>通过遍历 task_struct-&gt; 任务列表来收集活动任务</td>
+</tr>
+<tr class="odd">
+<td>linux_pslist_cache</td>
+<td>从 kmem_cache 收集任务</td>
+</tr>
+<tr class="even">
+<td>linux_psscan</td>
+<td>扫描进程的物理内存</td>
+</tr>
+<tr class="odd">
+<td>linux_pstree</td>
+<td>显示进程之间的父/子关系</td>
+</tr>
+<tr class="even">
+<td>linux_psxview</td>
+<td>使用各种进程列表查找隐藏进程</td>
+</tr>
+<tr class="odd">
+<td>linux_recover_filesystem</td>
+<td>从内存中恢复整个缓存文件系统</td>
+</tr>
+<tr class="even">
+<td>linux_route_cache</td>
+<td>从内存中恢复路由缓存</td>
+</tr>
+<tr class="odd">
+<td>linux_sk_buff_cache</td>
+<td>从 sk_buff kmem_cache 恢复数据包</td>
+</tr>
+<tr class="even">
+<td>linux_slabinfo</td>
+<td>在运行的机器上模拟 /proc/slabinfo</td>
+</tr>
+<tr class="odd">
+<td>linux_strings</td>
+<td>将物理偏移量与虚拟地址匹配（可能需要一段时间，非常冗长）</td>
+</tr>
+<tr class="even">
+<td>linux_threads</td>
+<td>打印进程的线程</td>
+</tr>
+<tr class="odd">
+<td>linux_tmpfs</td>
+<td>从内存中恢复 tmpfs 文件系统</td>
+</tr>
+<tr class="even">
+<td>linux_truecrypt_passphrase</td>
+<td>恢复缓存的 Truecrypt 密码短语</td>
+</tr>
+<tr class="odd">
+<td>linux_vma_cache</td>
+<td>从 vm_area_struct 缓存中收集 VMA</td>
+</tr>
+<tr class="even">
+<td>linux_volshell</td>
+<td>内存镜像中的外壳 shell</td>
+</tr>
+<tr class="odd">
+<td>linux_yarascan</td>
+<td>Linux 内存映像中的 shell</td>
+</tr>
+<tr class="even">
+<td>lsadump</td>
+<td>从注册表中转储（解密）LSA 机密</td>
+</tr>
+<tr class="odd">
+<td>mac_adium</td>
+<td>列出 Adium 消息</td>
+</tr>
+<tr class="even">
+<td>mac_apihooks</td>
+<td>检查进程中的 API 挂钩</td>
+</tr>
+<tr class="odd">
+<td>mac_apihooks_kernel</td>
+<td>检查系统调用和内核函数是否被挂钩</td>
+</tr>
+<tr class="even">
+<td>mac_arp</td>
+<td>打印 arp 表</td>
+</tr>
+<tr class="odd">
+<td>mac_bash</td>
+<td>从 bash 进程内存中恢复 bash 历史记录</td>
+</tr>
+<tr class="even">
+<td>mac_bash_env</td>
+<td>恢复 bash 的环境变量</td>
+</tr>
+<tr class="odd">
+<td>mac_bash_hash</td>
+<td>恢复来自 bash 进程内存的 bash 哈希表</td>
+</tr>
+<tr class="even">
+<td>mac_calendar</td>
+<td>从 Calendar.app 获取日历事件</td>
+</tr>
+<tr class="odd">
+<td>mac_check_fop</td>
+<td>验证文件操作指针</td>
+</tr>
+<tr class="even">
+<td>mac_check_mig_table</td>
+<td>列出内核 MIG 表中的全部内容</td>
+</tr>
+<tr class="odd">
+<td>mac_check_syscall_shadow</td>
+<td>查找影子系统调用表</td>
+</tr>
+<tr class="even">
+<td>mac_check_syscalls</td>
+<td>检查系统调用表条目是否已挂钩</td>
+</tr>
+<tr class="odd">
+<td>mac_check_sysctl</td>
+<td>检查未知的 sysctl 处理程序</td>
+</tr>
+<tr class="even">
+<td>mac_check_trap_table</td>
+<td>检查马赫陷阱表条目是否已挂钩</td>
+</tr>
+<tr class="odd">
+<td>mac_compressed_swap</td>
+<td>打印 Mac OS X VM 压缩器统计信息和转储所有压缩页面</td>
+</tr>
+<tr class="even">
+<td>mac_contacts</td>
+<td>从 <code>Contacts.app</code> 获取联系人名称</td>
+</tr>
+<tr class="odd">
+<td>mac_dead_procs</td>
+<td>打印终止/取消分配的进程</td>
+</tr>
+<tr class="even">
+<td>mac_dead_sockets</td>
+<td>打印终止/取消分配的网络套接字</td>
+</tr>
+<tr class="odd">
+<td>mac_dead_vnodes</td>
+<td>列出释放的 vnode 结构</td>
+</tr>
+<tr class="even">
+<td>mac_devfs</td>
+<td>列出文件缓存中的文件</td>
+</tr>
+<tr class="odd">
+<td>mac_dmesg</td>
+<td>打印内核调试缓冲区</td>
+</tr>
+<tr class="even">
+<td>mac_dump_file</td>
+<td>转储指定文件</td>
+</tr>
+<tr class="odd">
+<td>mac_dump_maps</td>
+<td>转储进程的内存范围，可选地包括压缩交换中的页面</td>
+</tr>
+<tr class="even">
+<td>mac_dyld_maps</td>
+<td>从 dyld 数据结构获取进程的内存映射</td>
+</tr>
+<tr class="odd">
+<td>mac_find_aslr_shift</td>
+<td>查找 10.8 的 ASLR 移位值+ 图像</td>
+</tr>
+<tr class="even">
+<td>mac_get_profile</td>
+<td>自动检测 Mac 配置文件</td>
+</tr>
+<tr class="odd">
+<td>mac_ifconfig</td>
+<td>列出所有设备的网络接口信息</td>
+</tr>
+<tr class="even">
+<td>mac_interest_handlers</td>
+<td>列出 IOKit 兴趣处理程序</td>
+</tr>
+<tr class="odd">
+<td>mac_ip_filters</td>
+<td>报告任何挂钩的 IP 过滤器</td>
+</tr>
+<tr class="even">
+<td>mac_kernel_classes</td>
+<td>列出内核中加载的 c++ 类</td>
+</tr>
+<tr class="odd">
+<td>mac_kevents</td>
+<td>显示进程的父/子关系</td>
+</tr>
+<tr class="even">
+<td>mac_keychaindump</td>
+<td>恢复可能的钥匙串密钥。使用 chainbreaker 打开相关的钥匙串文件</td>
+</tr>
+<tr class="odd">
+<td>mac_ldrmodules</td>
+<td>将 proc 映射的输出与 libdl 中的库列表进行比较</td>
+</tr>
+<tr class="even">
+<td>mac_librarydump</td>
+<td>转储进程的可执行文件</td>
+</tr>
+<tr class="odd">
+<td>mac_list_files</td>
+<td>列出文件缓存中的文件</td>
+</tr>
+<tr class="even">
+<td>mac_list_kauth_listeners</td>
+<td>列出 Kauth 范围侦听器</td>
+</tr>
+<tr class="odd">
+<td>mac_list_kauth_scopes</td>
+<td>列出 Kauth 范围和他们的状态</td>
+</tr>
+<tr class="even">
+<td>mac_list_raw</td>
+<td>列出具有混杂套接字的应用程序</td>
+</tr>
+<tr class="odd">
+<td>mac_list_sessions</td>
+<td>枚举会话</td>
+</tr>
+<tr class="even">
+<td>mac_list_zones</td>
+<td>打印活动区域</td>
+</tr>
+<tr class="odd">
+<td>mac_lsmod</td>
+<td>列出加载的内核模块</td>
+</tr>
+<tr class="even">
+<td>mac_lsmod_iokit</td>
+<td>列出通过 IOkit 加载的内核模块</td>
+</tr>
+<tr class="odd">
+<td>mac_lsmod_kext_map</td>
+<td>列出加载的内核模块</td>
+</tr>
+<tr class="even">
+<td>mac_lsof</td>
+<td>列出每个进程打开的文件</td>
+</tr>
+<tr class="odd">
+<td>mac_machine_info</td>
+<td>打印有关示例的机器信息</td>
+</tr>
+<tr class="even">
+<td>mac_malfind</td>
+<td>查找可疑进程映射</td>
+</tr>
+<tr class="odd">
+<td>mac_memdump</td>
+<td>将可寻址内存页转储到文件</td>
+</tr>
+<tr class="even">
+<td>mac_moddump</td>
+<td>将指定的内核扩展写入磁盘</td>
+</tr>
+<tr class="odd">
+<td>mac_mount</td>
+<td>打印已安装的设备信息</td>
+</tr>
+<tr class="even">
+<td>mac_netstat</td>
+<td>列出每个进程的活动网络连接</td>
+</tr>
+<tr class="odd">
+<td>mac_network_conns</td>
+<td>列出来自内核网络结构的网络连接</td>
+</tr>
+<tr class="even">
+<td>mac_notesapp</td>
+<td>查找 Notes 消息的内容</td>
+</tr>
+<tr class="odd">
+<td>mac_notifiers</td>
+<td>检测向 I/O Kit（例如 LogKext）添加挂钩的 rootkit</td>
+</tr>
+<tr class="even">
+<td>mac_orphan_threads</td>
+<td>列出不映射回已知模块/进程的线程</td>
+</tr>
+<tr class="odd">
+<td>mac_pgrp_hash_table</td>
+<td>步行进程组哈希表</td>
+</tr>
+<tr class="even">
+<td>mac_pid_hash_table</td>
+<td>遍历 pid 哈希表</td>
+</tr>
+<tr class="odd">
+<td>mac_print_boot_cmdline</td>
+<td>打印内核启动参数</td>
+</tr>
+<tr class="even">
+<td>mac_proc_maps</td>
+<td>获取进程的内存映射</td>
+</tr>
+<tr class="odd">
+<td>mac_procdump</td>
+<td>转储进程的可执行文件</td>
+</tr>
+<tr class="even">
+<td>mac_psaux</td>
+<td>打印带有用户空间参数的进程 (<code>**argv</code>)</td>
+</tr>
+<tr class="odd">
+<td>mac_psenv</td>
+<td>打印用户区环境中的进程 (<code>**envp</code>)</td>
+</tr>
+<tr class="even">
+<td>mac_pslist</td>
+<td>列出正在运行的进程</td>
+</tr>
+<tr class="odd">
+<td>mac_pstree</td>
+<td>显示进程的父/子关系</td>
+</tr>
+<tr class="even">
+<td>mac_psxview</td>
+<td>使用各种进程列表查找隐藏进程</td>
+</tr>
+<tr class="odd">
+<td>mac_recover_filesystem</td>
+<td>恢复缓存的文件系统</td>
+</tr>
+<tr class="even">
+<td>mac_route</td>
+<td>打印路由表</td>
+</tr>
+<tr class="odd">
+<td>mac_socket_filters</td>
+<td>报告套接字过滤器</td>
+</tr>
+<tr class="even">
+<td>mac_strings</td>
+<td>将物理偏移量与虚拟地址匹配（可能需要一段时间，非常冗长）</td>
+</tr>
+<tr class="odd">
+<td>mac_tasks</td>
+<td>列出活动任务</td>
+</tr>
+<tr class="even">
+<td>mac_threads</td>
+<td>列出进程线程</td>
+</tr>
+<tr class="odd">
+<td>mac_threads_simple</td>
+<td>列出线程及其开始时间和优先级</td>
+</tr>
+<tr class="even">
+<td>mac_timers</td>
+<td>报告内核驱动程序设置的计时器</td>
+</tr>
+<tr class="odd">
+<td>mac_trustedbsd</td>
+<td>列出恶意的 trustedbsd 策略</td>
+</tr>
+<tr class="even">
+<td>mac_version</td>
+<td>打印Mac版本</td>
+</tr>
+<tr class="odd">
+<td>mac_vfsevents</td>
+<td>列出过滤文件系统事件的进程</td>
+</tr>
+<tr class="even">
+<td>mac_volshell</td>
+<td>内存映像中的 shell</td>
+</tr>
+<tr class="odd">
+<td>mac_yarascan</td>
+<td>扫描内存对于 yara 签名</td>
+</tr>
+<tr class="even">
+<td>machoinfo</td>
+<td>转储 Mach-O 文件格式信息</td>
+</tr>
+<tr class="odd">
+<td>malfind</td>
+<td>查找隐藏和注入的代码</td>
+</tr>
+<tr class="even">
+<td>mbrparser</td>
+<td>扫描并解析潜在的主引导记录 (MBR)</td>
+</tr>
+<tr class="odd">
+<td>memdump</td>
+<td>转储进程的可寻址内存</td>
+</tr>
+<tr class="even">
+<td>memmap</td>
+<td>打印内存映射</td>
+</tr>
+<tr class="odd">
+<td>messagehooks</td>
+<td>列出桌面和线程窗口消息挂钩</td>
+</tr>
+<tr class="even">
+<td>mftparser</td>
+<td>扫描并解析潜在的 MFT 条目</td>
+</tr>
+<tr class="odd">
+<td>moddump</td>
+<td>将内核驱动程序转储到可执行文件示例</td>
+</tr>
+<tr class="even">
+<td>modscan</td>
+<td>内核池扫描程序modules</td>
+</tr>
+<tr class="odd">
+<td>modules</td>
+<td>打印加载模块的列表</td>
+</tr>
+<tr class="even">
+<td>multiscan</td>
+<td>一次性扫描各种对象</td>
+</tr>
+<tr class="odd">
+<td>mutantscan</td>
+<td>互斥对象的池扫描器</td>
+</tr>
+<tr class="even">
+<td>netscan</td>
+<td>扫描 Vista（或更高版本）图像的连接和套接字</td>
+</tr>
+<tr class="odd">
+<td>notepad</td>
+<td>列出当前显示的记事本文本</td>
+</tr>
+<tr class="even">
+<td>objtypescan</td>
+<td>扫描 Windows 对象类型对象</td>
+</tr>
+<tr class="odd">
+<td>patcher</td>
+<td>根据页面扫描修补内存</td>
+</tr>
+<tr class="even">
+<td>poolpeek</td>
+<td>可配置池扫描器插件</td>
+</tr>
+<tr class="odd">
+<td>pooltracker</td>
+<td>显示池标记使用摘要</td>
+</tr>
+<tr class="even">
+<td>printkey</td>
+<td>打印注册表项及其子项和值</td>
+</tr>
+<tr class="odd">
+<td>privs</td>
+<td>显示进程权限</td>
+</tr>
+<tr class="even">
+<td>procdump</td>
+<td>将进程转储到可执行文件示例</td>
+</tr>
+<tr class="odd">
+<td>pslist</td>
+<td>按照 EPROCESS 列表打印所有正在运行的进程</td>
+</tr>
+<tr class="even">
+<td>psscan</td>
+<td>进程对象的池扫描程序</td>
+</tr>
+<tr class="odd">
+<td>pstree</td>
+<td>将进程列表打印为树</td>
+</tr>
+<tr class="even">
+<td>psxview</td>
+<td>使用各种进程列表查找隐藏进程</td>
+</tr>
+<tr class="odd">
+<td>qemuinfo</td>
+<td>转储 Qemu 信息</td>
+</tr>
+<tr class="even">
+<td>raw2dmp</td>
+<td>将物理内存样本转换为 windbg 崩溃转储</td>
+</tr>
+<tr class="odd">
+<td>screenshot</td>
+<td>基于 GDI windows 保存伪屏幕截图</td>
+</tr>
+<tr class="even">
+<td>servicediff</td>
+<td>列出 Windows 服务（类似于 Plugx）</td>
+</tr>
+<tr class="odd">
+<td>sessions</td>
+<td>列出关于
+<code>_MM_SESSION_SPACE</code>（用户登录会话）的详细信息</td>
+</tr>
+<tr class="even">
+<td>shellbags</td>
+<td>打印 ShellBags 信息</td>
+</tr>
+<tr class="odd">
+<td>shimcache</td>
+<td>解析应用程序兼容性 Shim 缓存注册表项</td>
+</tr>
+<tr class="even">
+<td>shutdowntime</td>
+<td>从注册表中打印机器的 ShutdownTime</td>
+</tr>
+<tr class="odd">
+<td>sockets</td>
+<td>打印打开的套接字列表</td>
+</tr>
+<tr class="even">
+<td>sockscan</td>
+<td>用于 tcp 套接字对象的池扫描器</td>
+</tr>
+<tr class="odd">
+<td>ssdt</td>
+<td>显示 SSDT 条目</td>
+</tr>
+<tr class="even">
+<td>strings</td>
+<td>将物理偏移量与虚拟地址匹配（可能需要一段时间，非常冗长）</td>
+</tr>
+<tr class="odd">
+<td>svcscan</td>
+<td>扫描 Windows 服务</td>
+</tr>
+<tr class="even">
+<td>symlinkscan</td>
+<td>用于符号链接对象的池扫描器</td>
+</tr>
+<tr class="odd">
+<td>thrdscan</td>
+<td>线程对象的池扫描器</td>
+</tr>
+<tr class="even">
+<td>threads</td>
+<td>调查 <code>_ETHREAD</code> 和 <code>_KTHREAD</code></td>
+</tr>
+<tr class="odd">
+<td>timeliner</td>
+<td>从内存计时器中的各种工件创建时间线</td>
+</tr>
+<tr class="even">
+<td>timers</td>
+<td>打印内核计时器和相关的模块 DPC</td>
+</tr>
+<tr class="odd">
+<td>truecryptmaster</td>
+<td>恢复 TrueCrypt 7.1a 主密钥</td>
+</tr>
+<tr class="even">
+<td>truecryptpassphrase</td>
+<td>TrueCrypt 缓存密码查找器</td>
+</tr>
+<tr class="odd">
+<td>truecryptsummary</td>
+<td>TrueCrypt 摘要</td>
+</tr>
+<tr class="even">
+<td>unloadedmodules</td>
+<td>打印未加载模块的列表</td>
+</tr>
+<tr class="odd">
+<td>userassist</td>
+<td>打印 USER 注册表键值和信息</td>
+</tr>
+<tr class="even">
+<td>userhandles</td>
+<td>转出 USER 句柄表</td>
+</tr>
+<tr class="odd">
+<td>vaddump</td>
+<td>转储 VAD 信息到一个文件中</td>
+</tr>
+<tr class="even">
+<td>vadinfo</td>
+<td>转储 VAD 信息</td>
+</tr>
+<tr class="odd">
+<td>vadtree</td>
+<td>遍历 VAD 树并以树格式显示</td>
+</tr>
+<tr class="even">
+<td>vadwalk</td>
+<td>遍历 VAD 树</td>
+</tr>
+<tr class="odd">
+<td>vboxinfo</td>
+<td>转储 virtualbox 信息</td>
+</tr>
+<tr class="even">
+<td>verinfo</td>
+<td>从 PE 映像中打印版本信息</td>
+</tr>
+<tr class="odd">
+<td>vmwareinfo</td>
+<td>转储 VMware VMSS/VMSN 信息</td>
+</tr>
+<tr class="even">
+<td>volshell</td>
+<td>内存映像中的 Shell</td>
+</tr>
+<tr class="odd">
+<td>win10cookie</td>
+<td>查找 Windows 10 窗口的 <code>ObHeaderCookie</code> 值</td>
+</tr>
+<tr class="even">
+<td>windows</td>
+<td>打印桌面 Windows（详细详细信息）</td>
+</tr>
+<tr class="odd">
+<td>wintree</td>
+<td>打印 Z-Order 桌面Windows 树</td>
+</tr>
+<tr class="even">
+<td>wndscan</td>
+<td>用于窗口站的池扫描程序</td>
+</tr>
+<tr class="odd">
+<td>yarascan</td>
+<td>使用 Yara 签名扫描进程或内核内存</td>
+</tr>
+</tbody>
+</table>
+<h1 id="volatility2-插件">volatility2 插件</h1>
+<p>实际上所有 volatility2
+的功能都是由插件实现的，我们可以自主安装他人所写的插件或者是自己写插件脚本。</p>
+<p>无论是哪种，只需要将插件脚本拖入 <code>plugins/</code>
+文件下即可（另一个可能的路径为
+<code>volatility/plugins/</code>），且支持文件夹分类（实际上只要在该目录下的所有文件都会遍历加载）。</p>
+<h2 id="mimikatz">mimikatz</h2>
+<p>mimikatz 是一个可以从内存中提取明文密码、哈希、PIN 码和 kerberos
+票证的软件，在 volatility2 中有专门的插件替代了繁琐的操作。</p>
+<p>如果不使用插件，我们需要首先从内存镜像中转储 <code>lsass.exe</code>
+的内存文件为 <code>lsass.dmp</code> 后，用 mimikatz 加载并读取数据。</p>
+<p>我们可以在
+https://github.com/RealityNet/hotoloti/tree/master/volatility 中获取
+<code>mimikatz.py</code>，将其添加到 <code>plugins/</code>
+文件夹下即可使用。</p>
+<p>使用方式：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python2 vol.py -f file.raw mimikatz</span><br></pre></td></tr></table></figure>
+<p>一键提取出目标内存镜像中的用户名和密码。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/vol2-note.html" title="volatility2 使用笔记">https://hasegawaazusa.github.io/vol2-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/forensics/" rel="tag"># forensics</a>
+              <a href="/tags/volatility/" rel="tag"># volatility</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/ecdsa-note.html" rel="prev" title="ecdsa 笔记">
+                  <i class="fa fa-chevron-left"></i> ecdsa 笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/NTRU-note.html" rel="next" title="NTRU-note">
+                  NTRU-note <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">261k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:57</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

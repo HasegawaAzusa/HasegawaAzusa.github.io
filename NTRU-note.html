@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关NTRU-note的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NTRU-note">
+<meta property="og:url" content="https://hasegawaazusa.github.io/NTRU-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关NTRU-note的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-25T15:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-25T15:42:19.564Z">
+<meta property="article:author" content="qsDuzou">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/NTRU-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/NTRU-note.html","path":"/NTRU-note.html","title":"NTRU-note"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>NTRU-note | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">52</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">80</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ntru-%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">NTRU 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E6%8F%90"><span class="nav-number">1.2.</span> <span class="nav-text">前提</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90"><span class="nav-number">1.3.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86"><span class="nav-number">1.3.2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86"><span class="nav-number">1.3.3.</span> <span class="nav-text">解密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.4.</span> <span class="nav-text">解密原理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ntru-%E6%B1%82%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">NTRU 求解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%8E%E6%96%87%E7%88%86%E7%A0%B4"><span class="nav-number">2.1.</span> <span class="nav-text">明文爆破</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/NTRU-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          NTRU-note
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-25 23:00:00" itemprop="dateCreated datePublished" datetime="2022-07-25T23:00:00+08:00">2022-07-25</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关NTRU-note的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="ntru-原理">NTRU 原理</h1>
+<h2 id="简述">简述</h2>
+<p>NTRU
+是一种基于环与格的公钥密码系统，特点是密钥短且容易产生，算法运算速度快，所需存储空间小。</p>
+<h2 id="前提">前提</h2>
+<ol type="1">
+<li><p>设 <span class="math inline">\(R(N)\)</span> 表示最高次数不超过
+<span class="math inline">\(N-1\)</span> 的所有整系数多项式集合，即
+<span class="math inline">\(a=a_0+a_1x+\cdots+a_{N-1}x^{N-1}\)</span></p></li>
+<li><p><span class="math inline">\(R\)</span> 上的加法定义为：<span class="math inline">\(a+b=(a_0+b_0)+(a_1+b_1)x+\cdots+(a_{N-1}+b_{N-1})x^{N-1}\)</span></p></li>
+<li><p><span class="math inline">\(R\)</span> 上的乘法定义为：<span class="math inline">\(a\times
+b=c_0+c_1x+\cdots+c_{N-1}x^{N-1}\)</span>，其中第 <span class="math inline">\(k\)</span> 阶系数为： <span class="math display">\[
+\sum_{i+j\equiv k\pmod{N}}a_ib_i
+\]</span></p></li>
+</ol>
+<p>由以上定义可知，<span class="math inline">\(R\)</span>
+的加法和乘法运算构成一个环。</p>
+<h2 id="算法">算法</h2>
+<p>首先需要三个整数 <span class="math inline">\(N,p,q\)</span>，其中
+<span class="math inline">\(N-1\)</span> 为多项式的阶，<span class="math inline">\(\gcd(p,q)\equiv1\)</span> 且 <span class="math inline">\(q&gt;p\)</span>，且 <span class="math inline">\(L_f,L_g,L_\phi,L_m\)</span> 为 <span class="math inline">\(R(N)\)</span></p>
+<h3 id="密钥生成">密钥生成</h3>
+<ol type="1">
+<li><p>随机选取两个多项式 <span class="math inline">\(f,g\in
+L_g\)</span>，其中多项式 <span class="math inline">\(f\)</span> 在模
+<span class="math inline">\(p\)</span> 和 模 <span class="math inline">\(q\)</span> 下均可逆，其逆元分别表示为 <span class="math inline">\(F_p,F_q\)</span>，即满足 <span class="math display">\[
+F_p\cdot f\equiv1\pmod{p}\\F_q\cdot f\equiv1\pmod{q}
+\]</span></p></li>
+<li><p>计算 <span class="math inline">\(h\equiv F_q\cdot
+g\pmod{q}\)</span></p></li>
+<li><p>以 <span class="math inline">\(h\)</span> 作为公钥， <span class="math inline">\(f\)</span> 作为密钥，但密文接收方需要保存 <span class="math inline">\(F_q\)</span></p></li>
+</ol>
+<h3 id="加密">加密</h3>
+<ol type="1">
+<li><p>设 <span class="math inline">\(m\)</span> 为消息，有多项式 <span class="math inline">\(\phi\in L_\phi\)</span></p></li>
+<li><p>用公钥 <span class="math inline">\(h\)</span> 对消息进行加密：
+<span class="math display">\[
+e\equiv p\phi\cdot h+m\pmod{q}
+\]</span></p></li>
+<li><p><span class="math inline">\(e\)</span> 即为密文</p></li>
+</ol>
+<h3 id="解密">解密</h3>
+<ol type="1">
+<li>计算 <span class="math inline">\(a\equiv f\cdot
+e\pmod{q}\)</span>，其中 <span class="math inline">\(a\)</span>
+的系数选在 <span class="math inline">\(\displaystyle(-\frac{q}{2},\frac{q}{2})\)</span>
+区间内</li>
+<li>计算 <span class="math inline">\(m=F_P\cdot a\pmod{p}\)</span></li>
+</ol>
+<h3 id="解密原理">解密原理</h3>
+<p><span class="math display">\[
+\begin{align*}
+a&amp;\equiv f\cdot e\\
+&amp;\equiv f\cdot p\phi+f\cdot m\pmod{q}\\
+&amp;\equiv f\cdot p\phi \cdot F_qg+f\cdot m\pmod{q}\\
+&amp;\equiv p\phi\cdot g+f\cdot m\pmod{q}
+\end{align*}
+\]</span></p>
+<p>其中 <span class="math inline">\(a\)</span> 的系数选在 <span class="math inline">\(\displaystyle(-\frac{q}{2},\frac{q}{2})\)</span>
+区间内，故 <span class="math display">\[
+m=F_p\cdot a\equiv F_p\cdot p\phi\cdot g+F_p\cdot f\cdot m\pmod{q}\equiv
+m\pmod{q}
+\]</span></p>
+<h1 id="ntru-求解">NTRU 求解</h1>
+<h2 id="明文爆破">明文爆破</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">from</span> Crypto.Hash <span class="keyword">import</span> SHA3_256</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.Padding <span class="keyword">import</span> pad</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> flag</span><br><span class="line"></span><br><span class="line"><span class="comment"># parameters</span></span><br><span class="line">N = <span class="number">10</span></span><br><span class="line">p = <span class="number">3</span></span><br><span class="line">q = <span class="number">512</span></span><br><span class="line">d = <span class="number">3</span></span><br><span class="line"><span class="keyword">assert</span> q&gt;(<span class="number">6</span>*d+<span class="number">1</span>)*p</span><br><span class="line"></span><br><span class="line">R.&lt;x&gt; = ZZ[]</span><br><span class="line"></span><br><span class="line"><span class="comment">#d1 1s and #d2 -1s</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">T</span>(<span class="params">d1, d2</span>):</span></span><br><span class="line">    <span class="keyword">assert</span> N &gt;= d1+d2</span><br><span class="line">    s = [<span class="number">1</span>]*d1 + [-<span class="number">1</span>]*d2 + [<span class="number">0</span>]*(N-d1-d2)</span><br><span class="line">    shuffle(s)</span><br><span class="line">    <span class="keyword">return</span> R(s)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">invertModPrime</span>(<span class="params">f, p</span>):</span></span><br><span class="line">    Rp = R.change_ring(Integers(p)).quotient(x^N-<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> R(lift(<span class="number">1</span> / Rp(f)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convolution</span>(<span class="params">f, g</span>):</span></span><br><span class="line">    <span class="keyword">return</span> (f*g) % (x^N-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">liftMod</span>(<span class="params">f, q</span>):</span></span><br><span class="line">    g = <span class="built_in">list</span>(((f[i] + q//<span class="number">2</span>) % q) - q//<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N))</span><br><span class="line">    <span class="keyword">return</span> R(g)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">polyMod</span>(<span class="params">f, q</span>):</span></span><br><span class="line">    g = [f[i]%q <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)]</span><br><span class="line">    <span class="keyword">return</span> R(g)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">invertModPow2</span>(<span class="params">f, q</span>):</span></span><br><span class="line">    <span class="keyword">assert</span> q.is_power_of(<span class="number">2</span>)</span><br><span class="line">    g = invertModPrime(f,<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        r = liftMod(convolution(g,f),q)</span><br><span class="line">        <span class="keyword">if</span> r == <span class="number">1</span>: <span class="keyword">return</span> g</span><br><span class="line">        g = liftMod(convolution(g,<span class="number">2</span> - r),q)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">genMessage</span>():</span></span><br><span class="line">    result = <span class="built_in">list</span>(randrange(p) - <span class="number">1</span> <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(N))</span><br><span class="line">    <span class="keyword">return</span> R(result)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">genKey</span>():</span></span><br><span class="line">  <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      f = T(d+<span class="number">1</span>, d)</span><br><span class="line">      g = T(d, d)</span><br><span class="line">      Fp = polyMod(invertModPrime(f, p), p)</span><br><span class="line">      Fq = polyMod(invertModPow2(f, q), q)</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">  h = polyMod(convolution(Fq, g), q)</span><br><span class="line">  <span class="keyword">return</span> h, (f, g)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span>(<span class="params">m, h</span>):</span></span><br><span class="line">    e = liftMod(p*convolution(h, T(d, d)) + m, q)</span><br><span class="line">    <span class="keyword">return</span> e</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 1</span></span><br><span class="line">h, secret = genKey()</span><br><span class="line">m = genMessage()</span><br><span class="line">e = encrypt(m, h)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;h = %s&#x27;</span> % h)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;e = %s&#x27;</span> % e)</span><br><span class="line"></span><br><span class="line">result = <span class="built_in">list</span>(randrange(p) - <span class="number">1</span> <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(N))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(-<span class="number">1</span>, p), repeat=N):</span><br><span class="line">    i = <span class="built_in">list</span>(i)</span><br><span class="line">    m = R(i)</span><br><span class="line">    <span class="keyword">if</span> encrypt(m, h) == e:</span><br><span class="line">        <span class="built_in">print</span>(m)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;end&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2</span></span><br><span class="line">sha3 = SHA3_256.new()</span><br><span class="line">sha3.update(<span class="built_in">bytes</span>(<span class="built_in">str</span>(m).encode(<span class="string">&#x27;utf-8&#x27;</span>)))</span><br><span class="line">key = sha3.digest()</span><br><span class="line"></span><br><span class="line">cypher = AES.new(key, AES.MODE_ECB)</span><br><span class="line">c = cypher.encrypt(pad(flag, <span class="number">32</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;c = %s&#x27;</span> % c)</span><br></pre></td></tr></table></figure>
+<p>输出为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">h = <span class="number">39</span>*x^<span class="number">9</span> + <span class="number">60</span>*x^<span class="number">8</span> + <span class="number">349</span>*x^<span class="number">7</span> + <span class="number">268</span>*x^<span class="number">6</span> + <span class="number">144</span>*x^<span class="number">5</span> + <span class="number">469</span>*x^<span class="number">4</span> + <span class="number">449</span>*x^<span class="number">3</span> + <span class="number">165</span>*x^<span class="number">2</span> + <span class="number">248</span>*x + <span class="number">369</span></span><br><span class="line">e = -<span class="number">144</span>*x^<span class="number">9</span> - <span class="number">200</span>*x^<span class="number">8</span> - <span class="number">8</span>*x^<span class="number">7</span> + <span class="number">248</span>*x^<span class="number">6</span> + <span class="number">85</span>*x^<span class="number">5</span> + <span class="number">102</span>*x^<span class="number">4</span> + <span class="number">167</span>*x^<span class="number">3</span> + <span class="number">30</span>*x^<span class="number">2</span> - <span class="number">203</span>*x - <span class="number">78</span></span><br><span class="line">c = <span class="string">b&#x27;\xb9W\x8c\x8b\x0cG\xde\x7fl\xf7\x03\xbb9m\x0c\xc4L\xfe\xe9Q\xad\xfd\xda!\x1a\xea@&#125;U\x9ay4\x8a\xe3y\xdf\xd5BV\xa7\x06\xf9\x08\x96=&quot;f\xc1\x1b\xd7\xdb\xc1j\x82F\x0b\x16\x06\xbcJMB\xc8\x80&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>由于明文多项式较小，直接爆破即可：</p>
+<p>首先各种多项式 m 的值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">fp = <span class="built_in">open</span>(<span class="string">&#x27;m.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(p), repeat=N):</span><br><span class="line">    r = <span class="built_in">list</span>(j-<span class="number">1</span> <span class="keyword">for</span> j <span class="keyword">in</span> i)</span><br><span class="line">    m = R(r)</span><br><span class="line">    <span class="built_in">print</span>(m, file=fp)</span><br></pre></td></tr></table></figure>
+<p>然后直接爆破即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Hash <span class="keyword">import</span> SHA3_256</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.Padding <span class="keyword">import</span> pad</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;m.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read().splitlines()</span><br><span class="line"><span class="built_in">print</span>(data)</span><br><span class="line">c = <span class="string">b&#x27;\xb9W\x8c\x8b\x0cG\xde\x7fl\xf7\x03\xbb9m\x0c\xc4L\xfe\xe9Q\xad\xfd\xda!\x1a\xea@&#125;U\x9ay4\x8a\xe3y\xdf\xd5BV\xa7\x06\xf9\x08\x96=&quot;f\xc1\x1b\xd7\xdb\xc1j\x82F\x0b\x16\x06\xbcJMB\xc8\x80&#x27;</span></span><br><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> data:</span><br><span class="line">    sha3 = SHA3_256.new()</span><br><span class="line">    sha3.update(<span class="built_in">bytes</span>(<span class="built_in">str</span>(m).encode(<span class="string">&#x27;utf-8&#x27;</span>)))</span><br><span class="line">    key = sha3.digest()</span><br><span class="line"></span><br><span class="line">    cypher = AES.new(key, AES.MODE_ECB)</span><br><span class="line">    k = cypher.decrypt(c)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">b&#x27;DASCTF&#x27;</span> <span class="keyword">in</span> k:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;k=&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/NTRU-note.html" title="NTRU-note">https://hasegawaazusa.github.io/NTRU-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/vol2-note.html" rel="prev" title="volatility2 使用笔记">
+                  <i class="fa fa-chevron-left"></i> volatility2 使用笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">261k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:57</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

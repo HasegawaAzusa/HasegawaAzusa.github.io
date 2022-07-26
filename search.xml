@@ -2670,7 +2670,7 @@ mn\)</span></p>
 <h2 id="加密">加密</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p=<span class="number">447685307</span></span><br><span class="line">q=<span class="number">2037</span></span><br><span class="line">e=<span class="number">17</span></span><br><span class="line">m = <span class="number">904332399012</span></span><br><span class="line">n = p * q</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br></pre></td></tr></table></figure>
 <h2 id="解密">解密</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">p=<span class="number">447685307</span></span><br><span class="line">q=<span class="number">2037</span></span><br><span class="line">e=<span class="number">17</span></span><br><span class="line">c=<span class="number">704796792</span></span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = gmpy2.invert(e, phi)</span><br><span class="line">m = <span class="built_in">pow</span>(c, d, n)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p=<span class="number">447685307</span></span><br><span class="line">q=<span class="number">2037</span></span><br><span class="line">e=<span class="number">17</span></span><br><span class="line">c=<span class="number">704796792</span></span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = <span class="built_in">pow</span>(e, -<span class="number">1</span>, phi)</span><br><span class="line"><span class="comment"># 旧版本python需要使用gmpy2库求解逆元</span></span><br><span class="line"><span class="comment"># import gmpy2</span></span><br><span class="line"><span class="comment"># d = gmpy2.invert(e, phi)</span></span><br><span class="line">m = <span class="built_in">pow</span>(c, d, n)</span><br></pre></td></tr></table></figure>
 <h2 id="读取参数">读取参数</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./tmp/pubkey.pem&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    key = RSA.importKey(f)</span><br><span class="line">    N = key.n</span><br><span class="line">    e = key.e  </span><br></pre></td></tr></table></figure>
 <h1 id="rsa-攻击">RSA 攻击</h1>
@@ -3298,7 +3298,8 @@ RSA</strong>公钥和私钥文件。</p>
     <url>//vol3-note.html</url>
     <content><![CDATA[<h1 id="volatility3-安装">volatility3 安装</h1>
 <p><strong>volatility3 需要 Python 3.6.0 或更高版本。</strong></p>
-<p>进入https://github.com/volatilityfoundation/volatility3/releases选择<code>volatility3-2.0.0-py3-none-any.whl</code>进行下载</p>
+<p>进入 https://github.com/volatilityfoundation/volatility3/releases
+选择<code>volatility3-2.0.0-py3-none-any.whl</code>进行下载</p>
 <figure>
 <img src="/vol3-note/image-20220204224548796.png" alt="image-20220204224548796">
 <figcaption aria-hidden="true">image-20220204224548796</figcaption>
@@ -3619,7 +3620,7 @@ RSA</strong>公钥和私钥文件。</p>
 ]]></content>
       <tags>
         <tag>note</tag>
-        <tag>volatility3</tag>
+        <tag>volatility</tag>
       </tags>
   </entry>
   <entry>
@@ -4428,7 +4429,7 @@ key)</p>
 <h2 id="算法实现">算法实现</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">railfence</span>(<span class="params">data:<span class="built_in">str</span>, key:<span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>.join(data[i::key] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(key))</span><br></pre></td></tr></table></figure>
 <p>其中我们也可以实现对密文进行爆破的算法：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">railfence</span>(<span class="params">data:<span class="built_in">str</span>, key:<span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>.join(data[i::key] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(key))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取 x 的所有因数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factor</span>(<span class="params">x:<span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, math.floor(math.sqrt(x))):</span><br><span class="line">        <span class="keyword">if</span> x % i == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">yield</span> i</span><br><span class="line">            <span class="keyword">yield</span> x // i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack</span>(<span class="params">data:<span class="built_in">str</span>, needkeys:<span class="built_in">bool</span>=<span class="literal">False</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> needkeys:</span><br><span class="line">        facs = [i <span class="keyword">for</span> i <span class="keyword">in</span> factor(<span class="built_in">len</span>(data))]</span><br><span class="line">        <span class="keyword">return</span> facs, [railfence(data, i) <span class="keyword">for</span> i <span class="keyword">in</span> facs]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> [railfence(data, i) <span class="keyword">for</span> i <span class="keyword">in</span> factor(<span class="built_in">len</span>(data))]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_crack</span>(<span class="params">data:<span class="built_in">str</span></span>):</span></span><br><span class="line">    keys, msg = crack(data, <span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">for</span> k, m <span class="keyword">in</span> <span class="built_in">zip</span>(keys, msg):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;k&#125;</span>栏: <span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">print_crack(<span class="string">&quot;Ti_saf4h51__lg&quot;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">railfence</span>(<span class="params">data:<span class="built_in">str</span>, key:<span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;&quot;</span>.join(data[i::key] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(key))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取 x 的所有因数</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factor</span>(<span class="params">x:<span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>, math.floor(math.sqrt(x))+<span class="number">1</span>):</span><br><span class="line">        <span class="keyword">if</span> x % i == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">yield</span> i</span><br><span class="line">            <span class="keyword">yield</span> x // i</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack</span>(<span class="params">data:<span class="built_in">str</span>, needkeys:<span class="built_in">bool</span>=<span class="literal">False</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> needkeys:</span><br><span class="line">        facs = [i <span class="keyword">for</span> i <span class="keyword">in</span> factor(<span class="built_in">len</span>(data))]</span><br><span class="line">        <span class="keyword">return</span> facs, [railfence(data, i) <span class="keyword">for</span> i <span class="keyword">in</span> facs]</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> [railfence(data, i) <span class="keyword">for</span> i <span class="keyword">in</span> factor(<span class="built_in">len</span>(data))]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">print_crack</span>(<span class="params">data:<span class="built_in">str</span></span>):</span></span><br><span class="line">    keys, msg = crack(data, <span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">for</span> k, m <span class="keyword">in</span> <span class="built_in">zip</span>(keys, msg):</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;k&#125;</span>栏: <span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">print_crack(<span class="string">&quot;Ti_saf4h51__lg&quot;</span>)</span><br></pre></td></tr></table></figure>
 <h1 id="密钥栅栏算法">密钥栅栏算法</h1>
 <h2 id="加密算法描述-1">加密算法描述</h2>
 <ol type="1">
@@ -11484,6 +11485,1775 @@ chunk、Format chunk 和 Data chunk。</p>
       <tags>
         <tag>misc</tag>
         <tag>python</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>盲水印笔记</title>
+    <url>//blind-water-mask-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>水印（Water-Mask）是一种保护数字产品版权、完整性、防复制或去向追踪的技术，通常作为署名的一种。但水印的缺点显而易见，不止
+PhotoShop 有去除水印的功能，同时可以使用截图等手段将水印抹除。</p>
+<p>于是盲水印（Blind-Water-Mask）被发明出来，即字面意思——一种没办法用肉眼直接观察的水印。</p>
+<p>盲水印有着隐蔽性（Imperceptible）、不易移除性（Non-removable）、强健性（Robustness）和明确性（Unambiguous），可以很好的满足当前数字版权保护的所需。</p>
+<h1 id="算法">算法</h1>
+<h2 id="原理">原理</h2>
+<p>盲水印流程图如下：</p>
+<figure>
+<img src="/blind-water-mask-note/image-20220725205419764.png" alt="image-20220725205419764">
+<figcaption aria-hidden="true">image-20220725205419764</figcaption>
+</figure>
+<h3 id="傅里叶变换">傅里叶变换</h3>
+<p>盲水印用到的傅里叶变换是将信号在<strong>时域</strong>或<strong>空域</strong>的函数转变为用<strong>频域</strong>表示。</p>
+<p>图像是二维离散的，对该二维信号在各个方向上进行一次一维的傅里叶变换即可得到二维频域图，其中二维信号为时域中图像的灰度
+<span class="math inline">\(f(u,v)\)</span>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># 直接读取为灰度图</span></span><br><span class="line">img = cv2.imread(<span class="string">&#x27;flag.jpg&#x27;</span>,<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 进行快速傅里叶变换</span></span><br><span class="line">f = np.fft.fft2(img)</span><br><span class="line"><span class="comment"># 取绝对值，将复数域映射到实数域</span></span><br><span class="line">s = np.log(np.<span class="built_in">abs</span>(f))</span><br><span class="line">plt.imsave(<span class="string">&#x27;original.jpg&#x27;</span>, s)</span><br><span class="line">plt.imsave(<span class="string">&#x27;original_gray.jpg&#x27;</span>, s, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>随后我们将图片的低频部分移动到中间，将高频部分移动到外围：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># 直接读取为灰度图</span></span><br><span class="line">img = cv2.imread(<span class="string">&#x27;flag.jpg&#x27;</span>,<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 进行快速傅里叶变换</span></span><br><span class="line">f = np.fft.fft2(img)</span><br><span class="line"><span class="comment"># 将图像中的低频部分移动到图像的中心</span></span><br><span class="line">fshift = np.fft.fftshift(f)</span><br><span class="line"><span class="comment"># 取绝对值，将复数域映射到实数域</span></span><br><span class="line">s = np.log(np.<span class="built_in">abs</span>(fshift))</span><br><span class="line">plt.imsave(<span class="string">&#x27;center.jpg&#x27;</span>, s)</span><br><span class="line">plt.imsave(<span class="string">&#x27;center_gray.jpg&#x27;</span>, s, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="水印对称性">水印对称性</h3>
+<p>由于傅里叶变换后，频域图 <span class="math inline">\(f(u, v)\)</span>
+与 <span class="math inline">\(f(-u,-v)\)</span>
+是共轭的，所以其实部应该相等（如果不相等的话，逆变换后结果将在虚部上损失一部分信息，因为我们只写入实部数据），故我们应使得水印编码后的数据是对称的。</p>
+<h1 id="工具">工具</h1>
+<p>在盲水印的加密和解密中，我们通常使用 GitHub 上的开源脚本 <a href="https://github.com/chishaxie/BlindWaterMark">BlindWaterMark</a></p>
+<ul>
+<li>bwm.py程序文件python2版本</li>
+<li>bwmforpy3.py 程序文件python3版本</li>
+<li>hui.png 无水印的原图</li>
+<li>wm.png 水印图</li>
+<li>hui_with_wm.png 有盲水印的图</li>
+<li>wm_from_hui.png 解出来的水印图</li>
+</ul>
+<p>加密语法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python bwm.py encode hui.png wm.png hui_with_wm.png</span><br></pre></td></tr></table></figure>
+<p>解密语法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python bwm.py decode hui.png hui_with_wm.png wm_from_hui.png</span><br></pre></td></tr></table></figure>
+<p>缺陷是该工具需要一张原图，且注意python2和python3版本程序的 encode 和
+decode 结果会有所不同。主要原因是 python2 和 python3
+的随机算法不同。如果想让 python3 兼容 python2 的随机算法，请添加
+<code>--oldseed</code> 参数。</p>
+<p>同时由于其水印编码方式是使用默认随机数的，如果需要指定随机数，需要使用
+<code>--seed</code> 参数。</p>
+]]></content>
+      <tags>
+        <tag>misc</tag>
+        <tag>forensics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ecdsa 笔记</title>
+    <url>//ecdsa-note.html</url>
+    <content><![CDATA[<h1 id="ecdsa-原理">ECDSA 原理</h1>
+<h2 id="密钥生成">密钥生成</h2>
+<h3 id="私钥">私钥</h3>
+<p>随机选取一个在 <span class="math inline">\((1,n-1)\)</span>
+区间上的整数 <span class="math inline">\(d_A\)</span>
+作为<strong>私钥</strong>，其中 <span class="math inline">\(n\)</span>
+为椭圆曲线的 <span class="math inline">\(order\)</span>，即椭圆曲线加密方程的模数。</p>
+<h3 id="公钥">公钥</h3>
+<p><span class="math inline">\(Q=d_A\cdot G\)</span>，其中 <span class="math inline">\(Q\)</span> 即为<strong>公钥</strong>， <span class="math inline">\(G\)</span>
+为椭圆曲线上的基点（一般是随机选取的一点）。</p>
+<p>由上式可知<strong>公钥</strong>由<strong>私钥</strong>生成。</p>
+<h2 id="数字签名">数字签名</h2>
+<ol type="1">
+<li>随机生成一个临时密钥 <span class="math inline">\(k\)</span></li>
+<li>计算 <span class="math inline">\(P=k\cdot G\)</span>，其中 <span class="math inline">\(G\)</span> 为椭圆曲线上的基点</li>
+<li>取 <span class="math inline">\(P\)</span> 的 <span class="math inline">\(x\)</span> 轴坐标，<span class="math inline">\(r\equiv x\pmod{n}\)</span></li>
+<li>使用哈希函数（可能选取 <span class="math inline">\(sha\)</span>
+系列函数较为安全）计算 <span class="math inline">\(m\)</span>
+的哈希值（<span class="math inline">\(m\)</span> 一般为签名信息），使用
+<span class="math inline">\(\mathrm{H}(m)\)</span>
+表示（得到的哈希值应为数值）</li>
+<li><span class="math inline">\(s\equiv
+k^{-1}\times(\mathrm{H}(m)+d_A\cdot r)\pmod{n}\)</span></li>
+<li>最终 <span class="math inline">\((r,s)\)</span> 即为数字签名</li>
+</ol>
+<h1 id="python-实现">Python 实现</h1>
+<p>一般来说仅使用 Python 的话我们需要使用 <code>ecdsa</code> 模块。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="comment"># 使用 NIST256p 椭圆生成密钥</span></span><br><span class="line">gen = ecdsa.NIST256p.generator</span><br><span class="line"><span class="comment"># 获取该椭圆模数</span></span><br><span class="line">order = gen.order()</span><br><span class="line"><span class="comment"># 生成私钥d_A</span></span><br><span class="line">d_A = random.randrange(<span class="number">1</span>, order-<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 生成公私钥对象</span></span><br><span class="line">public_key = ecdsa.ecdsa.Public_key(gen, gen * d_A)</span><br><span class="line">private_key = ecdsa.ecdsa.Private_key(public_key, d_A)</span><br><span class="line"><span class="comment"># 签名信息</span></span><br><span class="line">m = <span class="string">&quot;message&quot;</span></span><br><span class="line">Hm = <span class="built_in">int</span>(hashlib.sha1(message.encode(<span class="string">&quot;utf8&quot;</span>)).hexdigest(),<span class="number">16</span>)</span><br><span class="line"><span class="comment"># 临时密钥</span></span><br><span class="line">k = random.randrange(<span class="number">1</span>, order-<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 签名</span></span><br><span class="line">signature = private_key.sign(Hm, k)</span><br><span class="line">r = signature.r </span><br><span class="line">s = signature.s </span><br></pre></td></tr></table></figure>
+<h1 id="ecdsa-实例">ECDSA 实例</h1>
+<ul>
+<li><p>题目</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">flag = <span class="string">b&quot;xxx&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">assert</span> flag.startswith(<span class="string">b&#x27;DASCTF&#123;&#x27;</span>) <span class="keyword">and</span> flag.endswith(<span class="string">b&#x27;&#125;&#x27;</span>)</span><br><span class="line"><span class="keyword">assert</span> <span class="built_in">len</span>(flag) == <span class="number">40</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">init</span>():</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    initiation</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">global</span> pub_key, priv_key, order, base, secret</span><br><span class="line">    gen = ecdsa.NIST256p.generator</span><br><span class="line">    order = gen.order()</span><br><span class="line">    secret = bytes_to_long(flag[<span class="number">7</span>:-<span class="number">1</span>])</span><br><span class="line">    </span><br><span class="line">    pub_key = ecdsa.ecdsa.Public_key(gen, gen * secret)</span><br><span class="line">    priv_key = ecdsa.ecdsa.Private_key(pub_key, secret)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sign</span>(<span class="params">msg, nonce</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    sign msg</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    msg = <span class="built_in">int</span>(hashlib.sha256(msg).hexdigest(), <span class="number">16</span>)</span><br><span class="line">    </span><br><span class="line">    sign = priv_key.sign(msg, nonce)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;R:&quot;</span>, <span class="built_in">hex</span>(sign.r)[<span class="number">2</span>:])</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;S:&quot;</span>, <span class="built_in">hex</span>(sign.s)[<span class="number">2</span>:])</span><br><span class="line"></span><br><span class="line">init()</span><br><span class="line">nonce = random.getrandbits(order.bit_length())</span><br><span class="line">sign(<span class="string">b&#x27;welcome to ecdsa&#x27;</span>, nonce)</span><br><span class="line"><span class="built_in">print</span>(nonce)</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">R: 7b35712a50d463ac5acf7af1675b4b63ba0da23b6452023afddd58d4891ef6e5</span></span><br><span class="line"><span class="string">S: a452fc44cc36fa6964d1b4f47392ff0a91350cfd58f11a4645c084d56e387e5c</span></span><br><span class="line"><span class="string">57872441580840888721108499129165088876046881204464784483281653404168342111855</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure></li>
+<li><p>题解</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">msg = <span class="string">b&#x27;welcome to ecdsa&#x27;</span></span><br><span class="line">nonce = <span class="number">57872441580840888721108499129165088876046881204464784483281653404168342111855</span></span><br><span class="line">R = <span class="number">0x7b35712a50d463ac5acf7af1675b4b63ba0da23b6452023afddd58d4891ef6e5</span></span><br><span class="line">S = <span class="number">0xa452fc44cc36fa6964d1b4f47392ff0a91350cfd58f11a4645c084d56e387e5c</span></span><br><span class="line">msg = <span class="built_in">int</span>(hashlib.sha256(msg).hexdigest(), <span class="number">16</span>)</span><br><span class="line">n = ecdsa.NIST256p.generator.order()</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">secret = (S * nonce - msg) * gmpy2.invert(R, n) % n</span><br><span class="line"><span class="built_in">print</span>(secret)</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(secret))</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>crypto</tag>
+        <tag>ecc</tag>
+        <tag>sagemath</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NTRU-note</title>
+    <url>//NTRU-note.html</url>
+    <content><![CDATA[<h1 id="ntru-原理">NTRU 原理</h1>
+<h2 id="简述">简述</h2>
+<p>NTRU
+是一种基于环与格的公钥密码系统，特点是密钥短且容易产生，算法运算速度快，所需存储空间小。</p>
+<h2 id="前提">前提</h2>
+<ol type="1">
+<li><p>设 <span class="math inline">\(R(N)\)</span> 表示最高次数不超过
+<span class="math inline">\(N-1\)</span> 的所有整系数多项式集合，即
+<span class="math inline">\(a=a_0+a_1x+\cdots+a_{N-1}x^{N-1}\)</span></p></li>
+<li><p><span class="math inline">\(R\)</span> 上的加法定义为：<span class="math inline">\(a+b=(a_0+b_0)+(a_1+b_1)x+\cdots+(a_{N-1}+b_{N-1})x^{N-1}\)</span></p></li>
+<li><p><span class="math inline">\(R\)</span> 上的乘法定义为：<span class="math inline">\(a\times
+b=c_0+c_1x+\cdots+c_{N-1}x^{N-1}\)</span>，其中第 <span class="math inline">\(k\)</span> 阶系数为： <span class="math display">\[
+\sum_{i+j\equiv k\pmod{N}}a_ib_i
+\]</span></p></li>
+</ol>
+<p>由以上定义可知，<span class="math inline">\(R\)</span>
+的加法和乘法运算构成一个环。</p>
+<h2 id="算法">算法</h2>
+<p>首先需要三个整数 <span class="math inline">\(N,p,q\)</span>，其中
+<span class="math inline">\(N-1\)</span> 为多项式的阶，<span class="math inline">\(\gcd(p,q)\equiv1\)</span> 且 <span class="math inline">\(q&gt;p\)</span>，且 <span class="math inline">\(L_f,L_g,L_\phi,L_m\)</span> 为 <span class="math inline">\(R(N)\)</span></p>
+<h3 id="密钥生成">密钥生成</h3>
+<ol type="1">
+<li><p>随机选取两个多项式 <span class="math inline">\(f,g\in
+L_g\)</span>，其中多项式 <span class="math inline">\(f\)</span> 在模
+<span class="math inline">\(p\)</span> 和 模 <span class="math inline">\(q\)</span> 下均可逆，其逆元分别表示为 <span class="math inline">\(F_p,F_q\)</span>，即满足 <span class="math display">\[
+F_p\cdot f\equiv1\pmod{p}\\F_q\cdot f\equiv1\pmod{q}
+\]</span></p></li>
+<li><p>计算 <span class="math inline">\(h\equiv F_q\cdot
+g\pmod{q}\)</span></p></li>
+<li><p>以 <span class="math inline">\(h\)</span> 作为公钥， <span class="math inline">\(f\)</span> 作为密钥，但密文接收方需要保存 <span class="math inline">\(F_q\)</span></p></li>
+</ol>
+<h3 id="加密">加密</h3>
+<ol type="1">
+<li><p>设 <span class="math inline">\(m\)</span> 为消息，有多项式 <span class="math inline">\(\phi\in L_\phi\)</span></p></li>
+<li><p>用公钥 <span class="math inline">\(h\)</span> 对消息进行加密：
+<span class="math display">\[
+e\equiv p\phi\cdot h+m\pmod{q}
+\]</span></p></li>
+<li><p><span class="math inline">\(e\)</span> 即为密文</p></li>
+</ol>
+<h3 id="解密">解密</h3>
+<ol type="1">
+<li>计算 <span class="math inline">\(a\equiv f\cdot
+e\pmod{q}\)</span>，其中 <span class="math inline">\(a\)</span>
+的系数选在 <span class="math inline">\(\displaystyle(-\frac{q}{2},\frac{q}{2})\)</span>
+区间内</li>
+<li>计算 <span class="math inline">\(m=F_P\cdot a\pmod{p}\)</span></li>
+</ol>
+<h3 id="解密原理">解密原理</h3>
+<p><span class="math display">\[
+\begin{align*}
+a&amp;\equiv f\cdot e\\
+&amp;\equiv f\cdot p\phi+f\cdot m\pmod{q}\\
+&amp;\equiv f\cdot p\phi \cdot F_qg+f\cdot m\pmod{q}\\
+&amp;\equiv p\phi\cdot g+f\cdot m\pmod{q}
+\end{align*}
+\]</span></p>
+<p>其中 <span class="math inline">\(a\)</span> 的系数选在 <span class="math inline">\(\displaystyle(-\frac{q}{2},\frac{q}{2})\)</span>
+区间内，故 <span class="math display">\[
+m=F_p\cdot a\equiv F_p\cdot p\phi\cdot g+F_p\cdot f\cdot m\pmod{q}\equiv
+m\pmod{q}
+\]</span></p>
+<h1 id="ntru-求解">NTRU 求解</h1>
+<h2 id="明文爆破">明文爆破</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">from</span> Crypto.Hash <span class="keyword">import</span> SHA3_256</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.Padding <span class="keyword">import</span> pad</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> flag</span><br><span class="line"></span><br><span class="line"><span class="comment"># parameters</span></span><br><span class="line">N = <span class="number">10</span></span><br><span class="line">p = <span class="number">3</span></span><br><span class="line">q = <span class="number">512</span></span><br><span class="line">d = <span class="number">3</span></span><br><span class="line"><span class="keyword">assert</span> q&gt;(<span class="number">6</span>*d+<span class="number">1</span>)*p</span><br><span class="line"></span><br><span class="line">R.&lt;x&gt; = ZZ[]</span><br><span class="line"></span><br><span class="line"><span class="comment">#d1 1s and #d2 -1s</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">T</span>(<span class="params">d1, d2</span>):</span></span><br><span class="line">    <span class="keyword">assert</span> N &gt;= d1+d2</span><br><span class="line">    s = [<span class="number">1</span>]*d1 + [-<span class="number">1</span>]*d2 + [<span class="number">0</span>]*(N-d1-d2)</span><br><span class="line">    shuffle(s)</span><br><span class="line">    <span class="keyword">return</span> R(s)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">invertModPrime</span>(<span class="params">f, p</span>):</span></span><br><span class="line">    Rp = R.change_ring(Integers(p)).quotient(x^N-<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> R(lift(<span class="number">1</span> / Rp(f)))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convolution</span>(<span class="params">f, g</span>):</span></span><br><span class="line">    <span class="keyword">return</span> (f*g) % (x^N-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">liftMod</span>(<span class="params">f, q</span>):</span></span><br><span class="line">    g = <span class="built_in">list</span>(((f[i] + q//<span class="number">2</span>) % q) - q//<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N))</span><br><span class="line">    <span class="keyword">return</span> R(g)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">polyMod</span>(<span class="params">f, q</span>):</span></span><br><span class="line">    g = [f[i]%q <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)]</span><br><span class="line">    <span class="keyword">return</span> R(g)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">invertModPow2</span>(<span class="params">f, q</span>):</span></span><br><span class="line">    <span class="keyword">assert</span> q.is_power_of(<span class="number">2</span>)</span><br><span class="line">    g = invertModPrime(f,<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        r = liftMod(convolution(g,f),q)</span><br><span class="line">        <span class="keyword">if</span> r == <span class="number">1</span>: <span class="keyword">return</span> g</span><br><span class="line">        g = liftMod(convolution(g,<span class="number">2</span> - r),q)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">genMessage</span>():</span></span><br><span class="line">    result = <span class="built_in">list</span>(randrange(p) - <span class="number">1</span> <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(N))</span><br><span class="line">    <span class="keyword">return</span> R(result)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">genKey</span>():</span></span><br><span class="line">  <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      f = T(d+<span class="number">1</span>, d)</span><br><span class="line">      g = T(d, d)</span><br><span class="line">      Fp = polyMod(invertModPrime(f, p), p)</span><br><span class="line">      Fq = polyMod(invertModPow2(f, q), q)</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">  h = polyMod(convolution(Fq, g), q)</span><br><span class="line">  <span class="keyword">return</span> h, (f, g)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">encrypt</span>(<span class="params">m, h</span>):</span></span><br><span class="line">    e = liftMod(p*convolution(h, T(d, d)) + m, q)</span><br><span class="line">    <span class="keyword">return</span> e</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 1</span></span><br><span class="line">h, secret = genKey()</span><br><span class="line">m = genMessage()</span><br><span class="line">e = encrypt(m, h)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;h = %s&#x27;</span> % h)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;e = %s&#x27;</span> % e)</span><br><span class="line"></span><br><span class="line">result = <span class="built_in">list</span>(randrange(p) - <span class="number">1</span> <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(N))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(-<span class="number">1</span>, p), repeat=N):</span><br><span class="line">    i = <span class="built_in">list</span>(i)</span><br><span class="line">    m = R(i)</span><br><span class="line">    <span class="keyword">if</span> encrypt(m, h) == e:</span><br><span class="line">        <span class="built_in">print</span>(m)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;end&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2</span></span><br><span class="line">sha3 = SHA3_256.new()</span><br><span class="line">sha3.update(<span class="built_in">bytes</span>(<span class="built_in">str</span>(m).encode(<span class="string">&#x27;utf-8&#x27;</span>)))</span><br><span class="line">key = sha3.digest()</span><br><span class="line"></span><br><span class="line">cypher = AES.new(key, AES.MODE_ECB)</span><br><span class="line">c = cypher.encrypt(pad(flag, <span class="number">32</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;c = %s&#x27;</span> % c)</span><br></pre></td></tr></table></figure>
+<p>输出为</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">h = <span class="number">39</span>*x^<span class="number">9</span> + <span class="number">60</span>*x^<span class="number">8</span> + <span class="number">349</span>*x^<span class="number">7</span> + <span class="number">268</span>*x^<span class="number">6</span> + <span class="number">144</span>*x^<span class="number">5</span> + <span class="number">469</span>*x^<span class="number">4</span> + <span class="number">449</span>*x^<span class="number">3</span> + <span class="number">165</span>*x^<span class="number">2</span> + <span class="number">248</span>*x + <span class="number">369</span></span><br><span class="line">e = -<span class="number">144</span>*x^<span class="number">9</span> - <span class="number">200</span>*x^<span class="number">8</span> - <span class="number">8</span>*x^<span class="number">7</span> + <span class="number">248</span>*x^<span class="number">6</span> + <span class="number">85</span>*x^<span class="number">5</span> + <span class="number">102</span>*x^<span class="number">4</span> + <span class="number">167</span>*x^<span class="number">3</span> + <span class="number">30</span>*x^<span class="number">2</span> - <span class="number">203</span>*x - <span class="number">78</span></span><br><span class="line">c = <span class="string">b&#x27;\xb9W\x8c\x8b\x0cG\xde\x7fl\xf7\x03\xbb9m\x0c\xc4L\xfe\xe9Q\xad\xfd\xda!\x1a\xea@&#125;U\x9ay4\x8a\xe3y\xdf\xd5BV\xa7\x06\xf9\x08\x96=&quot;f\xc1\x1b\xd7\xdb\xc1j\x82F\x0b\x16\x06\xbcJMB\xc8\x80&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>由于明文多项式较小，直接爆破即可：</p>
+<p>首先各种多项式 m 的值</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">fp = <span class="built_in">open</span>(<span class="string">&#x27;m.txt&#x27;</span>, <span class="string">&#x27;w&#x27;</span>)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(p), repeat=N):</span><br><span class="line">    r = <span class="built_in">list</span>(j-<span class="number">1</span> <span class="keyword">for</span> j <span class="keyword">in</span> i)</span><br><span class="line">    m = R(r)</span><br><span class="line">    <span class="built_in">print</span>(m, file=fp)</span><br></pre></td></tr></table></figure>
+<p>然后直接爆破即可</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Hash <span class="keyword">import</span> SHA3_256</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.Padding <span class="keyword">import</span> pad</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;m.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read().splitlines()</span><br><span class="line"><span class="built_in">print</span>(data)</span><br><span class="line">c = <span class="string">b&#x27;\xb9W\x8c\x8b\x0cG\xde\x7fl\xf7\x03\xbb9m\x0c\xc4L\xfe\xe9Q\xad\xfd\xda!\x1a\xea@&#125;U\x9ay4\x8a\xe3y\xdf\xd5BV\xa7\x06\xf9\x08\x96=&quot;f\xc1\x1b\xd7\xdb\xc1j\x82F\x0b\x16\x06\xbcJMB\xc8\x80&#x27;</span></span><br><span class="line"><span class="keyword">for</span> m <span class="keyword">in</span> data:</span><br><span class="line">    sha3 = SHA3_256.new()</span><br><span class="line">    sha3.update(<span class="built_in">bytes</span>(<span class="built_in">str</span>(m).encode(<span class="string">&#x27;utf-8&#x27;</span>)))</span><br><span class="line">    key = sha3.digest()</span><br><span class="line"></span><br><span class="line">    cypher = AES.new(key, AES.MODE_ECB)</span><br><span class="line">    k = cypher.decrypt(c)</span><br><span class="line">    <span class="keyword">if</span> <span class="string">b&#x27;DASCTF&#x27;</span> <span class="keyword">in</span> k:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;k=&#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+]]></content>
+  </entry>
+  <entry>
+    <title>zip压缩包取证笔记</title>
+    <url>//zip-crack-note.html</url>
+    <content><![CDATA[<h1 id="zip-格式详解">ZIP 格式详解</h1>
+<h2 id="简述">简述</h2>
+<p>ZIP 文件格式是一种数据压缩和文档储存的文件格式，原名
+Deflate（压缩算法），现通常以 <code>.zip</code>
+后缀表示该类压缩文件。</p>
+<p>目前来说 ZIP
+是一种主流的压缩方式，但存在许多缺陷，例如明文攻击、字典攻击和暴力破解等。</p>
+<p>可以使用 Bandizip 等多种主流工具进行 Deflate 压缩。</p>
+<h2 id="数据">数据</h2>
+<p>ZIP 压缩包的数据以块为单位，常见的有以下几个块：</p>
+<h3 id="文件数据块zipfilerecord">文件数据块（<code>ZIPFILERECORD</code>）</h3>
+<table>
+<colgroup>
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>名字</th>
+<th>字节</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Signature</code></td>
+<td>4</td>
+<td>值为<code>504B0304</code>，是 ZIP 特有签名</td>
+</tr>
+<tr class="even">
+<td><code>Version</code></td>
+<td>2</td>
+<td>解压文件所需版本</td>
+</tr>
+<tr class="odd">
+<td><code>Flags</code></td>
+<td>2</td>
+<td>通用标志位</td>
+</tr>
+<tr class="even">
+<td><code>Compression</code></td>
+<td>2</td>
+<td>压缩方式</td>
+</tr>
+<tr class="odd">
+<td><code>FileTime</code></td>
+<td>2</td>
+<td>被压缩文件最后修改时间（<code>DOSTIME</code>类型）</td>
+</tr>
+<tr class="even">
+<td><code>FileDate</code></td>
+<td>2</td>
+<td>被压缩文件最后修改日期（<code>DOSDATE</code>类型）</td>
+</tr>
+<tr class="odd">
+<td><code>Crc</code></td>
+<td>4</td>
+<td>CRC 校验码</td>
+</tr>
+<tr class="even">
+<td><code>CompressedSize</code></td>
+<td>4</td>
+<td>压缩后大小（同时也是 <code>Data</code> 块大小）</td>
+</tr>
+<tr class="odd">
+<td><code>UncompressedSize</code></td>
+<td>4</td>
+<td>文件原始大小（即解压后的大小）</td>
+</tr>
+<tr class="even">
+<td><code>FileNameLength</code></td>
+<td>2</td>
+<td>被压缩文件名长度</td>
+</tr>
+<tr class="odd">
+<td><code>ExtraFieldLength</code></td>
+<td>2</td>
+<td>扩展区长度</td>
+</tr>
+<tr class="even">
+<td><code>FileName</code></td>
+<td><code>FileNameLength</code></td>
+<td>被压缩文件名</td>
+</tr>
+<tr class="odd">
+<td><code>Data</code></td>
+<td><code>CompressedSize</code></td>
+<td>被压缩文件数据</td>
+</tr>
+<tr class="even">
+<td><code>ExtData</code></td>
+<td><code>ExtraFieldLength</code></td>
+<td>扩展区数据</td>
+</tr>
+</tbody>
+</table>
+<p>其中默认压缩版本一般为 <code>20</code>，即 <code>Deflate</code>
+压缩方式。</p>
+<h4 id="version"><code>Version</code></h4>
+<p><strong>当前最低功能版本定义如下</strong>：（压缩包记录的解压版本都是需要版本<em>10，比如：2.0
+</em> 10 = 20）</p>
+<ul>
+<li><p>1.0 - 默认值</p></li>
+<li><p>1.1 - 文件是卷标</p></li>
+<li><p>2.0 - 文件是一个文件夹（目录）</p></li>
+<li><p>2.0 - 使用 Deflate 压缩来压缩文件</p></li>
+<li><p>2.0 - 使用传统的 PKWARE 加密对文件进行加密</p></li>
+<li><p>2.1 - 使用 Deflate64™ 压缩文件</p></li>
+<li><p>2.5 - 使用 PKWARE DCL Implode 压缩文件</p></li>
+<li><p>2.7 - 文件是补丁数据集</p></li>
+<li><p>4.5 - 文件使用 ZIP64 格式扩展</p></li>
+<li><p>4.6 - 使用 BZIP2 压缩文件压缩</p></li>
+<li><p>5.0 - 文件使用 DES 加密</p></li>
+<li><p>5.0 - 文件使用 3DES 加密</p></li>
+<li><p>5.0 - 使用原始 RC2 加密对文件进行加密</p></li>
+<li><p>5.0 - 使用 RC4 加密对文件进行加密</p></li>
+<li><p>5.1 - 文件使用 AES 加密进行加密</p></li>
+<li><p>5.1 - 使用更正的 RC2 加密对文件进行加密</p></li>
+<li><p>5.2 - 使用更正的 RC2-64 加密对文件进行加密</p></li>
+<li><p>6.1 - 使用非 OAEP 密钥包装对文件进行加密</p></li>
+<li><p>6.2 - 中央目录加密</p></li>
+</ul>
+<h4 id="flags"><code>Flags</code></h4>
+<p>当<strong>第0位为1时</strong>（即<code>0x1</code>），表示<strong>文件被加密</strong>；当<strong>第3位为1时</strong>（即<code>0x3</code>），表示<strong>有数据描述部分</strong>。</p>
+<p>有时虽然第3位为1，但仍然本地头存有真实值（理论上文件头内的描述应该被设为0，然后将描述放在<strong>数据描述部分</strong>）。</p>
+<h4 id="compression"><code>Compression</code></h4>
+<p>不同的值代表不同的压缩方式，默认为 <code>8</code>，即
+<code>Deflate</code> 压缩。</p>
+<ul>
+<li>0 - The file is stored (no compression)</li>
+<li>1 - The file is Shrunk</li>
+<li>2 - The file is Reduced with compression factor 1</li>
+<li>3 - The file is Reduced with compression factor 2</li>
+<li>4 - The file is Reduced with compression factor 3</li>
+<li>5 - The file is Reduced with compression factor 4</li>
+<li>6 - The file is Imploded</li>
+<li>7 - Reserved for Tokenizing compression algorithm</li>
+<li>8 - The file is Deflated</li>
+<li>9 - Enhanced Deflating using Deflate64™</li>
+<li>10 - PKWARE Data Compression Library Imploding</li>
+<li>11 - Reserved by PKWARE</li>
+<li>12 - File is compressed using BZIP2 algorithm</li>
+</ul>
+<h4 id="crc"><code>Crc</code></h4>
+<p>该 CRC 校验码为文件未压缩时的 <code>CRC-32</code> 校验码，在 Python
+中可借助 <code>binascii</code> 模块进行计算。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line">crc = binascii.crc32(<span class="string">&#x27;hello&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="文件目录块zipdirentry">文件目录块（<code>ZIPDIRENTRY</code>）</h3>
+<p>一个数据块就对应一个目录块，其中
+<code>Flags</code>、<code>Compression</code>、<code>FileTime</code>、<code>FileDate</code>、<code>Crc</code>、<code>CompressedSize</code>、<code>UncompressedSize</code>、<code>FileNameLength</code>、<code>ExtraFieldLength</code>
+与数据块同值。</p>
+<table>
+<colgroup>
+<col style="width: 24%">
+<col style="width: 22%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>名字</th>
+<th>字节</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Signature</code></td>
+<td>4</td>
+<td>值为<code>504B0102</code>，是 ZIP 特有签名</td>
+</tr>
+<tr class="even">
+<td><code>VersionModeBy</code></td>
+<td>2</td>
+<td>压缩版本</td>
+</tr>
+<tr class="odd">
+<td><code>VersionToExtract</code></td>
+<td>2</td>
+<td>解压所需最小版本</td>
+</tr>
+<tr class="even">
+<td><code>Flags</code></td>
+<td>2</td>
+<td>通用标志位</td>
+</tr>
+<tr class="odd">
+<td><code>Compression</code></td>
+<td>2</td>
+<td>压缩方式</td>
+</tr>
+<tr class="even">
+<td><code>FileTime</code></td>
+<td>2</td>
+<td>被压缩文件最后修改时间（<code>DOSDATE</code>类型）</td>
+</tr>
+<tr class="odd">
+<td><code>FileDate</code></td>
+<td>2</td>
+<td>被压缩文件最后修改日期（<code>DOSDATE</code>类型）</td>
+</tr>
+<tr class="even">
+<td><code>Crc</code></td>
+<td>4</td>
+<td>CRC 校验码</td>
+</tr>
+<tr class="odd">
+<td><code>CompressedSize</code></td>
+<td>4</td>
+<td>压缩后大小（同时也是 <code>Data</code> 块大小）</td>
+</tr>
+<tr class="even">
+<td><code>UncompressedSize</code></td>
+<td>4</td>
+<td>文件原始大小（即解压后的大小）</td>
+</tr>
+<tr class="odd">
+<td><code>FileNameLength</code></td>
+<td>2</td>
+<td>被压缩文件名长度</td>
+</tr>
+<tr class="even">
+<td><code>ExtraFieldLength</code></td>
+<td>2</td>
+<td>扩展区长度</td>
+</tr>
+<tr class="odd">
+<td><code>FileCommentLength</code></td>
+<td>2</td>
+<td>文件注释的长度</td>
+</tr>
+<tr class="even">
+<td><code>DiskNumberStart</code></td>
+<td>2</td>
+<td>文件开始位置的磁盘编号（默认为0）</td>
+</tr>
+<tr class="odd">
+<td><code>InternalAttributes</code></td>
+<td>2</td>
+<td>内部文件属性</td>
+</tr>
+<tr class="even">
+<td><code>ExternalAttributes</code></td>
+<td>4</td>
+<td>外部文件属性</td>
+</tr>
+<tr class="odd">
+<td><code>HeaderOffset</code></td>
+<td>4</td>
+<td>数据区本地文件头相对于压缩包开始位置的偏移量</td>
+</tr>
+<tr class="even">
+<td><code>FileName</code></td>
+<td><code>FileNameLength</code></td>
+<td>被压缩文件名</td>
+</tr>
+<tr class="odd">
+<td><code>ExtraField</code></td>
+<td><code>ExtraFieldLength</code></td>
+<td>扩展区数据</td>
+</tr>
+<tr class="even">
+<td><code>Comment</code></td>
+<td><code>FileCommentLength</code></td>
+<td>注解</td>
+</tr>
+</tbody>
+</table>
+<h3 id="zip-尾块zipendlocator">ZIP
+尾块（<code>ZIPENDLOCATOR</code>）</h3>
+<table>
+<colgroup>
+<col style="width: 29%">
+<col style="width: 22%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>名字</th>
+<th>字节</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Signature</code></td>
+<td>4</td>
+<td>值为<code>504B0506</code>，是 ZIP 尾特有签名</td>
+</tr>
+<tr class="even">
+<td><code>DiskNumber</code></td>
+<td>2</td>
+<td>中央目录记录尾部区所在磁盘编号</td>
+</tr>
+<tr class="odd">
+<td><code>StartDiskNumber</code></td>
+<td>2</td>
+<td>中央目录开始位置所在的磁盘编号</td>
+</tr>
+<tr class="even">
+<td><code>EntriesOnDisk</code></td>
+<td>2</td>
+<td>该磁盘上所记录的核心目录数量</td>
+</tr>
+<tr class="odd">
+<td><code>EntriesInDirectory</code></td>
+<td>2</td>
+<td>zip压缩包中的文件总数</td>
+</tr>
+<tr class="even">
+<td><code>DirectorySize</code></td>
+<td>4</td>
+<td>目录大小</td>
+</tr>
+<tr class="odd">
+<td><code>DirectoryOffset</code></td>
+<td>4</td>
+<td>目录开始位置的相对偏移量</td>
+</tr>
+<tr class="even">
+<td><code>CommentLength</code></td>
+<td>2</td>
+<td>注解长度</td>
+</tr>
+<tr class="odd">
+<td><code>Comment</code></td>
+<td><code>CommentLength</code></td>
+<td>注解</td>
+</tr>
+</tbody>
+</table>
+<p>需要注意的是，一个 ZIP 文件只有一个 ZIP
+尾块，如果出现多个尾块可能是文件损坏或多文件重合。</p>
+<h1 id="zip-破解">ZIP 破解</h1>
+<h2 id="伪加密">伪加密</h2>
+<h3 id="原理">原理</h3>
+<p>在 ZIP 文件中，数据区与目录区中的 <code>Flags</code>
+应该是相同的值。当<strong>数据区</strong>的标志位为<strong>加密标志</strong>，而<strong>目录区</strong>的标志位为<strong>非加密标志</strong>时，这个时候许多
+ZIP 软件会将其识别为被加密，但实际上并不存在对应的密码。</p>
+<h3 id="破解">破解</h3>
+<p>只需要将<strong>数据区和目录区的标志位</strong>置为0即可。</p>
+<h2 id="弱密码爆破">弱密码爆破</h2>
+<h3 id="原理-1">原理</h3>
+<p>Deflate
+压缩方式的解压速度是十分优秀的，但是这也导致我们进行爆破的效率十分之高。</p>
+<h3 id="破解-1">破解</h3>
+<p>一般来说推荐使用 ARCHPR 对 ZIP
+压缩包进行暴力破解处理。一般是范围内枚举（例如纯数字或数字与字母的排列组合）或是使用专有的字典进行弱密码爆破。</p>
+<p>同时也可以使用 hashcat 和 <a href="https://github.com/kimci86/bkcrack">bkcrack</a> 对 ZIP
+的密码进行破解。</p>
+<h4 id="section"></h4>
+<h2 id="crc-碰撞">CRC 碰撞</h2>
+<h3 id="原理-2">原理</h3>
+<p>当压缩文件内容较少或仅有部分明文未知时，可以采用 CRC
+碰撞的方式去暴力破解明文（因为压缩包中保存的 CRC
+校验值为压缩前内容的校验）。</p>
+<h3 id="破解-2">破解</h3>
+<p>可以使用 Python
+脚本进行爆破，但下面的脚本仅是示例，如果有特别的需求（例如未知明文在已知明文中间段时）需要自行修改脚本。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CRCcrack</span>(<span class="params">unknownBytes: <span class="built_in">int</span>, targetCRC: <span class="built_in">int</span>, known: <span class="built_in">bytes</span>=<span class="string">&quot;&quot;</span></span>) -&gt; <span class="built_in">list</span>[<span class="built_in">bytes</span>]:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    CRC 碰撞</span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        unknownBytes - 未知的字节数</span></span><br><span class="line"><span class="string">        known - 已知明文（默认为拼接）</span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        完整明文</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    rst = []</span><br><span class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(<span class="number">128</span>), repeat=unknownBytes):</span><br><span class="line">        msg = known + <span class="string">b&#x27;&#x27;</span>.join(<span class="built_in">bytes</span>(m))</span><br><span class="line">        crc = binascii.crc32(msg)</span><br><span class="line">        <span class="keyword">if</span> crc == targetCRC:</span><br><span class="line">            rst.append(msg)</span><br><span class="line">    <span class="keyword">return</span> rst</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如果仅是碰撞，我们可以使用 GitHub 上的开源项目（<a href="https://github.com/theonlypwner/crc32">CRC32 Tools</a>）</p>
+<p>使用方法：</p>
+<figure class="highlight powershell"><table><tr><td class="code"><pre><span class="line">python crc32.py reverse <span class="number">0</span>x4FA83D8C</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，因为 CRC-32 是哈希算法的一种，所以可能会存在多个明文的
+CRC-32 值相等。</p>
+<h2 id="明文攻击">明文攻击</h2>
+<h3 id="原理-3">原理</h3>
+<p>ZIP
+加密模式本质上是将密码转化为内置的一个密钥进行加密的，而密钥是有限长度的，所以如果我们知道一个压缩包内其中一个文件的完整明文，那么我们就可以通过算法将密钥百分百地计算出来（理论上可以把密码也百分百计算出来），且理论上破解速度只与被压缩文件大小有关。</p>
+<h3 id="破解-3">破解</h3>
+<p>推荐使用 ARCHPR
+的明文攻击模式进行破解，需要一个明文压缩包和含有明文文件的密文压缩包，其中他们的压缩算法应该是相同的。</p>
+<p>同时也可以使用 <a href="https://github.com/kimci86/bkcrack">bkcrack</a> 进行破解。</p>
+<h2 id="深入明文攻击">深入明文攻击</h2>
+<h3 id="原理-4">原理</h3>
+<p>ZIP
+加密模式本质上是将密码转化为内置的一个密钥进行加密的，而密钥是有限长度的，而且
+ZIP
+的加密方式使得我们可以只解密部分密文，如果我们知道某个文件的部分密文，那么我们可以遍历所有可能的密钥去进行比对（类似
+CRC 碰撞的原理）。</p>
+<p>但仅有 ZipCrypto Deflate 算法和 ZipCrypto Store
+算法可以用此方式破解。</p>
+<h3 id="破解-4">破解</h3>
+<p>使用 <a href="https://github.com/kimci86/bkcrack">bkcrack</a>
+需要已知明文的十二个字节和偏移，其中八个字节必须连续。</p>
+<p>需要使用到的参数：</p>
+<table>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-C file.zip</code></td>
+<td>加密压缩包</td>
+</tr>
+<tr class="even">
+<td><code>-c file</code></td>
+<td>提取的密文文件（密文部分）</td>
+</tr>
+<tr class="odd">
+<td><code>-p key.txt</code></td>
+<td>指定明文部分</td>
+</tr>
+<tr class="even">
+<td><code>-x offset hex</code></td>
+<td>指定偏移量和部分明文十六进制值</td>
+</tr>
+<tr class="odd">
+<td><code>-o offset</code></td>
+<td>指定明文部分的偏移量</td>
+</tr>
+<tr class="even">
+<td><code>-k key1 key2 key3</code></td>
+<td>指定三段解密密钥</td>
+</tr>
+<tr class="odd">
+<td><code>-d file</code></td>
+<td>解压缩得到的目标文件</td>
+</tr>
+</tbody>
+</table>
+<p>例如针对 JPG 的压缩包，我们可以使用以下命令：</p>
+<p>首先生成明文文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> -n <span class="string">&quot;FFD8FFE000104A4649460001&quot;</span> | xxd -r -ps &gt; key.txt</span><br></pre></td></tr></table></figure>
+<p>随后进行密钥爆破：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bkcrack -C 1.zip -c t.jpg -p key.txt -o 0</span><br></pre></td></tr></table></figure>
+<p>或者是针对 ZIP 的压缩包，我们可以使用以下命令：</p>
+<p>首先我们这个 ZIP 中存在 flag.txt 的明文：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> -n <span class="string">&quot;flag.txt&quot;</span> &gt; key.txt</span><br></pre></td></tr></table></figure>
+<p>其次我们知道 ZIP 文件的头，故进行密钥爆破：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bkcrack -C 1.zip -c flag.zip -p key.txt -o 30 -x 0 504B03041400</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，当已知字节数越多时，得到的密钥越准确。</p>
+<p>得到三段密钥后我们进行提取：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bkcrack -C 1.zip -c flag.zip -k 683a571e f954e70c 49da18ac -d 111.zip</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，如果文件是使用 Deflate
+算法进行压缩的话，需要使用其自带的 <code>inflate.py</code> 脚本（在
+<code>./tools/</code> 文件夹中）进行解压缩：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python inflate.py &lt; 1.jpg &gt; 2.jpg</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>forensics</tag>
+        <tag>zip</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>volatility2 使用笔记</title>
+    <url>//vol2-note.html</url>
+    <content><![CDATA[<h1 id="volatility2-安装">volatility2 安装</h1>
+<p>在 GitHub
+主页中可以直接获取源码：https://github.com/volatilityfoundation/volatility</p>
+<p>直接使用源码运行即可，同时在官网也可以获取到可直接运行的版本：https://www.volatilityfoundation.org/releases</p>
+<p>需要注意的是，volatility2 所需的运行环境为
+Python2，且存在一些依赖库。</p>
+<h1 id="volatility2-使用">volatility2 使用</h1>
+<h2 id="参数">参数</h2>
+<p>使用 <code>python2 vol.py -h</code> 可获取到帮助信息：</p>
+<blockquote>
+<p>Options: -h, --help list all available options and their default
+values. Default values may be set in the configuration file
+(/etc/volatilityrc) --conf-file=.volatilityrc User based configuration
+file -d, --debug Debug volatility --plugins=PLUGINS Additional plugin
+directories to use (semi-colon separated) --info Print information about
+all registered objects --cache-directory=C:\53124/.cache Directory where
+cache files are stored --cache Use caching --tz=TZ Sets the (Olson)
+timezone for displaying timestamps using pytz (if installed) or tzset -f
+FILENAME, --filename=FILENAME Filename to use when opening an image
+--profile=WinXPSP2x86 Name of the profile to load (use --info to see a
+list of supported profiles) -l LOCATION, --location=LOCATION A URN
+location from which to load an address space -w, --write Enable write
+support --dtb=DTB DTB Address --output=text Output in this format
+(support is module specific, see the Module Output Options below)
+--output-file=OUTPUT_FILE Write output in this file -v, --verbose
+Verbose information --shift=SHIFT Mac KASLR shift address
+--physical_shift=PHYSICAL_SHIFT Linux kernel physical shift address
+--virtual_shift=VIRTUAL_SHIFT Linux kernel virtual shift address -g
+KDBG, --kdbg=KDBG Specify a KDBG virtual address (Note: for 64-bit
+Windows 8 and above this is the address of KdCopyDataBlock) --force
+Force utilization of suspect profile -k KPCR, --kpcr=KPCR Specify a
+specific KPCR address --cookie=COOKIE Specify the address of
+nt!ObHeaderCookie (valid for Windows 10 only)</p>
+</blockquote>
+<p>一般来说常用的参数格式为：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 vol.py -f file.raw plugins [args]</span><br></pre></td></tr></table></figure>
+<p>例如获取内存镜像的环境信息：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 vol.py -f file.raw imageinfo</span><br></pre></td></tr></table></figure>
+<p>或者是转储文件：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 vol.py -f file.raw dumpfiles --dump-dir .</span><br></pre></td></tr></table></figure>
+<h2 id="插件明细">插件明细</h2>
+<table>
+<colgroup>
+<col style="width: 30%">
+<col style="width: 69%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>插件名</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>amcache</td>
+<td>打印 AmCache 信息</td>
+</tr>
+<tr class="even">
+<td>apihooks</td>
+<td>检测进程和内核内存中的 API 钩子 (hooks)</td>
+</tr>
+<tr class="odd">
+<td>atoms</td>
+<td>打印会话和窗口站原子表</td>
+</tr>
+<tr class="even">
+<td>atomscan</td>
+<td>原子表池扫描器</td>
+</tr>
+<tr class="odd">
+<td>auditpol</td>
+<td>从 <code>HKLM\SECURITY\Policy\PolAdtEv</code> 打印审计策略</td>
+</tr>
+<tr class="even">
+<td>bigpools</td>
+<td>使用 <code>BigPagePoolScanner</code> 转储大页面池</td>
+</tr>
+<tr class="odd">
+<td>bioskbd</td>
+<td>从 <code>Real Mode</code> 内存中读取键盘缓冲区</td>
+</tr>
+<tr class="even">
+<td>cachedump</td>
+<td>从内存中转储缓存的域哈希值</td>
+</tr>
+<tr class="odd">
+<td>callbacks</td>
+<td>打印整个系统的回调和通知进程</td>
+</tr>
+<tr class="even">
+<td>clipboard</td>
+<td>提取 Windows 剪贴板的内容</td>
+</tr>
+<tr class="odd">
+<td>cmdline</td>
+<td>显示进程的命令行参数</td>
+</tr>
+<tr class="even">
+<td>cmdscan</td>
+<td>通过扫描 <code>_COMMAND_HISTORY</code> 提取命令历史记录</td>
+</tr>
+<tr class="odd">
+<td>connections</td>
+<td>打印开放的连接列表 [仅适用于Windows XP和2003]</td>
+</tr>
+<tr class="even">
+<td>connscan</td>
+<td>连接池中扫描 tcp 连接</td>
+</tr>
+<tr class="odd">
+<td>consoles</td>
+<td>通过扫描 <code>_CONSOLE_INFORMATION</code> 来提取命令历史记录</td>
+</tr>
+<tr class="even">
+<td>crashinfo</td>
+<td>转储崩溃转储信息</td>
+</tr>
+<tr class="odd">
+<td>deskscan</td>
+<td>标签 DESKTOP（台式机）的池扫描器</td>
+</tr>
+<tr class="even">
+<td>devicetree</td>
+<td>以树状图形式显示驱动</td>
+</tr>
+<tr class="odd">
+<td>dlldump</td>
+<td>从进程地址空间转储 DLL</td>
+</tr>
+<tr class="even">
+<td>dlllist</td>
+<td>打印每个进程的加载的 DLL 列表</td>
+</tr>
+<tr class="odd">
+<td>driverirp</td>
+<td>驱动程序 IRP 挂钩检测</td>
+</tr>
+<tr class="even">
+<td>drivermodule</td>
+<td>将驱动程序对象关联到内核模块</td>
+</tr>
+<tr class="odd">
+<td>driverscan</td>
+<td>驱动程序对象的池扫描程序</td>
+</tr>
+<tr class="even">
+<td>dumpcerts</td>
+<td>转储 RSA 的私有和公共 SSL 密钥</td>
+</tr>
+<tr class="odd">
+<td>dumpfiles</td>
+<td>提取内存映射和缓存文件</td>
+</tr>
+<tr class="even">
+<td>dumpregistry</td>
+<td>将注册表文件转储到磁盘</td>
+</tr>
+<tr class="odd">
+<td>editbox</td>
+<td>显示有关编辑控件的信息</td>
+</tr>
+<tr class="even">
+<td>envars</td>
+<td>显示进程环境变量</td>
+</tr>
+<tr class="odd">
+<td>eventhooks</td>
+<td>打印 Windows 事件挂钩的详细信息</td>
+</tr>
+<tr class="even">
+<td>evtlogs</td>
+<td>提取 Windows 事件日志（仅限 XP/2003）</td>
+</tr>
+<tr class="odd">
+<td>filescan</td>
+<td>输出所有文件对象</td>
+</tr>
+<tr class="even">
+<td>gahti</td>
+<td>转储 USER 句柄类型信息</td>
+</tr>
+<tr class="odd">
+<td>gditimers</td>
+<td>打印已安装的 GDI 计时器和回调</td>
+</tr>
+<tr class="even">
+<td>gdt</td>
+<td>显示全局描述符表</td>
+</tr>
+<tr class="odd">
+<td>getservicesids</td>
+<td>获取注册表中的服务名称并返回计算的SID</td>
+</tr>
+<tr class="even">
+<td>getsids</td>
+<td>打印属于每个进程的 SID</td>
+</tr>
+<tr class="odd">
+<td>handles</td>
+<td>打印每个进程的打开的句柄列表</td>
+</tr>
+<tr class="even">
+<td>hashdump</td>
+<td>从内存中转储密码哈希 (LM/NTLM)</td>
+</tr>
+<tr class="odd">
+<td>hibinfo</td>
+<td>转储休眠文件信息</td>
+</tr>
+<tr class="even">
+<td>hivedump</td>
+<td>转出注册表单元</td>
+</tr>
+<tr class="odd">
+<td>hivelist</td>
+<td>打印注册表配置单元列表。</td>
+</tr>
+<tr class="even">
+<td>hivescan</td>
+<td>注册表配置单元的池扫描器</td>
+</tr>
+<tr class="odd">
+<td>hpakextract</td>
+<td>从 HPAK 文件中提取物理内存</td>
+</tr>
+<tr class="even">
+<td>hpakinfo</td>
+<td>关于 HPAK 文件的信息</td>
+</tr>
+<tr class="odd">
+<td>idt</td>
+<td>显示中断描述符表</td>
+</tr>
+<tr class="even">
+<td>iehistory</td>
+<td>重建 Internet Explorer 缓存/历史</td>
+</tr>
+<tr class="odd">
+<td>imagecopy</td>
+<td>将物理地址空间复制为原始 DD 映像</td>
+</tr>
+<tr class="even">
+<td>imageinfo</td>
+<td>识别映像的信息</td>
+</tr>
+<tr class="odd">
+<td>impscan</td>
+<td>扫描对导入函数的调用</td>
+</tr>
+<tr class="even">
+<td>joblinks</td>
+<td>打印进程作业链接信息</td>
+</tr>
+<tr class="odd">
+<td>kdbgscan</td>
+<td>搜索并转储潜在的 KDBG 值</td>
+</tr>
+<tr class="even">
+<td>kpcrscan</td>
+<td>搜索并转储潜在的 KPCR 值</td>
+</tr>
+<tr class="odd">
+<td>ldrmodules</td>
+<td>检测未链接的 DLL</td>
+</tr>
+<tr class="even">
+<td>limeinfo</td>
+<td>转储 Lime 文件格式信息</td>
+</tr>
+<tr class="odd">
+<td>linux_apihooks</td>
+<td>检查用户区 apihooks 情况</td>
+</tr>
+<tr class="even">
+<td>linux_arp</td>
+<td>打印 ARP 表</td>
+</tr>
+<tr class="odd">
+<td>linux_aslr_shift</td>
+<td>自动检测 Linux ASLR shift</td>
+</tr>
+<tr class="even">
+<td>linux_banner</td>
+<td>打印 Linux 横幅信息</td>
+</tr>
+<tr class="odd">
+<td>linux_bash</td>
+<td>从 bash 进程内存中恢复 bash 历史记录</td>
+</tr>
+<tr class="even">
+<td>linux_bash_env</td>
+<td>恢复进程的动态环境变量</td>
+</tr>
+<tr class="odd">
+<td>linux_bash_hash</td>
+<td>从 bash 进程内存中恢复 bash 哈希表</td>
+</tr>
+<tr class="even">
+<td>linux_check_afinfo</td>
+<td>验证网络协议的操作函数指针</td>
+</tr>
+<tr class="odd">
+<td>linux_check_creds</td>
+<td>检查是否有任何进程共享凭证结构</td>
+</tr>
+<tr class="even">
+<td>linux_check_evt_arm</td>
+<td>检查异常向量表以查找系统调用表挂钩</td>
+</tr>
+<tr class="odd">
+<td>linux_check_fop</td>
+<td>检查文件操作结构以查找 rootkit 修改</td>
+</tr>
+<tr class="even">
+<td>linux_check_idt</td>
+<td>检查 IDT 是否已被更改</td>
+</tr>
+<tr class="odd">
+<td>linux_check_inline_kernel</td>
+<td>检查内联内核挂钩</td>
+</tr>
+<tr class="even">
+<td>linux_check_modules</td>
+<td>将模块列表与 sysfs 信息进行比较（如果可用）</td>
+</tr>
+<tr class="odd">
+<td>linux_check_syscall</td>
+<td>检查系统调用表是否已更改</td>
+</tr>
+<tr class="even">
+<td>linux_check_syscall_arm</td>
+<td>检查系统调用表是否已更改</td>
+</tr>
+<tr class="odd">
+<td>linux_check_tty</td>
+<td>检查 tty 设备的挂钩</td>
+</tr>
+<tr class="even">
+<td>linux_cpuinfo</td>
+<td>打印有关每个活动处理器的信息</td>
+</tr>
+<tr class="odd">
+<td>linux_dentry_cache</td>
+<td>从 dentry 缓存中收集文件</td>
+</tr>
+<tr class="even">
+<td>linux_dmesg</td>
+<td>收集 dmesg 缓冲区</td>
+</tr>
+<tr class="odd">
+<td>linux_dump_map</td>
+<td>将选定的内存映射写入磁盘</td>
+</tr>
+<tr class="even">
+<td>linux_dynamic_env</td>
+<td>恢复进程的动态环境变量</td>
+</tr>
+<tr class="odd">
+<td>linux_elfs</td>
+<td>在进程映射中查找 ELF 二进制文件</td>
+</tr>
+<tr class="even">
+<td>linux_enumerate_files</td>
+<td>列出文件系统缓存引用的文件</td>
+</tr>
+<tr class="odd">
+<td>linux_find_file</td>
+<td>列出并从内存中恢复文件</td>
+</tr>
+<tr class="even">
+<td>linux_getcwd</td>
+<td>列出每个进程的当前工作目录</td>
+</tr>
+<tr class="odd">
+<td>linux_hidden_modules</td>
+<td>雕刻内存以查找隐藏的内核模块</td>
+</tr>
+<tr class="even">
+<td>linux_ifconfig</td>
+<td>收集活动接口</td>
+</tr>
+<tr class="odd">
+<td>linux_info_regs</td>
+<td>就像 GDB 中的“信息寄存器”（它将打印出所有寄存器）</td>
+</tr>
+<tr class="even">
+<td>linux_iomem</td>
+<td>提供类似于 <code>/proc/iomem</code> 的输出</td>
+</tr>
+<tr class="odd">
+<td>linux_kernel_opened_files</td>
+<td>列出从内核中打开的文件</td>
+</tr>
+<tr class="even">
+<td>linux_keyboard_notifiers</td>
+<td>解析键盘通知程序调用链</td>
+</tr>
+<tr class="odd">
+<td>linux_ldrmodules</td>
+<td>将 proc maps 的输出与 libdl 中的库列表进行比较</td>
+</tr>
+<tr class="even">
+<td>linux_library_list</td>
+<td>列出加载到进程中的库</td>
+</tr>
+<tr class="odd">
+<td>linux_librarydump</td>
+<td>将进程内存中的共享库转储到磁盘</td>
+</tr>
+<tr class="even">
+<td>linux_list_raw</td>
+<td>列出具有混杂套接字的应用程序</td>
+</tr>
+<tr class="odd">
+<td>linux_lsmod</td>
+<td>收集加载的内核模块</td>
+</tr>
+<tr class="even">
+<td>linux_lsof</td>
+<td>列出文件描述符及其路径</td>
+</tr>
+<tr class="odd">
+<td>linux_malfind</td>
+<td>查找可疑进程映射</td>
+</tr>
+<tr class="even">
+<td>linux_memmap</td>
+<td>转储 linux 任务的内存映射</td>
+</tr>
+<tr class="odd">
+<td>linux_moddump</td>
+<td>提取加载的内核模块</td>
+</tr>
+<tr class="even">
+<td>linux_mount</td>
+<td>收集已安装的 fs/设备</td>
+</tr>
+<tr class="odd">
+<td>linux_mount_cache</td>
+<td>从 kmem_cache 收集已安装的 fs/驱动</td>
+</tr>
+<tr class="even">
+<td>linux_netfilter</td>
+<td>列出 Netfilter 钩子</td>
+</tr>
+<tr class="odd">
+<td>linux_netscan</td>
+<td>列出网络连接结构</td>
+</tr>
+<tr class="even">
+<td>linux_netstat</td>
+<td>列出打开的套接字</td>
+</tr>
+<tr class="odd">
+<td>linux_pidhashtable</td>
+<td>通过 PID 哈希表枚举进程</td>
+</tr>
+<tr class="even">
+<td>linux_pkt_queues</td>
+<td>将每个进程的数据包队列写入磁盘</td>
+</tr>
+<tr class="odd">
+<td>linux_plthook</td>
+<td>扫描 ELF 二进制文件的 PLT 以查找非需要图像的挂钩</td>
+</tr>
+<tr class="even">
+<td>linux_proc_maps</td>
+<td>收集进程内存映射</td>
+</tr>
+<tr class="odd">
+<td>linux_proc_maps_rb</td>
+<td>通过映射红黑树为 linux 收集 proc maps</td>
+</tr>
+<tr class="even">
+<td>linux_procdump</td>
+<td>将进程的可执行映像转储到磁盘</td>
+</tr>
+<tr class="odd">
+<td>linux_process_hollow</td>
+<td>检查进程空心的迹象</td>
+</tr>
+<tr class="even">
+<td>linux_psaux</td>
+<td>收集进程以及完整的命令行和开始时间</td>
+</tr>
+<tr class="odd">
+<td>linux_psenv</td>
+<td>收集进程及其静态环境变量</td>
+</tr>
+<tr class="even">
+<td>linux_pslist</td>
+<td>通过遍历 task_struct-&gt; 任务列表来收集活动任务</td>
+</tr>
+<tr class="odd">
+<td>linux_pslist_cache</td>
+<td>从 kmem_cache 收集任务</td>
+</tr>
+<tr class="even">
+<td>linux_psscan</td>
+<td>扫描进程的物理内存</td>
+</tr>
+<tr class="odd">
+<td>linux_pstree</td>
+<td>显示进程之间的父/子关系</td>
+</tr>
+<tr class="even">
+<td>linux_psxview</td>
+<td>使用各种进程列表查找隐藏进程</td>
+</tr>
+<tr class="odd">
+<td>linux_recover_filesystem</td>
+<td>从内存中恢复整个缓存文件系统</td>
+</tr>
+<tr class="even">
+<td>linux_route_cache</td>
+<td>从内存中恢复路由缓存</td>
+</tr>
+<tr class="odd">
+<td>linux_sk_buff_cache</td>
+<td>从 sk_buff kmem_cache 恢复数据包</td>
+</tr>
+<tr class="even">
+<td>linux_slabinfo</td>
+<td>在运行的机器上模拟 /proc/slabinfo</td>
+</tr>
+<tr class="odd">
+<td>linux_strings</td>
+<td>将物理偏移量与虚拟地址匹配（可能需要一段时间，非常冗长）</td>
+</tr>
+<tr class="even">
+<td>linux_threads</td>
+<td>打印进程的线程</td>
+</tr>
+<tr class="odd">
+<td>linux_tmpfs</td>
+<td>从内存中恢复 tmpfs 文件系统</td>
+</tr>
+<tr class="even">
+<td>linux_truecrypt_passphrase</td>
+<td>恢复缓存的 Truecrypt 密码短语</td>
+</tr>
+<tr class="odd">
+<td>linux_vma_cache</td>
+<td>从 vm_area_struct 缓存中收集 VMA</td>
+</tr>
+<tr class="even">
+<td>linux_volshell</td>
+<td>内存镜像中的外壳 shell</td>
+</tr>
+<tr class="odd">
+<td>linux_yarascan</td>
+<td>Linux 内存映像中的 shell</td>
+</tr>
+<tr class="even">
+<td>lsadump</td>
+<td>从注册表中转储（解密）LSA 机密</td>
+</tr>
+<tr class="odd">
+<td>mac_adium</td>
+<td>列出 Adium 消息</td>
+</tr>
+<tr class="even">
+<td>mac_apihooks</td>
+<td>检查进程中的 API 挂钩</td>
+</tr>
+<tr class="odd">
+<td>mac_apihooks_kernel</td>
+<td>检查系统调用和内核函数是否被挂钩</td>
+</tr>
+<tr class="even">
+<td>mac_arp</td>
+<td>打印 arp 表</td>
+</tr>
+<tr class="odd">
+<td>mac_bash</td>
+<td>从 bash 进程内存中恢复 bash 历史记录</td>
+</tr>
+<tr class="even">
+<td>mac_bash_env</td>
+<td>恢复 bash 的环境变量</td>
+</tr>
+<tr class="odd">
+<td>mac_bash_hash</td>
+<td>恢复来自 bash 进程内存的 bash 哈希表</td>
+</tr>
+<tr class="even">
+<td>mac_calendar</td>
+<td>从 Calendar.app 获取日历事件</td>
+</tr>
+<tr class="odd">
+<td>mac_check_fop</td>
+<td>验证文件操作指针</td>
+</tr>
+<tr class="even">
+<td>mac_check_mig_table</td>
+<td>列出内核 MIG 表中的全部内容</td>
+</tr>
+<tr class="odd">
+<td>mac_check_syscall_shadow</td>
+<td>查找影子系统调用表</td>
+</tr>
+<tr class="even">
+<td>mac_check_syscalls</td>
+<td>检查系统调用表条目是否已挂钩</td>
+</tr>
+<tr class="odd">
+<td>mac_check_sysctl</td>
+<td>检查未知的 sysctl 处理程序</td>
+</tr>
+<tr class="even">
+<td>mac_check_trap_table</td>
+<td>检查马赫陷阱表条目是否已挂钩</td>
+</tr>
+<tr class="odd">
+<td>mac_compressed_swap</td>
+<td>打印 Mac OS X VM 压缩器统计信息和转储所有压缩页面</td>
+</tr>
+<tr class="even">
+<td>mac_contacts</td>
+<td>从 <code>Contacts.app</code> 获取联系人名称</td>
+</tr>
+<tr class="odd">
+<td>mac_dead_procs</td>
+<td>打印终止/取消分配的进程</td>
+</tr>
+<tr class="even">
+<td>mac_dead_sockets</td>
+<td>打印终止/取消分配的网络套接字</td>
+</tr>
+<tr class="odd">
+<td>mac_dead_vnodes</td>
+<td>列出释放的 vnode 结构</td>
+</tr>
+<tr class="even">
+<td>mac_devfs</td>
+<td>列出文件缓存中的文件</td>
+</tr>
+<tr class="odd">
+<td>mac_dmesg</td>
+<td>打印内核调试缓冲区</td>
+</tr>
+<tr class="even">
+<td>mac_dump_file</td>
+<td>转储指定文件</td>
+</tr>
+<tr class="odd">
+<td>mac_dump_maps</td>
+<td>转储进程的内存范围，可选地包括压缩交换中的页面</td>
+</tr>
+<tr class="even">
+<td>mac_dyld_maps</td>
+<td>从 dyld 数据结构获取进程的内存映射</td>
+</tr>
+<tr class="odd">
+<td>mac_find_aslr_shift</td>
+<td>查找 10.8 的 ASLR 移位值+ 图像</td>
+</tr>
+<tr class="even">
+<td>mac_get_profile</td>
+<td>自动检测 Mac 配置文件</td>
+</tr>
+<tr class="odd">
+<td>mac_ifconfig</td>
+<td>列出所有设备的网络接口信息</td>
+</tr>
+<tr class="even">
+<td>mac_interest_handlers</td>
+<td>列出 IOKit 兴趣处理程序</td>
+</tr>
+<tr class="odd">
+<td>mac_ip_filters</td>
+<td>报告任何挂钩的 IP 过滤器</td>
+</tr>
+<tr class="even">
+<td>mac_kernel_classes</td>
+<td>列出内核中加载的 c++ 类</td>
+</tr>
+<tr class="odd">
+<td>mac_kevents</td>
+<td>显示进程的父/子关系</td>
+</tr>
+<tr class="even">
+<td>mac_keychaindump</td>
+<td>恢复可能的钥匙串密钥。使用 chainbreaker 打开相关的钥匙串文件</td>
+</tr>
+<tr class="odd">
+<td>mac_ldrmodules</td>
+<td>将 proc 映射的输出与 libdl 中的库列表进行比较</td>
+</tr>
+<tr class="even">
+<td>mac_librarydump</td>
+<td>转储进程的可执行文件</td>
+</tr>
+<tr class="odd">
+<td>mac_list_files</td>
+<td>列出文件缓存中的文件</td>
+</tr>
+<tr class="even">
+<td>mac_list_kauth_listeners</td>
+<td>列出 Kauth 范围侦听器</td>
+</tr>
+<tr class="odd">
+<td>mac_list_kauth_scopes</td>
+<td>列出 Kauth 范围和他们的状态</td>
+</tr>
+<tr class="even">
+<td>mac_list_raw</td>
+<td>列出具有混杂套接字的应用程序</td>
+</tr>
+<tr class="odd">
+<td>mac_list_sessions</td>
+<td>枚举会话</td>
+</tr>
+<tr class="even">
+<td>mac_list_zones</td>
+<td>打印活动区域</td>
+</tr>
+<tr class="odd">
+<td>mac_lsmod</td>
+<td>列出加载的内核模块</td>
+</tr>
+<tr class="even">
+<td>mac_lsmod_iokit</td>
+<td>列出通过 IOkit 加载的内核模块</td>
+</tr>
+<tr class="odd">
+<td>mac_lsmod_kext_map</td>
+<td>列出加载的内核模块</td>
+</tr>
+<tr class="even">
+<td>mac_lsof</td>
+<td>列出每个进程打开的文件</td>
+</tr>
+<tr class="odd">
+<td>mac_machine_info</td>
+<td>打印有关示例的机器信息</td>
+</tr>
+<tr class="even">
+<td>mac_malfind</td>
+<td>查找可疑进程映射</td>
+</tr>
+<tr class="odd">
+<td>mac_memdump</td>
+<td>将可寻址内存页转储到文件</td>
+</tr>
+<tr class="even">
+<td>mac_moddump</td>
+<td>将指定的内核扩展写入磁盘</td>
+</tr>
+<tr class="odd">
+<td>mac_mount</td>
+<td>打印已安装的设备信息</td>
+</tr>
+<tr class="even">
+<td>mac_netstat</td>
+<td>列出每个进程的活动网络连接</td>
+</tr>
+<tr class="odd">
+<td>mac_network_conns</td>
+<td>列出来自内核网络结构的网络连接</td>
+</tr>
+<tr class="even">
+<td>mac_notesapp</td>
+<td>查找 Notes 消息的内容</td>
+</tr>
+<tr class="odd">
+<td>mac_notifiers</td>
+<td>检测向 I/O Kit（例如 LogKext）添加挂钩的 rootkit</td>
+</tr>
+<tr class="even">
+<td>mac_orphan_threads</td>
+<td>列出不映射回已知模块/进程的线程</td>
+</tr>
+<tr class="odd">
+<td>mac_pgrp_hash_table</td>
+<td>步行进程组哈希表</td>
+</tr>
+<tr class="even">
+<td>mac_pid_hash_table</td>
+<td>遍历 pid 哈希表</td>
+</tr>
+<tr class="odd">
+<td>mac_print_boot_cmdline</td>
+<td>打印内核启动参数</td>
+</tr>
+<tr class="even">
+<td>mac_proc_maps</td>
+<td>获取进程的内存映射</td>
+</tr>
+<tr class="odd">
+<td>mac_procdump</td>
+<td>转储进程的可执行文件</td>
+</tr>
+<tr class="even">
+<td>mac_psaux</td>
+<td>打印带有用户空间参数的进程 (<code>**argv</code>)</td>
+</tr>
+<tr class="odd">
+<td>mac_psenv</td>
+<td>打印用户区环境中的进程 (<code>**envp</code>)</td>
+</tr>
+<tr class="even">
+<td>mac_pslist</td>
+<td>列出正在运行的进程</td>
+</tr>
+<tr class="odd">
+<td>mac_pstree</td>
+<td>显示进程的父/子关系</td>
+</tr>
+<tr class="even">
+<td>mac_psxview</td>
+<td>使用各种进程列表查找隐藏进程</td>
+</tr>
+<tr class="odd">
+<td>mac_recover_filesystem</td>
+<td>恢复缓存的文件系统</td>
+</tr>
+<tr class="even">
+<td>mac_route</td>
+<td>打印路由表</td>
+</tr>
+<tr class="odd">
+<td>mac_socket_filters</td>
+<td>报告套接字过滤器</td>
+</tr>
+<tr class="even">
+<td>mac_strings</td>
+<td>将物理偏移量与虚拟地址匹配（可能需要一段时间，非常冗长）</td>
+</tr>
+<tr class="odd">
+<td>mac_tasks</td>
+<td>列出活动任务</td>
+</tr>
+<tr class="even">
+<td>mac_threads</td>
+<td>列出进程线程</td>
+</tr>
+<tr class="odd">
+<td>mac_threads_simple</td>
+<td>列出线程及其开始时间和优先级</td>
+</tr>
+<tr class="even">
+<td>mac_timers</td>
+<td>报告内核驱动程序设置的计时器</td>
+</tr>
+<tr class="odd">
+<td>mac_trustedbsd</td>
+<td>列出恶意的 trustedbsd 策略</td>
+</tr>
+<tr class="even">
+<td>mac_version</td>
+<td>打印Mac版本</td>
+</tr>
+<tr class="odd">
+<td>mac_vfsevents</td>
+<td>列出过滤文件系统事件的进程</td>
+</tr>
+<tr class="even">
+<td>mac_volshell</td>
+<td>内存映像中的 shell</td>
+</tr>
+<tr class="odd">
+<td>mac_yarascan</td>
+<td>扫描内存对于 yara 签名</td>
+</tr>
+<tr class="even">
+<td>machoinfo</td>
+<td>转储 Mach-O 文件格式信息</td>
+</tr>
+<tr class="odd">
+<td>malfind</td>
+<td>查找隐藏和注入的代码</td>
+</tr>
+<tr class="even">
+<td>mbrparser</td>
+<td>扫描并解析潜在的主引导记录 (MBR)</td>
+</tr>
+<tr class="odd">
+<td>memdump</td>
+<td>转储进程的可寻址内存</td>
+</tr>
+<tr class="even">
+<td>memmap</td>
+<td>打印内存映射</td>
+</tr>
+<tr class="odd">
+<td>messagehooks</td>
+<td>列出桌面和线程窗口消息挂钩</td>
+</tr>
+<tr class="even">
+<td>mftparser</td>
+<td>扫描并解析潜在的 MFT 条目</td>
+</tr>
+<tr class="odd">
+<td>moddump</td>
+<td>将内核驱动程序转储到可执行文件示例</td>
+</tr>
+<tr class="even">
+<td>modscan</td>
+<td>内核池扫描程序modules</td>
+</tr>
+<tr class="odd">
+<td>modules</td>
+<td>打印加载模块的列表</td>
+</tr>
+<tr class="even">
+<td>multiscan</td>
+<td>一次性扫描各种对象</td>
+</tr>
+<tr class="odd">
+<td>mutantscan</td>
+<td>互斥对象的池扫描器</td>
+</tr>
+<tr class="even">
+<td>netscan</td>
+<td>扫描 Vista（或更高版本）图像的连接和套接字</td>
+</tr>
+<tr class="odd">
+<td>notepad</td>
+<td>列出当前显示的记事本文本</td>
+</tr>
+<tr class="even">
+<td>objtypescan</td>
+<td>扫描 Windows 对象类型对象</td>
+</tr>
+<tr class="odd">
+<td>patcher</td>
+<td>根据页面扫描修补内存</td>
+</tr>
+<tr class="even">
+<td>poolpeek</td>
+<td>可配置池扫描器插件</td>
+</tr>
+<tr class="odd">
+<td>pooltracker</td>
+<td>显示池标记使用摘要</td>
+</tr>
+<tr class="even">
+<td>printkey</td>
+<td>打印注册表项及其子项和值</td>
+</tr>
+<tr class="odd">
+<td>privs</td>
+<td>显示进程权限</td>
+</tr>
+<tr class="even">
+<td>procdump</td>
+<td>将进程转储到可执行文件示例</td>
+</tr>
+<tr class="odd">
+<td>pslist</td>
+<td>按照 EPROCESS 列表打印所有正在运行的进程</td>
+</tr>
+<tr class="even">
+<td>psscan</td>
+<td>进程对象的池扫描程序</td>
+</tr>
+<tr class="odd">
+<td>pstree</td>
+<td>将进程列表打印为树</td>
+</tr>
+<tr class="even">
+<td>psxview</td>
+<td>使用各种进程列表查找隐藏进程</td>
+</tr>
+<tr class="odd">
+<td>qemuinfo</td>
+<td>转储 Qemu 信息</td>
+</tr>
+<tr class="even">
+<td>raw2dmp</td>
+<td>将物理内存样本转换为 windbg 崩溃转储</td>
+</tr>
+<tr class="odd">
+<td>screenshot</td>
+<td>基于 GDI windows 保存伪屏幕截图</td>
+</tr>
+<tr class="even">
+<td>servicediff</td>
+<td>列出 Windows 服务（类似于 Plugx）</td>
+</tr>
+<tr class="odd">
+<td>sessions</td>
+<td>列出关于
+<code>_MM_SESSION_SPACE</code>（用户登录会话）的详细信息</td>
+</tr>
+<tr class="even">
+<td>shellbags</td>
+<td>打印 ShellBags 信息</td>
+</tr>
+<tr class="odd">
+<td>shimcache</td>
+<td>解析应用程序兼容性 Shim 缓存注册表项</td>
+</tr>
+<tr class="even">
+<td>shutdowntime</td>
+<td>从注册表中打印机器的 ShutdownTime</td>
+</tr>
+<tr class="odd">
+<td>sockets</td>
+<td>打印打开的套接字列表</td>
+</tr>
+<tr class="even">
+<td>sockscan</td>
+<td>用于 tcp 套接字对象的池扫描器</td>
+</tr>
+<tr class="odd">
+<td>ssdt</td>
+<td>显示 SSDT 条目</td>
+</tr>
+<tr class="even">
+<td>strings</td>
+<td>将物理偏移量与虚拟地址匹配（可能需要一段时间，非常冗长）</td>
+</tr>
+<tr class="odd">
+<td>svcscan</td>
+<td>扫描 Windows 服务</td>
+</tr>
+<tr class="even">
+<td>symlinkscan</td>
+<td>用于符号链接对象的池扫描器</td>
+</tr>
+<tr class="odd">
+<td>thrdscan</td>
+<td>线程对象的池扫描器</td>
+</tr>
+<tr class="even">
+<td>threads</td>
+<td>调查 <code>_ETHREAD</code> 和 <code>_KTHREAD</code></td>
+</tr>
+<tr class="odd">
+<td>timeliner</td>
+<td>从内存计时器中的各种工件创建时间线</td>
+</tr>
+<tr class="even">
+<td>timers</td>
+<td>打印内核计时器和相关的模块 DPC</td>
+</tr>
+<tr class="odd">
+<td>truecryptmaster</td>
+<td>恢复 TrueCrypt 7.1a 主密钥</td>
+</tr>
+<tr class="even">
+<td>truecryptpassphrase</td>
+<td>TrueCrypt 缓存密码查找器</td>
+</tr>
+<tr class="odd">
+<td>truecryptsummary</td>
+<td>TrueCrypt 摘要</td>
+</tr>
+<tr class="even">
+<td>unloadedmodules</td>
+<td>打印未加载模块的列表</td>
+</tr>
+<tr class="odd">
+<td>userassist</td>
+<td>打印 USER 注册表键值和信息</td>
+</tr>
+<tr class="even">
+<td>userhandles</td>
+<td>转出 USER 句柄表</td>
+</tr>
+<tr class="odd">
+<td>vaddump</td>
+<td>转储 VAD 信息到一个文件中</td>
+</tr>
+<tr class="even">
+<td>vadinfo</td>
+<td>转储 VAD 信息</td>
+</tr>
+<tr class="odd">
+<td>vadtree</td>
+<td>遍历 VAD 树并以树格式显示</td>
+</tr>
+<tr class="even">
+<td>vadwalk</td>
+<td>遍历 VAD 树</td>
+</tr>
+<tr class="odd">
+<td>vboxinfo</td>
+<td>转储 virtualbox 信息</td>
+</tr>
+<tr class="even">
+<td>verinfo</td>
+<td>从 PE 映像中打印版本信息</td>
+</tr>
+<tr class="odd">
+<td>vmwareinfo</td>
+<td>转储 VMware VMSS/VMSN 信息</td>
+</tr>
+<tr class="even">
+<td>volshell</td>
+<td>内存映像中的 Shell</td>
+</tr>
+<tr class="odd">
+<td>win10cookie</td>
+<td>查找 Windows 10 窗口的 <code>ObHeaderCookie</code> 值</td>
+</tr>
+<tr class="even">
+<td>windows</td>
+<td>打印桌面 Windows（详细详细信息）</td>
+</tr>
+<tr class="odd">
+<td>wintree</td>
+<td>打印 Z-Order 桌面Windows 树</td>
+</tr>
+<tr class="even">
+<td>wndscan</td>
+<td>用于窗口站的池扫描程序</td>
+</tr>
+<tr class="odd">
+<td>yarascan</td>
+<td>使用 Yara 签名扫描进程或内核内存</td>
+</tr>
+</tbody>
+</table>
+<h1 id="volatility2-插件">volatility2 插件</h1>
+<p>实际上所有 volatility2
+的功能都是由插件实现的，我们可以自主安装他人所写的插件或者是自己写插件脚本。</p>
+<p>无论是哪种，只需要将插件脚本拖入 <code>plugins/</code>
+文件下即可（另一个可能的路径为
+<code>volatility/plugins/</code>），且支持文件夹分类（实际上只要在该目录下的所有文件都会遍历加载）。</p>
+<h2 id="mimikatz">mimikatz</h2>
+<p>mimikatz 是一个可以从内存中提取明文密码、哈希、PIN 码和 kerberos
+票证的软件，在 volatility2 中有专门的插件替代了繁琐的操作。</p>
+<p>如果不使用插件，我们需要首先从内存镜像中转储 <code>lsass.exe</code>
+的内存文件为 <code>lsass.dmp</code> 后，用 mimikatz 加载并读取数据。</p>
+<p>我们可以在
+https://github.com/RealityNet/hotoloti/tree/master/volatility 中获取
+<code>mimikatz.py</code>，将其添加到 <code>plugins/</code>
+文件夹下即可使用。</p>
+<p>使用方式：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python2 vol.py -f file.raw mimikatz</span><br></pre></td></tr></table></figure>
+<p>一键提取出目标内存镜像中的用户名和密码。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>forensics</tag>
+        <tag>volatility</tag>
       </tags>
   </entry>
 </search>

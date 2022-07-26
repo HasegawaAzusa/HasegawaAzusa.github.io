@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关zip压缩包取证的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="zip压缩包取证笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/zip-crack-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关zip压缩包取证的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-20T04:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-23T18:50:28.787Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="forensics">
+<meta property="article:tag" content="zip">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/zip-crack-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/zip-crack-note.html","path":"/zip-crack-note.html","title":"zip压缩包取证笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>zip压缩包取证笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">52</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">80</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#zip-%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">ZIP 格式详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.</span> <span class="nav-text">数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%95%B0%E6%8D%AE%E5%9D%97zipfilerecord"><span class="nav-number">1.2.1.</span> <span class="nav-text">文件数据块（ZIPFILERECORD）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#version"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Version</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flags"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Flags</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#compression"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Compression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#crc"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Crc</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E5%9D%97zipdirentry"><span class="nav-number">1.2.2.</span> <span class="nav-text">文件目录块（ZIPDIRENTRY）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zip-%E5%B0%BE%E5%9D%97zipendlocator"><span class="nav-number">1.2.3.</span> <span class="nav-text">ZIP
+尾块（ZIPENDLOCATOR）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zip-%E7%A0%B4%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">ZIP 破解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%AA%E5%8A%A0%E5%AF%86"><span class="nav-number">2.1.</span> <span class="nav-text">伪加密</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3"><span class="nav-number">2.1.2.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%B1%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4"><span class="nav-number">2.2.</span> <span class="nav-text">弱密码爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">破解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#section"><span class="nav-number">2.2.2.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#crc-%E7%A2%B0%E6%92%9E"><span class="nav-number">2.3.</span> <span class="nav-text">CRC 碰撞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%8E%E6%96%87%E6%94%BB%E5%87%BB"><span class="nav-number">2.4.</span> <span class="nav-text">明文攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-3"><span class="nav-number">2.4.2.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E6%98%8E%E6%96%87%E6%94%BB%E5%87%BB"><span class="nav-number">2.5.</span> <span class="nav-text">深入明文攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-4"><span class="nav-number">2.5.2.</span> <span class="nav-text">破解</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/zip-crack-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          zip压缩包取证笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-20 12:00:00" itemprop="dateCreated datePublished" datetime="2022-07-20T12:00:00+08:00">2022-07-20</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关zip压缩包取证的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="zip-格式详解">ZIP 格式详解</h1>
+<h2 id="简述">简述</h2>
+<p>ZIP 文件格式是一种数据压缩和文档储存的文件格式，原名
+Deflate（压缩算法），现通常以 <code>.zip</code>
+后缀表示该类压缩文件。</p>
+<p>目前来说 ZIP
+是一种主流的压缩方式，但存在许多缺陷，例如明文攻击、字典攻击和暴力破解等。</p>
+<p>可以使用 Bandizip 等多种主流工具进行 Deflate 压缩。</p>
+<h2 id="数据">数据</h2>
+<p>ZIP 压缩包的数据以块为单位，常见的有以下几个块：</p>
+<h3 id="文件数据块zipfilerecord">文件数据块（<code>ZIPFILERECORD</code>）</h3>
+<table>
+<colgroup>
+<col style="width: 24%">
+<col style="width: 24%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>名字</th>
+<th>字节</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Signature</code></td>
+<td>4</td>
+<td>值为<code>504B0304</code>，是 ZIP 特有签名</td>
+</tr>
+<tr class="even">
+<td><code>Version</code></td>
+<td>2</td>
+<td>解压文件所需版本</td>
+</tr>
+<tr class="odd">
+<td><code>Flags</code></td>
+<td>2</td>
+<td>通用标志位</td>
+</tr>
+<tr class="even">
+<td><code>Compression</code></td>
+<td>2</td>
+<td>压缩方式</td>
+</tr>
+<tr class="odd">
+<td><code>FileTime</code></td>
+<td>2</td>
+<td>被压缩文件最后修改时间（<code>DOSTIME</code>类型）</td>
+</tr>
+<tr class="even">
+<td><code>FileDate</code></td>
+<td>2</td>
+<td>被压缩文件最后修改日期（<code>DOSDATE</code>类型）</td>
+</tr>
+<tr class="odd">
+<td><code>Crc</code></td>
+<td>4</td>
+<td>CRC 校验码</td>
+</tr>
+<tr class="even">
+<td><code>CompressedSize</code></td>
+<td>4</td>
+<td>压缩后大小（同时也是 <code>Data</code> 块大小）</td>
+</tr>
+<tr class="odd">
+<td><code>UncompressedSize</code></td>
+<td>4</td>
+<td>文件原始大小（即解压后的大小）</td>
+</tr>
+<tr class="even">
+<td><code>FileNameLength</code></td>
+<td>2</td>
+<td>被压缩文件名长度</td>
+</tr>
+<tr class="odd">
+<td><code>ExtraFieldLength</code></td>
+<td>2</td>
+<td>扩展区长度</td>
+</tr>
+<tr class="even">
+<td><code>FileName</code></td>
+<td><code>FileNameLength</code></td>
+<td>被压缩文件名</td>
+</tr>
+<tr class="odd">
+<td><code>Data</code></td>
+<td><code>CompressedSize</code></td>
+<td>被压缩文件数据</td>
+</tr>
+<tr class="even">
+<td><code>ExtData</code></td>
+<td><code>ExtraFieldLength</code></td>
+<td>扩展区数据</td>
+</tr>
+</tbody>
+</table>
+<p>其中默认压缩版本一般为 <code>20</code>，即 <code>Deflate</code>
+压缩方式。</p>
+<h4 id="version"><code>Version</code></h4>
+<p><strong>当前最低功能版本定义如下</strong>：（压缩包记录的解压版本都是需要版本<em>10，比如：2.0
+</em> 10 = 20）</p>
+<ul>
+<li><p>1.0 - 默认值</p></li>
+<li><p>1.1 - 文件是卷标</p></li>
+<li><p>2.0 - 文件是一个文件夹（目录）</p></li>
+<li><p>2.0 - 使用 Deflate 压缩来压缩文件</p></li>
+<li><p>2.0 - 使用传统的 PKWARE 加密对文件进行加密</p></li>
+<li><p>2.1 - 使用 Deflate64™ 压缩文件</p></li>
+<li><p>2.5 - 使用 PKWARE DCL Implode 压缩文件</p></li>
+<li><p>2.7 - 文件是补丁数据集</p></li>
+<li><p>4.5 - 文件使用 ZIP64 格式扩展</p></li>
+<li><p>4.6 - 使用 BZIP2 压缩文件压缩</p></li>
+<li><p>5.0 - 文件使用 DES 加密</p></li>
+<li><p>5.0 - 文件使用 3DES 加密</p></li>
+<li><p>5.0 - 使用原始 RC2 加密对文件进行加密</p></li>
+<li><p>5.0 - 使用 RC4 加密对文件进行加密</p></li>
+<li><p>5.1 - 文件使用 AES 加密进行加密</p></li>
+<li><p>5.1 - 使用更正的 RC2 加密对文件进行加密</p></li>
+<li><p>5.2 - 使用更正的 RC2-64 加密对文件进行加密</p></li>
+<li><p>6.1 - 使用非 OAEP 密钥包装对文件进行加密</p></li>
+<li><p>6.2 - 中央目录加密</p></li>
+</ul>
+<h4 id="flags"><code>Flags</code></h4>
+<p>当<strong>第0位为1时</strong>（即<code>0x1</code>），表示<strong>文件被加密</strong>；当<strong>第3位为1时</strong>（即<code>0x3</code>），表示<strong>有数据描述部分</strong>。</p>
+<p>有时虽然第3位为1，但仍然本地头存有真实值（理论上文件头内的描述应该被设为0，然后将描述放在<strong>数据描述部分</strong>）。</p>
+<h4 id="compression"><code>Compression</code></h4>
+<p>不同的值代表不同的压缩方式，默认为 <code>8</code>，即
+<code>Deflate</code> 压缩。</p>
+<ul>
+<li>0 - The file is stored (no compression)</li>
+<li>1 - The file is Shrunk</li>
+<li>2 - The file is Reduced with compression factor 1</li>
+<li>3 - The file is Reduced with compression factor 2</li>
+<li>4 - The file is Reduced with compression factor 3</li>
+<li>5 - The file is Reduced with compression factor 4</li>
+<li>6 - The file is Imploded</li>
+<li>7 - Reserved for Tokenizing compression algorithm</li>
+<li>8 - The file is Deflated</li>
+<li>9 - Enhanced Deflating using Deflate64™</li>
+<li>10 - PKWARE Data Compression Library Imploding</li>
+<li>11 - Reserved by PKWARE</li>
+<li>12 - File is compressed using BZIP2 algorithm</li>
+</ul>
+<h4 id="crc"><code>Crc</code></h4>
+<p>该 CRC 校验码为文件未压缩时的 <code>CRC-32</code> 校验码，在 Python
+中可借助 <code>binascii</code> 模块进行计算。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line">crc = binascii.crc32(<span class="string">&#x27;hello&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="文件目录块zipdirentry">文件目录块（<code>ZIPDIRENTRY</code>）</h3>
+<p>一个数据块就对应一个目录块，其中
+<code>Flags</code>、<code>Compression</code>、<code>FileTime</code>、<code>FileDate</code>、<code>Crc</code>、<code>CompressedSize</code>、<code>UncompressedSize</code>、<code>FileNameLength</code>、<code>ExtraFieldLength</code>
+与数据块同值。</p>
+<table>
+<colgroup>
+<col style="width: 24%">
+<col style="width: 22%">
+<col style="width: 53%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>名字</th>
+<th>字节</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Signature</code></td>
+<td>4</td>
+<td>值为<code>504B0102</code>，是 ZIP 特有签名</td>
+</tr>
+<tr class="even">
+<td><code>VersionModeBy</code></td>
+<td>2</td>
+<td>压缩版本</td>
+</tr>
+<tr class="odd">
+<td><code>VersionToExtract</code></td>
+<td>2</td>
+<td>解压所需最小版本</td>
+</tr>
+<tr class="even">
+<td><code>Flags</code></td>
+<td>2</td>
+<td>通用标志位</td>
+</tr>
+<tr class="odd">
+<td><code>Compression</code></td>
+<td>2</td>
+<td>压缩方式</td>
+</tr>
+<tr class="even">
+<td><code>FileTime</code></td>
+<td>2</td>
+<td>被压缩文件最后修改时间（<code>DOSDATE</code>类型）</td>
+</tr>
+<tr class="odd">
+<td><code>FileDate</code></td>
+<td>2</td>
+<td>被压缩文件最后修改日期（<code>DOSDATE</code>类型）</td>
+</tr>
+<tr class="even">
+<td><code>Crc</code></td>
+<td>4</td>
+<td>CRC 校验码</td>
+</tr>
+<tr class="odd">
+<td><code>CompressedSize</code></td>
+<td>4</td>
+<td>压缩后大小（同时也是 <code>Data</code> 块大小）</td>
+</tr>
+<tr class="even">
+<td><code>UncompressedSize</code></td>
+<td>4</td>
+<td>文件原始大小（即解压后的大小）</td>
+</tr>
+<tr class="odd">
+<td><code>FileNameLength</code></td>
+<td>2</td>
+<td>被压缩文件名长度</td>
+</tr>
+<tr class="even">
+<td><code>ExtraFieldLength</code></td>
+<td>2</td>
+<td>扩展区长度</td>
+</tr>
+<tr class="odd">
+<td><code>FileCommentLength</code></td>
+<td>2</td>
+<td>文件注释的长度</td>
+</tr>
+<tr class="even">
+<td><code>DiskNumberStart</code></td>
+<td>2</td>
+<td>文件开始位置的磁盘编号（默认为0）</td>
+</tr>
+<tr class="odd">
+<td><code>InternalAttributes</code></td>
+<td>2</td>
+<td>内部文件属性</td>
+</tr>
+<tr class="even">
+<td><code>ExternalAttributes</code></td>
+<td>4</td>
+<td>外部文件属性</td>
+</tr>
+<tr class="odd">
+<td><code>HeaderOffset</code></td>
+<td>4</td>
+<td>数据区本地文件头相对于压缩包开始位置的偏移量</td>
+</tr>
+<tr class="even">
+<td><code>FileName</code></td>
+<td><code>FileNameLength</code></td>
+<td>被压缩文件名</td>
+</tr>
+<tr class="odd">
+<td><code>ExtraField</code></td>
+<td><code>ExtraFieldLength</code></td>
+<td>扩展区数据</td>
+</tr>
+<tr class="even">
+<td><code>Comment</code></td>
+<td><code>FileCommentLength</code></td>
+<td>注解</td>
+</tr>
+</tbody>
+</table>
+<h3 id="zip-尾块zipendlocator">ZIP
+尾块（<code>ZIPENDLOCATOR</code>）</h3>
+<table>
+<colgroup>
+<col style="width: 29%">
+<col style="width: 22%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>名字</th>
+<th>字节</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Signature</code></td>
+<td>4</td>
+<td>值为<code>504B0506</code>，是 ZIP 尾特有签名</td>
+</tr>
+<tr class="even">
+<td><code>DiskNumber</code></td>
+<td>2</td>
+<td>中央目录记录尾部区所在磁盘编号</td>
+</tr>
+<tr class="odd">
+<td><code>StartDiskNumber</code></td>
+<td>2</td>
+<td>中央目录开始位置所在的磁盘编号</td>
+</tr>
+<tr class="even">
+<td><code>EntriesOnDisk</code></td>
+<td>2</td>
+<td>该磁盘上所记录的核心目录数量</td>
+</tr>
+<tr class="odd">
+<td><code>EntriesInDirectory</code></td>
+<td>2</td>
+<td>zip压缩包中的文件总数</td>
+</tr>
+<tr class="even">
+<td><code>DirectorySize</code></td>
+<td>4</td>
+<td>目录大小</td>
+</tr>
+<tr class="odd">
+<td><code>DirectoryOffset</code></td>
+<td>4</td>
+<td>目录开始位置的相对偏移量</td>
+</tr>
+<tr class="even">
+<td><code>CommentLength</code></td>
+<td>2</td>
+<td>注解长度</td>
+</tr>
+<tr class="odd">
+<td><code>Comment</code></td>
+<td><code>CommentLength</code></td>
+<td>注解</td>
+</tr>
+</tbody>
+</table>
+<p>需要注意的是，一个 ZIP 文件只有一个 ZIP
+尾块，如果出现多个尾块可能是文件损坏或多文件重合。</p>
+<h1 id="zip-破解">ZIP 破解</h1>
+<h2 id="伪加密">伪加密</h2>
+<h3 id="原理">原理</h3>
+<p>在 ZIP 文件中，数据区与目录区中的 <code>Flags</code>
+应该是相同的值。当<strong>数据区</strong>的标志位为<strong>加密标志</strong>，而<strong>目录区</strong>的标志位为<strong>非加密标志</strong>时，这个时候许多
+ZIP 软件会将其识别为被加密，但实际上并不存在对应的密码。</p>
+<h3 id="破解">破解</h3>
+<p>只需要将<strong>数据区和目录区的标志位</strong>置为0即可。</p>
+<h2 id="弱密码爆破">弱密码爆破</h2>
+<h3 id="原理-1">原理</h3>
+<p>Deflate
+压缩方式的解压速度是十分优秀的，但是这也导致我们进行爆破的效率十分之高。</p>
+<h3 id="破解-1">破解</h3>
+<p>一般来说推荐使用 ARCHPR 对 ZIP
+压缩包进行暴力破解处理。一般是范围内枚举（例如纯数字或数字与字母的排列组合）或是使用专有的字典进行弱密码爆破。</p>
+<p>同时也可以使用 hashcat 和 <a target="_blank" rel="noopener" href="https://github.com/kimci86/bkcrack">bkcrack</a> 对 ZIP
+的密码进行破解。</p>
+<h4 id="section"></h4>
+<h2 id="crc-碰撞">CRC 碰撞</h2>
+<h3 id="原理-2">原理</h3>
+<p>当压缩文件内容较少或仅有部分明文未知时，可以采用 CRC
+碰撞的方式去暴力破解明文（因为压缩包中保存的 CRC
+校验值为压缩前内容的校验）。</p>
+<h3 id="破解-2">破解</h3>
+<p>可以使用 Python
+脚本进行爆破，但下面的脚本仅是示例，如果有特别的需求（例如未知明文在已知明文中间段时）需要自行修改脚本。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CRCcrack</span>(<span class="params">unknownBytes: <span class="built_in">int</span>, targetCRC: <span class="built_in">int</span>, known: <span class="built_in">bytes</span>=<span class="string">&quot;&quot;</span></span>) -&gt; <span class="built_in">list</span>[<span class="built_in">bytes</span>]:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    CRC 碰撞</span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        unknownBytes - 未知的字节数</span></span><br><span class="line"><span class="string">        known - 已知明文（默认为拼接）</span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        完整明文</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    rst = []</span><br><span class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(<span class="number">128</span>), repeat=unknownBytes):</span><br><span class="line">        msg = known + <span class="string">b&#x27;&#x27;</span>.join(<span class="built_in">bytes</span>(m))</span><br><span class="line">        crc = binascii.crc32(msg)</span><br><span class="line">        <span class="keyword">if</span> crc == targetCRC:</span><br><span class="line">            rst.append(msg)</span><br><span class="line">    <span class="keyword">return</span> rst</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如果仅是碰撞，我们可以使用 GitHub 上的开源项目（<a target="_blank" rel="noopener" href="https://github.com/theonlypwner/crc32">CRC32 Tools</a>）</p>
+<p>使用方法：</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python crc32.py reverse <span class="number">0</span>x4FA83D8C</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，因为 CRC-32 是哈希算法的一种，所以可能会存在多个明文的
+CRC-32 值相等。</p>
+<h2 id="明文攻击">明文攻击</h2>
+<h3 id="原理-3">原理</h3>
+<p>ZIP
+加密模式本质上是将密码转化为内置的一个密钥进行加密的，而密钥是有限长度的，所以如果我们知道一个压缩包内其中一个文件的完整明文，那么我们就可以通过算法将密钥百分百地计算出来（理论上可以把密码也百分百计算出来），且理论上破解速度只与被压缩文件大小有关。</p>
+<h3 id="破解-3">破解</h3>
+<p>推荐使用 ARCHPR
+的明文攻击模式进行破解，需要一个明文压缩包和含有明文文件的密文压缩包，其中他们的压缩算法应该是相同的。</p>
+<p>同时也可以使用 <a target="_blank" rel="noopener" href="https://github.com/kimci86/bkcrack">bkcrack</a> 进行破解。</p>
+<h2 id="深入明文攻击">深入明文攻击</h2>
+<h3 id="原理-4">原理</h3>
+<p>ZIP
+加密模式本质上是将密码转化为内置的一个密钥进行加密的，而密钥是有限长度的，而且
+ZIP
+的加密方式使得我们可以只解密部分密文，如果我们知道某个文件的部分密文，那么我们可以遍历所有可能的密钥去进行比对（类似
+CRC 碰撞的原理）。</p>
+<p>但仅有 ZipCrypto Deflate 算法和 ZipCrypto Store
+算法可以用此方式破解。</p>
+<h3 id="破解-4">破解</h3>
+<p>使用 <a target="_blank" rel="noopener" href="https://github.com/kimci86/bkcrack">bkcrack</a>
+需要已知明文的十二个字节和偏移，其中八个字节必须连续。</p>
+<p>需要使用到的参数：</p>
+<table>
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>-C file.zip</code></td>
+<td>加密压缩包</td>
+</tr>
+<tr class="even">
+<td><code>-c file</code></td>
+<td>提取的密文文件（密文部分）</td>
+</tr>
+<tr class="odd">
+<td><code>-p key.txt</code></td>
+<td>指定明文部分</td>
+</tr>
+<tr class="even">
+<td><code>-x offset hex</code></td>
+<td>指定偏移量和部分明文十六进制值</td>
+</tr>
+<tr class="odd">
+<td><code>-o offset</code></td>
+<td>指定明文部分的偏移量</td>
+</tr>
+<tr class="even">
+<td><code>-k key1 key2 key3</code></td>
+<td>指定三段解密密钥</td>
+</tr>
+<tr class="odd">
+<td><code>-d file</code></td>
+<td>解压缩得到的目标文件</td>
+</tr>
+</tbody>
+</table>
+<p>例如针对 JPG 的压缩包，我们可以使用以下命令：</p>
+<p>首先生成明文文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -n <span class="string">&quot;FFD8FFE000104A4649460001&quot;</span> | xxd -r -ps &gt; key.txt</span><br></pre></td></tr></table></figure>
+<p>随后进行密钥爆破：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bkcrack -C 1.zip -c t.jpg -p key.txt -o 0</span><br></pre></td></tr></table></figure>
+<p>或者是针对 ZIP 的压缩包，我们可以使用以下命令：</p>
+<p>首先我们这个 ZIP 中存在 flag.txt 的明文：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> -n <span class="string">&quot;flag.txt&quot;</span> &gt; key.txt</span><br></pre></td></tr></table></figure>
+<p>其次我们知道 ZIP 文件的头，故进行密钥爆破：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bkcrack -C 1.zip -c flag.zip -p key.txt -o 30 -x 0 504B03041400</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，当已知字节数越多时，得到的密钥越准确。</p>
+<p>得到三段密钥后我们进行提取：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bkcrack -C 1.zip -c flag.zip -k 683a571e f954e70c 49da18ac -d 111.zip</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，如果文件是使用 Deflate
+算法进行压缩的话，需要使用其自带的 <code>inflate.py</code> 脚本（在
+<code>./tools/</code> 文件夹中）进行解压缩：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python inflate.py &lt; 1.jpg &gt; 2.jpg</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/zip-crack-note.html" title="zip压缩包取证笔记">https://hasegawaazusa.github.io/zip-crack-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/forensics/" rel="tag"># forensics</a>
+              <a href="/tags/zip/" rel="tag"># zip</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/wav-note.html" rel="prev" title="wav数据格式详解">
+                  <i class="fa fa-chevron-left"></i> wav数据格式详解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/blind-water-mask-note.html" rel="next" title="盲水印笔记">
+                  盲水印笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">261k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">3:57</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
