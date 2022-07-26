@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关mimikatz的使用笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mimikatz使用笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/mimikatz-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关mimikatz的使用笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-26T04:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-26T07:08:01.992Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="forensics">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/mimikatz-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/mimikatz-note.html","path":"/mimikatz-note.html","title":"mimikatz使用笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>mimikatz使用笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">52</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">80</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mimikatz-%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">mimikatz 介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mimikatz-%E4%BD%BF%E7%94%A8"><span class="nav-number">2.</span> <span class="nav-text">mimikatz 使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A8%A1%E5%9D%97"><span class="nav-number">2.1.</span> <span class="nav-text">模块</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#standard"><span class="nav-number">2.1.1.</span> <span class="nav-text">standard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#privilege"><span class="nav-number">2.1.2.</span> <span class="nav-text">privilege</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sekurlsa"><span class="nav-number">2.1.3.</span> <span class="nav-text">sekurlsa</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#pth"><span class="nav-number">2.1.3.1.</span> <span class="nav-text">pth</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD"><span class="nav-number">2.1.3.1.1.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.3.1.2.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">2.1.3.1.3.</span> <span class="nav-text">注意</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">2.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mimikatz-%E5%8F%98%E7%A7%8D"><span class="nav-number">3.</span> <span class="nav-text">mimikatz 变种</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/mimikatz-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          mimikatz使用笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-26 12:00:00" itemprop="dateCreated datePublished" datetime="2022-07-26T12:00:00+08:00">2022-07-26</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关mimikatz的使用笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="mimikatz-介绍">mimikatz 介绍</h1>
+<p>mimikatz 是法国人 benjamin
+开发的一款功能强大的轻量级调试工具，本来是用于个人测试使用，但由于功能过于强大，可以直接获取
+Windows 操作系统的明文密码，现被用于渗透测试。</p>
+<p>mimikatz 分为 Win32 与 x64 版本，在 kali
+中有存储，直接将文件夹拷贝即可使用。通过这些可以提升进程权限、注入进程和读取进程内存。</p>
+<blockquote>
+<p>├── kiwi_passwords.yar ├── mimicom.idl ├── Win32 │ ├── mimidrv.sys │
+├── mimikatz.exe │ ├── mimilib.dll │ ├── mimilove.exe │ └──
+mimispool.dll └── x64 ├── mimidrv.sys ├── mimikatz.exe ├── mimilib.dll
+└── mimispool.dll</p>
+</blockquote>
+<p>mimikatz 主要是从 Lsass
+中获取当前登陆过的系统用户的账号明文密码。Lsass 是微软 Windows
+系统的安全机制，主要用于本地安全和登陆策略，通常我们登录系统后，经过其
+wdigest 和 tspkg 两个模块调用后，对其使用可逆的算法加密并存储在 Lsass
+内存中，而 mimikatz 正是通过逆算获取到明文密码。</p>
+<p>mimikatz 可以在 GitHub
+主页中获取相应的发行（https://github.com/gentilkiwi/mimikatz/），同时也可以在
+kali 中拷贝。</p>
+<h1 id="mimikatz-使用">mimikatz 使用</h1>
+<p>mimikatz 打开后便是一个交互式的
+shell，其内置许多模块功能供我们使用，主要是通过
+<code>模块名::命令 [参数]</code> 来使用 mimikatz 的各种功能。</p>
+<h2 id="模块">模块</h2>
+<p>以下仅是常用模块及命令</p>
+<ul>
+<li><a href="#%60standard%60"><code>standard</code></a></li>
+<li><a href="#%60privilege%60"><code>privilege</code></a></li>
+<li><a href="#%60sekurlsa%60"><code>sekurlsa</code></a></li>
+</ul>
+<p>注：所有模块都可以通过 <code>模块名::错误命令</code>
+获取详细帮助，例如 <code>crypto::help</code>，如果需要详细信息请在官方
+wiki 中查找：https://github.com/gentilkiwi/mimikatz/wiki</p>
+<h3 id="standard"><code>standard</code></h3>
+<p><code>standard</code>
+模块的命令可以直接使用，并不需要指定模块名，即</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mimikatz <span class="comment"># exit</span></span><br></pre></td></tr></table></figure>
+<p>也可以正常使用该模块的命令。</p>
+<table>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 86%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>exit</code></td>
+<td>退出 mimikatz</td>
+</tr>
+<tr class="even">
+<td><code>cls</code></td>
+<td>清屏</td>
+</tr>
+<tr class="odd">
+<td><code>answer</code></td>
+<td>彩蛋（<code>Gives the Answer to the Ultimate Question of Life, the Universe, and Everything.</code>）</td>
+</tr>
+<tr class="even">
+<td><code>coffee</code></td>
+<td>彩蛋（<code>Because everyone deserves a good coffee.</code>）</td>
+</tr>
+<tr class="odd">
+<td><code>sleep</code></td>
+<td>休眠，以毫秒为单位（默认值为 1000）</td>
+</tr>
+<tr class="even">
+<td><code>log</code></td>
+<td>输出日志，可以指定输出文件名（默认为
+<code>mimikatz.log</code>），使用 <code>/stop</code> 参数停止记录</td>
+</tr>
+<tr class="odd">
+<td><code>base64</code></td>
+<td>切换输入输出为 base64 形式</td>
+</tr>
+<tr class="even">
+<td><code>version</code></td>
+<td>获取 mimikatz 的版本和 windows 的版本</td>
+</tr>
+<tr class="odd">
+<td><code>cd</code></td>
+<td>切换工作目录</td>
+</tr>
+</tbody>
+</table>
+<h3 id="privilege"><code>privilege</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>debug</code></td>
+<td>请求调试权限</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>调试权限允许某人调试他们原本无权访问的进程。例如，以用户身份运行并在其令牌上启用调试权限的进程可以调试作为本地系统运行的服务。</p>
+</blockquote>
+<p>如果出现
+<code>ERROR kuhl_m_privilege_simple ; RtlAdjustPrivilege (20) c0000061</code>
+错误，说明不是由管理员权限运行 mimikatz。</p>
+<h3 id="sekurlsa"><code>sekurlsa</code></h3>
+<p>该模块通过调用 lsass 进程来提取 <strong>passwords</strong>,
+<strong>keys</strong>, <strong>pin codes</strong>,
+<strong>tickets</strong>，但使用该模块需要满足以下其中一个条件：</p>
+<ul>
+<li>管理员，<code>debug</code>通过 <code>privilege::debug</code></li>
+<li><code>SYSTEM</code>帐户，通过后期利用工具，计划任务，<code>psexec -s ...</code>-在这种情况下<code>debug</code>不需要特权。</li>
+<li>使用 lsass 转储文件</li>
+</ul>
+<p>如果没有访问lsass进程的权限，所有命令都将失败，并出现如下错误：（<code>ERROR kuhl_m_sekurlsa_acquireLSA ; Handle on memory (0x00000005)</code>，使用
+lsass 转储时除外）。</p>
+<table>
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>logonpasswords</code></td>
+<td>打印出所以登陆过的账户及其明文密码</td>
+</tr>
+<tr class="even">
+<td><code>pth</code></td>
+<td>Pass-The-Hash，请查看<a href="#%60pth%60">下文</a></td>
+</tr>
+<tr class="odd">
+<td><code>minidump</code></td>
+<td>载入转储的 <code>lsass.dmp</code> 文件</td>
+</tr>
+<tr class="even">
+<td><code>kerberos</code></td>
+<td>打印在域上使用智能卡登录时，<code>lsass</code>缓存智能卡的 PIN
+码</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pth"><code>pth</code></h4>
+<h5 id="功能">功能</h5>
+<p>Pass-The-Hash，即使用<code>NTLM</code>用户密码的哈希而不是其真实密码在另一个凭据下运行进程。</p>
+<p>为此，它使用假身份启动一个过程，然后<code>NTLM</code>用真实信息（<code>NTLM</code>真实密码的散列）替换假信息（假密码的散列）。</p>
+<h5 id="参数">参数</h5>
+<ul>
+<li><code>/user</code>-
+您要冒充的用户名，请记住，管理员不是这个知名帐户的唯一名称。</li>
+<li><code>/domain</code>- 完全限定的域名 -
+没有域或在本地用户/管理员的情况下，使用计算机或服务器名称，<code>workgroup</code>或其他。</li>
+<li><code>/rc4</code>或<code>/ntlm</code>-<em>可选</em>- 用户密码的 RC4
+密钥/NTLM 哈希。</li>
+<li><code>/aes128</code>-<em>可选</em>- 从用户密码和域领域派生的 AES128
+密钥。</li>
+<li><code>/aes256</code>-<em>可选</em>- 从用户密码和域领域派生的 AES256
+密钥。</li>
+<li><code>/run</code>-<em>可选</em>- 要运行的命令行 -
+默认为：<code>cmd</code>拥有一个 shell。</li>
+</ul>
+<p>在 Windows 最新版本上也有效：</p>
+<ul>
+<li><code>sekurlsa::pth /user:Administrateur /domain:chocolate.local /aes256:b7268361386090314acce8d9367e55f55865e7ef8e670fbe4262d6c94098a9e9</code></li>
+<li><code>sekurlsa::pth /user:Administrateur /domain:chocolate.local /ntlm:cc36cf7a8514893efccd332446158b1a /aes256:b7268361386090314acce8d9367e55f55865e7ef8e670fbe4262d6c94098a9e9</code></li>
+</ul>
+<h5 id="注意">注意</h5>
+<ul>
+<li>此命令不适用于小型转储（废话）；</li>
+<li>它需要提升权限（<code>privilege::debug</code>或<code>SYSTEM</code>帐户），这与使用一个官方
+API 的“Pass-The-Ticket”不同；</li>
+<li>这个新版本的“Pass-The-Hash”用哈希替换<code>RC4 keys</code>了
+Kerberos <code>ntlm</code>（和/或替换了<code>AES</code>密钥）——它允许
+Kerberos 提供者询问<code>TGT</code>票证！;</li>
+<li><code>ntlm</code>哈希在 XP/2003/Vista/2008 和 7/2008r2/8/2012
+之前是<strong>强制性</strong><code>kb2871997</code>的（<code>AES</code>不可用或可替换）；</li>
+<li><code>AES</code>密钥只能在 8.1/2012r2 或 7/2008r2/8/2012
+上替换为<code>kb2871997</code>，在这种情况下，您可以避免<code>ntlm</code>散列。</li>
+</ul>
+<h2 id="实例">实例</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">mimikatz <span class="comment"># sekurlsa::minidump lsass.dmp</span></span><br><span class="line">Switch to MINIDUMP : <span class="string">&#x27;lsass.dmp&#x27;</span></span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># sekurlsa::logonpasswords</span></span><br><span class="line">Opening : <span class="string">&#x27;lsass.dmp&#x27;</span> file <span class="keyword">for</span> minidump...</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 88038 (00000000:000157e6)</span><br><span class="line">Session           : Interactive from 1</span><br><span class="line">User Name         : Gentil Kiwi</span><br><span class="line">Domain            : vm-w7-ult</span><br><span class="line">SID               : S-1-5-21-2044528444-627255920-3055224092-1000</span><br><span class="line">        msv :</span><br><span class="line">         [00000003] Primary</span><br><span class="line">         * Username : Gentil Kiwi</span><br><span class="line">         * Domain   : vm-w7-ult</span><br><span class="line">         * LM       : d0e9aee149655a6075e4540af1f22d3b</span><br><span class="line">         * NTLM     : cc36cf7a8514893efccd332446158b1a</span><br><span class="line">         * SHA1     : a299912f3dc7cf0023aef8e4361abfc03e9a8c30</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="mimikatz-变种">mimikatz 变种</h1>
+<ul>
+<li>Meterpreter 有 mimikatz 插件</li>
+<li>Volatility 有 mimikatz 插件</li>
+<li>PowerShell 有 mimikatz 的 DLL 反射</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/mimikatz-note.html" title="mimikatz使用笔记">https://hasegawaazusa.github.io/mimikatz-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/forensics/" rel="tag"># forensics</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/NTRU-note.html" rel="prev" title="NTRU-note">
+                  <i class="fa fa-chevron-left"></i> NTRU-note
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">267k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:03</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

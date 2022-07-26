@@ -10134,12 +10134,6 @@ GetCommandLineA() API：</p>
       </tags>
   </entry>
   <entry>
-    <title>amazing-rsa-algorithm-note</title>
-    <url>/post/amazing-rsa-algorithm-note.html</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>github action使用笔记</title>
     <url>//github-action-note.html</url>
     <content><![CDATA[<h1 id="简述">简述</h1>
@@ -11092,9 +11086,96 @@ y\rfloor,17))},2\right)\right\rfloor
       </tags>
   </entry>
   <entry>
-    <title>knapsack-note</title>
+    <title>knapsack背包密码算法</title>
     <url>//knapsack-note.html</url>
-    <content><![CDATA[<h1 id="简述">简述</h1>
+    <content><![CDATA[<h1 id="knapsack-算法">Knapsack 算法</h1>
+<h2 id="简述">简述</h2>
+<p>Merkle–Hellman 背包密码系统是最早的之一公钥密码系统，同时也被称作
+Knapsack 密码，在 1984 年便被破解，由阿迪·沙米尔（Adi
+Shamir）提出多项式时间攻击，故该密码为不安全的密码系统。</p>
+<p>Merkle-Hellman
+是一个公共密钥密码系统，这意味着使用了两个密钥，一个用于加密的公钥和一个用于解密的私钥。它基于子集和问题（背包问题），问题如下：</p>
+<blockquote>
+<p>给定一组整数 <span class="math inline">\(A\)</span> 和一个整数 <span class="math inline">\(c\)</span>，找到的子集 <span class="math inline">\(A\)</span> 总计 <span class="math inline">\(c\)</span>。通常，已知此问题是 NP 完全
+。但是，如果 <span class="math inline">\(A\)</span> 是超增
+，这意味着集合中的每个元素都大于集合中所有数字的总和，那么问题是“容易的”并且可以通过简单的方法在多项式时间内解决，即使用贪心算法.</p>
+</blockquote>
+<p>在 Merkle-Hellman
+中，解密消息需要解决一个看似“硬”的背包问题。私钥包含数字的递增列表 <span class="math inline">\(W\)</span>，并且公钥包含数字的非超级列表 <span class="math inline">\(B\)</span>，实际上是“伪装”的 <span class="math inline">\(W\)</span>。私钥还包含一些“活板门”信息，这些信息可用于转换使用以下内容的硬背包问题
+<span class="math inline">\(B\)</span> 使用一个简单的背包问题 <span class="math inline">\(W\)</span>。</p>
+<h2 id="密钥生成">密钥生成</h2>
+<ol type="1">
+<li><p>选择块大小 <span class="math inline">\(n\)</span></p></li>
+<li><p>选择一个随机的超增正序列 <span class="math inline">\(W=(w_1,w_2,\cdots,w_n)\)</span>，其中超增意味着需要满足：
+<span class="math display">\[
+w_k&gt;\sum^{k-1}_{i=1}w_i,k\in(1,n],k\in N
+\]</span></p></li>
+<li><p>选择一个随机整数 <span class="math inline">\(q\)</span>，满足
+<span class="math display">\[
+q&gt;\sum^{n}_{i=1}w_i
+\]</span></p></li>
+<li><p>随机选择一个随机整数 <span class="math inline">\(r\)</span>，满足
+<span class="math inline">\(\gcd(r,q)=1\)</span>，即 <span class="math inline">\(r\)</span> 与 <span class="math inline">\(q\)</span> 互质</p></li>
+<li><p>计算序列 <span class="math inline">\(B=(b_1,b_2,\cdots,b_n)\)</span>，其中 <span class="math display">\[
+b_i=rw_1\pmod{q}
+\]</span></p></li>
+</ol>
+<p>公钥即为 <span class="math inline">\(B\)</span>，私钥为 <span class="math inline">\((W,q,r)\)</span></p>
+<h2 id="加密">加密</h2>
+<ol type="1">
+<li><p>将明文 <span class="math inline">\(m\)</span> 二进制编码为序列
+<span class="math inline">\(M=(m_1,m_2,\cdots,m_n)\)</span>，例如明文 5
+编码为序列 <span class="math inline">\(M=(1,0,1)\)</span></p></li>
+<li><p>计算密文 <span class="math display">\[
+c=\sum^{n}_{i=1}m_ib_i
+\]</span></p></li>
+</ol>
+<h2 id="解密">解密</h2>
+<p>我们将问题转化为寻找 <span class="math inline">\(W\)</span>，使用贪心算法便可在多项式时间内求解。</p>
+<ol type="1">
+<li><p>计算模逆 <span class="math inline">\(F_r=r^{-1}\pmod{q}\)</span>（由于之前满足 <span class="math inline">\(\gcd(r,q)=1\)</span>，故模逆必存在）</p></li>
+<li><p>计算 <span class="math inline">\(c&#39;=cF_r\pmod{q}\)</span></p></li>
+<li><p>贪婪选取 <span class="math inline">\(X=(x_1,x_2,\cdots,x_n)\)</span>，使得满足 <span class="math display">\[
+c&#39;=\sum^{k}_{i=1}w_{x_i}
+\]</span></p></li>
+<li><p>最后将序列 <span class="math inline">\(X\)</span> 二进制解码回
+<span class="math inline">\(m\)</span> 即可</p></li>
+</ol>
+<h2 id="实例">实例</h2>
+<h3 id="密钥生成-1">密钥生成</h3>
+<p>生成超增序列 <span class="math inline">\(W=(2,7,11,21,42,89,180,354),q=881,r=588\)</span></p>
+<p>构造公钥 <span class="math display">\[
+2\times588\pmod{881}=295\\
+7\times588\pmod{881}=592\\
+11\times588\pmod{881}=301\\
+21\times588\pmod{881}=14\\
+42\times588\pmod{881}=28\\
+89\times588\pmod{881}=353\\
+180\times588\pmod{881}=120\\
+354\times588\pmod{881}=236
+\]</span> 故公钥为 <span class="math inline">\(B=(295,592,301,14,28,353,120,236)\)</span></p>
+<h3 id="加密-1">加密</h3>
+<p>消息 <span class="math inline">\(m=97\)</span>，二进制编码得到序列
+<span class="math inline">\(M=(0,1,1,0,0,0,0,1)\)</span></p>
+<p>序列相乘 <span class="math display">\[
+M\cdot
+B=0\times295+1\times592+1\times301+0\times14+0\times28+0\times353+0\times120+1\times236=1129
+\]</span> 故密文即为 <span class="math inline">\(c=1129\)</span></p>
+<h3 id="解密-1">解密</h3>
+<p>计算模逆 <span class="math inline">\(F_r=r^{-1}\pmod{q}=442\)</span></p>
+<p>计算 <span class="math inline">\(c&#39;=cF_r\pmod{q}=372\)</span></p>
+<p>使用贪婪算法求解步骤： <span class="math display">\[
+c&#39;=372,w_8=354\le372\Rightarrow x_8=1\\
+c&#39;=372-354=18,w_3=11\le18\Rightarrow x_3=1\\
+c&#39;=18-11=7,w_2=7\le7\Rightarrow x_2=1\\
+c&#39;=7-7=0
+\]</span> 故我们得到序列 <span class="math inline">\(X=(0,1,1,0,0,0,0,1)\)</span></p>
+<p>故二进制解码得到明文 <span class="math inline">\(m=97\)</span></p>
+<h2 id="安全性">安全性</h2>
+<p>背包密码系统的安全性依赖于一般背包问题的求解困难（已知公钥求解困难），而超增背包问题的求解简单（已知私钥求解容易）。</p>
+<h2 id="python-实现">Python 实现</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">keygen</span>():</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    密钥生成</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    pk=[]</span><br><span class="line">    sk=[]</span><br><span class="line">    sk.append(m)</span><br><span class="line">    sk.append(<span class="built_in">int</span>(gmpy2.invert(w,m)))</span><br><span class="line">    D=[]</span><br><span class="line">    binD=[]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(Baglenth):</span><br><span class="line">        di=(w*Bag[i])%m</span><br><span class="line">        D.append(di)</span><br><span class="line">        bindi=<span class="built_in">bin</span>(di)[<span class="number">2</span>:]</span><br><span class="line">        bindi=pad(bindi,h)</span><br><span class="line">        binD.append(bindi)</span><br><span class="line">    U=[]</span><br><span class="line">    V=[]</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(Baglenth):</span><br><span class="line">        tempu=<span class="built_in">int</span>(<span class="built_in">str</span>(binD[i][:j]),<span class="number">2</span>)</span><br><span class="line">        U.append(tempu)</span><br><span class="line">        tempv=<span class="built_in">int</span>(<span class="built_in">str</span>(binD[i][j:]),<span class="number">2</span>)</span><br><span class="line">        V.append(tempv)</span><br><span class="line">    e=gmpy2.next_prime(<span class="built_in">sum</span>(V))+<span class="number">2</span></span><br><span class="line">    f=gmpy2.next_prime(<span class="built_in">sum</span>(U))</span><br><span class="line">    <span class="keyword">assert</span> gmpy2.gcd(e,f)==<span class="number">1</span></span><br><span class="line">    sk.append(<span class="built_in">int</span>(e))</span><br><span class="line">    sk.append(<span class="built_in">int</span>(f))</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(Baglenth):</span><br><span class="line">        ai=e*U[i]+f*V[i]</span><br><span class="line">        pk.append(<span class="built_in">int</span>(ai))</span><br><span class="line">    <span class="keyword">return</span> pk, sk</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Encrypt</span>(<span class="params">plain,pk</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    加密</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    mbin=<span class="built_in">bin</span>(plain)[<span class="number">2</span>:]</span><br><span class="line">    c=<span class="number">0</span></span><br><span class="line">    mbin=pad(mbin,Baglenth)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(Baglenth):</span><br><span class="line">        c=c+<span class="built_in">int</span>(mbin[i])*pk[i]</span><br><span class="line">    <span class="keyword">return</span> c</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Decrypt</span>(<span class="params">code, sk, q, r</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    解密</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    code = code * <span class="built_in">pow</span>(r, -<span class="number">1</span>, q) % q</span><br><span class="line">    mbin = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> sk[::-<span class="number">1</span>]:</span><br><span class="line">        <span class="keyword">if</span> i &gt; code:</span><br><span class="line">            mbin.append(<span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            mbin.append(<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">            code -= i</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(<span class="string">&#x27;&#x27;</span>.join(code[::-<span class="number">1</span>]), <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+<h1 id="knapsack-破解">Knapsack 破解</h1>
 ]]></content>
   </entry>
   <entry>
@@ -13254,6 +13335,213 @@ https://github.com/RealityNet/hotoloti/tree/master/volatility 中获取
         <tag>note</tag>
         <tag>forensics</tag>
         <tag>volatility</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>mimikatz使用笔记</title>
+    <url>//mimikatz-note.html</url>
+    <content><![CDATA[<h1 id="mimikatz-介绍">mimikatz 介绍</h1>
+<p>mimikatz 是法国人 benjamin
+开发的一款功能强大的轻量级调试工具，本来是用于个人测试使用，但由于功能过于强大，可以直接获取
+Windows 操作系统的明文密码，现被用于渗透测试。</p>
+<p>mimikatz 分为 Win32 与 x64 版本，在 kali
+中有存储，直接将文件夹拷贝即可使用。通过这些可以提升进程权限、注入进程和读取进程内存。</p>
+<blockquote>
+<p>├── kiwi_passwords.yar ├── mimicom.idl ├── Win32 │ ├── mimidrv.sys │
+├── mimikatz.exe │ ├── mimilib.dll │ ├── mimilove.exe │ └──
+mimispool.dll └── x64 ├── mimidrv.sys ├── mimikatz.exe ├── mimilib.dll
+└── mimispool.dll</p>
+</blockquote>
+<p>mimikatz 主要是从 Lsass
+中获取当前登陆过的系统用户的账号明文密码。Lsass 是微软 Windows
+系统的安全机制，主要用于本地安全和登陆策略，通常我们登录系统后，经过其
+wdigest 和 tspkg 两个模块调用后，对其使用可逆的算法加密并存储在 Lsass
+内存中，而 mimikatz 正是通过逆算获取到明文密码。</p>
+<p>mimikatz 可以在 GitHub
+主页中获取相应的发行（https://github.com/gentilkiwi/mimikatz/），同时也可以在
+kali 中拷贝。</p>
+<h1 id="mimikatz-使用">mimikatz 使用</h1>
+<p>mimikatz 打开后便是一个交互式的
+shell，其内置许多模块功能供我们使用，主要是通过
+<code>模块名::命令 [参数]</code> 来使用 mimikatz 的各种功能。</p>
+<h2 id="模块">模块</h2>
+<p>以下仅是常用模块及命令</p>
+<ul>
+<li><a href="#%60standard%60"><code>standard</code></a></li>
+<li><a href="#%60privilege%60"><code>privilege</code></a></li>
+<li><a href="#%60sekurlsa%60"><code>sekurlsa</code></a></li>
+</ul>
+<p>注：所有模块都可以通过 <code>模块名::错误命令</code>
+获取详细帮助，例如 <code>crypto::help</code>，如果需要详细信息请在官方
+wiki 中查找：https://github.com/gentilkiwi/mimikatz/wiki</p>
+<h3 id="standard"><code>standard</code></h3>
+<p><code>standard</code>
+模块的命令可以直接使用，并不需要指定模块名，即</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mimikatz <span class="comment"># exit</span></span><br></pre></td></tr></table></figure>
+<p>也可以正常使用该模块的命令。</p>
+<table>
+<colgroup>
+<col style="width: 13%">
+<col style="width: 86%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>exit</code></td>
+<td>退出 mimikatz</td>
+</tr>
+<tr class="even">
+<td><code>cls</code></td>
+<td>清屏</td>
+</tr>
+<tr class="odd">
+<td><code>answer</code></td>
+<td>彩蛋（<code>Gives the Answer to the Ultimate Question of Life, the Universe, and Everything.</code>）</td>
+</tr>
+<tr class="even">
+<td><code>coffee</code></td>
+<td>彩蛋（<code>Because everyone deserves a good coffee.</code>）</td>
+</tr>
+<tr class="odd">
+<td><code>sleep</code></td>
+<td>休眠，以毫秒为单位（默认值为 1000）</td>
+</tr>
+<tr class="even">
+<td><code>log</code></td>
+<td>输出日志，可以指定输出文件名（默认为
+<code>mimikatz.log</code>），使用 <code>/stop</code> 参数停止记录</td>
+</tr>
+<tr class="odd">
+<td><code>base64</code></td>
+<td>切换输入输出为 base64 形式</td>
+</tr>
+<tr class="even">
+<td><code>version</code></td>
+<td>获取 mimikatz 的版本和 windows 的版本</td>
+</tr>
+<tr class="odd">
+<td><code>cd</code></td>
+<td>切换工作目录</td>
+</tr>
+</tbody>
+</table>
+<h3 id="privilege"><code>privilege</code></h3>
+<table>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>debug</code></td>
+<td>请求调试权限</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>调试权限允许某人调试他们原本无权访问的进程。例如，以用户身份运行并在其令牌上启用调试权限的进程可以调试作为本地系统运行的服务。</p>
+</blockquote>
+<p>如果出现
+<code>ERROR kuhl_m_privilege_simple ; RtlAdjustPrivilege (20) c0000061</code>
+错误，说明不是由管理员权限运行 mimikatz。</p>
+<h3 id="sekurlsa"><code>sekurlsa</code></h3>
+<p>该模块通过调用 lsass 进程来提取 <strong>passwords</strong>,
+<strong>keys</strong>, <strong>pin codes</strong>,
+<strong>tickets</strong>，但使用该模块需要满足以下其中一个条件：</p>
+<ul>
+<li>管理员，<code>debug</code>通过 <code>privilege::debug</code></li>
+<li><code>SYSTEM</code>帐户，通过后期利用工具，计划任务，<code>psexec -s ...</code>-在这种情况下<code>debug</code>不需要特权。</li>
+<li>使用 lsass 转储文件</li>
+</ul>
+<p>如果没有访问lsass进程的权限，所有命令都将失败，并出现如下错误：（<code>ERROR kuhl_m_sekurlsa_acquireLSA ; Handle on memory (0x00000005)</code>，使用
+lsass 转储时除外）。</p>
+<table>
+<colgroup>
+<col style="width: 22%">
+<col style="width: 77%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>命令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>logonpasswords</code></td>
+<td>打印出所以登陆过的账户及其明文密码</td>
+</tr>
+<tr class="even">
+<td><code>pth</code></td>
+<td>Pass-The-Hash，请查看<a href="#%60pth%60">下文</a></td>
+</tr>
+<tr class="odd">
+<td><code>minidump</code></td>
+<td>载入转储的 <code>lsass.dmp</code> 文件</td>
+</tr>
+<tr class="even">
+<td><code>kerberos</code></td>
+<td>打印在域上使用智能卡登录时，<code>lsass</code>缓存智能卡的 PIN
+码</td>
+</tr>
+</tbody>
+</table>
+<h4 id="pth"><code>pth</code></h4>
+<h5 id="功能">功能</h5>
+<p>Pass-The-Hash，即使用<code>NTLM</code>用户密码的哈希而不是其真实密码在另一个凭据下运行进程。</p>
+<p>为此，它使用假身份启动一个过程，然后<code>NTLM</code>用真实信息（<code>NTLM</code>真实密码的散列）替换假信息（假密码的散列）。</p>
+<h5 id="参数">参数</h5>
+<ul>
+<li><code>/user</code>-
+您要冒充的用户名，请记住，管理员不是这个知名帐户的唯一名称。</li>
+<li><code>/domain</code>- 完全限定的域名 -
+没有域或在本地用户/管理员的情况下，使用计算机或服务器名称，<code>workgroup</code>或其他。</li>
+<li><code>/rc4</code>或<code>/ntlm</code>-<em>可选</em>- 用户密码的 RC4
+密钥/NTLM 哈希。</li>
+<li><code>/aes128</code>-<em>可选</em>- 从用户密码和域领域派生的 AES128
+密钥。</li>
+<li><code>/aes256</code>-<em>可选</em>- 从用户密码和域领域派生的 AES256
+密钥。</li>
+<li><code>/run</code>-<em>可选</em>- 要运行的命令行 -
+默认为：<code>cmd</code>拥有一个 shell。</li>
+</ul>
+<p>在 Windows 最新版本上也有效：</p>
+<ul>
+<li><code>sekurlsa::pth /user:Administrateur /domain:chocolate.local /aes256:b7268361386090314acce8d9367e55f55865e7ef8e670fbe4262d6c94098a9e9</code></li>
+<li><code>sekurlsa::pth /user:Administrateur /domain:chocolate.local /ntlm:cc36cf7a8514893efccd332446158b1a /aes256:b7268361386090314acce8d9367e55f55865e7ef8e670fbe4262d6c94098a9e9</code></li>
+</ul>
+<h5 id="注意">注意</h5>
+<ul>
+<li>此命令不适用于小型转储（废话）；</li>
+<li>它需要提升权限（<code>privilege::debug</code>或<code>SYSTEM</code>帐户），这与使用一个官方
+API 的“Pass-The-Ticket”不同；</li>
+<li>这个新版本的“Pass-The-Hash”用哈希替换<code>RC4 keys</code>了
+Kerberos <code>ntlm</code>（和/或替换了<code>AES</code>密钥）——它允许
+Kerberos 提供者询问<code>TGT</code>票证！;</li>
+<li><code>ntlm</code>哈希在 XP/2003/Vista/2008 和 7/2008r2/8/2012
+之前是<strong>强制性</strong><code>kb2871997</code>的（<code>AES</code>不可用或可替换）；</li>
+<li><code>AES</code>密钥只能在 8.1/2012r2 或 7/2008r2/8/2012
+上替换为<code>kb2871997</code>，在这种情况下，您可以避免<code>ntlm</code>散列。</li>
+</ul>
+<h2 id="实例">实例</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">mimikatz <span class="comment"># sekurlsa::minidump lsass.dmp</span></span><br><span class="line">Switch to MINIDUMP : <span class="string">&#x27;lsass.dmp&#x27;</span></span><br><span class="line"></span><br><span class="line">mimikatz <span class="comment"># sekurlsa::logonpasswords</span></span><br><span class="line">Opening : <span class="string">&#x27;lsass.dmp&#x27;</span> file <span class="keyword">for</span> minidump...</span><br><span class="line"></span><br><span class="line">Authentication Id : 0 ; 88038 (00000000:000157e6)</span><br><span class="line">Session           : Interactive from 1</span><br><span class="line">User Name         : Gentil Kiwi</span><br><span class="line">Domain            : vm-w7-ult</span><br><span class="line">SID               : S-1-5-21-2044528444-627255920-3055224092-1000</span><br><span class="line">        msv :</span><br><span class="line">         [00000003] Primary</span><br><span class="line">         * Username : Gentil Kiwi</span><br><span class="line">         * Domain   : vm-w7-ult</span><br><span class="line">         * LM       : d0e9aee149655a6075e4540af1f22d3b</span><br><span class="line">         * NTLM     : cc36cf7a8514893efccd332446158b1a</span><br><span class="line">         * SHA1     : a299912f3dc7cf0023aef8e4361abfc03e9a8c30</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h1 id="mimikatz-变种">mimikatz 变种</h1>
+<ul>
+<li>Meterpreter 有 mimikatz 插件</li>
+<li>Volatility 有 mimikatz 插件</li>
+<li>PowerShell 有 mimikatz 的 DLL 反射</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>forensics</tag>
       </tags>
   </entry>
 </search>
