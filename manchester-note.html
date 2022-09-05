@@ -22,31 +22,27 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="有关盲水印的简要笔记">
+<meta name="description" content="有关曼彻斯特编码的简要笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="盲水印笔记">
-<meta property="og:url" content="https://hasegawaazusa.github.io/blind-water-mask-note.html">
+<meta property="og:title" content="曼彻斯特编码笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/manchester-note.html">
 <meta property="og:site_name" content="独奏の小屋">
-<meta property="og:description" content="有关盲水印的简要笔记">
+<meta property="og:description" content="有关曼彻斯特编码的简要笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hasegawaazusa.github.io/blind-water-mask-note/image-20220725205419764.png">
-<meta property="article:published_time" content="2022-07-23T18:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-25T14:49:39.650Z">
+<meta property="article:published_time" content="2022-08-25T05:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-25T06:55:51.427Z">
 <meta property="article:author" content="qsDuzou">
-<meta property="article:tag" content="misc">
-<meta property="article:tag" content="forensics">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hasegawaazusa.github.io/blind-water-mask-note/image-20220725205419764.png">
 
 
-<link rel="canonical" href="https://hasegawaazusa.github.io/blind-water-mask-note.html">
+<link rel="canonical" href="https://hasegawaazusa.github.io/manchester-note.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/blind-water-mask-note.html","path":"/blind-water-mask-note.html","title":"盲水印笔记"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/manchester-note.html","path":"/manchester-note.html","title":"曼彻斯特编码笔记"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>盲水印笔记 | 独奏の小屋</title>
+<title>曼彻斯特编码笔记 | 独奏の小屋</title>
   
 
 
@@ -92,8 +88,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">52</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">80</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">53</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -151,7 +147,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.</span> <span class="nav-text">原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2"><span class="nav-number">2.1.1.</span> <span class="nav-text">傅里叶变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B0%B4%E5%8D%B0%E5%AF%B9%E7%A7%B0%E6%80%A7"><span class="nav-number">2.1.2.</span> <span class="nav-text">水印对称性</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-number">3.</span> <span class="nav-text">工具</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">曼彻斯特编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">表示方法</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -166,13 +162,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -219,7 +215,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/blind-water-mask-note.html">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/manchester-note.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -232,7 +228,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          盲水印笔记
+          曼彻斯特编码笔记
         </h1>
 
         <div class="post-meta-container">
@@ -243,7 +239,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-07-24 02:00:00" itemprop="dateCreated datePublished" datetime="2022-07-24T02:00:00+08:00">2022-07-24</time>
+      <time title="创建时间：2022-08-25 13:00:00" itemprop="dateCreated datePublished" datetime="2022-08-25T13:00:00+08:00">2022-08-25</time>
     </span>
 
   
@@ -253,7 +249,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.6k</span>
+      <span>453</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -264,7 +260,7 @@
     </span>
 </div>
 
-            <div class="post-description">有关盲水印的简要笔记</div>
+            <div class="post-description">有关曼彻斯特编码的简要笔记</div>
         </div>
       </header>
 
@@ -272,49 +268,75 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="简述">简述</h1>
-<p>水印（Water-Mask）是一种保护数字产品版权、完整性、防复制或去向追踪的技术，通常作为署名的一种。但水印的缺点显而易见，不止
-PhotoShop 有去除水印的功能，同时可以使用截图等手段将水印抹除。</p>
-<p>于是盲水印（Blind-Water-Mask）被发明出来，即字面意思——一种没办法用肉眼直接观察的水印。</p>
-<p>盲水印有着隐蔽性（Imperceptible）、不易移除性（Non-removable）、强健性（Robustness）和明确性（Unambiguous），可以很好的满足当前数字版权保护的所需。</p>
-<h1 id="算法">算法</h1>
-<h2 id="原理">原理</h2>
-<p>盲水印流程图如下：</p>
-<figure>
-<img src="/blind-water-mask-note/image-20220725205419764.png" alt="image-20220725205419764">
-<figcaption aria-hidden="true">image-20220725205419764</figcaption>
-</figure>
-<h3 id="傅里叶变换">傅里叶变换</h3>
-<p>盲水印用到的傅里叶变换是将信号在<strong>时域</strong>或<strong>空域</strong>的函数转变为用<strong>频域</strong>表示。</p>
-<p>图像是二维离散的，对该二维信号在各个方向上进行一次一维的傅里叶变换即可得到二维频域图，其中二维信号为时域中图像的灰度
-<span class="math inline">\(f(u,v)\)</span>。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># 直接读取为灰度图</span></span><br><span class="line">img = cv2.imread(<span class="string">&#x27;flag.jpg&#x27;</span>,<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 进行快速傅里叶变换</span></span><br><span class="line">f = np.fft.fft2(img)</span><br><span class="line"><span class="comment"># 取绝对值，将复数域映射到实数域</span></span><br><span class="line">s = np.log(np.<span class="built_in">abs</span>(f))</span><br><span class="line">plt.imsave(<span class="string">&#x27;original.jpg&#x27;</span>, s)</span><br><span class="line">plt.imsave(<span class="string">&#x27;original_gray.jpg&#x27;</span>, s, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>随后我们将图片的低频部分移动到中间，将高频部分移动到外围：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># 直接读取为灰度图</span></span><br><span class="line">img = cv2.imread(<span class="string">&#x27;flag.jpg&#x27;</span>,<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 进行快速傅里叶变换</span></span><br><span class="line">f = np.fft.fft2(img)</span><br><span class="line"><span class="comment"># 将图像中的低频部分移动到图像的中心</span></span><br><span class="line">fshift = np.fft.fftshift(f)</span><br><span class="line"><span class="comment"># 取绝对值，将复数域映射到实数域</span></span><br><span class="line">s = np.log(np.<span class="built_in">abs</span>(fshift))</span><br><span class="line">plt.imsave(<span class="string">&#x27;center.jpg&#x27;</span>, s)</span><br><span class="line">plt.imsave(<span class="string">&#x27;center_gray.jpg&#x27;</span>, s, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="水印对称性">水印对称性</h3>
-<p>由于傅里叶变换后，频域图 <span class="math inline">\(f(u, v)\)</span>
-与 <span class="math inline">\(f(-u,-v)\)</span>
-是共轭的，所以其实部应该相等（如果不相等的话，逆变换后结果将在虚部上损失一部分信息，因为我们只写入实部数据），故我们应使得水印编码后的数据是对称的。</p>
-<h1 id="工具">工具</h1>
-<p>在盲水印的加密和解密中，我们通常使用 GitHub 上的开源脚本 <a target="_blank" rel="noopener" href="https://github.com/chishaxie/BlindWaterMark">BlindWaterMark</a></p>
-<ul>
-<li>bwm.py程序文件python2版本</li>
-<li>bwmforpy3.py 程序文件python3版本</li>
-<li>hui.png 无水印的原图</li>
-<li>wm.png 水印图</li>
-<li>hui_with_wm.png 有盲水印的图</li>
-<li>wm_from_hui.png 解出来的水印图</li>
-</ul>
-<p>加密语法：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python bwm.py encode hui.png wm.png hui_with_wm.png</span><br></pre></td></tr></table></figure>
-<p>解密语法：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python bwm.py decode hui.png hui_with_wm.png wm_from_hui.png</span><br></pre></td></tr></table></figure>
-<p>缺陷是该工具需要一张原图，且注意python2和python3版本程序的 encode 和
-decode 结果会有所不同。主要原因是 python2 和 python3
-的随机算法不同。如果想让 python3 兼容 python2 的随机算法，请添加
-<code>--oldseed</code> 参数。</p>
-<p>同时由于其水印编码方式是使用默认随机数的，如果需要指定随机数，需要使用
-<code>--seed</code> 参数。</p>
+        <h1 id="曼彻斯特编码">曼彻斯特编码</h1>
+<h2 id="简述">简述</h2>
+<p>曼彻斯特编码也称为相位编码，是一种同步时钟编码技术。通过电平的高低转换来表示“0”或“1”，每一位的中间有一个跳变的动作，这个动作既作时钟信号，又作数据信号，但因为每一个码元都被调成两个电平，所以数据传输速率只有调制速率的1/2，其编码效率为50%。</p>
+<p>常用于局域网传输和物联网传输中，例如传感器、蓝牙数据等。</p>
+<h2 id="表示方法">表示方法</h2>
+<p>曼彻斯特编码有两种表示方法：</p>
+<ol type="1">
+<li><p>第一种是 G. E. Thomas, Andrew S. Tanenbaum 在1949年提出的：</p>
+<p>位中间电平 从低到高 跳变表示"0"；</p>
+<p>位中间电平 从高到低 跳变表示"1"。</p>
+<p>此规则得到的编码表如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>编码</th>
+<th>原数据</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>0101 (0x5)</code></td>
+<td><code>00</code></td>
+</tr>
+<tr class="even">
+<td><code>1001 (0x9)</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>0110 (0x6)</code></td>
+<td><code>01</code></td>
+</tr>
+<tr class="even">
+<td><code>1010 (0xA)</code></td>
+<td><code>11</code></td>
+</tr>
+</tbody>
+</table></li>
+<li><p>第二种是 IEEE 802.4 (令牌总线) 和低速版的 IEEE 802.3 (以太网)
+中规定：</p>
+<p>位中间电平 从低到高 跳变表示"1"；</p>
+<p>位中间电平 从高到低 跳变表示"0"。</p>
+<p>此规则得到的编码表如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>编码</th>
+<th>原数据</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>0101 (0x5)</code></td>
+<td><code>11</code></td>
+</tr>
+<tr class="even">
+<td><code>1001 (0x9)</code></td>
+<td><code>01</code></td>
+</tr>
+<tr class="odd">
+<td><code>0110 (0x6)</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="even">
+<td><code>1010 (0xA)</code></td>
+<td><code>00</code></td>
+</tr>
+</tbody>
+</table></li>
+</ol>
 
     </div>
 
@@ -332,7 +354,7 @@ decode 结果会有所不同。主要原因是 python2 和 python3
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hasegawaazusa.github.io/blind-water-mask-note.html" title="盲水印笔记">https://hasegawaazusa.github.io/blind-water-mask-note.html</a>
+      <a href="https://hasegawaazusa.github.io/manchester-note.html" title="曼彻斯特编码笔记">https://hasegawaazusa.github.io/manchester-note.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -340,22 +362,18 @@ decode 结果会有所不同。主要原因是 python2 和 python3
 </ul>
 </div>
 
-          <div class="post-tags">
-              <a href="/tags/misc/" rel="tag"># misc</a>
-              <a href="/tags/forensics/" rel="tag"># forensics</a>
-          </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/zip-crack-note.html" rel="prev" title="zip压缩包取证笔记">
-                  <i class="fa fa-chevron-left"></i> zip压缩包取证笔记
+                <a href="/std-string-note.html" rel="prev" title="std::string笔记">
+                  <i class="fa fa-chevron-left"></i> std::string笔记
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/ecdsa-note.html" rel="next" title="ecdsa 笔记">
-                  ecdsa 笔记 <i class="fa fa-chevron-right"></i>
+                <a href="/hamming-code-note.html" rel="next" title="海明校验码的笔记">
+                  海明校验码的笔记 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -389,14 +407,14 @@ decode 结果会有所不同。主要原因是 python2 和 python3
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">267k</span>
+    <span title="站点总字数">275k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:03</span>
+    <span title="站点阅读时长">4:10</span>
   </span>
 </div>
 
@@ -423,7 +441,7 @@ decode 结果会有所不同。主要原因是 python2 和 python3
 
   
 
-  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
 <script src="/js/third-party/math/mathjax.js"></script>
 
 

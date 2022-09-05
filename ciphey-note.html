@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关ciphey的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ciphey 笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/ciphey-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关ciphey的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-05T07:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-05T09:03:09.931Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="ai">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/ciphey-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/ciphey-note.html","path":"/ciphey-note.html","title":"ciphey 笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>ciphey 笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">53</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">简述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%B9%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%A8%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">用法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">2.2.</span> <span class="nav-text">示例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E8%A7%A3%E5%AF%86%E5%88%97%E8%A1%A8"><span class="nav-number">2.2.1.</span> <span class="nav-text">支持解密列表</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/ciphey-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          ciphey 笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-05 15:00:00" itemprop="dateCreated datePublished" datetime="2022-08-05T15:00:00+08:00">2022-08-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关ciphey的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="简述">简述</h1>
+<p>Cipher
+是一款使用自然语言处理和人工智能以及一些常识的全自动解密/解码/破解工具，它类似
+<code>dcode.fr</code>（实际上该网站的服务也是基于人工智能），但 Ciphey
+有着更强大的功能，例如连续解密和更高效的密文识别技术。</p>
+<h2 id="特性">特性</h2>
+<ul>
+<li><strong>支持 30+的加密方法</strong>
+例如编码（二进制，base64）和常规加密（例如 Caesar 密码，重复密钥 XOR
+等） <strong><a href="https://link.zhihu.com/?target=https%3A//github.com/Ciphey/Ciphey/wiki/Supported-Ciphers">有关完整列表，请单击此处</a></strong></li>
+<li><strong>具有增强搜索功能的定制人工智能（AuSearch）可以回答“使用了哪种加密技术?"</strong>
+解密时间不到 3 秒</li>
+<li><strong>定制的自然语言处理系统</strong> Ciphey
+可以确定某些东西是否是纯文本。无论该纯文本是 JSON，CTF 标志还是英语
+Ciphey，都可以在几毫秒内获得它</li>
+<li><strong>多国语言支持</strong> 目前，仅有德语和英语（带有
+AU，UK，CAN，USA 变体）</li>
+<li><strong>支持加密和哈希</strong> 诸如 CyberChef Magic
+之类的替代品则没有。</li>
+<li><strong><a href="https://link.zhihu.com/?target=https%3A//github.com/Ciphey/CipheyCore">C++
+核心</a></strong> 这会使整个过程变得非常快</li>
+</ul>
+<h2 id="安装">安装</h2>
+<p>使用 pip 包管理即可，需要注意的是
+<code>Python&gt;=3.7</code>（Windows 仅支持
+Python3.7、Python3.8，其他平台支持 Python3.9，但暂时不支持
+Python3.10）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip3 install ciphey</span><br></pre></td></tr></table></figure>
+<h1 id="用法">用法</h1>
+<h2 id="参数">参数</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">选项:</span><br><span class="line">  -t, --text TEXT            您想要解密的密文。</span><br><span class="line">  -q, --quiet                减少冗长的显示,直接给结果</span><br><span class="line">  -g, --greppable            只输出答案(对于grep很有用)</span><br><span class="line">  -v, --verbose</span><br><span class="line">  -C, --checker TEXT         使用给定的检查器</span><br><span class="line">  -c, --config TEXT          使用给定的配置文件。默认为</span><br><span class="line">                             appdirs.user_config_dir(<span class="string">&#x27;ciphey&#x27;</span>,</span><br><span class="line">                             <span class="string">&#x27;ciphey&#x27;</span>)/<span class="string">&#x27;config.yml&#x27;</span></span><br><span class="line"></span><br><span class="line">  -w, --wordlist TEXT        使用给定的密码字典</span><br><span class="line">  -p, --param TEXT           将参数传递给语言检查器</span><br><span class="line">  -l, --list-params BOOLEAN  列出所选模块的参数</span><br><span class="line">  --searcher TEXT            选择要使用的搜索算法</span><br><span class="line">  -b, --bytes                强制密码使用二进制模式作为输入</span><br><span class="line">  --default-dist TEXT        设置默认的字符/字节分布</span><br><span class="line">  -m, --module PATH          从给定路径添加模块</span><br><span class="line">  -A, --appdirs              输出密码到想要的文件位置</span><br><span class="line"></span><br><span class="line">  -f, --file FILENAME</span><br><span class="line">  --<span class="built_in">help</span>                     显示此帮助消息并退出。</span><br></pre></td></tr></table></figure>
+<h2 id="示例">示例</h2>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">例如:</span><br><span class="line">    基本用法: ciphey -t <span class="string">&quot;aGVsbG8gbXkgbmFtZSBpcyBiZWU=&quot;</span></span><br></pre></td></tr></table></figure>
+<p>Ciphey 会自动运算，如果不是想要的结果可以输入
+<code>n</code>，继续运算，直到正确结果</p>
+<h3 id="支持解密列表">支持解密列表</h3>
+<blockquote>
+<p>支持破解的密码列表 基本加密</p>
+</blockquote>
+<ul>
+<li>Caesar Cipher-凯撒密码</li>
+<li>ROT47（使用 ROT47 字母高达 ROT94）</li>
+<li>ASCII 移位（高达 ROT127，带有完整的 ASCII 字母表）</li>
+<li>Vigenère Cipher - 维吉尼亚密码</li>
+<li>Affine Cipher - 仿射密码</li>
+<li>Binary Substitution Cipher-二进制替换密码 (XY-Cipher)</li>
+<li>Baconian Cipher -培根密码（两种变体）</li>
+<li>Soundex</li>
+<li>Transposition Cipher-转置密码</li>
+<li>Pig Latin-猪拉丁语</li>
+</ul>
+<p>现代密码学</p>
+<ul>
+<li>Repeating-key XOR-重复键异或</li>
+<li>Single XOR-单异或</li>
+</ul>
+<p>编码</p>
+<ul>
+<li>Base2（二进制）</li>
+<li>Base8（八进制）</li>
+<li>Base10（十进制）</li>
+<li>Base16（十六进制）</li>
+<li>Base32</li>
+<li>Base58 比特币</li>
+<li>Base58 Flickr（发布候选阶段）</li>
+<li>Base58 Ripple</li>
+<li>Base62</li>
+<li>Base64</li>
+<li>Base64 URL（发布候选阶段）</li>
+<li>Base69</li>
+<li>Base85</li>
+<li>Z85（发布候选阶段）</li>
+<li>ASCII Base85</li>
+<li>Base91</li>
+<li>Base65536（发布候选阶段）</li>
+<li>ASCII</li>
+<li>Reversed text - <strong>反转文字</strong></li>
+<li>Morse Code-摩尔斯电码</li>
+<li>DNA codons-DNA 密码子（释放候选阶段）</li>
+<li>Atbash</li>
+<li>Standard Galactic Alphabet-标准银河字母表（又名 Minecraft Enchanting
+Language）</li>
+<li>Leetspeak</li>
+<li>Baudot ITA2</li>
+<li>URL encoding-网址编码</li>
+<li>SMS Multi-tap</li>
+<li>DMTF（发布候选阶段）</li>
+<li>A1Z26（发布候选阶段）</li>
+<li>Prisoner’s Tap Code-囚犯的窃听代码</li>
+<li>UUencode</li>
+<li>Braille-盲文（1 级）</li>
+</ul>
+<p>深奥的语言 (EsoLang)</p>
+<ul>
+<li>Brainfuck</li>
+</ul>
+<p>压缩方法</p>
+<ul>
+<li>GZip</li>
+</ul>
+<p>哈希值
+<strong>注意：由于我们无法控制的外部服务的一些错误，哈希现在被关闭。</strong>
+Ciphey 支持 272 个哈希。</p>
+<ul>
+<li>MD5</li>
+<li>SHA-1</li>
+<li>SHA-256</li>
+<li>SHA-384</li>
+<li>SHA-512</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/ciphey-note.html" title="ciphey 笔记">https://hasegawaazusa.github.io/ciphey-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+              <a href="/tags/ai/" rel="tag"># ai</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/logo-language-note.html" rel="prev" title="LOGO语言笔记">
+                  <i class="fa fa-chevron-left"></i> LOGO语言笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/sqli-labs-note.html" rel="next" title="sqli-labs注入笔记">
+                  sqli-labs注入笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">275k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:10</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

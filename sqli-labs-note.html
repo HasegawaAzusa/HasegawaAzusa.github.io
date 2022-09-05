@@ -22,36 +22,31 @@
   <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
-<meta name="description" content="感觉这道题很有趣，简要记录一下">
+<meta name="description" content="有关sqli-labs注入的简要笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="hgame misc week4 题目 - 摆烂">
-<meta property="og:url" content="https://hasegawaazusa.github.io/wp/hgame-bailan.html">
+<meta property="og:title" content="sqli-labs注入笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/sqli-labs-note.html">
 <meta property="og:site_name" content="独奏の小屋">
-<meta property="og:description" content="感觉这道题很有趣，简要记录一下">
+<meta property="og:description" content="有关sqli-labs注入的简要笔记">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://hasegawaazusa.github.io/wp/hgame-bailan/bailan.png">
-<meta property="og:image" content="https://hasegawaazusa.github.io/wp/hgame-bailan/bailan_page_0.png">
-<meta property="og:image" content="https://hasegawaazusa.github.io/wp/hgame-bailan/bailan_page_1.png">
-<meta property="og:image" content="https://hasegawaazusa.github.io/wp/hgame-bailan/hui.png">
-<meta property="og:image" content="https://hasegawaazusa.github.io/wp/hgame-bailan/barcode.png">
-<meta property="article:published_time" content="2022-02-11T04:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-11T05:18:10.567Z">
+<meta property="og:image" content="https://hasegawaazusa.github.io/sqli-labs-note/image-20220807222546950.png">
+<meta property="article:published_time" content="2022-08-07T14:00:00.000Z">
+<meta property="article:modified_time" content="2022-08-07T14:37:19.314Z">
 <meta property="article:author" content="qsDuzou">
-<meta property="article:tag" content="hgame">
-<meta property="article:tag" content="wp">
-<meta property="article:tag" content="misc">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="web">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://hasegawaazusa.github.io/wp/hgame-bailan/bailan.png">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/sqli-labs-note/image-20220807222546950.png">
 
 
-<link rel="canonical" href="https://hasegawaazusa.github.io/wp/hgame-bailan.html">
+<link rel="canonical" href="https://hasegawaazusa.github.io/sqli-labs-note.html">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/wp/hgame-bailan.html","path":"/wp/hgame-bailan.html","title":"hgame misc week4 题目 - 摆烂"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/sqli-labs-note.html","path":"/sqli-labs-note.html","title":"sqli-labs注入笔记"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>hgame misc week4 题目 - 摆烂 | 独奏の小屋</title>
+<title>sqli-labs注入笔记 | 独奏の小屋</title>
   
 
 
@@ -97,8 +92,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">52</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">80</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">53</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -156,7 +151,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">题目描述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">2.</span> <span class="nav-text">解决方案</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E6%9C%89%E6%B3%A8%E5%85%A5"><span class="nav-number">1.1.</span> <span class="nav-text">判断是否有注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql"><span class="nav-number">1.2.</span> <span class="nav-text">MySQL</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#basic-challenges"><span class="nav-number">2.</span> <span class="nav-text">Basic Challenges</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1"><span class="nav-number">2.1.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-2-intiger"><span class="nav-number">2.2.</span> <span class="nav-text">Less-2 Intiger</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-1"><span class="nav-number">2.3.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-2"><span class="nav-number">2.4.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-3"><span class="nav-number">2.5.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-4"><span class="nav-number">2.6.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-5"><span class="nav-number">2.7.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-6"><span class="nav-number">2.8.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-7"><span class="nav-number">2.9.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-8"><span class="nav-number">2.10.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-9"><span class="nav-number">2.11.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-10"><span class="nav-number">2.12.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-11"><span class="nav-number">2.13.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-12"><span class="nav-number">2.14.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-13"><span class="nav-number">2.15.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-14"><span class="nav-number">2.16.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-15"><span class="nav-number">2.17.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-16"><span class="nav-number">2.18.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-17"><span class="nav-number">2.19.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-18"><span class="nav-number">2.20.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#less-1-19"><span class="nav-number">2.21.</span> <span class="nav-text">Less-1</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -171,13 +166,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">80</span>
+          <span class="site-state-item-count">84</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">52</span>
+        <span class="site-state-item-count">53</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -224,7 +219,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/wp/hgame-bailan.html">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/sqli-labs-note.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.jpg">
@@ -237,7 +232,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          hgame misc week4 题目 - 摆烂
+          sqli-labs注入笔记
         </h1>
 
         <div class="post-meta-container">
@@ -248,7 +243,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2022-02-11 12:00:00" itemprop="dateCreated datePublished" datetime="2022-02-11T12:00:00+08:00">2022-02-11</time>
+      <time title="创建时间：2022-08-07 22:00:00" itemprop="dateCreated datePublished" datetime="2022-08-07T22:00:00+08:00">2022-08-07</time>
     </span>
 
   
@@ -258,7 +253,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.3k</span>
+      <span>828</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -269,7 +264,7 @@
     </span>
 </div>
 
-            <div class="post-description">感觉这道题很有趣，简要记录一下</div>
+            <div class="post-description">有关sqli-labs注入的简要笔记</div>
         </div>
       </header>
 
@@ -277,67 +272,82 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="题目描述">题目描述</h1>
-<p>题名：摆烂</p>
-<p>描述：CTF 好难啊</p>
-<p>附件：</p>
-<p>链接：https://pan.baidu.com/s/1ox2iQPBUMmcJy3FtFYOAEw
-提取码：flag</p>
-<h1 id="解决方案">解决方案</h1>
-<p>一开始打开压缩包发现是加密的，便先用 010editor 打开查看文件二进制</p>
-<p>结果 010editor
-直接一个先手报错，不由得往下查看文件格式如何出错，最后可在文件末尾发现关键文件签名<code>89504E47</code>即特征<code>‰PNG</code></p>
-<p>将文件末尾的 png 图提取出来，得到一个不存在伪加密的压缩包和图片</p>
+        <h1 id="前言">前言</h1>
+<p>SQL 注入的产生有三个要素：</p>
+<ol type="1">
+<li>未严格校验 SQL 语句</li>
+<li>恶意修改 SQL 语句</li>
+<li>成功执行</li>
+</ol>
+<p>一般来说我们进行 SQL 注入有以下步骤：</p>
+<ol type="1">
+<li>判断是否有注入（第一要素：是否严格校验）</li>
+<li>判断是什么类型的注入</li>
+<li>语句是否能够被恶意修改（第二要素：恶意修改）</li>
+<li>是否能够成功执行（第三要素：成功执行）</li>
+<li>获取我们想要的数据</li>
+</ol>
+<h2 id="判断是否有注入">判断是否有注入</h2>
+<ol type="1">
+<li>可控参数的改变是否能够影响页面显示结果</li>
+<li>输入的 SQL
+语句是否能报错，能通过数据库的报错，看到数据库的一些语句的痕迹</li>
+<li>输入的 SQL 语句是否不报错，判断我们的语句是否能闭合</li>
+</ol>
+<h2 id="mysql">MySQL</h2>
+<p>在 MySQL 中，会默认存在两个库 <code>mysql</code> 和
+<code>information_schema</code>。</p>
+<p>其中 <code>information_schema</code> 这个库保存着 MySQL
+的所有信息，重要的是，<code>information_schema</code>
+包含以下几个重要的表：</p>
+<ul>
+<li><code>SCHEMATA</code> → 包含所有
+<code>SCHEMA_NAME</code>，即所有的库名，包括本身</li>
+<li><code>TABLES</code> → 包含所有
+<code>TABLE_NAME</code>，即所有的表名，包括本身</li>
+<li><code>COLUMNS</code> → 包含所有的
+<code>COLUMN_NAME</code>，即所有的字段名，包括本身</li>
+</ul>
+<p><code>COLUMNS</code> 表里有着几个重要的字段名：</p>
+<ul>
+<li><code>TABLE_SCHEMA</code> → 库名</li>
+<li><code>TABLE_NAME</code> → 表名</li>
+<li><code>COLUMN</code> → 字段名</li>
+</ul>
+<h1 id="basic-challenges">Basic Challenges</h1>
+<h2 id="less-1">Less-1</h2>
+<h2 id="less-2-intiger">Less-2 Intiger</h2>
+<p>尝试改变 payload <code>?id=3</code>，发现页面发生改变；</p>
+<p>尝试添加单引号和双引号，引发报错：</p>
 <figure>
-<img src="/wp/hgame-bailan/bailan.png" alt="bailan">
-<figcaption aria-hidden="true">bailan</figcaption>
+<img src="/sqli-labs-note/image-20220807222546950.png" alt="image-20220807222546950">
+<figcaption aria-hidden="true">image-20220807222546950</figcaption>
 </figure>
-<p>压缩包丢进 ARCHPR 暴力破解，我们接着分析这张分离出来的图片</p>
-<p>用 010editor
-检查发现这张图片存在<code>acTL</code>、<code>fcTL</code>和<code>fdTL</code>数据块，便知道这张图片为
-APNG 格式，即 PNG 动图</p>
-<p>我们使用 https://products.aspose.app/imaging/zh-hans/image-view
-在线分离帧，得到下面两张图片</p>
-<figure>
-<img src="/wp/hgame-bailan/bailan_page_0.png" alt="bailan_page_0">
-<figcaption aria-hidden="true">bailan_page_0</figcaption>
-</figure>
-<figure>
-<img src="/wp/hgame-bailan/bailan_page_1.png" alt="bailan_page_1">
-<figcaption aria-hidden="true">bailan_page_1</figcaption>
-</figure>
-<p>我们使用 Stegsolve.jar 分别查看，并且使用 image combiner
-功能混合图片，其中 xor 时发现两张图片不太一样，但并未探查出什么结果</p>
-<p>不由得想到了盲水印 (bwm)，我们使用
-https://github.com/chishaxie/BlindWaterMark 工具对两张图片进行盲水印提取
-(<code>python .\bwm.py .\bailan_page_0.png .\bailan_page_1.png hui.png</code>)，得到下面这张图片</p>
-<figure>
-<img src="/wp/hgame-bailan/hui.png" alt="hui">
-<figcaption aria-hidden="true">hui</figcaption>
-</figure>
-<p>手读可得一串密码：4C*9wfg976</p>
-<p>这时候可想而知 ARCHPR
-没有那么高效，密码还未破解到这位数，输入密码可解压压缩包得到四张二维码拼图</p>
-<p>猜测它们来自一张二维码，其中发现 <code>CTF.png</code>
-这张图片与其他图片 dpi 不太一样，且二维码拼图保留着白边。</p>
-<p>最终根据白边和 dpi 关系，将二维码拼凑完整 (有些对齐失败无伤大雅)</p>
-<figure>
-<img src="/wp/hgame-bailan/barcode.png" alt="barcode">
-<figcaption aria-hidden="true">barcode</figcaption>
-</figure>
-<p>扫描得到一串汉字：</p>
-<blockquote>
-<p>在这种困难的抉择下，本人思来想去‌‌‌‌‍‬‬‌，寝食难安。 既然如此‌‌‌‌‍‬‍﻿，
-亚伯拉罕·林肯在不经意间这样说过，你活了多少岁不算什么‌‌‌‌‍‬‌‍，‌‌‌‌‍‬﻿‍重要的是你是如何度过这些岁月的。‌‌‌‌‍‬‍‍这启发了我，‌‌‌‌‍﻿‬﻿
-CTF‌‌‌‌‌﻿‌‍好难，到底应该如何实现。‌‌‌‌‍‍﻿﻿‌‌‌‌‍‍‍﻿ ‌‌‌‌‌﻿‍‌‌‌‌‌‍‬﻿‬总结的来说‌‌‌‌‍‍‍‌‌‌‌‌‍‍﻿﻿，
-‌‌‌‌‍‍‍‌‌‌‌‌‌﻿‌‌‌‌‌‌‍‍﻿﻿‌‌‌‌‍﻿‌‌我们都知道‌‌‌‌‌﻿‌‍‌‌‌‌‍‌‌‍，只要有意义‌‌‌‌‍﻿‬‍，‌‌‌‌‍‍﻿﻿那么就必须慎重考虑‌‌‌‌‍﻿‌‬。‌‌‌‌‌﻿‌‌‌‌‌‌‍‍‍‌‌‌‌‌‍﻿‍‌ 我认为，
-每个人都不得不面对这些问题‌‌‌‌‍‬‍‍。‌‌‌‌‍‬﻿‬ 在面对这种问题时，‌‌‌‌‍﻿﻿‍
-CTF好难，到底应该如何实现。</p>
-</blockquote>
-<p>复制进 vscode 后发现存在一些非法 unicode
-字符，猜测为0宽字符加密，使用网站
-http://330k.github.io/misc_tools/unicode_steganography.html
-解密最终得到我们心心念念的 flag</p>
+<p>不妨猜测 SQL 语句可能是
+<code>where id=3 LIMIT 0,1</code>，那么尝试添加注释符，使得语句不报错；</p>
+<p>payload 为 <code>?id=1#</code> 时，SQL
+不报错，故为<strong>整形注入</strong>；</p>
+<p>输入 payload <code>?id=1 and 0#</code>
+发现可以<strong>恶意修改</strong>；</p>
+<h2 id="less-1-1">Less-1</h2>
+<h2 id="less-1-2">Less-1</h2>
+<h2 id="less-1-3">Less-1</h2>
+<h2 id="less-1-4">Less-1</h2>
+<h2 id="less-1-5">Less-1</h2>
+<h2 id="less-1-6">Less-1</h2>
+<h2 id="less-1-7">Less-1</h2>
+<h2 id="less-1-8">Less-1</h2>
+<h2 id="less-1-9">Less-1</h2>
+<h2 id="less-1-10">Less-1</h2>
+<h2 id="less-1-11">Less-1</h2>
+<h2 id="less-1-12">Less-1</h2>
+<h2 id="less-1-13">Less-1</h2>
+<h2 id="less-1-14">Less-1</h2>
+<h2 id="less-1-15">Less-1</h2>
+<h2 id="less-1-16">Less-1</h2>
+<h2 id="less-1-17">Less-1</h2>
+<h2 id="less-1-18">Less-1</h2>
+<h2 id="less-1-19">Less-1</h2>
 
     </div>
 
@@ -355,7 +365,7 @@ http://330k.github.io/misc_tools/unicode_steganography.html
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hasegawaazusa.github.io/wp/hgame-bailan.html" title="hgame misc week4 题目 - 摆烂">https://hasegawaazusa.github.io/wp/hgame-bailan.html</a>
+      <a href="https://hasegawaazusa.github.io/sqli-labs-note.html" title="sqli-labs注入笔记">https://hasegawaazusa.github.io/sqli-labs-note.html</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -364,22 +374,21 @@ http://330k.github.io/misc_tools/unicode_steganography.html
 </div>
 
           <div class="post-tags">
-              <a href="/tags/hgame/" rel="tag"># hgame</a>
-              <a href="/tags/wp/" rel="tag"># wp</a>
-              <a href="/tags/misc/" rel="tag"># misc</a>
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/web/" rel="tag"># web</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/png-note.html" rel="prev" title="png 图片格式笔记">
-                  <i class="fa fa-chevron-left"></i> png 图片格式笔记
+                <a href="/ciphey-note.html" rel="prev" title="ciphey 笔记">
+                  <i class="fa fa-chevron-left"></i> ciphey 笔记
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/ecc-note.html" rel="next" title="ECC 笔记">
-                  ECC 笔记 <i class="fa fa-chevron-right"></i>
+                <a href="/std-string-note.html" rel="next" title="std::string笔记">
+                  std::string笔记 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -413,14 +422,14 @@ http://330k.github.io/misc_tools/unicode_steganography.html
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">267k</span>
+    <span title="站点总字数">275k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:03</span>
+    <span title="站点阅读时长">4:10</span>
   </span>
 </div>
 

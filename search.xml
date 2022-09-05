@@ -249,7 +249,9 @@ y=(-bx&#39;+y)mod(N)
 <h2 id="静态分析">静态分析</h2>
 <p>通过 ida 静态分析，找到相应的修改算法，通过 ida python
 逆向修改代码区段</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">judge=<span class="number">0x600B00</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">182</span>):</span><br><span class="line">    addr=<span class="number">0x600B00</span>+i</span><br><span class="line">    byte=get_bytes(addr,<span class="number">1</span>)</span><br><span class="line">    <span class="comment"># 获取指定地址的指定字节数</span></span><br><span class="line">    byte=<span class="built_in">ord</span>(byte)^<span class="number">0xC</span></span><br><span class="line">    <span class="comment"># 打patch修改字节 </span></span><br><span class="line">    patch_byte(addr,byte)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">judge=<span class="number">0x600B00</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">182</span>):</span><br><span class="line">    addr=judge+i</span><br><span class="line">    byte=get_byte(addr)</span><br><span class="line">    <span class="comment"># 获取指定地址的指定字节数</span></span><br><span class="line">    byte=<span class="built_in">ord</span>(byte)^<span class="number">0xC</span></span><br><span class="line">    <span class="comment"># 打patch修改字节 </span></span><br><span class="line">    patch_byte(addr, byte)</span><br></pre></td></tr></table></figure>
+<p>一个可能的 IDA Python 静态分析脚本：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">start = <span class="number">0x402219</span></span><br><span class="line">offset = <span class="number">233</span></span><br><span class="line">xorn = <span class="number">0x99</span></span><br><span class="line">data = get_bytes(start, offset)</span><br><span class="line">newdata = <span class="built_in">bytes</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x: x ^ xorn, data))</span><br><span class="line">ida_bytes.patch_bytes(start, newdata)</span><br></pre></td></tr></table></figure>
 <h2 id="动态分析">动态分析</h2>
 <p>通过 ida 或是 ollydbg
 等动态调试器，在解密代码后下断点，可以直接将其自修改后的程序导出，但会存在数据可能发生错误的问题。</p>
@@ -267,8 +269,8 @@ y=(-bx&#39;+y)mod(N)
     <url>//file-header-note.html</url>
     <content><![CDATA[<table>
 <colgroup>
-<col style="width: 40%">
-<col style="width: 38%">
+<col style="width: 30%">
+<col style="width: 49%">
 <col style="width: 20%">
 </colgroup>
 <thead>
@@ -282,47 +284,47 @@ y=(-bx&#39;+y)mod(N)
 <tr class="odd">
 <td>JPEG (jpg)</td>
 <td>FFD8FF</td>
-<td>ÿØÿà</td>
+<td><code>ÿØÿà</code></td>
 </tr>
 <tr class="even">
 <td>PNG (png)</td>
 <td>89504E47</td>
-<td>PNG</td>
+<td><code>PNG</code></td>
 </tr>
 <tr class="odd">
 <td>GIF (gif)</td>
 <td>47494638</td>
-<td>GIF89a (GIF87a)</td>
+<td><code>GIF89a</code> (<code>GIF87a</code>)</td>
 </tr>
 <tr class="even">
 <td>ZIP Archive (zip)</td>
 <td>504B0304</td>
-<td>PK</td>
+<td><code>PK</code></td>
 </tr>
 <tr class="odd">
 <td>TIFF (tif)</td>
 <td>49492A00</td>
-<td>II*</td>
+<td><code>II*</code></td>
 </tr>
 <tr class="even">
 <td>Windows Bitmap (bmp)</td>
 <td>424D</td>
-<td>BM</td>
+<td><code>BM</code></td>
 </tr>
 <tr class="odd">
 <td>RAR Archive (rar)</td>
 <td>52617221</td>
-<td>Rar!</td>
+<td><code>Rar!</code></td>
 </tr>
 <tr class="even">
 <td>Wave (wav)</td>
 <td>57415645</td>
-<td>WAVE</td>
+<td><code>WAVE</code></td>
 </tr>
 <tr class="odd">
 <td>AVI (avi)</td>
 <td>41564920</td>
-<td>AVI</td>
+<td><code>AVI</code></td>
 </tr>
 <tr class="even">
 <td>MPEG (mpg) 音频数据和视频数据</td>
@@ -337,32 +339,32 @@ y=(-bx&#39;+y)mod(N)
 <tr class="even">
 <td>7Z</td>
 <td>377ABCAF271C</td>
-<td>7z¼¯'</td>
+<td><code>7z¼¯'</code></td>
 </tr>
 <tr class="odd">
 <td>CAD (dwg)</td>
 <td>41433130</td>
-<td>AC10</td>
+<td><code>AC10</code></td>
 </tr>
 <tr class="even">
 <td>Adobe Photoshop (psd)</td>
 <td>38425053</td>
-<td>8BPS</td>
+<td><code>8BPS</code></td>
 </tr>
 <tr class="odd">
 <td>Rich Text Format (rtf)</td>
 <td>7B5C727466</td>
-<td>{</td>
+<td><code>&#123;\rtf</code></td>
 </tr>
 <tr class="even">
 <td>XML (xml)</td>
 <td>3C3F786D6C</td>
-<td>&lt;?xml</td>
+<td><code>&lt;?xml</code></td>
 </tr>
 <tr class="odd">
 <td>Email [thorough only] (eml)</td>
 <td>44656C69766572792D646174653A</td>
-<td>Delivery-date:</td>
+<td><code>Delivery-date:</code></td>
 </tr>
 <tr class="even">
 <td>Outlook Express (dbx)</td>
@@ -372,7 +374,7 @@ y=(-bx&#39;+y)mod(N)
 <tr class="odd">
 <td>Outlook (pst)</td>
 <td>2142444E</td>
-<td>!BDN</td>
+<td><code>!BDN</code></td>
 </tr>
 <tr class="even">
 <td>MS Word/Excel (xls / doc)</td>
@@ -382,17 +384,17 @@ y=(-bx&#39;+y)mod(N)
 <tr class="odd">
 <td>MS Access (mdb)</td>
 <td>5374616E64617264204A</td>
-<td>Standard J</td>
+<td><code>Standard J</code></td>
 </tr>
 <tr class="even">
 <td>WordPerfect(wpd)</td>
 <td>FF575043</td>
-<td>ÿWPC</td>
+<td><code>ÿWPC</code></td>
 </tr>
 <tr class="odd">
 <td>Adobe Acrobat (pdf)</td>
 <td>255044462D312E</td>
-<td>%PDF</td>
+<td><code>%PDF</code></td>
 </tr>
 <tr class="even">
 <td>Quicken (qdf)</td>
@@ -407,17 +409,17 @@ y=(-bx&#39;+y)mod(N)
 <tr class="even">
 <td>Real Audio (ram)</td>
 <td>2E7261FD</td>
-<td>.raý</td>
+<td><code>.raý</code></td>
 </tr>
 <tr class="odd">
 <td>Real Media (rm)</td>
 <td>2E524D46</td>
-<td>.RMF</td>
+<td><code>.RMF</code></td>
 </tr>
 <tr class="even">
 <td>Quicktime (mov)</td>
 <td>6D6F6F76</td>
-<td>moov</td>
+<td><code>moov</code></td>
 </tr>
 <tr class="odd">
 <td>Windows Media (asf)</td>
@@ -427,32 +429,42 @@ y=(-bx&#39;+y)mod(N)
 <tr class="even">
 <td>MIDI (mid)</td>
 <td>4D546864</td>
-<td>MThd</td>
+<td><code>MThd</code></td>
 </tr>
 <tr class="odd">
 <td>Win PE</td>
 <td>4D5A</td>
-<td>MZ</td>
+<td><code>MZ</code></td>
 </tr>
 <tr class="even">
 <td>ELF</td>
 <td>7F 45 4C 46</td>
-<td>.ELF</td>
+<td><code>.ELF</code></td>
 </tr>
 <tr class="odd">
 <td>VMDK</td>
 <td>4B 44 4D</td>
-<td>KDM</td>
+<td><code>KDM</code></td>
 </tr>
 <tr class="even">
 <td>Java-class</td>
 <td>CA FE BA BE</td>
-<td>Êþº¾</td>
+<td><code>Êþº¾</code></td>
 </tr>
 <tr class="odd">
 <td>Postscript (eps / ps)</td>
 <td>252150532D41646F6265</td>
-<td>%!PS-Adobe</td>
+<td><code>%!PS-Adobe</code></td>
+</tr>
+<tr class="even">
+<td>m4a</td>
+<td>00 00 00 18 66 74 79 70 6D 70 34 32</td>
+<td><code>....ftypmp42</code></td>
+</tr>
+<tr class="odd">
+<td>m4a; m4v</td>
+<td>00 00 00 20 66 74 79 70 4D 34 41 20 00 00 00 00</td>
+<td></td>
 </tr>
 </tbody>
 </table>
@@ -905,6 +917,12 @@ EAN-13 码与 EAN-8 码。</p>
 </figure>
 <p>使用 FNC4 移位字符时 128 个低位 ASCII 字符和完整的 256 个字符扩展
 ASCII 集。</p>
+<h2 id="汉信码">汉信码</h2>
+<figure>
+<img src="/barcode-note/image-20220728225529360.png" alt="image-20220728225529360">
+<figcaption aria-hidden="true">image-20220728225529360</figcaption>
+</figure>
+<p>汉信码由中国物品编码中心牵头自主研制，是拥有完全自主知识产权的二维码码制，具有知识产权免费、支持任意语言编码、汉字信息编码能力超强、极强抗污损、抗畸变识读能力、识读速度快、信息密度高、信息容量大、纠错能力强等突出特点，达到国际领先水平。汉信码实现了我国二维码底层技术的后来居上，可在我国多个领域行业实现规模化应用，为我国应用二维码技术提供了可靠的核心技术支撑。</p>
 <h1 id="条形码的生成与识别">条形码的生成与识别</h1>
 <h2 id="条形码生成">条形码生成</h2>
 <ul>
@@ -914,81 +932,12 @@ ASCII 集。</p>
 <ul>
 <li>https://products.aspose.app/barcode/recognize</li>
 </ul>
+<h2 id="汉新码识别">汉新码识别</h2>
+<p>使用中国编码 APP。</p>
 ]]></content>
       <tags>
         <tag>note</tag>
         <tag>barcode</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hgame misc week4 题目 - 摆烂</title>
-    <url>//wp/hgame-bailan.html</url>
-    <content><![CDATA[<h1 id="题目描述">题目描述</h1>
-<p>题名：摆烂</p>
-<p>描述：CTF 好难啊</p>
-<p>附件：</p>
-<p>链接：https://pan.baidu.com/s/1ox2iQPBUMmcJy3FtFYOAEw
-提取码：flag</p>
-<h1 id="解决方案">解决方案</h1>
-<p>一开始打开压缩包发现是加密的，便先用 010editor 打开查看文件二进制</p>
-<p>结果 010editor
-直接一个先手报错，不由得往下查看文件格式如何出错，最后可在文件末尾发现关键文件签名<code>89504E47</code>即特征<code>‰PNG</code></p>
-<p>将文件末尾的 png 图提取出来，得到一个不存在伪加密的压缩包和图片</p>
-<figure>
-<img src="/wp/hgame-bailan/bailan.png" alt="bailan">
-<figcaption aria-hidden="true">bailan</figcaption>
-</figure>
-<p>压缩包丢进 ARCHPR 暴力破解，我们接着分析这张分离出来的图片</p>
-<p>用 010editor
-检查发现这张图片存在<code>acTL</code>、<code>fcTL</code>和<code>fdTL</code>数据块，便知道这张图片为
-APNG 格式，即 PNG 动图</p>
-<p>我们使用 https://products.aspose.app/imaging/zh-hans/image-view
-在线分离帧，得到下面两张图片</p>
-<figure>
-<img src="/wp/hgame-bailan/bailan_page_0.png" alt="bailan_page_0">
-<figcaption aria-hidden="true">bailan_page_0</figcaption>
-</figure>
-<figure>
-<img src="/wp/hgame-bailan/bailan_page_1.png" alt="bailan_page_1">
-<figcaption aria-hidden="true">bailan_page_1</figcaption>
-</figure>
-<p>我们使用 Stegsolve.jar 分别查看，并且使用 image combiner
-功能混合图片，其中 xor 时发现两张图片不太一样，但并未探查出什么结果</p>
-<p>不由得想到了盲水印 (bwm)，我们使用
-https://github.com/chishaxie/BlindWaterMark 工具对两张图片进行盲水印提取
-(<code>python .\bwm.py .\bailan_page_0.png .\bailan_page_1.png hui.png</code>)，得到下面这张图片</p>
-<figure>
-<img src="/wp/hgame-bailan/hui.png" alt="hui">
-<figcaption aria-hidden="true">hui</figcaption>
-</figure>
-<p>手读可得一串密码：4C*9wfg976</p>
-<p>这时候可想而知 ARCHPR
-没有那么高效，密码还未破解到这位数，输入密码可解压压缩包得到四张二维码拼图</p>
-<p>猜测它们来自一张二维码，其中发现 <code>CTF.png</code>
-这张图片与其他图片 dpi 不太一样，且二维码拼图保留着白边。</p>
-<p>最终根据白边和 dpi 关系，将二维码拼凑完整 (有些对齐失败无伤大雅)</p>
-<figure>
-<img src="/wp/hgame-bailan/barcode.png" alt="barcode">
-<figcaption aria-hidden="true">barcode</figcaption>
-</figure>
-<p>扫描得到一串汉字：</p>
-<blockquote>
-<p>在这种困难的抉择下，本人思来想去‌‌‌‌‍‬‬‌，寝食难安。 既然如此‌‌‌‌‍‬‍﻿，
-亚伯拉罕·林肯在不经意间这样说过，你活了多少岁不算什么‌‌‌‌‍‬‌‍，‌‌‌‌‍‬﻿‍重要的是你是如何度过这些岁月的。‌‌‌‌‍‬‍‍这启发了我，‌‌‌‌‍﻿‬﻿
-CTF‌‌‌‌‌﻿‌‍好难，到底应该如何实现。‌‌‌‌‍‍﻿﻿‌‌‌‌‍‍‍﻿ ‌‌‌‌‌﻿‍‌‌‌‌‌‍‬﻿‬总结的来说‌‌‌‌‍‍‍‌‌‌‌‌‍‍﻿﻿，
-‌‌‌‌‍‍‍‌‌‌‌‌‌﻿‌‌‌‌‌‌‍‍﻿﻿‌‌‌‌‍﻿‌‌我们都知道‌‌‌‌‌﻿‌‍‌‌‌‌‍‌‌‍，只要有意义‌‌‌‌‍﻿‬‍，‌‌‌‌‍‍﻿﻿那么就必须慎重考虑‌‌‌‌‍﻿‌‬。‌‌‌‌‌﻿‌‌‌‌‌‌‍‍‍‌‌‌‌‌‍﻿‍‌ 我认为，
-每个人都不得不面对这些问题‌‌‌‌‍‬‍‍。‌‌‌‌‍‬﻿‬ 在面对这种问题时，‌‌‌‌‍﻿﻿‍
-CTF好难，到底应该如何实现。</p>
-</blockquote>
-<p>复制进 vscode 后发现存在一些非法 unicode
-字符，猜测为0宽字符加密，使用网站
-http://330k.github.io/misc_tools/unicode_steganography.html
-解密最终得到我们心心念念的 flag</p>
-]]></content>
-      <tags>
-        <tag>hgame</tag>
-        <tag>wp</tag>
-        <tag>misc</tag>
       </tags>
   </entry>
   <entry>
@@ -1331,19 +1280,6 @@ format</h3>
         <tag>git</tag>
         <tag>hexo</tag>
         <tag>nodejs</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hgame-ezrsa</title>
-    <url>//hgame/ezrsa.html</url>
-    <content><![CDATA[<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">extendedGCD</span>(<span class="params">a, b</span>):</span></span><br><span class="line">    <span class="comment">#a*xi + b*yi = ri</span></span><br><span class="line">    <span class="keyword">if</span> b == <span class="number">0</span>:         </span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span>, <span class="number">0</span>, a     </span><br><span class="line">    <span class="keyword">else</span>:         </span><br><span class="line">        x, y, q = extendedGCD(b, a % b) </span><br><span class="line">        <span class="comment"># q = gcd(a, b) = gcd(b, a%b)         </span></span><br><span class="line">        x, y = y, (x - (a // b) * y)         </span><br><span class="line">        <span class="keyword">return</span> x, y, q</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">computeD</span>(<span class="params">fn, e</span>):</span></span><br><span class="line">    (x, y, r) = extendedGCD(fn, e)</span><br><span class="line">    <span class="comment">#y maybe &lt; 0, so convert it</span></span><br><span class="line">    <span class="keyword">if</span> y &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> fn + y</span><br><span class="line">    <span class="keyword">return</span> y</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fastExpMod</span>(<span class="params">b,e,c</span>):</span></span><br><span class="line">    result = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> e != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">if</span> (e &amp; <span class="number">1</span>) == <span class="number">1</span>:</span><br><span class="line">            result = (result * b) % c</span><br><span class="line">        e &gt;&gt;= <span class="number">1</span></span><br><span class="line">        b = (b * b ) % c</span><br><span class="line">    <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">l = [(<span class="number">12433</span>, <span class="number">149</span>, <span class="number">197</span>, <span class="number">104</span>), (<span class="number">8147</span>, <span class="number">131</span>, <span class="number">167</span>, <span class="number">6633</span>), (<span class="number">10687</span>, <span class="number">211</span>, <span class="number">197</span>, <span class="number">35594</span>), (<span class="number">19681</span>, <span class="number">131</span>, <span class="number">211</span>, <span class="number">15710</span>), (<span class="number">33577</span>, <span class="number">251</span>, <span class="number">211</span>, <span class="number">38798</span>), (<span class="number">30241</span>, <span class="number">157</span>, <span class="number">251</span>, <span class="number">35973</span>), (<span class="number">293</span>, <span class="number">211</span>, <span class="number">157</span>, <span class="number">31548</span>), (<span class="number">26459</span>, <span class="number">179</span>, <span class="number">149</span>, <span class="number">4778</span>), (<span class="number">27479</span>, <span class="number">149</span>, <span class="number">223</span>, <span class="number">32728</span>), (<span class="number">9029</span>, <span class="number">223</span>, <span class="number">137</span>, <span class="number">20696</span>), (<span class="number">4649</span>, <span class="number">149</span>, <span class="number">151</span>, <span class="number">13418</span>), (<span class="number">11783</span>, <span class="number">223</span>, <span class="number">251</span>, <span class="number">14239</span>), (<span class="number">13537</span>, <span class="number">179</span>, <span class="number">137</span>, <span class="number">11702</span>), (<span class="number">3835</span>, <span class="number">167</span>, <span class="number">139</span>, <span class="number">20051</span>), (<span class="number">30983</span>, <span class="number">149</span>, <span class="number">227</span>, <span class="number">23928</span>), (<span class="number">17581</span>, <span class="number">157</span>, <span class="number">131</span>, <span class="number">5855</span>), (<span class="number">35381</span>, <span class="number">223</span>, <span class="number">179</span>, <span class="number">37774</span>), (<span class="number">2357</span>, <span class="number">151</span>, <span class="number">223</span>, <span class="number">1849</span>), (<span class="number">22649</span>, <span class="number">211</span>, <span class="number">229</span>, <span class="number">7348</span>), (<span class="number">1151</span>, <span class="number">179</span>, <span class="number">223</span>, <span class="number">17982</span>), (<span class="number">8431</span>, <span class="number">251</span>, <span class="number">163</span>, <span class="number">30226</span>), (<span class="number">38501</span>, <span class="number">193</span>, <span class="number">211</span>, <span class="number">30559</span>), (<span class="number">14549</span>, <span class="number">211</span>, <span class="number">151</span>, <span class="number">21143</span>), (<span class="number">24781</span>, <span class="number">239</span>, <span class="number">241</span>, <span class="number">45604</span>), (<span class="number">8051</span>, <span class="number">179</span>, <span class="number">131</span>, <span class="number">7994</span>), (<span class="number">863</span>, <span class="number">181</span>, <span class="number">131</span>, <span class="number">11493</span>), (<span class="number">1117</span>, <span class="number">239</span>, <span class="number">157</span>, <span class="number">12579</span>), (<span class="number">7561</span>, <span class="number">149</span>, <span class="number">199</span>, <span class="number">8960</span>), (<span class="number">19813</span>, <span class="number">239</span>, <span class="number">229</span>, <span class="number">53463</span>), (<span class="number">4943</span>, <span class="number">131</span>, <span class="number">157</span>, <span class="number">14606</span>), (<span class="number">29077</span>, <span class="number">191</span>, <span class="number">181</span>, <span class="number">33446</span>), (<span class="number">18583</span>, <span class="number">211</span>, <span class="number">163</span>, <span class="number">31800</span>), (<span class="number">30643</span>, <span class="number">173</span>, <span class="number">191</span>, <span class="number">27293</span>), (<span class="number">11617</span>, <span class="number">223</span>, <span class="number">251</span>, <span class="number">13448</span>), (<span class="number">19051</span>, <span class="number">191</span>, <span class="number">151</span>, <span class="number">21676</span>), (<span class="number">18367</span>, <span class="number">179</span>, <span class="number">157</span>, <span class="number">14139</span>), (<span class="number">18861</span>, <span class="number">149</span>, <span class="number">191</span>, <span class="number">5139</span>), (<span class="number">9581</span>, <span class="number">211</span>, <span class="number">193</span>, <span class="number">25595</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> l:</span><br><span class="line">    e = i[<span class="number">0</span>]</span><br><span class="line">    p = i[<span class="number">1</span>]</span><br><span class="line">    q = i[<span class="number">2</span>]</span><br><span class="line">    c = i[<span class="number">3</span>]</span><br><span class="line">    n = p * q</span><br><span class="line">    fn = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">    d = computeD(fn, e)</span><br><span class="line">    m = fastExpMod(c, d, n)</span><br><span class="line">    <span class="built_in">print</span>(<span class="built_in">chr</span>(m), end=<span class="string">&quot;&quot;</span>)</span><br></pre></td></tr></table></figure>
-]]></content>
-      <tags>
-        <tag>hgame</tag>
-        <tag>wp</tag>
-        <tag>ctf</tag>
-        <tag>rsa</tag>
-        <tag>python</tag>
       </tags>
   </entry>
   <entry>
@@ -1744,7 +1680,7 @@ r\)</span></td>
 7 &amp; 8 &amp; 9
 \end{matrix}
 \]</span> 还可以这样写</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\left\&#123;</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right\&#125;</span><br><span class="line">\left[</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; \cdots &amp; n_1 \\</span><br><span class="line">  \vdots &amp; \ddots &amp; \vdots \\</span><br><span class="line">  m &amp; \cdots &amp; n_m</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right]</span><br><span class="line">\left(</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right)</span><br><span class="line">\left|</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">1 &amp; 2 &amp; 3 \\</span><br><span class="line">4 &amp; 5 &amp; 6 \\</span><br><span class="line">7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right|</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">\left\&#123;</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right\&#125;</span><br><span class="line">\left[</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">  1 &amp; \cdots &amp; n_1 \\</span><br><span class="line">  \vdots &amp; \ddots &amp; \vdots \\</span><br><span class="line">  m &amp; \cdots &amp; n_m</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right]</span><br><span class="line">\begin&#123;pmatrix&#125;</span><br><span class="line">  1 &amp; 2 &amp; 3 \\</span><br><span class="line">  4 &amp; 5 &amp; 6 \\</span><br><span class="line">  7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;pmatrix&#125;</span><br><span class="line">\left|</span><br><span class="line">\begin&#123;matrix&#125;</span><br><span class="line">1 &amp; 2 &amp; 3 \\</span><br><span class="line">4 &amp; 5 &amp; 6 \\</span><br><span class="line">7 &amp; 8 &amp; 9</span><br><span class="line">\end&#123;matrix&#125;</span><br><span class="line">\right|</span><br></pre></td></tr></table></figure>
 <p><span class="math display">\[
 \left\{
 \begin{matrix}
@@ -2673,6 +2609,9 @@ mn\)</span></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p=<span class="number">447685307</span></span><br><span class="line">q=<span class="number">2037</span></span><br><span class="line">e=<span class="number">17</span></span><br><span class="line">c=<span class="number">704796792</span></span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = <span class="built_in">pow</span>(e, -<span class="number">1</span>, phi)</span><br><span class="line"><span class="comment"># 旧版本python需要使用gmpy2库求解逆元</span></span><br><span class="line"><span class="comment"># import gmpy2</span></span><br><span class="line"><span class="comment"># d = gmpy2.invert(e, phi)</span></span><br><span class="line">m = <span class="built_in">pow</span>(c, d, n)</span><br></pre></td></tr></table></figure>
 <h2 id="读取参数">读取参数</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./tmp/pubkey.pem&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    key = RSA.importKey(f)</span><br><span class="line">    N = key.n</span><br><span class="line">    e = key.e  </span><br></pre></td></tr></table></figure>
+<p>也可以使用在线网站：http://www.hiencode.com/pub_asys.html</p>
+<p>或者使用 openssl 的 rsa 工具，例如：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl rsa -<span class="keyword">in</span> pub.key -text</span><br></pre></td></tr></table></figure>
 <h1 id="rsa-攻击">RSA 攻击</h1>
 <h2 id="分解模数n">分解模数N</h2>
 <ol type="1">
@@ -2683,8 +2622,14 @@ mn\)</span></p>
 <p>回显为：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">fac: factoring 911934970359</span><br><span class="line">fac: using pretesting plan: normal</span><br><span class="line">fac: no tune info: using qs/gnfs crossover of 95 digits</span><br><span class="line">div: primes less than 10000</span><br><span class="line">fmt: 1000000 iterations</span><br><span class="line">Total factoring time = 0.0080 seconds</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">***factors found***</span><br><span class="line"></span><br><span class="line">P1 = 3</span><br><span class="line">P1 = 7</span><br><span class="line">P2 = 97</span><br><span class="line">P9 = 447685307</span><br><span class="line"></span><br><span class="line">ans = 1</span><br></pre></td></tr></table></figure></li>
 </ol>
-<h2 id="共模数攻击">共模数攻击</h2>
+<h2 id="邻近因数-pq-分解">邻近因数 <span class="math inline">\((p,q)\)</span> 分解</h2>
 <h3 id="特征">特征</h3>
+<p><span class="math inline">\((p,q)\)</span> 是邻近的大素数</p>
+<h3 id="脚本">脚本</h3>
+<p>也可以使用 yafu 进行分解，这里给出 Sagemath 的脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n=<span class="number">177606504836499246970959030226871608885969321778211051080524634084516973331441644993898029573612290095853069264036530459253652875586267946877831055147546910227100566496658148381834683037366134553848011903251252726474047661274223137727688689535823533046778793131902143444408735610821167838717488859902242863683</span></span><br><span class="line">c=<span class="number">1457390378511382354771000540945361168984775052693073641682375071407490851289703070905749525830483035988737117653971428424612332020925926617395558868160380601912498299922825914229510166957910451841730028919883807634489834128830801407228447221775264711349928156290102782374379406719292116047581560530382210049</span></span><br><span class="line">e=<span class="number">65537</span></span><br><span class="line">pp = isqrt(n)</span><br><span class="line">qq = pp</span><br><span class="line"><span class="keyword">while</span> pp * qq != n:</span><br><span class="line">    pp = next_prime(pp)</span><br><span class="line">    qq = n // pp</span><br><span class="line">p, q = pp, qq</span><br></pre></td></tr></table></figure>
+<h2 id="共模数攻击">共模数攻击</h2>
+<h3 id="特征-1">特征</h3>
 <p>若干次加密，e不同，N相同，m相同。</p>
 <h3 id="原理">原理</h3>
 <p>由于使用公钥对 <span class="math inline">\((N,e_1)\)</span>与<span class="math inline">\((N,e_2)\)</span> 加密明文<span class="math inline">\(m\)</span></p>
@@ -2702,18 +2647,16 @@ e_1x+e_2y=1
 c_1^xc_2^y(mod\ n)=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m\ (mod\ n)
 \]</span></p>
 <h3 id="实现">实现</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">n = <span class="number">158052722013789461456896900244510199169216575693048895162538548356466884311543740968048825149608833390255268602486435690724338965409521812963337715301197225841194835534751041470231293288252951274190599189716955573428884560130364021535005115652592074445852835422027406556727605302404510264249211145063332337043</span></span><br><span class="line">e = [<span class="number">665213</span>, <span class="number">368273</span>]</span><br><span class="line">c = [<span class="number">16698617641888248664694980135332125531792692516788088682722832061393117609508765284473236240256421599515450690670639565968165473479697383505401285976148490839526672808730165847471005704945978274496508928460578173068717106075169723401049489389383596761956301440156581021583368058047939083755488885694261340425</span>, <span class="number">59192887933967939708054321952273893559113509451228797382728687616356609407020086787061368452871936378934964292805289941535766263083244529814852043063188312786173717046316177403357053871483983775362121186037776932260378728059531236711960979620603784044468207000654149190295060179235411429700710154759043236436</span>]</span><br><span class="line">s = gmpy2.gcdext(e[<span class="number">0</span>], e[<span class="number">1</span>])</span><br><span class="line">s1 = s[<span class="number">1</span>]</span><br><span class="line">s2 = s[<span class="number">2</span>]</span><br><span class="line"><span class="comment"># 求模反元素</span></span><br><span class="line"><span class="keyword">if</span> s1 &lt; <span class="number">0</span>:</span><br><span class="line">    s1 = -s1</span><br><span class="line">    c[<span class="number">0</span>] = gmpy2.invert(c[<span class="number">0</span>], n)</span><br><span class="line"><span class="keyword">elif</span> s2 &lt; <span class="number">0</span>:</span><br><span class="line">    s2 = -s2</span><br><span class="line">    c[<span class="number">1</span>] = gmpy2.invert(c[<span class="number">1</span>], n)</span><br><span class="line">m = <span class="built_in">pow</span>(c[<span class="number">0</span>], s1, n) * <span class="built_in">pow</span>(c[<span class="number">1</span>], s2, n) % n</span><br></pre></td></tr></table></figure>
-<p>还有一种简便解法</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> gcdext</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">n = <span class="number">0xa6241c28743fbbe4f2f67cee7121497f622fd81947af30f327fb028445b39c2d517ba7fdcb5f6ac9e6217205f8ec9576bdec7a0faef221c29291c784eed393cd95eb0d358d2a1a35dbff05d6fa0cc597f672dcfbeecbb14bd1462cb6ba4f465f30f22e595c36e6282c3e426831d30f0479ee18b870ab658a54571774d25d6875</span></span><br><span class="line">e1 = <span class="number">0x3045</span></span><br><span class="line">e2 = <span class="number">0xff4d</span></span><br><span class="line">c1 = <span class="number">0x5d1e39bc751108ec0a1397d79e63c013d238915d13380ae649e84d7d85ebcffbbc35ebb18d2218ccbc5409290dfa8a4847e5923c3420e83b1a9d7aa67190dc0d34711cce261665c64c28ed2834394d4b181926febf7eb685f9ce81f36c7fb72798da3a14a123287171d26e084948aab0fba81c53f10b5696fc291006254ee690</span></span><br><span class="line">c2 = <span class="number">0x3d90f2bec4fe02d8ce4cece3ddb6baed99337f7e6856eef255445741b5cfe378390f058679d70236e51be4746db4c207f274c40b092e24f8c155a0957867e84dca48e27980af488d2615a280c6eadec2f1d30b95653b1ee3135e2edff100dd2c529994f846722f811348b082d0bec7cfab579a4bd0ab789928b1bebed68d628f</span></span><br><span class="line">g, r, s = gcdext(e1, e2)</span><br><span class="line">m = <span class="built_in">pow</span>(c1, r, n) * <span class="built_in">pow</span>(c2, s, n) % n</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(m)))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">n = <span class="number">0xa6241c28743fbbe4f2f67cee7121497f622fd81947af30f327fb028445b39c2d517ba7fdcb5f6ac9e6217205f8ec9576bdec7a0faef221c29291c784eed393cd95eb0d358d2a1a35dbff05d6fa0cc597f672dcfbeecbb14bd1462cb6ba4f465f30f22e595c36e6282c3e426831d30f0479ee18b870ab658a54571774d25d6875</span></span><br><span class="line">e1 = <span class="number">0x3045</span></span><br><span class="line">e2 = <span class="number">0xff4d</span></span><br><span class="line">c1 = <span class="number">0x5d1e39bc751108ec0a1397d79e63c013d238915d13380ae649e84d7d85ebcffbbc35ebb18d2218ccbc5409290dfa8a4847e5923c3420e83b1a9d7aa67190dc0d34711cce261665c64c28ed2834394d4b181926febf7eb685f9ce81f36c7fb72798da3a14a123287171d26e084948aab0fba81c53f10b5696fc291006254ee690</span></span><br><span class="line">c2 = <span class="number">0x3d90f2bec4fe02d8ce4cece3ddb6baed99337f7e6856eef255445741b5cfe378390f058679d70236e51be4746db4c207f274c40b092e24f8c155a0957867e84dca48e27980af488d2615a280c6eadec2f1d30b95653b1ee3135e2edff100dd2c529994f846722f811348b082d0bec7cfab579a4bd0ab789928b1bebed68d628f</span></span><br><span class="line">g, r, s = gcdext(e1, e2)</span><br><span class="line">m = <span class="built_in">pow</span>(c1, r, n) * <span class="built_in">pow</span>(c2, s, n) % n</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(m)))</span><br></pre></td></tr></table></figure>
 <h2 id="公约数攻击">公约数攻击</h2>
-<h3 id="特征-1">特征</h3>
+<h3 id="特征-2">特征</h3>
 <p>多个n，均不相同，并且都是2048bit，4096bit级别，无法正面硬杠，并且明文都没什么联系，e也一般取65537。</p>
 <h3 id="原理-1">原理</h3>
 <p>使用公约数求出共同的素数因子</p>
 <h3 id="实现-1">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">n1 = <span class="number">9051013965404084482870087864821455535159008696042953021965631089095795348830954383127323853272528967729311045179605407693592665683311660581204886571146327720288455874927281128121117323579691204792399913106627543274457036172455814805715668293705603675386878220947722186914112990452722174363713630297685159669328951520891938403452797650685849523658191947411429068829734053745180460758604283051344339641429819373112365211739216160420494167071996438506850526168389386850499796102003625404245645796271690310748804327</span></span><br><span class="line">n2 = <span class="number">13225948396179603816062046418717214792668512413625091569997524364243995991961018894150059207824093837420451375240550310050209398964506318518991620142575926623780411532257230701985821629425722030608722035570690474171259238153947095310303522831971664666067542649034461621725656234869005501293423975184701929729170077280251436216167293058560030089006140224375425679571181787206982712477261432579537981278055755344573767076951793312062480275004564657590263719816033564139497109942073701755011873153205366238585665743</span></span><br><span class="line">p = gmpy2.gcd(n1, n2)</span><br><span class="line">q1 = n1 / p</span><br><span class="line">q2 = n2 / p</span><br></pre></td></tr></table></figure>
 <h2 id="低加密指数攻击">低加密指数攻击</h2>
-<h3 id="特征-2">特征</h3>
+<h3 id="特征-3">特征</h3>
 <p><span class="math inline">\(e\)</span>和<span class="math inline">\(m\)</span>都特小，例如<span class="math inline">\(e=3\)</span></p>
 <h3 id="原理-2">原理</h3>
 <p>在 RSA 中 e 也称为加密指数。</p>
@@ -2732,7 +2675,7 @@ c_1^xc_2^y(mod\ n)=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m\ (mod\ n)
 <h3 id="实现-3">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n = <span class="number">0x180be86dc898a3c3a710e52b31de460f8f350610bf63e6b2203c08fddad44601d96eb454a34dab7684589bc32b19eb27cffff8c07179e349ddb62898ae896f8c681796052ae1598bd41f35491175c9b60ae2260d0d4ebac05b4b6f2677a7609c2fe6194fe7b63841cec632e3a2f55d0cb09df08eacea34394ad473577dea5131552b0b30efac31c59087bfe603d2b13bed7d14967bfd489157aa01b14b4e1bd08d9b92ec0c319aeb8fedd535c56770aac95247d116d59cae2f99c3b51f43093fd39c10f93830c1ece75ee37e5fcdc5b174052eccadcadeda2f1b3a4a87184041d5c1a6a0b2eeaa3c3a1227bc27e130e67ac397b375ffe7c873e9b1c649812edcd</span></span><br><span class="line">e = <span class="number">0x1</span></span><br><span class="line">c = <span class="number">0x4963654354467b66616c6c735f61706172745f736f5f656173696c795f616e645f7265617373656d626c65645f736f5f63727564656c797d</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="comment"># i 可以取很多</span></span><br><span class="line"><span class="keyword">while</span> i &lt; <span class="number">10</span>:</span><br><span class="line">    m = c + i * n</span><br><span class="line">    <span class="built_in">print</span>(m)</span><br><span class="line">    i += <span class="number">1</span></span><br></pre></td></tr></table></figure>
 <h2 id="低加密指数广播攻击">低加密指数广播攻击</h2>
-<h3 id="特征-3">特征</h3>
+<h3 id="特征-4">特征</h3>
 <p>三组加密的参数和明密文，其中题目很明确地能告诉你这三组的明文都是一样的，并且e都取了一个较小的数字。</p>
 <h3 id="原理-3">原理</h3>
 <p>如果选取的加密指数较低，并且使用了相同的加密指数给一个接受者的群发送相同的信息，那么可以进行广播攻击得到明文。</p>
@@ -2749,7 +2692,7 @@ c_x=pow(m,3,n_1*n_2*n_3)
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CRT</span>(<span class="params">clist, nlist</span>):</span></span><br><span class="line">    N = reduce(<span class="keyword">lambda</span> x, y: x * y, nlist)</span><br><span class="line">    result = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> c, n <span class="keyword">in</span> <span class="built_in">zip</span>(clist, nlist):</span><br><span class="line">        m = N // n</span><br><span class="line">        d, r, s = gmpy2.gcdext(n, m)</span><br><span class="line">        <span class="keyword">if</span> d != <span class="number">1</span>: <span class="keyword">raise</span> Exception(<span class="string">&quot;Input not pairwise co-prime&quot;</span>)</span><br><span class="line">        result += c * s * m</span><br><span class="line">    <span class="keyword">return</span> result % N, N</span><br><span class="line">e = <span class="number">9</span></span><br><span class="line">n = [<span class="number">142782424368849674771976671955176187834932417027468006479038058385550042422280158726561712259205616626939123504489410624745195777853423961104590708231562726165590769610040722589287393102301338152085670464005026301781192671834390892019478189768725018303217559795377795540494239283891894830166363576205812991157</span>, <span class="number">153610425077816156109768509904751446801233412970601397035720458311275245730833227428213917577405780162151444202393431444812010569489900435979730559895340377469612234558042643742219128033827948585534761030527275423811282367831985007507137144308704413007806012914286105842311420933479771294576841956749281552971</span>, <span class="number">152540067782701001222493009941492423063369171831039847414320547494725020441901272486665728360741395415762864872737675660423920609681185809510355937534756399208661762715484879562585724584849261266873624875852300611683382543315580370484972470694466195837255994159609193239840228218925381488410059939975556977947</span>, <span class="number">125842716702134814646356078531900645012495638692517778270527426844383063904041812273637776798591687732598509470005151551320457132061693618473039437320011446697406190781306264437609046721508738109650829547010385875425097336266103994639126319889016342284747700714199556143378526590058467791687837422897022829661</span>, <span class="number">116144389285266462769913139639175922392318396923181100785008570884082681963637784423143843845816350379438789947802939701820129805341796427821894273985551331666719808355412080909245720551238149511778060242720419584504473490216670437024863860559347959698828131475160058721701582089480924088773887932997353631767</span>, <span class="number">127833907448946785858374094953899556339175475846831397383049660262333005992005484987913355932559627279178940862787593749842796469355336182379062826441222705075178971785791223706944120681105575965622931327112817747065200324610697178273898956820957640413744954233327851461318200323486469677469950386824833536523</span>, <span class="number">130561613227079478921314550968562766645507834694262831586725464124109153306162445639759476845681271537955934718244296904503168256991962908095007040044300188572466395275317838178325500238288302672390013747102961340256309124310478931896245221622317302428447389760864327859640573452084295225059466376349115703119</span>, <span class="number">115953389401040751013569404909249958538962411171147823610874077094621794755967854844224923689925397631692572916641171075740839099217316101334941033937183815345038898177087515909675028366437302462022970987947264115373697445950951595479758872029099661065186221250394358255523574834723958546450323357472451930993</span>, <span class="number">143437107845384843564651522639125300763388830136500260725097766445883003928355325003575359566631064630487365774344508496878731109174874449170057678821440711511966073934025028100604234445470976333825866939923998344367645612128590820812489407412175198698290167077116185959180877334222693344630253253476594907313</span>]</span><br><span class="line">c = [<span class="number">85033868418784308573673709960700777350314426427677627319697346811123742342359072170220428874952996988431950989321281905284522596263957356289624365171732095210045916218066135140320107686084053271623461104022705353814233772164502775939590711842361956121603943483040254727995655776263673058788416722141673409688</span>, <span class="number">66065963470666895005407449599703926269325406456711861190876894466341571726360462706664546294453572319565476664348345756905411939632955966517708138047546806602828064213238537646393524578984547577761559965654539771172357089802682793169968961304179886652390277814477825753096636750388350662980872556701402397564</span>, <span class="number">116011740820520887443111656288411611070614127688662643257265381793048354928820176624229624692124188995846076431510548507016903260774215950803926107831505634778278712070141663189086436127990584944132764896694777031370995058271038329228336417590284517922855284619653301817355115583540545182119702335431334401666</span>, <span class="number">97640420284096094887471273365295984332267897927392169402918423863919914002451127544715668846623138003564829254309568918651163254043205129883843425179687841236818720463784828905460885026290909768599562386370732119591181513319548915478512030197629196018254041500662654260834562708620760373487652389789200792120</span>, <span class="number">8112507653841374573057048967617108909055624101437903775740427861003476480616929517639719198652146909660899632120639789106782550275648578142883715280547602249589837441805676364041484345030575130408744621981440093280624046635769338568542048839419939250444929802135605724150484414516536378791500915047844188300</span>, <span class="number">36792148360808115566234645242678223867680969786675055638670907933041180936164293809961667801099516457636164692292891528415720085345494773373966277807505798679784807614784581861287048096977968620964436947452527540958289441390882589051225367658014709290392321808926567572528170531844664734909469690750971883323</span>, <span class="number">53043093283305492238903255767698153246673671181809989362223466090875767705978690531154079519999671834688647277179370374802495005937892824566602423646978168777735383632928274082669949750078161820002768640908750005814934158829006019656592134357897586040866207754535586785064545866404380204728594863102313407789</span>, <span class="number">88499407133762624445946519155722583633934260410706930537441122463087556094734626189377091740335667052378955691250910459790202385799502439716173363179773811920751410726795431402796346647688144853156900427797933862087074385441977254140336390678022955770879265490567987868532251217565094093318626424653599450992</span>, <span class="number">138337520305048557335599940473834485492131424901034295018189264168040969172072024612859307499682986987325414798210700710891033749119834960687318156171051379643844580970963540418974136891389303624057726575516576726845229494107327508855516437230240365759885913142671816868762838801720492804671259709458388192984</span>]</span><br><span class="line">x, n = CRT(c, n)</span><br><span class="line">m, flag = gmpy2.iroot(x, e)</span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;m=<span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;could not decode m&quot;</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="低解密指数攻击-wiener-attack">低解密指数攻击 (Wiener
 Attack)</h2>
-<h3 id="特征-4">特征</h3>
+<h3 id="特征-5">特征</h3>
 <p><span class="math inline">\(e\)</span>特别大</p>
 <h3 id="原理-4">原理</h3>
 <p>与低加密指数相同，低解密指数可以加快解密的过程，但是也带来了安全问题。种基于连分数(一个数论当中的问题)的特殊攻击类型就可以危害
@@ -2761,17 +2704,19 @@ Wiener Attack (维纳攻击) 可以在多项式时间中分解N。</p>
 <p>也可以使用 https://github.com/pablocelayes/rsa-wiener-attack
 的脚本</p>
 </blockquote>
-<h2 id="dpdq-泄露"><span class="math inline">\(dp\&amp;dq\)</span>
-泄露</h2>
-<h3 id="特征-5">特征</h3>
+<h2 id="dp-dq-泄露">dp &amp; dq 泄露</h2>
+<h3 id="特征-6">特征</h3>
 <p>题目仅给出<span class="math inline">\(p,q,dp,dq,c\)</span>，不给公钥<span class="math inline">\(e\)</span></p>
+<h3 id="原理-5">原理</h3>
+<p>已知 <span class="math inline">\(dp=inverse(e,p-1)\)</span>，<span class="math inline">\(dq=inverse(e,q-1)\)</span>，使用 CRT 可得 <span class="math inline">\(d=inverse(e,(p-1)(q-1))\)</span></p>
+<p>对 <span class="math inline">\(m\)</span> 也是同理</p>
 <h3 id="实现-6">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dec</span>(<span class="params">dp, dq, p, q, c</span>):</span></span><br><span class="line">    InvQ = gmpy2.invert(q,p)</span><br><span class="line">    mp = <span class="built_in">pow</span>(c,dp,p)</span><br><span class="line">    mq = <span class="built_in">pow</span>(c,dq,q)</span><br><span class="line">    m = (((mp - mq) * InvQ) % p) * q + mq</span><br><span class="line">    <span class="keyword">return</span> m</span><br><span class="line"></span><br><span class="line">p=<span class="number">0xf85d730bbf09033a75379e58a8465f8048b8516f8105ce2879ce774241305b6eb4ea506b61eb7e376d4fcd425c76e80cb748ebfaf3a852b5cf3119f028cc5971</span></span><br><span class="line">q=<span class="number">0xc1f34b4f826f91c5d68c5751c9af830bc770467a68699991be6e847c29c13170110ccd5e855710950abab2694b6ac730141152758acbeca0c5a51889cbe84d57</span></span><br><span class="line">dp=<span class="number">0xf7b885a246a59fa1b3fe88a2971cb1ee8b19c4a7f9c1a791b9845471320220803854a967a1a03820e297c0fc1aabc2e1c40228d50228766ebebc93c97577f511</span></span><br><span class="line">dq=<span class="number">0x865fe807b8595067ff93d053cc269be6a75134a34e800b741cba39744501a31cffd31cdea6078267a0bd652aeaa39a49c73d9121fafdfa7e1131a764a12fdb95</span></span><br><span class="line">c=<span class="number">0xae05e0c34e2ba4ca3536987cc2cfc3f1f7f53190164d0ac50b44832f0e7224c6fdeebd2c91e3991e7d179c26b1b997295dc9724925ba431f527fba212703a0d14a34ce133661ae0b6001ee326303d6ccdc27dbd94e0987fae25a84f197c1535bdac9094bfb3846b7ca696b2e5082bea7bff804da275772ca05dd51b185a4fc30</span></span><br><span class="line"></span><br><span class="line">m = dec(dp,dq,p,q,c)</span><br></pre></td></tr></table></figure>
-<h2 id="dp-泄露"><span class="math inline">\(dp\)</span> 泄露</h2>
+<h2 id="dp-泄露">dp 泄露</h2>
 <h3 id="实现-7">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line">n = <span class="number">248254007851526241177721526698901802985832766176221609612258877371620580060433101538328030305219918697643619814200930679612109885533801335348445023751670478437073055544724280684733298051599167660303645183146161497485358633681492129668802402065797789905550489547645118787266601929429724133167768465309665906113</span></span><br><span class="line">dp = <span class="number">905074498052346904643025132879518330691925174573054004621877253318682675055421970943552016695528560364834446303196939207056642927148093290374440210503657</span></span><br><span class="line">c = <span class="number">140423670976252696807533673586209400575664282100684119784203527124521188996403826597436883766041879067494280957410201958935737360380801845453829293997433414188838725751796261702622028587211560353362847191060306578510511380965162133472698713063592621028959167072781482562673683090590521214218071160287665180751</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, e + <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">if</span> (dp * e - <span class="number">1</span>) % i == <span class="number">0</span> <span class="keyword">and</span> n % (((dp * e - <span class="number">1</span>) // i) + <span class="number">1</span>) == <span class="number">0</span>:</span><br><span class="line">        p = ((dp * e - <span class="number">1</span>) // i) + <span class="number">1</span></span><br><span class="line">        q = n // (((dp * e - <span class="number">1</span>) // i) + <span class="number">1</span>)</span><br><span class="line">        phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">        d = gmpy2.invert(e, phi)</span><br><span class="line">        m = <span class="built_in">int</span>(<span class="built_in">pow</span>(c, d, n))</span><br></pre></td></tr></table></figure>
 <h2 id="e与varphin-不互素"><span class="math inline">\(e\)</span>与<span class="math inline">\(\varphi(n)\)</span> 不互素</h2>
-<h3 id="原理-5">原理</h3>
+<h3 id="原理-6">原理</h3>
 <p>已知<span class="math inline">\(c_1,c_2,p,q_1,q_2,n_1=pq_1,n_2=pq_2,e\)</span>，则有
 <span class="math display">\[
 k=\gcd(e,\varphi(n))\\
@@ -2795,7 +2740,7 @@ m^{ab}=kq_1q_2+last
 \]</span></p>
 <h2 id="pq-高位相同"><span class="math inline">\(p,q\)</span>
 高位相同</h2>
-<h3 id="特征-6">特征</h3>
+<h3 id="特征-7">特征</h3>
 <p>已知 <span class="math inline">\(n\)</span>，其中 <span class="math inline">\(|p-q|\)</span> 较小，<span class="math inline">\(p,q\)</span> 数量位知道</p>
 <h3 id="实例">实例</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">nbits = <span class="number">1024</span></span><br><span class="line">p = getPrime(nbits // <span class="number">2</span>)</span><br><span class="line">q = next_prime(p + (<span class="number">1</span> &lt;&lt; <span class="built_in">int</span>(nbits * beta)))</span><br><span class="line">n = p * q</span><br></pre></td></tr></table></figure>
@@ -2823,9 +2768,9 @@ e = 65537 c =
 <h3 id="实现-9">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CRT</span>(<span class="params">r,d</span>):</span></span><br><span class="line">    M = <span class="number">1</span></span><br><span class="line">    l = <span class="built_in">len</span>(r)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,l):</span><br><span class="line">        M = d[i] * M</span><br><span class="line">    x = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>,l):</span><br><span class="line">        md = M//d[i]</span><br><span class="line">        x = (x + gmpy2.invert(md, d[i])  * md *r[i] )%M</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(M+x% M)%M</span><br><span class="line"></span><br><span class="line">p = <span class="number">109935857933867829728985398563235455481120300859311421762540858762721955038310117609456763338082237907005937380873151279351831600225270995344096532750271070807051984097524900957809427861441436796934012393707770012556604479065826879107677002380580866325868240270494148512743861326447181476633546419262340100453</span></span><br><span class="line"></span><br><span class="line">e1 = <span class="number">15218928658178</span></span><br><span class="line">q1=<span class="number">127587319253436643569312142058559706815497211661083866592534217079310497260365307426095661281103710042392775453866174657404985539066741684196020137840472950102380232067786400322600902938984916355631714439668326671310160916766472897536055371474076089779472372913037040153356437528808922911484049460342088834871</span></span><br><span class="line">c1 =  <span class="number">262739975753930281690942784321252339035906196846340713237510382364557685379543498765074448825799342194332681181129770046075018122033421983227887719610112028230603166527303021036386350781414447347150383783816869784006598225583375458609586450854602862569022571672049158809874763812834044257419199631217527367046624888837755311215081173386523806086783266198390289097231168172692326653657393522561741947951887577156666663584249108899327053951891486355179939770150550995812478327735917006194574412518819299303783243886962455399783601229227718787081785391010424030509937403600351414176138124705168002288620664809270046124</span></span><br><span class="line">n1 = p*q1</span><br><span class="line"></span><br><span class="line">e2 = <span class="number">381791429275130</span></span><br><span class="line">q2 =  <span class="number">114401188227479584680884046151299704656920536168767132916589182357583461053336386996123783294932566567773695426689447410311969456458574731187512974868297092638677515283584994416382872450167046416573472658841627690987228528798356894803559278308702635288537653192098514966089168123710854679638671424978221959513</span></span><br><span class="line">c2 =  <span class="number">7395591129228876649030819616685821899204832684995757724924450812977470787822266387122334722132760470911599176362617225218345404468270014548817267727669872896838106451520392806497466576907063295603746660003188440170919490157250829308173310715318925771643105064882620746171266499859049038016902162599261409050907140823352990750298239508355767238575709803167676810456559665476121149766947851911064706646506705397091626648713684511780456955453552020460909638016134124590438425738826828694773960514221910109473941451471431637903182205738738109429736425025621308300895473186381826756650667842656050416299166317372707709596</span></span><br><span class="line">n2 = p*q2</span><br><span class="line"></span><br><span class="line">phi1=(p-<span class="number">1</span>)*(q1-<span class="number">1</span>)</span><br><span class="line">phi2=(p-<span class="number">1</span>)*(q2-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">xx1=gmpy2.gcd(e1,phi1) <span class="comment"># xx1=14</span></span><br><span class="line">xx2=gmpy2.gcd(e2,phi2) <span class="comment"># xx2=14</span></span><br><span class="line"></span><br><span class="line">d1=gmpy2.invert(e1//xx1,phi1)</span><br><span class="line">d2=gmpy2.invert(e2//xx2,phi2)</span><br><span class="line"></span><br><span class="line">nn=[]</span><br><span class="line">aa=[]</span><br><span class="line"></span><br><span class="line">nn.append(q1)</span><br><span class="line">nn.append(q2)</span><br><span class="line">a1=gmpy2.powmod(c1,d1,p*q1)%q1</span><br><span class="line">a2=gmpy2.powmod(c2,d2,p*q2)%q2</span><br><span class="line">aa.append(a1)</span><br><span class="line">aa.append(a2)</span><br><span class="line"></span><br><span class="line">last = CRT(aa,nn)</span><br><span class="line">new_e=<span class="number">7</span></span><br><span class="line">new_phi=(q1-<span class="number">1</span>)*(q2-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">new_d=gmpy2.invert(new_e,new_phi)</span><br><span class="line">m_2=gmpy2.powmod(last,new_d,q1*q2)</span><br><span class="line">m=gmpy2.iroot(m_2,<span class="number">2</span>)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
 <h2 id="rabin-攻击">Rabin 攻击</h2>
-<h3 id="特征-7">特征</h3>
+<h3 id="特征-8">特征</h3>
 <p><span class="math inline">\(e=2\)</span></p>
-<h3 id="原理-6">原理</h3>
+<h3 id="原理-7">原理</h3>
 <ul>
 <li><p>计算出 <span class="math inline">\(m_p\)</span> 和<span class="math inline">\(m_q\)</span>： <span class="math display">\[
 m_p=\sqrt{c}\mod{p}\\
@@ -2848,7 +2793,7 @@ m_q=c^{\frac{1}{4}(q+1)}mod\ q
 <h3 id="实现-10">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">n=<span class="number">523798549</span></span><br><span class="line">p=<span class="number">10663</span></span><br><span class="line">q=<span class="number">49123</span></span><br><span class="line">e=<span class="number">2</span></span><br><span class="line">c=<span class="number">162853095</span></span><br><span class="line">a,inv_q ,inv_p= gmpy2.gcdext(q,p)</span><br><span class="line">mp = <span class="built_in">pow</span>(c, (p + <span class="number">1</span>) // <span class="number">4</span>, p)</span><br><span class="line">mq = <span class="built_in">pow</span>(c, (q + <span class="number">1</span>) // <span class="number">4</span>, q)</span><br><span class="line">a = (inv_p * p * mq + inv_q * q * mp) % n</span><br><span class="line">b = n - <span class="built_in">int</span>(a)</span><br><span class="line">c = (inv_p * p * mq - inv_q * q * mp) % n</span><br><span class="line">d = n - <span class="built_in">int</span>(c)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span>(a, b, c, d):</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
 <h2 id="coppersmith-定理攻击">Coppersmith 定理攻击</h2>
-<h3 id="原理-7">原理</h3>
+<h3 id="原理-8">原理</h3>
 <p>Coppersmith 定理指出在一个<span class="math inline">\(e\)</span>阶的<span class="math inline">\(mod\
 n\)</span>多项式<span class="math inline">\(f(x)\)</span>中，如果有一个根小于<span class="math inline">\(n^\frac{1}{e}\)</span> ，就可以运用一个O(log
 n)的算法求出这些根。</p>
@@ -2856,12 +2801,12 @@ n)的算法求出这些根。</p>
 3\)</span>并且在明文当中只有三分之二的比特是已知的，这种算法可以求出明文中所有的比特。</p>
 <h2 id="prime-power-rsa-using-two-decryption-exponents">Prime Power RSA
 using Two Decryption Exponents</h2>
-<h3 id="特征-8">特征</h3>
+<h3 id="特征-9">特征</h3>
 <ul>
 <li><span class="math inline">\(N=p^rq\)</span></li>
 <li><span class="math inline">\(d_1\)</span> 和 <span class="math inline">\(d_2\)</span> 大部分高位相同，即 <span class="math inline">\(|d_1-d_2|\)</span> 很小</li>
 </ul>
-<h3 id="原理-8">原理</h3>
+<h3 id="原理-9">原理</h3>
 <p>我们用到了以下定理：</p>
 <ul>
 <li><p><strong>定理一</strong></p>
@@ -2929,20 +2874,20 @@ N^{0.99}\)</span>，且 Sarkar’s method 与存在范围 <span class="math inli
 <p><code>exp.sage</code></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">r = <span class="number">7</span></span><br><span class="line"></span><br><span class="line">N = <span class="number">1476751427633071977599571983301151063258376731102955975364111147037204614220376883752032253407881568290520059515340434632858734689439268479399482315506043425541162646523388437842149125178447800616137044219916586942207838674001004007237861470176454543718752182312318068466051713087927370670177514666860822341380494154077020472814706123209865769048722380888175401791873273850281384147394075054950169002165357490796510950852631287689747360436384163758289159710264469722036320819123313773301072777844457895388797742631541101152819089150281489897683508400098693808473542212963868834485233858128220055727804326451310080791</span></span><br><span class="line"></span><br><span class="line">e1 = <span class="number">425735006018518321920113858371691046233291394270779139216531379266829453665704656868245884309574741300746121946724344532456337490492263690989727904837374279175606623404025598533405400677329916633307585813849635071097268989906426771864410852556381279117588496262787146588414873723983855041415476840445850171457530977221981125006107741100779529209163446405585696682186452013669643507275620439492021019544922913941472624874102604249376990616323884331293660116156782891935217575308895791623826306100692059131945495084654854521834016181452508329430102813663713333608459898915361745215871305547069325129687311358338082029</span></span><br><span class="line">e2 = <span class="number">1004512650658647383814190582513307789549094672255033373245432814519573537648997991452158231923692387604945039180687417026069655569594454408690445879849410118502279459189421806132654131287284719070037134752526923855821229397612868419416851456578505341237256609343187666849045678291935806441844686439591365338539029504178066823886051731466788474438373839803448380498800384597878814991008672054436093542513518012957106825842251155935855375353004898840663429274565622024673235081082222394015174831078190299524112112571718817712276118850981261489528540025810396786605197437842655180663611669918785635193552649262904644919</span></span><br><span class="line"></span><br><span class="line">c = <span class="number">2420624631315473673388732074340410215657378096737020976722603529598864338532404224879219059105950005655100728361198499550862405660043591919681568611707967</span></span><br><span class="line"></span><br><span class="line">x = polygen(Zmod(N))</span><br><span class="line">f = e1 * e2 * x - (e2 - e1)</span><br><span class="line">f = f.monic()</span><br><span class="line"></span><br><span class="line">roots = f.small_roots(beta=((r - <span class="number">1</span>) / (r + <span class="number">1</span>) - <span class="number">0.01</span>), epsilon=<span class="number">0.05</span>)</span><br><span class="line"></span><br><span class="line">res = gmpy2.iroot(gmpy2.gcd(<span class="built_in">int</span>(f(roots[<span class="number">0</span>])), N), r - <span class="number">1</span>)</span><br><span class="line"><span class="keyword">assert</span> res[<span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;p =&quot;</span>, res[<span class="number">0</span>])</span><br><span class="line">p = res[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">q = N // (p**<span class="number">7</span>)</span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = inverse(<span class="number">0x10001</span>, phi)</span><br><span class="line">msg = long_to_bytes(power_mod(c, d, n))</span><br><span class="line"><span class="built_in">print</span>(msg)</span><br><span class="line">flag = <span class="string">&#x27;d3ctf&#123;&#x27;</span> + md5(msg).hexdigest() + <span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
 <h2 id="pq-存在相同-module-攻击"><span class="math inline">\(p,q\)</span> 存在相同 module 攻击</h2>
-<h3 id="特征-9">特征</h3>
+<h3 id="特征-10">特征</h3>
 <p><span class="math inline">\(p,q\)</span> 的生成需要借助某共同的
 module <span class="math inline">\(M\)</span> 进行生成</p>
 <h3 id="代码-1">代码</h3>
 <p>直接使用他人的脚本，roca 攻击：<a href="https://github.com/jvdsn/crypto-attacks/blob/c26872bdac2e2d95c5be00e6e593c891c849f446/attacks/factorization/roca.py">https://github.com/jvdsn/crypto-attacks/blob/c26872bdac2e2d95c5be00e6e593c891c849f446/attacks/factorization/roca.py</a></p>
 <h2 id="e-较小时的有限域开方攻击"><span class="math inline">\(e\)</span>
 较小时的有限域开方攻击</h2>
-<h3 id="特征-10">特征</h3>
+<h3 id="特征-11">特征</h3>
 <p><span class="math inline">\(e\)</span> 较小，比如说 10、50、100
 等等。</p>
 <p>或者 <span class="math inline">\(\gcd(e,
 \varphi(p))\neq1\)</span>，即 <span class="math inline">\(e\)</span> 与
 <span class="math inline">\(\varphi(p)\)</span> 不互素的情况。</p>
-<h3 id="原理-9">原理</h3>
+<h3 id="原理-10">原理</h3>
 <p><span class="math inline">\(e\)</span>
 较小时，有限域开方速度较快。</p>
 <p>同时运用到了高次剩余的定理：</p>
@@ -2970,7 +2915,7 @@ m=\sqrt[e]{c}\pmod{n}
 \end{cases}
 \]</span> 但因为有多解，所以需要进行验证。</p>
 <h3 id="代码-2">代码</h3>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span>(<span class="params">p, q, e, c</span>):</span></span><br><span class="line">    P.&lt;x&gt;=PolynomialRing(Zmod(p),implementation=<span class="string">&#x27;NTL&#x27;</span>)</span><br><span class="line">    f=x^e-c</span><br><span class="line">    mps=f.monic().roots()</span><br><span class="line"></span><br><span class="line">    P.&lt;x&gt;=PolynomialRing(Zmod(q),implementation=<span class="string">&#x27;NTL&#x27;</span>)</span><br><span class="line">    g=x^e-c</span><br><span class="line">    mqs=g.monic().roots()</span><br><span class="line"></span><br><span class="line">    solution = []</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> mp <span class="keyword">in</span> mps:</span><br><span class="line">        x = <span class="built_in">int</span>(mp[<span class="number">0</span>])</span><br><span class="line">        <span class="keyword">for</span> mq <span class="keyword">in</span> mqs:</span><br><span class="line">            y = <span class="built_in">int</span>(mq[<span class="number">0</span>])</span><br><span class="line">            s = CRT([x, y], [p, q])</span><br><span class="line">            solution.append(s)</span><br><span class="line">    <span class="keyword">return</span> solution</span><br><span class="line"></span><br><span class="line">s = solve(p, q, e, c)</span><br><span class="line"><span class="built_in">print</span>(s)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span>(<span class="params">p, q, e, c</span>):</span></span><br><span class="line">    P.&lt;x&gt;=Zmod(p)[]</span><br><span class="line">    f=x^e-c</span><br><span class="line">    mps=f.roots(multiplicities=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    P.&lt;x&gt;=Zmod(p)[]</span><br><span class="line">    g=x^e-c</span><br><span class="line">    mqs=g.roots(multiplicities=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    ms = []</span><br><span class="line">	<span class="keyword">import</span> itertools</span><br><span class="line">    <span class="keyword">for</span> mp, mq <span class="keyword">in</span> itertools.product(mps, mqs):</span><br><span class="line">        m = mp.crt(mq)</span><br><span class="line">        ms.append(m)</span><br><span class="line">    <span class="keyword">return</span> ms</span><br><span class="line"></span><br><span class="line">ms = solve(p, q, e, c)</span><br><span class="line"><span class="built_in">print</span>(ms)</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -6643,12 +6588,12 @@ Linux 内部文件中。</p>
 <tr class="odd">
 <td>12500</td>
 <td>RAR3-hp</td>
-<td><span class="math inline">\(RAR3\)</span><em>0</em>45109af8ab5f297a*adbf6c5385d7a40373e8f77d7b89d317</td>
+<td><code>$RAR3$*0*45109af8ab5f297a*adbf6c5385d7a40373e8f77d7b89d317</code></td>
 </tr>
 <tr class="even">
 <td>13000</td>
 <td>RAR5</td>
-<td>$rar5$16$74575567518807622265582327032280<span class="math inline">\(15\)</span>f8b4064de34ac02ecabfe</td>
+<td><code>$rar5$16$74575567518807622265582327032280$15$f8b4064de34ac02ecabfe</code></td>
 </tr>
 </tbody>
 </table>
@@ -7428,6 +7373,8 @@ random 算法请加 <code>--oldseed</code> 参数。</p>
 <img src="/picture-forensics-note/montage%20横向拼接.png" alt="montage 横向拼接">
 <figcaption aria-hidden="true">montage 横向拼接</figcaption>
 </figure>
+<p>批量重命名的 Python 脚本：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pathlib</span><br><span class="line"></span><br><span class="line">path = <span class="string">&#x27;./images&#x27;</span></span><br><span class="line">path = pathlib.Path(path)</span><br><span class="line"><span class="keyword">for</span> filename <span class="keyword">in</span> path.iterdir():</span><br><span class="line">    name = filename.name</span><br><span class="line">    os.rename(filename, path + name.zfill(<span class="number">8</span>))</span><br></pre></td></tr></table></figure>
 <h2 id="拼图">拼图</h2>
 <p>拼图问题我们可以使用
 <code>gaps</code>，一个基于遗传算法的拼图求解器，具有块大小自动检测功能
@@ -9722,6 +9669,12 @@ Malbolge 实现不会接受这样的操作数。</td>
 <code>aK==</code> 的解码结果是一样的，但我们可以在里面隐藏四位数据。</p>
 <p>故有以下隐写提取代码：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">base64stegExtract</span>(<span class="params">bases: <span class="built_in">list</span>[<span class="built_in">str</span>], needBin: <span class="built_in">bool</span>=<span class="literal">False</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    base64隐写提取函数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        bases - base64数组</span></span><br><span class="line"><span class="string">        needBin - 是否直接返回所提取的二进制数据</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        提取出的数据</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    table = <span class="string">&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;</span></span><br><span class="line">    code = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> base <span class="keyword">in</span> bases:</span><br><span class="line">        <span class="keyword">if</span> base.endswith(<span class="string">&#x27;==&#x27;</span>):</span><br><span class="line">            c = base[-<span class="number">3</span>]</span><br><span class="line">            code += <span class="built_in">bin</span>(table.find(c) &amp; <span class="number">0xF</span>)[<span class="number">2</span>:].zfill(<span class="number">4</span>)</span><br><span class="line">        <span class="keyword">elif</span> base.endswith(<span class="string">&#x27;=&#x27;</span>):</span><br><span class="line">            c = base[-<span class="number">2</span>]</span><br><span class="line">            code += <span class="built_in">bin</span>(table.find(c) &amp; <span class="number">0x3</span>)[<span class="number">2</span>:].zfill(<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">if</span> needBin:</span><br><span class="line">        <span class="keyword">return</span> code</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(code) &lt; <span class="number">8</span>:</span><br><span class="line">        <span class="keyword">raise</span> <span class="string">&quot;所提取出来的数据不足8位！&quot;</span></span><br><span class="line">    msg = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(code), <span class="number">8</span>):</span><br><span class="line">        msg += <span class="built_in">chr</span>(<span class="built_in">int</span>(code[i:i+<span class="number">8</span>], <span class="number">2</span>))</span><br><span class="line">    <span class="keyword">return</span> msg</span><br></pre></td></tr></table></figure>
+<h1 id="brainfuck">Brainfuck</h1>
+<p>Brainfuck 是一款极简的深奥语言（eco-language），特征是它由
+<code>&gt; &lt; + - . , [ ]</code> 八种符号组成代码，并且开头可能会出现
+<code>+++++ +++++[</code> 的代码。</p>
+<p>需要注意的是对于不同长度的明文，可能会出现不同的头。如果代码头不存在时，需要自己尝试添加
+<code>+</code> 爆破。</p>
 <h1 id="ocr">OCR</h1>
 <p>有的时候图片所包含的文本太长，手读困难且短时间内无法快速识别，我们就需要使用到
 OCR（光学字符识别），可以帮我们有效提高时间效率。</p>
@@ -9767,6 +9720,13 @@ Decode 区域中的 Tweet 文本框中即可：</p>
 <img src="/text-forensics-note/tsm解密结果.png" alt="tsm解密结果">
 <figcaption aria-hidden="true">tsm解密结果</figcaption>
 </figure>
+<h1 id="vigenere">Vigenere</h1>
+<p>维吉尼亚的词频分析求解十分常见，这里仅给出在线求解网站，各种网站在分析性能上无孰优孰劣之分。</p>
+<ul>
+<li>https://www.guballa.de/vigenere-solver</li>
+<li>https://quipqiup.com/</li>
+<li>https://www.dcode.fr/chiffre-vigenere</li>
+</ul>
 <h1 id="whitespace">Whitespace</h1>
 <p>WhiteSpace
 是一种只用空白字符（空格，TAB和回车）编程的语言，而其它可见字符统统会被当做注释对待。</p>
@@ -9797,6 +9757,18 @@ Decode 区域中的 Tweet 文本框中即可：</p>
 <p>该网站可以自由选择加解密参数，通常只用选择文本中存在的零宽字符。但缺点是该网站对零宽字符的支持过少。</p>
 <p>还可以使用网站：<a href="https://yuanfux.github.io/zero-width-web/">https://yuanfux.github.io/zero-width-web/</a></p>
 <p>该网站的优势是支持所有的零宽字符解密，但缺点是无法自由选择你想要的零宽字符。</p>
+<h1 id="词频隐写">词频隐写</h1>
+<p>将关键信息转换成冗余字符后打乱顺序，用词频顺序进行解密，一般来说会利用
+Python 的 <code>collections.Counter</code>
+进行词频统计，一个简单的题解可能是这样的：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read()</span><br><span class="line"></span><br><span class="line">c = Counter(data)</span><br><span class="line">k = c.most_common()</span><br><span class="line">k = <span class="string">&#x27;&#x27;</span>.join(i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> k)</span><br><span class="line"><span class="built_in">print</span>(k)</span><br></pre></td></tr></table></figure>
+<h1 id="空白字符隐写">空白字符隐写</h1>
+<p>利用空白字符进行隐写的手段很多，目前已经见过的有：</p>
+<ul>
+<li>制表符代表摩斯电码中的长码
+(<code>-</code>)，空格代表摩斯电码中的短码 (<code>.</code>)</li>
+<li>长空白代表二进制中的 1，短空白代表莫斯电码中的 0</li>
+</ul>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -11051,7 +11023,31 @@ y\rfloor,17))},2\right)\right\rfloor
 数据类型的隐写，并且可以保留文件名。</p>
 <p>可以使用 John 对其进行密码爆破。</p>
 <p>将音频拖入，再输入密码，即可提取出隐写的数据。</p>
+<h2 id="dtmf">DTMF</h2>
+<p>DTMF (dual-tone
+multifrequency)，即双音多频，由高频群和低频群组成，高低频群各包含4个频率。一个高频信号和一个低频信号叠加组成一个组合信号，代表一个数字。DTMF
+信号有16个编码，常用于老式电话，拨号音用的就是 DTMF 信号。</p>
+<p>可以使用在线网站将音频进行转换：http://dialabc.com/sound/detect/index.html</p>
+<p>也可以使用 Linux 软件 <code>dtmf2num</code>，使用 <code>apt</code>
+包管理工具即可安装。</p>
+<p>使用方式：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dtmf2num audio.wav</span><br></pre></td></tr></table></figure>
 <h2 id="lsb-隐写">lsb 隐写</h2>
+<h2 id="morse-code">Morse-Code</h2>
+<p>摩尔斯电码是只使用 0 和 1
+两种状态的二进制代码，电报、短期通讯都是使用该种编码，主要由短促的点信号（代表
+0）、保持一定时间的长信号（代表 1）和停顿组成。</p>
+<p>Morse Code
+的音频分析可以使用在线网站自动分析：https://morsecode.world/international/decoder/audio-decoder-expert.html</p>
+<p>也可以使用 Linux 软件 <code>morse2ascii</code>，使用 <code>apt</code>
+包管理工具即可安装。</p>
+<p>使用方式：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">morse2ascii audio.wav</span><br></pre></td></tr></table></figure>
+<h2 id="sstv">SSTV</h2>
+<h2 id="频谱图隐写">频谱图隐写</h2>
+<p>有时候会将关键信息隐藏在频谱图部分，可以使用 Audacity
+软件查看频谱图部分得到隐藏信息。</p>
+<p>需要注意的是，该种隐写会造成音乐听起来很奇怪。</p>
 <h1 id="wav-取证">WAV 取证</h1>
 <h2 id="silenteye">silenteye</h2>
 <p>silenteye 支持对 wav 格式的隐写。</p>
@@ -11062,6 +11058,15 @@ y\rfloor,17))},2\right)\right\rfloor
 <img src="/audio-forensics-note/silenteye%20encrypted.png" alt="silenteye encrypted">
 <figcaption aria-hidden="true">silenteye encrypted</figcaption>
 </figure>
+<h2 id="steghide">steghide</h2>
+<p>可以对 wave 文件进行隐写和提取。</p>
+<p>常常使用 <code>steghide info filename.wav</code>
+对目标文件进行检测。</p>
+<p>如果想要明文使用密码提取文件隐写数据，可以使用以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">steghide extract -sf filename -p password</span><br></pre></td></tr></table></figure>
+<p>它会将隐写数据输出到文件当中。</p>
+<p>可以使用 <a href="https://github.com/RickdeJager/stegseek">Stegseek</a>
+软件进行快速且精确的爆破。</p>
 <h2 id="wavsteg">WavSteg</h2>
 <p>一个开源项目，使用 LSB 技术进行隐写数据的 Python3 脚本。（<a href="https://github.com/ragibson/Steganography">Github 主页</a>）</p>
 <p>使用以下指令可以提取隐写数据，但缺点是要求大小精确。</p>
@@ -11570,9 +11575,9 @@ chunk、Format chunk 和 Data chunk。</p>
   </entry>
   <entry>
     <title>盲水印笔记</title>
-    <url>//blind-water-mask-note.html</url>
+    <url>//blind-water-mark-note.html</url>
     <content><![CDATA[<h1 id="简述">简述</h1>
-<p>水印（Water-Mask）是一种保护数字产品版权、完整性、防复制或去向追踪的技术，通常作为署名的一种。但水印的缺点显而易见，不止
+<p>水印（Water-Mark）是一种保护数字产品版权、完整性、防复制或去向追踪的技术，通常作为署名的一种。但水印的缺点显而易见，不止
 PhotoShop 有去除水印的功能，同时可以使用截图等手段将水印抹除。</p>
 <p>于是盲水印（Blind-Water-Mask）被发明出来，即字面意思——一种没办法用肉眼直接观察的水印。</p>
 <p>盲水印有着隐蔽性（Imperceptible）、不易移除性（Non-removable）、强健性（Robustness）和明确性（Unambiguous），可以很好的满足当前数字版权保护的所需。</p>
@@ -11580,7 +11585,7 @@ PhotoShop 有去除水印的功能，同时可以使用截图等手段将水印�
 <h2 id="原理">原理</h2>
 <p>盲水印流程图如下：</p>
 <figure>
-<img src="/blind-water-mask-note/image-20220725205419764.png" alt="image-20220725205419764">
+<img src="/blind-water-mark-note/image-20220725205419764.png" alt="image-20220725205419764">
 <figcaption aria-hidden="true">image-20220725205419764</figcaption>
 </figure>
 <h3 id="傅里叶变换">傅里叶变换</h3>
@@ -11595,14 +11600,16 @@ PhotoShop 有去除水印的功能，同时可以使用截图等手段将水印�
 与 <span class="math inline">\(f(-u,-v)\)</span>
 是共轭的，所以其实部应该相等（如果不相等的话，逆变换后结果将在虚部上损失一部分信息，因为我们只写入实部数据），故我们应使得水印编码后的数据是对称的。</p>
 <h1 id="工具">工具</h1>
+<h2 id="blindwatermark">BlindWaterMark</h2>
 <p>在盲水印的加密和解密中，我们通常使用 GitHub 上的开源脚本 <a href="https://github.com/chishaxie/BlindWaterMark">BlindWaterMark</a></p>
+<p>需要注意的是，该项目需要原图才能提取盲水印。</p>
 <ul>
-<li>bwm.py程序文件python2版本</li>
-<li>bwmforpy3.py 程序文件python3版本</li>
-<li>hui.png 无水印的原图</li>
-<li>wm.png 水印图</li>
-<li>hui_with_wm.png 有盲水印的图</li>
-<li>wm_from_hui.png 解出来的水印图</li>
+<li><code>bwm.py</code> 程序文件python2版本</li>
+<li><code>bwmforpy3.py</code> 程序文件python3版本</li>
+<li><code>hui.png</code> 无水印的原图</li>
+<li><code>wm.png</code> 水印图</li>
+<li><code>hui_with_wm.png</code> 有盲水印的图</li>
+<li><code>wm_from_hui.png</code> 解出来的水印图</li>
 </ul>
 <p>加密语法：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python bwm.py encode hui.png wm.png hui_with_wm.png</span><br></pre></td></tr></table></figure>
@@ -11614,6 +11621,40 @@ decode 结果会有所不同。主要原因是 python2 和 python3
 <code>--oldseed</code> 参数。</p>
 <p>同时由于其水印编码方式是使用默认随机数的，如果需要指定随机数，需要使用
 <code>--seed</code> 参数。</p>
+<h2 id="blind_watermark">blind_watermark</h2>
+<p>该项目的优点是无需原图即可还原盲水印，同时支持文字水印等。</p>
+<p>该项目在 GitHub
+上开源，主页链接：https://github.com/guofei9987/blind_watermark</p>
+<p>安装方式：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip install blind-watermark</span><br></pre></td></tr></table></figure>
+<h3 id="在-bash-中使用">在 bash 中使用</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># embed watermark into image:</span></span><br><span class="line">blind_watermark --embed --<span class="built_in">pwd</span> 1234 examples/pic/ori_img.jpeg <span class="string">&quot;watermark text&quot;</span> examples/output/embedded.png</span><br><span class="line"><span class="comment"># extract watermark from image:</span></span><br><span class="line">blind_watermark --extract --<span class="built_in">pwd</span> 1234 --wm_shape 111 examples/output/embedded.png</span><br></pre></td></tr></table></figure>
+<h3 id="在-python-中使用">在 Python 中使用</h3>
+<h4 id="嵌入文字">嵌入文字</h4>
+<p>嵌入水印：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> blind_watermark <span class="keyword">import</span> WaterMark</span><br><span class="line"></span><br><span class="line">bwm1 = WaterMark(password_img=<span class="number">1</span>, password_wm=<span class="number">1</span>)</span><br><span class="line">bwm1.read_img(<span class="string">&#x27;pic/ori_img.jpg&#x27;</span>)</span><br><span class="line">wm = <span class="string">&#x27;@guofei9987 开源万岁！&#x27;</span></span><br><span class="line">bwm1.read_wm(wm, mode=<span class="string">&#x27;str&#x27;</span>)</span><br><span class="line">bwm1.embed(<span class="string">&#x27;output/embedded.png&#x27;</span>)</span><br><span class="line">len_wm = <span class="built_in">len</span>(bwm1.wm_bit)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Put down the length of wm_bit &#123;len_wm&#125;&#x27;</span>.<span class="built_in">format</span>(len_wm=len_wm))</span><br></pre></td></tr></table></figure>
+<p>提取水印：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">bwm1 = WaterMark(password_img=<span class="number">1</span>, password_wm=<span class="number">1</span>)</span><br><span class="line">wm_extract = bwm1.extract(<span class="string">&#x27;output/embedded.png&#x27;</span>, wm_shape=len_wm, mode=<span class="string">&#x27;str&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(wm_extract)</span><br></pre></td></tr></table></figure>
+<p>输出：</p>
+<blockquote>
+<p><span class="citation" data-cites="guofei9987">@guofei9987</span>
+开源万岁！</p>
+</blockquote>
+<h4 id="嵌入图像">嵌入图像</h4>
+<p>嵌入水印：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> blind_watermark <span class="keyword">import</span> WaterMark</span><br><span class="line"></span><br><span class="line">bwm1 = WaterMark(password_wm=<span class="number">1</span>, password_img=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># read original image</span></span><br><span class="line">bwm1.read_img(<span class="string">&#x27;pic/ori_img.jpg&#x27;</span>)</span><br><span class="line"><span class="comment"># read watermark</span></span><br><span class="line">bwm1.read_wm(<span class="string">&#x27;pic/watermark.png&#x27;</span>)</span><br><span class="line"><span class="comment"># embed</span></span><br><span class="line">bwm1.embed(<span class="string">&#x27;output/embedded.png&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>提取水印：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">bwm1 = WaterMark(password_wm=<span class="number">1</span>, password_img=<span class="number">1</span>)</span><br><span class="line"><span class="comment"># notice that wm_shape is necessary</span></span><br><span class="line">bwm1.extract(filename=<span class="string">&#x27;output/embedded.png&#x27;</span>, wm_shape=(<span class="number">128</span>, <span class="number">128</span>), out_wm_name=<span class="string">&#x27;output/extracted.png&#x27;</span>, )</span><br></pre></td></tr></table></figure>
+<h4 id="嵌入位数组">嵌入位数组</h4>
+<p>作为演示，我们嵌入了 6 个字节的数据：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">wm = [<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">True</span>, <span class="literal">True</span>, <span class="literal">False</span>]</span><br></pre></td></tr></table></figure>
+<p>嵌入：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> blind_watermark <span class="keyword">import</span> WaterMark</span><br><span class="line"></span><br><span class="line">bwm1 = WaterMark(password_img=<span class="number">1</span>, password_wm=<span class="number">1</span>)</span><br><span class="line">bwm1.read_ori_img(<span class="string">&#x27;pic/ori_img.jpg&#x27;</span>)</span><br><span class="line">bwm1.read_wm([<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">True</span>, <span class="literal">True</span>, <span class="literal">True</span>, <span class="literal">False</span>], mode=<span class="string">&#x27;bit&#x27;</span>)</span><br><span class="line">bwm1.embed(<span class="string">&#x27;output/embedded.png&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>提炼：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">bwm1 = WaterMark(password_img=<span class="number">1</span>, password_wm=<span class="number">1</span>, wm_shape=<span class="number">6</span>)</span><br><span class="line">wm_extract = bwm1.extract(<span class="string">&#x27;output/打上水印的图.png&#x27;</span>, mode=<span class="string">&#x27;bit&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(wm_extract)</span><br></pre></td></tr></table></figure>
+<p>注意<code>wm_shape</code>（水印的形状）是必要的</p>
+<p>输出<code>wm_extract</code>是一个浮点数组。设置一个阈值，例如
+0.5。</p>
 ]]></content>
       <tags>
         <tag>misc</tag>
@@ -12118,6 +12159,13 @@ CRC-32 值相等。</p>
 <p>推荐使用 ARCHPR
 的明文攻击模式进行破解，需要一个明文压缩包和含有明文文件的密文压缩包，其中他们的压缩算法应该是相同的。</p>
 <p>同时也可以使用 <a href="https://github.com/kimci86/bkcrack">bkcrack</a> 进行破解。</p>
+<h3 id="注意">注意</h3>
+<ul>
+<li>文本文件如果编码不同（例如 <code>UTF-8</code> 与
+<code>GBK</code>）可能导致压缩出来的大小不同，所以各种编码都需要尝试一次。</li>
+<li>不同的压缩软件压缩出来的文件可能会导致 ARCHPR 报错，一般推荐
+Bandizip 与 WinRAR 都尝试一次。</li>
+</ul>
 <h2 id="深入明文攻击">深入明文攻击</h2>
 <h3 id="原理-4">原理</h3>
 <p>ZIP
@@ -12186,6 +12234,17 @@ CRC 碰撞的原理）。</p>
 算法进行压缩的话，需要使用其自带的 <code>inflate.py</code> 脚本（在
 <code>./tools/</code> 文件夹中）进行解压缩：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python inflate.py &lt; 1.jpg &gt; 2.jpg</span><br></pre></td></tr></table></figure>
+<h1 id="特殊实例">特殊实例</h1>
+<h2 id="以时间戳作为密码">以时间戳作为密码</h2>
+<h3 id="原理-5">原理</h3>
+<p>时间戳一般是一个两位小数，ZIP
+文件所保存的创建时间和更新时间并不一定与当时所获取的时间戳是一致的，也许会差几秒，所以我们需要先将文件创建时间转化为时间戳，然后进行掩码爆破。</p>
+<h3 id="破解-5">破解</h3>
+<p>例如文件创建时间为
+<code>2019/05/17 8:25:28</code>，我们使用如下脚本进行转化时间戳</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">a = time.struct_time((<span class="number">2019</span>,<span class="number">5</span>,<span class="number">17</span>,<span class="number">8</span>,<span class="number">25</span>,<span class="number">28</span>,-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(time.mktime(a))</span><br></pre></td></tr></table></figure>
+<p>得到结果 <code>1558052728.0</code>，设置掩码
+<code>15580?????.??</code> 或者 <code>15580?????.?</code> 爆破即可。</p>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -13347,10 +13406,19 @@ Windows 操作系统的明文密码，现被用于渗透测试。</p>
 <p>mimikatz 分为 Win32 与 x64 版本，在 kali
 中有存储，直接将文件夹拷贝即可使用。通过这些可以提升进程权限、注入进程和读取进程内存。</p>
 <blockquote>
-<p>├── kiwi_passwords.yar ├── mimicom.idl ├── Win32 │ ├── mimidrv.sys │
-├── mimikatz.exe │ ├── mimilib.dll │ ├── mimilove.exe │ └──
-mimispool.dll └── x64 ├── mimidrv.sys ├── mimikatz.exe ├── mimilib.dll
-└── mimispool.dll</p>
+<p>├── kiwi_passwords.yar</p>
+<p>├── mimicom.idl</p>
+<p>├── Win32</p>
+<p>│ ├── mimidrv.sys</p>
+<p>│ ├── mimikatz.exe</p>
+<p>│ ├── mimilib.dll</p>
+<p>│ ├── mimilove.exe</p>
+<p>│ └── mimispool.dll</p>
+<p>└── x64</p>
+<p>├── mimidrv.sys</p>
+<p>├── mimikatz.exe</p>
+<p>├── mimilib.dll</p>
+<p>└── mimispool.dll</p>
 </blockquote>
 <p>mimikatz 主要是从 Lsass
 中获取当前登陆过的系统用户的账号明文密码。Lsass 是微软 Windows
@@ -13367,9 +13435,9 @@ shell，其内置许多模块功能供我们使用，主要是通过
 <h2 id="模块">模块</h2>
 <p>以下仅是常用模块及命令</p>
 <ul>
-<li><a href="#%60standard%60"><code>standard</code></a></li>
-<li><a href="#%60privilege%60"><code>privilege</code></a></li>
-<li><a href="#%60sekurlsa%60"><code>sekurlsa</code></a></li>
+<li><a href="#standard"><code>standard</code></a></li>
+<li><a href="#privilege"><code>privilege</code></a></li>
+<li><a href="#sekurlsa"><code>sekurlsa</code></a></li>
 </ul>
 <p>注：所有模块都可以通过 <code>模块名::错误命令</code>
 获取详细帮助，例如 <code>crypto::help</code>，如果需要详细信息请在官方
@@ -13542,6 +13610,719 @@ Kerberos 提供者询问<code>TGT</code>票证！;</li>
       <tags>
         <tag>note</tag>
         <tag>forensics</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>ciphey 笔记</title>
+    <url>//ciphey-note.html</url>
+    <content><![CDATA[<h1 id="简述">简述</h1>
+<p>Cipher
+是一款使用自然语言处理和人工智能以及一些常识的全自动解密/解码/破解工具，它类似
+<code>dcode.fr</code>（实际上该网站的服务也是基于人工智能），但 Ciphey
+有着更强大的功能，例如连续解密和更高效的密文识别技术。</p>
+<h2 id="特性">特性</h2>
+<ul>
+<li><strong>支持 30+的加密方法</strong>
+例如编码（二进制，base64）和常规加密（例如 Caesar 密码，重复密钥 XOR
+等） <strong><a href="https://link.zhihu.com/?target=https%3A//github.com/Ciphey/Ciphey/wiki/Supported-Ciphers">有关完整列表，请单击此处</a></strong></li>
+<li><strong>具有增强搜索功能的定制人工智能（AuSearch）可以回答“使用了哪种加密技术?"</strong>
+解密时间不到 3 秒</li>
+<li><strong>定制的自然语言处理系统</strong> Ciphey
+可以确定某些东西是否是纯文本。无论该纯文本是 JSON，CTF 标志还是英语
+Ciphey，都可以在几毫秒内获得它</li>
+<li><strong>多国语言支持</strong> 目前，仅有德语和英语（带有
+AU，UK，CAN，USA 变体）</li>
+<li><strong>支持加密和哈希</strong> 诸如 CyberChef Magic
+之类的替代品则没有。</li>
+<li><strong><a href="https://link.zhihu.com/?target=https%3A//github.com/Ciphey/CipheyCore">C++
+核心</a></strong> 这会使整个过程变得非常快</li>
+</ul>
+<h2 id="安装">安装</h2>
+<p>使用 pip 包管理即可，需要注意的是
+<code>Python&gt;=3.7</code>（Windows 仅支持
+Python3.7、Python3.8，其他平台支持 Python3.9，但暂时不支持
+Python3.10）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">pip3 install ciphey</span><br></pre></td></tr></table></figure>
+<h1 id="用法">用法</h1>
+<h2 id="参数">参数</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">选项:</span><br><span class="line">  -t, --text TEXT            您想要解密的密文。</span><br><span class="line">  -q, --quiet                减少冗长的显示,直接给结果</span><br><span class="line">  -g, --greppable            只输出答案(对于grep很有用)</span><br><span class="line">  -v, --verbose</span><br><span class="line">  -C, --checker TEXT         使用给定的检查器</span><br><span class="line">  -c, --config TEXT          使用给定的配置文件。默认为</span><br><span class="line">                             appdirs.user_config_dir(<span class="string">&#x27;ciphey&#x27;</span>,</span><br><span class="line">                             <span class="string">&#x27;ciphey&#x27;</span>)/<span class="string">&#x27;config.yml&#x27;</span></span><br><span class="line"></span><br><span class="line">  -w, --wordlist TEXT        使用给定的密码字典</span><br><span class="line">  -p, --param TEXT           将参数传递给语言检查器</span><br><span class="line">  -l, --list-params BOOLEAN  列出所选模块的参数</span><br><span class="line">  --searcher TEXT            选择要使用的搜索算法</span><br><span class="line">  -b, --bytes                强制密码使用二进制模式作为输入</span><br><span class="line">  --default-dist TEXT        设置默认的字符/字节分布</span><br><span class="line">  -m, --module PATH          从给定路径添加模块</span><br><span class="line">  -A, --appdirs              输出密码到想要的文件位置</span><br><span class="line"></span><br><span class="line">  -f, --file FILENAME</span><br><span class="line">  --<span class="built_in">help</span>                     显示此帮助消息并退出。</span><br></pre></td></tr></table></figure>
+<h2 id="示例">示例</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">例如:</span><br><span class="line">    基本用法: ciphey -t <span class="string">&quot;aGVsbG8gbXkgbmFtZSBpcyBiZWU=&quot;</span></span><br></pre></td></tr></table></figure>
+<p>Ciphey 会自动运算，如果不是想要的结果可以输入
+<code>n</code>，继续运算，直到正确结果</p>
+<h3 id="支持解密列表">支持解密列表</h3>
+<blockquote>
+<p>支持破解的密码列表 基本加密</p>
+</blockquote>
+<ul>
+<li>Caesar Cipher-凯撒密码</li>
+<li>ROT47（使用 ROT47 字母高达 ROT94）</li>
+<li>ASCII 移位（高达 ROT127，带有完整的 ASCII 字母表）</li>
+<li>Vigenère Cipher - 维吉尼亚密码</li>
+<li>Affine Cipher - 仿射密码</li>
+<li>Binary Substitution Cipher-二进制替换密码 (XY-Cipher)</li>
+<li>Baconian Cipher -培根密码（两种变体）</li>
+<li>Soundex</li>
+<li>Transposition Cipher-转置密码</li>
+<li>Pig Latin-猪拉丁语</li>
+</ul>
+<p>现代密码学</p>
+<ul>
+<li>Repeating-key XOR-重复键异或</li>
+<li>Single XOR-单异或</li>
+</ul>
+<p>编码</p>
+<ul>
+<li>Base2（二进制）</li>
+<li>Base8（八进制）</li>
+<li>Base10（十进制）</li>
+<li>Base16（十六进制）</li>
+<li>Base32</li>
+<li>Base58 比特币</li>
+<li>Base58 Flickr（发布候选阶段）</li>
+<li>Base58 Ripple</li>
+<li>Base62</li>
+<li>Base64</li>
+<li>Base64 URL（发布候选阶段）</li>
+<li>Base69</li>
+<li>Base85</li>
+<li>Z85（发布候选阶段）</li>
+<li>ASCII Base85</li>
+<li>Base91</li>
+<li>Base65536（发布候选阶段）</li>
+<li>ASCII</li>
+<li>Reversed text - <strong>反转文字</strong></li>
+<li>Morse Code-摩尔斯电码</li>
+<li>DNA codons-DNA 密码子（释放候选阶段）</li>
+<li>Atbash</li>
+<li>Standard Galactic Alphabet-标准银河字母表（又名 Minecraft Enchanting
+Language）</li>
+<li>Leetspeak</li>
+<li>Baudot ITA2</li>
+<li>URL encoding-网址编码</li>
+<li>SMS Multi-tap</li>
+<li>DMTF（发布候选阶段）</li>
+<li>A1Z26（发布候选阶段）</li>
+<li>Prisoner’s Tap Code-囚犯的窃听代码</li>
+<li>UUencode</li>
+<li>Braille-盲文（1 级）</li>
+</ul>
+<p>深奥的语言 (EsoLang)</p>
+<ul>
+<li>Brainfuck</li>
+</ul>
+<p>压缩方法</p>
+<ul>
+<li>GZip</li>
+</ul>
+<p>哈希值
+<strong>注意：由于我们无法控制的外部服务的一些错误，哈希现在被关闭。</strong>
+Ciphey 支持 272 个哈希。</p>
+<ul>
+<li>MD5</li>
+<li>SHA-1</li>
+<li>SHA-256</li>
+<li>SHA-384</li>
+<li>SHA-512</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
+        <tag>ai</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>海明校验码的笔记</title>
+    <url>//hamming-code-note.html</url>
+    <content><![CDATA[<h1 id="海明校验码">海明校验码</h1>
+<h2 id="简述">简述</h2>
+<p>海明校验码由 Richard Hamming
+提出，是一种多重（复式）的奇偶检错系统，用于检错和纠错。</p>
+<p>海明校验是对偶校验的扩展，引入了更多的校验位来弥补奇偶校验的局限性。</p>
+<h2 id="原理">原理</h2>
+<p>假设有效信息有 <span class="math inline">\(k\)</span> 位，分成 <span class="math inline">\(r\)</span> 组，要组成 <span class="math inline">\(n\)</span>
+位的海明校验码。每组设一个校验位，则需要 <span class="math inline">\(r\)</span> 个校验位，<span class="math inline">\(r\)</span> 个校验位组成一个 <span class="math inline">\(r\)</span> 位的指误字，可以表示 <span class="math inline">\(2^r\)</span> 种状态，如果指误字是全 0
+则表示无误，因此有 <span class="math inline">\(2^r-1\)</span>
+种状态表示错误，所以如果要海明校验码能发现并纠正一位的错误，则必须要满足下面的是关系式（香农第二定理）：
+<span class="math display">\[
+n=k+r\leq2^r-1
+\]</span> 假设 <span class="math inline">\(k=8\)</span>，则代入公式得到： <span class="math display">\[
+8+r\leq2^r-1
+\]</span> 导出： <span class="math display">\[
+r\geq4
+\]</span> 故取 <span class="math inline">\(r=4\)</span></p>
+<h2 id="校验码计算">校验码计算</h2>
+<p>假设原始信息如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>位置</th>
+<th>8</th>
+<th>7</th>
+<th>6</th>
+<th>5</th>
+<th>4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>信息</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>首先我们知道校验码位数为 4，确定校验码的位置在 1，2，4，8
+上，得到新的信息如下：</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>位置</th>
+<th>12</th>
+<th>11</th>
+<th>10</th>
+<th>9</th>
+<th>8</th>
+<th>7</th>
+<th>6</th>
+<th>5</th>
+<th>4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>信息</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>H8</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>H4</td>
+<td>0</td>
+<td>H2</td>
+<td>H1</td>
+</tr>
+</tbody>
+</table>
+<p>随后我们计算校验码的值，每一个校验码只计算其对应二进制位为 1
+的位置，即：</p>
+<table>
+<thead>
+<tr class="header">
+<th>位置</th>
+<th>二进制码</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>0001</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>0010</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>0011</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>0100</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0101</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>0110</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>0111</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>1000</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>1001</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>1010</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>1011</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>1100</td>
+</tr>
+</tbody>
+</table>
+<p>那么海明码的计算为：</p>
+<table>
+<thead>
+<tr class="header">
+<th>海明码</th>
+<th>出现的位置</th>
+<th>对应位置上的值异或</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>H1</td>
+<td>3，5，7，9，11</td>
+<td><span class="math inline">\(0\oplus1\oplus1\oplus0\oplus1\)</span></td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>H2</td>
+<td>3，6，7，10，11</td>
+<td><span class="math inline">\(0\oplus1\oplus1\oplus1\oplus1\)</span></td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td>H4</td>
+<td>5，6，7，12</td>
+<td><span class="math inline">\(1\oplus1\oplus1\oplus0\)</span></td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>H8</td>
+<td>9，10，11，12</td>
+<td><span class="math inline">\(0\oplus1\oplus1\oplus0\)</span></td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>最终得到的信息为：</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 7%">
+<col style="width: 8%">
+<col style="width: 8%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>位置</th>
+<th>12</th>
+<th>11</th>
+<th>10</th>
+<th>9</th>
+<th>8</th>
+<th>7</th>
+<th>6</th>
+<th>5</th>
+<th>4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>信息</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><strong>1</strong></td>
+<td>0</td>
+<td><strong>0</strong></td>
+<td><strong>1</strong></td>
+</tr>
+</tbody>
+</table>
+<p>其中海明校验码为 H8H4H2H1 = <strong>0101</strong></p>
+<h2 id="校验和纠错">校验和纠错</h2>
+<p>假设信息 0110 0111 1001 被错误传输为 011<strong>1</strong> 0111
+1001</p>
+<p>我们对信息重新算出校验码 H8H4H2H1 = <strong>1100</strong></p>
+<p>而我们可以从信息中提取出原校验码为 <strong>0101</strong></p>
+<p>我们对其进行异或得到 <span class="math inline">\(0101\oplus1100=1001\)</span>，即第
+<strong>9</strong> 位出错</p>
+<h2 id="脚本">脚本</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">createHamming</span>(<span class="params">data: <span class="built_in">str</span></span>) -&gt; Hamming:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    对原数据加入海明校验码，并返回 Hamming 对象</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; h = h = createHamming(&#x27;01101110&#x27;)</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; h.msg(), h.code()</span></span><br><span class="line"><span class="string">    (&#x27;01101110&#x27;, &#x27;0101&#x27;)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        data - 原数据</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        Hamming 对象</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    k = <span class="built_in">len</span>(data)</span><br><span class="line">    <span class="keyword">for</span> r <span class="keyword">in</span> itertools.count():</span><br><span class="line">        <span class="keyword">if</span> k + r &lt;= (<span class="number">1</span> &lt;&lt; r) - <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    itdata = <span class="built_in">iter</span>(data[::-<span class="number">1</span>])</span><br><span class="line">    newdata = [<span class="built_in">int</span>(<span class="built_in">next</span>(itdata)) <span class="keyword">if</span> (i &amp; (i - <span class="number">1</span>)) <span class="keyword">else</span> <span class="literal">None</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k + r + <span class="number">1</span>)]</span><br><span class="line">    <span class="keyword">for</span> i, v <span class="keyword">in</span> <span class="built_in">enumerate</span>(newdata):</span><br><span class="line">        <span class="keyword">if</span> v <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            t = <span class="number">0</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(i + <span class="number">1</span>, <span class="built_in">len</span>(newdata)):</span><br><span class="line">                <span class="keyword">if</span> newdata[j] <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line">                <span class="keyword">if</span> ((j + <span class="number">1</span>) &amp; (i + <span class="number">1</span>)):</span><br><span class="line">                    t ^= newdata[j]</span><br><span class="line">            newdata[i] = t</span><br><span class="line">    <span class="keyword">return</span> Hamming(<span class="string">&#x27;&#x27;</span>.join(<span class="built_in">map</span>(<span class="built_in">str</span>, newdata[::-<span class="number">1</span>])))</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    <span class="keyword">import</span> doctest</span><br><span class="line">    doctest.testmod()</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>LOGO语言笔记</title>
+    <url>//logo-language-note.html</url>
+    <content><![CDATA[<h1 id="logo-语言">LOGO 语言</h1>
+<h2 id="简述">简述</h2>
+<p>LOGO
+是一门早期的简单易懂的语言，通常用来入门计算机编程，作为早教使用。</p>
+<p>这门语言通过操作小乌龟，使得其在<strong>画布</strong>上作出各种各样的图形，现如今早已被各种编程语言所替代（例如
+Python 的 <code>turtle</code> 模块）。</p>
+<h2 id="语法">语法</h2>
+<table>
+<thead>
+<tr class="header">
+<th>指令</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>FD 100</td>
+<td>使小乌龟前进 100 步</td>
+</tr>
+<tr class="even">
+<td>RT 90</td>
+<td>使小乌龟右转（顺时针） 90º</td>
+</tr>
+<tr class="odd">
+<td>LT 90</td>
+<td>使小乌龟左转（逆时针） 90º</td>
+</tr>
+<tr class="even">
+<td>BK 100</td>
+<td>使小乌龟退后 100 步</td>
+</tr>
+<tr class="odd">
+<td>PU</td>
+<td>拾起画笔（使小乌龟的路径不显现）</td>
+</tr>
+<tr class="even">
+<td>PD</td>
+<td>放下画笔（使小乌龟的路径显现）</td>
+</tr>
+<tr class="odd">
+<td>CS</td>
+<td>清屏并重新开始</td>
+</tr>
+<tr class="even">
+<td>HT</td>
+<td>隐藏小乌龟</td>
+</tr>
+<tr class="odd">
+<td>ST</td>
+<td>显示小乌龟</td>
+</tr>
+<tr class="even">
+<td>REPEAT 3 [...]</td>
+<td>重复命令三次</td>
+</tr>
+<tr class="odd">
+<td>HOME</td>
+<td>将小乌龟重置到屏幕中心</td>
+</tr>
+<tr class="even">
+<td>SETXY 20 20</td>
+<td>将小乌龟的位置设置为 (20, 20)</td>
+</tr>
+<tr class="odd">
+<td>ARC 90 50</td>
+<td>创建半径为 50，角度为 90º 的圆弧</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实例">实例</h2>
+<table>
+<colgroup>
+<col style="width: 45%">
+<col style="width: 54%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>命令</strong></th>
+<th><strong>输出</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cs fd 100 rt 90 fd 100 rt 90 fd 100 rt 90 fd 100</code></td>
+<td><img src="/logo-language-note/image009.png" alt="image009"></td>
+</tr>
+<tr class="even">
+<td><code>cs fd 100 rt 120 fd 100 rt 120 fd 100</code></td>
+<td><img src="/logo-language-note/image010.png" alt="image010"></td>
+</tr>
+<tr class="odd">
+<td><code>cs rt 90 fd 100 rt 120 fd 100 rt 120 fd 100</code></td>
+<td><img src="/logo-language-note/image011.png" alt="image011"></td>
+</tr>
+<tr class="even">
+<td><code>cs lt 30 fd 100 rt 120 fd 100 rt 120 fd 100</code></td>
+<td><img src="/logo-language-note/image012.png" alt="image012"></td>
+</tr>
+<tr class="odd">
+<td><code>cs fd 100 rt 90 fd 110 rt 90 fd 120 rt 90 fd 130</code></td>
+<td><img src="/logo-language-note/image013-16588977790712.png" alt="image013"></td>
+</tr>
+</tbody>
+</table>
+<h2 id="运行">运行</h2>
+<p>我们可以在在线网站中输入代码，让小乌龟开始绘图：https://www.calormen.com/jslogo/</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>LOGO</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>曼彻斯特编码笔记</title>
+    <url>//manchester-note.html</url>
+    <content><![CDATA[<h1 id="曼彻斯特编码">曼彻斯特编码</h1>
+<h2 id="简述">简述</h2>
+<p>曼彻斯特编码也称为相位编码，是一种同步时钟编码技术。通过电平的高低转换来表示“0”或“1”，每一位的中间有一个跳变的动作，这个动作既作时钟信号，又作数据信号，但因为每一个码元都被调成两个电平，所以数据传输速率只有调制速率的1/2，其编码效率为50%。</p>
+<p>常用于局域网传输和物联网传输中，例如传感器、蓝牙数据等。</p>
+<h2 id="表示方法">表示方法</h2>
+<p>曼彻斯特编码有两种表示方法：</p>
+<ol type="1">
+<li><p>第一种是 G. E. Thomas, Andrew S. Tanenbaum 在1949年提出的：</p>
+<p>位中间电平 从低到高 跳变表示"0"；</p>
+<p>位中间电平 从高到低 跳变表示"1"。</p>
+<p>此规则得到的编码表如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>编码</th>
+<th>原数据</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>0101 (0x5)</code></td>
+<td><code>00</code></td>
+</tr>
+<tr class="even">
+<td><code>1001 (0x9)</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="odd">
+<td><code>0110 (0x6)</code></td>
+<td><code>01</code></td>
+</tr>
+<tr class="even">
+<td><code>1010 (0xA)</code></td>
+<td><code>11</code></td>
+</tr>
+</tbody>
+</table></li>
+<li><p>第二种是 IEEE 802.4 (令牌总线) 和低速版的 IEEE 802.3 (以太网)
+中规定：</p>
+<p>位中间电平 从低到高 跳变表示"1"；</p>
+<p>位中间电平 从高到低 跳变表示"0"。</p>
+<p>此规则得到的编码表如下：</p>
+<table>
+<thead>
+<tr class="header">
+<th>编码</th>
+<th>原数据</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>0101 (0x5)</code></td>
+<td><code>11</code></td>
+</tr>
+<tr class="even">
+<td><code>1001 (0x9)</code></td>
+<td><code>01</code></td>
+</tr>
+<tr class="odd">
+<td><code>0110 (0x6)</code></td>
+<td><code>10</code></td>
+</tr>
+<tr class="even">
+<td><code>1010 (0xA)</code></td>
+<td><code>00</code></td>
+</tr>
+</tbody>
+</table></li>
+</ol>
+]]></content>
+  </entry>
+  <entry>
+    <title>sqli-labs注入笔记</title>
+    <url>//sqli-labs-note.html</url>
+    <content><![CDATA[<h1 id="前言">前言</h1>
+<p>SQL 注入的产生有三个要素：</p>
+<ol type="1">
+<li>未严格校验 SQL 语句</li>
+<li>恶意修改 SQL 语句</li>
+<li>成功执行</li>
+</ol>
+<p>一般来说我们进行 SQL 注入有以下步骤：</p>
+<ol type="1">
+<li>判断是否有注入（第一要素：是否严格校验）</li>
+<li>判断是什么类型的注入</li>
+<li>语句是否能够被恶意修改（第二要素：恶意修改）</li>
+<li>是否能够成功执行（第三要素：成功执行）</li>
+<li>获取我们想要的数据</li>
+</ol>
+<h2 id="判断是否有注入">判断是否有注入</h2>
+<ol type="1">
+<li>可控参数的改变是否能够影响页面显示结果</li>
+<li>输入的 SQL
+语句是否能报错，能通过数据库的报错，看到数据库的一些语句的痕迹</li>
+<li>输入的 SQL 语句是否不报错，判断我们的语句是否能闭合</li>
+</ol>
+<h2 id="mysql">MySQL</h2>
+<p>在 MySQL 中，会默认存在两个库 <code>mysql</code> 和
+<code>information_schema</code>。</p>
+<p>其中 <code>information_schema</code> 这个库保存着 MySQL
+的所有信息，重要的是，<code>information_schema</code>
+包含以下几个重要的表：</p>
+<ul>
+<li><code>SCHEMATA</code> → 包含所有
+<code>SCHEMA_NAME</code>，即所有的库名，包括本身</li>
+<li><code>TABLES</code> → 包含所有
+<code>TABLE_NAME</code>，即所有的表名，包括本身</li>
+<li><code>COLUMNS</code> → 包含所有的
+<code>COLUMN_NAME</code>，即所有的字段名，包括本身</li>
+</ul>
+<p><code>COLUMNS</code> 表里有着几个重要的字段名：</p>
+<ul>
+<li><code>TABLE_SCHEMA</code> → 库名</li>
+<li><code>TABLE_NAME</code> → 表名</li>
+<li><code>COLUMN</code> → 字段名</li>
+</ul>
+<h1 id="basic-challenges">Basic Challenges</h1>
+<h2 id="less-1">Less-1</h2>
+<h2 id="less-2-intiger">Less-2 Intiger</h2>
+<p>尝试改变 payload <code>?id=3</code>，发现页面发生改变；</p>
+<p>尝试添加单引号和双引号，引发报错：</p>
+<figure>
+<img src="/sqli-labs-note/image-20220807222546950.png" alt="image-20220807222546950">
+<figcaption aria-hidden="true">image-20220807222546950</figcaption>
+</figure>
+<p>不妨猜测 SQL 语句可能是
+<code>where id=3 LIMIT 0,1</code>，那么尝试添加注释符，使得语句不报错；</p>
+<p>payload 为 <code>?id=1#</code> 时，SQL
+不报错，故为<strong>整形注入</strong>；</p>
+<p>输入 payload <code>?id=1 and 0#</code>
+发现可以<strong>恶意修改</strong>；</p>
+<h2 id="less-1-1">Less-1</h2>
+<h2 id="less-1-2">Less-1</h2>
+<h2 id="less-1-3">Less-1</h2>
+<h2 id="less-1-4">Less-1</h2>
+<h2 id="less-1-5">Less-1</h2>
+<h2 id="less-1-6">Less-1</h2>
+<h2 id="less-1-7">Less-1</h2>
+<h2 id="less-1-8">Less-1</h2>
+<h2 id="less-1-9">Less-1</h2>
+<h2 id="less-1-10">Less-1</h2>
+<h2 id="less-1-11">Less-1</h2>
+<h2 id="less-1-12">Less-1</h2>
+<h2 id="less-1-13">Less-1</h2>
+<h2 id="less-1-14">Less-1</h2>
+<h2 id="less-1-15">Less-1</h2>
+<h2 id="less-1-16">Less-1</h2>
+<h2 id="less-1-17">Less-1</h2>
+<h2 id="less-1-18">Less-1</h2>
+<h2 id="less-1-19">Less-1</h2>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>web</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>std::string笔记</title>
+    <url>//std-string-note.html</url>
+    <content><![CDATA[<h1 id="stdstring"><code>std::string</code></h1>
+<h2 id="简述">简述</h2>
+<p>C++ 中有着一个标准实现的 Standard Template Library（STL），其中
+<code>std::string</code> 是其中一个经常被使用的特化模板类（特化类型为
+<code>std::basic_string&lt;char&gt;</code>）。</p>
+<p>出于 C++ ISO 标准委员会的效率和耦合性考虑，实际上
+<code>std::string</code> 与 <code>std::vector&lt;char&gt;</code>
+相差不大，底层实现原理基本上与之相同，接口函数也基本上一模一样。不过实际上
+<code>std::string</code>
+是经过特殊优化的，例如底层实际上对小字符串进行了一定程度的优化，避免频繁请求堆内存空间。</p>
+<h2 id="底层实现与内存空间">底层实现与内存空间</h2>
+<p>以 GCC 为例，<code>std::string</code> 的设计可以简化为：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> __<span class="title">string_value</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> local[<span class="number">16</span>];                 <span class="comment">// 小字符串的本地空间</span></span><br><span class="line">    <span class="keyword">size_t</span> nMaxSize;                <span class="comment">// 容器已分配的空间大小</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">string</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span>* actual;                   <span class="comment">// 容器的堆指针 (只有当字符串大小超过16才有效)</span></span><br><span class="line">    __string_value value;           <span class="comment">// 容器的缓冲区 (容器的一个优化措施)</span></span><br><span class="line">    <span class="keyword">size_t</span> nSize;                   <span class="comment">// 容器已使用的空间大小</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>或者另一个常见的版本：</p>
+<figure class="highlight c++"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> __<span class="title">string_value</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">char</span> local[<span class="number">16</span>];                 <span class="comment">// 小字符串的本地空间</span></span><br><span class="line">    <span class="keyword">char</span>* actual;                   <span class="comment">// 容器的堆指针 (只有当字符串大小超过16才有效)</span></span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">string</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    __string_value value;           <span class="comment">// 容器的空间 (容器的一个优化措施)</span></span><br><span class="line">    <span class="keyword">size_t</span> nSize;                   <span class="comment">// 容器已使用的空间大小</span></span><br><span class="line">    <span class="keyword">size_t</span> nMaxSize;                <span class="comment">// 容器已分配的空间大小</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，在旧标准版本中（C++11之前），由于 C
+标准布局类型导致空基类会占用四字节的空间（实际上空基类占用的是一字节，但是被补齐为四字节）。</p>
+<p>一个可能的空间分布如下：</p>
+<figure>
+<img src="/std-string-note/image-20220816135930341.png" alt="image-20220816135930341">
+<figcaption aria-hidden="true">image-20220816135930341</figcaption>
+</figure>
+<p>当没有空基类优化时，可能的空间分布为：</p>
+<figure>
+<img src="/std-string-note/image-20220816140019397.png" alt="image-20220816140019397">
+<figcaption aria-hidden="true">image-20220816140019397</figcaption>
+</figure>
+<h2 id="特征">特征</h2>
+<p>实际上类在 C++
+中是一种语法糖的表现形式，在底层编译时会被分离为结构体和函数（大概率是内联函数）的形式，一个较为明显的特征点是由于
+<code>std::string</code> 的小字符串优化，于是会存在取真实值的时候会进行
+<code>std::string.nMaxSize &gt;= 16</code> 的比较。</p>
+<p>例如以下这种判断形式：</p>
+<figure>
+<img src="/std-string-note/image-20220816140602051.png" alt="image-20220816140602051">
+<figcaption aria-hidden="true">image-20220816140602051</figcaption>
+</figure>
+<p>将其更改得更为明显一些（更改变量类型）：</p>
+<figure>
+<img src="/std-string-note/image-20220816141533896.png" alt="image-20220816141533896">
+<figcaption aria-hidden="true">image-20220816141533896</figcaption>
+</figure>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>c++</tag>
+        <tag>re</tag>
       </tags>
   </entry>
 </search>
