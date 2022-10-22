@@ -30,7 +30,7 @@
 <meta property="og:description" content="有关 pyinstaller 打包的 exe、pyc、pyd 的逆向笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-26T10:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-26T13:45:00.098Z">
+<meta property="article:modified_time" content="2022-10-16T09:04:46.827Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="re">
@@ -91,8 +91,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">53</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">54</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">86</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -165,13 +165,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -351,6 +351,7 @@ Github主页</a></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uncompyle6 *.pyc &gt; filename</span><br></pre></td></tr></table></figure>
 <p>将源码输出到文件里面，比如说：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uncompyle6 test.pyc &gt; test.py</span><br></pre></td></tr></table></figure>
+<p>有时候 uncompyle6 可能出于某些原因，反编译失败，这时可以使用<a target="_blank" rel="noopener" href="https://tool.lu/pyc/">在线网站</a>进行反编译。</p>
 <h2 id="反反编译">反反编译</h2>
 <h3 id="更改魔术头">更改魔术头</h3>
 <p>当想要保护我们的 pyc 文件不被反编译，最简单的做法就是更改魔术头，即
@@ -446,14 +447,14 @@ pyc 文件中加入当前 python 版本的魔术头
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">275k</span>
+    <span title="站点总字数">286k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:10</span>
+    <span title="站点阅读时长">4:20</span>
   </span>
 </div>
 

@@ -29,10 +29,16 @@
 <meta property="og:site_name" content="独奏の小屋">
 <meta property="og:description" content="有关曼彻斯特编码的简要笔记">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/manchester-note/image-20220906220031954.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/manchester-note/20150612043848848.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/manchester-note/98bb9a979a1446ceb8f4f65dfabe2f2d.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/manchester-note/20190126155852554.png">
 <meta property="article:published_time" content="2022-08-25T05:00:00.000Z">
-<meta property="article:modified_time" content="2022-08-25T06:55:51.427Z">
+<meta property="article:modified_time" content="2022-09-06T16:20:20.629Z">
 <meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="misc">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/manchester-note/image-20220906220031954.png">
 
 
 <link rel="canonical" href="https://hasegawaazusa.github.io/manchester-note.html">
@@ -88,8 +94,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">53</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">84</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">54</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">86</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -147,7 +153,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">曼彻斯特编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A1%A8%E7%A4%BA%E6%96%B9%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">表示方法</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="nav-number">1.</span> <span class="nav-text">曼彻斯特编码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#nrz-%E7%BC%96%E7%A0%81%E4%B8%8D%E5%BD%92%E9%9B%B6%E7%A0%81"><span class="nav-number">1.2.</span> <span class="nav-text">NRZ 编码（不归零码）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81-1"><span class="nav-number">1.3.</span> <span class="nav-text">曼彻斯特编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%AE%E5%88%86%E6%9B%BC%E5%BD%BB%E6%96%AF%E7%89%B9%E7%BC%96%E7%A0%81"><span class="nav-number">1.4.</span> <span class="nav-text">差分曼彻斯特编码</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -162,13 +168,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">84</span>
+          <span class="site-state-item-count">86</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">53</span>
+        <span class="site-state-item-count">54</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -249,7 +255,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>453</span>
+      <span>746</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -272,7 +278,23 @@
 <h2 id="简述">简述</h2>
 <p>曼彻斯特编码也称为相位编码，是一种同步时钟编码技术。通过电平的高低转换来表示“0”或“1”，每一位的中间有一个跳变的动作，这个动作既作时钟信号，又作数据信号，但因为每一个码元都被调成两个电平，所以数据传输速率只有调制速率的1/2，其编码效率为50%。</p>
 <p>常用于局域网传输和物联网传输中，例如传感器、蓝牙数据等。</p>
-<h2 id="表示方法">表示方法</h2>
+<figure>
+<img src="/manchester-note/image-20220906220031954.png" alt="image-20220906220031954">
+<figcaption aria-hidden="true">image-20220906220031954</figcaption>
+</figure>
+<h2 id="nrz-编码不归零码">NRZ 编码（不归零码）</h2>
+<p>NRZ 编码是我们最常见的编码之一，表示方式是：</p>
+<ul>
+<li>正电平表示 1</li>
+<li>低电平表示 0</li>
+</ul>
+<p>它与 RZ
+码的区别就是它<strong>不归零</strong>，即一个周期可以全部用来传输数据，这样传输的带宽就可以完全利用。</p>
+<figure>
+<img src="/manchester-note/20150612043848848.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h2 id="曼彻斯特编码-1">曼彻斯特编码</h2>
 <p>曼彻斯特编码有两种表示方法：</p>
 <ol type="1">
 <li><p>第一种是 G. E. Thomas, Andrew S. Tanenbaum 在1949年提出的：</p>
@@ -337,6 +359,22 @@
 </tbody>
 </table></li>
 </ol>
+<figure>
+<img src="/manchester-note/98bb9a979a1446ceb8f4f65dfabe2f2d.png" alt="98bb9a979a1446ceb8f4f65dfabe2f2d">
+<figcaption aria-hidden="true">98bb9a979a1446ceb8f4f65dfabe2f2d</figcaption>
+</figure>
+<p><strong>在实际应用中，若无特殊说明，曼彻斯特码的编码规则均采用第二种约定。</strong></p>
+<h2 id="差分曼彻斯特编码">差分曼彻斯特编码</h2>
+<p>差分曼彻斯特编码的表示方式如下：</p>
+<ol type="1">
+<li>初信号与<strong>标准曼彻斯特编码</strong>用一样的规则</li>
+<li>初信号之后的信号，如果发生了跳变（改变信号极性）则表示
+0；如果未发生跳变（未改变信号极性）则表示 1</li>
+</ol>
+<figure>
+<img src="/manchester-note/20190126155852554.png" alt="20190126155852554">
+<figcaption aria-hidden="true">20190126155852554</figcaption>
+</figure>
 
     </div>
 
@@ -362,6 +400,9 @@
 </ul>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/misc/" rel="tag"># misc</a>
+          </div>
 
         
 
@@ -407,14 +448,14 @@
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">275k</span>
+    <span title="站点总字数">286k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">4:10</span>
+    <span title="站点阅读时长">4:20</span>
   </span>
 </div>
 
