@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关yafu质因数分解工具的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="yafu质因数分解工具的笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/yafu-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关yafu质因数分解工具的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-10-27T04:00:00.000Z">
+<meta property="article:modified_time" content="2022-10-27T07:22:51.302Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="misc">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/yafu-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/yafu-note.html","path":"/yafu-note.html","title":"yafu质因数分解工具的笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>yafu质因数分解工具的笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">54</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">87</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#yafu"><span class="nav-number">1.</span> <span class="nav-text">yafu</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%89%E8%A3%85"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#number-field-sievenfs%E5%AE%89%E8%A3%85"><span class="nav-number">1.3.</span> <span class="nav-text">Number Field Sieve（NFS）安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#yafu.ini"><span class="nav-number">1.4.</span> <span class="nav-text">yafu.ini</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">87</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">54</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/yafu-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          yafu质因数分解工具的笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-10-27 12:00:00" itemprop="dateCreated datePublished" datetime="2022-10-27T12:00:00+08:00">2022-10-27</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关yafu质因数分解工具的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="yafu">yafu</h1>
+<h2 id="简述">简述</h2>
+<p><code>yafu</code>
+是数学爱好者们所写的一个关于大整数分解的项目，在现在的公钥加密方案中，大整数分解（质因数分解）十分重要，故
+<code>yafu</code> 通常被用于快速分解大整数（例如分解 RSA 中的
+<code>n</code>）。</p>
+<p><code>yafu</code>
+的成功离不开其他开源代码，它使用目前来说最先进的自动化代码，在智能和自适应方法中结合分解算法，最小化分解时间。</p>
+<p>同时需要注意的是，<code>yafu</code>
+是纯命令行驱动的，可以使用交互输入模式。</p>
+<h2 id="安装">安装</h2>
+<p>可以在 <a target="_blank" rel="noopener" href="https://github.com/bbuhrow/yafu">GitHub
+主页</a>上下载已经构建好的版本（或者是自行编译），也可以在 <a target="_blank" rel="noopener" href="https://sourceforge.net/projects/yafu/">SourceForge</a>
+上下载已经打包好的版本（解压即可）。</p>
+<p>仅需要对应的二进制即可运行（一般使用 x64
+版本），但需要注意的是，<code>yafu</code>
+所需的依赖文件是要与二进制文件在同一目录下的。</p>
+<p><code>yafu</code> 自身是通过支持库 <code>msieve</code>
+运行分解算法的，但不支持特殊的 NFS 算法。</p>
+<h2 id="number-field-sievenfs安装">Number Field Sieve（NFS）安装</h2>
+<blockquote>
+<p>不需要理会该节，仅是 README 的必要翻译。</p>
+</blockquote>
+<p>Number Field
+Sieve，数域筛法，是最快的、效率最高的（渐近意义下）整数分解方法，用于解决
+IFP 和 DLP 问题。</p>
+<p>想让 <code>yafu</code> 使用 NFS 算法进行质因数分解，可以直接在 <a target="_blank" rel="noopener" href="https://sourceforge.net/projects/ggnfs/">https://sourceforge.net/projects/ggnfs/</a>
+该网站中下载对应版本的 <code>GGNFS</code> 二进制文件的压缩包，再自解压到
+<code>yafu</code> 所在目录（如 <code>./ggnfs-bin</code> 下）。</p>
+<p>随后在 <code>yafu.ini</code> 中填入
+<code>ggnfs_dir=./ggnfs-bin/</code>（注意变量名不能冲突）。</p>
+<h2 id="yafu.ini">yafu.ini</h2>
+<p>该文件是 <code>yafu</code> 运行的初始化文件。</p>
+<blockquote>
+<p>需要注意，<code>yafu</code> 的 <code>input_size</code>
+以十进制算。例如 1903387770 是 10 位数。</p>
+</blockquote>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br></pre></td><td class="code"><pre><span class="line">%%% 常规选项 %%%</span><br><span class="line"></span><br><span class="line">% 多线程算法的指定线程数</span><br><span class="line"><span class="attr">threads</span>=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">% 米勒-拉宾素性检验的证人(witnesses)数量</span><br><span class="line"><span class="attr">nprp</span>=<span class="number">7</span></span><br><span class="line"></span><br><span class="line">% 信息输出等级设为1，默认为0</span><br><span class="line">v</span><br><span class="line"></span><br><span class="line">% 关闭信息输出</span><br><span class="line">silent</span><br><span class="line"></span><br><span class="line">% 跳过启动时的时钟测试</span><br><span class="line">no_clk_test</span><br><span class="line"></span><br><span class="line">% 运行给定脚本</span><br><span class="line"><span class="attr">script</span>=<span class="string">&quot;my_script&quot;</span></span><br><span class="line"></span><br><span class="line">% 指定会话日志(会话日志记录运行的命令，随机数种子，系统信息和一些启动项)</span><br><span class="line"><span class="attr">session</span>=<span class="string">&quot;session.log&quot;</span></span><br><span class="line"></span><br><span class="line">% 使用给定文件名的数字运行给定命令</span><br><span class="line"><span class="attr">batchfile</span>=<span class="string">&quot;my_batch_file&quot;</span></span><br><span class="line"></span><br><span class="line">% 指定随机数种子</span><br><span class="line"><span class="attr">seed</span>=<span class="number">1903387770</span></span><br><span class="line"></span><br><span class="line">% 启动时打印详细处理器信息</span><br><span class="line">vproc</span><br><span class="line"></span><br><span class="line">% 指定记录分解信息的日志文件</span><br><span class="line"><span class="attr">logfile</span>=<span class="string">&quot;factor.log&quot;</span></span><br><span class="line"></span><br><span class="line">% 将yafu设置为空闲优先级</span><br><span class="line">p</span><br><span class="line"></span><br><span class="line">% 重复给定的命令N次</span><br><span class="line"><span class="attr">repeat</span>=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">%%% factor选项 %%%</span><br><span class="line"></span><br><span class="line">% 在运行NFS之前，ECM是否工作到(pretest_ratio * input_size)位数</span><br><span class="line"><span class="attr">pretest_ratio</span>=<span class="number">0.25</span></span><br><span class="line"></span><br><span class="line">% GNFS/SIQS的交叉点(crossover)，以十进制数</span><br><span class="line"><span class="attr">xover</span>=<span class="number">100</span></span><br><span class="line"></span><br><span class="line">% SNFS/SIQS的交叉点(crossover)，以十进制数</span><br><span class="line"><span class="attr">snfs_xover</span>=<span class="number">85</span></span><br><span class="line"></span><br><span class="line">% 设置(ECM)预测试方案(pretesting plan), 例如<span class="attr">plan</span>=light.  </span><br><span class="line">% 以下是有效的选项与他们的比例:</span><br><span class="line">% light (2/9)</span><br><span class="line">% deep (1/3)</span><br><span class="line">% normal (4/13)</span><br><span class="line">% none (0)</span><br><span class="line">% custom (pretest_ratio)</span><br><span class="line"><span class="attr">plan</span>=normal</span><br><span class="line"></span><br><span class="line">% 仅预测试(rho, p-1, ecm)输入值(即不使用NFS或SIQS)，可选择最大深度</span><br><span class="line">pretest</span><br><span class="line"></span><br><span class="line">% 指定在输入上执行ECM的工作量</span><br><span class="line"><span class="attr">work</span>=<span class="number">25</span></span><br><span class="line"></span><br><span class="line">% 指定factor期间发现的素数输出文件</span><br><span class="line"><span class="attr">op</span>=<span class="string">&quot;pfile.dat&quot;</span></span><br><span class="line"></span><br><span class="line">% 指定factor期间发现的因子输出文件</span><br><span class="line"><span class="attr">of</span>=<span class="string">&quot;factored.dat&quot;</span></span><br><span class="line"></span><br><span class="line">% 指定factor期间未分解数的输出文件</span><br><span class="line"><span class="attr">ou</span>=<span class="string">&quot;unfactored.dat&quot;</span></span><br><span class="line"></span><br><span class="line">% 对输入值不执行ECM算法</span><br><span class="line">noecm</span><br><span class="line"></span><br><span class="line">% 在找到一个因子后就停止</span><br><span class="line">one</span><br><span class="line"></span><br><span class="line">% 设置十进制数位数低于N就使用APR-CL算法证明是素数</span><br><span class="line"><span class="attr">aprcl_p</span>=<span class="number">500</span></span><br><span class="line"></span><br><span class="line">% 设置十进制数位数高于N就使用APR-CL算法证明是素数，启用额外的信息</span><br><span class="line"><span class="attr">aprcl_d</span>=<span class="number">200</span></span><br><span class="line"></span><br><span class="line">%%% QS选项 %%%</span><br><span class="line">% 使用 double-large-prime variation</span><br><span class="line">forceDLP</span><br><span class="line"></span><br><span class="line">% 使用 triple-large-prime variation，注意其他选项，该选项可能不会被优化</span><br><span class="line">forceTLP</span><br><span class="line"></span><br><span class="line">% 设置小素数变化阈值</span><br><span class="line"><span class="attr">siqsTFSm</span> =<span class="number">18</span></span><br><span class="line"></span><br><span class="line">% 指定siqs保存文件名</span><br><span class="line">% <span class="attr">qssave</span>=<span class="string">&quot;siqs.dat&quot;</span></span><br><span class="line"></span><br><span class="line">% 设置因子基数的大小（要使用的素数）</span><br><span class="line">sqsB</span><br><span class="line"></span><br><span class="line">% 设置大于此大小的试分解截止-筛位置(以位为单位)，报告给试验因式分解例程</span><br><span class="line">sqsTF</span><br><span class="line"></span><br><span class="line">% 设置筛块数（每边）</span><br><span class="line">siqsNB</span><br><span class="line"></span><br><span class="line">% 将大素数界限设置为最大因子基素数的乘数</span><br><span class="line">sqsM</span><br><span class="line"></span><br><span class="line">% 不执行小素数变化阈值的优化</span><br><span class="line">noopt</span><br><span class="line"></span><br><span class="line">% 设置一个阈值，低于该阈值 siqs 将不使用保存文件（所有关系都是在内存中处理）</span><br><span class="line"><span class="attr">inmem</span>=<span class="number">70</span></span><br><span class="line"></span><br><span class="line">%%% NFS选项 %%%</span><br><span class="line">% 运行实验性 cado-nfs+msieve NFS</span><br><span class="line">cadoMsieve</span><br><span class="line"></span><br><span class="line">% 包含 CADO-NFS 文件的目录的相对或绝对路径</span><br><span class="line">% 注意：需要在路径末尾添加/或\</span><br><span class="line"><span class="attr">cado_dir</span> =/home/nyancat/工具/cado-nfs/</span><br><span class="line"></span><br><span class="line">% 指定 convert_poly 可执行文件的路径</span><br><span class="line">% 你可以通过在 CADO-NFS 目录下运行“ make convert_poly ”来构建它</span><br><span class="line">% 它将在 build/*/misc/convert_poly(.exe) 下</span><br><span class="line"><span class="attr">convert_poly_path</span> =/home/nyancat/Tools/cado-nfs/build/NyanCatCBLFS.mpi/misc/convert_poly</span><br><span class="line"></span><br><span class="line">% 包含 ggnfs-lasieve4I* 可执行文件的目录的相对或绝对路径。</span><br><span class="line">% 没有这些 yafu 将不会使用 NFS</span><br><span class="line"><span class="attr">ggnfs_dir</span> =..\..\ggnfs-bin\x64\</span><br><span class="line">% <span class="attr">ggnfs_dir</span> =../../ggnfs-bin/</span><br><span class="line"></span><br><span class="line">% 逗号分隔的 poly 文件列表以测试sieve</span><br><span class="line">testsieve</span><br><span class="line"></span><br><span class="line">% 如果过滤尝试失败，则收集新关系的百分比去生成矩阵</span><br><span class="line"><span class="attr">filt_bump</span>=<span class="number">5</span></span><br><span class="line"></span><br><span class="line">% 恢复矩阵求解</span><br><span class="line">ncr</span><br><span class="line"></span><br><span class="line">% 强制使用 gnfs（相对于 snfs）</span><br><span class="line">gnfs</span><br><span class="line"></span><br><span class="line">% 矩阵求解时使用指定线程数（可以是不同于常规选项的“threads”选项）</span><br><span class="line"><span class="attr">lathreads</span>=<span class="number">1</span></span><br><span class="line"></span><br><span class="line">% 重新启动 NFS 作业（当存在现有 nfs.dat 文件时，无论输入如何）</span><br><span class="line">R</span><br><span class="line"></span><br><span class="line">% 在搜索多项式前导系数时为每个线程设置一个批量大小</span><br><span class="line"><span class="attr">pbatch</span>=<span class="number">250</span></span><br><span class="line"></span><br><span class="line">% 使用代数方格筛分</span><br><span class="line">a</span><br><span class="line"></span><br><span class="line">% 使用有理方格筛</span><br><span class="line">r</span><br><span class="line"></span><br><span class="line">%%% ECM选项 %%%</span><br><span class="line">% 设置 ECM 的 B1 水平。</span><br><span class="line"><span class="attr">B1ecm</span> =<span class="number">11000</span></span><br><span class="line"></span><br><span class="line">% 设置 ECM 的 B2 水平。  </span><br><span class="line">% 仅当您想要默认值以外的其他内容时才需要，默认当前 B1 的百分比。</span><br><span class="line">% <span class="attr">B2ecm</span> =<span class="number">1100000</span></span><br><span class="line"></span><br><span class="line">% 指定 ECM 可执行文件的路径</span><br><span class="line"><span class="attr">ecm_path</span> =..\gmp-ecm\bin\x64\Release\ecm.exe</span><br><span class="line">% <span class="attr">ecm_path</span> =../gmp-ecm/install/mingw/bin/ecm.exe</span><br><span class="line">% <span class="attr">ecm_path</span> =../gmp-ecm/bin/ecm</span><br><span class="line"></span><br><span class="line">%%% P-1 选项 %%%</span><br><span class="line">% 为 P-1 设置 B1 级别。</span><br><span class="line">% <span class="attr">B1pm1</span> =<span class="number">100000</span></span><br><span class="line"></span><br><span class="line">% 为 P-1 设置 B2 级别。  </span><br><span class="line">% 仅当您想要默认值以外的其他内容时才需要，默认当前 B1 的百分比。</span><br><span class="line">% <span class="attr">B2pm1</span> =<span class="number">10000000</span></span><br><span class="line"></span><br><span class="line">%%% P+1 选项 %%%</span><br><span class="line">% 为 P+1 设置 B1 级别。</span><br><span class="line"><span class="attr">B1pm1</span> =<span class="number">20000</span></span><br><span class="line"></span><br><span class="line">% 为 P+1 设置 B2 级别。  </span><br><span class="line">% 仅当您想要默认值以外的其他内容时才需要，默认当前 B1 的百分比。</span><br><span class="line">% <span class="attr">B2pm1</span> =<span class="number">2000000</span></span><br><span class="line"></span><br><span class="line">%%% Brent-Pollard Rho 选项 %%%</span><br><span class="line"><span class="attr">rhomax</span>=<span class="number">200</span></span><br><span class="line"></span><br><span class="line">%%% 费马选项 %%%</span><br><span class="line"><span class="attr">fmtmax</span>=<span class="number">1000000</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/yafu-note.html" title="yafu质因数分解工具的笔记">https://hasegawaazusa.github.io/yafu-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+              <a href="/tags/misc/" rel="tag"># misc</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/lattice-note.html" rel="prev" title="格密码相关笔记">
+                  <i class="fa fa-chevron-left"></i> 格密码相关笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">290k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">4:23</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
