@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="multi-power-RSA 相关的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="multi-power-RSA 笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/multi-power-rsa.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="multi-power-RSA 相关的笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-14T13:30:00.000Z">
+<meta property="article:modified_time" content="2023-01-14T13:14:53.893Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="rsa">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/multi-power-rsa.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/multi-power-rsa.html","path":"/multi-power-rsa.html","title":"multi-power-RSA 笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>multi-power-RSA 笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">55</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">92</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#n-prq-attack-p-%E5%A4%9A%E6%AC%A1%E5%B9%82%E6%94%BB%E5%87%BB"><span class="nav-number">1.</span> <span class="nav-text">\(N &#x3D;
+p^rq\) Attack (\(p\)
+多次幂攻击)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#the-first-attack"><span class="nav-number">1.1.</span> <span class="nav-text">The First Attack</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#lu-zhang-and-lin-theorem-%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%96%B9%E7%A8%8B%E5%AE%9A%E7%90%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">Lu, Zhang and Lin
+theorem (线性模多项式方程定理)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#legendres-theorem-%E8%BF%9E%E5%88%86%E6%95%B0%E5%AE%9A%E7%90%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">Legendre&#39;s theorem
+(连分数定理)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.3.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC"><span class="nav-number">1.1.4.</span> <span class="nav-text">脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-second-attack"><span class="nav-number">1.2.</span> <span class="nav-text">The Second Attack</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.2.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#the-third-attack"><span class="nav-number">1.3.</span> <span class="nav-text">The Third Attack</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC-2"><span class="nav-number">1.3.2.</span> <span class="nav-text">脚本</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/multi-power-rsa.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          multi-power-RSA 笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-14 21:30:00" itemprop="dateCreated datePublished" datetime="2023-01-14T21:30:00+08:00">2023-01-14</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>12k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">multi-power-RSA 相关的笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="n-prq-attack-p-多次幂攻击"><span class="math inline">\(N =
+p^rq\)</span> Attack (<span class="math inline">\(p\)</span>
+多次幂攻击)</h1>
+<h2 id="the-first-attack">The First Attack</h2>
+<h3 id="lu-zhang-and-lin-theorem-线性模多项式方程定理">Lu, Zhang and Lin
+theorem (线性模多项式方程定理)</h3>
+<p>设 <span class="math inline">\(N\)</span> 整除 <span class="math inline">\(p^u\)</span>，使得 <span class="math inline">\(p\geq N^\beta\ (0&lt;\beta\leq 1)\)</span>，</p>
+<p>设 <span class="math inline">\(f(x,y)\in\Z[x,y]\)</span>
+为齐次线性多项式，</p>
+<p>如果满足条件： <span class="math display">\[
+\gamma1+\gamma2&lt;uv\beta^2
+\]</span> 我们就可以在多项式时间内找到方程 <span class="math inline">\(f(x,y)=0\pmod{p^v}\)</span> 所有的解 <span class="math inline">\((x,y)\)</span>，其中 <span class="math inline">\(\gcd(x,y)=1,|x|&lt;N^{\gamma1},|y|&lt;N^{\gamma2}\)</span>。</p>
+<h3 id="legendres-theorem-连分数定理">Legendre's theorem
+(连分数定理)</h3>
+<p>如果存在 <span class="math inline">\(\xi \in \Q^*\)</span>，<span class="math inline">\(a,b\in \Z\)</span> 且 <span class="math inline">\(\gcd(a,b)=1\)</span> 满足 <span class="math display">\[
+\left|\xi-\frac{a}{b}\right|&lt;\frac{1}{2b^2}
+\]</span> 那么 <span class="math inline">\(\displaystyle\frac{a}{b}\)</span> 就是 <span class="math inline">\(\xi\)</span> 的一个有理近似。</p>
+<h3 id="原理">原理</h3>
+<p>设 <span class="math inline">\(N=p^rq\)</span> 是 RSA
+中的模数，且公钥 <span class="math inline">\(e\)</span> 满足方程 <span class="math inline">\(ex-\varphi(N)y=z\)</span>，如果 <span class="math display">\[
+|xz|&lt;N^{\frac{r(r-1)}{(r+1)^2}}
+\]</span> 那么我们可以在多项式时间内分解 <span class="math inline">\(N\)</span>。</p>
+<p>证明忽略，最后得到结论 <span class="math display">\[
+\gcd(ex-z,N)=\gcd(p^{r-1}(p-1)(q-1)y,p^rq)=g
+\]</span> 可以确定 <span class="math inline">\(p\)</span>，因此将 <span class="math inline">\(N\)</span> 按如下情况分解：</p>
+<ul>
+<li>当 <span class="math inline">\(g=p^{r-1}\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r-1}}\)</span></li>
+<li>当 <span class="math inline">\(g=p^r\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r}}\)</span></li>
+<li>当 <span class="math inline">\(g=p^{r-1}q\)</span> 时，<span class="math inline">\(p=\frac{N}{g}\)</span></li>
+</ul>
+<p>因此我们分解了 <span class="math inline">\(N\)</span>。</p>
+<p>在算法中我们转换方程为 <span class="math inline">\(ex-z\equiv0\pmod{p^{r-1}}\)</span>，使用
+<strong>Coppersmith's technique</strong>，选择参数 <span class="math inline">\(m=7,t=6\)</span> 构造维度为 36 的格，并且选择
+<span class="math display">\[
+X=\left[N^{\frac{r(r-1)}{(r+1)^2}}\right]
+\]</span> 我们使用多项式 <span class="math inline">\(f(x1,x2)=x1+ex2\)</span> 构造格，应用 LLL
+算法寻找到小根 <span class="math inline">\((x_1,x_2)\)</span> 满足 <span class="math inline">\(f(x_1,x_2)\equiv0\pmod{p^{r-1}}\)</span>。</p>
+<p>这样我们就可以计算出 <span class="math display">\[
+g=\gcd(x_1+ex_2,N)
+\]</span></p>
+<h3 id="脚本">脚本</h3>
+<p>当方程 <span class="math inline">\(ex-z\equiv0\)</span>
+的解已知一个时，我们仅需一元 Copper 即可求解：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">N=<span class="number">539779851369541956878655738599584730199799866957191805784596190682932284216781781433367450841202917758999300635019369629627621029957135109806205877317954671312041249493462048283611940752235036153024920172209763260723728345918562258401803973624430150143563078517485996070862532682695228590709019451174548520135142052216785774589096706631010293690859363524584240662502290912412366366114571976050857239915691266377257797199583543940504695517331512813468837128344612227973709974625418257243011036826241599265375741977853552204640800449679679351666009764297016524814036295707311913711955324055690490892097177271718850857268982130811714517356073266905474635370690445031512184247179039751734276906533177939993769044135143389748416635981226449566039039202521305851567296884751935162651063209779647359922622084851547605090230221057349511482738300221222563908357379545905837110168948295030747460300104202323692732549831403834387939156877086852393515817984772384147449841124275061609701453997579569931391166586163299940486204581696722731952467570857217406030804590055255431828403195798003509083922294733709507134156466158642941338493323430671502043066148246348074878064089651235355282144209668143249348243220714471988019011613749340243917652821</span></span><br><span class="line">e=<span class="number">8179300978753084587812861894047395225516049110376948812109811319430275614612773726672345893359691900281432484382670047044697374818043512731533402576374645405477207239801498428774783768163880078495448747421425078521981578408638790336528372019271073712013371141939808017049399434858687299480461753638164719404612128939787055797762174745092074547412183349192156638711750872083313795551439465507724807626674514935170104573715458782366469587138508845980490673890245713729782917089910271980557159592807350504157192913530007199510144004848020221181558472160543018733124225266127379373751910439604459368078652499029070936707349862139053913745186413782066470461478961703013591655136140060879250067379283913798867648758171004535775565306842444545755351202796833177560656564652632975685912935281581268141803696686952259539945588609591385807620108279333498170028167338690235117003515264281843953984997958878272347778561933726792473981855755454522886321669676790813189668084373153897754540290867346751033567500922477317530445967753955221454744946208555394588111484610700789566547507402309549957740815535069057837915204852490930168843605732632328017129154852857227895362549146737618906180651623216848500491438142456250653458053922622240299736136335179639180898730269690699965799644757774472147210271111150769048976871249731156387939260749192370361488285775377622944817570292095201906142567403539151179209316853493906909989301225903409448461436855145</span></span><br><span class="line">b=<span class="number">17623328397444755087284107444487160871617682792372566887446834913712379373851213638071138745775127796589871734472781755930251379295485892067473329763997583502625804363418069062645997342172778252731889437</span></span><br><span class="line">r = <span class="number">7</span></span><br><span class="line">idx = (r*(r-<span class="number">1</span>)) / ((r+<span class="number">1</span>)*(r+<span class="number">1</span>))</span><br><span class="line">P.&lt;x&gt; = PolynomialRing(Zmod(N))</span><br><span class="line">f = e * x - b</span><br><span class="line">roots = f.monic().small_roots(beta=idx)</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br></pre></td></tr></table></figure>
+<p>当方程 <span class="math inline">\(ex-z\equiv0\)</span>
+的两个解都未知时，我们需要使用二元 Copper 求解：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">small_roots</span>(<span class="params">f, bounds, m=<span class="number">1</span>, d=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> d:</span><br><span class="line">        d = f.degree()</span><br><span class="line"></span><br><span class="line">    R = f.base_ring()</span><br><span class="line">    N = R.cardinality()</span><br><span class="line"></span><br><span class="line">    f /= f.coefficients().pop(<span class="number">0</span>)</span><br><span class="line">    f = f.change_ring(ZZ)</span><br><span class="line"></span><br><span class="line">    G = <span class="type">Sequence</span>([], f.parent())</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m + <span class="number">1</span>):</span><br><span class="line">        base = N ^ (m - i) * f ^ i</span><br><span class="line">        <span class="keyword">for</span> shifts <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(d), repeat=f.nvariables()):</span><br><span class="line">            g = base * prod(<span class="built_in">map</span>(power, f.variables(), shifts))</span><br><span class="line">            G.append(g)</span><br><span class="line"></span><br><span class="line">    B, monomials = G.coefficient_matrix()</span><br><span class="line">    monomials = vector(monomials)</span><br><span class="line"></span><br><span class="line">    factors = [monomial(*bounds) <span class="keyword">for</span> monomial <span class="keyword">in</span> monomials]</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, factor)</span><br><span class="line">    B = B.dense_matrix().LLL()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;LLL done&quot;</span>)</span><br><span class="line"></span><br><span class="line">    B = B.change_ring(QQ)</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, <span class="number">1</span> / factor)</span><br><span class="line"></span><br><span class="line">    H = <span class="type">Sequence</span>([], f.parent().change_ring(QQ))</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">filter</span>(<span class="literal">None</span>, B * monomials):</span><br><span class="line">        H.append(h)</span><br><span class="line">        I = H.ideal()</span><br><span class="line">        <span class="keyword">if</span> I.dimension() == -<span class="number">1</span>:</span><br><span class="line">            H.pop()</span><br><span class="line">        <span class="keyword">elif</span> I.dimension() == <span class="number">0</span>:</span><br><span class="line">            roots = []</span><br><span class="line">            <span class="keyword">for</span> root <span class="keyword">in</span> I.variety(ring=ZZ):</span><br><span class="line">                root = <span class="built_in">tuple</span>(R(root[var]) <span class="keyword">for</span> var <span class="keyword">in</span> f.variables())</span><br><span class="line">                roots.append(root)</span><br><span class="line">            <span class="keyword">return</span> roots</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = <span class="number">68823589009570846705623113091430161477799561031575612135516351257937127579444</span></span><br><span class="line">b = <span class="number">76549169049080319489163980188997771079750670038002598167961495813084486794567</span></span><br><span class="line">c = <span class="number">99215492498952976642031024510129092308042391285395704888838178561670205468882</span></span><br><span class="line">p = <span class="number">12775129699668988473759438271274836254349225413222075887429387682336494103348583050672280757042383792640084197832605411237644937815012509935794275313643031</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x1 = <span class="number">664406108637237317109372377546194289077117372665932150107678757303243619963182733408311739663233548725195723884930183442927293177078507</span></span><br><span class="line">x2 = <span class="number">269639459994260392015105629865659210391196381140872041084737976688017858324308345528702533444116282512066085580909718347778743354754352</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HiddenBits = <span class="number">64</span></span><br><span class="line">bound = <span class="number">2</span>**HiddenBits - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">P = PolynomialRing(Zmod(p), names=(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>))</span><br><span class="line">(x, y) = P.gens()</span><br><span class="line"></span><br><span class="line">f = y + (x2 &lt;&lt; HiddenBits) - a * (x + (x1 &lt;&lt; HiddenBits))**<span class="number">2</span> - b * (x+(x1&lt;&lt;HiddenBits)) - c</span><br><span class="line">bounds = (bound, bound)</span><br><span class="line">roots = small_roots(f, bounds)</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br></pre></td></tr></table></figure>
+<h2 id="the-second-attack">The Second Attack</h2>
+<h3 id="原理-1">原理</h3>
+<p>设模数 <span class="math inline">\(N=p^rq\)</span>，私钥 <span class="math inline">\((d_1,d_2)\)</span>，如果 <span class="math display">\[
+|d_1-d_2|&lt;N^{\frac{r(r-1)}{(r+1)^2}}
+\]</span> 那么我们可以在多项式时间内对 <span class="math inline">\(N\)</span> 进行分解。</p>
+<p>证明如下：</p>
+<p>假设 <span class="math inline">\(e_1d_1-k_1\phi(N)=1\)</span> 、<span class="math inline">\(e_2d_2-k_2\phi(N)=1\)</span> 且 <span class="math inline">\(e_1&gt;e_2\)</span></p>
+<p>因此 <span class="math inline">\(e_1d_1\equiv
+1\pmod{\phi(N)}\)</span>，<span class="math inline">\(e_2d_2\equiv
+1\pmod{\phi(N)}\)</span></p>
+<p>前一个式子乘以 <span class="math inline">\(e_2\)</span>，后一个式子乘以 <span class="math inline">\(e_1\)</span>，相减得到 <span class="math display">\[
+e_1e_2(d_1-d_2)\equiv e_2-e_1\pmod{\phi(N)}
+\]</span> 因为 <span class="math inline">\(\phi(N)=p^{r-1}(p-1)(q-1)\)</span>，故 <span class="math inline">\(e_1e_2(d_1-d_2)\equiv
+e_2-e_1\pmod{p^{r-1}}\)</span></p>
+<p>现在，只需考虑以下这个线性方程 <span class="math display">\[
+e_1e_2x-(e_2-e_1)\equiv 0\pmod{p^{r-1}}
+\]</span> 其中 <span class="math inline">\(d_1-d_2\)</span>
+是该方程的根。</p>
+<p>进一步假设 <span class="math inline">\(|d_1-d_2|&lt;N^\delta\)</span>，运用<strong>定理一</strong>，其中
+<span class="math inline">\(u=r,v=r-1\ 且\
+\beta=\frac{1}{r+1}\)</span>，可以推导出如果 <span class="math inline">\(\delta&lt;uv\beta^2=\frac{r(r-1)}{(r+1)^2}\)</span>，那么
+<span class="math inline">\(x=d_1-d_2\)</span>
+可在多项式时间内求解。</p>
+<p>也就是说如果 <span class="math inline">\(|d_1-d_2|&lt;N^{\frac{r(r-1)}{(r+1)^2}}\)</span>，可以在多项式时间内求解方程。</p>
+<p>通过计算 <span class="math display">\[
+\gcd(e_1e_2x-(e_2-e_1),N)=\gcd(p^{r-1}(p-1)(q-1)y,p^rq)=g
+\]</span></p>
+<p>证明忽略，最后得到结论 <span class="math display">\[
+\gcd(e_1e_2x-(e_2-e_1),N)=\gcd(p^{r-1}(p-1)(q-1)y,p^rq)=g
+\]</span> 可以确定 <span class="math inline">\(p\)</span>，因此将 <span class="math inline">\(N\)</span> 按如下情况分解：</p>
+<ul>
+<li>当 <span class="math inline">\(g=p^{r-1}\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r-1}}\)</span></li>
+<li>当 <span class="math inline">\(g=p^r\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r}}\)</span></li>
+<li>当 <span class="math inline">\(g=p^{r-1}q\)</span> 时，<span class="math inline">\(p=\frac{N}{g}\)</span></li>
+</ul>
+<p>因此我们分解了 <span class="math inline">\(N\)</span>。</p>
+<h3 id="实例">实例</h3>
+<p>尝试求解 <span class="math inline">\(N=p^2q\)</span>，其中 <span class="math display">\[
+N = 6093253851486120878859471958399737725885946526553626219\\
+e1 = 2749600381847487389715964767235618802529675855606377411\\
+e2 = 3575081244952414009316396501512372226545892558898276551
+\]</span> 构建方程 <span class="math inline">\(f(x)=e_1e_2x-(e_2-e_1)\equiv
+0\pmod{p^{r-1}}\)</span> （我们可以将这个方程看作 <span class="math inline">\(g(x)=x-a\equiv 0\pmod{p^{r-1}}\)</span>，其中
+<span class="math inline">\(a\equiv
+(e_2-e_1)(e_1e_2)^{-1}\pmod{N}\)</span>）</p>
+<p>使用 <span class="math inline">\(m=8\)</span> 和 <span class="math inline">\(t=6\)</span>，我们构建一个维度为 <span class="math inline">\(\omega=9\)</span> 的格。</p>
+<p>应用 LLL 算法并接触第一个简化多项式，我们得到了解 <span class="math inline">\(x_0= 1826732340\)</span></p>
+<p>因此 <span class="math inline">\(\gcd(f(x_0),N)=p=1789386140116417697\)</span>，且最终
+<span class="math inline">\(q=\frac{N}{p^2}=1903010275819064491\)</span></p>
+<p>整个求解程序的运行时间使用现成的计算机是少于 4 秒的。</p>
+<p>最后我们可以恢复私钥 <span class="math inline">\((d_1,d_2)\)</span>。</p>
+<p>但是要注意到，如果 <span class="math inline">\(d_1\approx d_2\approx
+N^{0.99}\)</span>，且 Sarkar’s method 与存在范围 <span class="math inline">\(d&lt;N^{0.395}\)</span>，可能无法恢复私钥。</p>
+<h3 id="脚本-1">脚本</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">r = <span class="number">7</span></span><br><span class="line">N = <span class="number">209798341155088334158217087474227805455138848036904381404809759100627849272231840321985747935471287990313456209656625928356468120896887536235496490078123448217785939608443507649096688546074968476040552137270080120417769906047001451239544719039212180059396791491281787790213953488743488306241516010351179070869410418232801398578982244984544906579574766534671056023774009163991804748763929626213884208260660722705479782932001102089367261720194650874553305179520889083170973755913964440175393646890791491057655226024046525748177999422035469428780228224800114202385209306803288475439775037067014297973202621118959024226798935588827359265962780792266516120013602384766460619793738405476219362508944225007365127768741191310079985425349292613888185378948854602285379329682053663283534930182589905986063348509703027498270111412063194971956202729807710253369312175636837558252924035002153389909587349043986253518050303628071319876207392440085675892353421232158925122721273720564784886530611286461575045181073744696415657043278123662980166364494583141297996445429477446442693717498789391918530672770193730629928408766563592081857706608049076318165712479742423149330311238462044666384622153280310696667586565906758451118241914402257039981388209</span></span><br><span class="line"></span><br><span class="line">e1 = <span class="number">167033559384298522723574512241709447697750495062051373339874928117760768631565225663704494711294488556402223152830158600944819657473430506318731286655519728589208977191031849602792050411662024383502548579402516538753112670329781366297260905517214408459895097308286783418547254449419676568096534767340832822470233461516097690657337287889405321592527860524201824371955082411119548743528220794151774190322092515459637969925138496615421690273925560390321721643556915400569894100488394008220811596560968566833296068500476868375996187754631888256419438775013308064639754700359028260289266420692324376220460340153811660590804281527733243177527178698523018103373311259548716062006020121615186595491453534952848570829485638553678760994354019044715078062414748269425818079274218450448217803229617020494546843594180682307375768323235309661628678546003718924902228908888185484412626429441196588985691713767554591991735686919964937441820738008046218954331990752603146125777571183543616375946363623251491371247594696767767918341279655251868517380267258878990871525012299220182939441091806206624720194246691865367941280852353547267930167542329486261552854451001546455904682702366584763940463481732752992487773878685793275652314513014646439770319249</span></span><br><span class="line">e2 = <span class="number">69076592619651589706691933313826601279528159013379300261609967352748175972662567592943146333144902972780621576811778115958019397062270814057821407036352529372113467206560849267275602453288227390740346959857322649956992529510338912182696854496200041245775322561359546062736323363354733510660780489558215103581313753430117471361013972291126160134685745917715386613876414886325025010348396410346222272648657374977901786530969589123771261040601627906959627351426881111464943086191212001374558078570830214670111422731410682212770683631011038163623234630601007231955235905528750031898751733232446644402069580930596404887288935724879795199659228145390574503341087565153744389617539607111733080406125228559950446336384154674927952991964565965760896308198785777527690939982523416579778957846249005801121682470447753074839399698315364445972142571727376297422736232659133510385808957304351692629177239808890209690661982628408419571131470406142532800330250274534615063537773403062635865734585850821677880659194795963303700015814615804751909674946908768425855361277478190640780518117596780808975720826484146074528564147729911624750510271539697935538038871993380673492022099183863825435237650082706168588306816635866830411481021066926833372846305</span></span><br><span class="line"></span><br><span class="line">x = polygen(Zmod(N))</span><br><span class="line">f = e1 * e2 * x - (e2 - e1)</span><br><span class="line">f = f.monic()</span><br><span class="line"></span><br><span class="line">roots = f.small_roots(beta=((r*(r-<span class="number">1</span>)) / ((r+<span class="number">1</span>)*(r+<span class="number">1</span>))))</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br></pre></td></tr></table></figure>
+<h2 id="the-third-attack">The Third Attack</h2>
+<h3 id="原理-2">原理</h3>
+<p>设 <span class="math inline">\(N_1=p_1^rq_1,N_2=p_2^rq_2\)</span>，其中 <span class="math inline">\(p_1&gt;p_2\)</span>，如果 <span class="math display">\[
+|p_1-p_2|&lt;\frac{p_1}{2rq_1q_2}
+\]</span> 那么我们可以在多项式时间内分解 <span class="math inline">\(N\)</span>。（<strong>连分数定理</strong>）</p>
+<p>类似于维纳攻击，结论是 <span class="math inline">\(\displaystyle\frac{q_2}{q_1}\)</span> 是 <span class="math inline">\(\displaystyle\frac{N_2}{N_1}\)</span>
+的一个有理近似，这样同样的我们分解了 <span class="math inline">\(N_1,N_2\)</span>： <span class="math display">\[
+p_1=\frac{N_1}{q_1}^{\frac{1}{r}}\\
+p_2=\frac{N_2}{q_2}^{\frac{1}{r}}
+\]</span></p>
+<h3 id="脚本-2">脚本</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">N1=<span class="number">170987233913769420505896917437304719816691353833034482461</span></span><br><span class="line">N2=<span class="number">120532911819726882881630714003135237766675602824250965921</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factorization</span>(<span class="params">N1, N2</span>):</span></span><br><span class="line">    cf = continued_fraction(N2/N1)</span><br><span class="line">    convers = cf.convergents()</span><br><span class="line">    <span class="keyword">for</span> pqq <span class="keyword">in</span> convers:</span><br><span class="line">        q2 = pqq.numerator()</span><br><span class="line">        q1 = pqq.denominator()</span><br><span class="line">        <span class="keyword">if</span> q2 == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> q1 != <span class="number">1</span> <span class="keyword">and</span> N1 % q1 == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> q1, q2</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">factorization(N1, N2)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参考文献</p>
+<p>《New attacks on RSA with Moduli <span class="math inline">\(N =
+p^rq\)</span>》</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/multi-power-rsa.html" title="multi-power-RSA 笔记">https://hasegawaazusa.github.io/multi-power-rsa.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+              <a href="/tags/rsa/" rel="tag"># rsa</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/common-prime-rsa.html" rel="prev" title="Common Prime RSA 笔记">
+                  <i class="fa fa-chevron-left"></i> Common Prime RSA 笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">338k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:07</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

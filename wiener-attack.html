@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="wiener attack 相关的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="wiener attack 笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/wiener-attack.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="wiener attack 相关的笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/wiener-attack/extendwiener-chosen-relations.png">
+<meta property="article:published_time" content="2023-01-14T13:30:00.000Z">
+<meta property="article:modified_time" content="2023-01-14T13:14:51.874Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="rsa">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/wiener-attack/extendwiener-chosen-relations.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/wiener-attack.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/wiener-attack.html","path":"/wiener-attack.html","title":"wiener attack 笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>wiener attack 笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">55</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">92</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%B4%E7%BA%B3%E6%94%BB%E5%87%BB-wiener-attack"><span class="nav-number">1.</span> <span class="nav-text">维纳攻击 (wiener attack)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E7%BB%B4%E7%BA%B3%E6%94%BB%E5%87%BB"><span class="nav-number">1.1.</span> <span class="nav-text">普通维纳攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E5%88%86%E6%95%B0"><span class="nav-number">1.1.1.</span> <span class="nav-text">连分数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%90%86%E8%BF%91%E4%BC%BC%E6%94%B6%E6%95%9B%E5%88%86%E6%95%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">有理近似（收敛分数）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#legendres-theorem-%E8%BF%9E%E5%88%86%E6%95%B0%E5%AE%9A%E7%90%86"><span class="nav-number">1.1.3.</span> <span class="nav-text">Legendre&#39;s theorem
+(连分数定理)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.4.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.1.5.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC"><span class="nav-number">1.1.6.</span> <span class="nav-text">脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%BB%B4%E7%BA%B3%E6%94%BB%E5%87%BB"><span class="nav-number">1.2.</span> <span class="nav-text">扩展维纳攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#wiener-s-approach"><span class="nav-number">1.2.1.</span> <span class="nav-text">Wiener &#39;s Approach</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#guo-s-approach-with-two-exponents"><span class="nav-number">1.2.2.</span> <span class="nav-text">Guo &#39;s Approach With Two
+Exponents</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%B0%8F%E8%A7%A3%E5%AF%86%E6%8C%87%E6%95%B0%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.3.</span> <span class="nav-text">两个小解密指数的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E5%B0%8F%E8%A7%A3%E5%AF%86%E6%8C%87%E6%95%B0%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">1.2.4.</span> <span class="nav-text">三个小解密指数的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%85%B3%E7%B3%BB"><span class="nav-number">1.2.5.</span> <span class="nav-text">选择关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC-1"><span class="nav-number">1.2.6.</span> <span class="nav-text">脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%AE%BA%E6%96%87"><span class="nav-number">1.3.</span> <span class="nav-text">参考论文</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/wiener-attack.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          wiener attack 笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-14 21:30:00" itemprop="dateCreated datePublished" datetime="2023-01-14T21:30:00+08:00">2023-01-14</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>13k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>12 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">wiener attack 相关的笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="维纳攻击-wiener-attack">维纳攻击 (wiener attack)</h1>
+<h2 id="普通维纳攻击">普通维纳攻击</h2>
+<h3 id="连分数">连分数</h3>
+<p>一个简单的表达式 <span class="math inline">\(x=a_0\)</span>，对其进行连分数展开应该是这样的：
+<span class="math display">\[
+x=a_0+\frac{1}{a_1+\frac{1}{a_2+\frac{1}{a_3+\cdots}}}
+\]</span> 其中 <span class="math inline">\(a_i\)</span>
+我们称作<strong>商(quotient)</strong>。</p>
+<p>一般我们将连分数简记为 <span class="math display">\[
+x=[a_0,a_1,a_2,\cdots,a_n]
+\]</span> 而一个有理数（无理数）具有有限（无限）的连分数展开式。</p>
+<p>一些简单的例子是： <span class="math display">\[
+\frac{73}{95}=0+\frac{1}{1+\frac{1}{3+\frac{1}{3+\frac{1}{7+}}}}=[0,1,3,3,7]\\
+\pi=[3,7,15,1,292,1,1,1,2,\cdots]
+\]</span> 获取连分数的 Python 脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">continuedFractions</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用辗转相处将分数 x/y 转为连分数的形式</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; list(continuedFractions(73, 95))</span></span><br><span class="line"><span class="string">    [0, 1, 3, 3, 7]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        x - 分子\\</span></span><br><span class="line"><span class="string">        y - 分母</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        连分数</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> y:</span><br><span class="line">        <span class="keyword">yield</span> x // y</span><br><span class="line">        x, y = y, x % y</span><br></pre></td></tr></table></figure>
+<p>或者我们也可以使用 Sagemath 的函数获取连分数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = continued_fraction(<span class="number">73</span>/<span class="number">95</span>)</span><br><span class="line"><span class="built_in">print</span>(a.quotient(<span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(a.quotients())</span><br></pre></td></tr></table></figure>
+<h3 id="有理近似收敛分数">有理近似（收敛分数）</h3>
+<p>虽然 <span class="math inline">\(\pi\)</span>
+是一个无理数，但我们可以使用连分数展开式获取到一个简洁的有理近似： <span class="math display">\[
+c_0=\frac{3}{1}=3.0\\
+c_1=3+\frac{1}{7}=3.142857\\
+c_2=3+\frac{1}{7+\frac{1}{15}}=3.141509\\
+\cdots
+\]</span> 这些有理数 (<span class="math inline">\(c_i\)</span>)
+我们称作连分数的收敛，当 <span class="math inline">\(i\)</span>
+增大时，<span class="math inline">\(c_i\)</span> 将会无限接近于 <span class="math inline">\(\pi\)</span></p>
+<p>我们把这样的 <span class="math inline">\(c_i\)</span>
+所组成的数列称作对某个数 <span class="math inline">\(e\)</span>
+的一个收敛分数，表示形式为： <span class="math display">\[
+e=[c_0,c_1,\cdots,c_n]
+\]</span>
+而同时需要知道<strong>任何一个有理数与其连分数形式是一一对应的</strong>。</p>
+<p>故实际上对于任何一个有理数我们都可以将其展开成一个对应的收敛分数形式。</p>
+<p>获取收敛分数的 Python 脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convergents</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        使用辗转相处将分数 x/y 转为渐进分数的形式</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; list(ContinuedFraction.convergents(73, 95))</span></span><br><span class="line"><span class="string">        [(0, 1), (1, 1), (3, 4), (10, 13), (73, 95)]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        `Parameters`:</span></span><br><span class="line"><span class="string">            x - 分子\\</span></span><br><span class="line"><span class="string">            y - 分母</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        `Returns`:</span></span><br><span class="line"><span class="string">            连分数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">    numerators, denominators = [], []</span><br><span class="line">    <span class="keyword">for</span> idx, val <span class="keyword">in</span> <span class="built_in">enumerate</span>(ContinuedFraction.fractions(x, y)):</span><br><span class="line">        <span class="keyword">if</span> idx == <span class="number">0</span>:</span><br><span class="line">            ni, di = val, <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> idx == <span class="number">1</span>:</span><br><span class="line">                ni, di = val * numerators[-<span class="number">1</span>] + <span class="number">1</span>, val</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    ni, di = val * numerators[-<span class="number">1</span>] + numerators[-<span class="number">2</span>], val * denominators[-<span class="number">1</span>] + denominators[-<span class="number">2</span>]</span><br><span class="line">                    numerators.append(ni)</span><br><span class="line">                    denominators.append(di)</span><br><span class="line">                    <span class="keyword">yield</span> ni, di</span><br></pre></td></tr></table></figure>
+<p>或者我们也可以使用 Sagemath 的函数获取渐进分数：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = continued_fraction(<span class="number">73</span>/<span class="number">95</span>)</span><br><span class="line"><span class="built_in">print</span>(a.convergent(<span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(a.convergents())</span><br></pre></td></tr></table></figure>
+<h3 id="legendres-theorem-连分数定理">Legendre's theorem
+(连分数定理)</h3>
+<p>如果存在 <span class="math inline">\(\alpha \in \Q\)</span>，<span class="math inline">\(c,d\in \Z\)</span> 满足 <span class="math display">\[
+\left|\alpha-\frac{c}{d}\right|&lt;\frac{1}{2d^2}
+\]</span> 那么 <span class="math inline">\(\displaystyle\frac{c}{d}\)</span> 就是 <span class="math inline">\(a\)</span> 的一个有理近似。</p>
+<h3 id="原理">原理</h3>
+<p>首先我们考虑，如果已知 <span class="math inline">\(N=pq\)</span> 和
+<span class="math inline">\(\varphi(N)=(p-1)(q-1)\)</span>，那么 <span class="math display">\[
+\begin{align}
+\varphi(N)&amp;=(p-1)(q-1)\\
+&amp;=N-p-q+1\\
+&amp;=N-p-\frac{N}{p}+1
+\end{align}
+\]</span> 因此我们可以得到方程： <span class="math display">\[
+p^2+p(\varphi(N)-N-1)+N=0
+\]</span> 所以当已知 <span class="math inline">\(N\)</span> 和 <span class="math inline">\(\varphi(N)\)</span> 时，<span class="math inline">\(N\)</span> 是极易分解的。</p>
+<p>其次我们知道 <span class="math inline">\(ed=1\pmod{\varphi(N)}\)</span>，即存在一个 <span class="math inline">\(k\)</span> 使得： <span class="math display">\[
+ed=1+k\varphi(N)
+\]</span> 对其变形可得 <span class="math display">\[
+\left|\frac{e}{\varphi(N)}-\frac{k}{d}\right|=\frac{1}{d\varphi(N)}
+\]</span> 由 <strong>Legendre's theorem</strong> 可得，<span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 是 <span class="math inline">\(\displaystyle\frac{e}{\varphi(N)}\)</span>
+的一个有理近似，如果我们获得了 <span class="math inline">\(\displaystyle\frac{e}{\varphi(N)}\)</span>，那么我们就可以从其的有理近似中获取
+<span class="math inline">\(\displaystyle\frac{k}{d}\)</span>。（<span class="math inline">\(d\)</span> 泄露攻击）</p>
+<p>但在维纳攻击中，我们只有 <span class="math inline">\(e\)</span> 和
+<span class="math inline">\(N\)</span>，那是否会在特定条件中 <span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 是 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
+的一个有理近似？</p>
+<p>实际上当 <span class="math inline">\(N=pq\)</span> 且 <span class="math inline">\(q&lt;p&lt;2q\)</span> 时，如果满足 <span class="math inline">\(d&lt;\displaystyle\frac{1}{3}N^{\frac{1}{4}}\)</span>，那么
+<span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 将是 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
+的一个有理近似。</p>
+<h3 id="步骤">步骤</h3>
+<ol type="1">
+<li>估测是否满足 <span class="math inline">\(d&lt;\displaystyle\frac{1}{3}N^{\frac{1}{4}}\)</span></li>
+<li>求 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
+的连分数展开</li>
+<li>迭代连分数 <span class="math inline">\(\displaystyle\frac{k_i}{d_i}\)</span>：
+<ul>
+<li>使用 <span class="math inline">\(k_i\)</span> 和 <span class="math inline">\(d_i\)</span> 计算出 <span class="math inline">\(\varphi_i(N)\)</span></li>
+<li>使用 <span class="math inline">\(\varphi_i(N)\)</span> 计算出 <span class="math inline">\(N\)</span>，然后通过因式分解进行验证是否正确（我们也可以直接进行解密验证）</li>
+</ul></li>
+</ol>
+<h3 id="脚本">脚本</h3>
+<p>以下仅给出 Sagemath 脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wienerAttack</span>(<span class="params">N, e</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    维纳攻击</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        N - p * q\\</span></span><br><span class="line"><span class="string">        e - public key</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        p, q, d</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    cf = continued_fraction(e/n)</span><br><span class="line">    convers = cf.convergents()</span><br><span class="line">    <span class="keyword">for</span> pkd <span class="keyword">in</span> convers:</span><br><span class="line">        <span class="comment"># possible k, d</span></span><br><span class="line">        pk, pd = pkd.as_integer_ratio()</span><br><span class="line">        <span class="keyword">if</span> pk == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># verify</span></span><br><span class="line">        <span class="keyword">if</span> (e * pd - <span class="number">1</span>) % pk != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># possible phi</span></span><br><span class="line">        pphi = (e * pd - <span class="number">1</span>) // pk</span><br><span class="line">        p = var(<span class="string">&#x27;p&#x27;</span>, domain=ZZ)</span><br><span class="line">        roots = solve(p ** <span class="number">2</span> + (pphi - N - <span class="number">1</span>) * p + N, p)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(roots) == <span class="number">2</span>:</span><br><span class="line">            <span class="comment"># possible p, q</span></span><br><span class="line">            pp, pq = roots</span><br><span class="line">            <span class="keyword">if</span> pp * pq == N:</span><br><span class="line">                <span class="keyword">return</span> pp, pq, pd</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">N = <span class="number">507419170088344932990702256911694788408493968749527614421614568612944144764889717229444020813658893362983714454159980719026366361318789415279417172858536381938870379267670180128174798344744371725609827872339512302232610590888649555446972990419313445687852636305518801236132032618350847705234643521557851434711389664130274468354405273873218264222293858509477860634889001898462547712800153111774564939279190835857445378261920532206352364005840238252284065587291779196975457288580812526597185332036342330147250312262816994625317482869849388424397437470502449815132000588425028055964432298176942124697105509057090546600330760364385753313923003549670107599757996810939165300581847068233156887269181096893089415302163770884312255957584660964506028002922164767453287973102961910781312351686488047510932997937700597992705557881172640175117476017503918294534205898046483981707558521558992058512940087192655700351675718815723840568640509355338482631416345193176708501897458649841539192993142790402734898948352382350766125000186026261167277014748183012844440603384989647664190074853086693408529737767147592432979469020671772152652865219092597717869942730499507426269170189547020660681363276871874469322437194397171763927907099922324375991793759</span></span><br><span class="line">e = <span class="number">77310199867448677782081572109343472783781135641712597643597122591443011229091533516758925238949755491395489408922437493670252550920826641442189683907973926843505436730014899918587477913032286153545247063493885982941194996251799882984145155733050069564485120660716110828110738784644223519725613280140006783618393995138076030616463398284819550627612102010214315235269945251741407899692274978642663650687157736417831290404871181902463904311095448368498432147292938825418930527188720696497596867575843476810225152659244529481480993843168383016583068747733118703000287423374094051895724494193455175131120243097065270804457787026492578916584536863548445813916819417857064037664101684455000184987531252344582899589746272173970083733130106407810619258077266603898529285634495710846838011858287024329514491058790557305041389614650730267774482954666726949886313386881066593946789460028399523245777171320319444673551268379126203862576627540177888290265714418064334752499940587750374552330008143708562065940245637685833371348603338834447212248648869514585047871442060412622164276894766238383894693759347590977926306581080390685360615407766600573527565016914830132066428454738135380178959590692145577418811677639050929791996313180297924833690095</span></span><br><span class="line">c = <span class="number">165251729917394529793163344300848992394021337429474789711805041655116845722480301677817165053253655027459227404782607373107477419083333844871948673626672704233977397989843349633720167495862807995411682262559392496273163155214888276398332204954185252030616473235814999366132031184631541209554169938146205402400412307638567132128690379079483633171535375278689326189057930259534983374296873110199636558962144635514392282351103900375366360933088605794654279480277782805401749872568584335215630740265944133347038070337891035560658434763924576508969938866566235926587685108811154229747423410476421860059769485356567301897413767088823807510568561254627099309752215808220067495561412081320541540679503218232020279947159175547517811501280846596226165148013762293861131544331444165070186672186027410082671602892508739473724143698396105392623164025712124329254933353509384748403154342322725203183050328143736631333990445537119855865348221215277608372952942702104088940952142851523651639574409075484106857403651453121036577767672430612728022444370874223001778580387635197325043524719396707713385963432915855227152371800527536048555551237729690663544828830627192867570345853910196397851763591543484023134551876591248557980182981967782409054277224</span></span><br><span class="line">p, q, d = wienerAttack(N, e)</span><br><span class="line">m = <span class="built_in">pow</span>(c, d, N)</span><br></pre></td></tr></table></figure>
+<h2 id="扩展维纳攻击">扩展维纳攻击</h2>
+<h3 id="wiener-s-approach">Wiener 's Approach</h3>
+<p>我们已知 <span class="math display">\[
+ed=k\varphi(N)+1
+\]</span> 不妨令 <span class="math inline">\(s=1-p-q\)</span>，那么
+<span class="math display">\[
+ed-kN=ks+1\tag{W}
+\]</span></p>
+<h3 id="guo-s-approach-with-two-exponents">Guo 's Approach With Two
+Exponents</h3>
+<p>如果对于同一个 <span class="math inline">\(N\)</span> 存在 <span class="math inline">\((e_1,e_2)\)</span> 都有相对应较小的 <span class="math inline">\((d_1,d_2)\)</span>，那么我们可以得到： <span class="math display">\[
+\begin{cases}
+e_1d_1-k_1\varphi(N)=1\\
+e_2d_2-k_2\varphi(N)=1\\
+\end{cases}
+\]</span> 对其进行化简得到： <span class="math display">\[
+e_1d_1k_2-e_2d_2k_1=k_2-k_1\tag{G(1,2)}
+\]</span> 可以推导出 <span class="math display">\[
+\left|\frac{e_1}{e_2}-\frac{d_2k_1}{d_1k_2}\right|=\frac{|k_2-k_1|}{e_2d_1k_1}
+\]</span> 那么如果 <span class="math inline">\(2(k_2-k_1)d_1k_2&lt;e_2\)</span>，根据
+<strong>Legendre's theorem</strong> 我们得知 <span class="math inline">\(\displaystyle\frac{d_2k_1}{d_1k_2}\)</span> 是
+<span class="math inline">\(\displaystyle\frac{e_1}{e_2}\)</span>
+的一个有理近似。</p>
+<p>但通过 <span class="math inline">\(\displaystyle\frac{d_2k_1}{d_1k_2}\)</span> 确定
+<span class="math inline">\((d_1,d_2)\)</span> 不是很现实。</p>
+<h3 id="两个小解密指数的原理">两个小解密指数的原理</h3>
+<p>结合维纳攻击和 <strong>Guo's
+Approach</strong>，我们可以通过多个等式构造格后，利用 LLL
+格规约算法化简求解该问题。</p>
+<p>首先假设 <span class="math inline">\(d_i&lt;N^\alpha\)</span>，联立四个式子：</p>
+<ol type="1">
+<li><p><span class="math display">\[
+k_1k_2=k_1k_2
+\]</span></p></li>
+<li><p><span class="math inline">\(W_1\cdot k_2\)</span> <span class="math display">\[
+e_1d_1k_2-k_1Nk_2=k_2(k_1s+1)
+\]</span></p></li>
+<li><p><span class="math inline">\(G(1,2)\)</span> <span class="math display">\[
+e_2d_2k_1-e_1d_1k_2=k_1-k_2\tag{G(1,2)}
+\]</span></p></li>
+<li><p><span class="math inline">\(W_1\cdot W_2\)</span> <span class="math display">\[
+(e_1d_1-k_1N)(e_2d_2-k_2N)=(k_2s+1)(k_2s+1)\\
+\Downarrow\\
+d_1d_2e_1e_2-d_1k_2e_1N-d_2k_1e_2N+k_1k_2N^2=(k_2s+1)(k_2s+1)
+\]</span></p></li>
+</ol>
+<p>从而构造矩阵 <span class="math inline">\(A,L,B\)</span> <span class="math display">\[
+A=
+\begin{pmatrix}
+  k_1k_2,d_1k_2,d_2k_1,d_1d_2
+\end{pmatrix}\\
+L=
+\begin{pmatrix}
+  1 &amp; -N &amp; 0 &amp; N^2 \\
+  0 &amp; e_1 &amp; -e_1 &amp; -e_1N \\
+  0 &amp; 0 &amp; e_2 &amp; -e_2N \\
+  0 &amp; 0 &amp; 0 &amp; e_1e_2
+\end{pmatrix}\\
+B=\begin{pmatrix}k_1k_2,k_2(k_1s+1),k_1-k_2,(k_2s+1)(k_2s+1)\end{pmatrix}
+\]</span> 满足 <span class="math display">\[
+A\cdot L=B
+\]</span> 而根据假设可知 <span class="math display">\[
+e_i\approx N\\
+d_i\approx N^\alpha\\
+k_i\approx d_i \approx N^\alpha\\
+g\approx 1\\
+s=1-p-q\approx N^{0.5}
+\]</span> 根据 <strong>Minkowoski′s first theorem</strong>
+可知，只有满足 <span class="math display">\[
+\lambda_1(L)\leq\sqrt{n}\det(L)^{\frac{1}{n}}
+\]</span> 才能算是最短向量，但明显右边计算结果为 <span class="math inline">\(N\)</span>，明显 <span class="math inline">\(||B||&gt;N\)</span>，所以需要考虑使得等式两边的大小尽量接近，而等式右边向量的大小为
+<span class="math inline">\((N^{2\alpha},N^{0.5+2\alpha},N^{\alpha},N^{1+2\alpha})\)</span>，故我们最终构造的矩阵应该为：
+<span class="math display">\[
+L=
+\begin{pmatrix}
+  1 &amp; -N &amp; 0 &amp; N^2 \\
+  0 &amp; e_1 &amp; -e_1 &amp; -e_1N \\
+  0 &amp; 0 &amp; e_2 &amp; -e_2N \\
+  0 &amp; 0 &amp; 0 &amp; e_1e_2
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+  N &amp;  &amp;  &amp;  \\
+   &amp; N^0.5 &amp;  &amp;  \\
+   &amp;  &amp; N^{1+\alpha} &amp;  \\
+   &amp;  &amp;  &amp; 1
+\end{pmatrix}
+\]</span> 这样便使得向量 <span class="math inline">\(B\)</span> 满足
+<span class="math display">\[
+||BL||&lt;2N^{1+2\alpha}
+\]</span> 将问题转化为类 SVP 问题后，使用格规约算法 LLL 既可以得到基向量
+<span class="math inline">\(B\)</span>，随后 <span class="math display">\[
+\frac{B_2}{B_1}=\frac{d_1}{k_1}\\
+\varphi(N)=\frac{ed}{k}
+\]</span> 在这里根据部分证明可知，对于两个小解密指数的情况，当 <span class="math inline">\(c\)</span> 较小时，如果有 <span class="math display">\[
+\alpha&lt;\frac{5}{14}-\varepsilon
+\]</span> 就可以通过格基规约找到向量 <span class="math inline">\(B\)</span>。</p>
+<h3 id="三个小解密指数的情况">三个小解密指数的情况</h3>
+<p>对于三个指数的情况我们额外选取 <span class="math inline">\(G(1,3),W_1G(2,3),W_2G(1,3)\)</span>
+的等式，这样我们的向量 <span class="math inline">\(B\)</span> 为： <span class="math display">\[
+B = \begin{pmatrix}
+k_1k_2k_3&amp;d_1gk_2k_3&amp;k_1d_2gk_3&amp;d_1d_2g^2k_3&amp;k_1k_2d_3g&amp;k_1d_3g&amp;k_2d_3g&amp;d_1d_2d_3g^3
+\end{pmatrix}
+\]</span> 然后我们便可以构造格： <span class="math display">\[
+L = \begin{pmatrix}
+        1 &amp; -N &amp; 0 &amp; N^{2} &amp; 0 &amp; 0 &amp; 0 &amp;
+-N^{3} \\
+        0 &amp; e_{1} &amp; -e_{1} &amp; -N e_{1} &amp; -e_{1} &amp; 0
+&amp; N e_{1} &amp; N^{2} e_{1} \\
+        0 &amp; 0 &amp; e_{2} &amp; -N e_{2} &amp; 0 &amp; N e_{2} &amp;
+0 &amp; N^{2} e_{2} \\
+        0 &amp; 0 &amp; 0 &amp; e_{1} e_{2} &amp; 0 &amp; -e_{1} e_{2}
+&amp; -e_{1} e_{2} &amp; -N e_{1} e_{2} \\
+        0 &amp; 0 &amp; 0 &amp; 0 &amp; e_{3} &amp; -N e_{3} &amp; -N
+e_{3} &amp; N^{2} e_{3} \\
+        0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e_{1} e_{3} &amp; 0
+&amp; -N e_{1} e_{3} \\
+        0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e_{2} e_{3}
+&amp; -N e_{2} e_{3} \\
+        0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e_{1}
+e_{2} e_{3}
+        \end{pmatrix}
+\]</span> 其中 <span class="math display">\[
+D = diag\begin{pmatrix}
+    N^{\frac{3}{2}}&amp;N&amp;N^{a + \frac{3}{2}}&amp;\sqrt{N}&amp;N^{a
++ \frac{3}{2}}&amp;N^{a + 1}&amp;N^{a + 1}&amp;1\end{pmatrix}
+\]</span> 同样我们可以得知 <span class="math display">\[
+||BL||&lt;\sqrt{8}N^{1.5+2\alpha}
+\]</span> 证明可得，当 <span class="math display">\[
+\alpha&lt;\frac{2}{5}-\varepsilon
+\]</span> 时，可以通过格基规约求出向量 <span class="math inline">\(B\)</span>。</p>
+<h3 id="选择关系">选择关系</h3>
+<p>论文末位给出的 <span class="math inline">\(n\leq 5\)</span>
+的选择关系表：</p>
+<figure>
+<img src="/wiener-attack/extendwiener-chosen-relations.png" alt="选择关系表">
+<figcaption aria-hidden="true">选择关系表</figcaption>
+</figure>
+<h3 id="脚本-1">脚本</h3>
+<p>这里仅给出 Sagemath 的脚本：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wienerAttack2</span>(<span class="params">N, e1, e2</span>):</span></span><br><span class="line">    a = <span class="number">5</span>/<span class="number">14</span></span><br><span class="line">    D = diagonal_matrix(ZZ, [N, <span class="built_in">int</span>(N^(<span class="number">1</span>/<span class="number">2</span>)), <span class="built_in">int</span>(N^(<span class="number">1</span>+a)), <span class="number">1</span>])</span><br><span class="line">    M = matrix(ZZ, [[<span class="number">1</span>, -N, <span class="number">0</span>, N^<span class="number">2</span>], [<span class="number">0</span>, e1, -e1, -e1*N], [<span class="number">0</span>, <span class="number">0</span>, e2, -e2*N], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, e1*e2]])*D</span><br><span class="line">    L = M.LLL()</span><br><span class="line">    B = vector(ZZ, L[<span class="number">0</span>])</span><br><span class="line">    A = B * M^(-<span class="number">1</span>)</span><br><span class="line">    phi = <span class="built_in">int</span>(A[<span class="number">1</span>]/A[<span class="number">0</span>]*e1)</span><br><span class="line">    d1 = inverse_mod(e1, phi)</span><br><span class="line">    d2 = inverse_mod(e2, phi)</span><br><span class="line">    p = var(<span class="string">&#x27;p&#x27;</span>, domain=ZZ)</span><br><span class="line">    roots = solve(p ** <span class="number">2</span> + (pphi - N - <span class="number">1</span>) * p + N, p)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(roots) == <span class="number">2</span>:</span><br><span class="line">        <span class="comment"># possible p, q</span></span><br><span class="line">        p, q = roots</span><br><span class="line">        <span class="keyword">if</span> p * q == N:</span><br><span class="line">            <span class="keyword">return</span> p, q, d1, d2</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">e1 = <span class="number">114552459553730357961013268333698879659007919035942930313432809776799669181481660306531243618160127922304264986001501784564575128319884991774542682853466808329973362019677284072646678280051091964555611220961719302320547405880386113519147076299481594997799884384012548506240748042365643212774215730304047871679706035596550898944580314923260982768858133395187777029914150064371998328788068888440803565964567662563652062845388379897799506439389461619422933318625765603423604615137217375612091221578339493263160670355032898186792479034771118678394464854413824347305505135625135428816394053078365603937337271798774138959</span></span><br><span class="line">e2 = <span class="number">27188825731727584656624712988703151030126350536157477591935558508817722580343689565924329442151239649607993377452763119541243174650065563589438911911135278704499670302489754540301886312489410648471922645773506837251600244109619850141762795901696503387880058658061490595034281884089265487336373011424883404499124002441860870291233875045675212355287622948427109362925199018383535259913549859747158348931847041907910313465531703810313472674435425886505383646969400166213185676876969805238803587967334447878968225219769481841748776108219650785975942208190380614555719233460250841332020054797811415069533137170950762289</span></span><br><span class="line">N = <span class="number">14922959775784066499316528935316325825140011208871830627653191549546959775167708525042423039865322548420928571524120743831693550123563493981797950912895893476200447083386549353336086899064921878582074346791320104106139965010480614879592357793053342577850761108944086318475849882440272688246818022209356852924215237481460229377544297224983887026669222885987323082324044645883070916243439521809702674295469253723616677245762242494478587807402688474176102093482019417118703747411862420536240611089529331148684440513934609412884941091651594861530606086982174862461739604705354416587503836130151492937714365614194583664241</span></span><br><span class="line">p, q, d1, d2 = wienerAttack2(N, e1, e2)</span><br></pre></td></tr></table></figure>
+<h2 id="参考论文">参考论文</h2>
+<p>《A New Attack on RSA with Two or Three》</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/wiener-attack.html" title="wiener attack 笔记">https://hasegawaazusa.github.io/wiener-attack.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+              <a href="/tags/rsa/" rel="tag"># rsa</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/pollard-rho-method-note.html" rel="prev" title="Pollard's rho method笔记">
+                  <i class="fa fa-chevron-left"></i> Pollard's rho method笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/common-prime-rsa.html" rel="next" title="Common Prime RSA 笔记">
+                  Common Prime RSA 笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">338k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:07</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

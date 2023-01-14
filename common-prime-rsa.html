@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="Common Prime RSA 相关的笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Common Prime RSA 笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/common-prime-rsa.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="Common Prime RSA 相关的笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-14T13:30:00.000Z">
+<meta property="article:modified_time" content="2023-01-14T13:19:25.902Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="rsa">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/common-prime-rsa.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/common-prime-rsa.html","path":"/common-prime-rsa.html","title":"Common Prime RSA 笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Common Prime RSA 笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">55</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">92</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#common-prime-rsa"><span class="nav-number">1.</span> <span class="nav-text">Common Prime RSA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">生成算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E5%87%BB"><span class="nav-number">1.3.</span> <span class="nav-text">攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gamma-%E6%8E%A5%E8%BF%91%E4%BA%8E-12"><span class="nav-number">1.3.1.</span> <span class="nav-text">\(\gamma\)
+接近于 \(1&#x2F;2\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5-ab"><span class="nav-number">1.3.2.</span> <span class="nav-text">已知 \(a,b\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5-g"><span class="nav-number">1.3.3.</span> <span class="nav-text">已知 \(g\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E8%A7%A3-n-1"><span class="nav-number">1.3.4.</span> <span class="nav-text">分解 \(N-1\)</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/common-prime-rsa.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Common Prime RSA 笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-01-14 21:30:00" itemprop="dateCreated datePublished" datetime="2023-01-14T21:30:00+08:00">2023-01-14</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.5k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">Common Prime RSA 相关的笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="common-prime-rsa">Common Prime RSA</h1>
+<h2 id="简介">简介</h2>
+<p>Wiener 提出，如果 <span class="math inline">\(p\)</span> 和 <span class="math inline">\(q\)</span> 是素数，使得 <span class="math inline">\(p-1\)</span> 和 <span class="math inline">\(q-1\)</span>
+有一个大数因子，那么具有这种性质的素数可以作为 Wiener Attack
+的反制措施。</p>
+<p>根据这种理论，出现了一种 <span class="math inline">\(p-1\)</span> 和
+<span class="math inline">\(q-1\)</span> 拥有一个共同的大素数因子的 RSA
+变体，我们称作共素数RSA（Common Prime RSA）。</p>
+<p>对于某个大素数 <span class="math inline">\(g\)</span>，让 <span class="math inline">\(p=2ga+1\)</span> 且 <span class="math inline">\(q=2gb+1\)</span> 作为平衡素数，保证 <span class="math inline">\(a,b\)</span> 互素且 <span class="math inline">\(h=2gab+a+b\)</span> 是素数。第一个限制确保 <span class="math inline">\(\gcd(p-1,q-1)=2g\)</span>，第二个限制确保 <span class="math inline">\((pq-1)/2=gh\)</span> 与 <span class="math inline">\(N=pq\)</span> 的大小接近。</p>
+<p>因为由上述算法生成的素数 <span class="math inline">\(p,q\)</span>
+满足 <span class="math inline">\(g=\gcd(p-1,q-1)\)</span>
+是一个大素数因子，故称 <span class="math inline">\(p,q\)</span>
+为共素数（common primes）。其中 <span class="math inline">\(g\)</span>
+为这两个素数的共因子（common factor）。</p>
+<p>我们需要注意到对于共素数RSA有着以下性质： <span class="math display">\[
+\lambda(pq)=\mathrm{lcm}(p-1,q-1)=\mathrm{lcm}(2ga,2gb)=2gab\\
+\varphi(pq)=(p-1)(q-1)=2ga2gb=2g\lambda(pq)
+\]</span> 此外存在额外定义，RSA加密指数和解密指数需要与 <span class="math inline">\(\lambda(pq)\)</span> 互素。</p>
+<p>根据上述定义，可以推导出 <span class="math display">\[
+N=pq=(2ga+1)(2gb+1)=2g(2gab+a+b)+1=2gh+1
+\]</span> 即 <span class="math inline">\(N-1\)</span> 为 <span class="math display">\[
+N-1=2g(2gab+a+b)=2gh
+\]</span> 定义 <span class="math inline">\(\gamma\)</span> 表示共因子
+<span class="math inline">\(g\)</span> 的相对于 <span class="math inline">\(N\)</span> 的大小，即 <span class="math inline">\(g=N^\gamma\)</span>。考虑 <span class="math inline">\(g\leq N^{1/2}\)</span>，故 <span class="math inline">\(0\leq\gamma\leq1/2\)</span>。</p>
+<h2 id="生成算法">生成算法</h2>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gcd</span><br><span class="line"><span class="keyword">except</span> NameError:</span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_prime</span>(<span class="params">nbits: <span class="built_in">int</span>, gamma: <span class="built_in">float</span></span>):</span></span><br><span class="line">    g = getPrime(<span class="built_in">int</span>(nbits * gamma))</span><br><span class="line">    alpha = <span class="number">0.5</span> - gamma</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        a = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">        p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> isPrime(p):</span><br><span class="line">            b = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">            q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">            h = <span class="number">2</span> * g * a * b + a + b</span><br><span class="line">            <span class="keyword">while</span> <span class="keyword">not</span> isPrime(q) <span class="keyword">or</span> isPrime(h) <span class="keyword">or</span> gcd(a, b) != <span class="number">1</span>:</span><br><span class="line">                b = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">                q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> p, q</span><br><span class="line"><span class="built_in">print</span>(gen_prime(<span class="number">512</span>, <span class="number">0.48</span>))</span><br></pre></td></tr></table></figure>
+<h2 id="攻击">攻击</h2>
+<h3 id="gamma-接近于-12"><span class="math inline">\(\gamma\)</span>
+接近于 <span class="math inline">\(1/2\)</span></h3>
+<p>当 <span class="math inline">\(\gamma\)</span> 接近于 <span class="math inline">\(1/2\)</span> 时，<span class="math inline">\(g=N^\gamma\)</span> 接近于 <span class="math inline">\(N^{1/2}\)</span>，由于共素数RSA的特殊构造我们可以在
+<span class="math inline">\(O(N^{1/4-\gamma/2})\)</span> 分解 <span class="math inline">\(N\)</span>，故此时算法时间复杂度接近于 <span class="math inline">\(O(1)\)</span>。</p>
+<p>此时我们只需修改 <code>Pollard's rho method</code> 的 <span class="math inline">\(x_i\)</span> 函数。</p>
+<p>在 Mckee&amp;Pinch 的论文<a target="_blank" rel="noopener" href="https://citeseerx.ist.psu.edu/doc_view/pid/64294c404088b69a519614510b8d12b4809a6b10">《Further
+Attacks on Server-Aided RSA Cryptosystems》</a>中指出将 <span class="math inline">\(f(x)=x^2+1\)</span> 修改为 <span class="math inline">\(f(x)=x^{N-1}+3\pmod{N}\)</span> 是最优解。</p>
+<p>由于 <span class="math inline">\(N-1=2gh\)</span> 且 <span class="math inline">\(p-1=ga\)</span>，故最多只有一个值不在 <span class="math inline">\(x^{N-1}\mod{p}\)</span> 的环中。</p>
+<p>算法实现如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gcd</span><br><span class="line"><span class="keyword">except</span> NameError:</span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rho</span>(<span class="params">N</span>):</span></span><br><span class="line">    f = <span class="keyword">lambda</span> x: (<span class="built_in">pow</span>(x, N-<span class="number">1</span>, N) + <span class="number">3</span>) % N</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 加快入环速度</span></span><br><span class="line">        t = random.randint(<span class="number">2</span>, N)</span><br><span class="line">        h = f(t)</span><br><span class="line">        step_times = <span class="number">0</span></span><br><span class="line">        step_limit = <span class="number">2</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> step_times &lt; step_limit:</span><br><span class="line">                step_times = <span class="number">0</span></span><br><span class="line">                step_limit *= <span class="number">2</span></span><br><span class="line">                t = h</span><br><span class="line">                h = f(h)</span><br><span class="line">            p = gcd(<span class="built_in">abs</span>(<span class="built_in">int</span>(t) - <span class="built_in">int</span>(h)), N)</span><br><span class="line">            <span class="keyword">if</span> p == N:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> p &gt; <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> (p, N // p)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                h = f(h)</span><br><span class="line">                step_times += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rho(<span class="number">84236796025318186855187782611491334781897277899439717384242559751095347166978304126358295609924321812851255222430530001043539925782811895605398187299748256080526691975084042025794113521587064616352833904856626744098904922117855866813505228134381046907659080078950018430266048447119221001098505107823645953039</span>))</span><br></pre></td></tr></table></figure>
+<p>故事实证明 <span class="math inline">\(\gamma\)</span>
+值的选取不能过于接近 <span class="math inline">\(1/2\)</span>。</p>
+<h3 id="已知-ab">已知 <span class="math inline">\(a,b\)</span></h3>
+<p>已知 <span class="math inline">\(N=2g(2gab+a+b)+1\)</span>，于是我们构造方程 <span class="math display">\[
+4abg^2+2(a+b)g-N+1=0
+\]</span> 可以在多项式时间 <span class="math inline">\(\log(N)\)</span>
+内分解 <span class="math inline">\(N\)</span>。</p>
+<p>Sagemath 代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1185431345934512</span></span><br><span class="line">b = <span class="number">1989628969125971</span></span><br><span class="line">N = <span class="number">54692260436051338814890781701826055707958209029414126894070449935683071253184867947357262267840171428710181955973010913204514025135188192484651672240708141692701667242130748316666406528479191422804307020656050201187035928715833163999813216597718706449260040885862566373392398826670863398295350419792842640631</span></span><br><span class="line">P.&lt;g&gt; = ZZ[]</span><br><span class="line">f = <span class="number">4</span> * a * b * g ^ <span class="number">2</span> + <span class="number">2</span> * (a + b) * g - N + <span class="number">1</span></span><br><span class="line">g = f.roots()</span><br><span class="line"><span class="keyword">if</span> g:</span><br><span class="line">    g = g[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">    q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">    <span class="keyword">assert</span> p * q == N</span><br></pre></td></tr></table></figure>
+<p>Python 可以借助 <code>sympy</code> 解方程。</p>
+<h3 id="已知-g">已知 <span class="math inline">\(g\)</span></h3>
+<p>当 <span class="math inline">\(g\geq a+b\)</span>
+时，会导致在多项式时间为 <span class="math inline">\(\log(N)\)</span>
+内分解 <span class="math inline">\(N\)</span>，同时因为素数是平衡的，条件相当于 <span class="math inline">\(g&gt;N^{1/4}\)</span>。</p>
+<p>证明如下：</p>
+<p>我们假设 <span class="math inline">\(g&gt;a+b\)</span>，那么给予
+<span class="math inline">\(N,g\)</span>，令 <span class="math inline">\(M=(N-1)/(2g)\)</span>，<span class="math inline">\(c=a+b\)</span>，那么方程 <span class="math display">\[
+N=2g(2gab+a+b)+1
+\]</span> 可以改写成 <span class="math display">\[
+M=2gab+c
+\]</span> 因为 <span class="math inline">\(c=a+b&lt;g\)</span>，根据假设，可以归约为模 <span class="math inline">\(g\)</span> 域下的方程： <span class="math display">\[
+c=M\pmod{g}
+\]</span> 因此，<span class="math inline">\(c=a+b\)</span>
+是已知的。</p>
+<p>将 <span class="math inline">\(b=c-a\)</span> 带回方程 <span class="math inline">\(N=2g(2gab+a+b)+1\)</span>，整理可得二次方程：
+<span class="math display">\[
+2ga^2-2gca+(N-1)/(2g)-c=0
+\]</span> 可以解得 <span class="math inline">\(a,b\)</span>
+为该方程两解。</p>
+<p>假设 <span class="math inline">\(g=a+b\)</span>，我们将方程 <span class="math inline">\(N=2g(2gab+a+b)+1\)</span> 作等价替换，整理得到方程
+<span class="math display">\[
+\frac{N-1}{4g^2}=ab+\frac{1}{2}
+\]</span> 我们再进一步替换 <span class="math inline">\(b=g-a\)</span>，再次整理可得二次方程： <span class="math display">\[
+a^2-ga+\frac{N-1}{4g^2}-\frac{1}{2}=0
+\]</span> 可以解得 <span class="math inline">\(a,b\)</span>。</p>
+<p>代码如下：</p>
+<p><span class="math inline">\(g&gt;a+b\)</span> 时，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">g = <span class="number">2056971706333850947354991471886113601423457483931388832864204860321308350537317091564919029078296379733989138742162694786565228112885684303</span></span><br><span class="line">N = <span class="number">67324909911911622626246005558967775211455024820506932698435813321567574468019013664789401988015894964099052816176029553245881317276340043887466584645914352982274378611180595397686920214079479901514703963131435008906250160656759300390805929849374653321934393399433471228218819498373221757779799476717494079667</span></span><br><span class="line">M = (N - <span class="number">1</span>) // (<span class="number">2</span> * g)</span><br><span class="line">c = M % g</span><br><span class="line">P.&lt;a&gt; = ZZ[]</span><br><span class="line">f = <span class="number">2</span> * g * a ^ <span class="number">2</span> - <span class="number">2</span> * g * c * a + M - c</span><br><span class="line">a = f.roots()</span><br><span class="line"><span class="keyword">if</span> a:</span><br><span class="line">    a, b = a[<span class="number">0</span>][<span class="number">0</span>], a[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">    p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">    q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">    <span class="keyword">assert</span> p * q == N</span><br></pre></td></tr></table></figure>
+<p><span class="math inline">\(g=a+b\)</span> 时，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">g = <span class="number">2855372645569408464444580237486670388029956719716115953907612135874419892154982850222965560661211729647325085879529571229774148545656169021</span></span><br><span class="line">N = <span class="number">159549169988238873893531105042878385551537587717347282632324748268846735710748763722602882823022008548774298858161130258369850715542192739582830583643642436399008902770027668038725347353393047833875066622910131525247842517372845617227325882916166114361718015983671803859502931814932543107911548450229250776542101141849788751722460468073974316977656001286989710480324512919121409123619799426221232443036698458643438020098037548757403</span></span><br><span class="line">M = (N - <span class="number">1</span>) // (<span class="number">2</span> * g)</span><br><span class="line">P.&lt;a&gt; = ZZ[]</span><br><span class="line">f = <span class="number">2</span> * a ^ <span class="number">2</span> - <span class="number">2</span> * g * a + (N - <span class="number">1</span>) // (<span class="number">2</span> * g ^ <span class="number">2</span>) - <span class="number">1</span></span><br><span class="line">a = f.roots()</span><br><span class="line"><span class="keyword">if</span> a:</span><br><span class="line">    a, b = a[<span class="number">0</span>][<span class="number">0</span>], a[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">    p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">    q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">    <span class="keyword">assert</span> p * q == N</span><br></pre></td></tr></table></figure>
+<p>因为 <span class="math inline">\(p=2ga+1\)</span>，注意到 <span class="math inline">\(g&gt;N^{1/4}\)</span> 是已知的，故我们也可以用
+<code>Coppersmith's factoring</code> 方法分解模数。</p>
+<p>而当 <span class="math inline">\(g&lt;a+b\)</span>
+时，我们可以使用时间复杂度为 <span class="math inline">\(O(N^{1/4-\gamma})\)</span> 的算法分解 <span class="math inline">\(N\)</span>，每个操作的多项式时间为 <span class="math inline">\(\log(N)\)</span>。</p>
+<p>证明如下：</p>
+<p>已知 <span class="math inline">\(g\)</span>，我们可以通过除法算法计算
+<span class="math inline">\(u\)</span> 和 <span class="math inline">\(0\leq v\leq2g\)</span>，例如： <span class="math display">\[
+\frac{N-1}{2g}=2gu+v
+\]</span> 因为我们知道 <span class="math inline">\(N=2g(2gab+a+b)+1\)</span>，于是乎 <span class="math display">\[
+a+b=v+2gc\\
+ab=u-c
+\]</span> 其中 <span class="math inline">\(c\)</span> 为任意整数。</p>
+<p>对于任意与 <span class="math inline">\(N\)</span> 互素的整数 <span class="math inline">\(x\)</span>，我们有 <span class="math display">\[
+x^{u2g}\equiv x^{ab2g+c2g}\equiv x^{c2g}\pmod{N}
+\]</span> 因为 <span class="math inline">\(u=ab+c\)</span> 且 <span class="math inline">\(\lambda(N)=2gab\)</span>，所以 <span class="math inline">\(x^{2gab}\equiv 1\pmod{N}\)</span>。</p>
+<p>让 <span class="math inline">\(y=x^{2g}\)</span>，我们有 <span class="math display">\[
+y^u\equiv y^c\pmod{N}
+\]</span> 根据这个关系，未知的 <span class="math inline">\(c\)</span>
+可以用 Shanks 的小步大步法（baby-step giant-step
+methodology）求解。对于某些 <span class="math inline">\(d&gt;\sqrt{c}\)</span>，我们计算得到大步为 <span class="math display">\[
+y^0,y^d,y^{2d},\cdots,y^{d^2}\mod{N}
+\]</span> 小步为 <span class="math display">\[
+y^u,y^{u-1},y^{u-2},\cdots,y^{u-d}\mod{N}
+\]</span> 在其中搜索碰撞，将会产生一个 <span class="math inline">\(r\)</span> 和 <span class="math inline">\(s\)</span> 满足： <span class="math display">\[
+y^{rd}\equiv y^{u-s}\pmod{N}
+\]</span> 其中 <span class="math inline">\(c=rd+s\)</span>。</p>
+<p>当 <span class="math inline">\(c\)</span> 已知，我们可以计算 <span class="math inline">\(a,b\)</span>。</p>
+<p>计算，排序和搜索需要 <span class="math inline">\(O(d\log(d))\)</span>
+操作，其中 <span class="math inline">\(d&gt;\sqrt{c}\)</span>。</p>
+<p>故使用这种算法需求 <span class="math inline">\(\gamma\)</span> 接近于
+<span class="math inline">\(1/4\)</span>。</p>
+<blockquote>
+<p>本人多次跑这个算法，最终验证可得 <span class="math inline">\(c\)</span> 的大致范围大概率会落在 <span class="math inline">\(N^{(1/2-2\gamma)}\)</span>
+的附近，取上下浮动两位大小最佳。</p>
+</blockquote>
+<p>Sagemath 如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sage.groups.generic <span class="keyword">import</span> bsgs</span><br><span class="line"></span><br><span class="line">g = <span class="number">28838314918840273611038952856252141148393903858815521699377328440901497</span></span><br><span class="line">N = <span class="number">23895816238623712091906549349650291003358466897973970818205381234024572750472476312894286233088847723906345049342176974080465940396626170377635736786780099297743807402105462746828310247313063710700453371777283064626446124365885063073122303271609231832129823571694756234973129694217982548355078107610764879363</span></span><br><span class="line">nbits = <span class="number">1024</span></span><br><span class="line">gamma = <span class="number">0.23</span></span><br><span class="line">cbits = ceil(nbits * (<span class="number">0.5</span> - <span class="number">2</span> * gamma))</span><br><span class="line"></span><br><span class="line">M = (N - <span class="number">1</span>) // (<span class="number">2</span> * g)</span><br><span class="line">u = M // (<span class="number">2</span> * g)</span><br><span class="line">v = M - <span class="number">2</span> * g * u</span><br><span class="line">GF = Zmod(N)</span><br><span class="line">x = GF.random_element()</span><br><span class="line">y = x ^ (<span class="number">2</span> * g)</span><br><span class="line"><span class="comment"># c的范围大概与N^(0.5-2*gamma)很接近</span></span><br><span class="line">c = bsgs(y, y ^ u, (<span class="built_in">int</span>(<span class="number">2</span>**(cbits-<span class="number">1</span>)), <span class="built_in">int</span>(<span class="number">2</span>**(cbits+<span class="number">1</span>))))</span><br><span class="line">ab = u - c</span><br><span class="line">apb = v + <span class="number">2</span> * g * c</span><br><span class="line">P.&lt;x&gt; = ZZ[]</span><br><span class="line">f = x ^ <span class="number">2</span> - apb * x + ab</span><br><span class="line">a = f.roots()</span><br><span class="line"><span class="keyword">if</span> a:</span><br><span class="line">    a, b = a[<span class="number">0</span>][<span class="number">0</span>], a[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">    p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">    q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">    <span class="keyword">assert</span> p * q == N</span><br></pre></td></tr></table></figure>
+<h3 id="分解-n-1">分解 <span class="math inline">\(N-1\)</span></h3>
+<p>当 <span class="math inline">\(\gamma\)</span> 过小，即 <span class="math inline">\(g=N^\gamma\)</span> 过小时，因为已知 <span class="math inline">\(N-1=2gh\)</span>，故分解出 <span class="math inline">\(g\)</span> 是较为容易的。</p>
+<p>可以使用 <code>yafu</code> 分解 <span class="math inline">\(\frac{N-1}{2}\)</span>，其中当 <span class="math inline">\(\gamma\)</span> 值约为 0.10 左右时分解迅速。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/common-prime-rsa.html" title="Common Prime RSA 笔记">https://hasegawaazusa.github.io/common-prime-rsa.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/crypto/" rel="tag"># crypto</a>
+              <a href="/tags/rsa/" rel="tag"># rsa</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/wiener-attack.html" rel="prev" title="wiener attack 笔记">
+                  <i class="fa fa-chevron-left"></i> wiener attack 笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/multi-power-rsa.html" rel="next" title="multi-power-RSA 笔记">
+                  multi-power-RSA 笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">338k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:07</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

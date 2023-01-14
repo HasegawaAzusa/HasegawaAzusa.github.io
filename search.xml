@@ -2561,6 +2561,14 @@ m=D(c)=c^d\ mod\ n
 <p>可以使用 <code>gmpy2.gcdext(a, b)</code> 替代，返回三元元组 <span class="math inline">\((g,s,t)\)</span></p>
 <p>其中<span class="math inline">\(g=\gcd(a, b)=sa+tb\)</span></p>
 </blockquote>
+<p>存在相关性的定理：裴蜀定理。</p>
+<p>裴蜀定理说明了对任意整数 <span class="math inline">\(a,b\)</span>
+和它们的最大公约数 <span class="math inline">\(\gcd{(a,b)}=d\)</span>，那么对任意整数 <span class="math inline">\(x,y\)</span> 都有 <span class="math inline">\(ax+by\)</span> 为 <span class="math inline">\(d\)</span> 的倍数，即 <span class="math display">\[
+ax+by=0\pmod{d}
+\]</span> 特别地，一定存在整数使得 <span class="math inline">\(ax+by=d\)</span> 成立。</p>
+<p>一个重要推论为，<span class="math inline">\(a,b\)</span>
+互质的充分必要条件为存在整数 <span class="math inline">\(x,y\)</span>
+使得 <span class="math inline">\(ax+by=1\)</span>。</p>
 <h2 id="求逆元">求逆元</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">invert</span>(<span class="params">e, phi</span>):</span></span><br><span class="line">    (x, y, r) = extendedGCD(e, phi)</span><br><span class="line">    <span class="comment"># y maybe &lt; 0, so convert it</span></span><br><span class="line">    <span class="keyword">if</span> y &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> phi + y</span><br><span class="line">    <span class="keyword">return</span> y</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -2596,12 +2604,35 @@ k=invert(c, n)^{-s}
 \phi (mn)=\phi (m)\phi (n)
 \]</span></p></li>
 </ul>
+<p>其中与之相关的有欧拉公式：</p>
+<p>对任意两个互素整数 <span class="math inline">\(a,n\)</span>，有 <span class="math display">\[
+a^{\varphi(n)}=1\pmod{n}
+\]</span></p>
 <h2 id="中国剩余定理">中国剩余定理</h2>
 <p>设<span class="math inline">\(m\)</span>与<span class="math inline">\(n\)</span>是整数，<span class="math inline">\(gcd(m,n)=1\)</span>，<span class="math inline">\(b\)</span>与<span class="math inline">\(c\)</span>是任意整数，则同余式组 <span class="math display">\[
 x\equiv b\ (mod\ m)\ 与\ x\equiv c\ (mod\ n)
 \]</span> 恰有一个解 <span class="math inline">\(0\leq x\leq
 mn\)</span></p>
 <p>详细内容可以在<a href="/CRT-note.html">这里</a>了解</p>
+<h2 id="威尔逊定理">威尔逊定理</h2>
+<p>威尔逊定理给出了判定一个自然数是否为素数的充分必要条件：</p>
+<p>当且仅当 <span class="math inline">\(p\)</span> 为素数时，有 <span class="math display">\[
+(p-1)!\equiv-1\pmod{p}
+\]</span> 或推论 <span class="math display">\[
+(p-1)!+1=0\pmod{p}
+\]</span> 即 <span class="math inline">\((p-1)!+1\)</span> 为 <span class="math inline">\(p\)</span> 的倍数。</p>
+<p>一般用于辅助推导，相关的有伽马函数 <span class="math display">\[
+\Gamma(n)=(n-1)!
+\]</span></p>
+<h2 id="费马小定理">费马小定理</h2>
+<p>如果 <span class="math inline">\(p\)</span> 是一个素数，取任意的非
+<span class="math inline">\(p\)</span> 整数 <span class="math inline">\(a\)</span>，有 <span class="math display">\[
+a^{p-1}\equiv1\pmod{p}
+\]</span> 推论有： <span class="math display">\[
+na^{p-1}\equiv n\pmod{p},n\in\Z\\
+a^{p-2}\equiv a^{-1}\pmod{p}\\
+a^b\equiv a^{b\pmod{p-1}}\pmod{p},b\in\Z\\
+\]</span></p>
 <h1 id="rsapython-实现">RSA&amp;python 实现</h1>
 <h2 id="加密">加密</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p=<span class="number">447685307</span></span><br><span class="line">q=<span class="number">2037</span></span><br><span class="line">e=<span class="number">17</span></span><br><span class="line">m = <span class="number">904332399012</span></span><br><span class="line">n = p * q</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br></pre></td></tr></table></figure>
@@ -2609,7 +2640,7 @@ mn\)</span></p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p=<span class="number">447685307</span></span><br><span class="line">q=<span class="number">2037</span></span><br><span class="line">e=<span class="number">17</span></span><br><span class="line">c=<span class="number">704796792</span></span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = <span class="built_in">pow</span>(e, -<span class="number">1</span>, phi)</span><br><span class="line"><span class="comment"># 旧版本python需要使用gmpy2库求解逆元</span></span><br><span class="line"><span class="comment"># import gmpy2</span></span><br><span class="line"><span class="comment"># d = gmpy2.invert(e, phi)</span></span><br><span class="line">m = <span class="built_in">pow</span>(c, d, n)</span><br></pre></td></tr></table></figure>
 <h2 id="读取参数">读取参数</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./tmp/pubkey.pem&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    key = RSA.importKey(f)</span><br><span class="line">    N = key.n</span><br><span class="line">    e = key.e  </span><br></pre></td></tr></table></figure>
-<p>也可以使用在线网站：http://www.hiencode.com/pub_asys.html</p>
+<p>也可以使用在线网站：<a href="http://www.hiencode.com/pub_asys.html">http://www.hiencode.com/pub_asys.html</a></p>
 <p>或者使用 openssl 的 rsa 工具，例如：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl rsa -<span class="keyword">in</span> pub.key -text</span><br></pre></td></tr></table></figure>
 <h2 id="poly-rsa">Poly-RSA</h2>
@@ -2659,11 +2690,15 @@ e_1x+e_2y=1
 <p>利用扩展欧几里得算法可以求得解<span class="math inline">\((x,y)\)</span>，在这里不妨设<span class="math inline">\(x\)</span>为正，<span class="math inline">\(y\)</span>为负，利用模运算性质得 <span class="math display">\[
 c_1^xc_2^y(mod\ n)=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m\ (mod\ n)
 \]</span></p>
+<p>特别地，当 <span class="math inline">\(\gcd(e_1,e_2)=g\)</span>
+较小时，也可以构造为： <span class="math display">\[
+c_1^xc_2^y(mod\ n)=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m^g\ (mod\ n)
+\]</span> 随后进行低加密指数攻击。</p>
 <h3 id="实现">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">n = <span class="number">0xa6241c28743fbbe4f2f67cee7121497f622fd81947af30f327fb028445b39c2d517ba7fdcb5f6ac9e6217205f8ec9576bdec7a0faef221c29291c784eed393cd95eb0d358d2a1a35dbff05d6fa0cc597f672dcfbeecbb14bd1462cb6ba4f465f30f22e595c36e6282c3e426831d30f0479ee18b870ab658a54571774d25d6875</span></span><br><span class="line">e1 = <span class="number">0x3045</span></span><br><span class="line">e2 = <span class="number">0xff4d</span></span><br><span class="line">c1 = <span class="number">0x5d1e39bc751108ec0a1397d79e63c013d238915d13380ae649e84d7d85ebcffbbc35ebb18d2218ccbc5409290dfa8a4847e5923c3420e83b1a9d7aa67190dc0d34711cce261665c64c28ed2834394d4b181926febf7eb685f9ce81f36c7fb72798da3a14a123287171d26e084948aab0fba81c53f10b5696fc291006254ee690</span></span><br><span class="line">c2 = <span class="number">0x3d90f2bec4fe02d8ce4cece3ddb6baed99337f7e6856eef255445741b5cfe378390f058679d70236e51be4746db4c207f274c40b092e24f8c155a0957867e84dca48e27980af488d2615a280c6eadec2f1d30b95653b1ee3135e2edff100dd2c529994f846722f811348b082d0bec7cfab579a4bd0ab789928b1bebed68d628f</span></span><br><span class="line">g, r, s = gcdext(e1, e2)</span><br><span class="line">m = <span class="built_in">pow</span>(c1, r, n) * <span class="built_in">pow</span>(c2, s, n) % n</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(m)))</span><br></pre></td></tr></table></figure>
 <h2 id="公约数攻击">公约数攻击</h2>
 <h3 id="特征-2">特征</h3>
-<p>多个n，均不相同，并且都是2048bit，4096bit级别，无法正面硬杠，并且明文都没什么联系，e也一般取65537。</p>
+<p>多个n，均不相同，并且都是2048bit，4096bit级别，并且明文都没什么联系。</p>
 <h3 id="原理-1">原理</h3>
 <p>使用公约数求出共同的素数因子</p>
 <h3 id="实现-1">实现</h3>
@@ -2697,9 +2732,9 @@ k=\frac{k\varphi(N)}{N}+1=k-\left \lceil \frac{p+q+1}{N} \right \rceil
 <h3 id="实现-2">实现</h3>
 <ul>
 <li><p>若<span class="math inline">\(m^3&lt;n\)</span></p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">n= <span class="number">22885480907469109159947272333565375109310485067211461543881386718201442106967914852474989176175269612229966461160065872310916096148216253429849921988412342732706875998100337754561586600637594798877898552625378551427864501926224989873772743227733285336042475675299391051376624685754547818835551263597996620383338263448888107691240136257201191331617560711786674975909597833383395574686942099700631002290836152972352041024137872983284691831292216787307841877839674258086005814225532597955826353796634417780156185485054141684249037538570742860026295194559710972266059844824388916869414355952432189722465103299013237588737</span></span><br><span class="line">e = <span class="number">3</span></span><br><span class="line">c= <span class="number">15685364647213619014219110070569189770745535885901269792039052046431067708991036961644224230125219358149236447900927116989931929305133870392430610563331490276096858863490412102016758082433435355613099047001069687409209484751075897343335693872741</span></span><br><span class="line">m, flag = gmpy2.iroot(c, <span class="number">3</span>)</span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;m=<span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;could not decode m&quot;</span>)</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">n= <span class="number">22885480907469109159947272333565375109310485067211461543881386718201442106967914852474989176175269612229966461160065872310916096148216253429849921988412342732706875998100337754561586600637594798877898552625378551427864501926224989873772743227733285336042475675299391051376624685754547818835551263597996620383338263448888107691240136257201191331617560711786674975909597833383395574686942099700631002290836152972352041024137872983284691831292216787307841877839674258086005814225532597955826353796634417780156185485054141684249037538570742860026295194559710972266059844824388916869414355952432189722465103299013237588737</span></span><br><span class="line">e = <span class="number">3</span></span><br><span class="line">c= <span class="number">15685364647213619014219110070569189770745535885901269792039052046431067708991036961644224230125219358149236447900927116989931929305133870392430610563331490276096858863490412102016758082433435355613099047001069687409209484751075897343335693872741</span></span><br><span class="line">m, flag = gmpy2.iroot(c, e)</span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;m=<span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;could not decode m&quot;</span>)</span><br></pre></td></tr></table></figure></li>
 <li><p>若<span class="math inline">\(m^3&gt;n\)</span>但并非<span class="math inline">\(m^3\gg n\)</span> (这里需要跑比较久)</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">n = <span class="number">114976915747243387792157708464120735018971336213935438953074748276198282761939060395482051056351068439137722626185590043024556656813730840050547350912425438364703854627760482842307943026011880815011654341047422453012558617703411700393668892701036222135444420377515575624398723436532681305293727164639582093389</span></span><br><span class="line">e = <span class="number">3</span></span><br><span class="line">c = <span class="number">5828813410620741112500628876643872258919868379601617907887884191584237969605489971465692568848339200057188383649365078832766143513766368216471491824042974016773526107276856706832404477882581400769791378958901067683158857990261489285951805740071223765359992165262854641069674603160977034446644199945940251030</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line">i = gmpy2.iroot(c, <span class="number">3</span>)[<span class="number">0</span>] // n</span><br><span class="line"><span class="built_in">print</span>(i)</span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    m, flag = gmpy2.iroot(c + i * n, <span class="number">3</span>)</span><br><span class="line">    <span class="keyword">if</span> flag:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;m=<span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    i += <span class="number">1</span></span><br></pre></td></tr></table></figure></li>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">n = <span class="number">114976915747243387792157708464120735018971336213935438953074748276198282761939060395482051056351068439137722626185590043024556656813730840050547350912425438364703854627760482842307943026011880815011654341047422453012558617703411700393668892701036222135444420377515575624398723436532681305293727164639582093389</span></span><br><span class="line">e = <span class="number">3</span></span><br><span class="line">c = <span class="number">5828813410620741112500628876643872258919868379601617907887884191584237969605489971465692568848339200057188383649365078832766143513766368216471491824042974016773526107276856706832404477882581400769791378958901067683158857990261489285951805740071223765359992165262854641069674603160977034446644199945940251030</span></span><br><span class="line">i = <span class="number">0</span></span><br><span class="line"><span class="keyword">while</span> <span class="number">1</span>:</span><br><span class="line">    m, flag = gmpy2.iroot(c + i * n, e)</span><br><span class="line">    <span class="keyword">if</span> flag:</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">f&quot;m=<span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    i += <span class="number">1</span></span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="e1-攻击"><span class="math inline">\(e=1\)</span> 攻击</h2>
 <h3 id="实现-3">实现</h3>
@@ -2716,8 +2751,9 @@ c_2=pow(m,e,n_2)\\
 c_3=pow(m,e,n_3)\\
 \cdots
 \]</span> 对上列等式运用中国剩余定理，得到 <span class="math display">\[
-c_x=pow(m,3,n_1*n_2*n_3)
+c_x=pow(m,e,n_1*n_2*n_3*\cdots)
 \]</span></p>
+<p>随后再进行低加密指数攻击。</p>
 <h3 id="实现-4">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CRT</span>(<span class="params">clist, nlist</span>):</span></span><br><span class="line">    N = reduce(<span class="keyword">lambda</span> x, y: x * y, nlist)</span><br><span class="line">    result = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> c, n <span class="keyword">in</span> <span class="built_in">zip</span>(clist, nlist):</span><br><span class="line">        m = N // n</span><br><span class="line">        d, r, s = gmpy2.gcdext(n, m)</span><br><span class="line">        <span class="keyword">if</span> d != <span class="number">1</span>: <span class="keyword">raise</span> Exception(<span class="string">&quot;Input not pairwise co-prime&quot;</span>)</span><br><span class="line">        result += c * s * m</span><br><span class="line">    <span class="keyword">return</span> result % N, N</span><br><span class="line">e = <span class="number">9</span></span><br><span class="line">n = [<span class="number">142782424368849674771976671955176187834932417027468006479038058385550042422280158726561712259205616626939123504489410624745195777853423961104590708231562726165590769610040722589287393102301338152085670464005026301781192671834390892019478189768725018303217559795377795540494239283891894830166363576205812991157</span>, <span class="number">153610425077816156109768509904751446801233412970601397035720458311275245730833227428213917577405780162151444202393431444812010569489900435979730559895340377469612234558042643742219128033827948585534761030527275423811282367831985007507137144308704413007806012914286105842311420933479771294576841956749281552971</span>, <span class="number">152540067782701001222493009941492423063369171831039847414320547494725020441901272486665728360741395415762864872737675660423920609681185809510355937534756399208661762715484879562585724584849261266873624875852300611683382543315580370484972470694466195837255994159609193239840228218925381488410059939975556977947</span>, <span class="number">125842716702134814646356078531900645012495638692517778270527426844383063904041812273637776798591687732598509470005151551320457132061693618473039437320011446697406190781306264437609046721508738109650829547010385875425097336266103994639126319889016342284747700714199556143378526590058467791687837422897022829661</span>, <span class="number">116144389285266462769913139639175922392318396923181100785008570884082681963637784423143843845816350379438789947802939701820129805341796427821894273985551331666719808355412080909245720551238149511778060242720419584504473490216670437024863860559347959698828131475160058721701582089480924088773887932997353631767</span>, <span class="number">127833907448946785858374094953899556339175475846831397383049660262333005992005484987913355932559627279178940862787593749842796469355336182379062826441222705075178971785791223706944120681105575965622931327112817747065200324610697178273898956820957640413744954233327851461318200323486469677469950386824833536523</span>, <span class="number">130561613227079478921314550968562766645507834694262831586725464124109153306162445639759476845681271537955934718244296904503168256991962908095007040044300188572466395275317838178325500238288302672390013747102961340256309124310478931896245221622317302428447389760864327859640573452084295225059466376349115703119</span>, <span class="number">115953389401040751013569404909249958538962411171147823610874077094621794755967854844224923689925397631692572916641171075740839099217316101334941033937183815345038898177087515909675028366437302462022970987947264115373697445950951595479758872029099661065186221250394358255523574834723958546450323357472451930993</span>, <span class="number">143437107845384843564651522639125300763388830136500260725097766445883003928355325003575359566631064630487365774344508496878731109174874449170057678821440711511966073934025028100604234445470976333825866939923998344367645612128590820812489407412175198698290167077116185959180877334222693344630253253476594907313</span>]</span><br><span class="line">c = [<span class="number">85033868418784308573673709960700777350314426427677627319697346811123742342359072170220428874952996988431950989321281905284522596263957356289624365171732095210045916218066135140320107686084053271623461104022705353814233772164502775939590711842361956121603943483040254727995655776263673058788416722141673409688</span>, <span class="number">66065963470666895005407449599703926269325406456711861190876894466341571726360462706664546294453572319565476664348345756905411939632955966517708138047546806602828064213238537646393524578984547577761559965654539771172357089802682793169968961304179886652390277814477825753096636750388350662980872556701402397564</span>, <span class="number">116011740820520887443111656288411611070614127688662643257265381793048354928820176624229624692124188995846076431510548507016903260774215950803926107831505634778278712070141663189086436127990584944132764896694777031370995058271038329228336417590284517922855284619653301817355115583540545182119702335431334401666</span>, <span class="number">97640420284096094887471273365295984332267897927392169402918423863919914002451127544715668846623138003564829254309568918651163254043205129883843425179687841236818720463784828905460885026290909768599562386370732119591181513319548915478512030197629196018254041500662654260834562708620760373487652389789200792120</span>, <span class="number">8112507653841374573057048967617108909055624101437903775740427861003476480616929517639719198652146909660899632120639789106782550275648578142883715280547602249589837441805676364041484345030575130408744621981440093280624046635769338568542048839419939250444929802135605724150484414516536378791500915047844188300</span>, <span class="number">36792148360808115566234645242678223867680969786675055638670907933041180936164293809961667801099516457636164692292891528415720085345494773373966277807505798679784807614784581861287048096977968620964436947452527540958289441390882589051225367658014709290392321808926567572528170531844664734909469690750971883323</span>, <span class="number">53043093283305492238903255767698153246673671181809989362223466090875767705978690531154079519999671834688647277179370374802495005937892824566602423646978168777735383632928274082669949750078161820002768640908750005814934158829006019656592134357897586040866207754535586785064545866404380204728594863102313407789</span>, <span class="number">88499407133762624445946519155722583633934260410706930537441122463087556094734626189377091740335667052378955691250910459790202385799502439716173363179773811920751410726795431402796346647688144853156900427797933862087074385441977254140336390678022955770879265490567987868532251217565094093318626424653599450992</span>, <span class="number">138337520305048557335599940473834485492131424901034295018189264168040969172072024612859307499682986987325414798210700710891033749119834960687318156171051379643844580970963540418974136891389303624057726575516576726845229494107327508855516437230240365759885913142671816868762838801720492804671259709458388192984</span>]</span><br><span class="line">x, n = CRT(c, n)</span><br><span class="line">m, flag = gmpy2.iroot(x, e)</span><br><span class="line"><span class="keyword">if</span> flag:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&quot;m=<span class="subst">&#123;m&#125;</span>&quot;</span>)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;could not decode m&quot;</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="低解密指数攻击-wiener-attack">低解密指数攻击 (Wiener
@@ -2745,8 +2781,39 @@ Wiener Attack (维纳攻击) 可以在多项式时间中分解N。</p>
 <h2 id="dp-泄露">dp 泄露</h2>
 <h3 id="实现-7">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line">n = <span class="number">248254007851526241177721526698901802985832766176221609612258877371620580060433101538328030305219918697643619814200930679612109885533801335348445023751670478437073055544724280684733298051599167660303645183146161497485358633681492129668802402065797789905550489547645118787266601929429724133167768465309665906113</span></span><br><span class="line">dp = <span class="number">905074498052346904643025132879518330691925174573054004621877253318682675055421970943552016695528560364834446303196939207056642927148093290374440210503657</span></span><br><span class="line">c = <span class="number">140423670976252696807533673586209400575664282100684119784203527124521188996403826597436883766041879067494280957410201958935737360380801845453829293997433414188838725751796261702622028587211560353362847191060306578510511380965162133472698713063592621028959167072781482562673683090590521214218071160287665180751</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, e + <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">if</span> (dp * e - <span class="number">1</span>) % i == <span class="number">0</span> <span class="keyword">and</span> n % (((dp * e - <span class="number">1</span>) // i) + <span class="number">1</span>) == <span class="number">0</span>:</span><br><span class="line">        p = ((dp * e - <span class="number">1</span>) // i) + <span class="number">1</span></span><br><span class="line">        q = n // (((dp * e - <span class="number">1</span>) // i) + <span class="number">1</span>)</span><br><span class="line">        phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">        d = gmpy2.invert(e, phi)</span><br><span class="line">        m = <span class="built_in">int</span>(<span class="built_in">pow</span>(c, d, n))</span><br></pre></td></tr></table></figure>
-<h2 id="e与varphin-不互素"><span class="math inline">\(e\)</span>与<span class="math inline">\(\varphi(n)\)</span> 不互素</h2>
+<h2 id="已知-p-高位">已知 <span class="math inline">\(p\)</span>
+高位</h2>
 <h3 id="原理-7">原理</h3>
+<p>已知 <span class="math inline">\(p\)</span> 的一半高位时，可以使用
+Coppersmith 方法分解 <span class="math inline">\(N\)</span>。</p>
+<p>其中在 Coppersmith 方法里，<span class="math inline">\(X\)</span> 为
+<span class="math inline">\(p\)</span> 未知的位数范围，<span class="math inline">\(p&gt;N^\beta\)</span>。</p>
+<blockquote>
+<p>1024 位需要知道 570 位</p>
+<p>512 位需要知道 300 位</p>
+</blockquote>
+<h3 id="实例">实例</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p3 = getPrime(<span class="number">512</span>)</span><br><span class="line">q3 = getPrime(<span class="number">512</span>)</span><br><span class="line">N3 = p3*q3</span><br><span class="line"><span class="built_in">print</span> <span class="built_in">pow</span>(msg3,e3,N3)</span><br><span class="line"><span class="built_in">print</span> (e3,N3)</span><br><span class="line"><span class="built_in">print</span> p3&gt;&gt;<span class="number">200</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># phigh = 7117286695925472918001071846973900342640107770214858928188419765628151478620236042882657992902</span></span><br><span class="line"><span class="comment"># N = 113432930155033263769270712825121761080813952100666693606866355917116416984149165507231925180593860836255402950358327422447359200689537217528547623691586008952619063846801829802637448874451228957635707553980210685985215887107300416969549087293746310593988908287181025770739538992559714587375763131132963783147</span></span><br></pre></td></tr></table></figure>
+<p>利用 Sagemath 中 <code>small_roots</code> 的参数，变成 Coppersmith
+方法求解低位值。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">phigh = <span class="number">7117286695925472918001071846973900342640107770214858928188419765628151478620236042882657992902</span></span><br><span class="line">N = <span class="number">113432930155033263769270712825121761080813952100666693606866355917116416984149165507231925180593860836255402950358327422447359200689537217528547623691586008952619063846801829802637448874451228957635707553980210685985215887107300416969549087293746310593988908287181025770739538992559714587375763131132963783147</span></span><br><span class="line"><span class="comment"># 未知的位数</span></span><br><span class="line">kbits = <span class="number">200</span></span><br><span class="line"><span class="comment"># beta值按需修改</span></span><br><span class="line">beta = <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line">P.&lt;x&gt; = Zmod(N)[]</span><br><span class="line">f = x + (phigh &lt;&lt; kbits)</span><br><span class="line">p0 = f.small_roots(X=<span class="number">2</span>**kbits, beta=beta)</span><br><span class="line"><span class="keyword">assert</span>(p0)</span><br><span class="line">p0 = p0[<span class="number">0</span>]</span><br><span class="line">p = Integer(f(p0))</span><br><span class="line"><span class="built_in">print</span>(p)</span><br></pre></td></tr></table></figure>
+<h2 id="已知-p-低位">已知 <span class="math inline">\(p\)</span>
+低位</h2>
+<h3 id="原理-8">原理</h3>
+<p>假设已知 <span class="math inline">\(p\)</span> 的 <span class="math inline">\(k\)</span> 个低位，那么有： <span class="math display">\[
+p \pmod{2^k}=p_0
+\]</span> 即 <span class="math display">\[
+p=p_0+\alpha\cdot2^k
+\]</span> 两边同乘，得到 <span class="math display">\[
+n=p_0q+\alpha q\cdot2^k
+\]</span> 有 <span class="math display">\[
+np_0^{-1}=q+\alpha qp_0^{-1}\cdot2^k
+\]</span> 两边同余，得到： <span class="math display">\[
+q\pmod{2^k}=np_0^{-1}\pmod{2^k}
+\]</span> 换句话说，知道 <span class="math inline">\(p\)</span>
+低位，即可求 <span class="math inline">\(q\)</span> 低位。</p>
+<h2 id="e与varphin-不互素"><span class="math inline">\(e\)</span>与<span class="math inline">\(\varphi(n)\)</span> 不互素</h2>
+<h3 id="原理-9">原理</h3>
 <p>已知<span class="math inline">\(c_1,c_2,p,q_1,q_2,n_1=pq_1,n_2=pq_2,e\)</span>，则有
 <span class="math display">\[
 k=\gcd(e,\varphi(n))\\
@@ -2772,7 +2839,7 @@ m^{ab}=kq_1q_2+last
 高位相同</h2>
 <h3 id="特征-7">特征</h3>
 <p>已知 <span class="math inline">\(n\)</span>，其中 <span class="math inline">\(|p-q|\)</span> 较小，<span class="math inline">\(p,q\)</span> 数量位知道</p>
-<h3 id="实例">实例</h3>
+<h3 id="实例-1">实例</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">nbits = <span class="number">1024</span></span><br><span class="line">p = getPrime(nbits // <span class="number">2</span>)</span><br><span class="line">q = next_prime(p + (<span class="number">1</span> &lt;&lt; <span class="built_in">int</span>(nbits * beta)))</span><br><span class="line">n = p * q</span><br></pre></td></tr></table></figure>
 <p>其中</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">n = 122774778628333786198247673730199699244621671207929503475974934116435291656353398717362903500544713183492877018211738292001516168567879903073296829793548881467270228989482723510323780292947403861546283099122868428902480999485625751961457245487615479377459707992802193391975415447673215862245349068018710525679</span><br><span class="line">beta = 0.44</span><br></pre></td></tr></table></figure>
@@ -2800,7 +2867,7 @@ e = 65537 c =
 <h2 id="rabin-攻击">Rabin 攻击</h2>
 <h3 id="特征-8">特征</h3>
 <p><span class="math inline">\(e=2\)</span></p>
-<h3 id="原理-8">原理</h3>
+<h3 id="原理-10">原理</h3>
 <ul>
 <li><p>计算出 <span class="math inline">\(m_p\)</span> 和<span class="math inline">\(m_q\)</span>： <span class="math display">\[
 m_p=\sqrt{c}\mod{p}\\
@@ -2823,12 +2890,13 @@ m_q=c^{\frac{1}{4}(q+1)}mod\ q
 <h3 id="实现-10">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">n=<span class="number">523798549</span></span><br><span class="line">p=<span class="number">10663</span></span><br><span class="line">q=<span class="number">49123</span></span><br><span class="line">e=<span class="number">2</span></span><br><span class="line">c=<span class="number">162853095</span></span><br><span class="line">a,inv_q ,inv_p= gmpy2.gcdext(q,p)</span><br><span class="line">mp = <span class="built_in">pow</span>(c, (p + <span class="number">1</span>) // <span class="number">4</span>, p)</span><br><span class="line">mq = <span class="built_in">pow</span>(c, (q + <span class="number">1</span>) // <span class="number">4</span>, q)</span><br><span class="line">a = (inv_p * p * mq + inv_q * q * mp) % n</span><br><span class="line">b = n - <span class="built_in">int</span>(a)</span><br><span class="line">c = (inv_p * p * mq - inv_q * q * mp) % n</span><br><span class="line">d = n - <span class="built_in">int</span>(c)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span>(a, b, c, d):</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
 <h2 id="coppersmith-定理攻击">Coppersmith 定理攻击</h2>
-<h3 id="原理-9">原理</h3>
-<p>Coppersmith 定理指出在一个<span class="math inline">\(e\)</span>阶的<span class="math inline">\(mod\
-n\)</span>多项式<span class="math inline">\(f(x)\)</span>中，如果有一个根小于<span class="math inline">\(n^\frac{1}{e}\)</span> ，就可以运用一个O(log
-n)的算法求出这些根。</p>
-<p>这个定理可以应用于 RSA 算法。如果<span class="math inline">\(e =
-3\)</span>并且在明文当中只有三分之二的比特是已知的，这种算法可以求出明文中所有的比特。</p>
+<h3 id="原理-11">原理</h3>
+<p>Coppersmith 定理指出在一个 <span class="math inline">\(e\)</span>
+阶的 <span class="math inline">\(mod\ n\)</span> 多项式 <span class="math inline">\(f(x)\)</span> 中，如果有一个根小于 <span class="math inline">\(n^\frac{1}{e}\)</span> ，就可以运用一个 O(log n)
+的算法求出这些根。</p>
+<p>这个定理可以应用于 RSA 算法。如果 <span class="math inline">\(e =
+3\)</span>
+并且在明文当中只有三分之二的比特是已知的，这种算法可以求出明文中所有的比特。</p>
 <h2 id="prime-power-rsa-using-two-decryption-exponents">Prime Power RSA
 using Two Decryption Exponents</h2>
 <h3 id="特征-9">特征</h3>
@@ -2836,7 +2904,7 @@ using Two Decryption Exponents</h2>
 <li><span class="math inline">\(N=p^rq\)</span></li>
 <li><span class="math inline">\(d_1\)</span> 和 <span class="math inline">\(d_2\)</span> 大部分高位相同，即 <span class="math inline">\(|d_1-d_2|\)</span> 很小</li>
 </ul>
-<h3 id="原理-10">原理</h3>
+<h3 id="原理-12">原理</h3>
 <p>我们用到了以下定理：</p>
 <ul>
 <li><p><strong>定理一</strong></p>
@@ -2881,7 +2949,7 @@ e_1e_2x-(e_2-e_1)\equiv 0\pmod{p^{r-1}}
 <li>当 <span class="math inline">\(g=p^r\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r}}\)</span></li>
 <li>当 <span class="math inline">\(g=p^{r-1}q\)</span> 时，<span class="math inline">\(p=\frac{N}{g}\)</span></li>
 </ul>
-<h3 id="实例-1">实例</h3>
+<h3 id="实例-2">实例</h3>
 <p>尝试求解 <span class="math inline">\(N=p^2q\)</span>，其中 <span class="math display">\[
 N = 6093253851486120878859471958399737725885946526553626219\\
 e1 = 2749600381847487389715964767235618802529675855606377411\\
@@ -2909,15 +2977,51 @@ N^{0.99}\)</span>，且 Sarkar’s method 与存在范围 <span class="math inli
 module <span class="math inline">\(M\)</span> 进行生成</p>
 <h3 id="代码-1">代码</h3>
 <p>直接使用他人的脚本，roca 攻击：<a href="https://github.com/jvdsn/crypto-attacks/blob/c26872bdac2e2d95c5be00e6e593c891c849f446/attacks/factorization/roca.py">https://github.com/jvdsn/crypto-attacks/blob/c26872bdac2e2d95c5be00e6e593c891c849f446/attacks/factorization/roca.py</a></p>
-<h2 id="e-较小时的有限域开方攻击"><span class="math inline">\(e\)</span>
-较小时的有限域开方攻击</h2>
+<p>论文《The Return of Coppersmith’s Attack: Practical Factorization of
+Widely Used RSA Moduli》指出该攻击方式中 <span class="math inline">\(m,t\)</span> 的选择依据为 <span class="math inline">\(N\)</span> 的位数。</p>
+<table>
+<thead>
+<tr class="header">
+<th>nbits</th>
+<th><span class="math inline">\(m\)</span></th>
+<th><span class="math inline">\(t\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>512</td>
+<td>5</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>1024</td>
+<td>4</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>2048</td>
+<td>6</td>
+<td>7</td>
+</tr>
+<tr class="even">
+<td>3072</td>
+<td>25</td>
+<td>26</td>
+</tr>
+<tr class="odd">
+<td>4096</td>
+<td>7</td>
+<td>8</td>
+</tr>
+</tbody>
+</table>
+<h2 id="有限域开根">有限域开根</h2>
 <h3 id="特征-11">特征</h3>
-<p><span class="math inline">\(e\)</span> 较小，比如说 10、50、100
-等等。</p>
+<p><span class="math inline">\(e\)</span> 较小。</p>
 <p>或者 <span class="math inline">\(\gcd(e,
 \varphi(p))\neq1\)</span>，即 <span class="math inline">\(e\)</span> 与
 <span class="math inline">\(\varphi(p)\)</span> 不互素的情况。</p>
-<h3 id="原理-11">原理</h3>
+<h3 id="原理-13">原理</h3>
 <p><span class="math inline">\(e\)</span>
 较小时，有限域开方速度较快。</p>
 <p>同时运用到了高次剩余的定理：</p>
@@ -2946,6 +3050,79 @@ m=\sqrt[e]{c}\pmod{n}
 \]</span> 但因为有多解，所以需要进行验证。</p>
 <h3 id="代码-2">代码</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">solve</span>(<span class="params">p, q, e, c</span>):</span></span><br><span class="line">    P.&lt;x&gt;=Zmod(p)[]</span><br><span class="line">    f=x^e-c</span><br><span class="line">    mps=f.roots(multiplicities=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    P.&lt;x&gt;=Zmod(p)[]</span><br><span class="line">    g=x^e-c</span><br><span class="line">    mqs=g.roots(multiplicities=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    ms = []</span><br><span class="line">	<span class="keyword">import</span> itertools</span><br><span class="line">    <span class="keyword">for</span> mp, mq <span class="keyword">in</span> itertools.product(mps, mqs):</span><br><span class="line">        m = mp.crt(mq)</span><br><span class="line">        ms.append(m)</span><br><span class="line">    <span class="keyword">return</span> ms</span><br><span class="line"></span><br><span class="line">ms = solve(p, q, e, c)</span><br><span class="line"><span class="built_in">print</span>(ms)</span><br></pre></td></tr></table></figure>
+<p>也可以尝试使用 Sagemath 自带的 <code>nth_root()</code> 函数。</p>
+<p>线程加速 <code>check</code>：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">flag = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">check</span>(<span class="params">something</span>):</span></span><br><span class="line">    <span class="keyword">if</span> long_to_bytes(<span class="built_in">int</span>(something)).startswith(<span class="string">b&#x27;NCTF&#x27;</span>):</span><br><span class="line">        <span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(something)))</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CRT_threading</span>(<span class="params">mps, mqs, p, q</span>):</span></span><br><span class="line">    <span class="keyword">global</span> flag</span><br><span class="line">    <span class="keyword">for</span> mp, mq <span class="keyword">in</span> itertools.product(mps, mqs):</span><br><span class="line">        m = CRT([mp, mq], [p, q])</span><br><span class="line">        <span class="keyword">if</span> check(m):</span><br><span class="line">            <span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(m)))</span><br><span class="line">            flag = <span class="keyword">not</span> flag</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[-] Done.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> threading</span><br><span class="line"></span><br><span class="line">thread_number = <span class="number">32</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(thread_number):</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;[+] Thread %d starting...&#x27;</span> % i)</span><br><span class="line">    thi = threading.Thread(target=CRT_threading, args=(mps, mqs[i*(<span class="built_in">len</span>(mqs) // thread_number):(i+<span class="number">1</span>)*(<span class="built_in">len</span>(mqs) // thread_number)], p, q), daemon=<span class="literal">True</span>)</span><br><span class="line">    thi.start()</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;[+] Thread %d starting...&#x27;</span> % (i+<span class="number">1</span>))</span><br><span class="line">thi = threading.Thread(target=CRT_threading, args=(mps, mqs[i*(<span class="built_in">len</span>(mqs) // thread_number):], p, q), daemon=<span class="literal">True</span>)</span><br><span class="line">thi.start()</span><br><span class="line"><span class="keyword">while</span> <span class="keyword">not</span> flag:</span><br><span class="line">    ...</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="amm">AMM</h3>
+<p>在 Sagemath 中，构造多项式求根或者使用 <code>nth_root</code> 的
+<code>Johnston</code> 算法（<code>Johnston</code>
+算法在针对小指数和不满足 <span class="math inline">\(e||p-1\)</span>
+的时候效率较高）对较大指数效率都较为低下，这个时候需要使用
+<code>Adleman-Manders-Miller rth Root Extraction Method</code>
+算法，简称 <code>AMM</code> 算法快速求有限域下的根。</p>
+<p><code>AMM</code>
+算法是目前在大指数下求高次根效率也较高的算法，但求高次根时需要满足条件
+<span class="math inline">\(e||(p-1)\)</span>，其中 <span class="math inline">\(F_p\)</span> 为有限域。</p>
+<blockquote>
+<p>目前 Sagemath 的更新进度似乎打算在 Sagemath9.8 加入
+<code>nth_root</code> 函数对 <code>AMM</code> 算法的支持。</p>
+</blockquote>
+<p>Sagemath 代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">AMM</span>(<span class="params">delta: <span class="built_in">int</span>, r: <span class="built_in">int</span>, q: <span class="built_in">int</span>, <span class="built_in">all</span>:<span class="built_in">bool</span> = <span class="literal">False</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用AMM算法进行有限域开根，即求delta^(1/r)%q下的解</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameter`:</span></span><br><span class="line"><span class="string">        delta - 底数</span></span><br><span class="line"><span class="string">        r - 根指数</span></span><br><span class="line"><span class="string">        q - 模数</span></span><br><span class="line"><span class="string">        all - 是否返回所有解</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Return`:</span></span><br><span class="line"><span class="string">        delta^(1/r)%q下的一个根</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (q - <span class="number">1</span>) % r != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> <span class="string">&quot;使用AMM算法需要满足e||(p-1)&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 1</span></span><br><span class="line">    Fq = GF(q)</span><br><span class="line">    delta = Fq(delta)</span><br><span class="line">    rho = Fq.random_element()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># step 2</span></span><br><span class="line">    <span class="keyword">while</span> rho ** ((q - <span class="number">1</span>) // r) == <span class="number">1</span>:</span><br><span class="line">        rho = Fq.random_element()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 3</span></span><br><span class="line">    <span class="comment"># step 3.1</span></span><br><span class="line">    t = <span class="number">0</span></span><br><span class="line">    s = q - <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> s % r == <span class="number">0</span>:</span><br><span class="line">        t += <span class="number">1</span></span><br><span class="line">        s //= r</span><br><span class="line">    <span class="comment"># step 3.2</span></span><br><span class="line">    k = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> (k * s + <span class="number">1</span>) % r != <span class="number">0</span>:</span><br><span class="line">        k += <span class="number">1</span></span><br><span class="line">    alpha = (k * s + <span class="number">1</span>) // r</span><br><span class="line">    <span class="comment"># step 3.3</span></span><br><span class="line">    a = rho ** (r ** t - <span class="number">1</span> * s)</span><br><span class="line">    b = delta ** (r * alpha - <span class="number">1</span>)</span><br><span class="line">    c = rho ** s</span><br><span class="line">    h = <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 4</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, t):</span><br><span class="line">        d = b ** <span class="built_in">pow</span>(r, t - <span class="number">1</span> - i, q - <span class="number">1</span>)</span><br><span class="line">        j = <span class="number">0</span> <span class="keyword">if</span> d == <span class="number">1</span> <span class="keyword">else</span> -d.log(a)</span><br><span class="line">        b *= (c ** r) ** j</span><br><span class="line">        h *= c ** j</span><br><span class="line">        c **= r</span><br><span class="line"></span><br><span class="line">    <span class="comment"># step 5</span></span><br><span class="line">    root = <span class="built_in">int</span>(delta ** alpha * h)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">all</span>:</span><br><span class="line">        <span class="keyword">return</span> root</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># if all is True, generate all roots to return</span></span><br><span class="line">    <span class="comment"># 2 ^ (q - 1) == 1 (mod q) because of Fermat&#x27;s little theorem</span></span><br><span class="line">    g = <span class="built_in">pow</span>(<span class="number">2</span>, (q - <span class="number">1</span>) // r, q)</span><br><span class="line">    <span class="comment"># find all primitive i-th roots of 1</span></span><br><span class="line">    ith_roots = [<span class="built_in">pow</span>(g, i, q) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(r)]</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">int</span>(root * ith_root % q) <span class="keyword">for</span> ith_root <span class="keyword">in</span> ith_roots]</span><br></pre></td></tr></table></figure>
+<h2 id="p-1-光滑数分解"><span class="math inline">\(p-1\)</span>
+光滑数分解</h2>
+<h3 id="特征-12">特征</h3>
+<p><span class="math inline">\(p-1\)</span> 为光滑数。</p>
+<h3 id="原理-14">原理</h3>
+<p>已知 <span class="math inline">\(p-1\)</span> 为若干个
+<code>primes</code> 元素相乘得到的平滑数，其中 <code>primes</code>
+为一组已知素数，不妨取 <span class="math display">\[
+P=\prod{primes}
+\]</span> 那么原素数 <span class="math inline">\(p\)</span> 可以表示为
+<span class="math display">\[
+p-1=kP
+\]</span> 其中 <span class="math inline">\(k\)</span> 为 <span class="math inline">\(primes\)</span> 任意元素的乘积。</p>
+<p>费马小定理有，若 <span class="math inline">\(p\)</span>
+为一个素数，则对于任意非 <span class="math inline">\(p\)</span> 整数
+<span class="math inline">\(a\)</span> 有 <span class="math inline">\(a^{p-1}\equiv1\pmod{p}\)</span> 。</p>
+<p>那么取任意的 <span class="math inline">\(a\)</span> ，有 <span class="math display">\[
+a^{kP}=1\pmod{p}
+\]</span> 即有 <span class="math display">\[
+a^P=1\pmod{p}=1+tp,t\in\Z
+\]</span> 记 <span class="math inline">\(N=pq\)</span>，那么 <span class="math display">\[
+\gcd{(a^P-1,N)}=p
+\]</span> 我们便分解了 <span class="math inline">\(N\)</span>。</p>
+<p>需要注意的是，实际计算中 <span class="math inline">\(a^P\)</span>
+不好计算，一般计算 <span class="math inline">\(a^P-1\pmod
+N\)</span>，可以证明与 <span class="math inline">\(1\pmod{p}\)</span>
+同余。</p>
+<h3 id="实例-3">实例</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> choice</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> isPrime, sieve_base <span class="keyword">as</span> primes</span><br><span class="line"><span class="keyword">from</span> flag <span class="keyword">import</span> flag</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">getPrime</span>(<span class="params">bits</span>):</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        n = <span class="number">2</span></span><br><span class="line">        <span class="keyword">while</span> n.bit_length() &lt; bits:</span><br><span class="line">            n *= choice(primes)</span><br><span class="line">        <span class="keyword">if</span> isPrime(n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">return</span> n + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">m = <span class="built_in">int</span>.from_bytes(flag.encode(), <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">p, q = [getPrime(<span class="number">2048</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>)]</span><br><span class="line">n = p * q</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br><span class="line"></span><br><span class="line"><span class="comment"># n = 32849718197337581823002243717057659218502519004386996660885100592872201948834155543125924395614928962750579667346279456710633774501407292473006312537723894221717638059058796679686953564471994009285384798450493756900459225040360430847240975678450171551048783818642467506711424027848778367427338647282428667393241157151675410661015044633282064056800913282016363415202171926089293431012379261585078566301060173689328363696699811123592090204578098276704877408688525618732848817623879899628629300385790344366046641825507767709276622692835393219811283244303899850483748651722336996164724553364097066493953127153066970594638491950199605713033004684970381605908909693802373826516622872100822213645899846325022476318425889580091613323747640467299866189070780620292627043349618839126919699862580579994887507733838561768581933029077488033326056066378869170169389819542928899483936705521710423905128732013121538495096959944889076705471928490092476616709838980562233255542325528398956185421193665359897664110835645928646616337700617883946369110702443135980068553511927115723157704586595844927607636003501038871748639417378062348085980873502535098755568810971926925447913858894180171498580131088992227637341857123607600275137768132347158657063692388249513</span></span><br><span class="line"><span class="comment"># c = 26308018356739853895382240109968894175166731283702927002165268998773708335216338997058314157717147131083296551313334042509806229853341488461087009955203854253313827608275460592785607739091992591431080342664081962030557042784864074533380701014585315663218783130162376176094773010478159362434331787279303302718098735574605469803801873109982473258207444342330633191849040553550708886593340770753064322410889048135425025715982196600650740987076486540674090923181664281515197679745907830107684777248532278645343716263686014941081417914622724906314960249945105011301731247324601620886782967217339340393853616450077105125391982689986178342417223392217085276465471102737594719932347242482670320801063191869471318313514407997326350065187904154229557706351355052446027159972546737213451422978211055778164578782156428466626894026103053360431281644645515155471301826844754338802352846095293421718249819728205538534652212984831283642472071669494851823123552827380737798609829706225744376667082534026874483482483127491533474306552210039386256062116345785870668331513725792053302188276682550672663353937781055621860101624242216671635824311412793495965628876036344731733142759495348248970313655381407241457118743532311394697763283681852908564387282605279108</span></span><br></pre></td></tr></table></figure>
+<h3 id="代码-3">代码</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n = <span class="number">32849718197337581823002243717057659218502519004386996660885100592872201948834155543125924395614928962750579667346279456710633774501407292473006312537723894221717638059058796679686953564471994009285384798450493756900459225040360430847240975678450171551048783818642467506711424027848778367427338647282428667393241157151675410661015044633282064056800913282016363415202171926089293431012379261585078566301060173689328363696699811123592090204578098276704877408688525618732848817623879899628629300385790344366046641825507767709276622692835393219811283244303899850483748651722336996164724553364097066493953127153066970594638491950199605713033004684970381605908909693802373826516622872100822213645899846325022476318425889580091613323747640467299866189070780620292627043349618839126919699862580579994887507733838561768581933029077488033326056066378869170169389819542928899483936705521710423905128732013121538495096959944889076705471928490092476616709838980562233255542325528398956185421193665359897664110835645928646616337700617883946369110702443135980068553511927115723157704586595844927607636003501038871748639417378062348085980873502535098755568810971926925447913858894180171498580131088992227637341857123607600275137768132347158657063692388249513</span></span><br><span class="line">c = <span class="number">26308018356739853895382240109968894175166731283702927002165268998773708335216338997058314157717147131083296551313334042509806229853341488461087009955203854253313827608275460592785607739091992591431080342664081962030557042784864074533380701014585315663218783130162376176094773010478159362434331787279303302718098735574605469803801873109982473258207444342330633191849040553550708886593340770753064322410889048135425025715982196600650740987076486540674090923181664281515197679745907830107684777248532278645343716263686014941081417914622724906314960249945105011301731247324601620886782967217339340393853616450077105125391982689986178342417223392217085276465471102737594719932347242482670320801063191869471318313514407997326350065187904154229557706351355052446027159972546737213451422978211055778164578782156428466626894026103053360431281644645515155471301826844754338802352846095293421718249819728205538534652212984831283642472071669494851823123552827380737798609829706225744376667082534026874483482483127491533474306552210039386256062116345785870668331513725792053302188276682550672663353937781055621860101624242216671635824311412793495965628876036344731733142759495348248970313655381407241457118743532311394697763283681852908564387282605279108</span></span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">P = prod(primes)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里的3是任取的</span></span><br><span class="line">pp = <span class="built_in">pow</span>(<span class="number">3</span>, P, n) - <span class="number">1</span></span><br><span class="line">p = gcd(pp, n)</span><br><span class="line">q = n // <span class="built_in">int</span>(p)</span><br><span class="line"><span class="keyword">assert</span> p * q == n</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = inverse_mod(e, phi)</span><br><span class="line">m = <span class="built_in">pow</span>(c, d, n)</span><br></pre></td></tr></table></figure>
+<h3 id="pollard-p-1-method">Pollard p-1 method</h3>
+<h4 id="原理-15">原理</h4>
+<p>对于 <span class="math inline">\(p-1\)</span>
+为光滑数，更有效且通用的方法是使用 <code>Pollard p-1 method</code>
+算法。</p>
+<p>根据以上的原理证明，Pollard 发现当 <code>primes</code>
+恰好为许多小素数的时候，那么 <span class="math inline">\(p-1\)</span>
+也整除 <span class="math inline">\(n!\)</span>，其中 <span class="math inline">\(n\)</span> 为不太大的一个整数。</p>
+<p>故当我们未知 <span class="math inline">\(primes\)</span>
+时，可以简单爆破 <span class="math inline">\(n\)</span> 求解 <span class="math display">\[
+g=\gcd(a^{n!}-1,N)
+\]</span> 当 <span class="math inline">\(g=1\)</span>
+时，需要接着求下一个 <span class="math inline">\(n\)</span> 的值；</p>
+<p>当 <span class="math inline">\(g=N\)</span> 时，需要修改 <span class="math inline">\(a\)</span> 的值（实际中一般从 2 开始）；</p>
+<p>当 <span class="math inline">\(1&lt;g&lt;N\)</span> 时，那么 <span class="math inline">\(g\)</span> 就是 <span class="math inline">\(N\)</span> 的一个因子。</p>
+<p>同理我们实际上会直接求 <span class="math inline">\(a^{n!}-1\pmod{N}\)</span> 而非 <span class="math inline">\(a^{n!}-1\)</span>。</p>
+<h4 id="代码-4">代码</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line">N = <span class="number">32849718197337581823002243717057659218502519004386996660885100592872201948834155543125924395614928962750579667346279456710633774501407292473006312537723894221717638059058796679686953564471994009285384798450493756900459225040360430847240975678450171551048783818642467506711424027848778367427338647282428667393241157151675410661015044633282064056800913282016363415202171926089293431012379261585078566301060173689328363696699811123592090204578098276704877408688525618732848817623879899628629300385790344366046641825507767709276622692835393219811283244303899850483748651722336996164724553364097066493953127153066970594638491950199605713033004684970381605908909693802373826516622872100822213645899846325022476318425889580091613323747640467299866189070780620292627043349618839126919699862580579994887507733838561768581933029077488033326056066378869170169389819542928899483936705521710423905128732013121538495096959944889076705471928490092476616709838980562233255542325528398956185421193665359897664110835645928646616337700617883946369110702443135980068553511927115723157704586595844927607636003501038871748639417378062348085980873502535098755568810971926925447913858894180171498580131088992227637341857123607600275137768132347158657063692388249513</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">PollardMethod</span>(<span class="params">N: <span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Pollard p-1 method</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        N - 要分解的大素数</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        N的一个因子</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    a = <span class="number">2</span></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> itertools.count(<span class="number">2</span>):</span><br><span class="line">        a = <span class="built_in">pow</span>(a, n, N)</span><br><span class="line">        g = gcd(a - <span class="number">1</span>, N)</span><br><span class="line">        <span class="keyword">if</span> g == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">elif</span> g == N:</span><br><span class="line">            a += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> g</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(PollardMethod(N))</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>需要注意的是，个人使用 Python 没办法跑出结果，得用 Sagemath。</p>
+</blockquote>
+<p>可以借助 Python 模块 <code>primefac</code> 进行分解：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -m primefac -vs -m=p-1 32849718197337581823002243717057659218502519004386996660885100592872201948834155543125924395614928962750579667346279456710633774501407292473006312537723894221717638059058796679686953564471994009285384798450493756900459225040360430847240975678450171551048783818642467506711424027848778367427338647282428667393241157151675410661015044633282064056800913282016363415202171926089293431012379261585078566301060173689328363696699811123592090204578098276704877408688525618732848817623879899628629300385790344366046641825507767709276622692835393219811283244303899850483748651722336996164724553364097066493953127153066970594638491950199605713033004684970381605908909693802373826516622872100822213645899846325022476318425889580091613323747640467299866189070780620292627043349618839126919699862580579994887507733838561768581933029077488033326056066378869170169389819542928899483936705521710423905128732013121538495096959944889076705471928490092476616709838980562233255542325528398956185421193665359897664110835645928646616337700617883946369110702443135980068553511927115723157704586595844927607636003501038871748639417378062348085980873502535098755568810971926925447913858894180171498580131088992227637341857123607600275137768132347158657063692388249513</span><br></pre></td></tr></table></figure>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -7711,7 +7888,7 @@ x\equiv a_n\pmod{m_n}
 \end{cases}
 \]</span> 都存在整数解，且若 <span class="math inline">\(X,Y\)</span>
 都满足该方程，则必有 <span class="math inline">\(X\equiv
-Y\pmod{N}\)</span>，其中 <span class="math inline">\(M=\displaystyle\prod_{i=1}^nm_i\)</span> 。</p>
+Y\pmod{M}\)</span>，其中 <span class="math inline">\(M=\displaystyle\prod_{i=1}^nm_i\)</span> 。</p>
 <p>具体而言，<span class="math inline">\(x\equiv
 \displaystyle\sum_{i=1}^na_i\times\frac{M}{m_i}\times\left[\left(\frac{M}{m_i}\right)^{-1}\right]_{m_i}\pmod{M}\\\)</span></p>
 <p>这便是<strong>中国剩余定理(Chinese remainder theorem,
@@ -7725,7 +7902,7 @@ CRT)</strong></p>
 x=kM+\sum_{i=1}^na_it_iM_i,k\in\mathrm{Z}
 \]</span> 在模 <span class="math inline">\(M\)</span>
 的环中，方程组仅有一个唯一整数解 <span class="math display">\[
-x=\sum_{i=1}^na_it_iM_i
+x=\sum_{i=1}^na_it_iM_i\pmod{M}
 \]</span></p></li>
 </ol>
 <h1 id="实例">实例</h1>
@@ -14584,6 +14761,563 @@ IFP 和 DLP 问题。</p>
       <tags>
         <tag>crypto</tag>
         <tag>misc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Pollard&#39;s rho method笔记</title>
+    <url>//pollard-rho-method-note.html</url>
+    <content><![CDATA[<h1 id="pollards-rho-method">Pollard's rho method</h1>
+<h2 id="原理">原理</h2>
+<h3 id="生日悖论">生日悖论</h3>
+<p>在概率论中，生日问题要求在一组随机选择的 <span class="math inline">\(n\)</span>
+个人中，至少有两人生日相同的概率。生日悖论指的是违反直觉的事实，即该概率超过
+50% 只需要 23 个人 。</p>
+<p>从条件概率原理的角度来看，可以知道 <span class="math display">\[
+\begin{align}
+\bar{p}(n)&amp;=1\times\left(1-\frac{1}{365}\right)\times\left(1-\frac{2}{365}\right)\times\cdots\times\left(1-\frac{n-1}{365}\right)\\
+&amp;=\frac{365\times364\times\cdots\times(365-n+1)}{365^n}\\
+&amp;=\frac{_{365}P_n}{365^n}
+\end{align}
+\]</span> 其中 <span class="math inline">\(_kP_n\)</span> 表示排列。</p>
+<figure>
+<img src="/pollard-rho-method-note/1024px-Birthdaymatch.svg.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="rho-method">rho method</h3>
+<p>假设 <span class="math inline">\(N=pq\)</span>，其中 <span class="math inline">\(p\)</span> 为 <span class="math inline">\(N\)</span> 的一个非平凡因子，使用一个模 <span class="math inline">\(N\)</span> 多项式 <span class="math inline">\(g(x)\)</span> 生成随机序列 <span class="math inline">\(\{x_i\mod{N}\}\)</span>。</p>
+<p>选择一个初始值 <span class="math inline">\(x=2\)</span>，计算 <span class="math inline">\(x_1=g(2),x_2=g(g(2)),\cdots\)</span>。</p>
+<p>由于其为模 <span class="math inline">\(N\)</span>
+多项式生成的序列值，故序列值必会重复。</p>
+<p>而由生日悖论的原理可以知道，<span class="math inline">\(x_i\)</span>
+重复出现的概率为 <span class="math inline">\(O(\sqrt{N})\)</span>。所以对于序列 <span class="math inline">\(\{x_i\mod{p}\}\)</span> 会更早地出现重复值。</p>
+<p>当找到 <span class="math inline">\(x_{i1}\neq x_{i_2}\)</span> 但
+<span class="math inline">\(x_{i1}= x_{i_2}\pmod{p}\)</span> 时，<span class="math inline">\(|x_{i1}-x_{i_2}|\)</span> 即为 <span class="math inline">\(p\)</span> 的倍数。</p>
+<p>由于序列中的每个值只依赖于它之前的值，且构成的循环画在图上就像是希腊字母
+<span class="math inline">\(\rho\)</span> 一样，故称为
+<code>rho method</code>。</p>
+<figure>
+<img src="/pollard-rho-method-note/800px-Pollard_rho_cycle.svg.png" alt="img">
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>该算法的时间复杂度为 <span class="math inline">\(\displaystyle{O(N^{\frac{1}{4}}+\frac{N^{\frac{1}{4}}\alpha(N)}{\beta}+\beta\alpha(N))}\)</span>。</p>
+<h3 id="floyd-判环法">Floyd 判环法</h3>
+<p>Floyd 判环法又称龟兔赛跑法。</p>
+<p>我们让 <span class="math inline">\(t,h\)</span>
+指向起始序列值（一般选取 2），让 <span class="math inline">\(t\)</span>
+和 <span class="math inline">\(h\)</span> 的移动速度不同，即每次 <span class="math inline">\(t=g(t)\)</span>，<span class="math inline">\(h=g(g(h))\)</span>，只要二者可以前进且没有相遇，就前进下去。</p>
+<p>当 <span class="math inline">\(t=h\)</span>
+时，可以确定已经进入到了环中。</p>
+<p>在 <code>rho method</code> 中即 <span class="math inline">\(|t-h|\)</span> 为 <span class="math inline">\(p\)</span> 的倍数。</p>
+<h3 id="brent-判环法">Brent 判环法</h3>
+<p>Brent 判环法又称传送乌龟法。</p>
+<p>我们让 <span class="math inline">\(t,h\)</span> 指向起始序列值，但
+<span class="math inline">\(t\)</span> 先不动，<span class="math inline">\(h\)</span> 每次只走一步，即 <span class="math inline">\(h=g(h)\)</span>，在第 <span class="math inline">\(i\)</span> 次中最多走 <span class="math inline">\(2^i\)</span> 步，在二者没有相遇时就前进下去。当
+<span class="math inline">\(h\)</span> 在本次移动完毕后，将 <span class="math inline">\(t\)</span> 移动到 <span class="math inline">\(h\)</span> 处，即 <span class="math inline">\(t=h\)</span>。</p>
+<h2 id="实现">实现</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gcd</span><br><span class="line"><span class="keyword">except</span> NameError:</span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rho</span>(<span class="params">N</span>):</span></span><br><span class="line">    f = <span class="keyword">lambda</span> x: (x ** <span class="number">2</span> + <span class="number">1</span>) % N</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 加快入环速度</span></span><br><span class="line">        t = random.randint(<span class="number">2</span>, N)</span><br><span class="line">        h = f(t)</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            p = gcd(<span class="built_in">abs</span>(<span class="built_in">int</span>(t) - <span class="built_in">int</span>(h)), N)</span><br><span class="line">            <span class="keyword">if</span> p == N:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> p &gt; <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> (p, N // p)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                t = f(t)</span><br><span class="line">                h = f(f(h))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rho(<span class="number">15405314906656169587</span>))</span><br></pre></td></tr></table></figure>
+<p>另一种判环法，效率相对高一些</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gcd</span><br><span class="line"><span class="keyword">except</span> NameError:</span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rho</span>(<span class="params">N</span>):</span></span><br><span class="line">    f = <span class="keyword">lambda</span> x: (x ** <span class="number">2</span> + <span class="number">1</span>) % N</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 加快入环速度</span></span><br><span class="line">        t = random.randint(<span class="number">2</span>, N)</span><br><span class="line">        h = f(t)</span><br><span class="line">        step_times = <span class="number">0</span></span><br><span class="line">        step_limit = <span class="number">2</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> step_times &lt; step_limit:</span><br><span class="line">                step_times = <span class="number">0</span></span><br><span class="line">                step_limit *= <span class="number">2</span></span><br><span class="line">                t = h</span><br><span class="line">                h = f(h)</span><br><span class="line">            p = gcd(<span class="built_in">abs</span>(<span class="built_in">int</span>(t) - <span class="built_in">int</span>(h)), N)</span><br><span class="line">            <span class="keyword">if</span> p == N:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> p &gt; <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> (p, N // p)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                h = f(h)</span><br><span class="line">                step_times += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rho(<span class="number">14354303587370996407</span>))</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>crypto</tag>
+        <tag>factor</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>multi-power-RSA 笔记</title>
+    <url>//multi-power-rsa.html</url>
+    <content><![CDATA[<h1 id="n-prq-attack-p-多次幂攻击"><span class="math inline">\(N =
+p^rq\)</span> Attack (<span class="math inline">\(p\)</span>
+多次幂攻击)</h1>
+<h2 id="the-first-attack">The First Attack</h2>
+<h3 id="lu-zhang-and-lin-theorem-线性模多项式方程定理">Lu, Zhang and Lin
+theorem (线性模多项式方程定理)</h3>
+<p>设 <span class="math inline">\(N\)</span> 整除 <span class="math inline">\(p^u\)</span>，使得 <span class="math inline">\(p\geq N^\beta\ (0&lt;\beta\leq 1)\)</span>，</p>
+<p>设 <span class="math inline">\(f(x,y)\in\Z[x,y]\)</span>
+为齐次线性多项式，</p>
+<p>如果满足条件： <span class="math display">\[
+\gamma1+\gamma2&lt;uv\beta^2
+\]</span> 我们就可以在多项式时间内找到方程 <span class="math inline">\(f(x,y)=0\pmod{p^v}\)</span> 所有的解 <span class="math inline">\((x,y)\)</span>，其中 <span class="math inline">\(\gcd(x,y)=1,|x|&lt;N^{\gamma1},|y|&lt;N^{\gamma2}\)</span>。</p>
+<h3 id="legendres-theorem-连分数定理">Legendre's theorem
+(连分数定理)</h3>
+<p>如果存在 <span class="math inline">\(\xi \in \Q^*\)</span>，<span class="math inline">\(a,b\in \Z\)</span> 且 <span class="math inline">\(\gcd(a,b)=1\)</span> 满足 <span class="math display">\[
+\left|\xi-\frac{a}{b}\right|&lt;\frac{1}{2b^2}
+\]</span> 那么 <span class="math inline">\(\displaystyle\frac{a}{b}\)</span> 就是 <span class="math inline">\(\xi\)</span> 的一个有理近似。</p>
+<h3 id="原理">原理</h3>
+<p>设 <span class="math inline">\(N=p^rq\)</span> 是 RSA
+中的模数，且公钥 <span class="math inline">\(e\)</span> 满足方程 <span class="math inline">\(ex-\varphi(N)y=z\)</span>，如果 <span class="math display">\[
+|xz|&lt;N^{\frac{r(r-1)}{(r+1)^2}}
+\]</span> 那么我们可以在多项式时间内分解 <span class="math inline">\(N\)</span>。</p>
+<p>证明忽略，最后得到结论 <span class="math display">\[
+\gcd(ex-z,N)=\gcd(p^{r-1}(p-1)(q-1)y,p^rq)=g
+\]</span> 可以确定 <span class="math inline">\(p\)</span>，因此将 <span class="math inline">\(N\)</span> 按如下情况分解：</p>
+<ul>
+<li>当 <span class="math inline">\(g=p^{r-1}\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r-1}}\)</span></li>
+<li>当 <span class="math inline">\(g=p^r\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r}}\)</span></li>
+<li>当 <span class="math inline">\(g=p^{r-1}q\)</span> 时，<span class="math inline">\(p=\frac{N}{g}\)</span></li>
+</ul>
+<p>因此我们分解了 <span class="math inline">\(N\)</span>。</p>
+<p>在算法中我们转换方程为 <span class="math inline">\(ex-z\equiv0\pmod{p^{r-1}}\)</span>，使用
+<strong>Coppersmith's technique</strong>，选择参数 <span class="math inline">\(m=7,t=6\)</span> 构造维度为 36 的格，并且选择
+<span class="math display">\[
+X=\left[N^{\frac{r(r-1)}{(r+1)^2}}\right]
+\]</span> 我们使用多项式 <span class="math inline">\(f(x1,x2)=x1+ex2\)</span> 构造格，应用 LLL
+算法寻找到小根 <span class="math inline">\((x_1,x_2)\)</span> 满足 <span class="math inline">\(f(x_1,x_2)\equiv0\pmod{p^{r-1}}\)</span>。</p>
+<p>这样我们就可以计算出 <span class="math display">\[
+g=\gcd(x_1+ex_2,N)
+\]</span></p>
+<h3 id="脚本">脚本</h3>
+<p>当方程 <span class="math inline">\(ex-z\equiv0\)</span>
+的解已知一个时，我们仅需一元 Copper 即可求解：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">N=<span class="number">539779851369541956878655738599584730199799866957191805784596190682932284216781781433367450841202917758999300635019369629627621029957135109806205877317954671312041249493462048283611940752235036153024920172209763260723728345918562258401803973624430150143563078517485996070862532682695228590709019451174548520135142052216785774589096706631010293690859363524584240662502290912412366366114571976050857239915691266377257797199583543940504695517331512813468837128344612227973709974625418257243011036826241599265375741977853552204640800449679679351666009764297016524814036295707311913711955324055690490892097177271718850857268982130811714517356073266905474635370690445031512184247179039751734276906533177939993769044135143389748416635981226449566039039202521305851567296884751935162651063209779647359922622084851547605090230221057349511482738300221222563908357379545905837110168948295030747460300104202323692732549831403834387939156877086852393515817984772384147449841124275061609701453997579569931391166586163299940486204581696722731952467570857217406030804590055255431828403195798003509083922294733709507134156466158642941338493323430671502043066148246348074878064089651235355282144209668143249348243220714471988019011613749340243917652821</span></span><br><span class="line">e=<span class="number">8179300978753084587812861894047395225516049110376948812109811319430275614612773726672345893359691900281432484382670047044697374818043512731533402576374645405477207239801498428774783768163880078495448747421425078521981578408638790336528372019271073712013371141939808017049399434858687299480461753638164719404612128939787055797762174745092074547412183349192156638711750872083313795551439465507724807626674514935170104573715458782366469587138508845980490673890245713729782917089910271980557159592807350504157192913530007199510144004848020221181558472160543018733124225266127379373751910439604459368078652499029070936707349862139053913745186413782066470461478961703013591655136140060879250067379283913798867648758171004535775565306842444545755351202796833177560656564652632975685912935281581268141803696686952259539945588609591385807620108279333498170028167338690235117003515264281843953984997958878272347778561933726792473981855755454522886321669676790813189668084373153897754540290867346751033567500922477317530445967753955221454744946208555394588111484610700789566547507402309549957740815535069057837915204852490930168843605732632328017129154852857227895362549146737618906180651623216848500491438142456250653458053922622240299736136335179639180898730269690699965799644757774472147210271111150769048976871249731156387939260749192370361488285775377622944817570292095201906142567403539151179209316853493906909989301225903409448461436855145</span></span><br><span class="line">b=<span class="number">17623328397444755087284107444487160871617682792372566887446834913712379373851213638071138745775127796589871734472781755930251379295485892067473329763997583502625804363418069062645997342172778252731889437</span></span><br><span class="line">r = <span class="number">7</span></span><br><span class="line">idx = (r*(r-<span class="number">1</span>)) / ((r+<span class="number">1</span>)*(r+<span class="number">1</span>))</span><br><span class="line">P.&lt;x&gt; = PolynomialRing(Zmod(N))</span><br><span class="line">f = e * x - b</span><br><span class="line">roots = f.monic().small_roots(beta=idx)</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br></pre></td></tr></table></figure>
+<p>当方程 <span class="math inline">\(ex-z\equiv0\)</span>
+的两个解都未知时，我们需要使用二元 Copper 求解：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">small_roots</span>(<span class="params">f, bounds, m=<span class="number">1</span>, d=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> d:</span><br><span class="line">        d = f.degree()</span><br><span class="line"></span><br><span class="line">    R = f.base_ring()</span><br><span class="line">    N = R.cardinality()</span><br><span class="line"></span><br><span class="line">    f /= f.coefficients().pop(<span class="number">0</span>)</span><br><span class="line">    f = f.change_ring(ZZ)</span><br><span class="line"></span><br><span class="line">    G = <span class="type">Sequence</span>([], f.parent())</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m + <span class="number">1</span>):</span><br><span class="line">        base = N ^ (m - i) * f ^ i</span><br><span class="line">        <span class="keyword">for</span> shifts <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(d), repeat=f.nvariables()):</span><br><span class="line">            g = base * prod(<span class="built_in">map</span>(power, f.variables(), shifts))</span><br><span class="line">            G.append(g)</span><br><span class="line"></span><br><span class="line">    B, monomials = G.coefficient_matrix()</span><br><span class="line">    monomials = vector(monomials)</span><br><span class="line"></span><br><span class="line">    factors = [monomial(*bounds) <span class="keyword">for</span> monomial <span class="keyword">in</span> monomials]</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, factor)</span><br><span class="line">    B = B.dense_matrix().LLL()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;LLL done&quot;</span>)</span><br><span class="line"></span><br><span class="line">    B = B.change_ring(QQ)</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, <span class="number">1</span> / factor)</span><br><span class="line"></span><br><span class="line">    H = <span class="type">Sequence</span>([], f.parent().change_ring(QQ))</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">filter</span>(<span class="literal">None</span>, B * monomials):</span><br><span class="line">        H.append(h)</span><br><span class="line">        I = H.ideal()</span><br><span class="line">        <span class="keyword">if</span> I.dimension() == -<span class="number">1</span>:</span><br><span class="line">            H.pop()</span><br><span class="line">        <span class="keyword">elif</span> I.dimension() == <span class="number">0</span>:</span><br><span class="line">            roots = []</span><br><span class="line">            <span class="keyword">for</span> root <span class="keyword">in</span> I.variety(ring=ZZ):</span><br><span class="line">                root = <span class="built_in">tuple</span>(R(root[var]) <span class="keyword">for</span> var <span class="keyword">in</span> f.variables())</span><br><span class="line">                roots.append(root)</span><br><span class="line">            <span class="keyword">return</span> roots</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = <span class="number">68823589009570846705623113091430161477799561031575612135516351257937127579444</span></span><br><span class="line">b = <span class="number">76549169049080319489163980188997771079750670038002598167961495813084486794567</span></span><br><span class="line">c = <span class="number">99215492498952976642031024510129092308042391285395704888838178561670205468882</span></span><br><span class="line">p = <span class="number">12775129699668988473759438271274836254349225413222075887429387682336494103348583050672280757042383792640084197832605411237644937815012509935794275313643031</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x1 = <span class="number">664406108637237317109372377546194289077117372665932150107678757303243619963182733408311739663233548725195723884930183442927293177078507</span></span><br><span class="line">x2 = <span class="number">269639459994260392015105629865659210391196381140872041084737976688017858324308345528702533444116282512066085580909718347778743354754352</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HiddenBits = <span class="number">64</span></span><br><span class="line">bound = <span class="number">2</span>**HiddenBits - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">P = PolynomialRing(Zmod(p), names=(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>))</span><br><span class="line">(x, y) = P.gens()</span><br><span class="line"></span><br><span class="line">f = y + (x2 &lt;&lt; HiddenBits) - a * (x + (x1 &lt;&lt; HiddenBits))**<span class="number">2</span> - b * (x+(x1&lt;&lt;HiddenBits)) - c</span><br><span class="line">bounds = (bound, bound)</span><br><span class="line">roots = small_roots(f, bounds)</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br></pre></td></tr></table></figure>
+<h2 id="the-second-attack">The Second Attack</h2>
+<h3 id="原理-1">原理</h3>
+<p>设模数 <span class="math inline">\(N=p^rq\)</span>，私钥 <span class="math inline">\((d_1,d_2)\)</span>，如果 <span class="math display">\[
+|d_1-d_2|&lt;N^{\frac{r(r-1)}{(r+1)^2}}
+\]</span> 那么我们可以在多项式时间内对 <span class="math inline">\(N\)</span> 进行分解。</p>
+<p>证明如下：</p>
+<p>假设 <span class="math inline">\(e_1d_1-k_1\phi(N)=1\)</span> 、<span class="math inline">\(e_2d_2-k_2\phi(N)=1\)</span> 且 <span class="math inline">\(e_1&gt;e_2\)</span></p>
+<p>因此 <span class="math inline">\(e_1d_1\equiv
+1\pmod{\phi(N)}\)</span>，<span class="math inline">\(e_2d_2\equiv
+1\pmod{\phi(N)}\)</span></p>
+<p>前一个式子乘以 <span class="math inline">\(e_2\)</span>，后一个式子乘以 <span class="math inline">\(e_1\)</span>，相减得到 <span class="math display">\[
+e_1e_2(d_1-d_2)\equiv e_2-e_1\pmod{\phi(N)}
+\]</span> 因为 <span class="math inline">\(\phi(N)=p^{r-1}(p-1)(q-1)\)</span>，故 <span class="math inline">\(e_1e_2(d_1-d_2)\equiv
+e_2-e_1\pmod{p^{r-1}}\)</span></p>
+<p>现在，只需考虑以下这个线性方程 <span class="math display">\[
+e_1e_2x-(e_2-e_1)\equiv 0\pmod{p^{r-1}}
+\]</span> 其中 <span class="math inline">\(d_1-d_2\)</span>
+是该方程的根。</p>
+<p>进一步假设 <span class="math inline">\(|d_1-d_2|&lt;N^\delta\)</span>，运用<strong>定理一</strong>，其中
+<span class="math inline">\(u=r,v=r-1\ 且\
+\beta=\frac{1}{r+1}\)</span>，可以推导出如果 <span class="math inline">\(\delta&lt;uv\beta^2=\frac{r(r-1)}{(r+1)^2}\)</span>，那么
+<span class="math inline">\(x=d_1-d_2\)</span>
+可在多项式时间内求解。</p>
+<p>也就是说如果 <span class="math inline">\(|d_1-d_2|&lt;N^{\frac{r(r-1)}{(r+1)^2}}\)</span>，可以在多项式时间内求解方程。</p>
+<p>通过计算 <span class="math display">\[
+\gcd(e_1e_2x-(e_2-e_1),N)=\gcd(p^{r-1}(p-1)(q-1)y,p^rq)=g
+\]</span></p>
+<p>证明忽略，最后得到结论 <span class="math display">\[
+\gcd(e_1e_2x-(e_2-e_1),N)=\gcd(p^{r-1}(p-1)(q-1)y,p^rq)=g
+\]</span> 可以确定 <span class="math inline">\(p\)</span>，因此将 <span class="math inline">\(N\)</span> 按如下情况分解：</p>
+<ul>
+<li>当 <span class="math inline">\(g=p^{r-1}\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r-1}}\)</span></li>
+<li>当 <span class="math inline">\(g=p^r\)</span> 时，<span class="math inline">\(p=g^{\frac{1}{r}}\)</span></li>
+<li>当 <span class="math inline">\(g=p^{r-1}q\)</span> 时，<span class="math inline">\(p=\frac{N}{g}\)</span></li>
+</ul>
+<p>因此我们分解了 <span class="math inline">\(N\)</span>。</p>
+<h3 id="实例">实例</h3>
+<p>尝试求解 <span class="math inline">\(N=p^2q\)</span>，其中 <span class="math display">\[
+N = 6093253851486120878859471958399737725885946526553626219\\
+e1 = 2749600381847487389715964767235618802529675855606377411\\
+e2 = 3575081244952414009316396501512372226545892558898276551
+\]</span> 构建方程 <span class="math inline">\(f(x)=e_1e_2x-(e_2-e_1)\equiv
+0\pmod{p^{r-1}}\)</span> （我们可以将这个方程看作 <span class="math inline">\(g(x)=x-a\equiv 0\pmod{p^{r-1}}\)</span>，其中
+<span class="math inline">\(a\equiv
+(e_2-e_1)(e_1e_2)^{-1}\pmod{N}\)</span>）</p>
+<p>使用 <span class="math inline">\(m=8\)</span> 和 <span class="math inline">\(t=6\)</span>，我们构建一个维度为 <span class="math inline">\(\omega=9\)</span> 的格。</p>
+<p>应用 LLL 算法并接触第一个简化多项式，我们得到了解 <span class="math inline">\(x_0= 1826732340\)</span></p>
+<p>因此 <span class="math inline">\(\gcd(f(x_0),N)=p=1789386140116417697\)</span>，且最终
+<span class="math inline">\(q=\frac{N}{p^2}=1903010275819064491\)</span></p>
+<p>整个求解程序的运行时间使用现成的计算机是少于 4 秒的。</p>
+<p>最后我们可以恢复私钥 <span class="math inline">\((d_1,d_2)\)</span>。</p>
+<p>但是要注意到，如果 <span class="math inline">\(d_1\approx d_2\approx
+N^{0.99}\)</span>，且 Sarkar’s method 与存在范围 <span class="math inline">\(d&lt;N^{0.395}\)</span>，可能无法恢复私钥。</p>
+<h3 id="脚本-1">脚本</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">r = <span class="number">7</span></span><br><span class="line">N = <span class="number">209798341155088334158217087474227805455138848036904381404809759100627849272231840321985747935471287990313456209656625928356468120896887536235496490078123448217785939608443507649096688546074968476040552137270080120417769906047001451239544719039212180059396791491281787790213953488743488306241516010351179070869410418232801398578982244984544906579574766534671056023774009163991804748763929626213884208260660722705479782932001102089367261720194650874553305179520889083170973755913964440175393646890791491057655226024046525748177999422035469428780228224800114202385209306803288475439775037067014297973202621118959024226798935588827359265962780792266516120013602384766460619793738405476219362508944225007365127768741191310079985425349292613888185378948854602285379329682053663283534930182589905986063348509703027498270111412063194971956202729807710253369312175636837558252924035002153389909587349043986253518050303628071319876207392440085675892353421232158925122721273720564784886530611286461575045181073744696415657043278123662980166364494583141297996445429477446442693717498789391918530672770193730629928408766563592081857706608049076318165712479742423149330311238462044666384622153280310696667586565906758451118241914402257039981388209</span></span><br><span class="line"></span><br><span class="line">e1 = <span class="number">167033559384298522723574512241709447697750495062051373339874928117760768631565225663704494711294488556402223152830158600944819657473430506318731286655519728589208977191031849602792050411662024383502548579402516538753112670329781366297260905517214408459895097308286783418547254449419676568096534767340832822470233461516097690657337287889405321592527860524201824371955082411119548743528220794151774190322092515459637969925138496615421690273925560390321721643556915400569894100488394008220811596560968566833296068500476868375996187754631888256419438775013308064639754700359028260289266420692324376220460340153811660590804281527733243177527178698523018103373311259548716062006020121615186595491453534952848570829485638553678760994354019044715078062414748269425818079274218450448217803229617020494546843594180682307375768323235309661628678546003718924902228908888185484412626429441196588985691713767554591991735686919964937441820738008046218954331990752603146125777571183543616375946363623251491371247594696767767918341279655251868517380267258878990871525012299220182939441091806206624720194246691865367941280852353547267930167542329486261552854451001546455904682702366584763940463481732752992487773878685793275652314513014646439770319249</span></span><br><span class="line">e2 = <span class="number">69076592619651589706691933313826601279528159013379300261609967352748175972662567592943146333144902972780621576811778115958019397062270814057821407036352529372113467206560849267275602453288227390740346959857322649956992529510338912182696854496200041245775322561359546062736323363354733510660780489558215103581313753430117471361013972291126160134685745917715386613876414886325025010348396410346222272648657374977901786530969589123771261040601627906959627351426881111464943086191212001374558078570830214670111422731410682212770683631011038163623234630601007231955235905528750031898751733232446644402069580930596404887288935724879795199659228145390574503341087565153744389617539607111733080406125228559950446336384154674927952991964565965760896308198785777527690939982523416579778957846249005801121682470447753074839399698315364445972142571727376297422736232659133510385808957304351692629177239808890209690661982628408419571131470406142532800330250274534615063537773403062635865734585850821677880659194795963303700015814615804751909674946908768425855361277478190640780518117596780808975720826484146074528564147729911624750510271539697935538038871993380673492022099183863825435237650082706168588306816635866830411481021066926833372846305</span></span><br><span class="line"></span><br><span class="line">x = polygen(Zmod(N))</span><br><span class="line">f = e1 * e2 * x - (e2 - e1)</span><br><span class="line">f = f.monic()</span><br><span class="line"></span><br><span class="line">roots = f.small_roots(beta=((r*(r-<span class="number">1</span>)) / ((r+<span class="number">1</span>)*(r+<span class="number">1</span>))))</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br></pre></td></tr></table></figure>
+<h2 id="the-third-attack">The Third Attack</h2>
+<h3 id="原理-2">原理</h3>
+<p>设 <span class="math inline">\(N_1=p_1^rq_1,N_2=p_2^rq_2\)</span>，其中 <span class="math inline">\(p_1&gt;p_2\)</span>，如果 <span class="math display">\[
+|p_1-p_2|&lt;\frac{p_1}{2rq_1q_2}
+\]</span> 那么我们可以在多项式时间内分解 <span class="math inline">\(N\)</span>。（<strong>连分数定理</strong>）</p>
+<p>类似于维纳攻击，结论是 <span class="math inline">\(\displaystyle\frac{q_2}{q_1}\)</span> 是 <span class="math inline">\(\displaystyle\frac{N_2}{N_1}\)</span>
+的一个有理近似，这样同样的我们分解了 <span class="math inline">\(N_1,N_2\)</span>： <span class="math display">\[
+p_1=\frac{N_1}{q_1}^{\frac{1}{r}}\\
+p_2=\frac{N_2}{q_2}^{\frac{1}{r}}
+\]</span></p>
+<h3 id="脚本-2">脚本</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">N1=<span class="number">170987233913769420505896917437304719816691353833034482461</span></span><br><span class="line">N2=<span class="number">120532911819726882881630714003135237766675602824250965921</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factorization</span>(<span class="params">N1, N2</span>):</span></span><br><span class="line">    cf = continued_fraction(N2/N1)</span><br><span class="line">    convers = cf.convergents()</span><br><span class="line">    <span class="keyword">for</span> pqq <span class="keyword">in</span> convers:</span><br><span class="line">        q2 = pqq.numerator()</span><br><span class="line">        q1 = pqq.denominator()</span><br><span class="line">        <span class="keyword">if</span> q2 == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> q1 != <span class="number">1</span> <span class="keyword">and</span> N1 % q1 == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> q1, q2</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">factorization(N1, N2)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参考文献</p>
+<p>《New attacks on RSA with Moduli <span class="math inline">\(N =
+p^rq\)</span>》</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
+        <tag>rsa</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Common Prime RSA 笔记</title>
+    <url>//common-prime-rsa.html</url>
+    <content><![CDATA[<h1 id="common-prime-rsa">Common Prime RSA</h1>
+<h2 id="简介">简介</h2>
+<p>Wiener 提出，如果 <span class="math inline">\(p\)</span> 和 <span class="math inline">\(q\)</span> 是素数，使得 <span class="math inline">\(p-1\)</span> 和 <span class="math inline">\(q-1\)</span>
+有一个大数因子，那么具有这种性质的素数可以作为 Wiener Attack
+的反制措施。</p>
+<p>根据这种理论，出现了一种 <span class="math inline">\(p-1\)</span> 和
+<span class="math inline">\(q-1\)</span> 拥有一个共同的大素数因子的 RSA
+变体，我们称作共素数RSA（Common Prime RSA）。</p>
+<p>对于某个大素数 <span class="math inline">\(g\)</span>，让 <span class="math inline">\(p=2ga+1\)</span> 且 <span class="math inline">\(q=2gb+1\)</span> 作为平衡素数，保证 <span class="math inline">\(a,b\)</span> 互素且 <span class="math inline">\(h=2gab+a+b\)</span> 是素数。第一个限制确保 <span class="math inline">\(\gcd(p-1,q-1)=2g\)</span>，第二个限制确保 <span class="math inline">\((pq-1)/2=gh\)</span> 与 <span class="math inline">\(N=pq\)</span> 的大小接近。</p>
+<p>因为由上述算法生成的素数 <span class="math inline">\(p,q\)</span>
+满足 <span class="math inline">\(g=\gcd(p-1,q-1)\)</span>
+是一个大素数因子，故称 <span class="math inline">\(p,q\)</span>
+为共素数（common primes）。其中 <span class="math inline">\(g\)</span>
+为这两个素数的共因子（common factor）。</p>
+<p>我们需要注意到对于共素数RSA有着以下性质： <span class="math display">\[
+\lambda(pq)=\mathrm{lcm}(p-1,q-1)=\mathrm{lcm}(2ga,2gb)=2gab\\
+\varphi(pq)=(p-1)(q-1)=2ga2gb=2g\lambda(pq)
+\]</span> 此外存在额外定义，RSA加密指数和解密指数需要与 <span class="math inline">\(\lambda(pq)\)</span> 互素。</p>
+<p>根据上述定义，可以推导出 <span class="math display">\[
+N=pq=(2ga+1)(2gb+1)=2g(2gab+a+b)+1=2gh+1
+\]</span> 即 <span class="math inline">\(N-1\)</span> 为 <span class="math display">\[
+N-1=2g(2gab+a+b)=2gh
+\]</span> 定义 <span class="math inline">\(\gamma\)</span> 表示共因子
+<span class="math inline">\(g\)</span> 的相对于 <span class="math inline">\(N\)</span> 的大小，即 <span class="math inline">\(g=N^\gamma\)</span>。考虑 <span class="math inline">\(g\leq N^{1/2}\)</span>，故 <span class="math inline">\(0\leq\gamma\leq1/2\)</span>。</p>
+<h2 id="生成算法">生成算法</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gcd</span><br><span class="line"><span class="keyword">except</span> NameError:</span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">gen_prime</span>(<span class="params">nbits: <span class="built_in">int</span>, gamma: <span class="built_in">float</span></span>):</span></span><br><span class="line">    g = getPrime(<span class="built_in">int</span>(nbits * gamma))</span><br><span class="line">    alpha = <span class="number">0.5</span> - gamma</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        a = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">        p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> isPrime(p):</span><br><span class="line">            b = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">            q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">            h = <span class="number">2</span> * g * a * b + a + b</span><br><span class="line">            <span class="keyword">while</span> <span class="keyword">not</span> isPrime(q) <span class="keyword">or</span> isPrime(h) <span class="keyword">or</span> gcd(a, b) != <span class="number">1</span>:</span><br><span class="line">                b = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">                q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> p, q</span><br><span class="line"><span class="built_in">print</span>(gen_prime(<span class="number">512</span>, <span class="number">0.48</span>))</span><br></pre></td></tr></table></figure>
+<h2 id="攻击">攻击</h2>
+<h3 id="gamma-接近于-12"><span class="math inline">\(\gamma\)</span>
+接近于 <span class="math inline">\(1/2\)</span></h3>
+<p>当 <span class="math inline">\(\gamma\)</span> 接近于 <span class="math inline">\(1/2\)</span> 时，<span class="math inline">\(g=N^\gamma\)</span> 接近于 <span class="math inline">\(N^{1/2}\)</span>，由于共素数RSA的特殊构造我们可以在
+<span class="math inline">\(O(N^{1/4-\gamma/2})\)</span> 分解 <span class="math inline">\(N\)</span>，故此时算法时间复杂度接近于 <span class="math inline">\(O(1)\)</span>。</p>
+<p>此时我们只需修改 <code>Pollard's rho method</code> 的 <span class="math inline">\(x_i\)</span> 函数。</p>
+<p>在 Mckee&amp;Pinch 的论文<a href="https://citeseerx.ist.psu.edu/doc_view/pid/64294c404088b69a519614510b8d12b4809a6b10">《Further
+Attacks on Server-Aided RSA Cryptosystems》</a>中指出将 <span class="math inline">\(f(x)=x^2+1\)</span> 修改为 <span class="math inline">\(f(x)=x^{N-1}+3\pmod{N}\)</span> 是最优解。</p>
+<p>由于 <span class="math inline">\(N-1=2gh\)</span> 且 <span class="math inline">\(p-1=ga\)</span>，故最多只有一个值不在 <span class="math inline">\(x^{N-1}\mod{p}\)</span> 的环中。</p>
+<p>算法实现如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gcd</span><br><span class="line"><span class="keyword">except</span> NameError:</span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">rho</span>(<span class="params">N</span>):</span></span><br><span class="line">    f = <span class="keyword">lambda</span> x: (<span class="built_in">pow</span>(x, N-<span class="number">1</span>, N) + <span class="number">3</span>) % N</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 加快入环速度</span></span><br><span class="line">        t = random.randint(<span class="number">2</span>, N)</span><br><span class="line">        h = f(t)</span><br><span class="line">        step_times = <span class="number">0</span></span><br><span class="line">        step_limit = <span class="number">2</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> step_times &lt; step_limit:</span><br><span class="line">                step_times = <span class="number">0</span></span><br><span class="line">                step_limit *= <span class="number">2</span></span><br><span class="line">                t = h</span><br><span class="line">                h = f(h)</span><br><span class="line">            p = gcd(<span class="built_in">abs</span>(<span class="built_in">int</span>(t) - <span class="built_in">int</span>(h)), N)</span><br><span class="line">            <span class="keyword">if</span> p == N:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> p &gt; <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> (p, N // p)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                h = f(h)</span><br><span class="line">                step_times += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rho(<span class="number">84236796025318186855187782611491334781897277899439717384242559751095347166978304126358295609924321812851255222430530001043539925782811895605398187299748256080526691975084042025794113521587064616352833904856626744098904922117855866813505228134381046907659080078950018430266048447119221001098505107823645953039</span>))</span><br></pre></td></tr></table></figure>
+<p>故事实证明 <span class="math inline">\(\gamma\)</span>
+值的选取不能过于接近 <span class="math inline">\(1/2\)</span>。</p>
+<h3 id="已知-ab">已知 <span class="math inline">\(a,b\)</span></h3>
+<p>已知 <span class="math inline">\(N=2g(2gab+a+b)+1\)</span>，于是我们构造方程 <span class="math display">\[
+4abg^2+2(a+b)g-N+1=0
+\]</span> 可以在多项式时间 <span class="math inline">\(\log(N)\)</span>
+内分解 <span class="math inline">\(N\)</span>。</p>
+<p>Sagemath 代码如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1185431345934512</span></span><br><span class="line">b = <span class="number">1989628969125971</span></span><br><span class="line">N = <span class="number">54692260436051338814890781701826055707958209029414126894070449935683071253184867947357262267840171428710181955973010913204514025135188192484651672240708141692701667242130748316666406528479191422804307020656050201187035928715833163999813216597718706449260040885862566373392398826670863398295350419792842640631</span></span><br><span class="line">P.&lt;g&gt; = ZZ[]</span><br><span class="line">f = <span class="number">4</span> * a * b * g ^ <span class="number">2</span> + <span class="number">2</span> * (a + b) * g - N + <span class="number">1</span></span><br><span class="line">g = f.roots()</span><br><span class="line"><span class="keyword">if</span> g:</span><br><span class="line">    g = g[<span class="number">0</span>][<span class="number">0</span>]</span><br><span class="line">    p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">    q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">    <span class="keyword">assert</span> p * q == N</span><br></pre></td></tr></table></figure>
+<p>Python 可以借助 <code>sympy</code> 解方程。</p>
+<h3 id="已知-g">已知 <span class="math inline">\(g\)</span></h3>
+<p>当 <span class="math inline">\(g\geq a+b\)</span>
+时，会导致在多项式时间为 <span class="math inline">\(\log(N)\)</span>
+内分解 <span class="math inline">\(N\)</span>，同时因为素数是平衡的，条件相当于 <span class="math inline">\(g&gt;N^{1/4}\)</span>。</p>
+<p>证明如下：</p>
+<p>我们假设 <span class="math inline">\(g&gt;a+b\)</span>，那么给予
+<span class="math inline">\(N,g\)</span>，令 <span class="math inline">\(M=(N-1)/(2g)\)</span>，<span class="math inline">\(c=a+b\)</span>，那么方程 <span class="math display">\[
+N=2g(2gab+a+b)+1
+\]</span> 可以改写成 <span class="math display">\[
+M=2gab+c
+\]</span> 因为 <span class="math inline">\(c=a+b&lt;g\)</span>，根据假设，可以归约为模 <span class="math inline">\(g\)</span> 域下的方程： <span class="math display">\[
+c=M\pmod{g}
+\]</span> 因此，<span class="math inline">\(c=a+b\)</span>
+是已知的。</p>
+<p>将 <span class="math inline">\(b=c-a\)</span> 带回方程 <span class="math inline">\(N=2g(2gab+a+b)+1\)</span>，整理可得二次方程：
+<span class="math display">\[
+2ga^2-2gca+(N-1)/(2g)-c=0
+\]</span> 可以解得 <span class="math inline">\(a,b\)</span>
+为该方程两解。</p>
+<p>假设 <span class="math inline">\(g=a+b\)</span>，我们将方程 <span class="math inline">\(N=2g(2gab+a+b)+1\)</span> 作等价替换，整理得到方程
+<span class="math display">\[
+\frac{N-1}{4g^2}=ab+\frac{1}{2}
+\]</span> 我们再进一步替换 <span class="math inline">\(b=g-a\)</span>，再次整理可得二次方程： <span class="math display">\[
+a^2-ga+\frac{N-1}{4g^2}-\frac{1}{2}=0
+\]</span> 可以解得 <span class="math inline">\(a,b\)</span>。</p>
+<p>代码如下：</p>
+<p><span class="math inline">\(g&gt;a+b\)</span> 时，</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">g = <span class="number">2056971706333850947354991471886113601423457483931388832864204860321308350537317091564919029078296379733989138742162694786565228112885684303</span></span><br><span class="line">N = <span class="number">67324909911911622626246005558967775211455024820506932698435813321567574468019013664789401988015894964099052816176029553245881317276340043887466584645914352982274378611180595397686920214079479901514703963131435008906250160656759300390805929849374653321934393399433471228218819498373221757779799476717494079667</span></span><br><span class="line">M = (N - <span class="number">1</span>) // (<span class="number">2</span> * g)</span><br><span class="line">c = M % g</span><br><span class="line">P.&lt;a&gt; = ZZ[]</span><br><span class="line">f = <span class="number">2</span> * g * a ^ <span class="number">2</span> - <span class="number">2</span> * g * c * a + M - c</span><br><span class="line">a = f.roots()</span><br><span class="line"><span class="keyword">if</span> a:</span><br><span class="line">    a, b = a[<span class="number">0</span>][<span class="number">0</span>], a[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">    p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">    q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">    <span class="keyword">assert</span> p * q == N</span><br></pre></td></tr></table></figure>
+<p><span class="math inline">\(g=a+b\)</span> 时，</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">g = <span class="number">2855372645569408464444580237486670388029956719716115953907612135874419892154982850222965560661211729647325085879529571229774148545656169021</span></span><br><span class="line">N = <span class="number">159549169988238873893531105042878385551537587717347282632324748268846735710748763722602882823022008548774298858161130258369850715542192739582830583643642436399008902770027668038725347353393047833875066622910131525247842517372845617227325882916166114361718015983671803859502931814932543107911548450229250776542101141849788751722460468073974316977656001286989710480324512919121409123619799426221232443036698458643438020098037548757403</span></span><br><span class="line">M = (N - <span class="number">1</span>) // (<span class="number">2</span> * g)</span><br><span class="line">P.&lt;a&gt; = ZZ[]</span><br><span class="line">f = <span class="number">2</span> * a ^ <span class="number">2</span> - <span class="number">2</span> * g * a + (N - <span class="number">1</span>) // (<span class="number">2</span> * g ^ <span class="number">2</span>) - <span class="number">1</span></span><br><span class="line">a = f.roots()</span><br><span class="line"><span class="keyword">if</span> a:</span><br><span class="line">    a, b = a[<span class="number">0</span>][<span class="number">0</span>], a[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">    p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">    q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">    <span class="keyword">assert</span> p * q == N</span><br></pre></td></tr></table></figure>
+<p>因为 <span class="math inline">\(p=2ga+1\)</span>，注意到 <span class="math inline">\(g&gt;N^{1/4}\)</span> 是已知的，故我们也可以用
+<code>Coppersmith's factoring</code> 方法分解模数。</p>
+<p>而当 <span class="math inline">\(g&lt;a+b\)</span>
+时，我们可以使用时间复杂度为 <span class="math inline">\(O(N^{1/4-\gamma})\)</span> 的算法分解 <span class="math inline">\(N\)</span>，每个操作的多项式时间为 <span class="math inline">\(\log(N)\)</span>。</p>
+<p>证明如下：</p>
+<p>已知 <span class="math inline">\(g\)</span>，我们可以通过除法算法计算
+<span class="math inline">\(u\)</span> 和 <span class="math inline">\(0\leq v\leq2g\)</span>，例如： <span class="math display">\[
+\frac{N-1}{2g}=2gu+v
+\]</span> 因为我们知道 <span class="math inline">\(N=2g(2gab+a+b)+1\)</span>，于是乎 <span class="math display">\[
+a+b=v+2gc\\
+ab=u-c
+\]</span> 其中 <span class="math inline">\(c\)</span> 为任意整数。</p>
+<p>对于任意与 <span class="math inline">\(N\)</span> 互素的整数 <span class="math inline">\(x\)</span>，我们有 <span class="math display">\[
+x^{u2g}\equiv x^{ab2g+c2g}\equiv x^{c2g}\pmod{N}
+\]</span> 因为 <span class="math inline">\(u=ab+c\)</span> 且 <span class="math inline">\(\lambda(N)=2gab\)</span>，所以 <span class="math inline">\(x^{2gab}\equiv 1\pmod{N}\)</span>。</p>
+<p>让 <span class="math inline">\(y=x^{2g}\)</span>，我们有 <span class="math display">\[
+y^u\equiv y^c\pmod{N}
+\]</span> 根据这个关系，未知的 <span class="math inline">\(c\)</span>
+可以用 Shanks 的小步大步法（baby-step giant-step
+methodology）求解。对于某些 <span class="math inline">\(d&gt;\sqrt{c}\)</span>，我们计算得到大步为 <span class="math display">\[
+y^0,y^d,y^{2d},\cdots,y^{d^2}\mod{N}
+\]</span> 小步为 <span class="math display">\[
+y^u,y^{u-1},y^{u-2},\cdots,y^{u-d}\mod{N}
+\]</span> 在其中搜索碰撞，将会产生一个 <span class="math inline">\(r\)</span> 和 <span class="math inline">\(s\)</span> 满足： <span class="math display">\[
+y^{rd}\equiv y^{u-s}\pmod{N}
+\]</span> 其中 <span class="math inline">\(c=rd+s\)</span>。</p>
+<p>当 <span class="math inline">\(c\)</span> 已知，我们可以计算 <span class="math inline">\(a,b\)</span>。</p>
+<p>计算，排序和搜索需要 <span class="math inline">\(O(d\log(d))\)</span>
+操作，其中 <span class="math inline">\(d&gt;\sqrt{c}\)</span>。</p>
+<p>故使用这种算法需求 <span class="math inline">\(\gamma\)</span> 接近于
+<span class="math inline">\(1/4\)</span>。</p>
+<blockquote>
+<p>本人多次跑这个算法，最终验证可得 <span class="math inline">\(c\)</span> 的大致范围大概率会落在 <span class="math inline">\(N^{(1/2-2\gamma)}\)</span>
+的附近，取上下浮动两位大小最佳。</p>
+</blockquote>
+<p>Sagemath 如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sage.groups.generic <span class="keyword">import</span> bsgs</span><br><span class="line"></span><br><span class="line">g = <span class="number">28838314918840273611038952856252141148393903858815521699377328440901497</span></span><br><span class="line">N = <span class="number">23895816238623712091906549349650291003358466897973970818205381234024572750472476312894286233088847723906345049342176974080465940396626170377635736786780099297743807402105462746828310247313063710700453371777283064626446124365885063073122303271609231832129823571694756234973129694217982548355078107610764879363</span></span><br><span class="line">nbits = <span class="number">1024</span></span><br><span class="line">gamma = <span class="number">0.23</span></span><br><span class="line">cbits = ceil(nbits * (<span class="number">0.5</span> - <span class="number">2</span> * gamma))</span><br><span class="line"></span><br><span class="line">M = (N - <span class="number">1</span>) // (<span class="number">2</span> * g)</span><br><span class="line">u = M // (<span class="number">2</span> * g)</span><br><span class="line">v = M - <span class="number">2</span> * g * u</span><br><span class="line">GF = Zmod(N)</span><br><span class="line">x = GF.random_element()</span><br><span class="line">y = x ^ (<span class="number">2</span> * g)</span><br><span class="line"><span class="comment"># c的范围大概与N^(0.5-2*gamma)很接近</span></span><br><span class="line">c = bsgs(y, y ^ u, (<span class="built_in">int</span>(<span class="number">2</span>**(cbits-<span class="number">1</span>)), <span class="built_in">int</span>(<span class="number">2</span>**(cbits+<span class="number">1</span>))))</span><br><span class="line">ab = u - c</span><br><span class="line">apb = v + <span class="number">2</span> * g * c</span><br><span class="line">P.&lt;x&gt; = ZZ[]</span><br><span class="line">f = x ^ <span class="number">2</span> - apb * x + ab</span><br><span class="line">a = f.roots()</span><br><span class="line"><span class="keyword">if</span> a:</span><br><span class="line">    a, b = a[<span class="number">0</span>][<span class="number">0</span>], a[<span class="number">1</span>][<span class="number">0</span>]</span><br><span class="line">    p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">    q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">    <span class="keyword">assert</span> p * q == N</span><br></pre></td></tr></table></figure>
+<h3 id="分解-n-1">分解 <span class="math inline">\(N-1\)</span></h3>
+<p>当 <span class="math inline">\(\gamma\)</span> 过小，即 <span class="math inline">\(g=N^\gamma\)</span> 过小时，因为已知 <span class="math inline">\(N-1=2gh\)</span>，故分解出 <span class="math inline">\(g\)</span> 是较为容易的。</p>
+<p>可以使用 <code>yafu</code> 分解 <span class="math inline">\(\frac{N-1}{2}\)</span>，其中当 <span class="math inline">\(\gamma\)</span> 值约为 0.10 左右时分解迅速。</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
+        <tag>rsa</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/post/scaffold.html</url>
+    <content><![CDATA[<h1 id="title">Title</h1>
+]]></content>
+  </entry>
+  <entry>
+    <title>wiener attack 笔记</title>
+    <url>//wiener-attack.html</url>
+    <content><![CDATA[<h1 id="维纳攻击-wiener-attack">维纳攻击 (wiener attack)</h1>
+<h2 id="普通维纳攻击">普通维纳攻击</h2>
+<h3 id="连分数">连分数</h3>
+<p>一个简单的表达式 <span class="math inline">\(x=a_0\)</span>，对其进行连分数展开应该是这样的：
+<span class="math display">\[
+x=a_0+\frac{1}{a_1+\frac{1}{a_2+\frac{1}{a_3+\cdots}}}
+\]</span> 其中 <span class="math inline">\(a_i\)</span>
+我们称作<strong>商(quotient)</strong>。</p>
+<p>一般我们将连分数简记为 <span class="math display">\[
+x=[a_0,a_1,a_2,\cdots,a_n]
+\]</span> 而一个有理数（无理数）具有有限（无限）的连分数展开式。</p>
+<p>一些简单的例子是： <span class="math display">\[
+\frac{73}{95}=0+\frac{1}{1+\frac{1}{3+\frac{1}{3+\frac{1}{7+}}}}=[0,1,3,3,7]\\
+\pi=[3,7,15,1,292,1,1,1,2,\cdots]
+\]</span> 获取连分数的 Python 脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">continuedFractions</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用辗转相处将分数 x/y 转为连分数的形式</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; list(continuedFractions(73, 95))</span></span><br><span class="line"><span class="string">    [0, 1, 3, 3, 7]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        x - 分子\\</span></span><br><span class="line"><span class="string">        y - 分母</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        连分数</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> y:</span><br><span class="line">        <span class="keyword">yield</span> x // y</span><br><span class="line">        x, y = y, x % y</span><br></pre></td></tr></table></figure>
+<p>或者我们也可以使用 Sagemath 的函数获取连分数：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = continued_fraction(<span class="number">73</span>/<span class="number">95</span>)</span><br><span class="line"><span class="built_in">print</span>(a.quotient(<span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(a.quotients())</span><br></pre></td></tr></table></figure>
+<h3 id="有理近似收敛分数">有理近似（收敛分数）</h3>
+<p>虽然 <span class="math inline">\(\pi\)</span>
+是一个无理数，但我们可以使用连分数展开式获取到一个简洁的有理近似： <span class="math display">\[
+c_0=\frac{3}{1}=3.0\\
+c_1=3+\frac{1}{7}=3.142857\\
+c_2=3+\frac{1}{7+\frac{1}{15}}=3.141509\\
+\cdots
+\]</span> 这些有理数 (<span class="math inline">\(c_i\)</span>)
+我们称作连分数的收敛，当 <span class="math inline">\(i\)</span>
+增大时，<span class="math inline">\(c_i\)</span> 将会无限接近于 <span class="math inline">\(\pi\)</span></p>
+<p>我们把这样的 <span class="math inline">\(c_i\)</span>
+所组成的数列称作对某个数 <span class="math inline">\(e\)</span>
+的一个收敛分数，表示形式为： <span class="math display">\[
+e=[c_0,c_1,\cdots,c_n]
+\]</span>
+而同时需要知道<strong>任何一个有理数与其连分数形式是一一对应的</strong>。</p>
+<p>故实际上对于任何一个有理数我们都可以将其展开成一个对应的收敛分数形式。</p>
+<p>获取收敛分数的 Python 脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convergents</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        使用辗转相处将分数 x/y 转为渐进分数的形式</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; list(ContinuedFraction.convergents(73, 95))</span></span><br><span class="line"><span class="string">        [(0, 1), (1, 1), (3, 4), (10, 13), (73, 95)]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        `Parameters`:</span></span><br><span class="line"><span class="string">            x - 分子\\</span></span><br><span class="line"><span class="string">            y - 分母</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        `Returns`:</span></span><br><span class="line"><span class="string">            连分数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">    numerators, denominators = [], []</span><br><span class="line">    <span class="keyword">for</span> idx, val <span class="keyword">in</span> <span class="built_in">enumerate</span>(ContinuedFraction.fractions(x, y)):</span><br><span class="line">        <span class="keyword">if</span> idx == <span class="number">0</span>:</span><br><span class="line">            ni, di = val, <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> idx == <span class="number">1</span>:</span><br><span class="line">                ni, di = val * numerators[-<span class="number">1</span>] + <span class="number">1</span>, val</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    ni, di = val * numerators[-<span class="number">1</span>] + numerators[-<span class="number">2</span>], val * denominators[-<span class="number">1</span>] + denominators[-<span class="number">2</span>]</span><br><span class="line">                    numerators.append(ni)</span><br><span class="line">                    denominators.append(di)</span><br><span class="line">                    <span class="keyword">yield</span> ni, di</span><br></pre></td></tr></table></figure>
+<p>或者我们也可以使用 Sagemath 的函数获取渐进分数：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = continued_fraction(<span class="number">73</span>/<span class="number">95</span>)</span><br><span class="line"><span class="built_in">print</span>(a.convergent(<span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(a.convergents())</span><br></pre></td></tr></table></figure>
+<h3 id="legendres-theorem-连分数定理">Legendre's theorem
+(连分数定理)</h3>
+<p>如果存在 <span class="math inline">\(\alpha \in \Q\)</span>，<span class="math inline">\(c,d\in \Z\)</span> 满足 <span class="math display">\[
+\left|\alpha-\frac{c}{d}\right|&lt;\frac{1}{2d^2}
+\]</span> 那么 <span class="math inline">\(\displaystyle\frac{c}{d}\)</span> 就是 <span class="math inline">\(a\)</span> 的一个有理近似。</p>
+<h3 id="原理">原理</h3>
+<p>首先我们考虑，如果已知 <span class="math inline">\(N=pq\)</span> 和
+<span class="math inline">\(\varphi(N)=(p-1)(q-1)\)</span>，那么 <span class="math display">\[
+\begin{align}
+\varphi(N)&amp;=(p-1)(q-1)\\
+&amp;=N-p-q+1\\
+&amp;=N-p-\frac{N}{p}+1
+\end{align}
+\]</span> 因此我们可以得到方程： <span class="math display">\[
+p^2+p(\varphi(N)-N-1)+N=0
+\]</span> 所以当已知 <span class="math inline">\(N\)</span> 和 <span class="math inline">\(\varphi(N)\)</span> 时，<span class="math inline">\(N\)</span> 是极易分解的。</p>
+<p>其次我们知道 <span class="math inline">\(ed=1\pmod{\varphi(N)}\)</span>，即存在一个 <span class="math inline">\(k\)</span> 使得： <span class="math display">\[
+ed=1+k\varphi(N)
+\]</span> 对其变形可得 <span class="math display">\[
+\left|\frac{e}{\varphi(N)}-\frac{k}{d}\right|=\frac{1}{d\varphi(N)}
+\]</span> 由 <strong>Legendre's theorem</strong> 可得，<span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 是 <span class="math inline">\(\displaystyle\frac{e}{\varphi(N)}\)</span>
+的一个有理近似，如果我们获得了 <span class="math inline">\(\displaystyle\frac{e}{\varphi(N)}\)</span>，那么我们就可以从其的有理近似中获取
+<span class="math inline">\(\displaystyle\frac{k}{d}\)</span>。（<span class="math inline">\(d\)</span> 泄露攻击）</p>
+<p>但在维纳攻击中，我们只有 <span class="math inline">\(e\)</span> 和
+<span class="math inline">\(N\)</span>，那是否会在特定条件中 <span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 是 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
+的一个有理近似？</p>
+<p>实际上当 <span class="math inline">\(N=pq\)</span> 且 <span class="math inline">\(q&lt;p&lt;2q\)</span> 时，如果满足 <span class="math inline">\(d&lt;\displaystyle\frac{1}{3}N^{\frac{1}{4}}\)</span>，那么
+<span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 将是 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
+的一个有理近似。</p>
+<h3 id="步骤">步骤</h3>
+<ol type="1">
+<li>估测是否满足 <span class="math inline">\(d&lt;\displaystyle\frac{1}{3}N^{\frac{1}{4}}\)</span></li>
+<li>求 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
+的连分数展开</li>
+<li>迭代连分数 <span class="math inline">\(\displaystyle\frac{k_i}{d_i}\)</span>：
+<ul>
+<li>使用 <span class="math inline">\(k_i\)</span> 和 <span class="math inline">\(d_i\)</span> 计算出 <span class="math inline">\(\varphi_i(N)\)</span></li>
+<li>使用 <span class="math inline">\(\varphi_i(N)\)</span> 计算出 <span class="math inline">\(N\)</span>，然后通过因式分解进行验证是否正确（我们也可以直接进行解密验证）</li>
+</ul></li>
+</ol>
+<h3 id="脚本">脚本</h3>
+<p>以下仅给出 Sagemath 脚本：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wienerAttack</span>(<span class="params">N, e</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    维纳攻击</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        N - p * q\\</span></span><br><span class="line"><span class="string">        e - public key</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        p, q, d</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    cf = continued_fraction(e/n)</span><br><span class="line">    convers = cf.convergents()</span><br><span class="line">    <span class="keyword">for</span> pkd <span class="keyword">in</span> convers:</span><br><span class="line">        <span class="comment"># possible k, d</span></span><br><span class="line">        pk, pd = pkd.as_integer_ratio()</span><br><span class="line">        <span class="keyword">if</span> pk == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># verify</span></span><br><span class="line">        <span class="keyword">if</span> (e * pd - <span class="number">1</span>) % pk != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># possible phi</span></span><br><span class="line">        pphi = (e * pd - <span class="number">1</span>) // pk</span><br><span class="line">        p = var(<span class="string">&#x27;p&#x27;</span>, domain=ZZ)</span><br><span class="line">        roots = solve(p ** <span class="number">2</span> + (pphi - N - <span class="number">1</span>) * p + N, p)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(roots) == <span class="number">2</span>:</span><br><span class="line">            <span class="comment"># possible p, q</span></span><br><span class="line">            pp, pq = roots</span><br><span class="line">            <span class="keyword">if</span> pp * pq == N:</span><br><span class="line">                <span class="keyword">return</span> pp, pq, pd</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">N = <span class="number">507419170088344932990702256911694788408493968749527614421614568612944144764889717229444020813658893362983714454159980719026366361318789415279417172858536381938870379267670180128174798344744371725609827872339512302232610590888649555446972990419313445687852636305518801236132032618350847705234643521557851434711389664130274468354405273873218264222293858509477860634889001898462547712800153111774564939279190835857445378261920532206352364005840238252284065587291779196975457288580812526597185332036342330147250312262816994625317482869849388424397437470502449815132000588425028055964432298176942124697105509057090546600330760364385753313923003549670107599757996810939165300581847068233156887269181096893089415302163770884312255957584660964506028002922164767453287973102961910781312351686488047510932997937700597992705557881172640175117476017503918294534205898046483981707558521558992058512940087192655700351675718815723840568640509355338482631416345193176708501897458649841539192993142790402734898948352382350766125000186026261167277014748183012844440603384989647664190074853086693408529737767147592432979469020671772152652865219092597717869942730499507426269170189547020660681363276871874469322437194397171763927907099922324375991793759</span></span><br><span class="line">e = <span class="number">77310199867448677782081572109343472783781135641712597643597122591443011229091533516758925238949755491395489408922437493670252550920826641442189683907973926843505436730014899918587477913032286153545247063493885982941194996251799882984145155733050069564485120660716110828110738784644223519725613280140006783618393995138076030616463398284819550627612102010214315235269945251741407899692274978642663650687157736417831290404871181902463904311095448368498432147292938825418930527188720696497596867575843476810225152659244529481480993843168383016583068747733118703000287423374094051895724494193455175131120243097065270804457787026492578916584536863548445813916819417857064037664101684455000184987531252344582899589746272173970083733130106407810619258077266603898529285634495710846838011858287024329514491058790557305041389614650730267774482954666726949886313386881066593946789460028399523245777171320319444673551268379126203862576627540177888290265714418064334752499940587750374552330008143708562065940245637685833371348603338834447212248648869514585047871442060412622164276894766238383894693759347590977926306581080390685360615407766600573527565016914830132066428454738135380178959590692145577418811677639050929791996313180297924833690095</span></span><br><span class="line">c = <span class="number">165251729917394529793163344300848992394021337429474789711805041655116845722480301677817165053253655027459227404782607373107477419083333844871948673626672704233977397989843349633720167495862807995411682262559392496273163155214888276398332204954185252030616473235814999366132031184631541209554169938146205402400412307638567132128690379079483633171535375278689326189057930259534983374296873110199636558962144635514392282351103900375366360933088605794654279480277782805401749872568584335215630740265944133347038070337891035560658434763924576508969938866566235926587685108811154229747423410476421860059769485356567301897413767088823807510568561254627099309752215808220067495561412081320541540679503218232020279947159175547517811501280846596226165148013762293861131544331444165070186672186027410082671602892508739473724143698396105392623164025712124329254933353509384748403154342322725203183050328143736631333990445537119855865348221215277608372952942702104088940952142851523651639574409075484106857403651453121036577767672430612728022444370874223001778580387635197325043524719396707713385963432915855227152371800527536048555551237729690663544828830627192867570345853910196397851763591543484023134551876591248557980182981967782409054277224</span></span><br><span class="line">p, q, d = wienerAttack(N, e)</span><br><span class="line">m = <span class="built_in">pow</span>(c, d, N)</span><br></pre></td></tr></table></figure>
+<h2 id="扩展维纳攻击">扩展维纳攻击</h2>
+<h3 id="wiener-s-approach">Wiener 's Approach</h3>
+<p>我们已知 <span class="math display">\[
+ed=k\varphi(N)+1
+\]</span> 不妨令 <span class="math inline">\(s=1-p-q\)</span>，那么
+<span class="math display">\[
+ed-kN=ks+1\tag{W}
+\]</span></p>
+<h3 id="guo-s-approach-with-two-exponents">Guo 's Approach With Two
+Exponents</h3>
+<p>如果对于同一个 <span class="math inline">\(N\)</span> 存在 <span class="math inline">\((e_1,e_2)\)</span> 都有相对应较小的 <span class="math inline">\((d_1,d_2)\)</span>，那么我们可以得到： <span class="math display">\[
+\begin{cases}
+e_1d_1-k_1\varphi(N)=1\\
+e_2d_2-k_2\varphi(N)=1\\
+\end{cases}
+\]</span> 对其进行化简得到： <span class="math display">\[
+e_1d_1k_2-e_2d_2k_1=k_2-k_1\tag{G(1,2)}
+\]</span> 可以推导出 <span class="math display">\[
+\left|\frac{e_1}{e_2}-\frac{d_2k_1}{d_1k_2}\right|=\frac{|k_2-k_1|}{e_2d_1k_1}
+\]</span> 那么如果 <span class="math inline">\(2(k_2-k_1)d_1k_2&lt;e_2\)</span>，根据
+<strong>Legendre's theorem</strong> 我们得知 <span class="math inline">\(\displaystyle\frac{d_2k_1}{d_1k_2}\)</span> 是
+<span class="math inline">\(\displaystyle\frac{e_1}{e_2}\)</span>
+的一个有理近似。</p>
+<p>但通过 <span class="math inline">\(\displaystyle\frac{d_2k_1}{d_1k_2}\)</span> 确定
+<span class="math inline">\((d_1,d_2)\)</span> 不是很现实。</p>
+<h3 id="两个小解密指数的原理">两个小解密指数的原理</h3>
+<p>结合维纳攻击和 <strong>Guo's
+Approach</strong>，我们可以通过多个等式构造格后，利用 LLL
+格规约算法化简求解该问题。</p>
+<p>首先假设 <span class="math inline">\(d_i&lt;N^\alpha\)</span>，联立四个式子：</p>
+<ol type="1">
+<li><p><span class="math display">\[
+k_1k_2=k_1k_2
+\]</span></p></li>
+<li><p><span class="math inline">\(W_1\cdot k_2\)</span> <span class="math display">\[
+e_1d_1k_2-k_1Nk_2=k_2(k_1s+1)
+\]</span></p></li>
+<li><p><span class="math inline">\(G(1,2)\)</span> <span class="math display">\[
+e_2d_2k_1-e_1d_1k_2=k_1-k_2\tag{G(1,2)}
+\]</span></p></li>
+<li><p><span class="math inline">\(W_1\cdot W_2\)</span> <span class="math display">\[
+(e_1d_1-k_1N)(e_2d_2-k_2N)=(k_2s+1)(k_2s+1)\\
+\Downarrow\\
+d_1d_2e_1e_2-d_1k_2e_1N-d_2k_1e_2N+k_1k_2N^2=(k_2s+1)(k_2s+1)
+\]</span></p></li>
+</ol>
+<p>从而构造矩阵 <span class="math inline">\(A,L,B\)</span> <span class="math display">\[
+A=
+\begin{pmatrix}
+  k_1k_2,d_1k_2,d_2k_1,d_1d_2
+\end{pmatrix}\\
+L=
+\begin{pmatrix}
+  1 &amp; -N &amp; 0 &amp; N^2 \\
+  0 &amp; e_1 &amp; -e_1 &amp; -e_1N \\
+  0 &amp; 0 &amp; e_2 &amp; -e_2N \\
+  0 &amp; 0 &amp; 0 &amp; e_1e_2
+\end{pmatrix}\\
+B=\begin{pmatrix}k_1k_2,k_2(k_1s+1),k_1-k_2,(k_2s+1)(k_2s+1)\end{pmatrix}
+\]</span> 满足 <span class="math display">\[
+A\cdot L=B
+\]</span> 而根据假设可知 <span class="math display">\[
+e_i\approx N\\
+d_i\approx N^\alpha\\
+k_i\approx d_i \approx N^\alpha\\
+g\approx 1\\
+s=1-p-q\approx N^{0.5}
+\]</span> 根据 <strong>Minkowoski′s first theorem</strong>
+可知，只有满足 <span class="math display">\[
+\lambda_1(L)\leq\sqrt{n}\det(L)^{\frac{1}{n}}
+\]</span> 才能算是最短向量，但明显右边计算结果为 <span class="math inline">\(N\)</span>，明显 <span class="math inline">\(||B||&gt;N\)</span>，所以需要考虑使得等式两边的大小尽量接近，而等式右边向量的大小为
+<span class="math inline">\((N^{2\alpha},N^{0.5+2\alpha},N^{\alpha},N^{1+2\alpha})\)</span>，故我们最终构造的矩阵应该为：
+<span class="math display">\[
+L=
+\begin{pmatrix}
+  1 &amp; -N &amp; 0 &amp; N^2 \\
+  0 &amp; e_1 &amp; -e_1 &amp; -e_1N \\
+  0 &amp; 0 &amp; e_2 &amp; -e_2N \\
+  0 &amp; 0 &amp; 0 &amp; e_1e_2
+\end{pmatrix}
+\cdot
+\begin{pmatrix}
+  N &amp;  &amp;  &amp;  \\
+   &amp; N^0.5 &amp;  &amp;  \\
+   &amp;  &amp; N^{1+\alpha} &amp;  \\
+   &amp;  &amp;  &amp; 1
+\end{pmatrix}
+\]</span> 这样便使得向量 <span class="math inline">\(B\)</span> 满足
+<span class="math display">\[
+||BL||&lt;2N^{1+2\alpha}
+\]</span> 将问题转化为类 SVP 问题后，使用格规约算法 LLL 既可以得到基向量
+<span class="math inline">\(B\)</span>，随后 <span class="math display">\[
+\frac{B_2}{B_1}=\frac{d_1}{k_1}\\
+\varphi(N)=\frac{ed}{k}
+\]</span> 在这里根据部分证明可知，对于两个小解密指数的情况，当 <span class="math inline">\(c\)</span> 较小时，如果有 <span class="math display">\[
+\alpha&lt;\frac{5}{14}-\varepsilon
+\]</span> 就可以通过格基规约找到向量 <span class="math inline">\(B\)</span>。</p>
+<h3 id="三个小解密指数的情况">三个小解密指数的情况</h3>
+<p>对于三个指数的情况我们额外选取 <span class="math inline">\(G(1,3),W_1G(2,3),W_2G(1,3)\)</span>
+的等式，这样我们的向量 <span class="math inline">\(B\)</span> 为： <span class="math display">\[
+B = \begin{pmatrix}
+k_1k_2k_3&amp;d_1gk_2k_3&amp;k_1d_2gk_3&amp;d_1d_2g^2k_3&amp;k_1k_2d_3g&amp;k_1d_3g&amp;k_2d_3g&amp;d_1d_2d_3g^3
+\end{pmatrix}
+\]</span> 然后我们便可以构造格： <span class="math display">\[
+L = \begin{pmatrix}
+        1 &amp; -N &amp; 0 &amp; N^{2} &amp; 0 &amp; 0 &amp; 0 &amp;
+-N^{3} \\
+        0 &amp; e_{1} &amp; -e_{1} &amp; -N e_{1} &amp; -e_{1} &amp; 0
+&amp; N e_{1} &amp; N^{2} e_{1} \\
+        0 &amp; 0 &amp; e_{2} &amp; -N e_{2} &amp; 0 &amp; N e_{2} &amp;
+0 &amp; N^{2} e_{2} \\
+        0 &amp; 0 &amp; 0 &amp; e_{1} e_{2} &amp; 0 &amp; -e_{1} e_{2}
+&amp; -e_{1} e_{2} &amp; -N e_{1} e_{2} \\
+        0 &amp; 0 &amp; 0 &amp; 0 &amp; e_{3} &amp; -N e_{3} &amp; -N
+e_{3} &amp; N^{2} e_{3} \\
+        0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e_{1} e_{3} &amp; 0
+&amp; -N e_{1} e_{3} \\
+        0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e_{2} e_{3}
+&amp; -N e_{2} e_{3} \\
+        0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; e_{1}
+e_{2} e_{3}
+        \end{pmatrix}
+\]</span> 其中 <span class="math display">\[
+D = diag\begin{pmatrix}
+    N^{\frac{3}{2}}&amp;N&amp;N^{a + \frac{3}{2}}&amp;\sqrt{N}&amp;N^{a
++ \frac{3}{2}}&amp;N^{a + 1}&amp;N^{a + 1}&amp;1\end{pmatrix}
+\]</span> 同样我们可以得知 <span class="math display">\[
+||BL||&lt;\sqrt{8}N^{1.5+2\alpha}
+\]</span> 证明可得，当 <span class="math display">\[
+\alpha&lt;\frac{2}{5}-\varepsilon
+\]</span> 时，可以通过格基规约求出向量 <span class="math inline">\(B\)</span>。</p>
+<h3 id="选择关系">选择关系</h3>
+<p>论文末位给出的 <span class="math inline">\(n\leq 5\)</span>
+的选择关系表：</p>
+<figure>
+<img src="/wiener-attack/extendwiener-chosen-relations.png" alt="选择关系表">
+<figcaption aria-hidden="true">选择关系表</figcaption>
+</figure>
+<h3 id="脚本-1">脚本</h3>
+<p>这里仅给出 Sagemath 的脚本：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wienerAttack2</span>(<span class="params">N, e1, e2</span>):</span></span><br><span class="line">    a = <span class="number">5</span>/<span class="number">14</span></span><br><span class="line">    D = diagonal_matrix(ZZ, [N, <span class="built_in">int</span>(N^(<span class="number">1</span>/<span class="number">2</span>)), <span class="built_in">int</span>(N^(<span class="number">1</span>+a)), <span class="number">1</span>])</span><br><span class="line">    M = matrix(ZZ, [[<span class="number">1</span>, -N, <span class="number">0</span>, N^<span class="number">2</span>], [<span class="number">0</span>, e1, -e1, -e1*N], [<span class="number">0</span>, <span class="number">0</span>, e2, -e2*N], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, e1*e2]])*D</span><br><span class="line">    L = M.LLL()</span><br><span class="line">    B = vector(ZZ, L[<span class="number">0</span>])</span><br><span class="line">    A = B * M^(-<span class="number">1</span>)</span><br><span class="line">    phi = <span class="built_in">int</span>(A[<span class="number">1</span>]/A[<span class="number">0</span>]*e1)</span><br><span class="line">    d1 = inverse_mod(e1, phi)</span><br><span class="line">    d2 = inverse_mod(e2, phi)</span><br><span class="line">    p = var(<span class="string">&#x27;p&#x27;</span>, domain=ZZ)</span><br><span class="line">    roots = solve(p ** <span class="number">2</span> + (pphi - N - <span class="number">1</span>) * p + N, p)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(roots) == <span class="number">2</span>:</span><br><span class="line">        <span class="comment"># possible p, q</span></span><br><span class="line">        p, q = roots</span><br><span class="line">        <span class="keyword">if</span> p * q == N:</span><br><span class="line">            <span class="keyword">return</span> p, q, d1, d2</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">e1 = <span class="number">114552459553730357961013268333698879659007919035942930313432809776799669181481660306531243618160127922304264986001501784564575128319884991774542682853466808329973362019677284072646678280051091964555611220961719302320547405880386113519147076299481594997799884384012548506240748042365643212774215730304047871679706035596550898944580314923260982768858133395187777029914150064371998328788068888440803565964567662563652062845388379897799506439389461619422933318625765603423604615137217375612091221578339493263160670355032898186792479034771118678394464854413824347305505135625135428816394053078365603937337271798774138959</span></span><br><span class="line">e2 = <span class="number">27188825731727584656624712988703151030126350536157477591935558508817722580343689565924329442151239649607993377452763119541243174650065563589438911911135278704499670302489754540301886312489410648471922645773506837251600244109619850141762795901696503387880058658061490595034281884089265487336373011424883404499124002441860870291233875045675212355287622948427109362925199018383535259913549859747158348931847041907910313465531703810313472674435425886505383646969400166213185676876969805238803587967334447878968225219769481841748776108219650785975942208190380614555719233460250841332020054797811415069533137170950762289</span></span><br><span class="line">N = <span class="number">14922959775784066499316528935316325825140011208871830627653191549546959775167708525042423039865322548420928571524120743831693550123563493981797950912895893476200447083386549353336086899064921878582074346791320104106139965010480614879592357793053342577850761108944086318475849882440272688246818022209356852924215237481460229377544297224983887026669222885987323082324044645883070916243439521809702674295469253723616677245762242494478587807402688474176102093482019417118703747411862420536240611089529331148684440513934609412884941091651594861530606086982174862461739604705354416587503836130151492937714365614194583664241</span></span><br><span class="line">p, q, d1, d2 = wienerAttack2(N, e1, e2)</span><br></pre></td></tr></table></figure>
+<h2 id="参考论文">参考论文</h2>
+<p>《A New Attack on RSA with Two or Three》</p>
+]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>crypto</tag>
+        <tag>rsa</tag>
       </tags>
   </entry>
 </search>
