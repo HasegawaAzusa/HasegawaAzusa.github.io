@@ -29,13 +29,16 @@
 <meta property="og:site_name" content="独奏の小屋">
 <meta property="og:description" content="ECC 加密算法的简要笔记">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/ecc-note/The%20addition%20law%20on%20an%20elliptic%20curve.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/ecc-note/Adding%20a%20point%20P%20to%20itself.png">
 <meta property="article:published_time" content="2022-02-11T05:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-11T13:58:56.627Z">
+<meta property="article:modified_time" content="2023-01-20T06:59:49.731Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="crypto">
 <meta property="article:tag" content="ecc">
 <meta property="article:tag" content="sagemath">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/ecc-note/The%20addition%20law%20on%20an%20elliptic%20curve.png">
 
 
 <link rel="canonical" href="https://hasegawaazusa.github.io/ecc-note.html">
@@ -91,8 +94,8 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">55</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">92</span></a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">56</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">95</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -150,8 +153,8 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">ECC 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc-%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">ECC 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ecc-%E5%B8%B8%E7%94%A8%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">ECC 常用椭圆曲线定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E8%A7%A3-e_pab"><span class="nav-number">2.2.</span> <span class="nav-text">求解 \(E_p(a,b)\)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E4%B8%8A%E7%9A%84%E7%BE%A4%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">椭圆曲线上的群操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ecdlp-%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0"><span class="nav-number">2.4.</span> <span class="nav-text">ECDLP 椭圆曲线离散对数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%9A%84-diffie-hellman-%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.5.</span> <span class="nav-text">基于椭圆曲线的
-Diffie-Hellman 密钥交换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elgamal-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.6.</span> <span class="nav-text">ElGamal 加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90"><span class="nav-number">2.6.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86"><span class="nav-number">2.6.2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86"><span class="nav-number">2.6.3.</span> <span class="nav-text">解密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ec-elgamal"><span class="nav-number">2.7.</span> <span class="nav-text">EC ElGamal</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-1"><span class="nav-number">2.7.2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-1"><span class="nav-number">2.7.3.</span> <span class="nav-text">解密</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eccsagemath-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">ECC&amp;sagemath 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-2"><span class="nav-number">3.1.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-2"><span class="nav-number">3.2.</span> <span class="nav-text">解密</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eccpython-%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">ECC&amp;Python 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90-ecc-%E5%AF%86%E9%92%A5"><span class="nav-number">4.1.</span> <span class="nav-text">生成 ECC 密钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E5%85%AC%E5%BC%80%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8F%82%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">查询公开椭圆曲线参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc%E5%B7%B2%E5%85%AC%E5%BC%80%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8F%82%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">ECC已公开椭圆曲线参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc-%E6%B1%82%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">ECC 求解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E6%98%8E%E6%96%87%E6%98%A0%E5%B0%84"><span class="nav-number">6.1.</span> <span class="nav-text">普通明文映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-number">6.2.</span> <span class="nav-text">离散对数问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-ecc-%E7%9A%84-pem-%E5%AF%86%E9%92%A5%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">6.3.</span> <span class="nav-text">查看 ECC 的 pem 密钥文件信息</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">ECC 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc-%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">ECC 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ecc-%E5%B8%B8%E7%94%A8%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">ECC 常用椭圆曲线定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E8%A7%A3-e_pab"><span class="nav-number">2.2.</span> <span class="nav-text">求解 \(E_p(a,b)\)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E4%B8%8A%E7%9A%84%E7%BE%A4%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">椭圆曲线上的群操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ecdlp-%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.</span> <span class="nav-text">ECDLP 椭圆曲线离散对数问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%9A%84-diffie-hellman-%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.5.</span> <span class="nav-text">基于椭圆曲线的
+Diffie-Hellman 密钥交换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elgamal-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.6.</span> <span class="nav-text">ElGamal 加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90"><span class="nav-number">2.6.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86"><span class="nav-number">2.6.2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86"><span class="nav-number">2.6.3.</span> <span class="nav-text">解密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ec-elgamal"><span class="nav-number">2.7.</span> <span class="nav-text">EC ElGamal</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-1"><span class="nav-number">2.7.2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-1"><span class="nav-number">2.7.3.</span> <span class="nav-text">解密</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eccsagemath-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">ECC&amp;sagemath 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-2"><span class="nav-number">3.1.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-2"><span class="nav-number">3.2.</span> <span class="nav-text">解密</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eccpython-%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">ECC&amp;Python 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90-ecc-%E5%AF%86%E9%92%A5"><span class="nav-number">4.1.</span> <span class="nav-text">生成 ECC 密钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E5%85%AC%E5%BC%80%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8F%82%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">查询公开椭圆曲线参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc%E5%B7%B2%E5%85%AC%E5%BC%80%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8F%82%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">ECC已公开椭圆曲线参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc-%E6%B1%82%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">ECC 求解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E6%98%8E%E6%96%87%E6%98%A0%E5%B0%84"><span class="nav-number">6.1.</span> <span class="nav-text">普通明文映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0"><span class="nav-number">6.2.</span> <span class="nav-text">普通离散对数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pohlig-hellman-%E6%94%BB%E5%87%BB"><span class="nav-number">6.3.</span> <span class="nav-text">Pohlig-Hellman 攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">6.3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">6.3.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smart-%E6%94%BB%E5%87%BB"><span class="nav-number">6.4.</span> <span class="nav-text">Smart 攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81"><span class="nav-number">6.4.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">6.4.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-ecc-%E7%9A%84-pem-%E5%AF%86%E9%92%A5%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">6.5.</span> <span class="nav-text">查看 ECC 的 pem 密钥文件信息</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -166,13 +169,13 @@ Diffie-Hellman 密钥交换</span></a></li><li class="nav-item nav-level-2"><a c
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">92</span>
+          <span class="site-state-item-count">95</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">55</span>
+        <span class="site-state-item-count">56</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -253,14 +256,14 @@ Diffie-Hellman 密钥交换</span></a></li><li class="nav-item nav-level-2"><a c
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>10k</span>
+      <span>15k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>9 分钟</span>
+      <span>13 分钟</span>
     </span>
 </div>
 
@@ -280,16 +283,19 @@ ECC)，又称<strong>椭圆曲线密码体制</strong>、<strong>椭圆曲线加
 <h1 id="ecc-原理">ECC 原理</h1>
 <h2 id="ecc-常用椭圆曲线定义">ECC 常用椭圆曲线定义</h2>
 <blockquote>
-<p><span class="math inline">\(Z_p\ (p&gt;3)\)</span>
+<p><span class="math inline">\(\Z_p\ (p\geq3)\)</span>
 上的椭圆曲线指满足以下条件的所有对 <span class="math inline">\((x, y)\in
-Z_p\)</span> 的集合 <span class="math display">\[
-y^2\equiv x^3+ax+b\ mod\ p
+\Z_p\)</span> 的集合 <span class="math display">\[
+y^2\equiv x^3+ax+b\pmod{p}
 \]</span> 以及一个无穷大的虚数点<span class="math inline">\(\partial\)</span>，其中 <span class="math display">\[
-a,b\in Z_p
-\]</span> 并且满足条件 <span class="math inline">\(4a^3+27b^2\neq 0\
-mod\ p\)</span>。</p>
+a,b\in\Z_p
+\]</span> 并且满足条件：<span class="math inline">\(p\)</span>
+是素数，<span class="math inline">\(\Delta_E=4a^3+27b^2\neq
+0\pmod{p}\)</span>。</p>
 </blockquote>
-<p>密码学应用感兴趣的时定义中给出的基于<strong>素数域</strong>的曲线。如果在<span class="math inline">\(Zp\)</span>上画出这个椭圆曲线，则得到的从远处看不像是一条曲线。</p>
+<p>密码学应用感兴趣的时定义中给出的基于<strong>素数域</strong>的曲线。如果在
+<span class="math inline">\(\Z_p\)</span>
+上画出这个椭圆曲线，则得到的从远处看不像是一条曲线。</p>
 <h2 id="求解-e_pab">求解 <span class="math inline">\(E_p(a,b)\)</span></h2>
 <p>设 <span class="math inline">\(E_p(a,b)\)</span>
 表示椭圆曲线上的点集： <span class="math display">\[
@@ -297,12 +303,10 @@ mod\ p\)</span>。</p>
 \]</span> 求 <span class="math inline">\(E_p(a,b)\)</span>
 点集步骤：</p>
 <ol type="1">
-<li>对每一个 <span class="math inline">\(x(0\leq x&lt;p\
-且x为整数)\)</span>，计算 <span class="math inline">\(x^3+ax+b\ (mod\
-p)\)</span></li>
-<li>决定以上求得的值在<span class="math inline">\(mod\
-p\)</span>下是否有平方根，计算 <span class="math inline">\(y^2\ (mod\
-p)\)</span>
+<li>对每一个 <span class="math inline">\(x(0\leq
+x&lt;p,x\in\Z)\)</span>，计算 <span class="math inline">\(x^3+ax+b\pmod{p}\)</span></li>
+<li>决定以上求得的值在模 <span class="math inline">\(p\)</span>
+下是否有平方根，计算 <span class="math inline">\(y^2\pmod{p}\)</span>
 <ul>
 <li>如果没有，则求曲线上没有与这一相对应的点</li>
 <li>如果有，则求出两个平方根</li>
@@ -317,18 +321,43 @@ P+Q=R\\
 \]</span>
 在这里我们只关注<strong>素数域</strong>上的加法法则，得到以下表达式
 <span class="math display">\[
-x_3=s^2-x_1-x_2\ mod\ p\\
-y_3=s(x_1-x_3)-y_1\ mod\ p
-\]</span> ​ 其中 <span class="math display">\[
+x_3=s^2-x_1-x_2\pmod{p}\\
+y_3=s(x_1-x_3)-y_1\pmod{p}
+\]</span> 其中 <span class="math display">\[
 s=\begin{cases}
-\frac{y_2-y_1}{x_2-x_1}mod\ p;\ 当P\neq Q(相异点相加)\\
-\frac{3x_1^2+a}{2y_1}mod\ p;\ 当P=Q(相同点相加)
+\displaystyle\frac{y_2-y_1}{x_2-x_1}\pmod{p};\ 当P\neq Q(相异点相加)\\
+\displaystyle\frac{3x_1^2+a}{2y_1}\pmod{p};\ 当P=Q(相同点相加)
 \end{cases}
 \]</span> 在相异点加法中，参数<span class="math inline">\(s\)</span>指的是经过<span class="math inline">\(P\)</span>和<span class="math inline">\(Q\)</span>的直线的斜率；而在相同点加法中，参数<span class="math inline">\(s\)</span>指的是经过点<span class="math inline">\(P\)</span>的切线的斜率。</p>
-<h2 id="ecdlp-椭圆曲线离散对数">ECDLP 椭圆曲线离散对数</h2>
+<p>从几何角度上定义，即作过 <span class="math inline">\(P,Q\)</span>
+两点的直线，与椭圆曲线交于第三点 <span class="math inline">\(R\)</span>，取 <span class="math inline">\(R\)</span> 的与 <span class="math inline">\(x\)</span> 轴对称的点（即将 <span class="math inline">\(R\)</span> 的 Y 坐标乘以 -1），得到二点相加的结果
+<span class="math inline">\(R&#39;\)</span> 点。</p>
+<figure>
+<img src="/ecc-note/The%20addition%20law%20on%20an%20elliptic%20curve.png" alt="The addition law on an elliptic curve">
+<figcaption aria-hidden="true">The addition law on an elliptic
+curve</figcaption>
+</figure>
+<p>当 <span class="math inline">\(P=Q\)</span>
+时，需要采用极限的思想，此时应该是在椭圆曲线上过 <span class="math inline">\(P\)</span> 点的切线与椭圆曲线的交点为二倍点。</p>
+<figure>
+<img src="/ecc-note/Adding%20a%20point%20P%20to%20itself.png" alt="Adding a point P to itself">
+<figcaption aria-hidden="true">Adding a point P to itself</figcaption>
+</figure>
+<p>定义点 <span class="math inline">\(O\)</span>
+为无穷远点，椭圆曲线上一点的运算满足以下规则（<span class="math inline">\(P,Q,R\in E\)</span>）： <span class="math display">\[
+P+O=O+P=P\\
+P+(-P)=O\\
+(P+Q)+R=P+(Q+R)\\
+P+Q+Q+P
+\]</span> 同时定义倍乘为 <span class="math display">\[
+n P=\underbrace{P+P+P+\cdots+P}_{n \text { copies }}
+\]</span></p>
+<p>而椭圆曲线的阶（order）定义为，找到一个最小的 <span class="math inline">\(s\)</span> 满足 <span class="math inline">\(s=|k-j|\)</span>，其中 <span class="math inline">\(kP=jP\)</span>。</p>
+<h2 id="ecdlp-椭圆曲线离散对数问题">ECDLP 椭圆曲线离散对数问题</h2>
 <p>首先已知存在定理：</p>
 <blockquote>
-<p>曲线上的点<span class="math inline">\(\partial\)</span>一起构成了循环子群。在某些条件下，椭圆曲线上的所有点可以形成一个循环群。</p>
+<p>曲线上的点 <span class="math inline">\(\partial\)</span>
+一起构成了循环子群。在某些条件下，椭圆曲线上的所有点可以形成一个循环群。</p>
 </blockquote>
 <p>在建立 <span class="math inline">\(DL\)</span>
 密码体制时，知道群的阶至关重要，我们可以根据 <strong>Hasse's
@@ -339,22 +368,29 @@ p+1-2\sqrt{p}\leq \#E\leq p+1+2\sqrt{p}
 \]</span></p>
 </blockquote>
 <p><strong>Hasse's 定理</strong>也称为<strong>Hasse's
-边界</strong>，它说明了点的个数大概在素数<span class="math inline">\(p\)</span>的范围内。这个结论具有非常大的实用性。例如，如果需要一个拥有<span class="math inline">\(2^{160}\)</span>个元素的椭圆曲线，我们必须使用一个长度大约为
-160 位的素数。</p>
-<p>以下给出椭圆曲线离散对数问题(ECDLP)的定义：</p>
+边界</strong>，它说明了点的个数大概在素数 <span class="math inline">\(p\)</span>
+的范围内。这个结论具有非常大的实用性。例如，如果需要一个拥有 <span class="math inline">\(2^{160}\)</span>
+个元素的椭圆曲线，我们必须使用一个长度大约为 160 位的素数。</p>
+<p>以下给出椭圆曲线离散对数问题（ECDLP）的定义：</p>
 <blockquote>
-<p>给定一个椭圆曲线<span class="math inline">\(E\)</span>，考虑本原<span class="math inline">\(P\)</span>和另一个元素<span class="math inline">\(Q\)</span>。则 <span class="math inline">\(DL\)</span> 问题是找到整数<span class="math inline">\(k\ (1\leq k\leq \#E)\)</span>，满足： <span class="math display">\[
+<p>给定一个椭圆曲线 <span class="math inline">\(E\)</span>，考虑本原
+<span class="math inline">\(P\)</span> 和另一个元素 <span class="math inline">\(Q\)</span>。则 <span class="math inline">\(DL\)</span> 问题是找到整数<span class="math inline">\(k(1\leq k\leq \#E)\)</span>，满足： <span class="math display">\[
 kP=Q
+\]</span> 记为 <span class="math display">\[
+k=\log_P{(Q)}
 \]</span></p>
 </blockquote>
 <p>其中，椭圆曲线加密的数学原理：</p>
 <blockquote>
-<p>点<span class="math inline">\(P\)</span>称为基点 (base point)；<span class="math inline">\(k\)</span>为私有密钥 (private key)；<span class="math inline">\(Q\)</span>为公开密钥 (public key)</p>
+<p>点<span class="math inline">\(P\)</span>称为基点（base point）；<span class="math inline">\(k\)</span>为私有密钥（private key）；<span class="math inline">\(Q\)</span>为公开密钥（public key）</p>
 <ul>
 <li>若给定<span class="math inline">\(k\)</span>和<span class="math inline">\(P\)</span>，根据加法法则，计算<span class="math inline">\(Q\)</span>很容易。</li>
 <li>但给定<span class="math inline">\(P\)</span>和<span class="math inline">\(Q\)</span>，求<span class="math inline">\(k\)</span>非常困难 (实际应用 ECC 时，素数<span class="math inline">\(p\)</span>会取得非常大，穷举出<span class="math inline">\(k\)</span>将十分困难)</li>
 </ul>
 </blockquote>
+<p>其中椭圆离散对数满足以下运算： <span class="math display">\[
+\log_P{(Q_1+Q_2)}=\log_P(Q_1)+\log_P(Q_2);Q_1,Q_2\in E
+\]</span> 目前已知最快的解决椭圆离散对数问题的算法大约需要在 <span class="math inline">\(\sqrt{p}\)</span> 步，所以当 <span class="math inline">\(p\)</span> 足够大时，椭圆曲线加密具有安全性。</p>
 <h2 id="基于椭圆曲线的-diffie-hellman-密钥交换">基于椭圆曲线的
 Diffie-Hellman 密钥交换</h2>
 <p>首先我们必须统一域参数，即实现所需要的合适的椭圆曲线以及曲线上的一个本原元：</p>
@@ -364,7 +400,7 @@ Diffie-Hellman 密钥交换</h2>
 <li>选择一个素数<span class="math inline">\(p\)</span>和椭圆曲线</li>
 </ul>
 <p><span class="math display">\[
-E:y^2\equiv x^3+ax+b\ mod\ P
+E:y^2\equiv x^3+ax+b\pmod{p}
 \]</span></p>
 <ul>
 <li>选择一个本原元<span class="math inline">\(P=(x_p,y_p)\)</span></li>
@@ -393,32 +429,35 @@ y_{AB})\)</span></p>
 </blockquote>
 <h2 id="elgamal-加密算法">ElGamal 加密算法</h2>
 <h3 id="密钥生成">密钥生成</h3>
-<p>选择一个素数<span class="math inline">\(p\)</span>以及两个小于<span class="math inline">\(p\)</span>的随机数<span class="math inline">\(g\)</span>和<span class="math inline">\(x\)</span>，计算 <span class="math display">\[
-y=g^x\ mod\ p
-\]</span> 以<span class="math inline">\((y,g,p)\)</span>作为公开密钥
-(public key)，<span class="math inline">\(x\)</span>作为私有密钥
+<p>选择一个素数 <span class="math inline">\(p\)</span> 以及两个小于
+<span class="math inline">\(p\)</span> 的随机数 <span class="math inline">\(g\)</span> 和 <span class="math inline">\(x\)</span>，计算 <span class="math display">\[
+y=g^x\pmod{p}
+\]</span> 以 <span class="math inline">\((y,g,p)\)</span> 作为公开密钥
+(public key)，<span class="math inline">\(x\)</span> 作为私有密钥
 (private key)</p>
 <h3 id="加密">加密</h3>
 <p>明文消息为<span class="math inline">\(m\)</span>，随机选取一个与<span class="math inline">\(p-1\)</span>互素的整数<span class="math inline">\(k\)</span>，计算 <span class="math display">\[
-c_1=g^k\ mod\ p\\
-c_2=my^k\ mod\ p
+c_1=g^k\pmod{p}\\
+c_2=my^k\pmod{p}
 \]</span> 密文为<span class="math inline">\(C=(c_1,c_2)\)</span></p>
 <h3 id="解密">解密</h3>
 <p><span class="math display">\[
-m=\frac{c_2}{c_1}mod\ p
+m=\frac{c_2}{c_1}\pmod{p}
 \]</span></p>
 <p>因为 <span class="math display">\[
 \frac{c_2}{c_1}mod\ p=\frac{my^k}{g^{kx}}mod\ p=\frac{my^k}{y^k}mod\
-p=m\ mod\ p
+p=m\pmod{p}
 \]</span></p>
 <h2 id="ec-elgamal">EC ElGamal</h2>
 <h3 id="密钥生成-1">密钥生成</h3>
 <p>选一条素数域椭圆曲线，得 <span class="math inline">\(E_p(a,b)\)</span>，将明文信息<span class="math inline">\(m\)</span>嵌入到曲线上的点<span class="math inline">\(P_m\)</span>，再对点<span class="math inline">\(P_m\)</span>做加密变换。</p>
-<p>取 <span class="math inline">\(E_p(a,b)\)</span> 的一个生成元<span class="math inline">\(G\)</span>，<span class="math inline">\(E_p(a,b)\)</span>和<span class="math inline">\(G\)</span>作为公开参数。用户A选则随机整数 <span class="math display">\[
-n_A作为密钥(private\ key)，以P_A=n_AG作为公钥(public\ key)
-\]</span></p>
+<p>取 <span class="math inline">\(E_p(a,b)\)</span> 的一个生成元<span class="math inline">\(G\)</span>，<span class="math inline">\(E_p(a,b)\)</span>和<span class="math inline">\(G\)</span>作为公开参数。用户A选则随机整数</p>
+<blockquote>
+<p><span class="math inline">\(n_A\)</span> 作为密钥 (private key)，以
+<span class="math inline">\(P_A=n_AG\)</span> 作为公钥 (public key)</p>
+</blockquote>
 <h3 id="加密-1">加密</h3>
-<p>用户B向用户A发送消息<span class="math inline">\(P_m\)</span>，选取一个随机正整数<span class="math inline">\(k\)</span>，产生以下点对作为密文： <span class="math display">\[
+<p>用户B向用户A发送消息 <span class="math inline">\(P_m\)</span>，选取一个随机正整数 <span class="math inline">\(k\)</span>，产生以下点对作为密文： <span class="math display">\[
 C_m=\{kG,P_m+kP_A\}
 \]</span></p>
 <h3 id="解密-1">解密</h3>
@@ -449,11 +488,51 @@ P_m+kP_A-n_AkG=P_m+k(n_AG)-n_AkG=P_m
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="number">74997021559434065975272431626618720725838473091721936616560359000648651891507</span></span><br><span class="line">a = <span class="number">61739043730332859978236469007948666997510544212362386629062032094925353519657</span></span><br><span class="line">b = <span class="number">87821782818477817609882526316479721490919815013668096771992360002467657827319</span></span><br><span class="line">k = <span class="number">93653874272176107584459982058527081604083871182797816204772644509623271061231</span></span><br><span class="line">E = Elliptic Curve defined by y^<span class="number">2</span> = x^<span class="number">3</span> + <span class="number">61739043730332859978236469007948666997510544212362386629062032094925353519657</span>*x + <span class="number">12824761259043751634610094689861000765081341921946160155432001001819005935812</span> over Finite Field of size <span class="number">74997021559434065975272431626618720725838473091721936616560359000648651891507</span></span><br><span class="line">c1 = (<span class="number">14455613666211899576018835165132438102011988264607146511938249744871964946084</span> : <span class="number">25506582570581289714612640493258299813803157561796247330693768146763035791942</span> : <span class="number">1</span>)</span><br><span class="line">c2 = (<span class="number">37554871162619456709183509122673929636457622251880199235054734523782483869931</span> : <span class="number">71392055540616736539267960989304287083629288530398474590782366384873814477806</span> : <span class="number">1</span>)</span><br><span class="line">cipher_left = <span class="number">68208062402162616009217039034331142786282678107650228761709584478779998734710</span></span><br><span class="line">cipher_right = <span class="number">27453988545002384546706933590432585006240439443312571008791835203660152890619</span></span><br></pre></td></tr></table></figure>
 <p>exp.sage</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="number">74997021559434065975272431626618720725838473091721936616560359000648651891507</span></span><br><span class="line">a = <span class="number">61739043730332859978236469007948666997510544212362386629062032094925353519657</span></span><br><span class="line">b = <span class="number">87821782818477817609882526316479721490919815013668096771992360002467657827319</span></span><br><span class="line">k = <span class="number">93653874272176107584459982058527081604083871182797816204772644509623271061231</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line">c1 = E(<span class="number">14455613666211899576018835165132438102011988264607146511938249744871964946084</span>, <span class="number">25506582570581289714612640493258299813803157561796247330693768146763035791942</span>)</span><br><span class="line">c2 = E(<span class="number">37554871162619456709183509122673929636457622251880199235054734523782483869931</span>, <span class="number">71392055540616736539267960989304287083629288530398474590782366384873814477806</span>)</span><br><span class="line">cipher_left = <span class="number">68208062402162616009217039034331142786282678107650228761709584478779998734710</span></span><br><span class="line">cipher_right = <span class="number">27453988545002384546706933590432585006240439443312571008791835203660152890619</span></span><br><span class="line">m = c1 - k*c2</span><br><span class="line">cipher_left = cipher_left * inverse_mod(<span class="built_in">int</span>(m[<span class="number">0</span>]), p) % p</span><br><span class="line">cipher_right = cipher_right * inverse_mod(<span class="built_in">int</span>(m[<span class="number">1</span>]), p) % p</span><br><span class="line"><span class="built_in">print</span>(cipher_left, cipher_right)</span><br></pre></td></tr></table></figure>
-<h2 id="离散对数问题">离散对数问题</h2>
+<h2 id="普通离散对数">普通离散对数</h2>
 <blockquote>
 <p>以下使用 sagemath，数据量不能太大</p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1234577</span></span><br><span class="line">b = <span class="number">3213242</span></span><br><span class="line">p = <span class="number">7654319</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line"><span class="comment"># 生成元</span></span><br><span class="line">G = E(<span class="number">5234568</span>, <span class="number">2287747</span>)</span><br><span class="line"><span class="comment"># k = 1584718</span></span><br><span class="line"><span class="comment"># K = k*G</span></span><br><span class="line"><span class="comment"># 公钥</span></span><br><span class="line">K = E(<span class="number">2366653</span>, <span class="number">1424308</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，自动选择bsgs或Pohlig Hellman算法</span></span><br><span class="line">discrete_log(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard rho算法</span></span><br><span class="line">discrete_log_rho(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard Lambda算法，能够确定所求值在某一小范围时效率较高</span></span><br><span class="line">discrete_log_lambda(K,G,(<span class="number">1500000</span>,<span class="number">2000000</span>),operation=<span class="string">&#x27;+&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1234577</span></span><br><span class="line">b = <span class="number">3213242</span></span><br><span class="line">p = <span class="number">7654319</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line"><span class="comment"># 生成元</span></span><br><span class="line">G = E(<span class="number">5234568</span>, <span class="number">2287747</span>)</span><br><span class="line"><span class="comment"># k = 1584718</span></span><br><span class="line"><span class="comment"># K = k*G</span></span><br><span class="line"><span class="comment"># 公钥</span></span><br><span class="line">K = E(<span class="number">2366653</span>, <span class="number">1424308</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，自动选择bsgs或Pohlig Hellman算法</span></span><br><span class="line">discrete_log(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"><span class="comment"># G.discrete_log(K)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard rho算法</span></span><br><span class="line">discrete_log_rho(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard Lambda算法，能够确定所求值在某一小范围时效率较高</span></span><br><span class="line">discrete_log_lambda(K,G,(<span class="number">1500000</span>,<span class="number">2000000</span>),operation=<span class="string">&#x27;+&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="pohlig-hellman-攻击">Pohlig-Hellman 攻击</h2>
+<h3 id="原理">原理</h3>
+<p>我们知道求解离散对数问题已经有较为高效的方法（例如
+<code>Pohlig Hellman</code> 算法），而 Pohlig 和 Hellman
+提出我们还可以使椭圆离散对数问题的求解变得更加有效率。</p>
+<p>他们提出，假设 <span class="math inline">\(n\)</span>
+为椭圆曲线的阶，而 <span class="math inline">\(n=p_1^{e_1}p_2^{e_2}\cdots
+p_r^{e_r}\)</span>，其中 <span class="math inline">\(p_i,1\leq i\leq
+r\)</span> 为质因数，那么我们可以把计算 <span class="math inline">\(l=\log_P{Q}\)</span> 转化为计算每一个 <span class="math inline">\(l_i=l\bmod{p_i^{e_i}}\)</span>，得到一个同余方程组
+<span class="math display">\[
+\begin{array}{rlr}
+l &amp; \equiv l_{1} &amp; \left(\bmod p_{1}^{e_{1}}\right) \\
+l &amp; \equiv l_{2} &amp; \left(\bmod p_{2}^{e_{2}}\right) \\
+&amp; \ \vdots &amp; \\
+l &amp; \equiv l_{r} &amp; \left(\bmod p_{r}^{e_{r}}\right)
+\end{array}
+\]</span> 使用中国剩余定理，我们就可解 <span class="math inline">\(l=\log_P{Q}\)</span>。</p>
+<p>现在的问题转化为求解 <span class="math inline">\(l_i=l\bmod{p_i^{e_i}}\)</span>。</p>
+<p>我们首先设 <span class="math inline">\(l_i\)</span> 为一个 <span class="math inline">\(p_i\)</span> 多项式（下面为方便表达，将 <span class="math inline">\(l_i,p_i,e_i\)</span> 的下标忽略）： <span class="math display">\[
+l=z_{0}+z_{1} p+z_{2} p^{2}+\cdots+z_{e-1} p^{e-1}
+\]</span> 其中 <span class="math inline">\(z_i\in [0,p-1]\)</span>。</p>
+<p>计算 <span class="math inline">\(P_0=(n/p)P\)</span>，<span class="math inline">\(Q_0=(n/p)Q\)</span>，有 <span class="math display">\[
+Q_0=\frac{n}{p}Q=l(\frac{n}{p}P)=lP_0=z_0P_0
+\]</span> 因此 <span class="math inline">\(z_0=\log_{P_0}{Q_0}\)</span>。</p>
+<p>同理我们计算 <span class="math inline">\(Q_1=(n/p^2)(Q-z_0P)\)</span>，有 <span class="math display">\[
+Q_1=\frac{n}{p^2}(Q-z_0P)=\frac{n}{p^2}(l-z_0)P=(z_0+z_1p-z_0)\frac{n}{p^2}P=z_1P_0
+\]</span> 故 <span class="math inline">\(z_1=\log_{P_0}{Q_1}\)</span>。</p>
+<p>以此类推，我们可以得 <span class="math inline">\(z_t=\log_{P_0}{Q_t}\)</span>，其中 <span class="math display">\[
+Q_t=\frac{n}{p^{t+1}}\left(Q-z_{0} P-z_{1} p P-z_{2} p^{2}
+P-\cdots-z_{t-1} p^{t-1} P\right)
+\]</span> 除分散为子域计算，Sagemath 的 <code>discrete_log</code>
+中已将以上叙述的 Pohlig Hellman 算法（对 <span class="math inline">\(p^k\)</span> 阶的离散对数求解）内置。</p>
+<h3 id="代码">代码</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="number">1256438680873352167711863680253958927079458741172412327087203</span></span><br><span class="line">A = <span class="number">377999945830334462584412960368612</span></span><br><span class="line">B = <span class="number">604811648267717218711247799143415167229480</span></span><br><span class="line">E = EllipticCurve(GF(p),[A,B])</span><br><span class="line">P = E(<span class="number">550637390822762334900354060650869238926454800955557622817950</span>, <span class="number">700751312208881169841494663466728684704743091638451132521079</span>)</span><br><span class="line">Q = E(<span class="number">1152079922659509908913443110457333432642379532625238229329830</span>, <span class="number">819973744403969324837069647827669815566569448190043645544592</span>)</span><br><span class="line"></span><br><span class="line">n = E.order()</span><br><span class="line"><span class="comment"># 对于大素数域计算离散对数效率太低，过滤</span></span><br><span class="line">primes = <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> x: x &lt; <span class="number">2</span> ** <span class="number">32</span>, (base ** exp <span class="keyword">for</span> base, exp <span class="keyword">in</span> factor(n))))</span><br><span class="line"></span><br><span class="line">dlogs = []</span><br><span class="line"><span class="keyword">for</span> fac <span class="keyword">in</span> primes:</span><br><span class="line">    t = <span class="built_in">int</span>(n) // <span class="built_in">int</span>(fac)</span><br><span class="line">    <span class="comment"># dlog = (t*P).discrete_log(t*Q)</span></span><br><span class="line">    dlog = discrete_log(t*Q,t*P,operation=<span class="string">&quot;+&quot;</span>)</span><br><span class="line">    dlogs.append(dlog)</span><br><span class="line"><span class="comment"># 最终结果 k = P.discrete_log(Q)</span></span><br><span class="line">k = <span class="built_in">int</span>(crt(dlogs,primes))</span><br><span class="line"><span class="built_in">print</span>(k)</span><br></pre></td></tr></table></figure>
+<h2 id="smart-攻击">Smart 攻击</h2>
+<h3 id="特征">特征</h3>
+<p>椭圆曲线的阶和素数 <span class="math inline">\(p\)</span>
+恰好相等（<code>E.order() == p</code>）</p>
+<h3 id="代码-1">代码</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="number">0xd3ceec4c84af8fa5f3e9af91e00cabacaaaecec3da619400e29a25abececfdc9bd678e2708a58acb1bd15370acc39c596807dab6229dca11fd3a217510258d1b</span></span><br><span class="line">A = <span class="number">0x95fc77eb3119991a0022168c83eee7178e6c3eeaf75e0fdf1853b8ef4cb97a9058c271ee193b8b27938a07052f918c35eccb027b0b168b4e2566b247b91dc07</span></span><br><span class="line">B = <span class="number">0x926b0e42376d112ca971569a8d3b3eda12172dfb4929aea13da7f10fb81f3b96bf1e28b4a396a1fcf38d80b463582e45d06a548e0dc0d567fc668bd119c346b2</span></span><br><span class="line">E = EllipticCurve(GF(p),[A,B])</span><br><span class="line">P = E(<span class="number">10121571443191913072732572831490534620810835306892634555532657696255506898960536955568544782337611042739846570602400973952350443413585203452769205144937861</span>, <span class="number">8425218582467077730409837945083571362745388328043930511865174847436798990397124804357982565055918658197831123970115905304092351218676660067914209199149610</span>)</span><br><span class="line">Q = E(<span class="number">964864009142237137341389653756165935542611153576641370639729304570649749004810980672415306977194223081235401355646820597987366171212332294914445469010927</span>, <span class="number">5162185780511783278449342529269970453734248460302908455520831950343371147566682530583160574217543701164101226640565768860451999819324219344705421407572537</span>)</span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SmartAttack</span>(<span class="params">P,Q</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用Smart攻击求解P.discrete_log(Q)</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        P.discrete_log(Q)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    E = P.curve()</span><br><span class="line">    p = E.base_ring().order()</span><br><span class="line">    <span class="keyword">if</span> E.order() != p:</span><br><span class="line">        <span class="keyword">raise</span> <span class="string">&quot;Smart&#x27;s attack need E.order() == p&quot;</span></span><br><span class="line">    Eqp = EllipticCurve(Qp(p, <span class="number">2</span>), [ ZZ(t) + randint(<span class="number">0</span>,p)*p <span class="keyword">for</span> t <span class="keyword">in</span> E.a_invariants() ])</span><br><span class="line"></span><br><span class="line">    P_Qps = Eqp.lift_x(ZZ(P.xy()[<span class="number">0</span>]), <span class="built_in">all</span>=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">for</span> P_Qp <span class="keyword">in</span> P_Qps:</span><br><span class="line">        <span class="keyword">if</span> (P_Qp.xy()[<span class="number">1</span>]) % p == P.xy()[<span class="number">1</span>]:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    Q_Qps = Eqp.lift_x(ZZ(Q.xy()[<span class="number">0</span>]), <span class="built_in">all</span>=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">for</span> Q_Qp <span class="keyword">in</span> Q_Qps:</span><br><span class="line">        <span class="keyword">if</span> (Q_Qp.xy()[<span class="number">1</span>]) % p == Q.xy()[<span class="number">1</span>]:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    p_times_P = p * P_Qp</span><br><span class="line">    p_times_Q = p * Q_Qp</span><br><span class="line"></span><br><span class="line">    x_P, y_P = p_times_P.xy()</span><br><span class="line">    x_Q, y_Q = p_times_Q.xy()</span><br><span class="line"></span><br><span class="line">    phi_P = (x_P // y_P)</span><br><span class="line">    phi_Q = (x_Q // y_Q)</span><br><span class="line">    k = phi_Q // phi_P</span><br><span class="line">    <span class="keyword">return</span> ZZ(k)</span><br><span class="line">k = <span class="built_in">int</span>(SmartAttack(P, Q))</span><br><span class="line"><span class="built_in">print</span>(k)</span><br></pre></td></tr></table></figure>
 <h2 id="查看-ecc-的-pem-密钥文件信息">查看 ECC 的 pem 密钥文件信息</h2>
 <p>使用 openssl</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看ECC私钥信息</span></span><br><span class="line">openssl ec -<span class="keyword">in</span> p384-key.pem -text -noout</span><br><span class="line"><span class="comment">#查看ECC公钥信息</span></span><br><span class="line">openssl ec -pubin -<span class="keyword">in</span> public.pem -text -noout</span><br></pre></td></tr></table></figure>
@@ -532,14 +611,14 @@ P_m+kP_A-n_AkG=P_m+k(n_AG)-n_AkG=P_m
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">338k</span>
+    <span title="站点总字数">361k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">5:07</span>
+    <span title="站点阅读时长">5:28</span>
   </span>
 </div>
 
