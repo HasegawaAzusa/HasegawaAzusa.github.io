@@ -15613,12 +15613,12 @@ u_1=K_1\frac{\mathrm{d}\phi(i)}{\mathrm{d}t}=K_1\frac{\mathrm{d}\phi(i)}{\mathrm
 <img src="/automatic-control-note/磁通曲线.png" alt="磁通曲线">
 <figcaption aria-hidden="true">磁通曲线</figcaption>
 </figure>
-<p>如果在工作范围内，仅取 <span class="math inline">\(\mathrm{d}i\)</span> 的变化，得到 <span class="math inline">\(\phi\)</span> 的近似值为 <span class="math display">\[
-\phi=\phi_0+C_1\mathrm{d}i
+<p>如果在工作范围内，仅取 <span class="math inline">\(\mathrm{d}i\)</span> 的变化，（在工作点 <span class="math inline">\((i_0,\phi_0)\)</span>）得到 <span class="math inline">\(\phi\)</span> 的近似值为 <span class="math display">\[
+\phi=\phi_0+\phi&#39;(i_0)\mathrm{d}i
 \]</span> 即将 <span class="math inline">\(\phi\)</span> 当作与 <span class="math inline">\(i\)</span> 的线性函数，有 <span class="math display">\[
-\frac{\mathrm{d}\phi(i)}{\mathrm{d}i}=C_1
+\frac{\mathrm{d}\phi(i)}{\mathrm{d}i}=C_1=\phi&#39;(i_0)
 \]</span> 整理可得 <span class="math display">\[
-K_1C_1\frac{\mathrm{d}i}{\mathrm{d}t}+Ri=u_r
+K_1\phi&#39;(i_0)\frac{\mathrm{d}i}{\mathrm{d}t}+Ri=u_r
 \]</span> 即为一阶常系数微分方程。</p>
 <h4 id="运动的模态">运动的模态</h4>
 <p>线性微分方程的解由<strong>齐次方程的通解</strong>和<strong>给定信号对应的特解</strong>组成，而其中通解反映了系统自由运动的规律。</p>
@@ -15653,7 +15653,7 @@ x}+C_2\sin{\beta x})\)</span></li>
 <p>每一种模态都可以看成是线性系统自由响应最基本的运动形态，线性系统的自由响应就是其相应模态的线性组合。</p>
 <h3 id="复域数学模型">复域数学模型</h3>
 <h4 id="拉普拉斯变换">拉普拉斯变换</h4>
-<p>拉普拉斯变换简称拉氏变换，是将实函数转化为 <span class="math inline">\(Re\ x&gt;0\)</span> 的复函数，定义为 <span class="math display">\[
+<p>拉普拉斯变换简称拉氏变换，是将实函数转化为 <span class="math inline">\(Re\ s&gt;0\)</span> 的复函数，定义为 <span class="math display">\[
 F(s)=\int^{+\infty}_0f(t)e^{-st}dt
 \]</span> 一般是将时域函数转化为复域函数，简单用 <span class="math inline">\(F(s)=L[f(t)]\)</span> 表示对时域函数 <span class="math inline">\(f(t)\)</span> 进行拉普拉斯变换。</p>
 <p>常用的变换结果有 <span class="math display">\[
@@ -15666,7 +15666,8 @@ L(t^nf(t))=(-1)^n\frac{\mathrm{d}^n}{\mathrm{d}s^n}f(s)=(-1)^nf^{(n)}(s)
 \]</span> 由此可知，拉普拉斯变换有以下一些性质</p>
 <ul>
 <li><p>线性性质 <span class="math display">\[
-\alpha f_1(t)+\beta f_2(t)\leftrightarrow \alpha F_1(s)+\beta F_2(s)
+\alpha f_1(t)\pm \beta f_2(t)\leftrightarrow \alpha F_1(s)\pm \beta
+F_2(s)
 \]</span></p></li>
 <li><p>位移性质 <span class="math display">\[
 f(t)\cdot e^{s_0t}\leftrightarrow F(s-s_0)
@@ -15675,7 +15676,7 @@ f(t)\cdot e^{s_0t}\leftrightarrow F(s-s_0)
 f(t-t_0)\cdot u(t-t_0)\leftrightarrow F(s)\cdot e^{-st_0}
 \]</span></p></li>
 <li><p>微分性质 <span class="math display">\[
-L(t^nf(t))=(-1)^n\frac{\mathrm{d}^n}{\mathrm{d}s^n}f(s)=(-1)^nf^{(n)}(s)
+f&#39;(t)\leftrightarrow sF(s)-f(0)
 \]</span></p></li>
 <li><p>积分性质 <span class="math display">\[
 \frac{f(t)}{t}\leftrightarrow \int^{+\infty}_sF(\eta)\mathrm{d}\eta
@@ -15718,6 +15719,79 @@ u_{c}(t)}{\mathrm{d} t}+u_{c}(t)=u_{r}(t)
 \]</span> 对两端取拉氏变换可得传递函数为 <span class="math display">\[
 G(s)=\frac{U_c(s)}{U_r(s)}=\frac{1}{LCs^2+RCs+1}
 \]</span></p>
+<h4 id="电位器">电位器</h4>
+<p>电位器可以把线位移或角位移变换成电压量。</p>
+<p>单个电位器常用作信号变换装置。</p>
+<figure>
+<img src="/automatic-control-note/电位器.png" alt="电位器">
+<figcaption aria-hidden="true">电位器</figcaption>
+</figure>
+<p>一对电位器可组成误差检测器。</p>
+<figure>
+<img src="/automatic-control-note/误差检测器.png" alt="误差检测器">
+<figcaption aria-hidden="true">误差检测器</figcaption>
+</figure>
+<p>其中电位器的传递系数（传递常数）记为 <span class="math inline">\(K_1\)</span>，即 <span class="math display">\[
+G(s)=\frac{U(s)}{\Delta\Theta(s)}=K_1
+\]</span>
+需要注意的是电位器会有<strong>负载效应</strong>，即在元件输出端接有负载时所产生的影响，此时输出电压
+<span class="math inline">\(u(t)\)</span> 与电刷角位移 <span class="math inline">\(\theta(t)\)</span> 不再保持线性关系，如果负载电阻
+<span class="math inline">\(R_L\)</span> 很大，则可以近似得到 <span class="math display">\[
+u(t)\approx K_1\theta(t)
+\]</span></p>
+<h4 id="自整角机">自整角机</h4>
+<p>自整角机是角位移传感器，在随动系统中总是成对使用的。按照用途不同分为力矩式和控制式。</p>
+<p>自整角机的传递系数（传递常数）记为 <span class="math inline">\(K_s\)</span>，即 <span class="math display">\[
+e(t)=K_s\cos{\Delta\theta}\sin{\omega t}
+\]</span> 在 <span class="math inline">\(\Delta \theta\)</span>
+较小的情况下，近似有 <span class="math display">\[
+E\approx K_s\Delta\theta
+\]</span>
+自整角机与电位器组成的误差角检测器有相同的功能，故功能框图形式相同</p>
+<figure>
+<img src="/automatic-control-note/自整角机结构图.png" alt="自整角机结构图">
+<figcaption aria-hidden="true">自整角机结构图</figcaption>
+</figure>
+<h4 id="测速发电机">测速发电机</h4>
+<p>测速发电机的转子与待测设备的转轴相连，无论是直流或交流测速发电机，其输出电压均正比于转子的角速度，故其微分方程可写为
+<span class="math display">\[
+u=K_t\omega=K_t\frac{\mathrm{d}\theta}{\mathrm{d}t}
+\]</span> 其中 <span class="math inline">\(K_t\)</span>
+是测速发电机输出电压的斜率，也是传递常数。</p>
+<p>其传递函数为 <span class="math display">\[
+G(s)=\frac{U(s)}{\Theta(s)}=K_t
+\]</span> 或者为 <span class="math display">\[
+G(s)=\frac{U(s)}{\Theta(s)}=K_ts
+\]</span> 当输入量取转速 <span class="math inline">\(\omega(t)\)</span>
+时用前者；输入量取转角 <span class="math inline">\(\theta(t)\)</span>
+时用后者。</p>
+<h4 id="电枢控制式直流电动机">电枢控制式直流电动机</h4>
+<p>直流电动机的微分方程为 <span class="math display">\[
+T_{m} \frac{\mathrm{d} \omega_{m}(t)}{\mathrm{d} t}+\omega_{m}(t)=K_{a}
+u_{a}(t)
+\]</span> <img src="/automatic-control-note/直流电动机结构图.png" alt="直流电动机结构图"></p>
+<figure>
+<img src="/automatic-control-note/测速发电机结构图.png" alt="测速发电机结构图">
+<figcaption aria-hidden="true">测速发电机结构图</figcaption>
+</figure>
+<p>得到电枢控制直流电动机的传递函数为 <span class="math display">\[
+G_a(s)=\frac{\Omega(s)}{U_a(s)}=\frac{K_a}{T_ms+1}
+\]</span> 如果输出用角位移 <span class="math inline">\(\theta(t)\)</span> 表示，则传递函数可以表示为
+<span class="math display">\[
+G_a(s)=\frac{\Omega(s)}{U_a(s)}=\frac{K_a}{s(T_ms+1)}
+\]</span></p>
+<h4 id="两相异步电动机">两相异步电动机</h4>
+<figure>
+<img src="/automatic-control-note/两相异步电动机及其特性曲线.png" alt="两相异步电动机及其特性曲线">
+<figcaption aria-hidden="true">两相异步电动机及其特性曲线</figcaption>
+</figure>
+<p>通常机械特性的<strong>线性化方程</strong>可表示为： <span class="math display">\[
+M_m=-C_\Omega\omega_m+M_s
+\]</span> 其中，<span class="math inline">\(M_m\)</span>
+为电动机输出转矩；<span class="math inline">\(\omega_m\)</span>
+为电动机角速度；<span class="math inline">\(C_\Omega\)</span>
+为粘性摩擦系数；<span class="math inline">\(M_m\)</span>
+为堵转转矩。</p>
 ]]></content>
   </entry>
   <entry>
@@ -15889,9 +15963,42 @@ P(\omega_1|\boldsymbol{x})&gt;P(\omega_2|\boldsymbol{x})
 是训练/学习（training/learning）计算得到的，而 <span class="math inline">\(P(\omega_j|\boldsymbol{x})\)</span>
 是用来预测（predict）的，在模式识别中是两个阶段。</p>
 </blockquote>
+<h4 id="连续特征下的决策论">连续特征下的决策论</h4>
+<p>将以上想法进一步正式化，推广为如下 4 种形式：</p>
+<ul>
+<li>允许使用多于一个的特征</li>
+<li>允许多余两种类别状态的情形</li>
+<li>允许有其他行为而不仅仅是判定类别</li>
+</ul>
+<p>其中，我们定义：</p>
+<ul>
+<li>特征使用特征向量 <span class="math inline">\(\boldsymbol{x}\)</span>
+来描述多个特征</li>
+<li>集合 <span class="math inline">\(\Omega=\{\omega_1,\omega_2\,\cdots,\omega_c\}\)</span>
+为有限的 <span class="math inline">\(c\)</span> 个类别（state）集合</li>
+<li>集合 <span class="math inline">\(A=\{\alpha_1,\alpha_2,\cdots,\alpha_a\}\)</span>
+为有限的 <span class="math inline">\(a\)</span>
+个可能的行动（action）集合</li>
+</ul>
+<p>我们已知 <span class="math display">\[
+P(\omega_j|\boldsymbol{x})=\frac{p(\boldsymbol{x}|\omega_j)P(\omega_j)}{p(\boldsymbol{x})}
+\]</span> 此时证据因子 <span class="math inline">\(p(\boldsymbol{x})\)</span> 为 <span class="math display">\[
+p(\boldsymbol{x})=\sum^c_{j=1}p(\boldsymbol{x}|\omega_j)P(\omega_j)
+\]</span> 对于简单化判决而言，判决规则是一个函数 <span class="math inline">\(\alpha(\boldsymbol{x})\)</span>，值域为集合 <span class="math inline">\(\Omega\)</span>。</p>
 <h4 id="最小误差概率决策">最小误差概率决策</h4>
 <p>对于二分类问题，如果有某个观测值使得 <span class="math inline">\(P(\omega_1|\boldsymbol{x})&gt;P(\omega_2|\boldsymbol{x})\)</span>，那么我们自然的可以判断该模式来自于分类
 <span class="math inline">\(\omega_1\)</span>。</p>
+<p>例如说，当先验概率 <span class="math inline">\(P(\omega_1)=2/3,P(\omega_2)=1/3\)</span>，则后验概率
+<span class="math inline">\(P(\omega_1 | \boldsymbol{x})\)</span> 和
+<span class="math inline">\(P(\omega_2|\boldsymbol{x})\)</span>
+如图所示</p>
+<figure>
+<img src="/pattern-recongnition-note/类条件概率密度.jpg" alt="类条件概率密度">
+<figcaption aria-hidden="true">类条件概率密度</figcaption>
+</figure>
+<p>此时假定一个模式具有特征值 <span class="math inline">\(x=14\)</span>，那么它属于 <span class="math inline">\(\omega_2\)</span> 类的概率约为 0.08，属于 <span class="math inline">\(\omega_1\)</span> 类的概率约为
+0.92，在此次后验概率之和为
+1.0，此时为<strong>最小化误差概率</strong>，故选择此模式属于 <span class="math inline">\(\omega_1\)</span>。</p>
 <p>同时该决策下的误差概率为： <span class="math display">\[
 P(error|\boldsymbol{x})=1-P(\omega_1|\boldsymbol{x})
 \]</span> 即有： <span class="math display">\[
@@ -15906,32 +16013,37 @@ P(error)=\int_{-\infty}^{\infty} P(error,x)\mathrm{d}
 x=\int_{-\infty}^{\infty} P(error|x) p(x)\mathrm{d}x
 \]</span></p>
 </blockquote>
-<h4 id="连续特征下的决策论">连续特征下的决策论</h4>
-<p>将以上想法进一步正式化，推广为如下 4 种形式：</p>
-<ul>
-<li>允许使用多于一个的特征</li>
-<li>允许多余两种类别状态的情形</li>
-<li>允许有其他行为而不仅仅是判定类别</li>
-<li>通过引入一个更一般的损失函数来替代误差概率</li>
-</ul>
-<p>其中，我们定义：</p>
-<ul>
-<li><p>特征使用特征向量 <span class="math inline">\(\boldsymbol{x}\)</span> 来描述多个特征</p></li>
-<li><p>集合 <span class="math inline">\(\Omega=\{\omega_1,\omega_2\,\cdots,\omega_c\}\)</span>
-为有限的 <span class="math inline">\(c\)</span>
-个类别（state）集合</p></li>
-<li><p>集合 <span class="math inline">\(A=\{\alpha_1,\alpha_2,\cdots,\alpha_a\}\)</span>
-为有限的 <span class="math inline">\(a\)</span>
-个可能的行动（action）集合</p></li>
-<li><p>风险函数 <span class="math inline">\(\lambda(\alpha_i|\omega_j)\)</span> 描述类别状态为
-<span class="math inline">\(\omega_j\)</span> 时，采取行动 <span class="math inline">\(\alpha_i\)</span>
-的风险（对风险的一个评估）</p></li>
-</ul>
-<p>我们已知 <span class="math display">\[
-P(\omega_j|\boldsymbol{x})=\frac{p(\boldsymbol{x}|\omega_j)P(\omega_j)}{p(\boldsymbol{x})}
-\]</span> 此时证据因子 <span class="math inline">\(p(\boldsymbol{x})\)</span> 为 <span class="math display">\[
-p(\boldsymbol{x})=\sum^c_{j=1}p(\boldsymbol{x}|\omega_j)P(\omega_j)
-\]</span> 对于简单化判决而言，判决规则是一个函数 <span class="math inline">\(\alpha(\boldsymbol{x})\)</span>，值域为集合 <span class="math inline">\(\Omega\)</span>。</p>
+<p>上述决策等价于，</p>
+<p>若 <span class="math inline">\(P(\boldsymbol{x}|\omega_1)P(\omega_1)&gt;P(\boldsymbol{x}|\omega_2)P(\omega_2)\)</span>，则决策为
+<span class="math inline">\(\boldsymbol{x}\in\omega_1\)</span>；</p>
+<p>若 <span class="math inline">\(P(\boldsymbol{x}|\omega_1)P(\omega_1)&lt;P(\boldsymbol{x}|\omega_2)P(\omega_2)\)</span>，则决策为
+<span class="math inline">\(\boldsymbol{x}\in\omega_2\)</span>。</p>
+<p>即 <span class="math display">\[
+\frac{P(\boldsymbol{x}|\omega_1)}{P(\boldsymbol{x}|\omega_2)}&gt;\frac{P(\omega_2)}{P(\omega_1)}
+\]</span> 判决为 <span class="math inline">\(\omega_1\)</span>。</p>
+<blockquote>
+<p>其中， <span class="math display">\[
+\frac{P(\boldsymbol{x}|\omega_1)}{P(\boldsymbol{x}|\omega_2)}
+\]</span> 称作<strong>似然比</strong>。</p>
+</blockquote>
+<p>实例如下</p>
+<blockquote>
+<p>某地区细胞识别中正常（<span class="math inline">\(\omega_1\)</span>）和异常（<span class="math inline">\(\omega_2\)</span>）两类的先验概率为 <span class="math inline">\(P(\omega_1)=0.9,P(\omega_2)=0.1\)</span>，且知道两类的类概率密度函数
+<span class="math inline">\(p(x|\omega_1),p(x|\omega_2)\)</span>。</p>
+<p>先有一细胞特征值为 <span class="math inline">\(x\)</span>，查询类概率密度函数曲线有 <span class="math inline">\(P(x|\omega_1)=0.2,P(x|\omega_1)=0.4\)</span>。</p>
+<p>采用最小误差概率决策，得到 <span class="math display">\[
+P(x|\omega_1)/P(x|\omega_2)=1/2\\
+P(\omega_2)/P(\omega_1)=1/9
+\]</span> 显然似然比大于先验概率反比，故判决为 <span class="math inline">\(x\in \omega_1\)</span>，为正常细胞。</p>
+</blockquote>
+<h4 id="最小风险损失决策">最小风险（损失）决策</h4>
+<p>基于最小误差概率的贝叶斯决策，仅考虑了最小化错误概率，未考虑决策所带来的损失，这是与实际应用不相符的，例如灭火系统、乙肝诊断等，总会存在一定的误判损失。</p>
+<p>所以我们需要<strong>引入一个更一般的风险函数来替代误差概率</strong>。</p>
+<p>定义风险函数 <span class="math inline">\(\lambda(\alpha_i|\omega_j)\)</span> 描述类别状态为
+<span class="math inline">\(\omega_j\)</span> 时，采取行动 <span class="math inline">\(\alpha_i\)</span> 的风险（对风险的一个评估）。</p>
+<blockquote>
+<p>或称为损失函数。</p>
+</blockquote>
 <p>定义总风险 <span class="math inline">\(R\)</span>
 是与某一给定的判决规则相关的预期损失，且 <span class="math inline">\(R(\alpha_i|\boldsymbol{x})\)</span> 是和行动 <span class="math inline">\(\alpha_i\)</span> 相关的条件风险，总风险则表示为
 <span class="math display">\[
@@ -15949,7 +16061,6 @@ R(\alpha_i|\boldsymbol{x})=\sum^c_{j=1}\lambda(\alpha_i|\omega_j)P(\omega_j|\bol
 <span class="math inline">\(R(\alpha_i|\boldsymbol{x})\)</span>
 最小化。</p>
 <p>最小化后的总风险值称为<strong>贝叶斯风险</strong>，记作 <span class="math inline">\(R^*\)</span>。</p>
-<h4 id="二分类下的决策论">二分类下的决策论</h4>
 <p>对于二分类问题，可以将条件风险简化为 <span class="math display">\[
 R(\alpha_1|\boldsymbol{x})=\lambda_{11}P(\omega_1|\boldsymbol{x})+\lambda_{12}P(\omega_2|\boldsymbol{x})\\
 R(\alpha_2|\boldsymbol{x})=\lambda_{21}P(\omega_1|\boldsymbol{x})+\lambda_{22}P(\omega_2|\boldsymbol{x})
@@ -15973,31 +16084,38 @@ R(\alpha_2|\boldsymbol{x})=\lambda_{21}P(\omega_1|\boldsymbol{x})+\lambda_{22}P(
 <p>如果 <span class="math display">\[
 \frac{p(\boldsymbol{x}|\omega_1)}{p(\boldsymbol{x}|\omega_2)}&gt;\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}\frac{P(\omega_2)}{P(\omega_1)}
 \]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
+<blockquote>
+<p>左式即为似然比。</p>
+</blockquote>
 <p>这种判决规则的优势是，只依赖于 <span class="math inline">\(\boldsymbol{x}\)</span> 的概率密度。</p>
-<p>我们可以化作一张表：</p>
-<table>
-<thead>
-<tr class="header">
-<th>损失函数</th>
-<th><span class="math inline">\(\omega_1\)</span></th>
-<th><span class="math inline">\(\omega_2\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(\alpha_1\)</span></td>
-<td><span class="math inline">\(\lambda_{11}\)</span></td>
-<td><span class="math inline">\(\lambda_{12}\)</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\alpha_2\)</span></td>
-<td><span class="math inline">\(\lambda_{21}\)</span></td>
-<td><span class="math inline">\(\lambda_{22}\)</span></td>
-</tr>
-</tbody>
-</table>
-<h4 id="最小误差分类">最小误差分类</h4>
-<p>如果要避免误判，自然要寻找一种判决规则使误判概率（即误差率）最小化。</p>
+<p>作出似然比函数，可以得知该种决策的判别边界与右式相关，当似然比大于判别边界时，判决为
+<span class="math inline">\(\omega_1\)</span>。</p>
+<figure>
+<img src="/pattern-recongnition-note/最小风险决策.jpg" alt="最小风险决策">
+<figcaption aria-hidden="true">最小风险决策</figcaption>
+</figure>
+<p>为方便判决，如上图，会选取一个阈值 <span class="math inline">\(\theta_m\)</span> 使得 <span class="math display">\[
+\frac{p(\boldsymbol{x}|\omega_1)}{p(\boldsymbol{x}|\omega_2)}&gt;\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}\frac{P(\omega_2)}{P(\omega_1)}&gt;\theta_m
+\]</span> 即为判决边界，如图虚线所示。</p>
+<p>同时由公式可知，当 <span class="math inline">\(\lambda_{12}-\lambda_{22}=\lambda_{21}-\lambda_{11}\)</span>
+时，无论选择最小误差概率决策还是最小风险决策都是<strong>等价</strong>的。</p>
+<p>实例如下</p>
+<blockquote>
+<p>同最小误差概率决策中的实例，但此时给出损失表如下</p>
+<figure>
+<img src="/pattern-recongnition-note/损失表.jpg" alt="损失表">
+<figcaption aria-hidden="true">损失表</figcaption>
+</figure>
+<p>似然比为 0.5，计算损失比 <span class="math display">\[
+\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}=5
+\]</span> 显然 <span class="math display">\[
+\frac{1}{2}&lt;5\times\frac{1}{9}
+\]</span> 此时如果判决为 <span class="math inline">\(\omega_1\)</span>
+风险（损失）更大，故此时判决为 <span class="math inline">\(x\in
+\omega_2\)</span>，为异常细胞。</p>
+</blockquote>
+<h4 id="最小误差率决策">最小误差率决策</h4>
+<p>如果要避免误判，自然要寻找一种判决规则使误判概率（即<strong>误差率</strong>）最小化。</p>
 <p>这种情况下的损失函数就是所谓的“对称损失”或者“0-1 损失”函数： <span class="math display">\[
 \lambda(\alpha_i|\omega_j)=\begin{cases}
 0,i=j\\
@@ -16005,13 +16123,22 @@ R(\alpha_2|\boldsymbol{x})=\lambda_{21}P(\omega_1|\boldsymbol{x})+\lambda_{22}P(
 \end{cases}
 \]</span> 其中要求 <span class="math inline">\(1&lt;i,j&lt;c\)</span>。</p>
 <p>从此简化模型可知，所有误判都是等代价的。</p>
-<p>这个损失函数对应的风险就是平均误差概率，它的条件风险为： <span class="math display">\[
+<p>这个损失函数对应的<strong>条件风险</strong>就是<strong>平均误差概率</strong>，它的条件风险为：
+<span class="math display">\[
 \begin{align}
-R(\alpha_i|\boldsymbol{x})&amp;=\sum^c_{j=1}\lambda(alpha_i|\omega_j)P(\omega_j|\boldsymbol{x})\\
+R(\alpha_i|\boldsymbol{x})&amp;=\sum^c_{j=1}\lambda(\alpha_i|\omega_j)P(\omega_j|\boldsymbol{x})\\
 &amp;=\sum_{i\neq j}P(\omega_j|\boldsymbol{x})\\
-&amp;=1-P(\omega_j|\boldsymbol{x})
+&amp;=1-P(\omega_i|\boldsymbol{x})
 \end{align}
-\]</span> 这种情况下我们想最小化风险只要选取 <span class="math inline">\(i\)</span> 使得后验概率最大即可。</p>
+\]</span> 其中 <span class="math inline">\(P(\omega_i|\boldsymbol{x})\)</span> 是行为 <span class="math inline">\(\alpha_i\)</span> 分类正确的条件概率。</p>
+<p>这种情况下我们想<strong>最小化平均误差概率</strong>只要选取 <span class="math inline">\(i\)</span> 使得后验概率 <span class="math inline">\(P(\omega_i|\boldsymbol{x})\)</span> 最大即可。</p>
+<blockquote>
+<p>或者说是<strong>最大化后验概率</strong>。</p>
+</blockquote>
+<p>即有决策规则，对于任意 <span class="math inline">\(j\neq
+i\)</span>，满足 <span class="math display">\[
+P(\omega_1|\boldsymbol{x})&gt;P(\omega_j|\boldsymbol{x})
+\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
 <h4 id="实际应用-1">实际应用</h4>
 <p>某人前往中高风险地区为特征 <span class="math inline">\(x\)</span>，有表</p>
 <table>
@@ -16074,11 +16201,12 @@ g_i(\boldsymbol{x})&gt;g_j(\boldsymbol{x})
 <figcaption aria-hidden="true">判别网络</figcaption>
 </figure>
 <p>简单的判别函数可以表示为后验概率或者条件风险的负值，这样能让判别函数与最小的条件风险对应，判别函数的选择不是唯一的。</p>
-<p>以下是常用的判别函数： <span class="math display">\[
-g_i(x)=-R(\alpha_i|\boldsymbol{x})\\
+<p>以下是常用的<strong>最小误差概率决策判别函数</strong>： <span class="math display">\[
 g_i(x)=P(\omega_i|\boldsymbol{x})\\
 g_i(x)=p(\boldsymbol{x}|\omega_i)P(\omega_i)\\
 g_i(x)=\ln p(\boldsymbol{x}|\omega_i)+\ln P(\omega_i)
+\]</span> 还有<strong>最小风险决策判别函数</strong>： <span class="math display">\[
+g_i(x)=-R(\alpha_i|\boldsymbol{x})
 \]</span> 判决规则是相同的，每种判决规则均是将特征空间分成 <span class="math inline">\(c\)</span> 个判决区域，<span class="math inline">\(R_1,R_2,\cdots,R_c\)</span>。</p>
 <p>如果对于所有的 <span class="math inline">\(j\neq i\)</span> 有 <span class="math inline">\(g_i(\boldsymbol{x})&gt;g_j(\boldsymbol{x})\)</span>，那么
 <span class="math inline">\(\boldsymbol{x}_i\)</span> 属于 <span class="math inline">\(R_i\)</span>。</p>
@@ -16098,6 +16226,309 @@ g(\boldsymbol{x})&gt;0
 g(\boldsymbol{x})=P(\omega_1|\boldsymbol{x})-P(\omega_2|\boldsymbol{x})\\
 g(\boldsymbol{x})=\ln\frac{p(\boldsymbol{x}|\omega_1)}{p(\boldsymbol{x}|\omega_2)}+\ln\frac{P(\omega_1)}{P(\omega_2)}
 \]</span></p>
+<h3 id="朴素贝叶斯分类器">朴素贝叶斯分类器</h3>
+<p>我们知道贝叶斯公式如下 <span class="math display">\[
+P(\omega|\boldsymbol{x})=\frac{P(\boldsymbol{x}|\omega)P(\omega)}{P(\boldsymbol{x})}
+\]</span> 从中可以知道，估计后验概率 <span class="math inline">\(P(\omega_j|\boldsymbol{x})\)</span>
+的主要困难为：类条件概率 <span class="math inline">\(P(\boldsymbol{x}|\omega_j)\)</span>
+是所有属性上的联合概率，难以从有限的训练样本估计获得。</p>
+<p>故采用“属性条件独立性假设”，即<strong>每个属性独立地对分类结果发生影响</strong>。</p>
+<blockquote>
+<p>即 <span class="math inline">\(P(AB)=P(A)P(B)\)</span></p>
+</blockquote>
+<p>基于属性条件独立性假设，可以将贝叶斯公式重写为 <span class="math display">\[
+P(\omega|\boldsymbol{x})=\frac{P(\boldsymbol{x}|\omega)P(\omega)}{P(\boldsymbol{x})}=\frac{P(\omega)}{P(\boldsymbol{x})}\prod^d_{i=1}P(x_i|\omega)
+\]</span> 其中，<span class="math inline">\(d\)</span>
+为维度（属性数目），<span class="math inline">\(x_i\)</span> 为 <span class="math inline">\(\boldsymbol{x}\)</span> 在第 <span class="math inline">\(i\)</span> 个维度（属性）上的取值。</p>
+<p>其中条件风险函数为 <span class="math display">\[
+\begin{align}
+R(\alpha_i|\boldsymbol{x})&amp;=\sum^c_{j=1}\lambda(\alpha_i|\omega_j)P(\omega_j|\boldsymbol{x})\\
+&amp;=\sum_{i\neq j}P(\omega_j|\boldsymbol{x})\\
+&amp;=1-P(\omega_i|\boldsymbol{x})
+\end{align}
+\]</span>
+选择<strong>最小误差率决策</strong>，那么得到朴素贝叶斯分类的判别函数：
+<span class="math display">\[
+h(\boldsymbol{x})_{nb}=\arg\max_{\omega\in
+\Omega}{P(\omega)\prod^d_{i=1}P(x_i|\omega)}
+\]</span> 即最大化后验概率。</p>
+<p>朴素贝叶斯分类器的训练器的<strong>训练过程</strong>就是基于训练集
+<span class="math inline">\(D\)</span> 估计<strong>类先验概率</strong>
+<span class="math inline">\(P(\omega)\)</span>
+并<strong>为每个属性估计条件概率</strong> <span class="math inline">\(P(x_i|\omega)\)</span>。</p>
+<p>令 <span class="math inline">\(D_\omega\)</span> 表示训练集 <span class="math inline">\(D\)</span> 中 <span class="math inline">\(\omega\)</span>
+类样本组合的集合，若有重组的<strong>独立同分布</strong>样本，则可以容易估计出<strong>类先验概率</strong>：
+<span class="math display">\[
+P(\omega)=\frac{|D_\omega|}{D}
+\]</span> 对离散属性而言，令 <span class="math inline">\(D_{\omega,x_i}\)</span> 表示 <span class="math inline">\(D_\omega\)</span> 中在第 <span class="math inline">\(i\)</span> 个属性上取值为 <span class="math inline">\(x_i\)</span> 的样本组成的集合，则条件概率 <span class="math inline">\(P(x_i|\omega)\)</span> 可估计为 <span class="math display">\[
+P(x_i|\omega)=\frac{D_{\omega,x_i}}{D}
+\]</span> 对于连续属性而言，可以考虑概率密度函数，假设 <span class="math inline">\(p(x_i|\omega)\sim
+N(\mu_{\omega,i},\sigma_{\omega,i}^2)\)</span>，则 <span class="math display">\[
+P(x_i|\omega)=p(x_i|\omega)
+\]</span> 此时 <span class="math inline">\(p(\boldsymbol{x}|\omega)\sim
+N(\boldsymbol{\mu}_\omega,\boldsymbol{\sigma}_\omega^2)\)</span>，则参数的极大似然估计为
+<span class="math display">\[
+\boldsymbol{\mu}_\omega=\frac{1}{|D_\omega|}\sum_{\boldsymbol{x}\in
+D_\omega}\boldsymbol{x}\\
+\boldsymbol{\sigma}_\omega^2=\frac{1}{|D_\omega|}\sum_{\boldsymbol{x}\in
+D_\omega}(\boldsymbol{x}-\boldsymbol{\mu}_\omega)^2\\
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu}_\omega)^2\)</span>
+表示向量积，即 <span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu}_\omega)(\boldsymbol{x}-\boldsymbol{\mu}_\omega)^T\)</span></p>
+</blockquote>
+<h3 id="正态分布下的贝叶斯分类">正态分布下的贝叶斯分类</h3>
+<p>朴素贝叶斯分类过于简单，实际情况中无法满足属性条件独立性假设，往往属性之间具有相关性。</p>
+<h4 id="协方差">协方差</h4>
+<p>在统计学中，<strong>方差</strong>是用来度量<strong>单个随机变量的离散程度</strong>，而<strong>协方差</strong>一般用来刻画两个随机变量的相似程度（值越大越相似）。</p>
+<p>方差的计算公式如下 <span class="math display">\[
+\sigma^2_x=\frac{1}{n}\sum^n_{i=1}(x_i-\bar{x})^2
+\]</span> 其中，<span class="math inline">\(n\)</span>
+表示<strong>样本量</strong>，<span class="math inline">\(\bar{x}\)</span>
+表示这一组随机数据的<strong>均值</strong>。</p>
+<p>在此基础上，协方差的计算公式定义如下 <span class="math display">\[
+\sigma(x,y)=\frac{1}{n}\sum^n_{i=1}(x_i-\bar{x})(y_i-\bar{y})
+\]</span> 其中，<span class="math inline">\(\bar{x},\bar{y}\)</span>
+分别表示两个随机变量所对应的观测样本<strong>均值</strong>，由此可知，方差
+<span class="math inline">\(\sigma_x^2\)</span> 可视作随机变量 <span class="math inline">\(x\)</span> 关于其自身的协方差 <span class="math inline">\(\sigma(x,x)\)</span>。</p>
+<p>给定 <span class="math inline">\(d\)</span>
+组随机变量（特征向量）<span class="math inline">\(\boldsymbol{x}_k,k=1,2,\cdots,d\)</span>，则这些随机变量的方差为
+<span class="math display">\[
+\sigma(\boldsymbol{x}_k,\boldsymbol{x}_k)=\frac{1}{n}\sum^n_{i=1}(x_{ki}-\bar{x}_k)^2,k=1,2,\cdots,d
+\]</span> 其中 <span class="math inline">\(x_{ki}\)</span>
+代表特征向量的第 <span class="math inline">\(i\)</span>
+个维度的值，<span class="math inline">\(\bar{x}_k\)</span>
+代表该维度下的平均值。</p>
+<p>而协方差为 <span class="math display">\[
+\sigma(\boldsymbol{x}_m,\boldsymbol{x}_k)=\frac{1}{n}\sum^n_{i=1}(x_{mi}-\bar{x}_m)(x_{ki}-\bar{x}_k),k=1,2,\cdots,d
+\]</span> 因此，协方差矩阵定义为 <span class="math display">\[
+\Sigma=\left[\begin{array}{ccc}
+\sigma\left(x_{1}, x_{1}\right) &amp; \cdots &amp; \sigma\left(x_{1},
+x_{d}\right) \\
+\vdots &amp; \ddots &amp; \vdots \\
+\sigma\left(x_{d}, x_{1}\right) &amp; \cdots &amp; \sigma\left(x_{d},
+x_{d}\right)
+\end{array}\right] \in \mathbb{R}^{d \times d}
+\]</span>
+其中对角线上的元素为各随机变量的方差，非对角线上的元素为两两随机变量之间的协方差，且
+<span class="math inline">\(\Sigma\)</span>
+为<strong>对称矩阵</strong>。</p>
+<h4 id="一维正态分布">一维正态分布</h4>
+<p>对于一维正态分布，有密度函数 <span class="math display">\[
+p(x)=\frac{1}{\sqrt{2\pi}\sigma}\exp{[{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}]}
+\]</span> 其中均值 <span class="math display">\[
+\mu=E(x)=\int^{+\infty}_{-\infty}xp(x)\mathrm{d}x
+\]</span> 方差 <span class="math display">\[
+\sigma^2=E[(x-\mu)^2]=\int^{+\infty}_{-\infty}(x-\mu)^2p(x)\mathrm{d}x
+\]</span> 其中一维正态分布也可以简写为 <span class="math inline">\(p(x)\sim N(\mu,\sigma^2)\)</span>。</p>
+<p>一种分布的熵由下式给出 <span class="math display">\[
+H(p(x))=-\int p(x)\ln{p(x)}\mathrm{d}x
+\]</span> 单位为奈特，如果对数换为 <span class="math inline">\(\log_2\)</span>，则单位为比特。</p>
+<p>可以证明正态分布在所有具有给定均值和方差的分布中<strong>具有最大熵</strong>。由<strong>中心极限定理</strong>所述，<strong>大量的小的、独立地随机分布的总和等效为正态分布</strong>。由于所有模式——鱼、手写字符、语音——都可以看成是由大量随机过程所组成的某个理想的模式或原型模式，所以<strong>实际上通常会选择正态分布作为实际的概率分布</strong>。</p>
+<h4 id="多维正态分布">多维正态分布</h4>
+<p>设 <span class="math inline">\(d\)</span> 维特征向量 <span class="math display">\[
+\boldsymbol{x}=(x_1,x_2,\cdots,x_d)^T
+\]</span> 则 <span class="math inline">\(d\)</span> 维正态分布定义为
+<span class="math display">\[
+p(\boldsymbol{x})=\frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}}\exp[-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^T\Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu})]
+\]</span> 其中 <span class="math inline">\(\Sigma\)</span> 是 <span class="math inline">\(d\)</span> 维的协方差矩阵，<span class="math inline">\(|\Sigma|\)</span> 代表行列式的值，<span class="math inline">\(\Sigma^{-1}\)</span> 代表矩阵的逆，<span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu})^T\)</span>
+表示矩阵的转置（在这里是变为行向量）。</p>
+<p>通常简写为 <span class="math display">\[
+p(\boldsymbol{x})=N(\boldsymbol{\mu},\boldsymbol{\Sigma})
+\]</span> 其中均值 <span class="math display">\[
+\boldsymbol{\mu}=E(\boldsymbol{x})=\int\boldsymbol{x}p(\boldsymbol{x})\mathrm{d}\boldsymbol{x}
+\]</span> 协方差矩阵 <span class="math display">\[
+\Sigma=E[(\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^T]=\int
+(\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^Tp(\boldsymbol{x})\mathrm{d}\boldsymbol{x}
+\]</span> 其中 <span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^T\)</span>
+表示求向量内积。</p>
+<p>其中某个向量的均值可以通过其属性的均值获得，即 <span class="math display">\[
+\begin{align}
+\mu_i&amp;=E(x_i)\\
+\sigma_{ij}^2&amp;=E[(x_i-\mu_i)(x_j-\mu_j)]\\
+&amp;=\iint(x_i-\mu_i)(x_j-\mu_j)p(x_i,x_j)\mathrm{d}{x_i}\mathrm{d}{x_j}
+\end{align}
+\]</span> 当 <span class="math inline">\(i=j\)</span>
+时（对角线元素），<span class="math inline">\(\sigma_{ij}\)</span>
+反映样本 <span class="math inline">\(x_i\)</span> 在 <span class="math inline">\(d\)</span>
+维特征空间<strong>各方向的发散程度</strong>；</p>
+<p>当 <span class="math inline">\(i\neq j\)</span> 时，<span class="math inline">\(\sigma_{ij}\)</span>
+反映<strong>各特征间的统计相关性</strong>。</p>
+<blockquote>
+<p>这里需要严格限定 <span class="math inline">\(\Sigma\)</span>
+是正定矩阵，使得其行列式为正值。</p>
+</blockquote>
+<h4 id="分类器">分类器</h4>
+<p>设各类样本的<strong>类概率密度</strong>均满足正态分布，即 <span class="math display">\[
+p(\boldsymbol{x}|\omega_i)\sim N(\boldsymbol{\mu},\boldsymbol{\Sigma})
+\]</span> 根据最小误差概率决策，判别函数为 <span class="math display">\[
+g_i(\boldsymbol{x})=p(\boldsymbol{x}|\omega_i)p(\omega_i)=\max_{1\leq
+j\leq c}{(p(\boldsymbol{x}|\omega_j),p(\omega_j))}
+\]</span> 或者使用 <span class="math display">\[
+\begin{align}
+g_i(\boldsymbol{x})&amp;=\ln{p(\boldsymbol{x}|\omega_i)}+\ln{p(\omega_i)}\\
+&amp;=-\frac{d}{2}\ln{2\pi}-\frac{1}{2}\ln{|\Sigma_i|}-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_i)^T\Sigma^{-1}_i(\boldsymbol{x}-\boldsymbol{\mu}_i)+\ln{P(\omega_i)}
+\end{align}
+\]</span> 分以下三种情况讨论决策结果。</p>
+<h5 id="情况一sigmasigma2i">情况一：<span class="math inline">\(\Sigma=\sigma^2I\)</span></h5>
+<ul>
+<li>各类协方差矩阵相等，<span class="math inline">\(\Sigma_i=\Sigma_j=\Sigma\)</span></li>
+<li>各特征统计独立，<span class="math inline">\(\sigma_{ij}^2=0,i\neq
+j\)</span></li>
+<li>样本各方向的发散程度一致 <span class="math inline">\(\sigma_{ij}^2=\sigma^2,i=j\)</span></li>
+</ul>
+<p>即 <span class="math display">\[
+\Sigma=\begin{bmatrix}
+\sigma^2 &amp; 0 &amp; \cdots &amp; 0\\
+0 &amp; \sigma^2 &amp; \cdots &amp; 0\\
+\cdots &amp; \cdots &amp; \cdots &amp; \cdots\\
+0 &amp; 0 &amp; \cdots &amp; \sigma^2
+\end{bmatrix}
+\]</span> 此时 <span class="math inline">\(\Sigma=\sigma^2I\)</span>，故
+<span class="math inline">\(\Sigma^{-1}=\frac{1}{\sigma^2}I\)</span>，其中
+<span class="math inline">\(I\)</span> 为单位矩阵。</p>
+<p>故判别函数化简为 <span class="math display">\[
+\begin{align}
+g_i(\boldsymbol{x})&amp;=-\frac{(\boldsymbol{x}-\boldsymbol{\mu}_i)^T(\boldsymbol{x}-\boldsymbol{\mu}_i)}{2\sigma^2}+\ln
+p(\omega_i)\\
+&amp;=-\frac{\begin{Vmatrix}
+\boldsymbol{x}-\boldsymbol{\mu}_i
+\end{Vmatrix}^2}{2\sigma^2}+\ln p(\omega_i)
+\end{align}
+\]</span> 其中 <span class="math inline">\(\begin{Vmatrix}
+\boldsymbol{x}-\boldsymbol{\mu}_i \end{Vmatrix}\)</span>
+是求欧氏距离，即<strong>欧几里得范数</strong>。</p>
+<p>故在此种决策函数下，只需计算 <span class="math inline">\(\boldsymbol{x}\)</span> 到各类样本均值 <span class="math inline">\(\boldsymbol{\mu}_i\)</span>
+的范数，选择范数最小（在空间中称为距离最近）的类别即可。</p>
+<p>情况一也称作<strong>最小距离分类器</strong>。</p>
+<p>对判别函数重整，有 <span class="math display">\[
+g_i(\boldsymbol{x})=\frac{1}{2\sigma^2}(\begin{Vmatrix}\boldsymbol{x}\end{Vmatrix}^2-2\boldsymbol{\mu}_i^T\boldsymbol{x}+\begin{Vmatrix}\boldsymbol{\mu}\end{Vmatrix}^2)+\ln{p(\omega_i)}
+\]</span> 其中 <span class="math inline">\(\begin{Vmatrix}\boldsymbol{x}\end{Vmatrix}^2\)</span>
+对于任意 <span class="math inline">\(i\)</span>
+是相等的，于是乎我们可以把上式等价于 <span class="math display">\[
+g_i(\boldsymbol{x})=\boldsymbol{w}_i^T \boldsymbol{x}+\omega_{i0}
+\]</span> 其中 <span class="math display">\[
+\boldsymbol{w}_i=\frac{1}{\sigma ^2}\boldsymbol{\mu}_i\\
+\omega_{i0}=-\frac{1}{2\sigma^2}\begin{Vmatrix}\boldsymbol{\mu}\end{Vmatrix}^2+\ln{p(\omega_i)}
+\]</span> <span class="math inline">\(\omega_{i0}\)</span> 又称作第
+<span class="math inline">\(i\)</span>
+个方向的<strong>阈值</strong>或<strong>偏置</strong>。</p>
+<p>使用线性判别函数的分类器称为“线性机器”。这类分类器有许多有趣的理论性质。</p>
+<p>此处只需注意到一个线性机器的判定面是一些超平面，它们是由两类问题中可获得最大后验概率的线性方程
+<span class="math inline">\(g_i(\boldsymbol{x})=g_j(\boldsymbol{x})\)</span>
+来确定。</p>
+<p>上式可写为 <span class="math display">\[
+\boldsymbol{w}^T(\boldsymbol{x}-\boldsymbol{x}_0)=0
+\]</span> 其中 <span class="math display">\[
+\boldsymbol{w}=\boldsymbol{\mu}_i-\boldsymbol{\mu}_j
+\]</span> 且 <span class="math display">\[
+\mathbf{x}_{0}=\frac{1}{2}\left(\boldsymbol{\mu}_{i}+\boldsymbol{\mu}_{j}\right)-\frac{\sigma^{2}}{\left\|\boldsymbol{\mu}_{i}-\boldsymbol{\mu}_{j}\right\|^{2}}
+\ln
+\frac{P\left(\omega_{i}\right)}{P\left(\omega_{j}\right)}\left(\boldsymbol{\mu}_{i}-\boldsymbol{\mu}_{j}\right)
+\]</span> 此方程定义了<strong>一个通过 <span class="math inline">\(\boldsymbol{x}_0\)</span> 且与向量 <span class="math inline">\(\boldsymbol{w}\)</span>
+正交</strong>的超平面。</p>
+<blockquote>
+<p>如果 <span class="math inline">\(\sigma^2\)</span>
+相对于范数的平方较小，那么判决边界的位置相对于确切的先验概率值并不敏感。</p>
+</blockquote>
+<h5 id="情况二sigma_isigma_jsigma">情况二：<span class="math inline">\(\Sigma_i=\Sigma_j=\Sigma\)</span></h5>
+<ul>
+<li>各类方差相同，<span class="math inline">\(\Sigma_i=\Sigma_j=\Sigma\)</span></li>
+</ul>
+<p>可以证明，此时判别函数仍满足线性关系，即 <span class="math display">\[
+g_i(\boldsymbol{x})=\boldsymbol{w}_i^T\boldsymbol{x}+\omega_{i0}
+\]</span></p>
+<h5 id="情况三sigma_ineq-sigma_j">情况三：<span class="math inline">\(\Sigma_i\neq \Sigma_j\)</span></h5>
+<ul>
+<li><span class="math inline">\(\Sigma_i\neq \Sigma_j\)</span></li>
+</ul>
+<p>此时判别函数为 <span class="math display">\[
+g_i(\boldsymbol{x})=\boldsymbol{x}^TA_i\boldsymbol{x}+\boldsymbol{w}_i^T+\omega_{i0}
+\]</span> 此分类器为非线性分类器（二次型分类器）。</p>
+<h3 id="实际计算">实际计算</h3>
+<p>两类高斯分布所计算出的贝叶斯判决边界如下，每一类都基于 4
+个数据点。</p>
+<p>以 <span class="math inline">\(\omega_1\)</span> 表示 4
+个黑点的集合，<span class="math inline">\(\omega_2\)</span>
+表示红点集合。</p>
+<figure>
+<img src="/pattern-recongnition-note/模式简图.jpg" alt="模式简图">
+<figcaption aria-hidden="true">模式简图</figcaption>
+</figure>
+<p>由图可知，<span class="math inline">\(\omega_1\)</span>
+的特征向量矩阵为 <span class="math display">\[
+X=\begin{bmatrix}
+2 &amp; 3 &amp; 3 &amp; 4\\
+6 &amp; 8 &amp; 4 &amp; 6
+\end{bmatrix}
+\]</span> 可知特征向量维度 <span class="math inline">\(d=2\)</span></p>
+<p>由均值公式 <span class="math display">\[
+\mu_k=\frac{1}{4}\sum^4_{i=1} x_{ki},k=1,2
+\]</span> 得均值向量为 <span class="math display">\[
+\boldsymbol{\mu}=\begin{bmatrix}
+3\\
+6
+\end{bmatrix}
+\]</span> 由协方差公式 <span class="math display">\[
+\sigma(\boldsymbol{x}_k,\boldsymbol{x}_k)=\frac{1}{n}\sum^n_{i=1}(x_{ki}-\bar{x}_k)^2,k=1,2,\cdots,d
+\]</span> 得协方差为 <span class="math display">\[
+\begin{align}
+\sigma\left(x_{1},
+x_{1}\right)&amp;=\frac{1}{4}\left\{\left(x_{11}-\bar{x}_{1}\right)\left(x_{11}-\bar{x}_{1}\right)+\left(x_{12}-\bar{x}_{1}\right)\left(x_{12}-\bar{x}_{1}\right)+\left(x_{13}-\bar{x}_{1}\right)\left(x_{13}-\bar{x}_{1}\right)+\left(x_{14}-\bar{x}_{1}\right)\left(x_{14}-\bar{x}_{1}\right)\right\}
+\\
+&amp;=\frac{1}{4}\{(2-3)(2-3)+(3-3)(3-3)+(3-3)(3-3)+(4-3)(4-3)\}\\
+&amp;=\frac{1}{2}
+\end{align}
+\]</span></p>
+<blockquote>
+<p>此处 <span class="math inline">\(x_1=\begin{bmatrix}2&amp;3&amp;3&amp;6\end{bmatrix},x_{11}=2,x_{12}=3,\bar{x}_1=3\)</span>，同时忽略其他协方差的计算。</p>
+</blockquote>
+<p>同理可得，协方差矩阵为 <span class="math display">\[
+\Sigma=\begin{bmatrix}
+\frac{1}{2} &amp; 0\\
+0 &amp; 2
+\end{bmatrix}
+\]</span> 对于另一组特征向量 <span class="math display">\[
+X=\begin{bmatrix}
+1 &amp; 3 &amp; 3 &amp; 5\\
+-2 &amp; 0 &amp; -4 &amp; -2
+\end{bmatrix}
+\]</span> 同理可得均值和方差。</p>
+<p>记第一组数据的均值为 <span class="math inline">\(\mu_1\)</span>，协方差矩阵为 <span class="math inline">\(\Sigma_1\)</span>；第二组数据的均值为 <span class="math inline">\(\mu_2\)</span>，协方差矩阵为 <span class="math inline">\(\Sigma_2\)</span>： <span class="math display">\[
+\boldsymbol{\mu}_1=\begin{bmatrix}
+3\\
+6
+\end{bmatrix},
+\boldsymbol{\mu}_2=\begin{bmatrix}
+3\\
+-2
+\end{bmatrix}
+\\
+\Sigma_1=\begin{bmatrix}
+\frac{1}{2} &amp; 0\\
+0 &amp; 2
+\end{bmatrix},
+\Sigma_2=\begin{bmatrix}
+2 &amp; 0\\
+0 &amp; 2
+\end{bmatrix}
+\]</span> 可得逆矩为 <span class="math display">\[
+\Sigma_1^{-1}=\begin{bmatrix}
+2 &amp; 0\\
+0 &amp; \frac{1}{2}
+\end{bmatrix},
+\Sigma_2^{-1}=\begin{bmatrix}
+\frac{1}{2} &amp; 0\\
+0 &amp; \frac{1}{2}
+\end{bmatrix}
+\]</span> 假定两类分布的先验概率相等，即 <span class="math inline">\(P(\omega_1)=P(\omega_2)=0.5\)</span>，代入后可得
+<span class="math inline">\(g_1(\boldsymbol{x})=g_2(\boldsymbol{x})\)</span>
+时的判决边界为 <span class="math display">\[
+x_2=3.514-1.125x_1+0.1875x_1^2
+\]</span></p>
+<blockquote>
+<p>这里由于各类协方差矩阵各不相同，于是套用情况三的公式</p>
+</blockquote>
 <h3 id="实际应用-2">实际应用</h3>
 <h4 id="拼写纠错检查">拼写纠错检查</h4>
 <p>当用户输入了一个不在字典中的单词，我们需要去猜测：“这个家伙到底真正想输入的单词是什么呢？”用形式化的语言来叙述，就是我们需要求得：
@@ -16127,6 +16558,32 @@ P(H|D)\propto P(H)P(D|H)
 <li>奥卡姆剃刀：先验概率 <span class="math inline">\(P(H)\)</span>
 较大的模型有较大的优势。</li>
 </ul>
+<h4 id="医生诊断">医生诊断</h4>
+<p>一个两类识别问题：医生根据病人血液中白细胞的浓度来判断病人是否患血液病。</p>
+<p>根据医学知识和以往的经验，医生知道（先验知识）：</p>
+<ul>
+<li>患病的人，白细胞的浓度服从均值2000，方差1000的正态分布；未患病的人，白细胞的浓度服从均值7000，方差3000的正态分布</li>
+<li>一般人群中，患病的人数比例为0.5%</li>
+</ul>
+<p>当一个人的白细胞浓度是3100，医生应该做出怎样的判断？</p>
+<p>用 <span class="math inline">\(\Omega\)</span> 表示分类集合，有 <span class="math inline">\(\omega_1\)</span> 表示患病，<span class="math inline">\(\omega_2\)</span> 表示未患病；</p>
+<p>用 <span class="math inline">\(x\)</span>
+表示"白细胞浓度"这个随机变量，即选择其作为特征。</p>
+<p>由先验知识我们可以得到先验概率：</p>
+<ul>
+<li><span class="math inline">\(P(\omega_1)=0.5\%,P(\omega_2)=99.5\%\)</span></li>
+<li>白细胞浓度在两种类别下的类条件概率密度：<span class="math inline">\(p(x|\omega_1)\sim N(2000,1000),p(x|\omega_2)\sim
+N(7000,3000)\)</span></li>
+</ul>
+<p>查表可以得到类条件概率： <span class="math display">\[
+P(3100|\omega_1)=2.1785\times10^{-4}\\
+P(3100|\omega_2)=5.7123\times10^{-5}\\
+\]</span> 根据贝叶斯公式，计算得到后验概率： <span class="math display">\[
+\begin{align}
+P(\omega_1|3100)&amp;=1.9\%\\
+P(\omega_2|3100)&amp;=98.1\%
+\end{align}
+\]</span> 故判决为 <span class="math inline">\(\omega_2\)</span>，即医生诊断为：未患病，体征正常。</p>
 ]]></content>
       <tags>
         <tag>math</tag>
