@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关信号与系统的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信号与系统笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/signal-and-system-note2.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关信号与系统的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/典型激励函数相应特解.jpg">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/冲激响应表.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/假设的激励信号.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/假设的冲激响应.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/r0信号.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/r1信号.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/r2信号.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/响应r(t).png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/并联系统的卷积.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/串联系统的卷积.png">
+<meta property="article:published_time" content="2023-03-09T08:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-12T12:18:46.802Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="信号与系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/signal-and-system-note2/典型激励函数相应特解.jpg">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/signal-and-system-note2.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/signal-and-system-note2.html","path":"/signal-and-system-note2.html","title":"信号与系统笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>信号与系统笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">57</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">信号与系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%97%B6%E5%9F%9F%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">系统的时域分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E6%B3%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">经典法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%BD%90%E6%AC%A1%E8%A7%A3-r_ht"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">齐次解 \(r_h(t)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E8%A7%A3-r_pt"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">特解 \(r_p(t)\)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E6%9D%A1%E4%BB%B6%E6%B1%82%E5%BE%85%E5%AE%9A%E7%B3%BB%E6%95%B0"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">初始条件求待定系数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B5%B7%E5%A7%8B%E7%82%B9%E7%9A%84%E8%B7%B3%E5%8F%98"><span class="nav-number">1.1.2.</span> <span class="nav-text">起始点的跳变</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%B6%E8%BE%93%E5%85%A5%E5%93%8D%E5%BA%94%E4%B8%8E%E9%9B%B6%E7%8A%B6%E6%80%81%E5%93%8D%E5%BA%94"><span class="nav-number">1.1.3.</span> <span class="nav-text">零输入响应与零状态响应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B2%E6%BF%80%E5%93%8D%E5%BA%94%E4%B8%8E%E9%98%B6%E8%B7%83%E5%93%8D%E5%BA%94"><span class="nav-number">1.1.4.</span> <span class="nav-text">冲激响应与阶跃响应</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF"><span class="nav-number">1.1.5.</span> <span class="nav-text">卷积</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">1.1.6.</span> <span class="nav-text">卷积的性质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E5%BE%8B"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">交换律</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E9%85%8D%E5%BE%8B"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">分配律</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BB%93%E5%90%88%E5%BE%8B"><span class="nav-number">1.1.6.3.</span> <span class="nav-text">结合律</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%AE%E5%88%86"><span class="nav-number">1.1.6.4.</span> <span class="nav-text">微分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%AF%E5%88%86"><span class="nav-number">1.1.6.5.</span> <span class="nav-text">积分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%8E%E5%86%B2%E6%BF%80%E5%87%BD%E6%95%B0%E7%9A%84%E5%8D%B7%E7%A7%AF"><span class="nav-number">1.1.6.6.</span> <span class="nav-text">与冲激函数的卷积</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E7%AE%97%E5%AD%90%E8%A1%A8%E7%A4%BA%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">1.1.7.</span> <span class="nav-text">用算子表示微分方程注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%A0%E8%BE%93%E7%AE%97%E5%AD%90"><span class="nav-number">1.1.8.</span> <span class="nav-text">传输算子</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/signal-and-system-note2.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信号与系统笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-09 16:00:00" itemprop="dateCreated datePublished" datetime="2023-03-09T16:00:00+08:00">2023-03-09</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>7.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关信号与系统的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="信号与系统">信号与系统</h1>
+<h2 id="系统的时域分析">系统的时域分析</h2>
+<h3 id="经典法">经典法</h3>
+<p>一个定常系统（线性系统）对应的数学模型是一个<strong>线性常系数常微分方程</strong>。</p>
+<p>设系统的激励信号为 <span class="math inline">\(e(t)\)</span>，响应为
+<span class="math inline">\(r(t)\)</span>，则它的数学模型可表示为 <span class="math display">\[
+\newcommand{\diff}{\mathrm{d}}
+C_0\frac{\diff^n}{\diff{t^n}}r(t)+C_1\frac{\diff^{n-1}}{\diff{t^{n-1}}}r(t)+\cdots+C_{n-1}\frac{\diff}{\diff{t}}r(t)+C_nr(t)\\
+=E_0\frac{\diff^m}{\diff{t^m}}e(t)+E_1\frac{\diff^{m-1}}{\diff{t^{m-1}}}e(t)+\cdots+E_{m-1}\frac{\diff}{\diff{t}}e(t)+E_me(t)
+\]</span>
+在经典法中，一个微分方程的解由两部分组成：齐次解和非齐次解。</p>
+<h4 id="齐次解-r_ht">齐次解 <span class="math inline">\(r_h(t)\)</span></h4>
+<p>求解齐次解 <span class="math inline">\(r_h(t)\)</span> 即求解方程</p>
+<blockquote>
+<p>Homogeneous equation 是齐次方程的英文。</p>
+</blockquote>
+<p><span class="math display">\[
+C_0\frac{\diff^n}{\diff{t^n}}r(t)+C_1\frac{\diff^{n-1}}{\diff{t^{n-1}}}r(t)+\cdots+C_{n-1}\frac{\diff}{\diff{t}}r(t)+C_nr(t)=0
+\]</span></p>
+<p>用算子符号将方程中的 <span class="math inline">\(\frac{\diff}{\diff{t}}\)</span> 简记为 <span class="math inline">\(p\)</span>，则方程化为 <span class="math display">\[
+C_0p^nr(t)+C_1p^{n-1}r(t)+\cdots+C_{n-1}pr(t)+C_nr(t)=0
+\]</span> 提取出特征有 <span class="math display">\[
+C_0p^n+C_1p^{n-1}+\cdots+C_{n-1}p+C_n=0
+\]</span>
+该方程称为<strong>特征根方程</strong>，该方程的解称为<strong>特征根</strong>。</p>
+<p>记特征根为 <span class="math inline">\(\lambda_k\)</span>，则齐次微分方程的通解为 <span class="math display">\[
+r(t)=Ae^{\lambda_kt}
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\(e^{\lambda_k t}\)</span> 又称为模态。</p>
+</blockquote>
+<p>（1）若特征根各不相同（无重根），那么解出的齐次解为 <span class="math display">\[
+\begin{align}
+r_h(t)&amp;=A_1e^{\lambda_1 t}+A_2e^{\lambda_2 t}+\cdots+A_ne^{\lambda_n
+t}\\
+&amp;=\sum^n_{i=1}A_ie^{\lambda_i t}
+\end{align}
+\]</span> （2）若有重根，例如 <span class="math inline">\(\lambda_1\)</span> 是特征根方程的 <span class="math inline">\(k\)</span>
+阶重根，那么重根部分会使得齐次解的一部分替换为 <span class="math display">\[
+(\sum^k_{i=1}A_it^{k-i})e^{\lambda_1 t}
+\]</span> <span class="math inline">\(k\)</span>
+阶重根指这个特征根有几个相同的根。</p>
+<p>例如，求如下微分方程的齐次解 <span class="math display">\[
+\frac{\diff^3}{\diff{t^3}}r(t)+7\frac{\diff^2}{\diff{t^2}}r(t)+16\frac{\diff}{\diff{t}}r(t)+12r(t)=e(t)
+\]</span> 特征方程为 <span class="math display">\[
+p^3+7p^2+16p+12=0
+\]</span> 化简得到 <span class="math display">\[
+(p+2)^2(p+3)=0
+\]</span> 求解得到 <span class="math display">\[
+\lambda_1=\lambda_2=-2,\lambda_3=-3
+\]</span> 知 <span class="math inline">\(-2\)</span> 为二阶重根。</p>
+<p>故齐次解为 <span class="math display">\[
+r_h(t)=(A_1t+A_2)e^{-2t}+A_3e^{-3}t
+\]</span></p>
+<h4 id="特解-r_pt">特解 <span class="math inline">\(r_p(t)\)</span></h4>
+<p>微分方程的特解 <span class="math inline">\(r_p(t)\)</span>
+与激励函数的形式有关系。</p>
+<figure>
+<img src="/signal-and-system-note2/典型激励函数相应特解.jpg" alt="典型激励函数相应特解">
+<figcaption aria-hidden="true">典型激励函数相应特解</figcaption>
+</figure>
+<p>例如，求如下微分方程的特解 <span class="math display">\[
+\frac{\diff^2}{\diff{t^2}}r(t)+2\frac{\diff}{\diff{t}}r(t)+3r(t)=\frac{\diff}{\diff{t}}e(t)+e(t)
+\]</span> 其中 <span class="math inline">\(e(t)=t^2\)</span>。</p>
+<p>代入得到激励为 <span class="math display">\[
+t^2+2t
+\]</span> 选取特解函数式 <span class="math display">\[
+r_p(t)=B_1t^2+B_2t+B_3
+\]</span> 代入可解 <span class="math display">\[
+r_p(t)=\frac{1}{3}t^2+\frac{2}{9}t-\frac{10}{27}
+\]</span></p>
+<blockquote>
+<p>注意齐次解是通解，没有初始条件无法求得系数的值，仅仅与系统本身的性质有关；但特解与外部输入有关。</p>
+</blockquote>
+<h4 id="初始条件求待定系数">初始条件求待定系数</h4>
+<p>在系统中，激励一般在 <span class="math inline">\(t=0\)</span>
+时刻加入，故当 <span class="math inline">\(t=0\)</span>
+的一组条件就是初始条件，代入可得 <span class="math display">\[
+\left\{\begin{array}{l}
+r(0)=A_{1}+A_{2}+\cdots+A_{n}+r_{\mathrm{p}}(0) \\
+\frac{\mathrm{d}}{\mathrm{d} t} r(0)=A_{1} \alpha_{1}+A_{2}
+\alpha_{2}+\cdots+A_{n} \alpha_{n}+\frac{\mathrm{d}}{\mathrm{d} t}
+r_{\mathrm{p}}(0) \\
+\quad \vdots \\
+\frac{\mathrm{d}^{n-1}}{\mathrm{~d} t^{n-1}} r(0)=A_{1}
+\alpha_{1}^{n-1}+A_{2}
+\alpha_{2}^{n-1}+\cdots+A_{n}+\frac{\mathrm{d}^{n-1}}{\mathrm{~d}
+t^{n-1}} r_{\mathrm{p}}(0)
+\end{array}\right.
+\]</span></p>
+<h3 id="起始点的跳变">起始点的跳变</h3>
+<p>由于激励信号的作用，响应 <span class="math inline">\(r(t)\)</span>
+可能会发生跳变（如电感电流和电容电压），为区分跳变前后的状态，我们定义：</p>
+<ul>
+<li><span class="math inline">\(0_-\)</span>
+表示为激励<strong>接入之前</strong>的是瞬时；</li>
+<li><span class="math inline">\(0_+\)</span>
+表示为激励<strong>接入之后</strong>的是瞬时；</li>
+</ul>
+<p>同时代入后的两组状态：</p>
+<ul>
+<li><span class="math inline">\(r^{(k)}(0_-)\)</span>
+称作<strong>起始状态</strong>（<span class="math inline">\(0_-\)</span>
+状态）；</li>
+<li><span class="math inline">\(r^{(k)}(0_+)\)</span>
+称作<strong>初始状态</strong>（<span class="math inline">\(0_+\)</span>
+状态），或<strong>导出的起始状态</strong>。</li>
+</ul>
+<h3 id="零输入响应与零状态响应">零输入响应与零状态响应</h3>
+<p>齐次解的函数特性仅依赖于系统本身，与激励信号的函数形式无关，因而称为系统的<strong>自由响应</strong>（固有响应）。</p>
+<p>但特解的形式完全由激励函数决定，因而称为系统的<strong>强迫响应</strong>（受迫响应）。</p>
+<p><strong>零输入响应：没有外加激励信号的作用，只由起始状态（起始时刻储能）所产生的响应。</strong></p>
+<blockquote>
+<p>一般以 <span class="math inline">\(r_{zi}(t)\)</span> 表示。（zero
+input 为零输入的英文）</p>
+<p>仅字面意思可理解为不考虑任何输入对系统的作用，仅关注系统本身的性质。</p>
+</blockquote>
+<p><strong>零状态响应：不考虑起始时刻的系统储能的作用（起始状态为
+0）由系统外加激励信号所产生的响应。</strong></p>
+<blockquote>
+<p>一般以 <span class="math inline">\(r_{zs}(t)\)</span> 表示。（zero
+state 为零状态的英文）</p>
+<p>仅字面意思可理解为不考虑任何系统本身，仅考虑输入对系统所产生的影响。</p>
+</blockquote>
+<p>按照上述定义，可以知道 <span class="math display">\[
+r_{zi}(t)=\sum^n_{k=1}A_{zik}e^{\lambda_k t}
+\]</span> 即，<strong>零状态输入是齐次解的一部分</strong>。</p>
+<p>其中常系数可以由 <span class="math inline">\(r^{(k)}(0_-)\)</span>
+决定，即由 <span class="math inline">\(0_-\)</span> 状态决定。</p>
+<p>而 <span class="math inline">\(r_{zs}(t)\)</span>
+理应是解的剩下一部分，即 <span class="math display">\[
+r_{zs}(t)=\sum^n_{k=1}A_{zsk}e^{\lambda_kt}+B(t)
+\]</span> 即为<strong>自由响应的一部分与强迫相应之和</strong>。</p>
+<p>从中我们可以得出一个结论<strong>：自由响应中的两部分，一部分由起始状态决定，另一部分由激励信号决定</strong>。</p>
+<blockquote>
+<p>有一个附加结论：当系统无储能，零输入响应即为零。当一个系统发生跳变，则只可能影响零状态响应。</p>
+</blockquote>
+<p>例如，求如下微分方程的自由响应、强迫响应、零输入响应和零状态响应以及完全响应。
+<span class="math display">\[
+\frac{\diff}{\diff{t}}r(t)+3r(t)=3e(t)
+\]</span> 其中 <span class="math inline">\(e(t)=u(t)\)</span>，起始状态
+<span class="math inline">\(r(0_-)=\frac{3}{2}\)</span>。</p>
+<blockquote>
+<p>这里的 <span class="math inline">\(u(t)\)</span>
+表示前文的单位阶跃信号。</p>
+</blockquote>
+<p>由经典法可得，自由响应 <span class="math display">\[
+r_h(t)=\frac{1}{2}e^{-3t}
+\]</span> 强迫响应 <span class="math display">\[
+r_p(t)=1
+\]</span> 完全响应 <span class="math display">\[
+r(t)=\frac{1}{2}e^{-3t}+1
+\]</span> 求零输入响应可得 <span class="math display">\[
+r_{zi}(t)=\frac{3}{2}e^{-3t}
+\]</span> 令 <span class="math inline">\(r(0_+)=0\)</span>，解得</p>
+<blockquote>
+<p>不考虑起始状态的储能 <span class="math inline">\(r(0_-)\)</span>，故没有发生跳变的情况下 <span class="math inline">\(r(0_-)=r(0_+)=0\)</span></p>
+</blockquote>
+<p><span class="math display">\[
+r_{zs}(t)=-e^{-3t}+1
+\]</span></p>
+<p><strong>零状态响应的用处</strong></p>
+<ol type="1">
+<li>由于大量的通信与电子系统的系统储能一般都为零，故只需讨论零状态响应。</li>
+<li>零状态响应可用<strong>卷积</strong>求解。</li>
+<li>零响应满足系统叠加性和齐次性，便于我们研究其他 LTI 系统。</li>
+</ol>
+<h3 id="冲激响应与阶跃响应">冲激响应与阶跃响应</h3>
+<p><strong>以单位冲激信号 <span class="math inline">\(\delta(t)\)</span>
+作为激励信号，系统所产生的零状态响应称为单位冲激响应（冲激响应）。</strong></p>
+<p><strong>以单位阶跃信号 <span class="math inline">\(u(t)\)</span>
+作为激励信号，系统所产生的零状态响应称为单位阶跃响应（阶跃响应）。</strong></p>
+<p>对某个激励信号求解零状态响应，可以转化为将这个激励信号分解为无数个单位冲激信号，然后求和每个单位冲激信号的冲激响应，这是<strong>卷积求解零状态响应</strong>的基本原理。</p>
+<blockquote>
+<p>利用了线性系统的叠加性和齐次性，显然响应可以化为冲激响应和。在这里利用<strong>卷积加权求和</strong>的特性，解得冲激响应和。</p>
+</blockquote>
+<p>首先我们要知晓如何计算冲激响应 <span class="math inline">\(h(t)\)</span>。</p>
+<p>对于微分方程 <span class="math display">\[
+\newcommand{\diff}{\mathrm{d}}
+C_0\frac{\diff^n}{\diff{t^n}}r(t)+C_1\frac{\diff^{n-1}}{\diff{t^{n-1}}}r(t)+\cdots+C_{n-1}\frac{\diff}{\diff{t}}r(t)+C_nr(t)\\
+=E_0\frac{\diff^m}{\diff{t^m}}e(t)+E_1\frac{\diff^{m-1}}{\diff{t^{m-1}}}e(t)+\cdots+E_{m-1}\frac{\diff}{\diff{t}}e(t)+E_me(t)
+\]</span> 代入 <span class="math inline">\(e(t)=\delta(t)\)</span>，可得右式可能为冲激函数、冲击偶函数及其各阶导数。</p>
+<p>由于要使左右式子平衡，故 <span class="math inline">\(h(t)\)</span> 与
+<span class="math inline">\(m,n\)</span> 的相对大小相关。</p>
+<blockquote>
+<p><span class="math inline">\(m,n\)</span>
+的相对大小可以评估为左右式导数阶数。</p>
+</blockquote>
+<p>一般的系统都会有 <span class="math inline">\(n&gt;m\)</span>，此时
+<span class="math inline">\(h(t)\)</span> 中不包含 <span class="math inline">\(\delta(t)\)</span> 及其各阶导数，简单来说，<span class="math inline">\(h(t)\)</span> 与齐次解形式相同 <span class="math display">\[
+h(t)=\sum^n_{i=1}A_ie^{\lambda_i t}
+\]</span> 对系数的求解可以直接使用系数匹配法。</p>
+<blockquote>
+<p>一般来说，如果 <span class="math inline">\(n=m+1\)</span>，即左式是二阶微分方程，右式是一阶微分方程，则设
+<span class="math display">\[
+h(t)=(\sum^n_{i=1}A_ie^{\lambda_i t})u(t)
+\]</span> 因为 <span class="math inline">\(h(t)\)</span> 不包含 <span class="math inline">\(\delta(t)\)</span>
+及其各阶导数，但是方程两式又出现相等，那么 <span class="math inline">\(h(t)\)</span> 只可能包含 <span class="math inline">\(\delta(t)\)</span> 的各阶积分，在这里 <span class="math inline">\(u(t)\)</span> 是 <span class="math inline">\(\delta(t)\)</span>
+的一阶积分，即单位阶跃函数。</p>
+<p>同理，如果 <span class="math inline">\(n=m+2\)</span>，那么设 <span class="math display">\[
+h(t)=(\sum^n_{i=1}A_ie^{\lambda_i t})R(t)
+\]</span> 在这里，<span class="math inline">\(R(t)\)</span> 是 <span class="math inline">\(\delta(t)\)</span>
+的二阶积分，即单位斜变函数。</p>
+</blockquote>
+<p>例如，求解如下微分方程的冲激响应 <span class="math inline">\(h(t)\)</span> <span class="math display">\[
+\frac{\diff^2}{\diff{t^2}}r(t)+4\frac{\diff}{\diff{t}}r(t)+3r(t)=\frac{\diff}{\diff{t}}e(t)+2e(t)
+\]</span> 利用经典法可得 <span class="math display">\[
+r_h(t)=A_1e^{-t}+A_2e^{-3t}
+\]</span> 故设 <span class="math display">\[
+h(t)=(A_1e^{-t}+A_2e^{-3t})u(t)
+\]</span> 代入后作系数的一一对应，可求解得到 <span class="math display">\[
+A_1=A_2=\frac{1}{2}
+\]</span> 故冲激响应为 <span class="math display">\[
+h(t)=\frac{1}{2}(e^{-t}+e^{-3t})u(t)
+\]</span> <img src="/signal-and-system-note2/冲激响应表.png" alt="冲激响应表"></p>
+<blockquote>
+<p>如果 <span class="math inline">\(n\leq m\)</span>，很显然也可以设
+<span class="math inline">\(h(t)\)</span> 包含 <span class="math inline">\(\delta(t)\)</span> 及其导数，例如当 <span class="math inline">\(n=m\)</span> 时，设 <span class="math display">\[
+h(t)=(\sum^n_{i=1}A_ie^{\lambda_i t})\delta(t)
+\]</span></p>
+</blockquote>
+<p><strong>求解阶跃响应 <span class="math inline">\(g(t)\)</span>
+同理。</strong></p>
+<p>需要注意的重点是，<strong>冲激响应与阶跃响应完全由系统本身决定，与外界因素无关</strong>。</p>
+<blockquote>
+<p>同时由于冲激函数和阶跃函数的关联性，冲激响应与阶跃响应也有一定的关联性，这里可以用
+<strong>LTI 系统的微分性</strong>。</p>
+</blockquote>
+<h3 id="卷积">卷积</h3>
+<p>由单位冲激信号的特性，我们知道 <span class="math display">\[
+f(t_0)=\int^{\infty}_{-\infty}f(t)\delta(t-t_0)\diff{t}=f(t_0)\delta(t-t_0)\Delta{t_0}
+\]</span> 故对于任意处的激励信号，可以表示为冲激信号，即 <span class="math display">\[
+e(t_k)=e(t_k)\delta(t-t_k)\Delta{t_k}
+\]</span> 显然 <span class="math inline">\(e(t_k)\Delta{t_k}\)</span>
+在此式中为常数，对于此冲激信号有<strong>冲激响应</strong>为 <span class="math display">\[
+e(t_k)\Delta{t_k}\cdot h(t-t_k)
+\]</span> 对该冲激响应求和 <span class="math display">\[
+\sum^n_{k=1}e(t_k)\Delta{t_k}\cdot h(t-t_k)
+\]</span> 当 <span class="math inline">\(\Delta t_k\to 0\)</span>
+时，即可写为积分形式 <span class="math display">\[
+r(t)=\int^t_0 e(\tau)h(t-\tau)\diff{\tau}
+\]</span></p>
+<blockquote>
+<p>这里的 <span class="math inline">\(r(t)\)</span>
+的实际意义是零状态响应，因为是冲激响应之和。</p>
+</blockquote>
+<p>例如，有如下一个激励信号（以离散信号为例）</p>
+<figure>
+<img src="/signal-and-system-note2/假设的激励信号.png" alt="假设的激励信号">
+<figcaption aria-hidden="true">假设的激励信号</figcaption>
+</figure>
+<p>对于一个系统的冲激响应如下（以离散响应为例）</p>
+<figure>
+<img src="/signal-and-system-note2/假设的冲激响应.png" alt="假设的冲激响应">
+<figcaption aria-hidden="true">假设的冲激响应</figcaption>
+</figure>
+<p>显然对于每一个激励可以用冲激函数简单表示为 <span class="math display">\[
+e_0=e_0\delta(t-0)=a\cdot \delta(t-0)\\
+e_1=e_1\delta(t-1)=b\cdot \delta(t-1)\\
+e_2=e_2\delta(t-2)=c\cdot \delta(t-2)
+\]</span> 那么对于每个激励所造成的响应可以简单表示为 <span class="math display">\[
+r_0=e_0h(t-0)=a\cdot h(t-0)\\
+r_1=e_1h(t-1)=b\cdot h(t-1)\\
+r_2=e_2h(t-2)=c\cdot h(t-2)
+\]</span> 其中，<span class="math inline">\(h(t-0),h(t-1),h(t-2)\)</span>
+分别代表冲激函数移位的结果。</p>
+<p>我们可以得到每个激励的响应 <span class="math inline">\(r_0,r_1,r_2\)</span> 如下</p>
+<figure>
+<img src="/signal-and-system-note2/r0信号.png" alt="r0信号">
+<figcaption aria-hidden="true">r0信号</figcaption>
+</figure>
+<figure>
+<img src="/signal-and-system-note2/r1信号.png" alt="r1信号">
+<figcaption aria-hidden="true">r1信号</figcaption>
+</figure>
+<figure>
+<img src="/signal-and-system-note2/r2信号.png" alt="r2信号">
+<figcaption aria-hidden="true">r2信号</figcaption>
+</figure>
+<p>最后根据叠加原理，得到最终的响应</p>
+<figure>
+<img src="/signal-and-system-note2/响应r(t).png" alt="响应r(t)">
+<figcaption aria-hidden="true">响应r(t)</figcaption>
+</figure>
+<p>在信号与系统中，我们把这种信号的叠加积分运算（或离散求和运算）称作<strong>卷积</strong>。</p>
+<p>卷积的定义式如下 <span class="math display">\[
+f(t)*g(t)=\int^{\infty}_{-\infty}f(\tau)g(t-\tau)\diff{\tau}
+\]</span> 其中 <span class="math inline">\(*\)</span>
+代表对两个函数求卷积。</p>
+<p>根据上面的例子，可以知道卷积的运算实际上是用 <span class="math inline">\(f(t)\)</span> 的每个值倍乘 <span class="math inline">\(g(t)\)</span>
+函数，同时移位到每个值对应的位置上后，进行求和，积分仅是<strong>连续</strong>求和。</p>
+<p>例如，系统微分方程如下，<span class="math inline">\(e(t)=u(t)-u(t-t_0)\)</span>，求解冲激响应 <span class="math inline">\(h(t)\)</span> 和零状态响应。 <span class="math display">\[
+\frac{\diff}{\diff{t}}r(t)+3r(t)=e(t)
+\]</span> 易求 <span class="math display">\[
+h(t)=e^{-3t}u(t)
+\]</span> 则零状态响应 <span class="math display">\[
+\begin{align}
+r(t)&amp;=\int^t_0 [u(\tau)-u(\tau-t_0)]e^{-3(t-\tau)}\diff{\tau}\\
+&amp;=u(t)\int^t_0 e^{-3(t-\tau)}\diff{\tau}+u(t-t_0)\int^t_{t_0}
+e^{-3(t-\tau)}\diff{\tau}\\
+&amp;=\frac{1}{3}(1-e^{-3t})u(t)+\frac{1}{3}[1-e^{-3(t-t_0)}]u(t-t_0)
+\end{align}
+\]</span></p>
+<blockquote>
+<p>这里运用了卷积的方法求零状态响应，其中第一步到第二步用了积分的加法性质，<span class="math inline">\(u(t)\)</span> 是单位阶跃函数，故 <span class="math inline">\(u(t-t_0)\)</span> 使得积分上下限改变。</p>
+</blockquote>
+<h3 id="卷积的性质">卷积的性质</h3>
+<h4 id="交换律">交换律</h4>
+<p><span class="math display">\[
+f(t)*g(t)=g(t)*f(t)
+\]</span></p>
+<h4 id="分配律">分配律</h4>
+<p><span class="math display">\[
+f(t)*[g(t)+h(t)]=f(t)*g(t)+f(t)*h(t)
+\]</span></p>
+<blockquote>
+<p>应用于并联系统的分析，<strong>两系统各自的冲激响应之和等于并联系统的冲激响应</strong>。</p>
+<figure>
+<img src="/signal-and-system-note2/并联系统的卷积.png" alt="并联系统的卷积">
+<figcaption aria-hidden="true">并联系统的卷积</figcaption>
+</figure>
+</blockquote>
+<h4 id="结合律">结合律</h4>
+<p><span class="math display">\[
+[f(t)*g(t)]*h(t)=f(t)*[g(t)*h(t)]
+\]</span></p>
+<blockquote>
+<p>应用于串联系统的分析，<strong>两系统各自的冲激响应的卷积等于并联系统的冲激响应</strong>。</p>
+<figure>
+<img src="/signal-and-system-note2/串联系统的卷积.png" alt="串联系统的卷积">
+<figcaption aria-hidden="true">串联系统的卷积</figcaption>
+</figure>
+</blockquote>
+<h4 id="微分">微分</h4>
+<p><span class="math display">\[
+\begin{align}
+\frac{\diff}{\diff{t}}[f(t)*g(t)]
+&amp;=f(t)*\frac{\diff}{\diff{t}}g(t)\\
+&amp;=\frac{\diff}{\diff{t}}f(t)*g(t)
+\end{align}
+\]</span></p>
+<blockquote>
+<p>高阶微分同理，保证各自微分阶数和为总微分阶数即可。</p>
+</blockquote>
+<h4 id="积分">积分</h4>
+<p><span class="math display">\[
+\begin{align}
+\int[f(t)*g(t)]\diff{t}
+&amp;=\int f(t)\diff{t}\cdot g(t)\\
+&amp;=f(t)\cdot \int g(t)\diff{t}
+\end{align}
+\]</span></p>
+<blockquote>
+<p>高阶积分同理，保证各自积分阶数和为总积分阶数即可。</p>
+</blockquote>
+<h4 id="与冲激函数的卷积">与冲激函数的卷积</h4>
+<p><span class="math display">\[
+f(t)*\delta(t-t_0)=f(t-t_0)
+\]</span></p>
+<p>利用微分性质，与冲激偶函数的卷积为 <span class="math display">\[
+f(t)*\delta&#39;(t-t_0)=f&#39;(t-t_0)
+\]</span> 利用积分性质，与单位阶跃函数的卷积 <span class="math display">\[
+f(t)*u(t)=\int f(t)\diff{t}
+\]</span> 推广到一般情况有 <span class="math display">\[
+f(t)*\delta^{(k)}(t-t_0)=f^{(k)}(t-t_0)
+\]</span> 即，微分积分的传递性。</p>
+<blockquote>
+<p>即卷积满足线性运算。</p>
+</blockquote>
+<h3 id="用算子表示微分方程注意事项">用算子表示微分方程注意事项</h3>
+<p>在经典法中提过，使用 <span class="math inline">\(p\)</span> 表示微分
+<span class="math display">\[
+p=\frac{\diff}{\diff{t}}
+\]</span> 用 <span class="math inline">\(\frac{1}{p}\)</span> 表示积分
+<span class="math display">\[
+\frac{1}{p}=\int\diff{t}
+\]</span>
+但需要注意的是，化为符号算子表示微分方程只为简化表示和运算，并非真正满足多项式运算的算子。</p>
+<ol type="1">
+<li><span class="math inline">\(p\)</span>
+多项式可以进行<strong>因式分解和同类项合并</strong>；</li>
+<li><strong>不可任意消去</strong>等式两端的 <span class="math inline">\(p\)</span>；</li>
+<li><strong>微分积分次序不可交换</strong>。</li>
+</ol>
+<h3 id="传输算子">传输算子</h3>
+<p>在开头提过，微分方程可写成 <span class="math display">\[
+C_0p^nr(t)+C_1p^{n-1}r(t)+\cdots+C_{n-1}pr(t)+C_nr(t)=E_0p^me(t)+E_1p^{m-1}e(t)+\cdots+E_{m-1}pe(t)+E_me(t)
+\]</span> 定义 <span class="math display">\[
+D(p)=C_0p^n+C_1p^{n-1}+\cdots+C_{n-1}p+C_n\\
+N(p)=E_0p^m+E_1p^{m-1}+\cdots+E_{m-1}p+E_m
+\]</span> 那么原方程可化为 <span class="math display">\[
+r(t)=\frac{N(p)}{D(p)}e(t)
+\]</span> 我们定义 <span class="math display">\[
+H(p)=\frac{N(p)}{D(p)}
+\]</span> 称作<strong>系统传输算子</strong>。</p>
+<blockquote>
+<p>自动控制原理中称作传递函数。</p>
+</blockquote>
+<p>传输算子完整地建立了描述系统的顺序模型，一些有用的系统特性可以通过对
+<span class="math inline">\(H(p)\)</span> 分析而得出。</p>
+<blockquote>
+<p>跟拉氏变换法形式一致。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/signal-and-system-note2.html" title="信号与系统笔记">https://hasegawaazusa.github.io/signal-and-system-note2.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F/" rel="tag"># 信号与系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/automatic-control-note.html" rel="prev" title="自动控制原理笔记">
+                  <i class="fa fa-chevron-left"></i> 自动控制原理笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/signal-and-system-note1.html" rel="next" title="信号与系统笔记">
+                  信号与系统笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">390k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:55</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

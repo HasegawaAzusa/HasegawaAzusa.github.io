@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关信号与系统的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信号与系统笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/signal-and-system-note1.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关信号与系统的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/连续时间信号与离散时间信号示例.jpg">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/模拟信号和抽样信号和数字信号示例.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/指数信号波形.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/正弦信号.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/衰减的正弦信号.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/抽样信号图像.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/钟形信号示例.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/信号的位移.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/信号的反褶.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/信号的尺度变换.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/微分运算.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/积分运算.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/相加与相乘.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/斜变信号.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/斜变信号变种.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/单位阶跃信号.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/延时单位阶跃函数.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/矩形脉冲信号.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/单位阶跃信号的抽样性.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/单位冲激信号的其他表达式.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/冲激函数演变图.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/t0时刻出现的冲激函数.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/冲激偶的形成.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/信号的偶分量和奇分量.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/加法器.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/倍乘器.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/微分器.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/积分器.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/线性系统的叠加性与均匀性.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/RLC并联电路.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/机械位移系统.png">
+<meta property="article:published_time" content="2023-03-09T08:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-12T11:58:48.514Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="信号与系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/signal-and-system-note1/连续时间信号与离散时间信号示例.jpg">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/signal-and-system-note1.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/signal-and-system-note1.html","path":"/signal-and-system-note1.html","title":"信号与系统笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>信号与系统笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">57</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">97</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">信号与系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.1.</span> <span class="nav-text">信号的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%BF%A1%E5%8F%B7%E4%B8%8E%E9%9A%8F%E6%9C%BA%E6%80%A7%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">确定性信号与随机性信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%A8%E6%9C%9F%E4%BF%A1%E5%8F%B7%E4%B8%8E%E9%9D%9E%E5%91%A8%E6%9C%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">周期信号与非周期信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E6%97%B6%E9%97%B4%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%A6%BB%E6%95%A3%E6%97%B6%E9%97%B4%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">连续时间信号与离散时间信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E7%BB%B4%E4%BF%A1%E5%8F%B7%E4%B8%8E%E5%A4%9A%E7%BB%B4%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">一维信号与多维信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7%E6%8A%BD%E6%A0%B7%E4%BF%A1%E5%8F%B7%E4%B8%8E%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">模拟信号，抽样信号与数字信号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E7%A1%AE%E5%AE%9A%E6%80%A7%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.2.</span> <span class="nav-text">典型确定性信号</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E6%95%B0%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">指数信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E5%BC%A6%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">正弦信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%8D%E6%8C%87%E6%95%B0%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">复指数信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8A%BD%E6%A0%B7%E4%BF%A1%E5%8F%B7newcommandsamathopmathrmsasat"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">抽样信号（\(\newcommand{\Sa}{\mathop{\mathrm{Sa}}}\Sa{(t)}\)）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%92%9F%E5%BD%A2%E4%BF%A1%E5%8F%B7%E9%AB%98%E6%96%AF%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">钟形信号（高斯函数）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E7%9A%84%E8%BF%90%E7%AE%97"><span class="nav-number">1.1.3.</span> <span class="nav-text">信号的运算</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%BB%E4%BD%8D"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">移位</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E8%A4%B6"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">反褶</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%BA%E5%BA%A6%E5%8F%98%E6%8D%A2"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">尺度变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%AE%E5%88%86"><span class="nav-number">1.1.3.4.</span> <span class="nav-text">微分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%AF%E5%88%86"><span class="nav-number">1.1.3.5.</span> <span class="nav-text">积分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B8%E5%8A%A0%E4%B8%8E%E7%9B%B8%E4%B9%98"><span class="nav-number">1.1.3.6.</span> <span class="nav-text">相加与相乘</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E5%A5%87%E5%BC%82%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.4.</span> <span class="nav-text">经典奇异信号</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%BD%8D%E6%96%9C%E5%8F%98%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">单位斜变信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%BD%8D%E9%98%B6%E8%B7%83%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">单位阶跃信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%BD%8D%E5%86%B2%E6%BF%80%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">单位冲激信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%B2%E6%BF%80%E5%81%B6%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.4.4.</span> <span class="nav-text">冲激偶信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.1.4.5.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%88%86%E8%A7%A3"><span class="nav-number">1.1.5.</span> <span class="nav-text">信号的分解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%B4%E6%B5%81%E5%88%86%E9%87%8F%E4%B8%8E%E4%BA%A4%E6%B5%81%E5%88%86%E9%87%8F"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">直流分量与交流分量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%81%B6%E5%88%86%E9%87%8F%E4%B8%8E%E5%A5%87%E5%88%86%E9%87%8F"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">偶分量与奇分量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%84%89%E5%86%B2%E5%88%86%E9%87%8F"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">脉冲分量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%83%A8%E5%88%86%E9%87%8F%E4%B8%8E%E8%99%9A%E9%83%A8%E5%88%86%E9%87%8F"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">实部分量与虚部分量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E4%BA%A4%E5%87%BD%E6%95%B0%E5%88%86%E9%87%8F"><span class="nav-number">1.1.5.5.</span> <span class="nav-text">正交函数分量</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.6.</span> <span class="nav-text">系统模型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E5%9F%9F%E8%BF%90%E7%AE%97%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%85%83%E4%BB%B6"><span class="nav-number">1.1.6.1.</span> <span class="nav-text">时域运算的基本元件</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8A%A0%E6%B3%95%E5%99%A8"><span class="nav-number">1.1.6.1.1.</span> <span class="nav-text">加法器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%80%8D%E4%B9%98%E5%99%A8"><span class="nav-number">1.1.6.1.2.</span> <span class="nav-text">倍乘器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BE%AE%E5%88%86%E5%99%A8"><span class="nav-number">1.1.6.1.3.</span> <span class="nav-text">微分器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A7%AF%E5%88%86%E5%99%A8"><span class="nav-number">1.1.6.1.4.</span> <span class="nav-text">积分器</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%97%B6%E4%B8%8D%E5%8F%98%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.1.6.2.</span> <span class="nav-text">线性时不变系统</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%8F%A0%E5%8A%A0%E6%80%A7%E4%B8%8E%E5%9D%87%E5%8C%80%E6%80%A7"><span class="nav-number">1.1.6.2.1.</span> <span class="nav-text">叠加性与均匀性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E6%97%B6%E4%B8%8D%E5%8F%98%E7%89%B9%E6%80%A7"><span class="nav-number">1.1.6.2.2.</span> <span class="nav-text">时不变特性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%BE%AE%E5%88%86%E7%89%B9%E6%80%A7"><span class="nav-number">1.1.6.2.3.</span> <span class="nav-text">微分特性</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9B%A0%E6%9E%9C%E6%80%A7"><span class="nav-number">1.1.6.2.4.</span> <span class="nav-text">因果性</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B%E5%BE%AE%E5%88%86%E6%96%B9%E7%A8%8B%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="nav-number">1.1.6.3.</span> <span class="nav-text">系统数学模型（微分方程）的建立</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">97</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">57</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/signal-and-system-note1.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信号与系统笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-09 16:00:00" itemprop="dateCreated datePublished" datetime="2023-03-09T16:00:00+08:00">2023-03-09</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关信号与系统的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="信号与系统">信号与系统</h1>
+<h2 id="简介">简介</h2>
+<h3 id="信号的分类">信号的分类</h3>
+<h4 id="确定性信号与随机性信号">确定性信号与随机性信号</h4>
+<ul>
+<li>确定性信号（规则信号）：信号可以被表示为一个<strong>确定的时间函数</strong>
+<span class="math inline">\(f(t)\)</span>，但确定性信号也代表着我们没办法获得任何新的信息，因为它的<strong>未来是既定的</strong>。</li>
+<li>随机性信号：某一时刻的信号是无法确定的，或者称作<strong>未来是不确定的</strong>，这代表着它可以传递新的信息。</li>
+</ul>
+<h4 id="周期信号与非周期信号">周期信号与非周期信号</h4>
+<p>一个<strong>确定性信号</strong>又被分为周期信号与非周期信号，因为这将帮助我们简化研究。</p>
+<ul>
+<li>周期信号：即时间函数存在周期，写作 <span class="math inline">\(f(t)=f(t+nT),n\in Z\)</span>，例如 <span class="math inline">\(f(t)=\sin{t}\)</span> 是典型的正弦信号。</li>
+<li>非周期信号：一般为了方便研究，通常会将非周期信号当作 <span class="math inline">\(T\to \infty\)</span> 的一个周期信号。</li>
+</ul>
+<h4 id="连续时间信号与离散时间信号">连续时间信号与离散时间信号</h4>
+<ul>
+<li>连续时间信号：除了<strong>有限个</strong>间断点以外的在任意时刻都有确切函数值的信号称作连续信号。</li>
+<li>离散时间信号：时间上是离散的，只在某些不连续的瞬时点上存在函数值，其他时间上没有定的信号称作离散信号。</li>
+</ul>
+<blockquote>
+<p>需要注意的是，连续信号并非是连续函数，仅仅是区别于离散信号之称。</p>
+<p>一般情况下，用 <span class="math inline">\(t\)</span>
+表示连续时间变量；用 <span class="math inline">\(n\)</span>
+表示离散时间变量</p>
+</blockquote>
+<figure>
+<img src="/signal-and-system-note1/连续时间信号与离散时间信号示例.jpg" alt="连续时间信号与离散时间信号示例">
+<figcaption aria-hidden="true">连续时间信号与离散时间信号示例</figcaption>
+</figure>
+<h4 id="一维信号与多维信号">一维信号与多维信号</h4>
+<p>由于确定性信号是一个确定的函数表达式，所以可以被分为单变量函数和多变量函数。</p>
+<ul>
+<li>一维信号：单变量函数，例如语音信号中声压随时间变化的函数。</li>
+<li>多维信号：多变量函数，例如图像信号中光强与坐标的函数。</li>
+</ul>
+<h4 id="模拟信号抽样信号与数字信号">模拟信号，抽样信号与数字信号</h4>
+<ul>
+<li>模拟信号：一般是真实世界中的连续信号，例如语音信号</li>
+<li>抽样信号：时间是离散的，但幅值是连续的（有无限个幅值），一般是通过抽样函数抽样后得到的信号</li>
+<li>数字信号：一般是方便传输和计算机运算的信号，时间和幅值均是离散的（幅值为有限个，例如普通单片机中的数字信号仅有
+<span class="math inline">\(0\)</span> 和 <span class="math inline">\(5\symbf{V}\)</span>）</li>
+</ul>
+<figure>
+<img src="/signal-and-system-note1/模拟信号和抽样信号和数字信号示例.png" alt="模拟信号和抽样信号和数字信号示例">
+<figcaption aria-hidden="true">模拟信号和抽样信号和数字信号示例</figcaption>
+</figure>
+<h3 id="典型确定性信号">典型确定性信号</h3>
+<p>为方便研究，一般我们仅考虑信号中 <span class="math inline">\(t\geq
+0\)</span> 的部分。</p>
+<h4 id="指数信号">指数信号</h4>
+<p>指数信号的表达式为 <span class="math display">\[
+f(t)=Ke^{at}
+\]</span> 其中 <span class="math inline">\(a\)</span>
+为实数，由函数特性可知：</p>
+<ul>
+<li>当 <span class="math inline">\(a&gt;0\)</span>
+时，信号将随时间增长；</li>
+<li>当 <span class="math inline">\(a&lt;0\)</span>
+时，信号将随时间衰减；</li>
+<li>当 <span class="math inline">\(a=0\)</span>
+时，信号将不随时间变化，退化为 <span class="math inline">\(f(t)=K\)</span>，即直流信号。</li>
+</ul>
+<p>常数 <span class="math inline">\(K\)</span>
+表示指数信号的<strong>初始状态</strong>（即 <span class="math inline">\(t=0\)</span> 时的初始值）。</p>
+<figure>
+<img src="/signal-and-system-note1/指数信号波形.png" alt="指数信号波形">
+<figcaption aria-hidden="true">指数信号波形</figcaption>
+</figure>
+<p>由于 <span class="math inline">\(a\)</span>
+的绝对值的大小反映了信号增长或衰减的速率（快慢），故通常记 <span class="math display">\[
+\tau=\frac{1}{|a|}
+\]</span>
+称作<strong>时间常数</strong>，这个值越大<strong>代表指数信号增长或衰减的速率越慢</strong>。</p>
+<p>现实生活中通常遇到的是衰减指数信号（如负反馈系统中特别常见），记作
+<span class="math display">\[
+f(t)=\begin{cases}
+Ke^{-\frac{t}{\tau}} &amp; t\geq 0\\
+0 &amp; t&lt;0
+\end{cases}
+\]</span></p>
+<blockquote>
+<p>主要是喜欢它对时间的微分和积分仍是指数信号的性质。</p>
+</blockquote>
+<h4 id="正弦信号">正弦信号</h4>
+<p>正弦信号与余弦信号不作区分（由于仅相差 <span class="math inline">\(\frac{\pi}{2}\)</span>
+个相位），仅讨论正弦信号，表达式为 <span class="math display">\[
+f(t)=K\sin{(\omega t+\theta)}
+\]</span> 其中 <span class="math inline">\(K\)</span>
+为<strong>振幅</strong>，<span class="math inline">\(\omega\)</span>
+为<strong>角频率</strong>，<span class="math inline">\(\theta\)</span>
+为<strong>初相位</strong>。</p>
+<figure>
+<img src="/signal-and-system-note1/正弦信号.png" alt="正弦信号">
+<figcaption aria-hidden="true">正弦信号</figcaption>
+</figure>
+<p>正弦信号是周期信号，满足 <span class="math display">\[
+T=\frac{2\pi}{\omega}=\frac{1}{f}
+\]</span> 其中，<span class="math inline">\(f\)</span>
+为<strong>频率</strong>，表示正弦信号震荡的快慢。</p>
+<p>实际的正弦震荡信号可能按指数规律衰减，一般乘以指数信号表达，其表达式为
+<span class="math display">\[
+f(t)=\begin{cases}
+Ke^{-\frac{t}{\tau}}\sin{(\omega t+\theta)} &amp; t\geq 0\\
+0 &amp; t&lt;0
+\end{cases}
+\]</span> <img src="/signal-and-system-note1/衰减的正弦信号.png" alt="衰减的正弦信号"></p>
+<p>同时需要注意的是，在复分析中会使用复指数信号表示正弦信号，即 <span class="math display">\[
+\newcommand{\j}{\mathrm{j}}
+\sin{(\omega t)}=\frac{1}{2\j}(e^{\j\omega t}-e^{-\j\omega t})\\
+\cos{(\omega t)}=\frac{1}{2}(e^{\j\omega t}+e^{-\j\omega t})
+\]</span></p>
+<blockquote>
+<p>同样的，正弦信号的微分和积分结果是同频率的正弦信号</p>
+</blockquote>
+<h4 id="复指数信号">复指数信号</h4>
+<p>复指数信号的表达式为 <span class="math display">\[
+f(t)=Ke^{st}
+\]</span> 其中 <span class="math display">\[
+s=\sigma+\j\omega
+\]</span> 借助欧拉公式可以展开复指数信号： <span class="math display">\[
+Ke^{st}=Ke^{\sigma t}\cos{(\omega t)}+\j Ke^{\sigma t}\sin{(\omega t)}
+\]</span>
+即复指数信号由两部分信号组成：实部的余弦信号，虚部的正弦信号。</p>
+<p>其中 <span class="math inline">\(\sigma\)</span>
+表示了振幅随时间变化的快慢，且</p>
+<ul>
+<li><p>当 <span class="math inline">\(\sigma &gt;0\)</span>
+时，正弦信号和余弦信号是<strong>增幅振荡</strong>；</p></li>
+<li><p>当 <span class="math inline">\(\sigma &lt;0\)</span>
+时，正弦信号和余弦信号是<strong>衰减振荡</strong>；</p></li>
+<li><p>当 <span class="math inline">\(\sigma =0\)</span>
+时，正弦信号和余弦信号是<strong>等幅振荡</strong>。</p></li>
+<li><p>当 <span class="math inline">\(\sigma=0,\omega=0\)</span>，即
+<span class="math inline">\(s=0\)</span> 时，此时退化为直流信号，即
+<span class="math inline">\(f(t)=K\)</span>。</p></li>
+</ul>
+<p>一般用作简化分析。</p>
+<h4 id="抽样信号newcommandsamathopmathrmsasat">抽样信号（<span class="math inline">\(\newcommand{\Sa}{\mathop{\mathrm{Sa}}}\Sa{(t)}\)</span>）</h4>
+<p>抽样信号一般记作 <span class="math inline">\(\Sa(t)\)</span>，表达式为 <span class="math display">\[
+\Sa{(t)}=\frac{\sin{t}}{t}
+\]</span> 可以知道其为偶函数，图像如下</p>
+<figure>
+<img src="/signal-and-system-note1/抽样信号图像.png" alt="抽样信号图像">
+<figcaption aria-hidden="true">抽样信号图像</figcaption>
+</figure>
+<p>其中可以证明得到如下性质 <span class="math display">\[
+\newcommand{\diff}{\mathrm{d}}
+\begin{align}
+\lim_{t\to 0}\Sa{(t)}&amp;=1\\
+\lim_{t\to \infty}\Sa{(t)}&amp;=0\\
+\int^{\infty}_0\Sa{(t)}\diff{t}&amp;=\frac{\pi}{2}\\
+\int^{\infty}_{\infty}\Sa{(t)}\diff{t}&amp;=\pi
+\end{align}
+\]</span> 与 <span class="math inline">\(\Sa(t)\)</span> 相似的有 <span class="math display">\[
+\newcommand{\sinc}{\mathop{\mathrm{sinc}}}
+\sinc{t}=\frac{\sin{\pi t}}{\pi t}
+\]</span></p>
+<blockquote>
+<p>有些书中，也把两种符号混用。</p>
+</blockquote>
+<blockquote>
+<p>由于现实中无法创造真正的冲激函数，而创造 <span class="math inline">\(\Sa{(t)}\)</span>
+却是容易的，故我们可以使得其频率特别大而接近于冲激函数以便采样。</p>
+</blockquote>
+<h4 id="钟形信号高斯函数">钟形信号（高斯函数）</h4>
+<p>钟形信号的表达式为 <span class="math display">\[
+f(t)=Ee^{-(\frac{t}{\tau})^2}
+\]</span> <img src="/signal-and-system-note1/钟形信号示例.png" alt="钟形信号示例"></p>
+<p>可以得知 <span class="math display">\[
+f(\frac{\tau}{2})=Ee^{-\frac{1}{4}}\approx 0.78E
+\]</span> 即 <span class="math inline">\(\tau\)</span> 为信号从 <span class="math inline">\(E\)</span> 衰减到 <span class="math inline">\(0.78E\)</span>
+时所占据的时间宽度，也称作<strong>带宽</strong>。</p>
+<blockquote>
+<p>钟形信号在随机信号分析中占重要地位。</p>
+</blockquote>
+<h3 id="信号的运算">信号的运算</h3>
+<h4 id="移位">移位</h4>
+<p>数学表达式为 <span class="math inline">\(f(t)\to
+f(t-t_0)\)</span>，其中 <span class="math inline">\(t_0\)</span>
+为信号位移量。</p>
+<figure>
+<img src="/signal-and-system-note1/信号的位移.png" alt="信号的位移">
+<figcaption aria-hidden="true">信号的位移</figcaption>
+</figure>
+<ul>
+<li>当 <span class="math inline">\(t_0&gt;0\)</span>
+时，信号向右位移，又称信号<strong>滞后</strong>；</li>
+<li>当 <span class="math inline">\(t_0&lt;0\)</span>
+时，信号向左位移，又称信号<strong>超前</strong>；</li>
+</ul>
+<p>比如说同一个波源发射的波信号通过同一种介质传播在不同位置的波信号相对于波源处的波信号就会出现滞后现象，这与传播的时间差（或波程）有关系。</p>
+<h4 id="反褶">反褶</h4>
+<p>数学表达式为 <span class="math inline">\(f(t)\to
+f(-t)\)</span>，即信号的<strong>未来与过去发生了交换</strong>。</p>
+<figure>
+<img src="/signal-and-system-note1/信号的反褶.png" alt="信号的反褶">
+<figcaption aria-hidden="true">信号的反褶</figcaption>
+</figure>
+<p>实际物理元器件无法做到反褶，仅能在数字处理中做到相应的概念。</p>
+<h4 id="尺度变换">尺度变换</h4>
+<p>尺度变换又称作尺度倍乘，数学表达式为 <span class="math inline">\(f(t)\to f(at)\)</span>，其中 <span class="math inline">\(a\)</span> 为尺度。</p>
+<ul>
+<li>当 <span class="math inline">\(a&gt;1\)</span>
+时，信号将被<strong>压缩</strong>，即保持信号的时间缩短了；</li>
+<li>当 <span class="math inline">\(a&lt;1\)</span>
+时，信号将被<strong>扩展</strong>，即保持信号的时间增长了。</li>
+</ul>
+<figure>
+<img src="/signal-and-system-note1/信号的尺度变换.png" alt="信号的尺度变换">
+<figcaption aria-hidden="true">信号的尺度变换</figcaption>
+</figure>
+<h4 id="微分">微分</h4>
+<p>即信号对时间 <span class="math inline">\(t\)</span> 求导数： <span class="math display">\[
+f&#39;(t)=\frac{\diff}{\diff{t}}f(t)
+\]</span></p>
+<blockquote>
+<p>在实际物理元器件中，可以使用电感电路求电信号的微分。</p>
+</blockquote>
+<p>可见微分可以突出信号的变化部分。</p>
+<blockquote>
+<p>如果是黑白图像信号，那么微分运算可以突出它的边缘轮廓，这也是图像处理中常用的手法。</p>
+</blockquote>
+<figure>
+<img src="/signal-and-system-note1/微分运算.png" alt="微分运算">
+<figcaption aria-hidden="true">微分运算</figcaption>
+</figure>
+<blockquote>
+<p>需要注意的是，如果对阶跃信号求微分将得到冲激信号。</p>
+</blockquote>
+<h4 id="积分">积分</h4>
+<p>即信号对时间 <span class="math inline">\(t\)</span> 求积分： <span class="math display">\[
+\int^t_{-\infty}f(\tau)\diff{\tau}
+\]</span></p>
+<blockquote>
+<p>在实际物理元器件中，可以使用电容电路求电信号的积分。</p>
+</blockquote>
+<p>可见微分可以使得信号的变化部分变得平滑。</p>
+<blockquote>
+<p>如果是黑白图像信号，那么积分运算可以削弱图像中的噪声，这也是图像处理中常用的手法。</p>
+</blockquote>
+<figure>
+<img src="/signal-and-system-note1/积分运算.png" alt="积分运算">
+<figcaption aria-hidden="true">积分运算</figcaption>
+</figure>
+<blockquote>
+<p>需要注意的是，如果对冲激信号求积分将得到阶跃信号。</p>
+</blockquote>
+<h4 id="相加与相乘">相加与相乘</h4>
+<figure>
+<img src="/signal-and-system-note1/相加与相乘.png" alt="相加与相乘">
+<figcaption aria-hidden="true">相加与相乘</figcaption>
+</figure>
+<p>需要说明的是，在通信系统的调制、解调等过程中，将经常遇到两信号相乘运算。</p>
+<h3 id="经典奇异信号">经典奇异信号</h3>
+<p>奇异信号即函数本身有不连续点（跳变点）或其导数与积分有不连续点的信号。</p>
+<h4 id="单位斜变信号">单位斜变信号</h4>
+<p>即信号的函数表达式是正比例函数的信号，表达式为 <span class="math display">\[
+R(t)=\begin{cases}
+t &amp; t\geq0\\
+0 &amp; t&lt;0
+\end{cases}
+\]</span> 若将起始点移位至 <span class="math inline">\(t_0\)</span>
+即写为 <span class="math display">\[
+R(t-t_0)=\begin{cases}
+t-t_0 &amp; t\geq t_0\\
+0 &amp; t&lt;t_0
+\end{cases}
+\]</span></p>
+<blockquote>
+<p>单位斜变信号记作 <span class="math inline">\(R(t)\)</span>。</p>
+</blockquote>
+<figure>
+<img src="/signal-and-system-note1/斜变信号.png" alt="斜变信号">
+<figcaption aria-hidden="true">斜变信号</figcaption>
+</figure>
+<p>实际应用中会常遇到截平的斜变信号，在时间 <span class="math inline">\(\tau\)</span> 后信号波形被切平，表达式为 <span class="math display">\[
+f_1(t)=\begin{cases}
+\frac{K}{\tau}t &amp; t &lt; \tau\\
+K &amp; t\geq \tau
+\end{cases}
+\]</span> 通常<strong>三角形脉冲信号</strong>用斜变信号表示： <span class="math display">\[
+f_1(t)=\begin{cases}
+\frac{K}{\tau}t &amp; t\leq \tau\\
+0 &amp; t&gt; \tau
+\end{cases}
+\]</span> <img src="/signal-and-system-note1/斜变信号变种.png" alt="斜变信号变种"></p>
+<h4 id="单位阶跃信号">单位阶跃信号</h4>
+<p>单位阶跃信号的表达式为 <span class="math display">\[
+u(t)=\begin{cases}
+0 &amp; t&lt;0\\
+1 &amp; t&gt;0
+\end{cases}
+\]</span></p>
+<blockquote>
+<p>一般记单位阶跃信号为 <span class="math inline">\(u(t)\)</span>。</p>
+</blockquote>
+<p>跳变点 <span class="math inline">\(t=0\)</span>
+处无定义，为方便计算一般规定为 <span class="math inline">\(u(0)=\frac{1}{2}\)</span>。</p>
+<blockquote>
+<p>物理背景是在 <span class="math inline">\(t=0\)</span>
+时刻对某一电路接入单位电源（直流电压源或直流电流源），并且无限持续下去。</p>
+</blockquote>
+<figure>
+<img src="/signal-and-system-note1/单位阶跃信号.png" alt="单位阶跃信号">
+<figcaption aria-hidden="true">单位阶跃信号</figcaption>
+</figure>
+<p>如果存在延时，可以表示为 <span class="math display">\[
+u(t-t_0)=\begin{cases}
+0 &amp; t&lt;t_0\\
+1 &amp; t&gt;t_0
+\end{cases}
+\]</span> <img src="/signal-and-system-note1/延时单位阶跃函数.png" alt="延时单位阶跃函数"></p>
+<blockquote>
+<p>可以注意到，单位斜变信号的微分就是单位阶跃信号。</p>
+</blockquote>
+<p>通常用单位阶跃信号来表示<strong>矩形脉冲信号</strong>，即写作 <span class="math display">\[
+R_T(t)=u(t)-u(t-T)
+\]</span> 表示为宽度为 <span class="math inline">\(T\)</span>，出现在
+<span class="math inline">\([0,T]\)</span> 的一个矩形脉冲信号。 <span class="math display">\[
+G_T(t)=u(t+\frac{T}{2})-u(t-\frac{T}{2})
+\]</span> 表示为带宽为 <span class="math inline">\(T\)</span>，出现在
+<span class="math inline">\([-\frac{T}{2},\frac{T}{2}]\)</span>
+的一个矩形脉冲信号（也称作窗函数）。</p>
+<figure>
+<img src="/signal-and-system-note1/矩形脉冲信号.png" alt="矩形脉冲信号">
+<figcaption aria-hidden="true">矩形脉冲信号</figcaption>
+</figure>
+<p>一般我们会用来在数学上抽样其他信号，例如说 <span class="math display">\[
+f_1(t)=(\sin{t})u(t)
+\]</span> 表示为抽样正弦信号 <span class="math inline">\(\sin{t}\)</span> 中 <span class="math inline">\(t\geq 0\)</span> 的部分。</p>
+<p>或者 <span class="math display">\[
+f_2(t)=e^{-t}[u(t)-u(t-t_0)]
+\]</span> 表示为抽样指数信号 <span class="math inline">\(e^{-t}\)</span>
+中 <span class="math inline">\(0\leq t\leq t_0\)</span> 的部分。</p>
+<figure>
+<img src="/signal-and-system-note1/单位阶跃信号的抽样性.png" alt="单位阶跃信号的抽样性">
+<figcaption aria-hidden="true">单位阶跃信号的抽样性</figcaption>
+</figure>
+<p>符号函数也可以用单位阶跃信号来表示： <span class="math display">\[
+\mathrm{sgn}(t)=\begin{cases}
+1 &amp; t&gt;0\\
+-1 &amp; t&lt;0
+\end{cases}
+=2u(t)-1
+\]</span></p>
+<h4 id="单位冲激信号">单位冲激信号</h4>
+<p>某些物理现象需要使用一个时间极短但取值极大的函数模型来描述，例如力学中的瞬时冲击力，数字通信中的抽样脉冲等。</p>
+<p>单位冲激信号的表达式（用矩形脉冲信号定义）为 <span class="math display">\[
+\delta(t)=\lim _{\tau \rightarrow 0}
+\frac{1}{\tau}\left[u\left(t+\frac{\tau}{2}\right)-u\left(t-\frac{\tau}{2}\right)\right]
+\]</span> 其冲激值（峰值）为 1。</p>
+<p>也可以使用其他脉冲定义：</p>
+<figure>
+<img src="/signal-and-system-note1/单位冲激信号的其他表达式.png" alt="单位冲激信号的其他表达式">
+<figcaption aria-hidden="true">单位冲激信号的其他表达式</figcaption>
+</figure>
+<figure>
+<img src="/signal-and-system-note1/冲激函数演变图.png" alt="冲激函数演变图">
+<figcaption aria-hidden="true">冲激函数演变图</figcaption>
+</figure>
+<p>狄拉克给出单位冲激函数的另一种定义： <span class="math display">\[
+\begin{cases}
+\displaystyle\int^{\infty}_{-\infty}\delta(t)\diff{t}=1 &amp; t=0\\
+\delta(t)=0 &amp; t\neq0
+\end{cases}
+\]</span> 故也称单位冲激函数为<strong>狄拉克函数</strong>。</p>
+<p>描述 <span class="math inline">\(t=t_0\)</span>
+处的冲激时，可使用如下定义： <span class="math display">\[
+\begin{cases}
+\displaystyle\int^{\infty}_{-\infty}\delta(t-t_0)\diff{t}=1 &amp;
+t=t_0\\
+\delta(t-t_0)=0 &amp; t\neq t_0
+\end{cases}
+\]</span> <img src="/signal-and-system-note1/t0时刻出现的冲激函数.png" alt="t0时刻出现的冲激函数"></p>
+<blockquote>
+<p>可以发现单位冲激信号实际上为离散信号。</p>
+</blockquote>
+<p>单位冲激信号有以下性质： <span class="math display">\[
+\int^{\infty}_{-\infty}\delta(t)f(t)\diff{t}=\int^{\infty}_{-\infty}\delta(t)f(0)\diff{t}=f(0)\int^{\infty}_{-\infty}\delta(t)\diff{t}=f(0)
+\]</span> 即采样结果为冲激处的函数值。</p>
+<p>类似地，对于延迟的单位冲激信号有 <span class="math display">\[
+\int^{\infty}_{-\infty}\delta(t-t_0)f(t)\diff{t}=\int^{\infty}_{-\infty}\delta(t-t_0)f(t_0)\diff{t}=f(t_0)
+\]</span>
+故单位冲激信号具有<strong>采样特性</strong>（或称筛选特性）。</p>
+<p>单位冲激信号是<strong>偶函数</strong>。（不给予证明）</p>
+<p>单位冲激信号的积分是单位阶跃信号： <span class="math display">\[
+u(t)=\int^t_{-\infty}\delta(\tau)\diff(\tau)
+\]</span> 同理，单位阶跃信号的微分是单位冲激信号： <span class="math display">\[
+\frac{\diff}{\diff{t}}u(t)=\delta(t)
+\]</span></p>
+<blockquote>
+<p>由积分性质可以知道，如果给予一个冲激电流信号，那么就可以使得电容两端电压发生跳变；</p>
+<p>由微分性质可以知道，如果给予一个冲激电压信号，那么就可以使得电感两端电流发生跳变。</p>
+</blockquote>
+<h4 id="冲激偶信号">冲激偶信号</h4>
+<p>冲激信号的微分（阶跃信号的二阶导数）将会呈现正、负两种极性的一对冲激，称为冲激偶信号，表示为
+<span class="math inline">\(\delta&#39;(t)\)</span>。</p>
+<figure>
+<img src="/signal-and-system-note1/冲激偶的形成.png" alt="冲激偶的形成">
+<figcaption aria-hidden="true">冲激偶的形成</figcaption>
+</figure>
+<p>冲激偶的一个重要性质为 <span class="math display">\[
+\int^{\infty}_{-\infty}\delta&#39;(t)f(t)\diff{t}=-f&#39;(0)
+\]</span> 或者是 <span class="math display">\[
+\int^{\infty}_{-\infty}\delta&#39;(t-t_0)f(t)\diff{t}=-f&#39;(t_0)
+\]</span> 另一个性质是 <span class="math display">\[
+\int^{\infty}_{-\infty}\delta&#39;(t)\diff{t}=0
+\]</span></p>
+<h4 id="总结">总结</h4>
+<p>可以发现从<strong>单位斜变信号</strong>到<strong>单位阶跃信号</strong>到<strong>单位冲激信号</strong>再到<strong>冲激偶信号</strong>是一步一步微分的结果，反之也是一步一步积分的结果，其中单位冲激信号也是之后方便<strong>采样</strong>信号的最重要的函数。</p>
+<h3 id="信号的分解">信号的分解</h3>
+<p>为方便研究信号传输和信号处理的问题，往往将一些信号分解为比较简单的或比较基本的<strong>信号分量</strong>之和。</p>
+<h4 id="直流分量与交流分量">直流分量与交流分量</h4>
+<p><strong>信号平均值即为信号的直流分量；交流分量即为原信号去掉直流分量。</strong></p>
+<p>表达式为 <span class="math display">\[
+f(t)=f_D+f_A(t)
+\]</span></p>
+<blockquote>
+<p>Direct-current 是直流的英文；Alternating-current 是交流的英文。</p>
+</blockquote>
+<p>其中 <span class="math inline">\(f_D\)</span> 为直流分量，<span class="math inline">\(f_A(t)\)</span> 为交流分量。</p>
+<p>需要知道 <span class="math inline">\(f_Df_A(t)\)</span>
+在对称区间上的积分为 0。</p>
+<h4 id="偶分量与奇分量">偶分量与奇分量</h4>
+<p>偶分量定义为 <span class="math display">\[
+f_e(t)=f_e(-t)
+\]</span> 奇分量定义为 <span class="math display">\[
+f_o(t)=-f_o(-t)
+\]</span></p>
+<blockquote>
+<p>even 是偶数的英文；odd 是 奇数的英文。</p>
+</blockquote>
+<p>由于任何信号都可以写成 <span class="math display">\[
+\begin{align}
+f(t)&amp;=\frac{1}{2}[f(t)+f(t)+f(-t)-f(-t)]\\
+&amp;=\frac{1}{2}[f(t)+f(-t)]+\frac{1}{2}[f(t)-f(-t)]\\
+&amp;=\frac{1}{2}f_e(t)+\frac{1}{2}f_o(t)
+\end{align}
+\]</span> 即 <span class="math display">\[
+f_e(t)=\frac{1}{2}[f(t)+f(-t)]\\
+f_o(t)=\frac{1}{2}[f(t)-f(-t)]
+\]</span> <img src="/signal-and-system-note1/信号的偶分量和奇分量.png" alt="信号的偶分量和奇分量"></p>
+<h4 id="脉冲分量">脉冲分量</h4>
+<p><strong>一个信号可近似分解为许多脉冲分量之和。</strong></p>
+<p>主要的方式是将信号分解为<strong>冲激信号的叠加</strong>。</p>
+<p>即写作 <span class="math display">\[
+f(t_0)=\int^{\infty}_{-\infty}f(t)\delta(t-t_0)\diff{t}
+\]</span></p>
+<h4 id="实部分量与虚部分量">实部分量与虚部分量</h4>
+<p>主要是复分析中常采用的方式，采用共轭分解的方法。</p>
+<p>已知 <span class="math display">\[
+f(t)=f_r(t)+\j f_i(t)
+\]</span> 那么它的共轭复函数写作 <span class="math display">\[
+f^*(t)=f_r(t)-\j f_i(t)
+\]</span></p>
+<blockquote>
+<p>real 是实数的英文；image 是虚数的英文。</p>
+</blockquote>
+<p>那么 <span class="math display">\[
+f_r(t)=\frac{1}{2}[f(t)+f^*(t)]\\
+f_i(t)=\frac{1}{2\j}[f(t)-f^*(t)]
+\]</span> 且 <span class="math display">\[
+|f(t)|^2=f(t)f^*(t)=f_r^2(t)+f_i^2(t)
+\]</span>
+虽然现实中的信号都是实信号，但复分析可以很好的帮助我们简化信号的分析。</p>
+<h4 id="正交函数分量">正交函数分量</h4>
+<p>用正交函数集来表示一个信号，那么信号分量也是相互正交的。</p>
+<p>例如常常用正弦信号与余弦信号的叠加来表示一个矩形脉冲。</p>
+<p>主要采用的数学工具是<strong>傅里叶级数</strong>和<strong>傅里叶展开</strong>。</p>
+<h3 id="系统模型">系统模型</h3>
+<h4 id="时域运算的基本元件">时域运算的基本元件</h4>
+<h5 id="加法器">加法器</h5>
+<p><img src="/signal-and-system-note1/加法器.png" alt="加法器"> <span class="math display">\[
+r(t)=e_1(t)+e_2(t)
+\]</span></p>
+<blockquote>
+<p>encourage 是激励的英文；response 是响应的英文。</p>
+</blockquote>
+<h5 id="倍乘器">倍乘器</h5>
+<p><img src="/signal-and-system-note1/倍乘器.png" alt="倍乘器"> <span class="math display">\[
+r(t)=Ae(t)
+\]</span></p>
+<h5 id="微分器">微分器</h5>
+<p><img src="/signal-and-system-note1/微分器.png" alt="微分器"> <span class="math display">\[
+r(t)=\frac{\diff}{\diff{t}}e(t)
+\]</span></p>
+<h5 id="积分器">积分器</h5>
+<p><img src="/signal-and-system-note1/积分器.png" alt="积分器"> <span class="math display">\[
+r(t)=\int e(t)
+\]</span></p>
+<h4 id="线性时不变系统">线性时不变系统</h4>
+<p>线性时不变系统即 Linear Time - Invariant，缩写为 LTI，简称 LTI
+系统。</p>
+<p>线性时不变系统具有以下一些基本特性。</p>
+<h5 id="叠加性与均匀性">叠加性与均匀性</h5>
+<figure>
+<img src="/signal-and-system-note1/线性系统的叠加性与均匀性.png" alt="线性系统的叠加性与均匀性">
+<figcaption aria-hidden="true">线性系统的叠加性与均匀性</figcaption>
+</figure>
+<p><strong>满足叠加定理</strong>，即 <span class="math display">\[
+C_1e_1(t)+C_2e_2(t)=C_1r_1(t)+C_2r_2(t)
+\]</span></p>
+<h5 id="时不变特性">时不变特性</h5>
+<p><strong>系统响应与激励施加于系统的时刻无关。</strong></p>
+<p>即如果激励为 <span class="math inline">\(e(t-t_0)\)</span>，那么响应也会相应的变为 <span class="math inline">\(r(t-t_0)\)</span>。</p>
+<h5 id="微分特性">微分特性</h5>
+<p>即激励为 <span class="math inline">\(\frac{\diff{e(t)}}{\diff{t}}\)</span>，那么响应也会相应的变为
+<span class="math inline">\(\frac{\diff{r(t)}}{\diff{t}}\)</span>。</p>
+<blockquote>
+<p>以上三个特性可以总结为，激励信号的运算也会相应作用于响应信号。</p>
+</blockquote>
+<h5 id="因果性">因果性</h5>
+<p><strong>响应只与激励发生的时刻及时刻之前有关，便称为因果系统。</strong></p>
+<p>或者说，激励是产生响应的原因，响应式激励引起的结果，这种特性称为因果性。</p>
+<p>例如系统模型为 <span class="math display">\[
+r_1(t)=e_1(t-1)
+\]</span>
+可以发现<strong>响应信号是滞后于激励信号的</strong>，故该系统是<strong>因果系统</strong>。</p>
+<p>如果 <span class="math display">\[
+r_2(t)=e_2(t+1)
+\]</span>
+可以发现<strong>响应信号是超前于激励信号的</strong>，故该系统是<strong>非因果系统</strong>。</p>
+<p><strong>实际的物理可实现系统均为因果系统。</strong></p>
+<p>而在 <span class="math inline">\(t=0\)</span>
+时刻接入的系统信号称为<strong>因果信号</strong>。</p>
+<h4 id="系统数学模型微分方程的建立">系统数学模型（微分方程）的建立</h4>
+<figure>
+<img src="/signal-and-system-note1/RLC并联电路.png" alt="RLC并联电路">
+<figcaption aria-hidden="true">RLC并联电路</figcaption>
+</figure>
+<p>设各支路电流分别为 <span class="math inline">\(i_R(t),i_L(t),i_C(t)\)</span>，以 <span class="math inline">\(v(t)\)</span>
+作为待求响应函数，根据元件本身的特性，可得 <span class="math display">\[
+i_R(t)=\frac{1}{R}v(t)\\
+i_L(t)=\frac{1}{L}\int^t_{-\infty}v(\tau)\diff{\tau}\\
+i_C(t)=C\frac{\diff}{\diff{t}}v(t)
+\]</span> 根据基尔霍夫定律有 <span class="math display">\[
+i_R(t)+i_L(t)+i_C(t)=i_S(t)
+\]</span> 解得 <span class="math display">\[
+C\frac{\diff^2}{\diff{t^2}}v(t)+\frac{1}{R}\frac{\diff}{\diff{t}}v(t)+\frac{1}{L}v(t)=\frac{\diff}{\diff{t}}i_S(t)
+\]</span> 为一个二阶常系数微分方程。</p>
+<figure>
+<img src="/signal-and-system-note1/机械位移系统.png" alt="机械位移系统">
+<figcaption aria-hidden="true">机械位移系统</figcaption>
+</figure>
+<p>设位移速度 <span class="math inline">\(v(t)=\frac{\diff}{\diff{t}}y(t)\)</span>，弹簧手力
+<span class="math inline">\(F_k(t)\)</span>，由胡克定律可得 <span class="math display">\[
+F_k(t)=ky(t)=k\int^t_{-\infty}v(\tau)\diff{\tau}
+\]</span> 阻尼力 <span class="math display">\[
+F_f(t)=fv(t)
+\]</span> 惯性力 <span class="math display">\[
+F_m(t)=m\frac{\diff}{\diff{t}}v(t)
+\]</span> 根据达朗贝尔原理，系统受力应该保持平衡，有 <span class="math display">\[
+m\frac{\diff}{\diff{t}}v(t)+fv(t)+k\int^t_{-\infty}v(\tau)\diff{\tau}=F_s(t)
+\]</span> 两端微分得到 <span class="math display">\[
+m\frac{\diff^2}{\diff{t^2}}v(t)+f\frac{\diff}{\diff{t}}v(t)+kv(t)=\frac{\diff}{\diff{t}}F_s(t)
+\]</span> 为一个二阶常系数微分方程。</p>
+<p>从上式可以看出，这两个系统所建立的数学模型是相似的，即使他们是性质完全不同的两个物理系统。</p>
+<p>这是<strong>系统之间的相似性</strong>，对于完全没有接触过的系统，我们也可以通过系统的相似性来分析它。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/signal-and-system-note1.html" title="信号与系统笔记">https://hasegawaazusa.github.io/signal-and-system-note1.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F/" rel="tag"># 信号与系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/signal-and-system-note2.html" rel="prev" title="信号与系统笔记">
+                  <i class="fa fa-chevron-left"></i> 信号与系统笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">390k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">5:55</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
