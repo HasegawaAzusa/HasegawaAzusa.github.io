@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.0.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/themes/blue/pace-theme-minimal.css">
+  <script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.9.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":true,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}}</script><script src="/js/config.js"></script>
+<meta name="description" content="有关信号与系统的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="信号与系统笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/signal-and-system-note3.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关信号与系统的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/周期信号的频谱图示例.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/周期信号的复数频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/可能的奇谐函数.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/周期矩形脉冲信号图示.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/周期矩形脉冲信号的频谱图.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/周期对称方波信号.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/周期锯齿脉冲信号的波形.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/单边指数信号的波形及频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/双边指数信号的波形及频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/矩形脉冲信号的波形及频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/钟形脉冲信号的波形和频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/符号函数的波形和频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/升余弦脉冲信号的波形.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/升余弦脉冲信号的频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/单位冲激函数的频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/单位阶跃函数的波形和频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/时间函数与频谱函数的对称性举例.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/时间函数与频谱函数的对称性举例-16790621149231.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/余弦和正弦信号的频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/矩形脉冲信号的波形及频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/周期矩形脉冲信号的傅里叶变换.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/抽样过程.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/矩形抽样信号的频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/冲击抽样信号的频谱.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/频谱抽样所对应的信号波形.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/周期信号和抽样信号的特性.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/低抽样率时的抽样信号及频谱（混叠）.png">
+<meta property="article:published_time" content="2023-03-09T08:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-20T11:16:56.833Z">
+<meta property="article:author" content="qsDuzou">
+<meta property="article:tag" content="信号与系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/signal-and-system-note3/周期信号的频谱图示例.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/signal-and-system-note3.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/signal-and-system-note3.html","path":"/signal-and-system-note3.html","title":"信号与系统笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>信号与系统笔记 | 独奏の小屋</title>
+  
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">59</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">101</span></a></li>
+        <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">信号与系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%82%85%E9%87%8C%E5%8F%B6%E7%BA%A7%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">傅里叶级数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E8%A7%92%E5%BD%A2%E5%BC%8F%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E7%BA%A7%E6%95%B0"><span class="nav-number">1.1.1.</span> <span class="nav-text">三角形式的傅里叶级数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E6%95%B0%E5%BD%A2%E5%BC%8F%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E7%BA%A7%E6%95%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">指数形式的傅里叶级数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%A8%E6%9C%9F%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%B9%B3%E5%9D%87%E5%8A%9F%E7%8E%87"><span class="nav-number">1.1.3.</span> <span class="nav-text">周期信号的平均功率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%B9%E7%A7%B0%E6%80%A7%E4%B8%8E%E5%82%85%E9%87%8C%E5%8F%B6%E7%B3%BB%E6%95%B0%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.1.4.</span> <span class="nav-text">函数的对称性与傅里叶系数的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%81%B6%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">偶函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A5%87%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.4.2.</span> <span class="nav-text">奇函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A5%87%E8%B0%90%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.4.3.</span> <span class="nav-text">奇谐函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E5%91%A8%E6%9C%9F%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E7%BA%A7%E6%95%B0"><span class="nav-number">1.1.5.</span> <span class="nav-text">典型周期信号的傅里叶级数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%A8%E6%9C%9F%E7%9F%A9%E5%BD%A2%E8%84%89%E5%86%B2%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">周期矩形脉冲信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%A8%E6%9C%9F%E9%94%AF%E9%BD%BF%E8%84%89%E5%86%B2%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">周期锯齿脉冲信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%A8%E6%9C%9F%E4%B8%89%E8%A7%92%E8%84%89%E5%86%B2%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">周期三角脉冲信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%A8%E6%9C%9F%E5%8D%8A%E6%B3%A2%E4%BD%99%E5%BC%A6%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.5.4.</span> <span class="nav-text">周期半波余弦信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%91%A8%E6%9C%9F%E5%85%A8%E6%B3%A2%E4%BD%99%E5%BC%A6%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.1.5.5.</span> <span class="nav-text">周期全波余弦信号</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">傅里叶变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E9%9D%9E%E5%91%A8%E6%9C%9F%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.2.</span> <span class="nav-text">典型非周期信号的傅里叶变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E8%BE%B9%E6%8C%87%E6%95%B0%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">单边指数信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8C%E8%BE%B9%E6%8C%87%E6%95%B0%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">双边指数信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A9%E5%BD%A2%E8%84%89%E5%86%B2%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">矩形脉冲信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%92%9F%E5%BD%A2%E8%84%89%E5%86%B2%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">钟形脉冲信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.5.</span> <span class="nav-text">符号函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%87%E4%BD%99%E5%BC%A6%E8%84%89%E5%86%B2%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.2.6.</span> <span class="nav-text">升余弦脉冲信号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A5%87%E5%BC%82%E5%87%BD%E6%95%B0%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.3.</span> <span class="nav-text">奇异函数的傅里叶变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%B2%E6%BF%80%E5%87%BD%E6%95%B0%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">冲激函数的傅里叶变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%B2%E6%BF%80%E5%81%B6%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">冲激偶的傅里叶变换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B6%E8%B7%83%E5%87%BD%E6%95%B0%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">阶跃函数的傅里叶变换</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%80%A7%E8%B4%A8"><span class="nav-number">1.2.4.</span> <span class="nav-text">傅里叶变换的基本性质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%B9%E7%A7%B0%E6%80%A7"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">对称性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%80%A7%E5%8F%A0%E5%8A%A0%E6%80%A7"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">线性性（叠加性）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A5%87%E5%81%B6%E8%99%9A%E5%AE%9E%E6%80%A7"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">奇偶虚实性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%BA%E5%BA%A6%E5%8F%98%E6%8D%A2%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.4.4.</span> <span class="nav-text">尺度变换特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E7%A7%BB%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.4.5.</span> <span class="nav-text">时移特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%91%E7%A7%BB%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.4.6.</span> <span class="nav-text">频移特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BE%AE%E5%88%86%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.4.7.</span> <span class="nav-text">微分特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A7%AF%E5%88%86%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.4.8.</span> <span class="nav-text">积分特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E7%89%B9%E6%80%A7%E5%8D%B7%E7%A7%AF%E5%AE%9A%E7%90%86"><span class="nav-number">1.2.5.</span> <span class="nav-text">卷积特性（卷积定理）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E5%9F%9F%E5%8D%B7%E7%A7%AF%E5%AE%9A%E7%90%86"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">时域卷积定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%91%E5%9F%9F%E5%8D%B7%E7%A7%AF%E5%AE%9A%E7%90%86"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">频域卷积定理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%A8%E6%9C%9F%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.6.</span> <span class="nav-text">周期信号的傅里叶变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E6%95%B0%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">指数信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E5%BC%A6%E4%BD%99%E5%BC%A6%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">正弦、余弦信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E5%91%A8%E6%9C%9F%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.6.3.</span> <span class="nav-text">一般周期信号</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%BD%E6%A0%B7%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%82%85%E9%87%8C%E5%8F%B6%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.7.</span> <span class="nav-text">抽样信号的傅里叶变换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E5%9F%9F%E6%8A%BD%E6%A0%B7"><span class="nav-number">1.2.7.1.</span> <span class="nav-text">时域抽样</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9F%A9%E5%BD%A2%E8%84%89%E5%86%B2%E6%8A%BD%E6%A0%B7"><span class="nav-number">1.2.7.1.1.</span> <span class="nav-text">矩形脉冲抽样</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%86%B2%E6%BF%80%E8%84%89%E5%86%B2%E6%8A%BD%E6%A0%B7"><span class="nav-number">1.2.7.1.2.</span> <span class="nav-text">冲激脉冲抽样</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%91%E5%9F%9F%E6%8A%BD%E6%A0%B7"><span class="nav-number">1.2.7.2.</span> <span class="nav-text">频域抽样</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.7.3.</span> <span class="nav-text">特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%BD%E6%A0%B7%E5%AE%9A%E7%90%86"><span class="nav-number">1.2.8.</span> <span class="nav-text">抽样定理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E5%9F%9F%E6%8A%BD%E6%A0%B7%E5%AE%9A%E7%90%86"><span class="nav-number">1.2.8.1.</span> <span class="nav-text">时域抽样定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%91%E5%9F%9F%E6%8A%BD%E6%A0%B7%E5%AE%9A%E7%90%86"><span class="nav-number">1.2.8.2.</span> <span class="nav-text">频域抽样定理</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsDuzou"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">qsDuzou</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">101</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">59</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="Github → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>Github</a>
+      </span>
+  </div>
+  <div class="cc-license site-overview-item animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdn.jsdelivr.net/npm/@creativecommons/vocabulary@2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/signal-and-system-note3.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          信号与系统笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-09 16:00:00" itemprop="dateCreated datePublished" datetime="2023-03-09T16:00:00+08:00">2023-03-09</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>13k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>11 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关信号与系统的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="信号与系统">信号与系统</h1>
+<h2 id="傅里叶级数">傅里叶级数</h2>
+<h3 id="三角形式的傅里叶级数">三角形式的傅里叶级数</h3>
+<p>首先我们知道，<strong>周期函数</strong> <span class="math inline">\(f(t)\)</span> 可用傅里叶级数表示，形式如下 <span class="math display">\[
+f(t)=a_0+\sum^\infty_{n=1}[a_n\cos{(n\omega t)}+b_n\sin{(n\omega t)}]
+\]</span> 直流分量 <span class="math inline">\(a_0\)</span> <span class="math display">\[
+\newcommand{\diff}{\mathrm{d}}
+a_0=\frac{1}{T}\int^{t_0+T}_{t_0}f(t)\diff{t}
+\]</span> 余弦分量的幅值 <span class="math display">\[
+a_n=\frac{2}{T}\int^{t_0+T}_{t_0}f(t)\cos{(n\omega  t)}\diff{t}
+\]</span> 正弦分量的幅值 <span class="math display">\[
+b_n=\frac{2}{T}\int^{t_0+T}_{t_0}f(t)\sin{(n\omega  t)}\diff{t}
+\]</span> 其中 <span class="math inline">\(T\)</span> 为周期函数 <span class="math inline">\(f(t)\)</span> 的<strong>周期</strong>。</p>
+<p>如果用和差化积公式将两项三角函数合并为一项，则可表示为 <span class="math display">\[
+f(t)=c_0+\sum^\infty_{n=1}c_n\cos{(n\omega t+\varphi_n)}
+\]</span> 或 <span class="math display">\[
+f(t)=d_0+\sum^\infty_{n=1}d_n\sin{(n\omega t+\theta_n)}
+\]</span> 其中满足 <span class="math display">\[
+a_0=c_0=d_0\\
+c_n=d_n=\sqrt{a_n^2+b_n^2}\\
+a_n=c_n\cos{\varphi_n}=d_n\sin{\theta_n}\\
+b_n=-c_n\sin{\varphi_n}=d_n\cos{\theta_n}\\
+\tan{\theta_n}=\frac{a_n}{b_n}\\
+\tan{\varphi_n}=-\frac{b_n}{a_n}
+\]</span> 正弦、余弦分量的频率必定是<strong>基频</strong> <span class="math inline">\(f_1=1/T\)</span> 的整数倍，通常把频率为 <span class="math inline">\(f_1\)</span>
+的分量称为<strong>基波</strong>，频率为 <span class="math inline">\(2f_1,3f_1,\cdots\)</span>
+的称为<strong>二次谐波</strong>、<strong>三次谐波</strong>等。</p>
+<p>从上式可以发现，<span class="math inline">\(a_n,b_n,c_n\)</span>
+是关于 <span class="math inline">\(n\omega\)</span> 的函数，记 <span class="math inline">\(a_n=a_n(n\omega)\)</span>，对于不同的 <span class="math inline">\(n\omega\)</span> 值有不同的取值，绘制 <span class="math inline">\(c_n-n\omega\)</span> 图可得</p>
+<figure>
+<img src="/signal-and-system-note3/周期信号的频谱图示例.png" alt="周期信号的频谱图示例">
+<figcaption aria-hidden="true">周期信号的频谱图示例</figcaption>
+</figure>
+<p>明显可以看出<strong>各频率分量的相对大小</strong>，我们把这种图称为信号的<strong>幅度频谱</strong>或简称<strong>幅度谱</strong>，图中的实线称作<strong>谱线</strong>，虚线称作<strong>包络线</strong>——反映各分量的幅度变化情况。</p>
+<p>同理还可以绘制<strong>相位频谱</strong>或简称<strong>相位谱</strong>。</p>
+<h3 id="指数形式的傅里叶级数">指数形式的傅里叶级数</h3>
+<p>根据欧拉公式可转换为 <span class="math display">\[
+\newcommand{\j}{\mathrm{j}}
+f(t)=a_0+\sum^\infty_{n=1}\left(\frac{a_n-\j b_n}{2}e^{\j n\omega
+t}+\frac{a_n+\j b_n}{2}e^{-\j n\omega t} \right)
+\]</span> 不妨令 <span class="math display">\[
+F(n\omega)=\frac{1}{2}(a_n-\j b_n)
+\]</span></p>
+<blockquote>
+<p>从公式知晓：</p>
+<p><span class="math inline">\(a_n\)</span> 是关于 <span class="math inline">\(n\)</span> 的偶函数，故 <span class="math inline">\(a_n(-n\omega)=a_n(n\omega)\)</span>；</p>
+<p><span class="math inline">\(b_n\)</span> 是关于 <span class="math inline">\(n\)</span> 的奇函数，故 <span class="math inline">\(b_n(-n\omega)=-b_n(n\omega)\)</span>；</p>
+<p><span class="math inline">\(F(0)=a_0\)</span>。</p>
+</blockquote>
+<p>故 <span class="math display">\[
+\newcommand{\j}{\mathrm{j}}
+f(t)=\sum^{\infty}_{-\infty}F(n\omega)e^{\j n\omega t}\\
+\]</span> 一般也会简写 <span class="math inline">\(F_n\)</span> <span class="math display">\[
+F_n=\frac{1}{T}\int^{t_0+T}_{t_0}f(t)e^{-\j n\omega t}\diff{t}
+\]</span> 其中满足 <span class="math display">\[
+F_0=c_0=d_0=a_0\\
+F_n=|F_n|e^{\j \varphi_n}\\
+F_{-n}=|F_{-n}|e^{-\j \varphi_n}\\
+|F_n|=|F_{-n}|=\frac{1}{2}c_n=\frac{1}{2}d_n=\frac{1}{2}\sqrt{a_n^2+b_n^2}\\
+|F_n|+|F_{-n}|=c_n\\
+F_n+F_{-n}=a_n\\
+b_n=\j(F_n-F_{-n})\\
+c_n^2=d_n^2=a_n^2+b_n^2=4F_nF_{-n}
+\]</span>
+同样我们可以画出指数形式下的<strong>幅度谱</strong>，又称<strong>复数频谱</strong>。其中
+<span class="math inline">\(F_n\)</span> 的大小由 <span class="math inline">\(|F_n|\)</span> 决定，正负由相位 <span class="math inline">\(\varphi_n\)</span> 决定，合在一张频谱图上得到</p>
+<figure>
+<img src="/signal-and-system-note3/周期信号的复数频谱.png" alt="周期信号的复数频谱">
+<figcaption aria-hidden="true">周期信号的复数频谱</figcaption>
+</figure>
+<h3 id="周期信号的平均功率">周期信号的平均功率</h3>
+<p><span class="math display">\[
+P=\overline{f^2(t)}=\sum^{\infty}_{-\infty}|F_n|^2
+\]</span></p>
+<p>即<strong>周期信号的平均功率等于傅里叶级数展开各谐波分量有效值的平方和</strong>，也即<strong>时域和频域能量守恒</strong>。</p>
+<h3 id="函数的对称性与傅里叶系数的关系">函数的对称性与傅里叶系数的关系</h3>
+<h4 id="偶函数">偶函数</h4>
+<p>由于偶函数满足 <span class="math display">\[
+f(t)=f(-t)
+\]</span> 故傅里叶展开后只可能是偶级数，所以 <span class="math display">\[
+\begin{cases}
+a_n=\frac{4}{T}\int^{\frac{T}{2}}_{0}f(t)\cos{(n\omega  t)}\diff{t}\\
+b_n=0
+\end{cases}
+\]</span> 可以得到 <span class="math display">\[
+c_n=d_n=a_n=2F_n\\
+F_n=F_{-n}=\frac{a_n}{2}\\
+\varphi_n=0\\
+\theta_n=\frac{\pi}{2}
+\]</span> 且偶函数的 <span class="math inline">\(F_n\)</span>
+为实数。</p>
+<h4 id="奇函数">奇函数</h4>
+<p>由于偶函数满足 <span class="math display">\[
+-f(t)=f(-t)
+\]</span> 故傅里叶展开后只可能是奇级数，所以 <span class="math display">\[
+\begin{cases}
+a_0=0,a_n=0\\
+b_n=\frac{4}{T}\int^{\frac{T}{2}}_{0}f(t)\sin{(n\omega  t)}\diff{t}
+\end{cases}
+\]</span> 可以得到 <span class="math display">\[
+c_n=d_n=a_n=2\j F_n\\
+F_n=-F_{-n}=-\j\frac{a_n}{2}\\
+\varphi_n=-\frac{\pi}{2}\\
+\theta_n=0
+\]</span> 且偶函数的 <span class="math inline">\(F_n\)</span>
+为虚数。</p>
+<h4 id="奇谐函数">奇谐函数</h4>
+<p>该函数满足 <span class="math display">\[
+f(t)=-f(t\pm \frac{T}{2})
+\]</span> 即每个周期发生一次翻转的函数。</p>
+<figure>
+<img src="/signal-and-system-note3/可能的奇谐函数.png" alt="可能的奇谐函数">
+<figcaption aria-hidden="true">可能的奇谐函数</figcaption>
+</figure>
+<p>当 <span class="math inline">\(n\)</span> 为偶数时， <span class="math display">\[
+\begin{cases}
+a_0=0,a_n=0\\
+b_n=0
+\end{cases}
+\]</span> 当 <span class="math inline">\(n\)</span> 为奇数时， <span class="math display">\[
+\begin{cases}
+a_n=\frac{4}{T}\int^{\frac{T}{2}}_{0}f(t)\cos{(n\omega  t)}\diff{t}\\
+b_n=\frac{4}{T}\int^{\frac{T}{2}}_{0}f(t)\sin{(n\omega  t)}\diff{t}
+\end{cases}
+\]</span>
+可见，<strong>半波对称周期函数</strong>的傅里叶级数中，只含有<strong>基波</strong>和<strong>奇次谐波</strong>的正弦项和余弦项，故称为<strong>奇谐函数</strong>。</p>
+<h3 id="典型周期信号的傅里叶级数">典型周期信号的傅里叶级数</h3>
+<h4 id="周期矩形脉冲信号">周期矩形脉冲信号</h4>
+<p>设周期矩形脉冲信号 <span class="math inline">\(f(t)\)</span>
+的脉冲宽度为 <span class="math inline">\(\tau\)</span>，脉冲幅度为 <span class="math inline">\(E\)</span>，重复周期为 <span class="math inline">\(T\)</span>，有 <span class="math display">\[
+f(t)=E\left[u(t+\frac{\tau}{2}-u(t-\frac{\tau}{2}) \right]
+\]</span> <img src="/signal-and-system-note3/周期矩形脉冲信号图示.png" alt="周期矩形脉冲信号图示"></p>
+<p><strong>傅里叶展开</strong> $$ <span class="math display">\[\begin{align}
+a_0&amp;=\frac{E\tau}{T}\\
+
+a_n&amp;=\frac{2E}{n\pi}\sin{(\frac{\tau}{T} n\pi)}\\
+&amp;=\frac{2E\tau}{T}\mathop{\mathrm{Sa}}{(\frac{\tau}{T} n\pi)}\\
+b_n&amp;=0
+\end{align}\]</span> <span class="math display">\[
+故**傅里叶级数**为
+\]</span> f(t)=+<sup>{}<em>{n=1} <span class="math display">\[
+**指数形式的傅里叶展开**
+\]</span> F_n= <span class="math display">\[
+故**傅里叶级数**为
+\]</span> f(t)=^{}</em>{-}e</sup>{nt} $$
+可以得到<strong>频谱图</strong></p>
+<figure>
+<img src="/signal-and-system-note3/周期矩形脉冲信号的频谱图.png" alt="周期矩形脉冲信号的频谱图">
+<figcaption aria-hidden="true">周期矩形脉冲信号的频谱图</figcaption>
+</figure>
+<p>记矩形信号的<strong>频带宽度</strong> <span class="math inline">\(B_\omega=\frac{2\pi}{\tau}\)</span>，或 <span class="math inline">\(B_f=\frac{1}{\tau}\)</span>。</p>
+<p>例如周期对称方波信号的傅里叶级数求解</p>
+<figure>
+<img src="/signal-and-system-note3/周期对称方波信号.png" alt="周期对称方波信号">
+<figcaption aria-hidden="true">周期对称方波信号</figcaption>
+</figure>
+<p>其中，幅度为 <span class="math inline">\(E\)</span>，脉冲宽度为 <span class="math inline">\(\tau=\frac{T}{2}\)</span>。</p>
+<p>由于它为<strong>奇谐函数</strong>，又为<strong>偶函数</strong>，故
+<span class="math display">\[
+a_0,b_n=0\\
+a_n=E\mathop{\mathrm{Sa}}{(\frac{n\pi}{2})}=\pm
+\frac{2E}{n\pi},n=1,3,5,\cdots
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\(\frac{2E\tau}{T}=E\)</span>；<span class="math inline">\(\mathop{\mathrm{Sa}}{(\frac{n\pi}{2})}=\pm
+1,n=1,3,5,\cdots\)</span>；<span class="math inline">\(F_n=F_{-n}=\frac{E}{2}\mathop{\mathrm{Sa}}{(\frac{n\pi}{2})}\)</span>。</p>
+</blockquote>
+<p>故傅里叶级数为 <span class="math display">\[
+\begin{align}
+f(t)&amp;=\frac{2E}{\pi}\sum^{\infty}_{n=1}\frac{\sin{\frac{n\pi}{2}}}{n}\cos{(n\omega
+t)}\\
+&amp;=\frac{E}{\pi}\sum^{\infty}_{n=1}\frac{\sin{\frac{n\pi}{2}}}{n}e^{\j
+n\omega t},n=1,3,5,\cdots
+\end{align}
+\]</span></p>
+<h4 id="周期锯齿脉冲信号">周期锯齿脉冲信号</h4>
+<figure>
+<img src="/signal-and-system-note3/周期锯齿脉冲信号的波形.png" alt="周期锯齿脉冲信号的波形">
+<figcaption aria-hidden="true">周期锯齿脉冲信号的波形</figcaption>
+</figure>
+<p>傅里叶级数为 <span class="math display">\[
+f(t)=\frac{E}{\pi}\sum^{\infty}_{n=1}(-1)^{n+1}\frac{1}{n}\sin{(n \omega
+t)}
+\]</span></p>
+<h4 id="周期三角脉冲信号">周期三角脉冲信号</h4>
+<p>傅里叶级数为 <span class="math display">\[
+f(t)=\frac{E}{2}+\frac{4E}{\pi^2}\sum^{\infty}_{n=1}\frac{1}{n^2}\sin^2{(\frac{n\pi}{2})}\cos{(n
+\omega t)}
+\]</span></p>
+<h4 id="周期半波余弦信号">周期半波余弦信号</h4>
+<p><span class="math display">\[
+f(t)=\frac{E}{\pi}-\frac{2E}{\pi}\sum^{\infty}_{n=1}\frac{1}{n^2-1}\cos{(\frac{n\pi}{2})}\cos{(n
+\omega t)}
+\]</span></p>
+<h4 id="周期全波余弦信号">周期全波余弦信号</h4>
+<p>即信号 <span class="math inline">\(f(t)=E|\cos{(\omega_0
+t)}|\)</span>，则 <span class="math display">\[
+f(t)=\frac{2E}{\pi}+\frac{4E}{\pi^2}\sum^{\infty}_{n=1}(-1)^{n+1}\frac{1}{4n^2-1}\cos{(2n
+\omega_0 t)}
+\]</span></p>
+<h2 id="傅里叶变换">傅里叶变换</h2>
+<h3 id="原理">原理</h3>
+<p>傅里叶展开是对周期信号而言的，得到的频谱图也是离散的。</p>
+<p>拓展到对非周期函数，则是令 <span class="math inline">\(T\to
+\infty\)</span>，此时拟合成周期函数，有 <span class="math inline">\(\Delta \omega=\frac{2\pi}{T}\to
+0\)</span>，频谱图从<strong>离散谱变为连续谱</strong>；同时<strong>谱线长度</strong>
+<span class="math inline">\(F(n\omega)\to 0\)</span>。</p>
+<p>此时连续谱与我们想要的频谱图是不一样的，我们称这种连续谱为<strong>频谱密度函数</strong>。</p>
+<p>此时 <span class="math inline">\(F(n\omega) T\)</span>
+趋近于有限值，为一个连续函数，通常记作 <span class="math inline">\(F(\omega)\)</span> 或 <span class="math inline">\(F(\j \omega)\)</span>，即 <span class="math display">\[
+F(\omega)=\lim_{\omega \to 0} \frac{2\pi F(n\omega)}{\omega}=\lim_{T \to
+\infty}F(n\omega)T
+\]</span> 这样，在非周期信号下有 <span class="math display">\[
+F(\omega)=\int^\infty_{-\infty}f(t)e^{-\j \omega t}\diff{t}
+\]</span> 傅里叶级数为 <span class="math display">\[
+f(t)=\frac{1}{2\pi}\int^{\infty}_{-\infty}F(\omega)e^{\j n\omega
+t}\diff{\omega}
+\]</span>
+把这种积分形式的傅里叶级数称为<strong>傅里叶变换</strong>，即<strong>非周期信号的连续频谱表达式</strong>。</p>
+<blockquote>
+<p>或者说把原函数从时域变换到频域（幅频坐标系）。</p>
+</blockquote>
+<p>记傅里叶正变换 <span class="math display">\[
+F(\omega)=\mathscr{F}[f(t)]=\int^\infty_{-\infty}f(t)e^{-\j \omega
+t}\diff{t}
+\]</span> 记傅里叶逆变换 <span class="math display">\[
+f(t)=\mathscr{F}^{-1}[F(\omega)]=\frac{1}{2\pi}\int^\infty_{-\infty}F(\omega)e^{\j
+\omega t}\diff{t}
+\]</span> 其中 <span class="math inline">\(F(\omega)\)</span> 是 <span class="math inline">\(f(t)\)</span> 的频谱函数，一般是复函数，可以写作
+<span class="math display">\[
+F(\omega)=|F(\omega)|e^{\j \varphi(\omega)}
+\]</span> 其中 <span class="math inline">\(|F(\omega)|\)</span>
+表示<strong>信号中各频率分量的相对大小</strong>，<span class="math inline">\(\varphi(\omega)\)</span>
+表示<strong>信号中各频率分量之间的相位关系</strong>。</p>
+<p>非周期函数的傅里叶级数也可以用 <span class="math inline">\(F(\omega)\)</span> 表示 <span class="math display">\[
+f(t)=\frac{1}{2\pi}\int^\infty_{-\infty}|F(\omega)|\cos{[\omega
+t}+\varphi(\omega)]\diff{\omega}
++
+\frac{\j}{2\pi}\int^\infty_{-\infty}|F(\omega)|\sin{[\omega
+t}+\varphi(\omega)]\diff{\omega}
+\]</span> 当 <span class="math inline">\(f(t)\)</span>
+为<strong>实函数</strong>时，化简为 <span class="math display">\[
+f(t)=\frac{1}{\pi}\int^\infty_{0}|F(\omega)|\cos{[\omega
+t}+\varphi(\omega)]\diff{\omega}
+\]</span></p>
+<h3 id="典型非周期信号的傅里叶变换">典型非周期信号的傅里叶变换</h3>
+<h4 id="单边指数信号">单边指数信号</h4>
+<p>即 <span class="math inline">\(f(t)=e^{-at},t\geq 0\)</span>，其中
+<span class="math inline">\(a\)</span> 为正实数，有 <span class="math display">\[
+F(\omega)=\frac{1}{a+\j \omega}\\
+|F(\omega)|=\frac{1}{\sqrt{a^2+\omega^2}}\\
+\varphi(\omega)=-\arctan{(\frac{\omega}{a})}
+\]</span> <img src="/signal-and-system-note3/单边指数信号的波形及频谱.png" alt="单边指数信号的波形及频谱"></p>
+<h4 id="双边指数信号">双边指数信号</h4>
+<p>即 <span class="math inline">\(f(t)=e^{-a|t|}\)</span>，其中 <span class="math inline">\(a\)</span> 为正实数，有 <span class="math display">\[
+F(\omega)=\frac{2a}{a^2+\omega^2}\\
+|F(\omega)|=\frac{2a}{a^2+\omega^2}\\
+\varphi(\omega)=0
+\]</span> <img src="/signal-and-system-note3/双边指数信号的波形及频谱.png" alt="双边指数信号的波形及频谱"></p>
+<h4 id="矩形脉冲信号">矩形脉冲信号</h4>
+<p>即 <span class="math inline">\(f(t)=E[u(t+\frac{\tau}{2})-u(t-\frac{\tau}{2})]\)</span>，其中
+<span class="math inline">\(E\)</span> 为脉冲幅度，<span class="math inline">\(\tau\)</span> 为脉冲宽度，有 <span class="math display">\[
+F(\omega)=E\tau\cdot \mathop{\mathrm{Sa}}{(\frac{\omega\pi}{2})}\\
+|F(\omega)|=E\tau|\mathop{\mathrm{Sa}}{(\frac{\omega\pi}{2})}|\\
+\varphi(\omega)=0\text{ or }\pi
+\]</span> <img src="/signal-and-system-note3/矩形脉冲信号的波形及频谱.png" alt="矩形脉冲信号的波形及频谱"></p>
+<p>通常我们认为 <span class="math inline">\(\mathop{\mathrm{Sa}}(t)\)</span>
+函数的主要信号分布在中心频段，故其占有频率范围（<strong>频带</strong>）
+<span class="math display">\[
+B\approx\frac{1}{\tau}
+\]</span></p>
+<h4 id="钟形脉冲信号">钟形脉冲信号</h4>
+<p>即高斯脉冲，有 <span class="math display">\[
+F(\omega)=\sqrt{\pi}E\tau\cdot \exp{[-(\frac{\omega \tau}{2})^2]}
+\]</span> 它是一个正实函数，<strong>相位谱为零</strong>。</p>
+<figure>
+<img src="/signal-and-system-note3/钟形脉冲信号的波形和频谱.png" alt="钟形脉冲信号的波形和频谱">
+<figcaption aria-hidden="true">钟形脉冲信号的波形和频谱</figcaption>
+</figure>
+<h4 id="符号函数">符号函数</h4>
+<p><span class="math display">\[
+f(t)=\mathrm{sgn}(t)=\begin{cases}
++1 &amp; t&gt;0\\
+0 &amp; t=0\\
+-1 &amp; t&lt;0
+\end{cases}
+\]</span></p>
+<p>有 <span class="math display">\[
+F(\omega)=\frac{2}{\j \omega}\\
+|F(\omega)|=\frac{2}{|\omega|}\\
+\varphi(\omega)=
+\begin{cases}
+-\frac{\pi}{2} &amp; \omega&gt;0\\
++\frac{\pi}{2} &amp; \omega&lt;0
+\end{cases}
+\]</span> <img src="/signal-and-system-note3/符号函数的波形和频谱.png" alt="符号函数的波形和频谱"></p>
+<h4 id="升余弦脉冲信号">升余弦脉冲信号</h4>
+<p><span class="math display">\[
+f(t)=\frac{E}{2}[1+\cos{(\frac{\pi t}{\tau})}],0\leq |t|\leq \tau
+\]</span></p>
+<figure>
+<img src="/signal-and-system-note3/升余弦脉冲信号的波形.png" alt="升余弦脉冲信号的波形">
+<figcaption aria-hidden="true">升余弦脉冲信号的波形</figcaption>
+</figure>
+<p>有 <span class="math display">\[
+F(\omega)=\frac{E\tau\cdot\mathop{\mathrm{Sa}}{(\omega\tau)}}{1-\left(\frac{\omega\tau}{\pi}\right)^2}
+\]</span> <img src="/signal-and-system-note3/升余弦脉冲信号的频谱.png" alt="升余弦脉冲信号的频谱"></p>
+<h3 id="奇异函数的傅里叶变换">奇异函数的傅里叶变换</h3>
+<h4 id="冲激函数的傅里叶变换">冲激函数的傅里叶变换</h4>
+<p>由冲激函数的抽样特性可知 <span class="math display">\[
+F(\omega)=\mathscr{F}[\delta(t)]=1
+\]</span> <img src="/signal-and-system-note3/单位冲激函数的频谱.png" alt="单位冲激函数的频谱"></p>
+<p>这意味着，在时域中变化异常剧烈的冲激函数<strong>包含幅度相等的所有频率分量</strong>，因此这种频谱也被称为<strong>均匀谱</strong>或<strong>白色谱</strong>。</p>
+<p>对其冲激函数逆变换，可以<strong>找到什么样的函数的频谱为冲激函数</strong>，得
+<span class="math display">\[
+f(t)=\mathscr{F}^{-1}[\delta(\omega)]=\frac{1}{2\pi}
+\]</span>
+结果表明，<strong>直流信号的傅里叶变换是冲激函数</strong>。</p>
+<h4 id="冲激偶的傅里叶变换">冲激偶的傅里叶变换</h4>
+<p>因为 <span class="math display">\[
+\mathscr{F}[\delta(t)]=1
+\]</span> 两边求导可得 <span class="math display">\[
+\mathscr{F}[\delta&#39;(t)]=\j \omega
+\]</span> 同理逆变换为 <span class="math display">\[
+\mathscr{F}(t^n)=2\pi(\j)^n\delta^{(n)}(\omega)
+\]</span></p>
+<h4 id="阶跃函数的傅里叶变换">阶跃函数的傅里叶变换</h4>
+<p>因为 <span class="math display">\[
+u(t)=\frac{1}{2}+\frac{1}{2}\mathrm{sgn}(t)
+\]</span> 故 <span class="math display">\[
+\mathscr{F}[u(t)]=\mathscr{F}(\frac{1}{2})+\frac{1}{2}\mathscr{F}[\mathrm{sgn}(t)]
+\]</span> 即 <span class="math display">\[
+\mathscr{F}[u(t)]=\pi\delta(\omega)+\frac{1}{\j \omega}
+\]</span> <img src="/signal-and-system-note3/单位阶跃函数的波形和频谱.png" alt="单位阶跃函数的波形和频谱"></p>
+<h3 id="傅里叶变换的基本性质">傅里叶变换的基本性质</h3>
+<h4 id="对称性">对称性</h4>
+<p>若 <span class="math display">\[
+F(\omega)=\mathscr{F}[f(t)]
+\]</span> 则 <span class="math display">\[
+\mathscr{F}[F(t)]=2\pi f(-\omega)
+\]</span></p>
+<blockquote>
+<p>若 <span class="math inline">\(f(t)\)</span> 为偶函数则变为 <span class="math display">\[
+\mathscr{F}[F(t)]=2\pi f(\omega)
+\]</span> 即 <span class="math inline">\(f(t)\)</span> 的频谱为 <span class="math inline">\(F(\omega)\)</span>，那么形状为 <span class="math inline">\(F(t)\)</span> 的波形，其频谱必为 <span class="math inline">\(f(\omega)\)</span>。</p>
+</blockquote>
+<p>对 <span class="math inline">\(\mathop{\mathrm{Sa}}\)</span>
+函数有</p>
+<figure>
+<img src="/signal-and-system-note3/时间函数与频谱函数的对称性举例.png" alt="时间函数与频谱函数的对称性举例">
+<figcaption aria-hidden="true">时间函数与频谱函数的对称性举例</figcaption>
+</figure>
+<p>对单位阶跃信号有</p>
+<figure>
+<img src="/signal-and-system-note3/时间函数与频谱函数的对称性举例-16790621149231.png" alt="时间函数与频谱函数的对称性举例">
+<figcaption aria-hidden="true">时间函数与频谱函数的对称性举例</figcaption>
+</figure>
+<h4 id="线性性叠加性">线性性（叠加性）</h4>
+<p><span class="math display">\[
+\mathscr{F}[\sum^\infty_{i=1} a_if_i(t)]=\sum^\infty_{i=1}
+a_iF_i(\omega)
+\]</span></p>
+<blockquote>
+<p>这对我们研究 LTI 系统十分有帮助。</p>
+</blockquote>
+<h4 id="奇偶虚实性">奇偶虚实性</h4>
+<p>记 <span class="math display">\[
+F(\omega)=|F(\omega)|e^{\j \varphi(\omega)}=R(\omega)+\j X(\omega)
+\]</span> 其中 <span class="math inline">\(R(\omega)\)</span>
+为实部，<span class="math inline">\(X(\omega)\)</span> 为虚部。</p>
+<p><strong>当 <span class="math inline">\(f(t)\)</span>
+为实函数时，<span class="math inline">\(R(\omega)\)</span>
+为偶函数；<span class="math inline">\(X(\omega)\)</span>
+为奇函数。</strong></p>
+<p><strong>可证 <span class="math inline">\(|F(\omega)|\)</span>
+是偶函数，<span class="math inline">\(\varphi(\omega)\)</span>
+是奇函数。</strong></p>
+<p>更进一步，</p>
+<ul>
+<li><p>当 <span class="math inline">\(f(t)\)</span> 为实偶函数，有 <span class="math display">\[
+X(\omega)=0\\
+F(\omega)=R(\omega)=2\int^\infty_0f(t)\cos{(\omega t)}\diff{t}
+\]</span> 即 <span class="math inline">\(F(\omega)\)</span>
+必为实偶函数。</p></li>
+<li><p>当 <span class="math inline">\(f(t)\)</span> 为实奇函数，有 <span class="math display">\[
+R(\omega)=0\\
+F(\omega)=\j X(\omega)=-2\j\int^\infty_0f(t)\sin{(\omega t)}\diff{t}
+\]</span> 即 <span class="math inline">\(F(\omega)\)</span>
+必为虚奇函数。</p></li>
+</ul>
+<p><strong>当 <span class="math inline">\(f(t)\)</span>
+为虚函数时，<span class="math inline">\(R(\omega)\)</span>
+为奇函数；<span class="math inline">\(X(\omega)\)</span>
+为偶函数。</strong></p>
+<p>同时满足 <span class="math display">\[
+\mathscr{F}[f(-t)]=F(-\omega)
+\]</span> 对于复共轭函数 <span class="math inline">\(f^*(t)\)</span>
+同理 <span class="math display">\[
+\mathscr{F}[f^*(t)]=F^*(-\omega)\\
+\mathscr{F}[f^*(-t)]=F^*(\omega)
+\]</span></p>
+<h4 id="尺度变换特性">尺度变换特性</h4>
+<p><span class="math display">\[
+\mathscr{F}[f(at)]=\frac{1}{|a|}F(\frac{\omega}{a})
+\]</span></p>
+<p>即时域缩减 <span class="math inline">\(a\)</span> 倍，那么频域将扩大
+<span class="math inline">\(a\)</span> 倍，幅值缩小 <span class="math inline">\(|a|\)</span> 倍。</p>
+<p>即<strong>信号在时域中压缩等效于在频域中扩展，反之亦然。</strong></p>
+<blockquote>
+<p>当 <span class="math inline">\(a=-1\)</span> 时，<span class="math inline">\(\mathscr{F}[f(-t)]=F(-\omega)\)</span>，这表明<strong>信号在时域中反褶等效于在频域中反褶</strong>。</p>
+</blockquote>
+<p>通过这点可以得出，<strong>信号的等效脉冲宽度与占有的等效带宽成反比</strong>。如果要压缩信号的持续时间，就不得不以展宽频带作代价，所以在通信系统中，<strong>通信速度和占用频带宽度是矛盾的</strong>。</p>
+<h4 id="时移特性">时移特性</h4>
+<p><span class="math display">\[
+\mathscr{F}[f(t-t_0)]=F(\omega)e^{-\j \omega t_0}
+\]</span></p>
+<p>信号右移（滞后）<span class="math inline">\(t_0\)</span>
+等效于在频域中乘以因子 <span class="math inline">\(e^{-\j \omega
+t_0}\)</span>，即相位谱产生附加变化 <span class="math inline">\(-\omega
+t_0\)</span>。</p>
+<p>如果时移加尺度变换，则有 <span class="math display">\[
+\mathscr{F}[f(at+t_0)]=\frac{1}{|a|}F(\frac{\omega}{a})e^{\j \omega
+\frac{t_0}{a}}
+\]</span></p>
+<h4 id="频移特性">频移特性</h4>
+<p><span class="math display">\[
+\mathscr{F}[f(t)e^{\j \omega_0 t}]=F(\omega -\omega_0)
+\]</span></p>
+<p><strong>频谱搬移技术</strong>在通信系统中得到广泛应用，诸如调幅、同步解调、变频等。</p>
+<p>例如 <span class="math display">\[
+\mathscr{F}[f(t)\cos{(\omega_0
+t)}]=\frac{1}{2}[F(\omega+\omega_0)+F(\omega-\omega_0)]\\
+\mathscr{F}[f(t)\sin{(\omega_0
+t)}]=\frac{\j}{2}[F(\omega+\omega_0)-F(\omega-\omega_0)]
+\]</span></p>
+<h4 id="微分特性">微分特性</h4>
+<p>时域微分特性 <span class="math display">\[
+\mathscr{F}\left[\frac{\diff}{\diff{t}}f(t)\right]=\j \omega F(\omega)\\
+\mathscr{F}\left[\frac{\diff^n}{\diff{t^n}}f(t)\right]=(\j \omega)^n
+F(\omega)
+\]</span> 频域微分特性 <span class="math display">\[
+\mathscr{F}^{-1}\left[\frac{\diff}{\diff{t}}F(\omega)\right]=(-\j
+t)f(t)\\
+\mathscr{F}^{-1}\left[\frac{\diff^n}{\diff{t^n}}F(\omega)\right]=(-\j
+t)^n f(t)
+\]</span> 应用在于，我们知道 <span class="math display">\[
+\mathscr{F}[u(t)]=\frac{1}{\j \omega}+\pi \delta(\omega)
+\]</span> 那么应用微分特性可以知道 <span class="math display">\[
+\mathscr{F}[\delta(t)]=\j\omega[\frac{1}{\j \omega}+\pi
+\delta(\omega)]=1\\
+\mathscr{F}[\delta&#39;(t)]=\j \omega
+\]</span></p>
+<h4 id="积分特性">积分特性</h4>
+<p>时域积分特性 <span class="math display">\[
+\mathscr{F}[\int^t_{-\infty}f(\tau)\diff{\tau}]=\frac{F(\omega)}{\j
+\omega}+\pi F(0)\delta(\omega)
+\]</span> 频域积分特性 <span class="math display">\[
+\mathscr{F}^{-1}[\int^\omega_{-\infty}f(\Omega)\diff{\Omega}]=-\frac{f(t)}{\j
+t}+\pi f(0)\delta(t)
+\]</span></p>
+<h3 id="卷积特性卷积定理">卷积特性（卷积定理）</h3>
+<p>卷积定理揭示了时域与频域的运算关系，在通信系统和信号处理研究领域中得到大量应用。</p>
+<h4 id="时域卷积定理">时域卷积定理</h4>
+<p><span class="math display">\[
+\mathscr{F}[f_1(t)*f_2(t)]=F_1(\omega)F_2(\omega)
+\]</span></p>
+<p><strong>时域卷积对应频域频谱密度函数乘积。</strong></p>
+<h4 id="频域卷积定理">频域卷积定理</h4>
+<p><span class="math display">\[
+\mathscr{F}[f_1(t)\cdot f_2(t)]=\frac{1}{2\pi}F_1(\omega)*F_2(\omega)
+\]</span></p>
+<p><strong>频域卷积对应时域函数乘积的 <span class="math inline">\(2\pi\)</span> 倍。</strong></p>
+<h3 id="周期信号的傅里叶变换">周期信号的傅里叶变换</h3>
+<h4 id="指数信号">指数信号</h4>
+<p><span class="math display">\[
+\mathscr{F}[e^{\j \omega_0 t}]=2\pi\delta(\omega -\omega_0)
+\]</span></p>
+<h4 id="正弦余弦信号">正弦、余弦信号</h4>
+<p><span class="math display">\[
+\mathscr{F}[\cos{(\omega_0
+t)}]=\pi[\delta(\omega+\omega_0)+\delta(\omega-\omega_0)]\\
+\mathscr{F}[\sin{(\omega_0
+t)}]=\j\pi[\delta(\omega+\omega_0)-\delta(\omega-\omega_0)]
+\]</span></p>
+<figure>
+<img src="/signal-and-system-note3/余弦和正弦信号的频谱.png" alt="余弦和正弦信号的频谱">
+<figcaption aria-hidden="true">余弦和正弦信号的频谱</figcaption>
+</figure>
+<h4 id="一般周期信号">一般周期信号</h4>
+<p>设周期函数 <span class="math inline">\(f(t)\)</span> 满足 <span class="math display">\[
+f(t)=f(t+T)\\
+\omega_0=\frac{2\pi}{T}
+\]</span> 指数形式的傅里叶展开为 <span class="math display">\[
+\newcommand{\j}{\mathrm{j}}
+f(t)=\sum^{\infty}_{-\infty}F_ne^{\j n\omega_0 t}\\
+\]</span> 傅里叶变换为 <span class="math display">\[
+\begin{align}
+\mathscr{F}[f(t)]
+&amp;=\sum^{\infty}_{-\infty}F_n\mathscr{F}[e^{\j n\omega_0 t}]\\
+&amp;=\sum^{\infty}_{-\infty}F_n[2\pi\delta(\omega-n\omega_0)]\\
+&amp;=2\pi\sum^{\infty}_{-\infty}F_n\delta(\omega-n\omega_0)
+\end{align}
+\]</span> 可以知道，周期信号 <span class="math inline">\(f(t)\)</span>
+的傅里叶变换是<strong>由一些冲激函数组成的</strong>，这些冲激位处于信号的<strong>谐频</strong>。</p>
+<blockquote>
+<p>从中我们也可以知道，当 <span class="math inline">\(T\to
+\infty\)</span>，即 <span class="math inline">\(\omega\to 0\)</span>
+时，频谱图中频率间隔趋近于零，此时傅里叶变换得到的频谱图将变为密度很高的冲激函数的组合，密度足够小时，即为连续图像。</p>
+<p>同时反之也可以知道，周期信号的傅里叶变换，我们可以先选取周期信号的一个周期进行傅里叶变换，然后再间隔
+<span class="math inline">\(\omega_0\)</span>
+抽样，这样也得到了周期信号的傅里叶变换。</p>
+</blockquote>
+<p>例如周期为 <span class="math inline">\(T_1\)</span>，脉宽为 <span class="math inline">\(\tau\)</span>
+的矩形脉冲信号，我们首先知道单周期的矩形脉冲信号的傅里叶变换为 <span class="math display">\[
+F(\omega)=E\tau\cdot \mathop{\mathrm{Sa}}{(\frac{\omega\pi}{2})}
+\]</span> <img src="/signal-and-system-note3/矩形脉冲信号的波形及频谱.png" alt="矩形脉冲信号的波形及频谱"></p>
+<p>我们间隔 <span class="math inline">\(\omega_0=\frac{2\pi}{T_1}\)</span>
+进行抽样冲激函数，得到结果</p>
+<figure>
+<img src="/signal-and-system-note3/周期矩形脉冲信号的傅里叶变换.png" alt="周期矩形脉冲信号的傅里叶变换">
+<figcaption aria-hidden="true">周期矩形脉冲信号的傅里叶变换</figcaption>
+</figure>
+<blockquote>
+<p>需要注意乘以 <span class="math inline">\(2\pi\)</span>。</p>
+</blockquote>
+<h3 id="抽样信号的傅里叶变换">抽样信号的傅里叶变换</h3>
+<p><strong>连续信号乘以抽样脉冲得到抽样信号。</strong></p>
+<figure>
+<img src="/signal-and-system-note3/抽样过程.png" alt="抽样过程">
+<figcaption aria-hidden="true">抽样过程</figcaption>
+</figure>
+<h4 id="时域抽样">时域抽样</h4>
+<p>我们知道，时域乘与频域卷积是等效的，那么 <span class="math display">\[
+\mathscr{F}[f(t)\cdot p(t)]=2\pi F(t)*P(t)
+\]</span></p>
+<h5 id="矩形脉冲抽样">矩形脉冲抽样</h5>
+<figure>
+<img src="/signal-and-system-note3/矩形抽样信号的频谱.png" alt="矩形抽样信号的频谱">
+<figcaption aria-hidden="true">矩形抽样信号的频谱</figcaption>
+</figure>
+<h5 id="冲激脉冲抽样">冲激脉冲抽样</h5>
+<figure>
+<img src="/signal-and-system-note3/冲击抽样信号的频谱.png" alt="冲击抽样信号的频谱">
+<figcaption aria-hidden="true">冲击抽样信号的频谱</figcaption>
+</figure>
+<p>可以发现，<strong>时域抽样会使得频域信号产生周期</strong>。</p>
+<h4 id="频域抽样">频域抽样</h4>
+<p>我们在周期信号的傅里叶变换中可以知道，频域冲激抽样相当于让时域信号产生周期。</p>
+<figure>
+<img src="/signal-and-system-note3/频谱抽样所对应的信号波形.png" alt="频谱抽样所对应的信号波形">
+<figcaption aria-hidden="true">频谱抽样所对应的信号波形</figcaption>
+</figure>
+<p>可以发现，<strong>频域抽样会使得时域信号产生周期</strong>。</p>
+<h4 id="特性">特性</h4>
+<figure>
+<img src="/signal-and-system-note3/周期信号和抽样信号的特性.png" alt="周期信号和抽样信号的特性">
+<figcaption aria-hidden="true">周期信号和抽样信号的特性</figcaption>
+</figure>
+<p>时域和频域之间，抽样其中一边的信号，会使得另一边的信号产生重复（周期）。</p>
+<h3 id="抽样定理">抽样定理</h3>
+<h4 id="时域抽样定理">时域抽样定理</h4>
+<p>我们知道，在时域抽样会使得频域信号产生周期，也就是说实际上我们可以抽取频域信号的一个周期来还原时域信号，这就是现代数字通信的原理之一。</p>
+<p>但是，我们会发现，如果说 <span class="math inline">\(\omega\)</span>
+越小，也就是说 <span class="math inline">\(T\)</span>
+越大，那么频域信号重复得就会越快。</p>
+<p>我们把 <span class="math inline">\(f=\frac{1}{T}=\frac{\omega}{2\pi}\)</span>
+称作<strong>抽样频率</strong>（抽样率）。</p>
+<p>抽样率越低，抽样的冲激信号越分散，频域信号重复得越快；</p>
+<p>抽样率越高，抽样的冲激信号越密集，频域信号重复得越慢。</p>
+<blockquote>
+<p>从这一点也可以得知，当抽样率趋近于零的时候，相当于周期信号的每个部分重叠在一个位置，这也是符合非周期信号的傅里叶变换的现象。</p>
+</blockquote>
+<figure>
+<img src="/signal-and-system-note3/低抽样率时的抽样信号及频谱（混叠）.png" alt="低抽样率时的抽样信号及频谱（混叠）">
+<figcaption aria-hidden="true">低抽样率时的抽样信号及频谱（混叠）</figcaption>
+</figure>
+<p>我们可以从图中看出，如果说频域信号产生了重叠（<strong>混叠</strong>），那么我们就无法从单一周期内的频域信号还原出完整的时域信号。</p>
+<p><strong>抽样定理</strong>指出：</p>
+<blockquote>
+<p>一个频谱受限的信号 <span class="math inline">\(f(t)\)</span>，如果频谱只占据 <span class="math inline">\(-\omega_m\sim+\omega_m\)</span> 的范围，则信号
+<span class="math inline">\(f(t)\)</span>
+可以用等间隔的抽样值惟一的表示。而抽样间隔必须不大于 <span class="math inline">\(\frac{1}{2f_m}\)</span>，其中 <span class="math inline">\(\omega_m=2\pi
+f_m\)</span>，或者说，<strong>最低抽样频率</strong>为 <span class="math inline">\(2f_m\)</span>。</p>
+</blockquote>
+<p>即<strong>重建原信号的必要条件为
+抽样率需要大于等于最低抽样率</strong>： <span class="math display">\[
+f\geq 2f_m\text{ or }\omega\geq 2\omega_m
+\]</span>
+其中最大抽样间隔称为<strong>奈奎斯特抽样间隔</strong>，最低抽样频率称为<strong>奈奎斯特抽样频率</strong>。</p>
+<p>抽样定理的物理意义为</p>
+<ul>
+<li>对于一个<strong>频率受限</strong>的信号波形决不可能在很短的时间内产生独立的、实质的变化，它的<strong>最高变化速度</strong>受<strong>最高频率分量</strong>
+<span class="math inline">\(\omega_m\)</span> 的限制。</li>
+<li>为保留波形所有频率分量的全部信息，<strong>要求一个周期的间隔内至少抽样两次</strong>。</li>
+</ul>
+<p>根据抽样定理，如果想要恢复原信号，我们需要选取频域的一个周期，一般采取
+<span class="math display">\[
+F(\omega)=F_s(\omega)H(\omega)
+\]</span> 其中 <span class="math inline">\(F_s(\omega)\)</span>
+是抽样信号傅里叶变换后的时域信号，<span class="math inline">\(H(\omega)\)</span> 是矩形信号 <span class="math display">\[
+H(\omega)=\begin{cases}
+T &amp; |\omega|&lt;\omega_m\\
+0 &amp; |\omega|&gt;\omega_m
+\end{cases}
+\]</span> 即选取低频信号，一般是将抽样信号 <span class="math inline">\(f_s(t)\)</span>
+施加于<strong>理想低通滤波器</strong>（该滤波器的传输函数为 <span class="math inline">\(H(\omega)\)</span>），这样就得到了频谱为 <span class="math inline">\(F(\omega)\)</span> 的连续信号 <span class="math inline">\(f(t)\)</span>。</p>
+<h4 id="频域抽样定理">频域抽样定理</h4>
+<p>由时域和频域的对称性，可以得到频域抽样定理：</p>
+<blockquote>
+<p>若信号 <span class="math inline">\(f(t)\)</span>
+是时间受限信号，它集中在 <span class="math inline">\(-t_m\sim+t_m\)</span>
+的时间范围内，若在频域中以不大于 <span class="math inline">\(\frac{1}{2t_m}\)</span> 的频率间隔对 <span class="math inline">\(f(t)\)</span> 的频谱 <span class="math inline">\(F(\omega)\)</span> 进行抽样，则抽样后的频谱 <span class="math inline">\(F_s(\omega)\)</span> 可以惟一地表示原信号。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsDuzou
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/signal-and-system-note3.html" title="信号与系统笔记">https://hasegawaazusa.github.io/signal-and-system-note3.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F/" rel="tag"># 信号与系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/automatic-control-note.html" rel="prev" title="自动控制原理笔记">
+                  <i class="fa fa-chevron-left"></i> 自动控制原理笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/signal-and-system-note2.html" rel="next" title="信号与系统笔记">
+                  信号与系统笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+      <span>站点总字数：</span>
+    <span title="站点总字数">429k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+      <span>站点阅读时长 &asymp;</span>
+    <span title="站点阅读时长">6:30</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+<script src="https://cdn.jsdelivr.net/npm/hexo-generator-searchdb@1.4.0/dist/search.js" integrity="sha256-vXZMYLEqsROAXkEw93GGIvaB2ab+QW6w3+1ahD9nXXA=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
