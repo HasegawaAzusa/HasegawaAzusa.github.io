@@ -731,7 +731,7 @@ P_m+kP_A-n_AkG=P_m+k(n_AG)-n_AkG=P_m
 <blockquote>
 <p>以下使用 sagemath，数据量不能太大</p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1234577</span></span><br><span class="line">b = <span class="number">3213242</span></span><br><span class="line">p = <span class="number">7654319</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line"><span class="comment"># 生成元</span></span><br><span class="line">G = E(<span class="number">5234568</span>, <span class="number">2287747</span>)</span><br><span class="line"><span class="comment"># k = 1584718</span></span><br><span class="line"><span class="comment"># K = k*G</span></span><br><span class="line"><span class="comment"># 公钥</span></span><br><span class="line">K = E(<span class="number">2366653</span>, <span class="number">1424308</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，自动选择bsgs或Pohlig Hellman算法</span></span><br><span class="line">discrete_log(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"><span class="comment"># G.discrete_log(K)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard rho算法</span></span><br><span class="line">discrete_log_rho(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard Lambda算法，能够确定所求值在某一小范围时效率较高</span></span><br><span class="line">discrete_log_lambda(K,G,(<span class="number">1500000</span>,<span class="number">2000000</span>),operation=<span class="string">&#x27;+&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">a = <span class="number">1234577</span></span><br><span class="line">b = <span class="number">3213242</span></span><br><span class="line">p = <span class="number">7654319</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line"><span class="comment"># 生成元</span></span><br><span class="line">G = E(<span class="number">5234568</span>, <span class="number">2287747</span>)</span><br><span class="line"><span class="comment"># k = 1584718</span></span><br><span class="line"><span class="comment"># K = k*G</span></span><br><span class="line"><span class="comment"># 公钥</span></span><br><span class="line">K = E(<span class="number">2366653</span>, <span class="number">1424308</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，自动选择bsgs或Pohlig Hellman算法</span></span><br><span class="line">discrete_log(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"><span class="comment"># G.discrete_log(K)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard rho算法</span></span><br><span class="line">discrete_log_rho(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard Lambda(Pollard kangaroo)算法，能够确定所求值在某一小范围时效率较高</span></span><br><span class="line">discrete_log_lambda(K,G,(<span class="number">1500000</span>,<span class="number">2000000</span>),operation=<span class="string">&#x27;+&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="pohlig-hellman-攻击">Pohlig-Hellman 攻击</h2>
 <h3 id="原理">原理</h3>
 <p>我们知道求解离散对数问题已经有较为高效的方法（例如
@@ -7711,6 +7711,17 @@ windows 软件，可以在 <a href="http://io.acad.athabascau.ca/~grizzlie/Comp6
 <h2 id="图片-ihdr-crc32-错误">图片 <code>IHDR</code> CRC32 错误</h2>
 <p>一般情况下这是因为宽度或者高度被篡改的缘故，可以使用以下代码对图片的宽度或者长度进行爆破：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_height</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    height = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">20</span>:<span class="number">24</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(height+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">20</span>] + h.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">24</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real height: <span class="subst">&#123;h&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(filename + <span class="string">&quot;crack.png&quot;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;height is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_width</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    width = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">16</span>:<span class="number">20</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(width+<span class="number">1</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        data = pngdata[<span class="number">12</span>:<span class="number">16</span>] + w.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">20</span>:<span class="number">29</span>]</span><br><span class="line">        <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">            <span class="built_in">print</span>(<span class="string">f&quot;Real width: <span class="subst">&#123;w&#125;</span>&quot;</span>)</span><br><span class="line">            <span class="keyword">if</span> needout:</span><br><span class="line">                <span class="keyword">with</span> <span class="built_in">open</span>(filename + <span class="string">&quot;crack.png&quot;</span>, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                    f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;width is real.&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">crack_all</span>(<span class="params">filename:<span class="built_in">str</span>, needout:<span class="built_in">bool</span>=<span class="literal">True</span></span>):</span></span><br><span class="line">    <span class="keyword">with</span> <span class="built_in">open</span>(filename, <span class="string">&#x27;rb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">        pngdata = f.read()</span><br><span class="line">    width = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">16</span>:<span class="number">20</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    target = <span class="built_in">int</span>.from_bytes(pngdata[<span class="number">29</span>:<span class="number">33</span>], <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> w <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">0xFFFF</span>):</span><br><span class="line">        <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">0XFFFF</span>):</span><br><span class="line">            data = pngdata[<span class="number">12</span>:<span class="number">16</span>] + w.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + h.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) + pngdata[<span class="number">24</span>:<span class="number">29</span>]</span><br><span class="line">            <span class="keyword">if</span> binascii.crc32(data) == target:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">f&quot;Real width: <span class="subst">&#123;w&#125;</span>, Real height: <span class="subst">&#123;h&#125;</span>&quot;</span>)</span><br><span class="line">                <span class="keyword">if</span> needout:</span><br><span class="line">                    <span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&quot;crack_&quot;</span> + filename, <span class="string">&#x27;wb&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">                        f.write(pngdata[:<span class="number">12</span>] + data + pngdata[<span class="number">29</span>:])</span><br><span class="line">                <span class="keyword">return</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;width and heigth are real.&quot;</span>)</span><br><span class="line">    </span><br><span class="line">filename = <span class="string">&#x27;false_height.png&#x27;</span></span><br><span class="line">crack_height(filename)</span><br></pre></td></tr></table></figure>
+<h2 id="imagemagic">ImageMagic</h2>
+<p>CVE-2022-44268，任意文件读取。</p>
+<p>使用 ImageMagic 的 <code>convert</code> 功能转换成 PNG
+图片时，会携带部分信息。</p>
+<p>POC：<a href="https://github.com/Sybil-Scan/imagemagick-lfi-poc">https://github.com/Sybil-Scan/imagemagick-lfi-poc</a></p>
+<p>使用方法：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python3 generate.py -f <span class="string">&quot;/etc/passwd&quot;</span> -o exploit.png</span><br></pre></td></tr></table></figure>
+<p>利用方式：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">convert exploit.png result.png</span><br></pre></td></tr></table></figure>
+<p>获取到结果图片后，输入命令读取 PNG 携带的内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">identify -verbose result.png</span><br></pre></td></tr></table></figure>
 <h1 id="gif-取证">GIF 取证</h1>
 <h2 id="简述-3">简述</h2>
 <p>以下的各种图片取证形式仅限于 GIF 图片格式。</p>
@@ -14699,6 +14710,111 @@ f\cdot h-k\cdot p\equiv g
 <p>之后我们只需要使用 LLL 算法即可。</p>
 <p>一个可能的代码示例（使用 Sagemath）：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">M = matrix(ZZ, [(<span class="number">66586820</span>,<span class="number">65354729</span>),(<span class="number">6513996</span>,<span class="number">6393464</span>)])</span><br><span class="line">shortest_vector = M.LLL()[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h1 id="lwe-问题">LWE 问题</h1>
+<h2 id="原理">原理</h2>
+<p>LWE 问题，即 Learning-with-errors 问题，针对的是形如 <span class="math display">\[
+\boldsymbol{S}=\boldsymbol{R}\cdot x+\boldsymbol{E}
+\]</span> 的方程组，即 <span class="math display">\[
+\begin{cases}
+s_1=r_1\cdot x+e_1\\
+s_2=r_2\cdot x+e_2\\
+\ \ \ \ \ \ \vdots\\
+s_n=r_n\cdot x+e_n\\
+\end{cases}
+\]</span> 其中 <span class="math inline">\(e_i\)</span>
+我们称作误差（error），是未知量，而 <span class="math inline">\(r_i,s_i\)</span> 为已知量，对这个方程组求解 <span class="math inline">\(x\)</span> 即 LWE 问题。</p>
+<p>这在深度学习领域是一个重要问题，即每次的输入和输出有一定的误差存在，要如何根据输出求解输入。</p>
+<h2 id="代码">代码</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p = <span class="number">6897108443075981744484758716081045417854227543713106404294789655180105457499042179717447342593790180943415014044830872925165163457476209819356694244840079</span></span><br><span class="line">rs = [<span class="number">12844634549263053228759749264403637022740290008286987401585068952741935277415527678380021212624846722242500708422759563558995936977274580301379494195702461</span>, <span class="number">12251634003683452916928102291170339939586644029776192301741341674585154859358419625191986830852794085541953563738986709807899575511700135958334229151930861</span>, <span class="number">7051370666077542197248638013011793824477073777322219545882367881807130066168444134964571398112151848834032654978368255218649720738040945429837692857031957</span>, <span class="number">9773046862351952930368505593284546267554571295872377323111558071278701231472975791962979256551519533723988556870551885073742407630481198192389750289392107</span>, <span class="number">8883776497660138308720006912582738672888752344326928153810910221453595077711284302041512529457450211602787210761461172326429880594024187025419873043435877</span>, <span class="number">12056735137145460036580841038332100311160368843873164649606343042416896898793233249873902218683966283969721460087390120622254758027779960740926123005377571</span>, <span class="number">8819958747150954554494406068232243249186433676383469322817152210037563032056202909377825740775383087605647374150477096718956454225946093710691864988563109</span>, <span class="number">12246023449098354751049599873213988024512286270964608502444597112110163392131757813461977030270733012385926751192637938686124570227538910606279104888073013</span>, <span class="number">11308837998867241929817950595621831002334468993828126438599805989088017326675963100044309448653090403889186401929445861220402556074702741108929442867300279</span>, <span class="number">9184622887414209361516593101129556569811888214607556630094969763910426953786020755838094184972397480276666170685926425137063559394969166216392939257091541</span>, <span class="number">12896400069515890897430087815982545671830645201023665112429779640768899091287291452408369445919464144390726200808875066389240126909811239597092893733457339</span>, <span class="number">11227025698697471809912850435140886785315702278826761054472525227951791647003561270585720797267604996360933395122286757099101227901032364782594523739698877</span>, <span class="number">8162123490656317490361880020667919072708091053716891870691544217490126444997503404094174246087938828993696335191488583306443577208796794274099282013427247</span>, <span class="number">13366989889442670291461262313757977600095962057470863475519088648267301129719953368943419562144276679400967122727554764013132918505564677243979978807323041</span>, <span class="number">9920857455945408588203972193444437533164351309299040911469275059092031755811492460585653948481522995557801781838215407648572999358456612525812067538372579</span>, <span class="number">7139402473546047825312503780125417567716958846513076797328672521987900978293260385267945187604725349720103672258987935569856239987227455748213833342843243</span>, <span class="number">13108142660294572752252393081421368493392921884487755391460006730258159004638343897340537616297811742032405724656497443006056456690449881719305597286675631</span>, <span class="number">13276762958403786077380090195631980415297280849950287990717193547481553124160398455403123819234755237450529090601858784999113026218918277529515287668651121</span>, <span class="number">12463094640052886550696551772104539361264529587569204472038955376345085195998921095774583176899949596998985033050547755235409943131811058035802010421860899</span>, <span class="number">11307743131694864808301935844724645695851330736969875190167422024500753079857478680029193758960169072890576310607053767920339034290416580654771095674487943</span>, <span class="number">10053742503547378455068966704402695956702795408343604912294923217443553169726438945982031485796964462946592530592946335569560364464958066521486506177193131</span>, <span class="number">9703695763451799125258961776229325510814289358679213305418559381901496449849584244211834872313767844996255556721041007654625153809128987422992102292472533</span>, <span class="number">8148189465927721940294369879439913703690047528695196368949823197675716174991296513758196009346701553643721225250628151384047219921709201619262393792138023</span>, <span class="number">9114150910964237818418367840207724528917302406836157928223872622442928604249864486858755737149640683259834299165900696585038569188627682022002709058902291</span>, <span class="number">12273514376180781903469287345188404399033432117915094289694407562166649079228640510678711431664410226301556172582177240184695103942141430877677144285616059</span>, <span class="number">8355005721684425514882933910286584148305344580589623112959517428993968438533866906223777778058096962333203237111245328436600994120168924143849685728268811</span>, <span class="number">8957883838807471492147480816683526636019698464133185237668243268667169800811696770484487123560197988448434475112352005768286417529319182162245840523697001</span>, <span class="number">12168542584724814356632409768687396920143300559579648963851924568387314914334359305942685551210180448419674060219496395116081866784918059237133414041227833</span>, <span class="number">12285935007930825571672128346804313607196190465690759870758278705086034778808662886056460827935986285259185071514490942831585313190946386878622608868345563</span>, <span class="number">7719913817859572377164973343651155934060296607908537845256755472465025202751239980758950094865067751407889569369974011139801401586939119147773466111699913</span>]</span><br><span class="line">cs = [<span class="number">3911325901261770731066343727353093385607196883601022244426857460074338420692610012414571623512152485474248169220030587839849722757773859682519433853455847</span>, <span class="number">4198555117325325874584019691418573071733167640213933749582347442518997588452211673143722179281773602455507001395983681009769848414007206268682184816168744</span>, <span class="number">4422173666634983234895098798813962037875417568235708524339826709271381748884936178371767574064794177416615710120223914725873239836121654705208614576413533</span>, <span class="number">3540260422555697887869627546208164711550015909378340105077652177481959576550678379723450981807556863572610759824660630418670546203733170058626755080797998</span>, <span class="number">6451498467498935201092514865627931677091078787997097414208430992183264950579022373372254486595458117887305393317663712337699331503725124287017134808484874</span>, <span class="number">3439629581963524351810430910737336124616316641656190641248434504621774235943514617301857917041111617104850245148746427180069743940612560718213177903427306</span>, <span class="number">4279468191481832212496939242093486044278976937965085475567008228061184947513156012369586970486543083130565628906296600553024574099481246534878242920637212</span>, <span class="number">4102135455518061133919027670571325279976222647984452353051395864554309521223498761823084717077102213648612826513661629599971609555235760152049549057234342</span>, <span class="number">329051927890365028889097463563711966673066795688728876214731188783168691555262156515161429328581094087585127929869064685419149676592073496155898360311360</span>, <span class="number">1674347209896897571502352451063188834938904430329951752111921115230349947823188121972980025563878887201507629419811736910690965020923751424101521816057970</span>, <span class="number">4779084317811375050159574994746297486592271247137823471375199626788956576998627181220489952507937768042501203098391966702297812537463211799837921684467541</span>, <span class="number">5240331815784322792144549873873658636726233093228415489098002982220769676718681132737794994708716389174162820721646744776624413735318240597745363490427584</span>, <span class="number">2689716894922604875455207695253665212853470308341743040957367957727155614199743562225147359614514189877983156892749669804800163252617480446565479990148021</span>, <span class="number">449708769594599088851244243076921016853502252396793496349534051273454215985560340288452398756880916680293627457774430655982228613348249480600180821975835</span>, <span class="number">1584603978331289335352997151059666773277943458357161051278658090420067023680231414255557805410288144092653121568766136372728095300982743309696347031121424</span>, <span class="number">4874260053151700374809337053763032489184725334196495160358275038586824027920238733886703163018450814805937363825223459277373073591021082276610135118976834</span>, <span class="number">3524374131362906900545297291947110177298862564718451821839794960169356082042548386553363480921097452902723033854749443288682983558847052843293666815425196</span>, <span class="number">6544123591499569232021913370293570477776709315008783531720886545784773471486769240711262562401683145937715612435213816372680189321141928790509490282629891</span>, <span class="number">4873861166228118967099569086478548167127431415017791678812419676791754466935832034870862000658789609084166891933970013849850146718379819943737269970654866</span>, <span class="number">4100817874436703071716655163972145036104985973164830547825929590871920825981241934633977227547934514142660786061291026657802357404024236287955309372489516</span>, <span class="number">343238276681348130286495167739162902430650061145485619903964358840996341335935043000395056684771452815629410388891486531126938900311458948803147120186532</span>, <span class="number">2683710724350412998770392318832434885304538325033159937379489319924346689197445720734209841902612235485016866254994045969716413020197296428323832404151182</span>, <span class="number">5909464641105704179999104311562416363090166762341644691188169716182958971270396007422581429813172933930581475771306034495224054972725230757675444731953480</span>, <span class="number">105593489999747649490909471306354863316673821363863362258853043970534652401274789197677558215188249074837829003335733211890211648501689656345824858507373</span>, <span class="number">4992379366542645691375959247465888889778118153982142100956809440855745659745235576280578316185469306620017845690312554043770651058126536040173113949524396</span>, <span class="number">6533456398244789907636779407045515567135195474284185379689518387558345997627435421582437390053234675991361808532278264077968540197407743744279106871716267</span>, <span class="number">5169360398767270275853790242315213671633880428212603766301308853363063092609582572957561138022806887895634140899640025570759919257615537375706008159680239</span>, <span class="number">203310740924699994885931266978520636166917734618272844754878785050509801614513144739164450834936178065792112797202959106365282699245578309060905297742706</span>, <span class="number">3143563289239398127009575193211845399079310618985464994769603542400451633289266080869317336163844517539211542909055869608349639432145332113320465388067087</span>, <span class="number">4016252180207572047405081190649590978593306403200098541033213590567723751195926093369984531729148621419589009515870336049849542537363832071754623330736088</span>]</span><br><span class="line">enc = <span class="number">1315637864146686255246675143589215932218700984880749264689270214639479160648747323586062096067740047809798944996253169402675772469028914904598116394230426</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#脚本1-小规模</span></span><br><span class="line"><span class="comment">#Sage</span></span><br><span class="line"><span class="keyword">from</span> sage.modules.free_module_integer <span class="keyword">import</span> IntegerLattice</span><br><span class="line"></span><br><span class="line">row = <span class="number">30</span></span><br><span class="line">column = <span class="number">30</span></span><br><span class="line">prime = p</span><br><span class="line"></span><br><span class="line">ma = rs</span><br><span class="line">res = cs</span><br><span class="line"></span><br><span class="line">W = matrix(ZZ, ma)</span><br><span class="line">cc = vector(ZZ, res)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Babai&#x27;s Nearest Plane algorithm</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Babai_closest_vector</span>(<span class="params">M, G, target</span>):</span></span><br><span class="line">    small = target</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">reversed</span>(<span class="built_in">range</span>(M.nrows())):</span><br><span class="line">            c = ((small * G[i]) / (G[i] * G[i])).<span class="built_in">round</span>()</span><br><span class="line">            small -=  M[i] * c</span><br><span class="line">    <span class="keyword">return</span> target - small</span><br><span class="line"></span><br><span class="line">A1 = matrix.identity(column)</span><br><span class="line">Ap = matrix.identity(row) * prime</span><br><span class="line">B = block_matrix([[Ap], [W]])  </span><br><span class="line">lattice = IntegerLattice(B, lll_reduce=<span class="literal">True</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;LLL done&quot;</span>)</span><br><span class="line">gram = lattice.reduced_basis.gram_schmidt()[<span class="number">0</span>]</span><br><span class="line">target = vector(ZZ, res)</span><br><span class="line">re = Babai_closest_vector(lattice.reduced_basis, gram, target)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Closest Vector: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(re))</span><br><span class="line"></span><br><span class="line">R = IntegerModRing(prime)</span><br><span class="line">M = Matrix(R, ma)</span><br><span class="line">M = M.transpose()</span><br><span class="line"></span><br><span class="line">ingredients = M.solve_right(re)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Ingredients: &#123;&#125;&quot;</span>.<span class="built_in">format</span>(ingredients))</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h1 id="hnp-问题">HNP 问题</h1>
+<p>HNP 问题，即 Hidden Number Problem。</p>
+<h2 id="lhnp线性隐藏数问题">LHNP(线性隐藏数问题)</h2>
+<h3 id="原理-1">原理</h3>
+<p>LHNP，即 <em>The Linear Hidden Number
+Problem</em>，线性隐藏数问题。</p>
+<p>定义是从形如 <span class="math display">\[
+c_i=r_i\cdot x+e_i\pmod{p}
+\]</span> 的一组方程组恢复 <span class="math inline">\(s\)</span>。</p>
+<p>即 <span class="math display">\[
+\begin{cases}
+c_1=r_1\cdot x+e_1\\
+c_2=r_2\cdot x+e_2\\
+\ \ \ \ \ \ \vdots\\
+c_n=r_t\cdot x+e_t\\
+\end{cases}\pmod{p}
+\]</span> 将单个方程可以转化为 <span class="math display">\[
+e_i=c_i-r_i\cdot x+k_ip
+\]</span> 我们可以构造出矩阵 <span class="math display">\[
+M=\begin{bmatrix}
+p\\
+&amp; p\\
+&amp; &amp; \ddots\\
+&amp; &amp; &amp; p\\
+-r_1 &amp; -r_2 &amp; \cdots &amp; -r_n &amp; K/p &amp;\\
+c_1 &amp; c_2 &amp; \cdots &amp; c_n &amp; &amp; K
+\end{bmatrix}
+\]</span> 其中 <span class="math inline">\(K\)</span> 为 <span class="math inline">\(s\)</span> 的上界，<span class="math inline">\(k_i\)</span>
+为常系数，用于占位便于格出最短向量，该矩阵满足 <span class="math display">\[
+(k_1,k_2,\cdots,k_t,x,1)M=(e_1,e_2,\cdots,e_t,Kx/p,K)
+\]</span> 其中 <span class="math inline">\((e_1,e_2,\cdots,e_t,Kx/p,K)\)</span>
+可证在格中，那么我们进行 LLL 算法即可得到该向量，并且可以从中还原 <span class="math inline">\(x\)</span>。</p>
+<h3 id="实例">实例</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">t = <span class="number">30</span></span><br><span class="line">p = getPrime(<span class="number">512</span>)</span><br><span class="line">x = getPrime(<span class="number">512</span>)</span><br><span class="line"><span class="keyword">while</span> x &gt; p:</span><br><span class="line">    x = getPrime(<span class="number">512</span>)</span><br><span class="line">rs = []</span><br><span class="line">cs = []</span><br><span class="line">ss = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(t):</span><br><span class="line">    r = getPrime(<span class="number">512</span>)</span><br><span class="line">    s = getPrime(<span class="number">400</span>)</span><br><span class="line">    c = (r * x + s) % p</span><br><span class="line">    rs.append(r)</span><br><span class="line">    cs.append(c)</span><br><span class="line">    ss.append(s)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;p = <span class="subst">&#123;p&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;rs = <span class="subst">&#123;rs&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;cs = <span class="subst">&#123;cs&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>从上面代码我们可以获取三十个方程满足 <span class="math display">\[
+c_i=r_i\cdot x+s_i\pmod{p}
+\]</span> 构造格后 LLL 算法即可得到 <span class="math inline">\(x\)</span>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">t = <span class="number">30</span></span><br><span class="line">p = <span class="number">6897108443075981744484758716081045417854227543713106404294789655180105457499042179717447342593790180943415014044830872925165163457476209819356694244840079</span></span><br><span class="line">rs = [<span class="number">12844634549263053228759749264403637022740290008286987401585068952741935277415527678380021212624846722242500708422759563558995936977274580301379494195702461</span>, <span class="number">12251634003683452916928102291170339939586644029776192301741341674585154859358419625191986830852794085541953563738986709807899575511700135958334229151930861</span>, <span class="number">7051370666077542197248638013011793824477073777322219545882367881807130066168444134964571398112151848834032654978368255218649720738040945429837692857031957</span>, <span class="number">9773046862351952930368505593284546267554571295872377323111558071278701231472975791962979256551519533723988556870551885073742407630481198192389750289392107</span>, <span class="number">8883776497660138308720006912582738672888752344326928153810910221453595077711284302041512529457450211602787210761461172326429880594024187025419873043435877</span>, <span class="number">12056735137145460036580841038332100311160368843873164649606343042416896898793233249873902218683966283969721460087390120622254758027779960740926123005377571</span>, <span class="number">8819958747150954554494406068232243249186433676383469322817152210037563032056202909377825740775383087605647374150477096718956454225946093710691864988563109</span>, <span class="number">12246023449098354751049599873213988024512286270964608502444597112110163392131757813461977030270733012385926751192637938686124570227538910606279104888073013</span>, <span class="number">11308837998867241929817950595621831002334468993828126438599805989088017326675963100044309448653090403889186401929445861220402556074702741108929442867300279</span>, <span class="number">9184622887414209361516593101129556569811888214607556630094969763910426953786020755838094184972397480276666170685926425137063559394969166216392939257091541</span>, <span class="number">12896400069515890897430087815982545671830645201023665112429779640768899091287291452408369445919464144390726200808875066389240126909811239597092893733457339</span>, <span class="number">11227025698697471809912850435140886785315702278826761054472525227951791647003561270585720797267604996360933395122286757099101227901032364782594523739698877</span>, <span class="number">8162123490656317490361880020667919072708091053716891870691544217490126444997503404094174246087938828993696335191488583306443577208796794274099282013427247</span>, <span class="number">13366989889442670291461262313757977600095962057470863475519088648267301129719953368943419562144276679400967122727554764013132918505564677243979978807323041</span>, <span class="number">9920857455945408588203972193444437533164351309299040911469275059092031755811492460585653948481522995557801781838215407648572999358456612525812067538372579</span>, <span class="number">7139402473546047825312503780125417567716958846513076797328672521987900978293260385267945187604725349720103672258987935569856239987227455748213833342843243</span>, <span class="number">13108142660294572752252393081421368493392921884487755391460006730258159004638343897340537616297811742032405724656497443006056456690449881719305597286675631</span>, <span class="number">13276762958403786077380090195631980415297280849950287990717193547481553124160398455403123819234755237450529090601858784999113026218918277529515287668651121</span>, <span class="number">12463094640052886550696551772104539361264529587569204472038955376345085195998921095774583176899949596998985033050547755235409943131811058035802010421860899</span>, <span class="number">11307743131694864808301935844724645695851330736969875190167422024500753079857478680029193758960169072890576310607053767920339034290416580654771095674487943</span>, <span class="number">10053742503547378455068966704402695956702795408343604912294923217443553169726438945982031485796964462946592530592946335569560364464958066521486506177193131</span>, <span class="number">9703695763451799125258961776229325510814289358679213305418559381901496449849584244211834872313767844996255556721041007654625153809128987422992102292472533</span>, <span class="number">8148189465927721940294369879439913703690047528695196368949823197675716174991296513758196009346701553643721225250628151384047219921709201619262393792138023</span>, <span class="number">9114150910964237818418367840207724528917302406836157928223872622442928604249864486858755737149640683259834299165900696585038569188627682022002709058902291</span>, <span class="number">12273514376180781903469287345188404399033432117915094289694407562166649079228640510678711431664410226301556172582177240184695103942141430877677144285616059</span>, <span class="number">8355005721684425514882933910286584148305344580589623112959517428993968438533866906223777778058096962333203237111245328436600994120168924143849685728268811</span>, <span class="number">8957883838807471492147480816683526636019698464133185237668243268667169800811696770484487123560197988448434475112352005768286417529319182162245840523697001</span>, <span class="number">12168542584724814356632409768687396920143300559579648963851924568387314914334359305942685551210180448419674060219496395116081866784918059237133414041227833</span>, <span class="number">12285935007930825571672128346804313607196190465690759870758278705086034778808662886056460827935986285259185071514490942831585313190946386878622608868345563</span>, <span class="number">7719913817859572377164973343651155934060296607908537845256755472465025202751239980758950094865067751407889569369974011139801401586939119147773466111699913</span>]</span><br><span class="line">cs = [<span class="number">3911325901261770731066343727353093385607196883601022244426857460074338420692610012414571623512152485474248169220030587839849722757773859682519433853455847</span>, <span class="number">4198555117325325874584019691418573071733167640213933749582347442518997588452211673143722179281773602455507001395983681009769848414007206268682184816168744</span>, <span class="number">4422173666634983234895098798813962037875417568235708524339826709271381748884936178371767574064794177416615710120223914725873239836121654705208614576413533</span>, <span class="number">3540260422555697887869627546208164711550015909378340105077652177481959576550678379723450981807556863572610759824660630418670546203733170058626755080797998</span>, <span class="number">6451498467498935201092514865627931677091078787997097414208430992183264950579022373372254486595458117887305393317663712337699331503725124287017134808484874</span>, <span class="number">3439629581963524351810430910737336124616316641656190641248434504621774235943514617301857917041111617104850245148746427180069743940612560718213177903427306</span>, <span class="number">4279468191481832212496939242093486044278976937965085475567008228061184947513156012369586970486543083130565628906296600553024574099481246534878242920637212</span>, <span class="number">4102135455518061133919027670571325279976222647984452353051395864554309521223498761823084717077102213648612826513661629599971609555235760152049549057234342</span>, <span class="number">329051927890365028889097463563711966673066795688728876214731188783168691555262156515161429328581094087585127929869064685419149676592073496155898360311360</span>, <span class="number">1674347209896897571502352451063188834938904430329951752111921115230349947823188121972980025563878887201507629419811736910690965020923751424101521816057970</span>, <span class="number">4779084317811375050159574994746297486592271247137823471375199626788956576998627181220489952507937768042501203098391966702297812537463211799837921684467541</span>, <span class="number">5240331815784322792144549873873658636726233093228415489098002982220769676718681132737794994708716389174162820721646744776624413735318240597745363490427584</span>, <span class="number">2689716894922604875455207695253665212853470308341743040957367957727155614199743562225147359614514189877983156892749669804800163252617480446565479990148021</span>, <span class="number">449708769594599088851244243076921016853502252396793496349534051273454215985560340288452398756880916680293627457774430655982228613348249480600180821975835</span>, <span class="number">1584603978331289335352997151059666773277943458357161051278658090420067023680231414255557805410288144092653121568766136372728095300982743309696347031121424</span>, <span class="number">4874260053151700374809337053763032489184725334196495160358275038586824027920238733886703163018450814805937363825223459277373073591021082276610135118976834</span>, <span class="number">3524374131362906900545297291947110177298862564718451821839794960169356082042548386553363480921097452902723033854749443288682983558847052843293666815425196</span>, <span class="number">6544123591499569232021913370293570477776709315008783531720886545784773471486769240711262562401683145937715612435213816372680189321141928790509490282629891</span>, <span class="number">4873861166228118967099569086478548167127431415017791678812419676791754466935832034870862000658789609084166891933970013849850146718379819943737269970654866</span>, <span class="number">4100817874436703071716655163972145036104985973164830547825929590871920825981241934633977227547934514142660786061291026657802357404024236287955309372489516</span>, <span class="number">343238276681348130286495167739162902430650061145485619903964358840996341335935043000395056684771452815629410388891486531126938900311458948803147120186532</span>, <span class="number">2683710724350412998770392318832434885304538325033159937379489319924346689197445720734209841902612235485016866254994045969716413020197296428323832404151182</span>, <span class="number">5909464641105704179999104311562416363090166762341644691188169716182958971270396007422581429813172933930581475771306034495224054972725230757675444731953480</span>, <span class="number">105593489999747649490909471306354863316673821363863362258853043970534652401274789197677558215188249074837829003335733211890211648501689656345824858507373</span>, <span class="number">4992379366542645691375959247465888889778118153982142100956809440855745659745235576280578316185469306620017845690312554043770651058126536040173113949524396</span>, <span class="number">6533456398244789907636779407045515567135195474284185379689518387558345997627435421582437390053234675991361808532278264077968540197407743744279106871716267</span>, <span class="number">5169360398767270275853790242315213671633880428212603766301308853363063092609582572957561138022806887895634140899640025570759919257615537375706008159680239</span>, <span class="number">203310740924699994885931266978520636166917734618272844754878785050509801614513144739164450834936178065792112797202959106365282699245578309060905297742706</span>, <span class="number">3143563289239398127009575193211845399079310618985464994769603542400451633289266080869317336163844517539211542909055869608349639432145332113320465388067087</span>, <span class="number">4016252180207572047405081190649590978593306403200098541033213590567723751195926093369984531729148621419589009515870336049849542537363832071754623330736088</span>]</span><br><span class="line">K = <span class="number">2</span> ** <span class="number">400</span></span><br><span class="line"></span><br><span class="line">P = identity_matrix(t) * p</span><br><span class="line">RC = matrix([[-<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]]) * matrix([rs, cs])</span><br><span class="line">KP = matrix([[K / p, <span class="number">0</span>], [<span class="number">0</span>, K]])</span><br><span class="line">M = block_matrix([[P, <span class="number">0</span>], [RC, KP]], subdivide=<span class="literal">False</span>)</span><br><span class="line">shortest_vector = M.LLL()</span><br><span class="line">x = shortest_vector[<span class="number">1</span>, -<span class="number">2</span>] / K * p % p</span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure>
+<h2 id="mihnp模反隐藏数问题">MIHNP(模反隐藏数问题)</h2>
+<h3 id="原理-2">原理</h3>
+<p>MIHNP，即 <em>The Modular Inversion Hidden Number
+Problem</em>，模反隐藏数问题。</p>
+<p>针对的是形如 <span class="math display">\[
+h_i=(s+t_i)^{-1}-e_i\pmod{p}
+\]</span> 其中，<span class="math inline">\(e\)</span>
+是误差（error），满足 <span class="math inline">\(|e|\leq
+\frac{p}{2^{k+1}}\)</span>，从 <span class="math inline">\(d\)</span> 个
+<span class="math inline">\((h_i,t_i)\)</span> 对中恢复 <span class="math inline">\(s\)</span> 即模反隐藏数问题。</p>
+<p>考虑其中一个方程，有 <span class="math display">\[
+(h_0+e_0)(s+t_0)\equiv 1\pmod{p}
+\]</span> 那么可以改写成 <span class="math inline">\(s\)</span> 的表达式
+<span class="math display">\[
+s\equiv
+\frac{1-(h_0+e_0)t_0}{h_0+e_0}\equiv\frac{1}{h_0+e_0}-t_0\pmod{p}
+\]</span> 如果我们有另外一个对 <span class="math inline">\((h_1,t_1)\)</span>，那么可以写作 <span class="math display">\[
+(h_1+e_1)(s+t_1)\equiv 1\pmod{p}
+\]</span> 将 <span class="math inline">\(s\)</span> 改写为用 <span class="math inline">\((h_0,t_0)\)</span> 对表示 <span class="math display">\[
+1\equiv (h_1+e_1)(\frac{1}{h_0+e_0}-t_0+t_1)\pmod{p}
+\]</span> 展开可写成方程 <span class="math display">\[
+(h_0+e_0)(h_1+e_1)(t_0-t_1)+(e_0-e_1)+(h_0-h_1)\equiv 0\pmod{p}
+\]</span> 那么其中只有 <span class="math inline">\((e_0,e_1)\)</span>
+对未知，我们仅需构造方程后进行二元 Coppersmith 还原这两个小根即可。</p>
+<h3 id="实例-1">实例</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> random, os</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line">flag = <span class="string">&#x27;flag&#123;th1s_1s_fl4g&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">p = random.getrandbits(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&gt; mod =&#x27;</span>, p)</span><br><span class="line">secret = random.randint(<span class="number">1</span>, p-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">XennyOracle</span>():</span></span><br><span class="line">    r = getPrime(<span class="number">512</span>)</span><br><span class="line">    d = invert(secret+r, p) - getPrime(<span class="number">246</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&gt; r =&#x27;</span>, r)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&gt; d =&#x27;</span>, d)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">task</span>():</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">        op = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line">        <span class="keyword">if</span> op == <span class="number">1</span>:</span><br><span class="line">            XennyOracle()</span><br><span class="line">        <span class="keyword">elif</span> op == <span class="number">2</span>:</span><br><span class="line">            ss = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> ss == secret:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;flag: &#x27;</span>, flag)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    task()</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Error. try again.&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>根据如上代码，可以得到关系式 <span class="math display">\[
+d=\frac{1}{\mathrm{secret}+r}-e\pmod{p}
+\]</span> 其中我们需要两对 <span class="math inline">\((d,r)\)</span>。</p>
+<blockquote>
+<p>mod =
+103749960487318496535753127992597646596574197997346604494391500263407540367515232654243412375033616945349248057185120615722859917113041268644784351010497818179758334399774566693302975715253680868349322945783661543444012109390796753316368646224473385493551959776211868508124173853146220498072369988662598365737</p>
+<p>r =
+7554447571265160138826769036234163274945140724778979915009852024745364483862510066425251491305987868229626094117437547971483604358422085703908125935180533</p>
+<p>d =
+101985344200009891162621238301457902327130889519486305921303529965809795092552155000675574294868973653091733390024027051635945224775240336861956431150596823874553394527629780608016246850565741640968516986406244424459268316383289944793625444505084150632372055950924768521047738331629715715251235824065754062421</p>
+<p>r =
+13090253437847914840731392679465737677743543688720968701737801038380918192995977693627043510294249352189923663339210839369051093420312059888494671044789773</p>
+<p>d =
+67171614284124458946714888283433754454833311156850027624019964385885510153022868877446836813353331293804301964862035632895563688487758460098403813402145815716073796080437726175478667720783792797395845065060542295820029322704256388851730482630855413455182090758448749461531342234199684253932837821327563402710</p>
+</blockquote>
+<p>构造二元方程</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mod = <span class="number">103749960487318496535753127992597646596574197997346604494391500263407540367515232654243412375033616945349248057185120615722859917113041268644784351010497818179758334399774566693302975715253680868349322945783661543444012109390796753316368646224473385493551959776211868508124173853146220498072369988662598365737</span></span><br><span class="line">r1 = <span class="number">7554447571265160138826769036234163274945140724778979915009852024745364483862510066425251491305987868229626094117437547971483604358422085703908125935180533</span></span><br><span class="line">d1 = <span class="number">101985344200009891162621238301457902327130889519486305921303529965809795092552155000675574294868973653091733390024027051635945224775240336861956431150596823874553394527629780608016246850565741640968516986406244424459268316383289944793625444505084150632372055950924768521047738331629715715251235824065754062421</span></span><br><span class="line">r2 = <span class="number">13090253437847914840731392679465737677743543688720968701737801038380918192995977693627043510294249352189923663339210839369051093420312059888494671044789773</span></span><br><span class="line">d2 = <span class="number">67171614284124458946714888283433754454833311156850027624019964385885510153022868877446836813353331293804301964862035632895563688487758460098403813402145815716073796080437726175478667720783792797395845065060542295820029322704256388851730482630855413455182090758448749461531342234199684253932837821327563402710</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">small_roots</span>(<span class="params">f, bounds, m=<span class="number">1</span>, d=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> d:</span><br><span class="line">        d = f.degree()</span><br><span class="line"></span><br><span class="line">    R = f.base_ring()</span><br><span class="line">    N = R.cardinality()</span><br><span class="line"></span><br><span class="line">    f /= f.coefficients().pop(<span class="number">0</span>)</span><br><span class="line">    f = f.change_ring(ZZ)</span><br><span class="line"></span><br><span class="line">    G = <span class="type">Sequence</span>([], f.parent())</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m + <span class="number">1</span>):</span><br><span class="line">        base = N ^ (m - i) * f ^ i</span><br><span class="line">        <span class="keyword">for</span> shifts <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(d), repeat=f.nvariables()):</span><br><span class="line">            g = base * prod(<span class="built_in">map</span>(power, f.variables(), shifts))</span><br><span class="line">            G.append(g)</span><br><span class="line"></span><br><span class="line">    B, monomials = G.coefficient_matrix()</span><br><span class="line">    monomials = vector(monomials)</span><br><span class="line"></span><br><span class="line">    factors = [monomial(*bounds) <span class="keyword">for</span> monomial <span class="keyword">in</span> monomials]</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, factor)</span><br><span class="line">    B = B.dense_matrix().LLL()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;LLL done&quot;</span>)</span><br><span class="line"></span><br><span class="line">    B = B.change_ring(QQ)</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, <span class="number">1</span> / factor)</span><br><span class="line"></span><br><span class="line">    H = <span class="type">Sequence</span>([], f.parent().change_ring(QQ))</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">filter</span>(<span class="literal">None</span>, B * monomials):</span><br><span class="line">        H.append(h)</span><br><span class="line">        I = H.ideal()</span><br><span class="line">        <span class="keyword">if</span> I.dimension() == -<span class="number">1</span>:</span><br><span class="line">            H.pop()</span><br><span class="line">        <span class="keyword">elif</span> I.dimension() == <span class="number">0</span>:</span><br><span class="line">            roots = []</span><br><span class="line">            <span class="keyword">for</span> root <span class="keyword">in</span> I.variety(ring=ZZ):</span><br><span class="line">                root = <span class="built_in">tuple</span>(R(root[var]) <span class="keyword">for</span> var <span class="keyword">in</span> f.variables())</span><br><span class="line">                roots.append(root)</span><br><span class="line">            <span class="keyword">return</span> roots</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">Fp.&lt;e1, e2&gt; = Zmod(mod)[]</span><br><span class="line">f = (d1 + e1) * (d2 + e2) * (r1 - r2) + e1 - e2 + d1 - d2</span><br><span class="line">roots = small_roots(f, (<span class="number">2</span> ** <span class="number">246</span>, <span class="number">2</span> ** <span class="number">246</span>))</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br><span class="line">e1, e2 = roots[<span class="number">0</span>]</span><br><span class="line">s1 = inverse_mod(ZZ(d1 + e1), mod) - r1</span><br><span class="line">s2 = inverse_mod(ZZ(d2 + e2), mod) - r2</span><br><span class="line"><span class="built_in">print</span>(s1 == s2)</span><br><span class="line"><span class="built_in">print</span>(s1)</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<blockquote>
+<p>LLL done</p>
+<p>[(110376508622719622460215737752126153337071479266224099409237079274751233023,
+105599366105793964194530868572953367123126433936636879204012605915941896157)]</p>
+<p>True</p>
+<p>53379746320881385658533052144390270941298506554594791554301088574708911821601622941503571564466589181259916168325928415646767240609719266256878030902014359933013735963354498961369838802171449182939387573660896489128177385885182722953047765671114102309583476608373333611398704410882862602499435963602566386559</p>
+</blockquote>
 ]]></content>
       <tags>
         <tag>crypto</tag>
@@ -16861,915 +16977,6 @@ H=\frac{B}{\mu}
       </tags>
   </entry>
   <entry>
-    <title>模式识别笔记</title>
-    <url>//pattern-recongnition-note2.html</url>
-    <content><![CDATA[<h1 id="模式识别">模式识别</h1>
-<h2 id="前言">前言</h2>
-<p>先验概率是可以通过训练集和先验知识易求得的，但类条件概率密度是难求的，主要的问题有两个：</p>
-<ol type="1">
-<li>很多情况下，已有的训练样本数总是显得太少；</li>
-<li>用于表示特征的向量 <span class="math inline">\(\boldsymbol{x}\)</span>
-的维数过大时，计算负担更大。</li>
-</ol>
-<p>这时候我们一般会像上一章所说的那样，譬如让 <span class="math inline">\(p(\boldsymbol{x}|\omega_j)\sim
-N(\boldsymbol{\mu}|\Sigma)\)</span>，即假设我们求类条件概率密度转化为求<strong>正态分布的参数</strong>，这种方式称作<strong>参数化</strong>，即使得类条件概率密度仅依赖于某些参数（例如在这里是均值和协方差矩阵）。</p>
-<p>也可以让类条件概率密度<strong>参数化</strong>为其他分布密度（例如泊松分布），但此时的问题就转化为——估计（计算）参数。</p>
-<p>而估计（计算）这些参数，主要有两种方式——最大似然估计和贝叶斯参数估计。</p>
-<h2 id="最大似然估计">最大似然估计</h2>
-<h3 id="基本原理">基本原理</h3>
-<p>假设我们有 <span class="math inline">\(c\)</span> 个样本集，<span class="math inline">\(D_1,D_2,\cdots,D_c\)</span>，而任意一个样本集所得到的类条件概率密度
-<span class="math inline">\(p(\boldsymbol{x}|\omega_j)\)</span>
-是互相独立的。在前言中，我们目前的问题是，知道 <span class="math inline">\(p(\boldsymbol{x}|\omega_j)\)</span>
-的形式，但未知其参数，最大似然估计中，将参数写作 <span class="math inline">\(\boldsymbol{\theta}\)</span>
-的形式，每个参数值记作 <span class="math inline">\(\theta_1,\theta_2,\cdots,\theta_p\)</span>（参数向量的维度与特征向量的维度不统一），通常可以写作
-<span class="math inline">\(p(\boldsymbol{x}|\omega_j,\boldsymbol{\theta_j})\)</span>，这表示对于某一类条件概率密度的参数向量函数。</p>
-<blockquote>
-<p>例如已知 <span class="math inline">\(p(x|\omega_j)\sim
-N(\mu,\sigma^2)\)</span>，即一个一维特征类条件概率密度满足正态分布的形式，那么我们求解类条件概率密度问题就转化为求解正态分布的参数
-<span class="math inline">\((\mu,\sigma^2)\)</span>。</p>
-<p>那么我们把参数向量写作 <span class="math inline">\(\boldsymbol{\theta}_j=(\mu,\sigma^2)^T\)</span>，即对于
-<span class="math inline">\(\omega_j\)</span>
-的类条件概率密度的参数向量，写作 <span class="math inline">\(p(x|\omega_j,\boldsymbol{\theta_j})\)</span>，此时特征向量维度为
-1，参数向量维度为 2。</p>
-</blockquote>
-<p>为简化问题，设样本集 <span class="math inline">\(D\)</span> 中有
-<span class="math inline">\(n\)</span> 个样本 <span class="math inline">\(\boldsymbol{x}_1,\boldsymbol{x}_2,\cdots,\boldsymbol{x}_n\)</span>，把上式写作
-<span class="math inline">\(p(D|\boldsymbol{\theta})\)</span>，仅研究对于某个样本集的参数向量的计算，满足
-<span class="math display">\[
-p(D|\boldsymbol{\theta})=\prod^n_{k=1}p(\boldsymbol{x}_k|\boldsymbol{\theta})
-\]</span></p>
-<blockquote>
-<p>采用<strong>属性条件独立性假设</strong>，各个分布独立，其联合分布即各个分布的乘积。</p>
-</blockquote>
-<p>由于 <span class="math inline">\(D\)</span> 是已知的，故实际上 <span class="math inline">\(p(D|\boldsymbol{\theta})\)</span> 是一个关于 <span class="math inline">\(\boldsymbol{\theta}\)</span>
-的<strong>似然函数</strong>。</p>
-<figure>
-<img src="/pattern-recongnition-note2/最大似然估计图示.png" alt="最大似然估计图示">
-<figcaption aria-hidden="true">最大似然估计图示</figcaption>
-</figure>
-<p>定义，梯度算子 <span class="math display">\[
-\nabla_{\boldsymbol{\theta}}=\left[\begin{array}{c}
-\frac{\partial}{\partial \theta_{1}} \\
-\vdots \\
-\frac{\partial}{\partial \theta_{p}}
-\end{array}\right]
-\]</span> 定义对数似然函数 <span class="math display">\[
-\begin{align}
-l(\boldsymbol{\theta})
-&amp;=\ln{p(D|\boldsymbol{\theta})}\\
-&amp;=\sum^n_{k=1}\ln{p(\boldsymbol{x}_k|\boldsymbol{\theta})}
-\end{align}
-\]</span></p>
-<blockquote>
-<p>这里主要是将乘积转化为求和，可以更好的运算。</p>
-</blockquote>
-<p>那么，记 <span class="math display">\[
-\hat{\boldsymbol{\theta}}=\arg{\max_{\boldsymbol{\theta}}{l(\boldsymbol{\theta})}}
-\]</span> 且 <span class="math display">\[
-\nabla_{\boldsymbol{\theta}}l=\sum^n_{k=1}\nabla_{\boldsymbol{\theta}}\sum^n_{k=1}\ln{p(\boldsymbol{x}_k|\boldsymbol{\theta})}
-\]</span> 我们得到最大似然估计值 <span class="math inline">\(\boldsymbol{\theta}\)</span> 的必然条件为 <span class="math display">\[
-\nabla_{\boldsymbol{\theta}}l=0
-\]</span></p>
-<blockquote>
-<p>根据此条件得到的 <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span>
-可能是局部极大值，或是拐点，需要讨论。类似于函数讨论最大值点。</p>
-</blockquote>
-<p>理论上来说，如果训练样本个数越多，其中的样本就越具有代表性，参数值也就越接近真实值。</p>
-<h3 id="正态分布boldsymbolmu-未知">正态分布：<span class="math inline">\(\boldsymbol{\mu}\)</span> 未知</h3>
-<p>根据上一篇文章，可以知道多维正态分布的对数似然函数为 <span class="math display">\[
-l(\boldsymbol{\mu})=-\frac{d}{2}\ln{2\pi}-\frac{1}{2}\ln{|\Sigma_i|}-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_i)^T\Sigma^{-1}_i(\boldsymbol{x}-\boldsymbol{\mu}_i)
-\]</span></p>
-<blockquote>
-<p>在这里 <span class="math inline">\(\boldsymbol{\theta}=\boldsymbol{\mu}\)</span>。</p>
-</blockquote>
-<p>求得 <span class="math display">\[
-\nabla_\boldsymbol{\mu}l=\Sigma^{-1}(\boldsymbol{x}_k-\boldsymbol{\mu})
-\]</span> 令 <span class="math display">\[
-\nabla_\boldsymbol{\mu}l=0
-\]</span> 求得 <span class="math display">\[
-\hat{\boldsymbol{\mu}}=\frac{1}{n}\sum^n_{k=1}\boldsymbol{x}_k
-\]</span> 显然最大似然估计的结果满足我们直觉所得。</p>
-<h3 id="正态分布musigma2-未知">正态分布：<span class="math inline">\((\mu,\sigma^2)\)</span> 未知</h3>
-<p>根据上一篇文章，可以知道一维正态分布的对数似然函数为 <span class="math display">\[
-l(\boldsymbol{\theta})=-\frac{1}{2}\ln{(2\pi\theta_2)}-\frac{1}{2\theta_2}(x_k-\theta_1)
-\]</span></p>
-<blockquote>
-<p>在这里 <span class="math inline">\(\boldsymbol{\theta}=(\mu,\sigma^2)^T\)</span>。</p>
-</blockquote>
-<p>求梯度可得 <span class="math display">\[
-\boldsymbol{\nabla}_{\theta}
-\mid=\boldsymbol{\nabla}_{\boldsymbol{\theta}} \ln p\left(x_{k} \mid
-\boldsymbol{\theta}\right)=\left[\begin{array}{c}
-\frac{1}{\theta_{2}}\left(x_{k}-\theta_{1}\right) \\
--\frac{1}{2 \theta_{2}}+\frac{\left(x_{k}-\theta_{1}\right)^{2}}{2
-\theta_{2}^{2}}
-\end{array}\right]
-\]</span> 易得 <span class="math display">\[
-\hat{\mu}=\frac{1}{n}\sum^n_{k=1}x_k\\
-\hat{\sigma^2}=\frac{1}{n}\sum^n_{k=1}(x_k-\hat{\mu})^2
-\]</span> 对于多元正态分布，我们也可以求得满足直觉的结果。</p>
-<h3 id="估计的偏差">估计的偏差</h3>
-]]></content>
-      <tags>
-        <tag>模式识别</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>模式识别笔记</title>
-    <url>//pattern-recongnition-note1.html</url>
-    <content><![CDATA[<h1 id="模式识别">模式识别</h1>
-<h2 id="贝叶斯决策论">贝叶斯决策论</h2>
-<h3 id="公式">公式</h3>
-<p>贝叶斯概率是由贝叶斯提出的一种“逆概”的概念，计算正向概率的方法对于当时的人们而言是十分轻易的，例如“假设容器中有N个白球，M个黑球，随机抽取一个球，抽取的是白球的概率是多少”。但一个自然而然的问题是与正向概率相反的，例如“随机抽取一个（多个）球，知道了抽取的概率，那么容器内黑白球的比例是多少”。</p>
-<p>这个问题是现实的，因为往往人们对一个事件进行评价的时候，无法掌握因，而只能知晓果，由果推因是人们常做的事情。</p>
-<h4 id="条件概率">条件概率</h4>
-<p>要理解<strong>贝叶斯公式</strong>首先需要了解<strong>条件概率</strong>，定义
-<span class="math inline">\(P(A|B)\)</span> 为在事件 <span class="math inline">\(B\)</span> 发生后，事件 <span class="math inline">\(A\)</span> 发生的概率。</p>
-<p>条件概率公式： <span class="math display">\[
-P(A|B)=\frac{P(AB)}{P(B)}
-\]</span> 其中 <span class="math inline">\(P(A|B)\)</span>
-是条件概率，<span class="math inline">\(P(AB)\)</span>
-是两个事件共同发生的概率，<span class="math inline">\(P(B)\)</span>
-是事件 <span class="math inline">\(B\)</span>
-作为独立事件单独发生的概率。</p>
-<p>例如掷骰子，掷出3点以上的概率为 <span class="math inline">\(P(\text{掷出3点以上})=1/2\)</span>，而掷出3点以上又为偶数的概率为
-<span class="math inline">\(P(\text{掷出3点以上又为偶数})=1/3\)</span>，那么我们可以计算得到已经掷出3点以上后，点数为偶数的概率为
-<span class="math display">\[
-P(\text{掷出3点以上}|\text{点数为偶数})=\frac{P(\text{掷出3点以上又为偶数})}{P(\text{掷出3点以上})}=2/3
-\]</span> 显然，符合我们通过古典概型计算得到的结果。</p>
-<h4 id="概率密度函数">概率密度函数</h4>
-<p>定义连续型随机变量的概率密度为 <span class="math display">\[
-F(x)=\int^\infty_{-\infty}f(t)\mathrm{d}t
-\]</span> 其中 <span class="math inline">\(F(x)\)</span> 为随机变量
-<span class="math inline">\(X\)</span> 的<strong>分布函数</strong>，则称
-<span class="math inline">\(f(x)\)</span> 为 <span class="math inline">\(X\)</span>
-的<strong>概率密度函数</strong>，简称<strong>概率密度</strong>或<strong>密度函数</strong>。</p>
-<p>而分布函数的定义为 <span class="math display">\[
-F(\xi)=P(X&lt;\xi)
-\]</span> 反之有 <span class="math display">\[
-f(x)=\frac{\mathrm{d}F(x)}{\mathrm{d}x}
-\]</span></p>
-<h4 id="全概率公式">全概率公式</h4>
-<p><span class="math display">\[
-P(B)=P(B|A)P(A)+P(B|\bar{A})P(\bar{A})
-\]</span></p>
-<p>用于求贝叶斯公式中的无条件概率 <span class="math inline">\(P(B)\)</span>，其中事件 <span class="math inline">\(\bar{A}\)</span> 代表事件 <span class="math inline">\(A\)</span> 不发生。</p>
-<p>完整公式有 <span class="math display">\[
-\begin{align*}
-P(B)&amp;=P(BA_1)+P(BA_2)+\cdots+P(BA_n)\\
-&amp;=P(B|A_{1}) P(A_{1})+P(B|A_{2})P(A_{2})+\cdots+P(B|A_{n})P(A_{n})\\
-&amp;=\sum^n_{i=1}P(A_i)P(B|A_i)
-\end{align*}
-\]</span></p>
-<h4 id="贝叶斯公式">贝叶斯公式</h4>
-<p>通过条件概率公式变形，可以得到 <span class="math display">\[
-P(AB)=P(A)P(B|A)=P(B)P(A|B)
-\]</span> 整理可得贝叶斯公式 <span class="math display">\[
-P(A|B)=P(A)\frac{P(B|A)}{P(B)}
-\]</span> 其中我们把 <span class="math inline">\(P(A)\)</span>
-称作<strong>先验概率</strong>，即事件 <span class="math inline">\(A\)</span>
-发生的概率，称为<strong>先验</strong>是因为该概率并不考虑事件 <span class="math inline">\(B\)</span> 的影响，即在事件 <span class="math inline">\(B\)</span> 发生前，对事件 <span class="math inline">\(A\)</span> 概率的一个评估。</p>
-<p><span class="math inline">\(P(A|B)\)</span>
-称作<strong>后验概率</strong>，即事件 <span class="math inline">\(B\)</span> 发生后，事件 <span class="math inline">\(A\)</span> 发生的概率，也是对事件 <span class="math inline">\(A\)</span> 概率的重新评估。</p>
-<p>而因子 <span class="math inline">\(P(B|A)/P(B)\)</span>
-称作<strong>可能性函数</strong>（likelihood），也是一个<strong>调整因子</strong>，使得预估概率更加接近真实概率。（<span class="math inline">\(P(B)\)</span> 也称作证据概率（evidence
-probability））</p>
-<blockquote>
-<p><span class="math inline">\(P(B)\)</span> 可用全概率公式求解。</p>
-</blockquote>
-<p>故贝叶斯公式可以表达为：**后验概率=先验概率*可能性函数**</p>
-<p>根据<strong>可能性函数</strong>的公式，我们可以知道：</p>
-<blockquote>
-<p>当“<strong>可能性函数</strong>&gt;1”时，<strong>先验概率</strong>被增强，事件
-<span class="math inline">\(A\)</span> 发生的概率增大；</p>
-<p>当“<strong>可能性函数</strong>=1”时，意味着事件 <span class="math inline">\(B\)</span> 无助于判断事件 <span class="math inline">\(A\)</span> 发生的概率；</p>
-<p>当“<strong>可能性函数</strong>&lt;1”时，<strong>先验概率</strong>被削弱，事件
-<span class="math inline">\(A\)</span> 发生的概率减小。</p>
-</blockquote>
-<p>贝叶斯公式的意义在于帮助我们在有限信息的情况下，尽量得到客观概率的近似值（先验概率由我们主观估计，通过可能性函数进行修正我们的先验概率得到后验概率，即客观概率的近似值）。</p>
-<h4 id="实际应用">实际应用</h4>
-<p>已知两个一模一样的容器，容器 <span class="math inline">\(A_1\)</span>
-中有 30 个白球和 10 个黑球，而容器 <span class="math inline">\(A_2\)</span> 中有 20 个白球和 20
-个黑球，现在从中随机摸出一个球是白球，请问这个白球来自一号容器的概率是多少？</p>
-<p>我们可以列出下面一个表：</p>
-<table>
-<thead>
-<tr class="header">
-<th>容器/分类</th>
-<th><span class="math inline">\(A_1\)</span></th>
-<th><span class="math inline">\(A_2\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>白球</td>
-<td>30</td>
-<td>20</td>
-</tr>
-<tr class="even">
-<td>黑球</td>
-<td>10</td>
-<td>20</td>
-</tr>
-</tbody>
-</table>
-<p>可以知道先验概率 <span class="math inline">\(P(A_1)=P(A_2)=0.5\)</span>（不受摸出来的球的影响下，球来自哪个容器的概率）</p>
-<p>假定事件 <span class="math inline">\(B\)</span> 为摸出白球，有 <span class="math inline">\(P(B)=(30+20)/80=5/8\)</span></p>
-<p>而已知在容器 <span class="math inline">\(A_1\)</span>
-中摸出白球的概率为 <span class="math inline">\(P(B|A_1)=30/40=3/4\)</span></p>
-<p>那么我们要求的后验概率 <span class="math inline">\(P(A_1|B)=P(A_1)P(B|A_1)/P(B)=3/5\)</span>，即在抽取的球为白球时，球来自容器
-<span class="math inline">\(A_1\)</span> 的概率为 0.6。</p>
-<p>其中可能性函数 <span class="math inline">\(P(B|A_1)/P(B)=1.2\)</span>，即先验概率<strong>被增强</strong>了。</p>
-<p>举个更具体的例子，因为艾滋病潜伏期很长，所以即便感染了也可能在很长的一段时间，身体没有任何感觉，所以艾滋病检测的假阳性会导致被测人非常大的心理压力。</p>
-<p><strong>你可能会觉得，检测准确率都99%了，误测几乎可以忽略不计了吧？所以你觉得这人肯定没有患艾滋病了对不对？</strong></p>
-<p>让我们用贝叶斯定理算一下，就会发现你的直觉是错误的。</p>
-<p>假设某种疾病的发病率是0.001，即1000人中会有1个人得病。现在有一种试剂可以检验患者是否得病，它的准确率是0.99，即在患者确实得病的情况下，它有99%的可能呈现阳性。它的误报率是5%，即在患者没有得病的情况下，它有5%的可能呈现阳性。</p>
-<p>现在有一个病人的检验结果为阳性，请问他确实得病的可能性有多大？</p>
-<p>病人的检验结果为阳性（新的信息）记为事件 <span class="math inline">\(B\)</span>，他得病记为事件 <span class="math inline">\(A\)</span>。</p>
-<p>那么要求的问题就是 <span class="math inline">\(P(A|B)\)</span>，也就是病人的检验结果为阳性 <span class="math inline">\(P(B)\)</span>，他确实得病的概率 <span class="math inline">\(P(A)\)</span>。</p>
-<p>已知信息为这种疾病的发病率是 0.001，即 <span class="math inline">\(P(A)=0.001\)</span></p>
-<p>试剂可以检验患者是否得病，准确率是
-0.99，也就是在患者确实得病的情况下<span class="math inline">\(P(A)\)</span>，它有 99% 的可能呈现阳性 <span class="math inline">\(P(B)\)</span>，所以 <span class="math inline">\(P(B|A)=0.99\)</span></p>
-<p>试剂的误报率是 5%，即在患者没有得病的情况下，它有 5%
-的可能呈现阳性。得病我们记为事件 <span class="math inline">\(A\)</span>，那么没有得病就是事件 <span class="math inline">\(A\)</span> 的反面，记为 <span class="math inline">\(\bar{A}\)</span>，所以这句话就可以表示为 <span class="math inline">\(P(B|\bar{A})=0.05\)</span></p>
-<p>可能性函数为 <span class="math inline">\(P(B|A)/P(B)=19.4346\)</span>，可以知道先验概率被增强，得到后验概率为
-<span class="math inline">\(P(A|B)=0.0194\)</span>，即筛查的准确率都到了
-99% 了，通过体检结果有病（阳性）确实得病的概率也只有 1.94%。</p>
-<p>由于发艾滋病实在是小概率事件，所以当我们对一大群人做艾滋病筛查时，虽说准确率有
-99%，但仍然会有相当一部分人因为误测而被诊断为艾滋病，这一部分人在人群中的数目甚至比真正艾滋病患者的数目还要高。</p>
-<p>造成这么不靠谱的误诊的原因，是无差别地给一大群人做筛查，而不论测量准确率有多高，因为正常人的数目远大于实际的患者，所以误测造成的干扰就非常大了。</p>
-<p>根据贝叶斯定理，我们知道提高先验概率，可以有效的提高后验概率。</p>
-<p>所以解决的办法倒也很简单，就是先锁定可疑的人群，比如10000人中检查出现问题的那10个人，再独立重复检测一次。因为正常人连续两次体检都出现误测的概率极低，这时筛选出真正患者的准确率就很高了，这也是为什么许多疾病的检测，往往还要送交独立机构多次检查的原因。</p>
-<p>这也是为什么艾滋病检测第一次呈阳性的人，还需要做第二次检测，第二次依然是阳性的还需要送交国家实验室做第三次检测。</p>
-<h3 id="决策论">决策论</h3>
-<h4 id="定义">定义</h4>
-<p>我们首先定义 <span class="math inline">\(\boldsymbol{x}\)</span>
-为<strong>特征向量</strong>，假定 <span class="math inline">\(\boldsymbol{x}\)</span>
-是一个连续随机变量，其分布取决于类别状态，表示为 <span class="math inline">\(p(\boldsymbol{x}|\omega)\)</span>，将该概率密度函数称作<strong>类条件概率密度</strong>（class-conditional
-probability），即<strong>类别状态为 <span class="math inline">\(\omega\)</span> 时 <span class="math inline">\(\boldsymbol{x}\)</span>
-的概率密度函数</strong>，又叫做<strong>似然</strong>（likelihood）。通俗理解为<strong>分类作为概率密度函数的条件</strong>。</p>
-<p>其中 <span class="math inline">\(p(\boldsymbol{x})\)</span>
-为<strong>证据概率</strong>（evidence probability），<span class="math inline">\(P(\omega_i|\boldsymbol{x})\)</span>
-为<strong>后验概率</strong>（posterior probability），而 <span class="math inline">\(P(\omega_i)\)</span>
-为<strong>先验概率</strong>（prior probability）。</p>
-<h4 id="贝叶斯分类">贝叶斯分类</h4>
-<p>对一个模式（pattern）进行分类，只根据<strong>先验概率</strong>进行决策是不现实的，这会导致分类永远只有一个结果。</p>
-<p>例如取 <span class="math inline">\(\omega_1,\omega_2\)</span>
-为鲈鱼和鲑鱼，可知鲑鱼要比鲈鱼稀有，仅从客观概率上来说，<span class="math inline">\(P(\omega_1)&gt;P(\omega_2)\)</span>，此时无论如何判决都会选取
-<span class="math inline">\(\omega_1\)</span> 而非 <span class="math inline">\(\omega_2\)</span>。</p>
-<p>为了更好的分类，我们需要引入模式的特征（feature），结合特征进行分类。</p>
-<p>而贝叶斯分类就是结合特征和贝叶斯概率的结果进行决策。</p>
-<p>根据贝叶斯公式： <span class="math display">\[
-P(\omega_j|\boldsymbol{x})=\frac{p(\boldsymbol{x}|\omega_j)P(\omega_j)}{p(\boldsymbol{x})}
-\]</span> 我们可以通过观测 <span class="math inline">\(\boldsymbol{x}\)</span> 的值将先验概率 <span class="math inline">\(P(\omega_j)\)</span>
-转化为后验概率，即假设特征向量已知的条件下，类别为 <span class="math inline">\(\omega_j\)</span> 的概率。</p>
-<p>其中 <span class="math inline">\(p(\boldsymbol{x})\)</span> 和 <span class="math inline">\(p(\boldsymbol{x}|\omega_j)\)</span>
-是可以通过已知的部分信息学习得知的。</p>
-<p>例如取特征向量 <span class="math inline">\(\boldsymbol{x}\)</span>
-为鱼的长度，我们可以通过样本（sample）计算其长度总的出现频率（证据概率密度，或者也可以使用全概率公式求解）和在类别为
-<span class="math inline">\(\omega_1,\omega_2\)</span>
-时长度的出现频率（类条件概率密度）。</p>
-<figure>
-<img src="/pattern-recongnition-note1/类条件概率密度.png" alt="类条件概率密度">
-<figcaption aria-hidden="true">类条件概率密度</figcaption>
-</figure>
-<p>此时我们的判决规则为：</p>
-<p>如果 <span class="math display">\[
-P(\omega_1|\boldsymbol{x})&gt;P(\omega_2|\boldsymbol{x})
-\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
-<p>正如贝叶斯概率的核心思想，我们通过先验概率（主观判断或客观事实）和已知信息（果或者似然）计算得到了后验概率（因或逆概）。</p>
-<blockquote>
-<p>需要分清的是，<span class="math inline">\(p(\boldsymbol{x}|\omega_j)\)</span>
-是训练/学习（training/learning）计算得到的，而 <span class="math inline">\(P(\omega_j|\boldsymbol{x})\)</span>
-是用来预测（predict）的，在模式识别中是两个阶段。</p>
-</blockquote>
-<h4 id="连续特征下的决策论">连续特征下的决策论</h4>
-<p>将以上想法进一步正式化，推广为如下 4 种形式：</p>
-<ul>
-<li>允许使用多于一个的特征</li>
-<li>允许多余两种类别状态的情形</li>
-<li>允许有其他行为而不仅仅是判定类别</li>
-</ul>
-<p>其中，我们定义：</p>
-<ul>
-<li>特征使用特征向量 <span class="math inline">\(\boldsymbol{x}\)</span>
-来描述多个特征</li>
-<li>集合 <span class="math inline">\(\Omega=\{\omega_1,\omega_2\,\cdots,\omega_c\}\)</span>
-为有限的 <span class="math inline">\(c\)</span> 个类别（state）集合</li>
-<li>集合 <span class="math inline">\(A=\{\alpha_1,\alpha_2,\cdots,\alpha_a\}\)</span>
-为有限的 <span class="math inline">\(a\)</span>
-个可能的行动（action）集合</li>
-</ul>
-<p>我们已知 <span class="math display">\[
-P(\omega_j|\boldsymbol{x})=\frac{p(\boldsymbol{x}|\omega_j)P(\omega_j)}{p(\boldsymbol{x})}
-\]</span> 此时证据因子 <span class="math inline">\(p(\boldsymbol{x})\)</span> 为 <span class="math display">\[
-p(\boldsymbol{x})=\sum^c_{j=1}p(\boldsymbol{x}|\omega_j)P(\omega_j)
-\]</span> 对于简单化判决而言，判决规则是一个函数 <span class="math inline">\(\alpha(\boldsymbol{x})\)</span>，值域为集合 <span class="math inline">\(\Omega\)</span>。</p>
-<h4 id="最小误差概率决策">最小误差概率决策</h4>
-<p>对于二分类问题，如果有某个观测值使得 <span class="math inline">\(P(\omega_1|\boldsymbol{x})&gt;P(\omega_2|\boldsymbol{x})\)</span>，那么我们自然的可以判断该模式来自于分类
-<span class="math inline">\(\omega_1\)</span>。</p>
-<p>例如说，当先验概率 <span class="math inline">\(P(\omega_1)=2/3,P(\omega_2)=1/3\)</span>，则后验概率
-<span class="math inline">\(P(\omega_1 | \boldsymbol{x})\)</span> 和
-<span class="math inline">\(P(\omega_2|\boldsymbol{x})\)</span>
-如图所示</p>
-<figure>
-<img src="/pattern-recongnition-note1/类条件概率密度.jpg" alt="类条件概率密度">
-<figcaption aria-hidden="true">类条件概率密度</figcaption>
-</figure>
-<p>此时假定一个模式具有特征值 <span class="math inline">\(x=14\)</span>，那么它属于 <span class="math inline">\(\omega_2\)</span> 类的概率约为 0.08，属于 <span class="math inline">\(\omega_1\)</span> 类的概率约为
-0.92，在此次后验概率之和为
-1.0，此时为<strong>最小化误差概率</strong>，故选择此模式属于 <span class="math inline">\(\omega_1\)</span>。</p>
-<p>同时该决策下的误差概率为： <span class="math display">\[
-P(error|\boldsymbol{x})=1-P(\omega_1|\boldsymbol{x})
-\]</span> 即有： <span class="math display">\[
-P(error|\boldsymbol{x})=\begin{cases}
-P(\omega_1|\boldsymbol{x})\text{,choose }\omega_2\\
-P(\omega_2|\boldsymbol{x})\text{,choose }\omega_1
-\end{cases}
-\]</span> 可以验证，这种规则将平均误差概率最小化。</p>
-<blockquote>
-<p>平均误差概率表示为 <span class="math display">\[
-P(error)=\int_{-\infty}^{\infty} P(error,x)\mathrm{d}
-x=\int_{-\infty}^{\infty} P(error|x) p(x)\mathrm{d}x
-\]</span></p>
-</blockquote>
-<p>上述决策等价于，</p>
-<p>若 <span class="math inline">\(P(\boldsymbol{x}|\omega_1)P(\omega_1)&gt;P(\boldsymbol{x}|\omega_2)P(\omega_2)\)</span>，则决策为
-<span class="math inline">\(\boldsymbol{x}\in\omega_1\)</span>；</p>
-<p>若 <span class="math inline">\(P(\boldsymbol{x}|\omega_1)P(\omega_1)&lt;P(\boldsymbol{x}|\omega_2)P(\omega_2)\)</span>，则决策为
-<span class="math inline">\(\boldsymbol{x}\in\omega_2\)</span>。</p>
-<p>即 <span class="math display">\[
-\frac{P(\boldsymbol{x}|\omega_1)}{P(\boldsymbol{x}|\omega_2)}&gt;\frac{P(\omega_2)}{P(\omega_1)}
-\]</span> 判决为 <span class="math inline">\(\omega_1\)</span>。</p>
-<blockquote>
-<p>其中， <span class="math display">\[
-\frac{P(\boldsymbol{x}|\omega_1)}{P(\boldsymbol{x}|\omega_2)}
-\]</span> 称作<strong>似然比</strong>。</p>
-</blockquote>
-<p>实例如下</p>
-<blockquote>
-<p>某地区细胞识别中正常（<span class="math inline">\(\omega_1\)</span>）和异常（<span class="math inline">\(\omega_2\)</span>）两类的先验概率为 <span class="math inline">\(P(\omega_1)=0.9,P(\omega_2)=0.1\)</span>，且知道两类的类概率密度函数
-<span class="math inline">\(p(x|\omega_1),p(x|\omega_2)\)</span>。</p>
-<p>先有一细胞特征值为 <span class="math inline">\(x\)</span>，查询类概率密度函数曲线有 <span class="math inline">\(P(x|\omega_1)=0.2,P(x|\omega_1)=0.4\)</span>。</p>
-<p>采用最小误差概率决策，得到 <span class="math display">\[
-P(x|\omega_1)/P(x|\omega_2)=1/2\\
-P(\omega_2)/P(\omega_1)=1/9
-\]</span> 显然似然比大于先验概率反比，故判决为 <span class="math inline">\(x\in \omega_1\)</span>，为正常细胞。</p>
-</blockquote>
-<h4 id="最小风险损失决策">最小风险（损失）决策</h4>
-<p>基于最小误差概率的贝叶斯决策，仅考虑了最小化错误概率，未考虑决策所带来的损失，这是与实际应用不相符的，例如灭火系统、乙肝诊断等，总会存在一定的误判损失。</p>
-<p>所以我们需要<strong>引入一个更一般的风险函数来替代误差概率</strong>。</p>
-<p>定义风险函数 <span class="math inline">\(\lambda(\alpha_i|\omega_j)\)</span> 描述类别状态为
-<span class="math inline">\(\omega_j\)</span> 时，采取行动 <span class="math inline">\(\alpha_i\)</span> 的风险（对风险的一个评估）。</p>
-<blockquote>
-<p>或称为损失函数。</p>
-</blockquote>
-<p>定义总风险 <span class="math inline">\(R\)</span>
-是与某一给定的判决规则相关的预期损失，且 <span class="math inline">\(R(\alpha_i|\boldsymbol{x})\)</span> 是和行动 <span class="math inline">\(\alpha_i\)</span> 相关的条件风险，总风险则表示为
-<span class="math display">\[
-R=\int
-R(\alpha(\boldsymbol{x})|\boldsymbol{x})p(\boldsymbol{x})\mathrm{d}\boldsymbol{x}
-\]</span></p>
-<blockquote>
-<p><span class="math inline">\(\mathrm{d}\boldsymbol{x}\)</span>
-说明积分是在整个特征空间进行的。</p>
-</blockquote>
-<p>可知，如果使得 <span class="math inline">\(R(\alpha_i|\boldsymbol{x})\)</span> 对每个 <span class="math inline">\(\boldsymbol{x}\)</span> 尽可能小，那么总风险 <span class="math inline">\(R\)</span> 将被最小化。</p>
-<p>故为了<strong>最小化总风险</strong>，对行动集合 <span class="math inline">\(A\)</span> 计算条件风险 <span class="math display">\[
-R(\alpha_i|\boldsymbol{x})=\sum^c_{j=1}\lambda(\alpha_i|\omega_j)P(\omega_j|\boldsymbol{x})
-\]</span> 并选择行动 <span class="math inline">\(\alpha_i\)</span> 使得
-<span class="math inline">\(R(\alpha_i|\boldsymbol{x})\)</span>
-最小化。</p>
-<p>最小化后的总风险值称为<strong>贝叶斯风险</strong>，记作 <span class="math inline">\(R^*\)</span>。</p>
-<p>对于二分类问题，可以将条件风险简化为 <span class="math display">\[
-R(\alpha_1|\boldsymbol{x})=\lambda_{11}P(\omega_1|\boldsymbol{x})+\lambda_{12}P(\omega_2|\boldsymbol{x})\\
-R(\alpha_2|\boldsymbol{x})=\lambda_{21}P(\omega_1|\boldsymbol{x})+\lambda_{22}P(\omega_2|\boldsymbol{x})
-\]</span></p>
-<blockquote>
-<p><span class="math inline">\(\lambda_{ij}\)</span> 为简记 <span class="math inline">\(\lambda(\alpha_i|\omega_j)\)</span></p>
-</blockquote>
-<p>判别的基本规则为当 <span class="math inline">\(R(\alpha_1|\boldsymbol{x})&lt;R(\alpha_2|\boldsymbol{x})\)</span>
-时，则判为 <span class="math inline">\(\omega_1\)</span>（描述为当决策为
-<span class="math inline">\(\omega_1\)</span> 的损失小于决策为 <span class="math inline">\(\omega_2\)</span> 的损失时，判别为 <span class="math inline">\(\omega_1\)</span>）。</p>
-<p>化简为<strong>用后验概率的形式描述该公式</strong>：</p>
-<p>如果 <span class="math display">\[
-(\lambda_{21}-\lambda_{11})P(\omega_1|\boldsymbol{x})&gt;(\lambda_{12}-\lambda_{22})P(\omega_2|\boldsymbol{x})
-\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
-<p>利用贝叶斯公式，改为<strong>用先验概率描述规则</strong>，则变更为：</p>
-<p>如果 <span class="math display">\[
-(\lambda_{21}-\lambda_{11})p(\boldsymbol{x}|\omega_1)P(\omega_1)&gt;(\lambda_{12}-\lambda_{22})p(\boldsymbol{x}|\omega_2)P(\omega_2)
-\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
-<p>另一种表示方式是，合理假设 <span class="math inline">\(\lambda_{21}&gt;\lambda_{11}\)</span>
-的条件下：</p>
-<p>如果 <span class="math display">\[
-\frac{p(\boldsymbol{x}|\omega_1)}{p(\boldsymbol{x}|\omega_2)}&gt;\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}\frac{P(\omega_2)}{P(\omega_1)}
-\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
-<blockquote>
-<p>左式即为似然比。</p>
-</blockquote>
-<p>这种判决规则的优势是，只依赖于 <span class="math inline">\(\boldsymbol{x}\)</span> 的概率密度。</p>
-<p>作出似然比函数，可以得知该种决策的判别边界与右式相关，当似然比大于判别边界时，判决为
-<span class="math inline">\(\omega_1\)</span>。</p>
-<figure>
-<img src="/pattern-recongnition-note1/最小风险决策.jpg" alt="最小风险决策">
-<figcaption aria-hidden="true">最小风险决策</figcaption>
-</figure>
-<p>为方便判决，如上图，会选取一个阈值 <span class="math inline">\(\theta_m\)</span> 使得 <span class="math display">\[
-\frac{p(\boldsymbol{x}|\omega_1)}{p(\boldsymbol{x}|\omega_2)}&gt;\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}\frac{P(\omega_2)}{P(\omega_1)}&gt;\theta_m
-\]</span> 即为判决边界，如图虚线所示。</p>
-<p>同时由公式可知，当 <span class="math inline">\(\lambda_{12}-\lambda_{22}=\lambda_{21}-\lambda_{11}\)</span>
-时，无论选择最小误差概率决策还是最小风险决策都是<strong>等价</strong>的。</p>
-<p>实例如下</p>
-<blockquote>
-<p>同最小误差概率决策中的实例，但此时给出损失表如下</p>
-<figure>
-<img src="/pattern-recongnition-note1/损失表.jpg" alt="损失表">
-<figcaption aria-hidden="true">损失表</figcaption>
-</figure>
-<p>似然比为 0.5，计算损失比 <span class="math display">\[
-\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}=5
-\]</span> 显然 <span class="math display">\[
-\frac{1}{2}&lt;5\times\frac{1}{9}
-\]</span> 此时如果判决为 <span class="math inline">\(\omega_1\)</span>
-风险（损失）更大，故此时判决为 <span class="math inline">\(x\in
-\omega_2\)</span>，为异常细胞。</p>
-</blockquote>
-<h4 id="最小误差率决策">最小误差率决策</h4>
-<p>如果要避免误判，自然要寻找一种判决规则使误判概率（即<strong>误差率</strong>）最小化。</p>
-<p>这种情况下的损失函数就是所谓的“对称损失”或者“0-1 损失”函数： <span class="math display">\[
-\lambda(\alpha_i|\omega_j)=\begin{cases}
-0,i=j\\
-1,i\neq j
-\end{cases}
-\]</span> 其中要求 <span class="math inline">\(1&lt;i,j&lt;c\)</span>。</p>
-<p>从此简化模型可知，所有误判都是等代价的。</p>
-<p>这个损失函数对应的<strong>条件风险</strong>就是<strong>平均误差概率</strong>，它的条件风险为：
-<span class="math display">\[
-\begin{align}
-R(\alpha_i|\boldsymbol{x})&amp;=\sum^c_{j=1}\lambda(\alpha_i|\omega_j)P(\omega_j|\boldsymbol{x})\\
-&amp;=\sum_{i\neq j}P(\omega_j|\boldsymbol{x})\\
-&amp;=1-P(\omega_i|\boldsymbol{x})
-\end{align}
-\]</span> 其中 <span class="math inline">\(P(\omega_i|\boldsymbol{x})\)</span> 是行为 <span class="math inline">\(\alpha_i\)</span> 分类正确的条件概率。</p>
-<p>这种情况下我们想<strong>最小化平均误差概率</strong>只要选取 <span class="math inline">\(i\)</span> 使得后验概率 <span class="math inline">\(P(\omega_i|\boldsymbol{x})\)</span> 最大即可。</p>
-<blockquote>
-<p>或者说是<strong>最大化后验概率</strong>。</p>
-</blockquote>
-<p>即有决策规则，对于任意 <span class="math inline">\(j\neq
-i\)</span>，满足 <span class="math display">\[
-P(\omega_1|\boldsymbol{x})&gt;P(\omega_j|\boldsymbol{x})
-\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
-<h4 id="实际应用-1">实际应用</h4>
-<p>某人前往中高风险地区为特征 <span class="math inline">\(x\)</span>，有表</p>
-<table>
-<colgroup>
-<col style="width: 22%">
-<col style="width: 29%">
-<col style="width: 22%">
-<col style="width: 25%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>分类</th>
-<th><span class="math inline">\(\alpha_1=\text{主动上报，自我隔离}\)</span></th>
-<th><span class="math inline">\(\alpha_2=\text{做核酸检测}\)</span></th>
-<th><span class="math inline">\(\alpha_1=\text{不上报，不做为}\)</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(\omega_1=\text{感染新冠}\)</span></td>
-<td>5</td>
-<td>50</td>
-<td>10000</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(\omega_2=\text{未感染新冠}\)</span></td>
-<td>60</td>
-<td>3</td>
-<td>0</td>
-</tr>
-</tbody>
-</table>
-<p>知道 <span class="math inline">\(P(\omega_1|x)=0.01\)</span>，<span class="math inline">\(P(\omega_2|x)=0.99\)</span></p>
-<p>可以计算 <span class="math display">\[
-\begin{align}
-R(\alpha_1|x)&amp;=\sum^2_{j=1}\lambda_{1j}P(\omega_j|x)\\
-&amp;=\lambda_{11}P(\omega_1|x)+\lambda_{12}P(\omega_2|x)\\
-&amp;=5\times0.01+60\times0.99\\
-&amp;=59.45\\
-R(\alpha_2|x)&amp;=3.47\\
-R(\alpha_3|x)&amp;=100\\
-\end{align}
-\]</span>
-故可以得知，前往高风险地区时应采取的决策是做核酸（因为做核酸所导致的损失最低）。</p>
-<h3 id="分类器判别函数与判别区域">分类器、判别函数与判别区域</h3>
-<h4 id="判别函数">判别函数</h4>
-<p>用后验概率与风险函数决策的方式，被称为<strong>模式分类器</strong>，有很多种方式来表示模式分类器，其中用的最多的是使用<strong>判别函数</strong>
-<span class="math inline">\(g(\boldsymbol{x})\)</span>。</p>
-<blockquote>
-<p>使用单增函数嵌套的判决结果不变，即 <span class="math inline">\(f(g(\boldsymbol{x}))\)</span> 对判决无影响，其中
-<span class="math inline">\(f(\boldsymbol{x})\)</span> 为单增函数</p>
-</blockquote>
-<p>如果对于定 <span class="math inline">\(i\)</span> 有任意的 <span class="math inline">\(j\)</span> 满足 <span class="math display">\[
-g_i(\boldsymbol{x})&gt;g_j(\boldsymbol{x})
-\]</span> 那么判决为 <span class="math inline">\(\omega_i\)</span>。</p>
-<p>此分类器可视为一个<strong>计算 <span class="math inline">\(c\)</span>
-个判别函数并选取最大判别值对应的类型</strong>的网络。</p>
-<figure>
-<img src="/pattern-recongnition-note1/判别网络.png" alt="判别网络">
-<figcaption aria-hidden="true">判别网络</figcaption>
-</figure>
-<p>简单的判别函数可以表示为后验概率或者条件风险的负值，这样能让判别函数与最小的条件风险对应，判别函数的选择不是唯一的。</p>
-<p>以下是常用的<strong>最小误差概率决策判别函数</strong>： <span class="math display">\[
-g_i(x)=P(\omega_i|\boldsymbol{x})\\
-g_i(x)=p(\boldsymbol{x}|\omega_i)P(\omega_i)\\
-g_i(x)=\ln p(\boldsymbol{x}|\omega_i)+\ln P(\omega_i)
-\]</span> 还有<strong>最小风险决策判别函数</strong>： <span class="math display">\[
-g_i(x)=-R(\alpha_i|\boldsymbol{x})
-\]</span> 判决规则是相同的，每种判决规则均是将特征空间分成 <span class="math inline">\(c\)</span> 个判决区域，<span class="math inline">\(R_1,R_2,\cdots,R_c\)</span>。</p>
-<p>如果对于所有的 <span class="math inline">\(j\neq i\)</span> 有 <span class="math inline">\(g_i(\boldsymbol{x})&gt;g_j(\boldsymbol{x})\)</span>，那么
-<span class="math inline">\(\boldsymbol{x}_i\)</span> 属于 <span class="math inline">\(R_i\)</span>。</p>
-<p>此时该区域由判决边界来分割，其判决边界即判决空间中使判别函数值最大的曲面。</p>
-<figure>
-<img src="/pattern-recongnition-note1/判决区域.png" alt="判决区域">
-<figcaption aria-hidden="true">判决区域</figcaption>
-</figure>
-<h4 id="二类分类器">二类分类器</h4>
-<p>在该种情况下，使用判别函数 <span class="math display">\[
-g(\boldsymbol{x})=g_1(\boldsymbol{x})-g_2(\boldsymbol{x})
-\]</span> 判决规则为：</p>
-<p>如果 <span class="math display">\[
-g(\boldsymbol{x})&gt;0
-\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>，否则判决为 <span class="math inline">\(\omega_2\)</span>。</p>
-<p>一般为简化会多使用以下形式： <span class="math display">\[
-g(\boldsymbol{x})=P(\omega_1|\boldsymbol{x})-P(\omega_2|\boldsymbol{x})\\
-g(\boldsymbol{x})=\ln\frac{p(\boldsymbol{x}|\omega_1)}{p(\boldsymbol{x}|\omega_2)}+\ln\frac{P(\omega_1)}{P(\omega_2)}
-\]</span></p>
-<h3 id="朴素贝叶斯分类器">朴素贝叶斯分类器</h3>
-<p>我们知道贝叶斯公式如下 <span class="math display">\[
-P(\omega|\boldsymbol{x})=\frac{P(\boldsymbol{x}|\omega)P(\omega)}{P(\boldsymbol{x})}
-\]</span> 从中可以知道，估计后验概率 <span class="math inline">\(P(\omega_j|\boldsymbol{x})\)</span>
-的主要困难为：类条件概率 <span class="math inline">\(P(\boldsymbol{x}|\omega_j)\)</span>
-是所有属性上的联合概率，难以从有限的训练样本估计获得。</p>
-<p>故采用“属性条件独立性假设”，即<strong>每个属性独立地对分类结果发生影响</strong>。</p>
-<blockquote>
-<p>即 <span class="math inline">\(P(AB)=P(A)P(B)\)</span></p>
-</blockquote>
-<p>基于属性条件独立性假设，可以将贝叶斯公式重写为 <span class="math display">\[
-P(\omega|\boldsymbol{x})=\frac{P(\boldsymbol{x}|\omega)P(\omega)}{P(\boldsymbol{x})}=\frac{P(\omega)}{P(\boldsymbol{x})}\prod^d_{i=1}P(x_i|\omega)
-\]</span> 其中，<span class="math inline">\(d\)</span>
-为维度（属性数目），<span class="math inline">\(x_i\)</span> 为 <span class="math inline">\(\boldsymbol{x}\)</span> 在第 <span class="math inline">\(i\)</span> 个维度（属性）上的取值。</p>
-<p>其中条件风险函数为 <span class="math display">\[
-\begin{align}
-R(\alpha_i|\boldsymbol{x})&amp;=\sum^c_{j=1}\lambda(\alpha_i|\omega_j)P(\omega_j|\boldsymbol{x})\\
-&amp;=\sum_{i\neq j}P(\omega_j|\boldsymbol{x})\\
-&amp;=1-P(\omega_i|\boldsymbol{x})
-\end{align}
-\]</span>
-选择<strong>最小误差率决策</strong>，那么得到朴素贝叶斯分类的判别函数：
-<span class="math display">\[
-h(\boldsymbol{x})_{nb}=\arg\max_{\omega\in
-\Omega}{P(\omega)\prod^d_{i=1}P(x_i|\omega)}
-\]</span> 即最大化后验概率。</p>
-<p>朴素贝叶斯分类器的训练器的<strong>训练过程</strong>就是基于训练集
-<span class="math inline">\(D\)</span> 估计<strong>类先验概率</strong>
-<span class="math inline">\(P(\omega)\)</span>
-并<strong>为每个属性估计条件概率</strong> <span class="math inline">\(P(x_i|\omega)\)</span>。</p>
-<p>令 <span class="math inline">\(D_\omega\)</span> 表示训练集 <span class="math inline">\(D\)</span> 中 <span class="math inline">\(\omega\)</span>
-类样本组合的集合，若有重组的<strong>独立同分布</strong>样本，则可以容易估计出<strong>类先验概率</strong>：
-<span class="math display">\[
-P(\omega)=\frac{|D_\omega|}{D}
-\]</span> 对离散属性而言，令 <span class="math inline">\(D_{\omega,x_i}\)</span> 表示 <span class="math inline">\(D_\omega\)</span> 中在第 <span class="math inline">\(i\)</span> 个属性上取值为 <span class="math inline">\(x_i\)</span> 的样本组成的集合，则条件概率 <span class="math inline">\(P(x_i|\omega)\)</span> 可估计为 <span class="math display">\[
-P(x_i|\omega)=\frac{|D_{\omega,x_i}|}{|D_\omega|}
-\]</span> 对于连续属性而言，可以考虑概率密度函数，假设 <span class="math inline">\(p(x_i|\omega)\sim
-N(\mu_{\omega,i},\sigma_{\omega,i}^2)\)</span>，则 <span class="math display">\[
-P(x_i|\omega)=p(x_i|\omega)
-\]</span> 此时 <span class="math inline">\(p(\boldsymbol{x}|\omega)\sim
-N(\boldsymbol{\mu}_\omega,\boldsymbol{\sigma}_\omega^2)\)</span>，则参数的极大似然估计为
-<span class="math display">\[
-\boldsymbol{\mu}_\omega=\frac{1}{|D_\omega|}\sum_{\boldsymbol{x}\in
-D_\omega}\boldsymbol{x}\\
-\boldsymbol{\sigma}_\omega^2=\frac{1}{|D_\omega|}\sum_{\boldsymbol{x}\in
-D_\omega}(\boldsymbol{x}-\boldsymbol{\mu}_\omega)^2\\
-\]</span></p>
-<blockquote>
-<p><span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu}_\omega)^2\)</span>
-表示向量积，即 <span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu}_\omega)(\boldsymbol{x}-\boldsymbol{\mu}_\omega)^T\)</span></p>
-</blockquote>
-<h3 id="正态分布下的贝叶斯分类">正态分布下的贝叶斯分类</h3>
-<p>朴素贝叶斯分类过于简单，实际情况中无法满足属性条件独立性假设，往往属性之间具有相关性。</p>
-<h4 id="协方差">协方差</h4>
-<p>在统计学中，<strong>方差</strong>是用来度量<strong>单个随机变量的离散程度</strong>，而<strong>协方差</strong>一般用来刻画两个随机变量的相似程度（值越大越相似）。</p>
-<p>方差的计算公式如下 <span class="math display">\[
-\sigma^2_x=\frac{1}{n}\sum^n_{i=1}(x_i-\bar{x})^2
-\]</span> 其中，<span class="math inline">\(n\)</span>
-表示<strong>样本量</strong>，<span class="math inline">\(\bar{x}\)</span>
-表示这一组随机数据的<strong>均值</strong>。</p>
-<p>在此基础上，协方差的计算公式定义如下 <span class="math display">\[
-\sigma(x,y)=\frac{1}{n}\sum^n_{i=1}(x_i-\bar{x})(y_i-\bar{y})
-\]</span> 其中，<span class="math inline">\(\bar{x},\bar{y}\)</span>
-分别表示两个随机变量所对应的观测样本<strong>均值</strong>，由此可知，方差
-<span class="math inline">\(\sigma_x^2\)</span> 可视作随机变量 <span class="math inline">\(x\)</span> 关于其自身的协方差 <span class="math inline">\(\sigma(x,x)\)</span>。</p>
-<p>给定 <span class="math inline">\(d\)</span>
-组随机变量（特征向量）<span class="math inline">\(\boldsymbol{x}_k,k=1,2,\cdots,d\)</span>，则这些随机变量的方差为
-<span class="math display">\[
-\sigma(\boldsymbol{x}_k,\boldsymbol{x}_k)=\frac{1}{n}\sum^n_{i=1}(x_{ki}-\bar{x}_k)^2,k=1,2,\cdots,d
-\]</span> 其中 <span class="math inline">\(x_{ki}\)</span>
-代表特征向量的第 <span class="math inline">\(i\)</span>
-个维度的值，<span class="math inline">\(\bar{x}_k\)</span>
-代表该维度下的平均值。</p>
-<p>而协方差为 <span class="math display">\[
-\sigma(\boldsymbol{x}_m,\boldsymbol{x}_k)=\frac{1}{n}\sum^n_{i=1}(x_{mi}-\bar{x}_m)(x_{ki}-\bar{x}_k),k=1,2,\cdots,d
-\]</span> 因此，协方差矩阵定义为 <span class="math display">\[
-\Sigma=\left[\begin{array}{ccc}
-\sigma\left(x_{1}, x_{1}\right) &amp; \cdots &amp; \sigma\left(x_{1},
-x_{d}\right) \\
-\vdots &amp; \ddots &amp; \vdots \\
-\sigma\left(x_{d}, x_{1}\right) &amp; \cdots &amp; \sigma\left(x_{d},
-x_{d}\right)
-\end{array}\right] \in \mathbb{R}^{d \times d}
-\]</span>
-其中对角线上的元素为各随机变量的方差，非对角线上的元素为两两随机变量之间的协方差，且
-<span class="math inline">\(\Sigma\)</span>
-为<strong>对称矩阵</strong>。</p>
-<h4 id="一维正态分布">一维正态分布</h4>
-<p>对于一维正态分布，有密度函数 <span class="math display">\[
-p(x)=\frac{1}{\sqrt{2\pi}\sigma}\exp{[{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}]}
-\]</span> 其中均值 <span class="math display">\[
-\mu=E(x)=\int^{+\infty}_{-\infty}xp(x)\mathrm{d}x
-\]</span> 方差 <span class="math display">\[
-\sigma^2=E[(x-\mu)^2]=\int^{+\infty}_{-\infty}(x-\mu)^2p(x)\mathrm{d}x
-\]</span> 其中一维正态分布也可以简写为 <span class="math inline">\(p(x)\sim N(\mu,\sigma^2)\)</span>。</p>
-<p>一种分布的熵由下式给出 <span class="math display">\[
-H(p(x))=-\int p(x)\ln{p(x)}\mathrm{d}x
-\]</span> 单位为奈特，如果对数换为 <span class="math inline">\(\log_2\)</span>，则单位为比特。</p>
-<p>可以证明正态分布在所有具有给定均值和方差的分布中<strong>具有最大熵</strong>。由<strong>中心极限定理</strong>所述，<strong>大量的小的、独立地随机分布的总和等效为正态分布</strong>。由于所有模式——鱼、手写字符、语音——都可以看成是由大量随机过程所组成的某个理想的模式或原型模式，所以<strong>实际上通常会选择正态分布作为实际的概率分布</strong>。</p>
-<h4 id="多维正态分布">多维正态分布</h4>
-<p>设 <span class="math inline">\(d\)</span> 维特征向量 <span class="math display">\[
-\boldsymbol{x}=(x_1,x_2,\cdots,x_d)^T
-\]</span> 则 <span class="math inline">\(d\)</span> 维正态分布定义为
-<span class="math display">\[
-p(\boldsymbol{x})=\frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}}\exp[-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^T\Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu})]
-\]</span> 其中 <span class="math inline">\(\Sigma\)</span> 是 <span class="math inline">\(d\)</span> 维的协方差矩阵，<span class="math inline">\(|\Sigma|\)</span> 代表行列式的值，<span class="math inline">\(\Sigma^{-1}\)</span> 代表矩阵的逆，<span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu})^T\)</span>
-表示矩阵的转置（在这里是变为行向量）。</p>
-<p>通常简写为 <span class="math display">\[
-p(\boldsymbol{x})=N(\boldsymbol{\mu},\boldsymbol{\Sigma})
-\]</span> 其中均值 <span class="math display">\[
-\boldsymbol{\mu}=E(\boldsymbol{x})=\int\boldsymbol{x}p(\boldsymbol{x})\mathrm{d}\boldsymbol{x}
-\]</span> 协方差矩阵 <span class="math display">\[
-\Sigma=E[(\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^T]=\int
-(\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^Tp(\boldsymbol{x})\mathrm{d}\boldsymbol{x}
-\]</span> 其中 <span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^T\)</span>
-表示求向量内积。</p>
-<p>其中某个向量的均值可以通过其属性的均值获得，即 <span class="math display">\[
-\begin{align}
-\mu_i&amp;=E(x_i)\\
-\sigma_{ij}^2&amp;=E[(x_i-\mu_i)(x_j-\mu_j)]\\
-&amp;=\iint(x_i-\mu_i)(x_j-\mu_j)p(x_i,x_j)\mathrm{d}{x_i}\mathrm{d}{x_j}
-\end{align}
-\]</span> 当 <span class="math inline">\(i=j\)</span>
-时（对角线元素），<span class="math inline">\(\sigma_{ij}\)</span>
-反映样本 <span class="math inline">\(x_i\)</span> 在 <span class="math inline">\(d\)</span>
-维特征空间<strong>各方向的发散程度</strong>；</p>
-<p>当 <span class="math inline">\(i\neq j\)</span> 时，<span class="math inline">\(\sigma_{ij}\)</span>
-反映<strong>各特征间的统计相关性</strong>。</p>
-<blockquote>
-<p>这里需要严格限定 <span class="math inline">\(\Sigma\)</span>
-是正定矩阵，使得其行列式为正值。</p>
-</blockquote>
-<h4 id="分类器">分类器</h4>
-<p>设各类样本的<strong>类概率密度</strong>均满足正态分布，即 <span class="math display">\[
-p(\boldsymbol{x}|\omega_i)\sim N(\boldsymbol{\mu},\boldsymbol{\Sigma})
-\]</span> 根据最小误差概率决策，判别函数为 <span class="math display">\[
-g_i(\boldsymbol{x})=p(\boldsymbol{x}|\omega_i)p(\omega_i)=\max_{1\leq
-j\leq c}{(p(\boldsymbol{x}|\omega_j),p(\omega_j))}
-\]</span> 或者使用 <span class="math display">\[
-\begin{align}
-g_i(\boldsymbol{x})&amp;=\ln{p(\boldsymbol{x}|\omega_i)}+\ln{p(\omega_i)}\\
-&amp;=-\frac{d}{2}\ln{2\pi}-\frac{1}{2}\ln{|\Sigma_i|}-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_i)^T\Sigma^{-1}_i(\boldsymbol{x}-\boldsymbol{\mu}_i)+\ln{P(\omega_i)}
-\end{align}
-\]</span> 分以下三种情况讨论决策结果。</p>
-<h5 id="情况一sigmasigma2i">情况一：<span class="math inline">\(\Sigma=\sigma^2I\)</span></h5>
-<ul>
-<li>各类协方差矩阵相等，<span class="math inline">\(\Sigma_i=\Sigma_j=\Sigma\)</span></li>
-<li>各特征统计独立，<span class="math inline">\(\sigma_{ij}^2=0,i\neq
-j\)</span></li>
-<li>样本各方向的发散程度一致 <span class="math inline">\(\sigma_{ij}^2=\sigma^2,i=j\)</span></li>
-</ul>
-<p>即 <span class="math display">\[
-\Sigma=\begin{bmatrix}
-\sigma^2 &amp; 0 &amp; \cdots &amp; 0\\
-0 &amp; \sigma^2 &amp; \cdots &amp; 0\\
-\cdots &amp; \cdots &amp; \cdots &amp; \cdots\\
-0 &amp; 0 &amp; \cdots &amp; \sigma^2
-\end{bmatrix}
-\]</span> 此时 <span class="math inline">\(\Sigma=\sigma^2I\)</span>，故
-<span class="math inline">\(\Sigma^{-1}=\frac{1}{\sigma^2}I\)</span>，其中
-<span class="math inline">\(I\)</span> 为单位矩阵。</p>
-<p>故判别函数化简为 <span class="math display">\[
-\begin{align}
-g_i(\boldsymbol{x})&amp;=-\frac{(\boldsymbol{x}-\boldsymbol{\mu}_i)^T(\boldsymbol{x}-\boldsymbol{\mu}_i)}{2\sigma^2}+\ln
-p(\omega_i)\\
-&amp;=-\frac{\begin{Vmatrix}
-\boldsymbol{x}-\boldsymbol{\mu}_i
-\end{Vmatrix}^2}{2\sigma^2}+\ln p(\omega_i)
-\end{align}
-\]</span> 其中 <span class="math inline">\(\begin{Vmatrix}
-\boldsymbol{x}-\boldsymbol{\mu}_i \end{Vmatrix}\)</span>
-是求欧氏距离，即<strong>欧几里得范数</strong>。</p>
-<p>故在此种决策函数下，只需计算 <span class="math inline">\(\boldsymbol{x}\)</span> 到各类样本均值 <span class="math inline">\(\boldsymbol{\mu}_i\)</span>
-的范数，选择范数最小（在空间中称为距离最近）的类别即可。</p>
-<p>情况一也称作<strong>最小距离分类器</strong>。</p>
-<p>对判别函数重整，有 <span class="math display">\[
-g_i(\boldsymbol{x})=\frac{1}{2\sigma^2}(\begin{Vmatrix}\boldsymbol{x}\end{Vmatrix}^2-2\boldsymbol{\mu}_i^T\boldsymbol{x}+\begin{Vmatrix}\boldsymbol{\mu}\end{Vmatrix}^2)+\ln{p(\omega_i)}
-\]</span> 其中 <span class="math inline">\(\begin{Vmatrix}\boldsymbol{x}\end{Vmatrix}^2\)</span>
-对于任意 <span class="math inline">\(i\)</span>
-是相等的，于是乎我们可以把上式等价于 <span class="math display">\[
-g_i(\boldsymbol{x})=\boldsymbol{w}_i^T \boldsymbol{x}+\omega_{i0}
-\]</span> 其中 <span class="math display">\[
-\boldsymbol{w}_i=\frac{1}{\sigma ^2}\boldsymbol{\mu}_i\\
-\omega_{i0}=-\frac{1}{2\sigma^2}\begin{Vmatrix}\boldsymbol{\mu}\end{Vmatrix}^2+\ln{p(\omega_i)}
-\]</span> <span class="math inline">\(\omega_{i0}\)</span> 又称作第
-<span class="math inline">\(i\)</span>
-个方向的<strong>阈值</strong>或<strong>偏置</strong>。</p>
-<p>使用线性判别函数的分类器称为“线性机器”。这类分类器有许多有趣的理论性质。</p>
-<p>此处只需注意到一个线性机器的判定面是一些超平面，它们是由两类问题中可获得最大后验概率的线性方程
-<span class="math inline">\(g_i(\boldsymbol{x})=g_j(\boldsymbol{x})\)</span>
-来确定。</p>
-<p>上式可写为 <span class="math display">\[
-\boldsymbol{w}^T(\boldsymbol{x}-\boldsymbol{x}_0)=0
-\]</span> 其中 <span class="math display">\[
-\boldsymbol{w}=\boldsymbol{\mu}_i-\boldsymbol{\mu}_j
-\]</span> 且 <span class="math display">\[
-\mathbf{x}_{0}=\frac{1}{2}\left(\boldsymbol{\mu}_{i}+\boldsymbol{\mu}_{j}\right)-\frac{\sigma^{2}}{\left\|\boldsymbol{\mu}_{i}-\boldsymbol{\mu}_{j}\right\|^{2}}
-\ln
-\frac{P\left(\omega_{i}\right)}{P\left(\omega_{j}\right)}\left(\boldsymbol{\mu}_{i}-\boldsymbol{\mu}_{j}\right)
-\]</span> 此方程定义了<strong>一个通过 <span class="math inline">\(\boldsymbol{x}_0\)</span> 且与向量 <span class="math inline">\(\boldsymbol{w}\)</span>
-正交</strong>的超平面。</p>
-<blockquote>
-<p>如果 <span class="math inline">\(\sigma^2\)</span>
-相对于范数的平方较小，那么判决边界的位置相对于确切的先验概率值并不敏感。</p>
-</blockquote>
-<h5 id="情况二sigma_isigma_jsigma">情况二：<span class="math inline">\(\Sigma_i=\Sigma_j=\Sigma\)</span></h5>
-<ul>
-<li>各类方差相同，<span class="math inline">\(\Sigma_i=\Sigma_j=\Sigma\)</span></li>
-</ul>
-<p>可以证明，此时判别函数仍满足线性关系，即 <span class="math display">\[
-g_i(\boldsymbol{x})=\boldsymbol{w}_i^T\boldsymbol{x}+\omega_{i0}
-\]</span></p>
-<h5 id="情况三sigma_ineq-sigma_j">情况三：<span class="math inline">\(\Sigma_i\neq \Sigma_j\)</span></h5>
-<ul>
-<li><span class="math inline">\(\Sigma_i\neq \Sigma_j\)</span></li>
-</ul>
-<p>此时判别函数为 <span class="math display">\[
-g_i(\boldsymbol{x})=\boldsymbol{x}^TA_i\boldsymbol{x}+\boldsymbol{w}_i^T+\omega_{i0}
-\]</span> 此分类器为非线性分类器（二次型分类器）。</p>
-<h3 id="实际计算">实际计算</h3>
-<p>两类高斯分布所计算出的贝叶斯判决边界如下，每一类都基于 4
-个数据点。</p>
-<p>以 <span class="math inline">\(\omega_1\)</span> 表示 4
-个黑点的集合，<span class="math inline">\(\omega_2\)</span>
-表示红点集合。</p>
-<figure>
-<img src="/pattern-recongnition-note1/模式简图.jpg" alt="模式简图">
-<figcaption aria-hidden="true">模式简图</figcaption>
-</figure>
-<p>由图可知，<span class="math inline">\(\omega_1\)</span>
-的特征向量矩阵为 <span class="math display">\[
-X=\begin{bmatrix}
-2 &amp; 3 &amp; 3 &amp; 4\\
-6 &amp; 8 &amp; 4 &amp; 6
-\end{bmatrix}
-\]</span> 可知特征向量维度 <span class="math inline">\(d=2\)</span></p>
-<p>由均值公式 <span class="math display">\[
-\mu_k=\frac{1}{4}\sum^4_{i=1} x_{ki},k=1,2
-\]</span> 得均值向量为 <span class="math display">\[
-\boldsymbol{\mu}=\begin{bmatrix}
-3\\
-6
-\end{bmatrix}
-\]</span> 由协方差公式 <span class="math display">\[
-\sigma(\boldsymbol{x}_k,\boldsymbol{x}_k)=\frac{1}{n}\sum^n_{i=1}(x_{ki}-\bar{x}_k)^2,k=1,2,\cdots,d
-\]</span> 得协方差为 <span class="math display">\[
-\begin{align}
-\sigma\left(x_{1},
-x_{1}\right)&amp;=\frac{1}{4}\left\{\left(x_{11}-\bar{x}_{1}\right)\left(x_{11}-\bar{x}_{1}\right)+\left(x_{12}-\bar{x}_{1}\right)\left(x_{12}-\bar{x}_{1}\right)+\left(x_{13}-\bar{x}_{1}\right)\left(x_{13}-\bar{x}_{1}\right)+\left(x_{14}-\bar{x}_{1}\right)\left(x_{14}-\bar{x}_{1}\right)\right\}
-\\
-&amp;=\frac{1}{4}\{(2-3)(2-3)+(3-3)(3-3)+(3-3)(3-3)+(4-3)(4-3)\}\\
-&amp;=\frac{1}{2}
-\end{align}
-\]</span></p>
-<blockquote>
-<p>此处 <span class="math inline">\(x_1=\begin{bmatrix}2&amp;3&amp;3&amp;6\end{bmatrix},x_{11}=2,x_{12}=3,\bar{x}_1=3\)</span>，同时忽略其他协方差的计算。</p>
-</blockquote>
-<p>同理可得，协方差矩阵为 <span class="math display">\[
-\Sigma=\begin{bmatrix}
-\frac{1}{2} &amp; 0\\
-0 &amp; 2
-\end{bmatrix}
-\]</span> 对于另一组特征向量 <span class="math display">\[
-X=\begin{bmatrix}
-1 &amp; 3 &amp; 3 &amp; 5\\
--2 &amp; 0 &amp; -4 &amp; -2
-\end{bmatrix}
-\]</span> 同理可得均值和方差。</p>
-<p>记第一组数据的均值为 <span class="math inline">\(\mu_1\)</span>，协方差矩阵为 <span class="math inline">\(\Sigma_1\)</span>；第二组数据的均值为 <span class="math inline">\(\mu_2\)</span>，协方差矩阵为 <span class="math inline">\(\Sigma_2\)</span>： <span class="math display">\[
-\boldsymbol{\mu}_1=\begin{bmatrix}
-3\\
-6
-\end{bmatrix},
-\boldsymbol{\mu}_2=\begin{bmatrix}
-3\\
--2
-\end{bmatrix}
-\\
-\Sigma_1=\begin{bmatrix}
-\frac{1}{2} &amp; 0\\
-0 &amp; 2
-\end{bmatrix},
-\Sigma_2=\begin{bmatrix}
-2 &amp; 0\\
-0 &amp; 2
-\end{bmatrix}
-\]</span> 可得逆矩为 <span class="math display">\[
-\Sigma_1^{-1}=\begin{bmatrix}
-2 &amp; 0\\
-0 &amp; \frac{1}{2}
-\end{bmatrix},
-\Sigma_2^{-1}=\begin{bmatrix}
-\frac{1}{2} &amp; 0\\
-0 &amp; \frac{1}{2}
-\end{bmatrix}
-\]</span> 假定两类分布的先验概率相等，即 <span class="math inline">\(P(\omega_1)=P(\omega_2)=0.5\)</span>，代入后可得
-<span class="math inline">\(g_1(\boldsymbol{x})=g_2(\boldsymbol{x})\)</span>
-时的判决边界为 <span class="math display">\[
-x_2=3.514-1.125x_1+0.1875x_1^2
-\]</span></p>
-<blockquote>
-<p>这里由于各类协方差矩阵各不相同，于是套用情况三的公式</p>
-</blockquote>
-<h3 id="实际应用-2">实际应用</h3>
-<h4 id="拼写纠错检查">拼写纠错检查</h4>
-<p>当用户输入了一个不在字典中的单词，我们需要去猜测：“这个家伙到底真正想输入的单词是什么呢？”用形式化的语言来叙述，就是我们需要求得：
-<span class="math display">\[
-P(\text{我们猜测他想输入的单词}|\text{他实际输入的单词})
-\]</span>
-比如用户输入thew，那么猜测他到底想输入the，还是thaw，还是其他的单词？到底哪一个单词的可能性比较大？这时候我们就可以用贝叶斯去求出每个词语的可能性。</p>
-<p>不妨把我们的猜测记为 <span class="math inline">\(h_1,h_2,\cdots,h_n\)</span>，他们都属于一个有限且离散的猜测空间H（单词总共就只有那么多，<span class="math inline">\(H\)</span> 代表
-hypothesis），将用户实际输入的单词记为 <span class="math inline">\(D\)</span>（<span class="math inline">\(D\)</span>
-代表 data，即观测数据），于是问题转为：</p>
-<p><span class="math inline">\(P(\text{我们的猜测1}|\text{他实际输入的单词})\)</span>
-可以表示为 <span class="math inline">\(P(h_1|D)\)</span>，同理对于猜测2，则表示为 <span class="math inline">\(P(h_2|D)\)</span>，我们需要计算这些概率值，取最大值。</p>
-<p>将所有猜测统一记为 <span class="math inline">\(P(H|D)\)</span>，运用贝叶斯公式可以得到 <span class="math display">\[
-P(H|D)=\frac{P(H)P(D|H)}{P(D)}
-\]</span> 由于证据因子 <span class="math inline">\(P(D)\)</span>
-对我们的决策无影响，故计算时将公式简化为 <span class="math display">\[
-P(H|D)\propto P(H)P(D|H)
-\]</span> 即用户实际想输入 the 的可能性大小取决于 the
-本身在词汇表中被使用的可能性（频繁程度）大小和想打 the 却打成 thew
-的可能性大小（似然）的乘积。</p>
-<blockquote>
-<p>抽象理解为给定观测数据，猜测是好是坏取决于“这个猜测本身独立的可能性大小”（先验概率）和“这个猜测生成我们观测到的数据的可能性大小”（似然）的乘积。</p>
-</blockquote>
-<p>有两种模型解决该问题：</p>
-<ul>
-<li>最大似然：最符合观测数据的最有优势（即 <span class="math inline">\(P(D|H)\)</span> 最大）</li>
-<li>奥卡姆剃刀：先验概率 <span class="math inline">\(P(H)\)</span>
-较大的模型有较大的优势。</li>
-</ul>
-<h4 id="医生诊断">医生诊断</h4>
-<p>一个两类识别问题：医生根据病人血液中白细胞的浓度来判断病人是否患血液病。</p>
-<p>根据医学知识和以往的经验，医生知道（先验知识）：</p>
-<ul>
-<li>患病的人，白细胞的浓度服从均值2000，方差1000的正态分布；未患病的人，白细胞的浓度服从均值7000，方差3000的正态分布</li>
-<li>一般人群中，患病的人数比例为0.5%</li>
-</ul>
-<p>当一个人的白细胞浓度是3100，医生应该做出怎样的判断？</p>
-<p>用 <span class="math inline">\(\Omega\)</span> 表示分类集合，有 <span class="math inline">\(\omega_1\)</span> 表示患病，<span class="math inline">\(\omega_2\)</span> 表示未患病；</p>
-<p>用 <span class="math inline">\(x\)</span>
-表示"白细胞浓度"这个随机变量，即选择其作为特征。</p>
-<p>由先验知识我们可以得到先验概率：</p>
-<ul>
-<li><span class="math inline">\(P(\omega_1)=0.5\%,P(\omega_2)=99.5\%\)</span></li>
-<li>白细胞浓度在两种类别下的类条件概率密度：<span class="math inline">\(p(x|\omega_1)\sim N(2000,1000),p(x|\omega_2)\sim
-N(7000,3000)\)</span></li>
-</ul>
-<p>查表可以得到类条件概率： <span class="math display">\[
-P(3100|\omega_1)=2.1785\times10^{-4}\\
-P(3100|\omega_2)=5.7123\times10^{-5}\\
-\]</span> 根据贝叶斯公式，计算得到后验概率： <span class="math display">\[
-\begin{align}
-P(\omega_1|3100)&amp;=1.9\%\\
-P(\omega_2|3100)&amp;=98.1\%
-\end{align}
-\]</span> 故判决为 <span class="math inline">\(\omega_2\)</span>，即医生诊断为：未患病，体征正常。</p>
-]]></content>
-      <tags>
-        <tag>math</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>信号与系统笔记</title>
     <url>//signal-and-system-note3.html</url>
     <content><![CDATA[<h1 id="信号与系统">信号与系统</h1>
@@ -18388,6 +17595,976 @@ T &amp; |\omega|&lt;\omega_m\\
 ]]></content>
       <tags>
         <tag>信号与系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>离散对数笔记</title>
+    <url>//discrete-logarithm-note.html</url>
+    <content><![CDATA[<h1 id="离散对数">离散对数</h1>
+<h2 id="基本问题">基本问题</h2>
+<p>离散对数基本问题是解决形如 <span class="math display">\[
+a^y\equiv x\pmod{p}
+\]</span> 求解 <span class="math inline">\(y\)</span> 的值，我们记作
+<span class="math display">\[
+y=\log_a{x}\pmod{p}
+\]</span> 显然我们会想到朴素的爆破算法，计算每一个 <span class="math inline">\(x+kp\)</span> 对 <span class="math inline">\(a\)</span>
+的对数，如果结果是整数，那么这个值恰好是 <span class="math inline">\(y\)</span>。</p>
+<p>同时需要知道，<strong>当 <span class="math inline">\(p\)</span>
+不为质数时，结果可能不唯一</strong>。</p>
+<h2 id="小步大步法baby-step-giant-step">小步大步法（baby-step-giant-step）</h2>
+<h3 id="原理">原理</h3>
+<p>小步大步法的优势是可以指定一个范围，同时算法内部迭代速度是线性的，算法复杂度是
+<span class="math inline">\(\sqrt{p}\)</span>。</p>
+<h3 id="代码">代码</h3>
+<p>一般使用 Sagemath 自带的算法，需要指定一个范围。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sage.groups.generic <span class="keyword">import</span> bsgs</span><br><span class="line"></span><br><span class="line">p = getPrime(<span class="number">128</span>)</span><br><span class="line">Fp = GF(p)</span><br><span class="line">a = Fp(getPrime(<span class="number">32</span>))</span><br><span class="line">y = Fp(getPrime(<span class="number">32</span>))</span><br><span class="line">b = a ^ y</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;p = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;a = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;y = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;b = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">p = 308246233383857285750026618406218229381</span></span><br><span class="line"><span class="string">a = 2189570113</span></span><br><span class="line"><span class="string">y = 2989311631</span></span><br><span class="line"><span class="string">b = 157894317370901577057351162302392667811</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">result = bsgs(mod(a, p), mod(b, p), bounds=(<span class="number">2</span>**<span class="number">31</span>, <span class="number">2</span>**<span class="number">32</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;result = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">result = 2989311631</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="pohlig-hellman-算法">Pohlig-Hellman 算法</h2>
+<h3 id="原理-1">原理</h3>
+<p>在 <span class="math inline">\(GF(p)\)</span>
+的<strong>阶</strong>（order）为光滑数时，易分解为较小的域，此时在小域内求解离散对数速度会快得多。</p>
+<p>特别地，当 <span class="math inline">\(p\)</span> 为素数时，<span class="math inline">\(p-1\)</span> 一般都为光滑数。</p>
+<h3 id="代码-1">代码</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p = <span class="number">6897108443075981744484758716081045417854227543713106404294789655180105457499042179717447342593790180943415014044830872925165163457476209819356694244840079</span></span><br><span class="line">b = <span class="number">1315637864146686255246675143589215932218700984880749264689270214639479160648747323586062096067740047809798944996253169402675772469028914904598116394230426</span></span><br><span class="line">a = <span class="number">6789891305297779556556571922812978922375073901749764215969003309869718878076269545304055843125301553103531252334876560433405451108895206969904268456786139</span></span><br><span class="line"></span><br><span class="line">n = p - <span class="number">1</span></span><br><span class="line">primes = <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> x: x &lt; <span class="number">2</span> ** <span class="number">32</span>, (base ** exp <span class="keyword">for</span> base, exp <span class="keyword">in</span> factor(n))))</span><br><span class="line">dlogs = []</span><br><span class="line"><span class="keyword">for</span> fac <span class="keyword">in</span> primes:</span><br><span class="line">    t = <span class="built_in">int</span>(n) // <span class="built_in">int</span>(fac)</span><br><span class="line">    dlog = discrete_log(<span class="built_in">pow</span>(b, t, p), <span class="built_in">pow</span>(a, t, p))</span><br><span class="line">    dlogs.append(dlog)</span><br><span class="line">yp = <span class="built_in">int</span>(crt(dlogs, primes))</span><br><span class="line"><span class="built_in">print</span>(yp)</span><br></pre></td></tr></table></figure>
+<p>此时需要注意，如果 <span class="math inline">\(y_p\neq y\)</span>，即
+<span class="math inline">\(y=y_p+kp\)</span>，那么可能需要小范围爆破：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>**<span class="number">10</span>):</span><br><span class="line">    res = long_to_bytes(k + i * prod(primes))</span><br><span class="line">    <span class="keyword">if</span> res.startswith(<span class="string">b&#x27;flag&#x27;</span>):</span><br><span class="line">        <span class="built_in">print</span>(res)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>crypto</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>模式识别-贝叶斯决策论笔记</title>
+    <url>//bayesian-decision-theory.html</url>
+    <content><![CDATA[<h1 id="模式识别">模式识别</h1>
+<h2 id="贝叶斯决策论">贝叶斯决策论</h2>
+<h3 id="公式">公式</h3>
+<p>贝叶斯概率是由贝叶斯提出的一种“逆概”的概念，计算正向概率的方法对于当时的人们而言是十分轻易的，例如“假设容器中有N个白球，M个黑球，随机抽取一个球，抽取的是白球的概率是多少”。但一个自然而然的问题是与正向概率相反的，例如“随机抽取一个（多个）球，知道了抽取的概率，那么容器内黑白球的比例是多少”。</p>
+<p>这个问题是现实的，因为往往人们对一个事件进行评价的时候，无法掌握因，而只能知晓果，由果推因是人们常做的事情。</p>
+<h4 id="条件概率">条件概率</h4>
+<p>要理解<strong>贝叶斯公式</strong>首先需要了解<strong>条件概率</strong>，定义
+<span class="math inline">\(P(A|B)\)</span> 为在事件 <span class="math inline">\(B\)</span> 发生后，事件 <span class="math inline">\(A\)</span> 发生的概率。</p>
+<p>条件概率公式： <span class="math display">\[
+P(A|B)=\frac{P(AB)}{P(B)}
+\]</span> 其中 <span class="math inline">\(P(A|B)\)</span>
+是条件概率，<span class="math inline">\(P(AB)\)</span>
+是两个事件共同发生的概率，<span class="math inline">\(P(B)\)</span>
+是事件 <span class="math inline">\(B\)</span>
+作为独立事件单独发生的概率。</p>
+<p>例如掷骰子，掷出3点以上的概率为 <span class="math inline">\(P(\text{掷出3点以上})=1/2\)</span>，而掷出3点以上又为偶数的概率为
+<span class="math inline">\(P(\text{掷出3点以上又为偶数})=1/3\)</span>，那么我们可以计算得到已经掷出3点以上后，点数为偶数的概率为
+<span class="math display">\[
+P(\text{掷出3点以上}|\text{点数为偶数})=\frac{P(\text{掷出3点以上又为偶数})}{P(\text{掷出3点以上})}=2/3
+\]</span> 显然，符合我们通过古典概型计算得到的结果。</p>
+<h4 id="概率密度函数">概率密度函数</h4>
+<p>定义连续型随机变量的概率密度为 <span class="math display">\[
+F(x)=\int^\infty_{-\infty}f(t)\mathrm{d}t
+\]</span> 其中 <span class="math inline">\(F(x)\)</span> 为随机变量
+<span class="math inline">\(X\)</span> 的<strong>分布函数</strong>，则称
+<span class="math inline">\(f(x)\)</span> 为 <span class="math inline">\(X\)</span>
+的<strong>概率密度函数</strong>，简称<strong>概率密度</strong>或<strong>密度函数</strong>。</p>
+<p>而分布函数的定义为 <span class="math display">\[
+F(\xi)=P(X&lt;\xi)
+\]</span> 反之有 <span class="math display">\[
+f(x)=\frac{\mathrm{d}F(x)}{\mathrm{d}x}
+\]</span></p>
+<h4 id="全概率公式">全概率公式</h4>
+<p><span class="math display">\[
+P(B)=P(B|A)P(A)+P(B|\bar{A})P(\bar{A})
+\]</span></p>
+<p>用于求贝叶斯公式中的无条件概率 <span class="math inline">\(P(B)\)</span>，其中事件 <span class="math inline">\(\bar{A}\)</span> 代表事件 <span class="math inline">\(A\)</span> 不发生。</p>
+<p>完整公式有 <span class="math display">\[
+\begin{align*}
+P(B)&amp;=P(BA_1)+P(BA_2)+\cdots+P(BA_n)\\
+&amp;=P(B|A_{1}) P(A_{1})+P(B|A_{2})P(A_{2})+\cdots+P(B|A_{n})P(A_{n})\\
+&amp;=\sum^n_{i=1}P(A_i)P(B|A_i)
+\end{align*}
+\]</span></p>
+<h4 id="贝叶斯公式">贝叶斯公式</h4>
+<p>通过条件概率公式变形，可以得到 <span class="math display">\[
+P(AB)=P(A)P(B|A)=P(B)P(A|B)
+\]</span> 整理可得贝叶斯公式 <span class="math display">\[
+P(A|B)=P(A)\frac{P(B|A)}{P(B)}
+\]</span> 其中我们把 <span class="math inline">\(P(A)\)</span>
+称作<strong>先验概率</strong>，即事件 <span class="math inline">\(A\)</span>
+发生的概率，称为<strong>先验</strong>是因为该概率并不考虑事件 <span class="math inline">\(B\)</span> 的影响，即在事件 <span class="math inline">\(B\)</span> 发生前，对事件 <span class="math inline">\(A\)</span> 概率的一个评估。</p>
+<p><span class="math inline">\(P(A|B)\)</span>
+称作<strong>后验概率</strong>，即事件 <span class="math inline">\(B\)</span> 发生后，事件 <span class="math inline">\(A\)</span> 发生的概率，也是对事件 <span class="math inline">\(A\)</span> 概率的重新评估。</p>
+<p>而因子 <span class="math inline">\(P(B|A)/P(B)\)</span>
+称作<strong>可能性函数</strong>（likelihood），也是一个<strong>调整因子</strong>，使得预估概率更加接近真实概率。（<span class="math inline">\(P(B)\)</span> 也称作证据概率（evidence
+probability））</p>
+<blockquote>
+<p><span class="math inline">\(P(B)\)</span> 可用全概率公式求解。</p>
+</blockquote>
+<p>故贝叶斯公式可以表达为：**后验概率=先验概率*可能性函数**</p>
+<p>根据<strong>可能性函数</strong>的公式，我们可以知道：</p>
+<blockquote>
+<p>当“<strong>可能性函数</strong>&gt;1”时，<strong>先验概率</strong>被增强，事件
+<span class="math inline">\(A\)</span> 发生的概率增大；</p>
+<p>当“<strong>可能性函数</strong>=1”时，意味着事件 <span class="math inline">\(B\)</span> 无助于判断事件 <span class="math inline">\(A\)</span> 发生的概率；</p>
+<p>当“<strong>可能性函数</strong>&lt;1”时，<strong>先验概率</strong>被削弱，事件
+<span class="math inline">\(A\)</span> 发生的概率减小。</p>
+</blockquote>
+<p>贝叶斯公式的意义在于帮助我们在有限信息的情况下，尽量得到客观概率的近似值（先验概率由我们主观估计，通过可能性函数进行修正我们的先验概率得到后验概率，即客观概率的近似值）。</p>
+<h4 id="实际应用">实际应用</h4>
+<p>已知两个一模一样的容器，容器 <span class="math inline">\(A_1\)</span>
+中有 30 个白球和 10 个黑球，而容器 <span class="math inline">\(A_2\)</span> 中有 20 个白球和 20
+个黑球，现在从中随机摸出一个球是白球，请问这个白球来自一号容器的概率是多少？</p>
+<p>我们可以列出下面一个表：</p>
+<table>
+<thead>
+<tr class="header">
+<th>容器/分类</th>
+<th><span class="math inline">\(A_1\)</span></th>
+<th><span class="math inline">\(A_2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>白球</td>
+<td>30</td>
+<td>20</td>
+</tr>
+<tr class="even">
+<td>黑球</td>
+<td>10</td>
+<td>20</td>
+</tr>
+</tbody>
+</table>
+<p>可以知道先验概率 <span class="math inline">\(P(A_1)=P(A_2)=0.5\)</span>（不受摸出来的球的影响下，球来自哪个容器的概率）</p>
+<p>假定事件 <span class="math inline">\(B\)</span> 为摸出白球，有 <span class="math inline">\(P(B)=(30+20)/80=5/8\)</span></p>
+<p>而已知在容器 <span class="math inline">\(A_1\)</span>
+中摸出白球的概率为 <span class="math inline">\(P(B|A_1)=30/40=3/4\)</span></p>
+<p>那么我们要求的后验概率 <span class="math inline">\(P(A_1|B)=P(A_1)P(B|A_1)/P(B)=3/5\)</span>，即在抽取的球为白球时，球来自容器
+<span class="math inline">\(A_1\)</span> 的概率为 0.6。</p>
+<p>其中可能性函数 <span class="math inline">\(P(B|A_1)/P(B)=1.2\)</span>，即先验概率<strong>被增强</strong>了。</p>
+<p>举个更具体的例子，因为艾滋病潜伏期很长，所以即便感染了也可能在很长的一段时间，身体没有任何感觉，所以艾滋病检测的假阳性会导致被测人非常大的心理压力。</p>
+<p><strong>你可能会觉得，检测准确率都99%了，误测几乎可以忽略不计了吧？所以你觉得这人肯定没有患艾滋病了对不对？</strong></p>
+<p>让我们用贝叶斯定理算一下，就会发现你的直觉是错误的。</p>
+<p>假设某种疾病的发病率是0.001，即1000人中会有1个人得病。现在有一种试剂可以检验患者是否得病，它的准确率是0.99，即在患者确实得病的情况下，它有99%的可能呈现阳性。它的误报率是5%，即在患者没有得病的情况下，它有5%的可能呈现阳性。</p>
+<p>现在有一个病人的检验结果为阳性，请问他确实得病的可能性有多大？</p>
+<p>病人的检验结果为阳性（新的信息）记为事件 <span class="math inline">\(B\)</span>，他得病记为事件 <span class="math inline">\(A\)</span>。</p>
+<p>那么要求的问题就是 <span class="math inline">\(P(A|B)\)</span>，也就是病人的检验结果为阳性 <span class="math inline">\(P(B)\)</span>，他确实得病的概率 <span class="math inline">\(P(A)\)</span>。</p>
+<p>已知信息为这种疾病的发病率是 0.001，即 <span class="math inline">\(P(A)=0.001\)</span></p>
+<p>试剂可以检验患者是否得病，准确率是
+0.99，也就是在患者确实得病的情况下<span class="math inline">\(P(A)\)</span>，它有 99% 的可能呈现阳性 <span class="math inline">\(P(B)\)</span>，所以 <span class="math inline">\(P(B|A)=0.99\)</span></p>
+<p>试剂的误报率是 5%，即在患者没有得病的情况下，它有 5%
+的可能呈现阳性。得病我们记为事件 <span class="math inline">\(A\)</span>，那么没有得病就是事件 <span class="math inline">\(A\)</span> 的反面，记为 <span class="math inline">\(\bar{A}\)</span>，所以这句话就可以表示为 <span class="math inline">\(P(B|\bar{A})=0.05\)</span></p>
+<p>可能性函数为 <span class="math inline">\(P(B|A)/P(B)=19.4346\)</span>，可以知道先验概率被增强，得到后验概率为
+<span class="math inline">\(P(A|B)=0.0194\)</span>，即筛查的准确率都到了
+99% 了，通过体检结果有病（阳性）确实得病的概率也只有 1.94%。</p>
+<p>由于发艾滋病实在是小概率事件，所以当我们对一大群人做艾滋病筛查时，虽说准确率有
+99%，但仍然会有相当一部分人因为误测而被诊断为艾滋病，这一部分人在人群中的数目甚至比真正艾滋病患者的数目还要高。</p>
+<p>造成这么不靠谱的误诊的原因，是无差别地给一大群人做筛查，而不论测量准确率有多高，因为正常人的数目远大于实际的患者，所以误测造成的干扰就非常大了。</p>
+<p>根据贝叶斯定理，我们知道提高先验概率，可以有效的提高后验概率。</p>
+<p>所以解决的办法倒也很简单，就是先锁定可疑的人群，比如10000人中检查出现问题的那10个人，再独立重复检测一次。因为正常人连续两次体检都出现误测的概率极低，这时筛选出真正患者的准确率就很高了，这也是为什么许多疾病的检测，往往还要送交独立机构多次检查的原因。</p>
+<p>这也是为什么艾滋病检测第一次呈阳性的人，还需要做第二次检测，第二次依然是阳性的还需要送交国家实验室做第三次检测。</p>
+<h3 id="决策论">决策论</h3>
+<h4 id="定义">定义</h4>
+<p>我们首先定义 <span class="math inline">\(\boldsymbol{x}\)</span>
+为<strong>特征向量</strong>，假定 <span class="math inline">\(\boldsymbol{x}\)</span>
+是一个连续随机变量，其分布取决于类别状态，表示为 <span class="math inline">\(p(\boldsymbol{x}|\omega)\)</span>，将该概率密度函数称作<strong>类条件概率密度</strong>（class-conditional
+probability），即<strong>类别状态为 <span class="math inline">\(\omega\)</span> 时 <span class="math inline">\(\boldsymbol{x}\)</span>
+的概率密度函数</strong>，又叫做<strong>似然</strong>（likelihood）。通俗理解为<strong>分类作为概率密度函数的条件</strong>。</p>
+<p>其中 <span class="math inline">\(p(\boldsymbol{x})\)</span>
+为<strong>证据概率</strong>（evidence probability），<span class="math inline">\(P(\omega_i|\boldsymbol{x})\)</span>
+为<strong>后验概率</strong>（posterior probability），而 <span class="math inline">\(P(\omega_i)\)</span>
+为<strong>先验概率</strong>（prior probability）。</p>
+<h4 id="贝叶斯分类">贝叶斯分类</h4>
+<p>对一个模式（pattern）进行分类，只根据<strong>先验概率</strong>进行决策是不现实的，这会导致分类永远只有一个结果。</p>
+<p>例如取 <span class="math inline">\(\omega_1,\omega_2\)</span>
+为鲈鱼和鲑鱼，可知鲑鱼要比鲈鱼稀有，仅从客观概率上来说，<span class="math inline">\(P(\omega_1)&gt;P(\omega_2)\)</span>，此时无论如何判决都会选取
+<span class="math inline">\(\omega_1\)</span> 而非 <span class="math inline">\(\omega_2\)</span>。</p>
+<p>为了更好的分类，我们需要引入模式的特征（feature），结合特征进行分类。</p>
+<p>而贝叶斯分类就是结合特征和贝叶斯概率的结果进行决策。</p>
+<p>根据贝叶斯公式： <span class="math display">\[
+P(\omega_j|\boldsymbol{x})=\frac{p(\boldsymbol{x}|\omega_j)P(\omega_j)}{p(\boldsymbol{x})}
+\]</span> 我们可以通过观测 <span class="math inline">\(\boldsymbol{x}\)</span> 的值将先验概率 <span class="math inline">\(P(\omega_j)\)</span>
+转化为后验概率，即假设特征向量已知的条件下，类别为 <span class="math inline">\(\omega_j\)</span> 的概率。</p>
+<p>其中 <span class="math inline">\(p(\boldsymbol{x})\)</span> 和 <span class="math inline">\(p(\boldsymbol{x}|\omega_j)\)</span>
+是可以通过已知的部分信息学习得知的。</p>
+<p>例如取特征向量 <span class="math inline">\(\boldsymbol{x}\)</span>
+为鱼的长度，我们可以通过样本（sample）计算其长度总的出现频率（证据概率密度，或者也可以使用全概率公式求解）和在类别为
+<span class="math inline">\(\omega_1,\omega_2\)</span>
+时长度的出现频率（类条件概率密度）。</p>
+<figure>
+<img src="/bayesian-decision-theory/类条件概率密度.png" alt="类条件概率密度">
+<figcaption aria-hidden="true">类条件概率密度</figcaption>
+</figure>
+<p>此时我们的判决规则为：</p>
+<p>如果 <span class="math display">\[
+P(\omega_1|\boldsymbol{x})&gt;P(\omega_2|\boldsymbol{x})
+\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
+<p>正如贝叶斯概率的核心思想，我们通过先验概率（主观判断或客观事实）和已知信息（果或者似然）计算得到了后验概率（因或逆概）。</p>
+<blockquote>
+<p>需要分清的是，<span class="math inline">\(p(\boldsymbol{x}|\omega_j)\)</span>
+是训练/学习（training/learning）计算得到的，而 <span class="math inline">\(P(\omega_j|\boldsymbol{x})\)</span>
+是用来预测（predict）的，在模式识别中是两个阶段。</p>
+</blockquote>
+<h4 id="连续特征下的决策论">连续特征下的决策论</h4>
+<p>将以上想法进一步正式化，推广为如下 4 种形式：</p>
+<ul>
+<li>允许使用多于一个的特征</li>
+<li>允许多余两种类别状态的情形</li>
+<li>允许有其他行为而不仅仅是判定类别</li>
+</ul>
+<p>其中，我们定义：</p>
+<ul>
+<li>特征使用特征向量 <span class="math inline">\(\boldsymbol{x}\)</span>
+来描述多个特征</li>
+<li>集合 <span class="math inline">\(\Omega=\{\omega_1,\omega_2\,\cdots,\omega_c\}\)</span>
+为有限的 <span class="math inline">\(c\)</span> 个类别（state）集合</li>
+<li>集合 <span class="math inline">\(A=\{\alpha_1,\alpha_2,\cdots,\alpha_a\}\)</span>
+为有限的 <span class="math inline">\(a\)</span>
+个可能的行动（action）集合</li>
+</ul>
+<p>我们已知 <span class="math display">\[
+P(\omega_j|\boldsymbol{x})=\frac{p(\boldsymbol{x}|\omega_j)P(\omega_j)}{p(\boldsymbol{x})}
+\]</span> 此时证据因子 <span class="math inline">\(p(\boldsymbol{x})\)</span> 为 <span class="math display">\[
+p(\boldsymbol{x})=\sum^c_{j=1}p(\boldsymbol{x}|\omega_j)P(\omega_j)
+\]</span> 对于简单化判决而言，判决规则是一个函数 <span class="math inline">\(\alpha(\boldsymbol{x})\)</span>，值域为集合 <span class="math inline">\(\Omega\)</span>。</p>
+<h4 id="最小误差概率决策">最小误差概率决策</h4>
+<p>对于二分类问题，如果有某个观测值使得 <span class="math inline">\(P(\omega_1|\boldsymbol{x})&gt;P(\omega_2|\boldsymbol{x})\)</span>，那么我们自然的可以判断该模式来自于分类
+<span class="math inline">\(\omega_1\)</span>。</p>
+<p>例如说，当先验概率 <span class="math inline">\(P(\omega_1)=2/3,P(\omega_2)=1/3\)</span>，则后验概率
+<span class="math inline">\(P(\omega_1 | \boldsymbol{x})\)</span> 和
+<span class="math inline">\(P(\omega_2|\boldsymbol{x})\)</span>
+如图所示</p>
+<figure>
+<img src="/bayesian-decision-theory/类条件概率密度.jpg" alt="类条件概率密度">
+<figcaption aria-hidden="true">类条件概率密度</figcaption>
+</figure>
+<p>此时假定一个模式具有特征值 <span class="math inline">\(x=14\)</span>，那么它属于 <span class="math inline">\(\omega_2\)</span> 类的概率约为 0.08，属于 <span class="math inline">\(\omega_1\)</span> 类的概率约为
+0.92，在此次后验概率之和为
+1.0，此时为<strong>最小化误差概率</strong>，故选择此模式属于 <span class="math inline">\(\omega_1\)</span>。</p>
+<p>同时该决策下的误差概率为： <span class="math display">\[
+P(error|\boldsymbol{x})=1-P(\omega_1|\boldsymbol{x})
+\]</span> 即有： <span class="math display">\[
+P(error|\boldsymbol{x})=\begin{cases}
+P(\omega_1|\boldsymbol{x})\text{,choose }\omega_2\\
+P(\omega_2|\boldsymbol{x})\text{,choose }\omega_1
+\end{cases}
+\]</span> 可以验证，这种规则将平均误差概率最小化。</p>
+<blockquote>
+<p>平均误差概率表示为 <span class="math display">\[
+P(error)=\int_{-\infty}^{\infty} P(error,x)\mathrm{d}
+x=\int_{-\infty}^{\infty} P(error|x) p(x)\mathrm{d}x
+\]</span></p>
+</blockquote>
+<p>上述决策等价于，</p>
+<p>若 <span class="math inline">\(P(\boldsymbol{x}|\omega_1)P(\omega_1)&gt;P(\boldsymbol{x}|\omega_2)P(\omega_2)\)</span>，则决策为
+<span class="math inline">\(\boldsymbol{x}\in\omega_1\)</span>；</p>
+<p>若 <span class="math inline">\(P(\boldsymbol{x}|\omega_1)P(\omega_1)&lt;P(\boldsymbol{x}|\omega_2)P(\omega_2)\)</span>，则决策为
+<span class="math inline">\(\boldsymbol{x}\in\omega_2\)</span>。</p>
+<p>即 <span class="math display">\[
+\frac{P(\boldsymbol{x}|\omega_1)}{P(\boldsymbol{x}|\omega_2)}&gt;\frac{P(\omega_2)}{P(\omega_1)}
+\]</span> 判决为 <span class="math inline">\(\omega_1\)</span>。</p>
+<blockquote>
+<p>其中， <span class="math display">\[
+\frac{P(\boldsymbol{x}|\omega_1)}{P(\boldsymbol{x}|\omega_2)}
+\]</span> 称作<strong>似然比</strong>。</p>
+</blockquote>
+<p>实例如下</p>
+<blockquote>
+<p>某地区细胞识别中正常（<span class="math inline">\(\omega_1\)</span>）和异常（<span class="math inline">\(\omega_2\)</span>）两类的先验概率为 <span class="math inline">\(P(\omega_1)=0.9,P(\omega_2)=0.1\)</span>，且知道两类的类概率密度函数
+<span class="math inline">\(p(x|\omega_1),p(x|\omega_2)\)</span>。</p>
+<p>先有一细胞特征值为 <span class="math inline">\(x\)</span>，查询类概率密度函数曲线有 <span class="math inline">\(P(x|\omega_1)=0.2,P(x|\omega_1)=0.4\)</span>。</p>
+<p>采用最小误差概率决策，得到 <span class="math display">\[
+P(x|\omega_1)/P(x|\omega_2)=1/2\\
+P(\omega_2)/P(\omega_1)=1/9
+\]</span> 显然似然比大于先验概率反比，故判决为 <span class="math inline">\(x\in \omega_1\)</span>，为正常细胞。</p>
+</blockquote>
+<h4 id="最小风险损失决策">最小风险（损失）决策</h4>
+<p>基于最小误差概率的贝叶斯决策，仅考虑了最小化错误概率，未考虑决策所带来的损失，这是与实际应用不相符的，例如灭火系统、乙肝诊断等，总会存在一定的误判损失。</p>
+<p>所以我们需要<strong>引入一个更一般的风险函数来替代误差概率</strong>。</p>
+<p>定义风险函数 <span class="math inline">\(\lambda(\alpha_i|\omega_j)\)</span> 描述类别状态为
+<span class="math inline">\(\omega_j\)</span> 时，采取行动 <span class="math inline">\(\alpha_i\)</span> 的风险（对风险的一个评估）。</p>
+<blockquote>
+<p>或称为损失函数。</p>
+</blockquote>
+<p>定义总风险 <span class="math inline">\(R\)</span>
+是与某一给定的判决规则相关的预期损失，且 <span class="math inline">\(R(\alpha_i|\boldsymbol{x})\)</span> 是和行动 <span class="math inline">\(\alpha_i\)</span> 相关的条件风险，总风险则表示为
+<span class="math display">\[
+R=\int
+R(\alpha(\boldsymbol{x})|\boldsymbol{x})p(\boldsymbol{x})\mathrm{d}\boldsymbol{x}
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\(\mathrm{d}\boldsymbol{x}\)</span>
+说明积分是在整个特征空间进行的。</p>
+</blockquote>
+<p>可知，如果使得 <span class="math inline">\(R(\alpha_i|\boldsymbol{x})\)</span> 对每个 <span class="math inline">\(\boldsymbol{x}\)</span> 尽可能小，那么总风险 <span class="math inline">\(R\)</span> 将被最小化。</p>
+<p>故为了<strong>最小化总风险</strong>，对行动集合 <span class="math inline">\(A\)</span> 计算条件风险 <span class="math display">\[
+R(\alpha_i|\boldsymbol{x})=\sum^c_{j=1}\lambda(\alpha_i|\omega_j)P(\omega_j|\boldsymbol{x})
+\]</span> 并选择行动 <span class="math inline">\(\alpha_i\)</span> 使得
+<span class="math inline">\(R(\alpha_i|\boldsymbol{x})\)</span>
+最小化。</p>
+<p>最小化后的总风险值称为<strong>贝叶斯风险</strong>，记作 <span class="math inline">\(R^*\)</span>。</p>
+<p>对于二分类问题，可以将条件风险简化为 <span class="math display">\[
+R(\alpha_1|\boldsymbol{x})=\lambda_{11}P(\omega_1|\boldsymbol{x})+\lambda_{12}P(\omega_2|\boldsymbol{x})\\
+R(\alpha_2|\boldsymbol{x})=\lambda_{21}P(\omega_1|\boldsymbol{x})+\lambda_{22}P(\omega_2|\boldsymbol{x})
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\(\lambda_{ij}\)</span> 为简记 <span class="math inline">\(\lambda(\alpha_i|\omega_j)\)</span></p>
+</blockquote>
+<p>判别的基本规则为当 <span class="math inline">\(R(\alpha_1|\boldsymbol{x})&lt;R(\alpha_2|\boldsymbol{x})\)</span>
+时，则判为 <span class="math inline">\(\omega_1\)</span>（描述为当决策为
+<span class="math inline">\(\omega_1\)</span> 的损失小于决策为 <span class="math inline">\(\omega_2\)</span> 的损失时，判别为 <span class="math inline">\(\omega_1\)</span>）。</p>
+<p>化简为<strong>用后验概率的形式描述该公式</strong>：</p>
+<p>如果 <span class="math display">\[
+(\lambda_{21}-\lambda_{11})P(\omega_1|\boldsymbol{x})&gt;(\lambda_{12}-\lambda_{22})P(\omega_2|\boldsymbol{x})
+\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
+<p>利用贝叶斯公式，改为<strong>用先验概率描述规则</strong>，则变更为：</p>
+<p>如果 <span class="math display">\[
+(\lambda_{21}-\lambda_{11})p(\boldsymbol{x}|\omega_1)P(\omega_1)&gt;(\lambda_{12}-\lambda_{22})p(\boldsymbol{x}|\omega_2)P(\omega_2)
+\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
+<p>另一种表示方式是，合理假设 <span class="math inline">\(\lambda_{21}&gt;\lambda_{11}\)</span>
+的条件下：</p>
+<p>如果 <span class="math display">\[
+\frac{p(\boldsymbol{x}|\omega_1)}{p(\boldsymbol{x}|\omega_2)}&gt;\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}\frac{P(\omega_2)}{P(\omega_1)}
+\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
+<blockquote>
+<p>左式即为似然比。</p>
+</blockquote>
+<p>这种判决规则的优势是，只依赖于 <span class="math inline">\(\boldsymbol{x}\)</span> 的概率密度。</p>
+<p>作出似然比函数，可以得知该种决策的判别边界与右式相关，当似然比大于判别边界时，判决为
+<span class="math inline">\(\omega_1\)</span>。</p>
+<figure>
+<img src="/bayesian-decision-theory/最小风险决策.jpg" alt="最小风险决策">
+<figcaption aria-hidden="true">最小风险决策</figcaption>
+</figure>
+<p>为方便判决，如上图，会选取一个阈值 <span class="math inline">\(\theta_m\)</span> 使得 <span class="math display">\[
+\frac{p(\boldsymbol{x}|\omega_1)}{p(\boldsymbol{x}|\omega_2)}&gt;\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}\frac{P(\omega_2)}{P(\omega_1)}&gt;\theta_m
+\]</span> 即为判决边界，如图虚线所示。</p>
+<p>同时由公式可知，当 <span class="math inline">\(\lambda_{12}-\lambda_{22}=\lambda_{21}-\lambda_{11}\)</span>
+时，无论选择最小误差概率决策还是最小风险决策都是<strong>等价</strong>的。</p>
+<p>实例如下</p>
+<blockquote>
+<p>同最小误差概率决策中的实例，但此时给出损失表如下</p>
+<figure>
+<img src="/bayesian-decision-theory/损失表.jpg" alt="损失表">
+<figcaption aria-hidden="true">损失表</figcaption>
+</figure>
+<p>似然比为 0.5，计算损失比 <span class="math display">\[
+\frac{\lambda_{12}-\lambda_{22}}{\lambda_{21}-\lambda_{11}}=5
+\]</span> 显然 <span class="math display">\[
+\frac{1}{2}&lt;5\times\frac{1}{9}
+\]</span> 此时如果判决为 <span class="math inline">\(\omega_1\)</span>
+风险（损失）更大，故此时判决为 <span class="math inline">\(x\in
+\omega_2\)</span>，为异常细胞。</p>
+</blockquote>
+<h4 id="最小误差率决策">最小误差率决策</h4>
+<p>如果要避免误判，自然要寻找一种判决规则使误判概率（即<strong>误差率</strong>）最小化。</p>
+<p>这种情况下的损失函数就是所谓的“对称损失”或者“0-1 损失”函数： <span class="math display">\[
+\lambda(\alpha_i|\omega_j)=\begin{cases}
+0,i=j\\
+1,i\neq j
+\end{cases}
+\]</span> 其中要求 <span class="math inline">\(1&lt;i,j&lt;c\)</span>。</p>
+<p>从此简化模型可知，所有误判都是等代价的。</p>
+<p>这个损失函数对应的<strong>条件风险</strong>就是<strong>平均误差概率</strong>，它的条件风险为：
+<span class="math display">\[
+\begin{align}
+R(\alpha_i|\boldsymbol{x})&amp;=\sum^c_{j=1}\lambda(\alpha_i|\omega_j)P(\omega_j|\boldsymbol{x})\\
+&amp;=\sum_{i\neq j}P(\omega_j|\boldsymbol{x})\\
+&amp;=1-P(\omega_i|\boldsymbol{x})
+\end{align}
+\]</span> 其中 <span class="math inline">\(P(\omega_i|\boldsymbol{x})\)</span> 是行为 <span class="math inline">\(\alpha_i\)</span> 分类正确的条件概率。</p>
+<p>这种情况下我们想<strong>最小化平均误差概率</strong>只要选取 <span class="math inline">\(i\)</span> 使得后验概率 <span class="math inline">\(P(\omega_i|\boldsymbol{x})\)</span> 最大即可。</p>
+<blockquote>
+<p>或者说是<strong>最大化后验概率</strong>。</p>
+</blockquote>
+<p>即有决策规则，对于任意 <span class="math inline">\(j\neq
+i\)</span>，满足 <span class="math display">\[
+P(\omega_1|\boldsymbol{x})&gt;P(\omega_j|\boldsymbol{x})
+\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>。</p>
+<h4 id="实际应用-1">实际应用</h4>
+<p>某人前往中高风险地区为特征 <span class="math inline">\(x\)</span>，有表</p>
+<table>
+<colgroup>
+<col style="width: 22%">
+<col style="width: 29%">
+<col style="width: 22%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>分类</th>
+<th><span class="math inline">\(\alpha_1=\text{主动上报，自我隔离}\)</span></th>
+<th><span class="math inline">\(\alpha_2=\text{做核酸检测}\)</span></th>
+<th><span class="math inline">\(\alpha_1=\text{不上报，不做为}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\omega_1=\text{感染新冠}\)</span></td>
+<td>5</td>
+<td>50</td>
+<td>10000</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\omega_2=\text{未感染新冠}\)</span></td>
+<td>60</td>
+<td>3</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>知道 <span class="math inline">\(P(\omega_1|x)=0.01\)</span>，<span class="math inline">\(P(\omega_2|x)=0.99\)</span></p>
+<p>可以计算 <span class="math display">\[
+\begin{align}
+R(\alpha_1|x)&amp;=\sum^2_{j=1}\lambda_{1j}P(\omega_j|x)\\
+&amp;=\lambda_{11}P(\omega_1|x)+\lambda_{12}P(\omega_2|x)\\
+&amp;=5\times0.01+60\times0.99\\
+&amp;=59.45\\
+R(\alpha_2|x)&amp;=3.47\\
+R(\alpha_3|x)&amp;=100\\
+\end{align}
+\]</span>
+故可以得知，前往高风险地区时应采取的决策是做核酸（因为做核酸所导致的损失最低）。</p>
+<h3 id="分类器判别函数与判别区域">分类器、判别函数与判别区域</h3>
+<h4 id="判别函数">判别函数</h4>
+<p>用后验概率与风险函数决策的方式，被称为<strong>模式分类器</strong>，有很多种方式来表示模式分类器，其中用的最多的是使用<strong>判别函数</strong>
+<span class="math inline">\(g(\boldsymbol{x})\)</span>。</p>
+<blockquote>
+<p>使用单增函数嵌套的判决结果不变，即 <span class="math inline">\(f(g(\boldsymbol{x}))\)</span> 对判决无影响，其中
+<span class="math inline">\(f(\boldsymbol{x})\)</span> 为单增函数</p>
+</blockquote>
+<p>如果对于定 <span class="math inline">\(i\)</span> 有任意的 <span class="math inline">\(j\)</span> 满足 <span class="math display">\[
+g_i(\boldsymbol{x})&gt;g_j(\boldsymbol{x})
+\]</span> 那么判决为 <span class="math inline">\(\omega_i\)</span>。</p>
+<p>此分类器可视为一个<strong>计算 <span class="math inline">\(c\)</span>
+个判别函数并选取最大判别值对应的类型</strong>的网络。</p>
+<figure>
+<img src="/bayesian-decision-theory/判别网络.png" alt="判别网络">
+<figcaption aria-hidden="true">判别网络</figcaption>
+</figure>
+<p>简单的判别函数可以表示为后验概率或者条件风险的负值，这样能让判别函数与最小的条件风险对应，判别函数的选择不是唯一的。</p>
+<p>以下是常用的<strong>最小误差概率决策判别函数</strong>： <span class="math display">\[
+g_i(x)=P(\omega_i|\boldsymbol{x})\\
+g_i(x)=p(\boldsymbol{x}|\omega_i)P(\omega_i)\\
+g_i(x)=\ln p(\boldsymbol{x}|\omega_i)+\ln P(\omega_i)
+\]</span> 还有<strong>最小风险决策判别函数</strong>： <span class="math display">\[
+g_i(x)=-R(\alpha_i|\boldsymbol{x})
+\]</span> 判决规则是相同的，每种判决规则均是将特征空间分成 <span class="math inline">\(c\)</span> 个判决区域，<span class="math inline">\(R_1,R_2,\cdots,R_c\)</span>。</p>
+<p>如果对于所有的 <span class="math inline">\(j\neq i\)</span> 有 <span class="math inline">\(g_i(\boldsymbol{x})&gt;g_j(\boldsymbol{x})\)</span>，那么
+<span class="math inline">\(\boldsymbol{x}_i\)</span> 属于 <span class="math inline">\(R_i\)</span>。</p>
+<p>此时该区域由判决边界来分割，其判决边界即判决空间中使判别函数值最大的曲面。</p>
+<figure>
+<img src="/bayesian-decision-theory/判决区域.png" alt="判决区域">
+<figcaption aria-hidden="true">判决区域</figcaption>
+</figure>
+<h4 id="二类分类器">二类分类器</h4>
+<p>在该种情况下，使用判别函数 <span class="math display">\[
+g(\boldsymbol{x})=g_1(\boldsymbol{x})-g_2(\boldsymbol{x})
+\]</span> 判决规则为：</p>
+<p>如果 <span class="math display">\[
+g(\boldsymbol{x})&gt;0
+\]</span> 则判决为 <span class="math inline">\(\omega_1\)</span>，否则判决为 <span class="math inline">\(\omega_2\)</span>。</p>
+<p>一般为简化会多使用以下形式： <span class="math display">\[
+g(\boldsymbol{x})=P(\omega_1|\boldsymbol{x})-P(\omega_2|\boldsymbol{x})\\
+g(\boldsymbol{x})=\ln\frac{p(\boldsymbol{x}|\omega_1)}{p(\boldsymbol{x}|\omega_2)}+\ln\frac{P(\omega_1)}{P(\omega_2)}
+\]</span></p>
+<h3 id="朴素贝叶斯分类器">朴素贝叶斯分类器</h3>
+<p>我们知道贝叶斯公式如下 <span class="math display">\[
+P(\omega|\boldsymbol{x})=\frac{P(\boldsymbol{x}|\omega)P(\omega)}{P(\boldsymbol{x})}
+\]</span> 从中可以知道，估计后验概率 <span class="math inline">\(P(\omega_j|\boldsymbol{x})\)</span>
+的主要困难为：类条件概率 <span class="math inline">\(P(\boldsymbol{x}|\omega_j)\)</span>
+是所有属性上的联合概率，难以从有限的训练样本估计获得。</p>
+<p>故采用“属性条件独立性假设”，即<strong>每个属性独立地对分类结果发生影响</strong>。</p>
+<blockquote>
+<p>即 <span class="math inline">\(P(AB)=P(A)P(B)\)</span></p>
+</blockquote>
+<p>基于属性条件独立性假设，可以将贝叶斯公式重写为 <span class="math display">\[
+P(\omega|\boldsymbol{x})=\frac{P(\boldsymbol{x}|\omega)P(\omega)}{P(\boldsymbol{x})}=\frac{P(\omega)}{P(\boldsymbol{x})}\prod^d_{i=1}P(x_i|\omega)
+\]</span> 其中，<span class="math inline">\(d\)</span>
+为维度（属性数目），<span class="math inline">\(x_i\)</span> 为 <span class="math inline">\(\boldsymbol{x}\)</span> 在第 <span class="math inline">\(i\)</span> 个维度（属性）上的取值。</p>
+<p>其中条件风险函数为 <span class="math display">\[
+\begin{align}
+R(\alpha_i|\boldsymbol{x})&amp;=\sum^c_{j=1}\lambda(\alpha_i|\omega_j)P(\omega_j|\boldsymbol{x})\\
+&amp;=\sum_{i\neq j}P(\omega_j|\boldsymbol{x})\\
+&amp;=1-P(\omega_i|\boldsymbol{x})
+\end{align}
+\]</span>
+选择<strong>最小误差率决策</strong>，那么得到朴素贝叶斯分类的判别函数：
+<span class="math display">\[
+h(\boldsymbol{x})_{nb}=\arg\max_{\omega\in
+\Omega}{P(\omega)\prod^d_{i=1}P(x_i|\omega)}
+\]</span> 即最大化后验概率。</p>
+<p>朴素贝叶斯分类器的训练器的<strong>训练过程</strong>就是基于训练集
+<span class="math inline">\(D\)</span> 估计<strong>类先验概率</strong>
+<span class="math inline">\(P(\omega)\)</span>
+并<strong>为每个属性估计条件概率</strong> <span class="math inline">\(P(x_i|\omega)\)</span>。</p>
+<p>令 <span class="math inline">\(D_\omega\)</span> 表示训练集 <span class="math inline">\(D\)</span> 中 <span class="math inline">\(\omega\)</span>
+类样本组合的集合，若有重组的<strong>独立同分布</strong>样本，则可以容易估计出<strong>类先验概率</strong>：
+<span class="math display">\[
+P(\omega)=\frac{|D_\omega|}{D}
+\]</span> 对离散属性而言，令 <span class="math inline">\(D_{\omega,x_i}\)</span> 表示 <span class="math inline">\(D_\omega\)</span> 中在第 <span class="math inline">\(i\)</span> 个属性上取值为 <span class="math inline">\(x_i\)</span> 的样本组成的集合，则条件概率 <span class="math inline">\(P(x_i|\omega)\)</span> 可估计为 <span class="math display">\[
+P(x_i|\omega)=\frac{|D_{\omega,x_i}|}{|D_\omega|}
+\]</span> 对于连续属性而言，可以考虑概率密度函数，假设 <span class="math inline">\(p(x_i|\omega)\sim
+N(\mu_{\omega,i},\sigma_{\omega,i}^2)\)</span>，则 <span class="math display">\[
+P(x_i|\omega)=p(x_i|\omega)
+\]</span> 此时 <span class="math inline">\(p(\boldsymbol{x}|\omega)\sim
+N(\boldsymbol{\mu}_\omega,\boldsymbol{\sigma}_\omega^2)\)</span>，则参数的极大似然估计为
+<span class="math display">\[
+\boldsymbol{\mu}_\omega=\frac{1}{|D_\omega|}\sum_{\boldsymbol{x}\in
+D_\omega}\boldsymbol{x}\\
+\boldsymbol{\sigma}_\omega^2=\frac{1}{|D_\omega|}\sum_{\boldsymbol{x}\in
+D_\omega}(\boldsymbol{x}-\boldsymbol{\mu}_\omega)^2\\
+\]</span></p>
+<blockquote>
+<p><span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu}_\omega)^2\)</span>
+表示向量积，即 <span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu}_\omega)(\boldsymbol{x}-\boldsymbol{\mu}_\omega)^T\)</span></p>
+</blockquote>
+<h3 id="正态分布下的贝叶斯分类">正态分布下的贝叶斯分类</h3>
+<p>朴素贝叶斯分类过于简单，实际情况中无法满足属性条件独立性假设，往往属性之间具有相关性。</p>
+<h4 id="协方差">协方差</h4>
+<p>在统计学中，<strong>方差</strong>是用来度量<strong>单个随机变量的离散程度</strong>，而<strong>协方差</strong>一般用来刻画两个随机变量的相似程度（值越大越相似）。</p>
+<p>方差的计算公式如下 <span class="math display">\[
+\sigma^2_x=\frac{1}{n}\sum^n_{i=1}(x_i-\bar{x})^2
+\]</span> 其中，<span class="math inline">\(n\)</span>
+表示<strong>样本量</strong>，<span class="math inline">\(\bar{x}\)</span>
+表示这一组随机数据的<strong>均值</strong>。</p>
+<p>在此基础上，协方差的计算公式定义如下 <span class="math display">\[
+\sigma(x,y)=\frac{1}{n}\sum^n_{i=1}(x_i-\bar{x})(y_i-\bar{y})
+\]</span> 其中，<span class="math inline">\(\bar{x},\bar{y}\)</span>
+分别表示两个随机变量所对应的观测样本<strong>均值</strong>，由此可知，方差
+<span class="math inline">\(\sigma_x^2\)</span> 可视作随机变量 <span class="math inline">\(x\)</span> 关于其自身的协方差 <span class="math inline">\(\sigma(x,x)\)</span>。</p>
+<p>给定 <span class="math inline">\(d\)</span>
+组随机变量（特征向量）<span class="math inline">\(\boldsymbol{x}_k,k=1,2,\cdots,d\)</span>，则这些随机变量的方差为
+<span class="math display">\[
+\sigma(\boldsymbol{x}_k,\boldsymbol{x}_k)=\frac{1}{n}\sum^n_{i=1}(x_{ki}-\bar{x}_k)^2,k=1,2,\cdots,d
+\]</span> 其中 <span class="math inline">\(x_{ki}\)</span>
+代表特征向量的第 <span class="math inline">\(i\)</span>
+个维度的值，<span class="math inline">\(\bar{x}_k\)</span>
+代表该维度下的平均值。</p>
+<p>而协方差为 <span class="math display">\[
+\sigma(\boldsymbol{x}_m,\boldsymbol{x}_k)=\frac{1}{n}\sum^n_{i=1}(x_{mi}-\bar{x}_m)(x_{ki}-\bar{x}_k),k=1,2,\cdots,d
+\]</span> 因此，协方差矩阵定义为 <span class="math display">\[
+\Sigma=\left[\begin{array}{ccc}
+\sigma\left(x_{1}, x_{1}\right) &amp; \cdots &amp; \sigma\left(x_{1},
+x_{d}\right) \\
+\vdots &amp; \ddots &amp; \vdots \\
+\sigma\left(x_{d}, x_{1}\right) &amp; \cdots &amp; \sigma\left(x_{d},
+x_{d}\right)
+\end{array}\right] \in \mathbb{R}^{d \times d}
+\]</span>
+其中对角线上的元素为各随机变量的方差，非对角线上的元素为两两随机变量之间的协方差，且
+<span class="math inline">\(\Sigma\)</span>
+为<strong>对称矩阵</strong>。</p>
+<h4 id="一维正态分布">一维正态分布</h4>
+<p>对于一维正态分布，有密度函数 <span class="math display">\[
+p(x)=\frac{1}{\sqrt{2\pi}\sigma}\exp{[{-\frac{1}{2}(\frac{x-\mu}{\sigma})^2}]}
+\]</span> 其中均值 <span class="math display">\[
+\mu=E(x)=\int^{+\infty}_{-\infty}xp(x)\mathrm{d}x
+\]</span> 方差 <span class="math display">\[
+\sigma^2=E[(x-\mu)^2]=\int^{+\infty}_{-\infty}(x-\mu)^2p(x)\mathrm{d}x
+\]</span> 其中一维正态分布也可以简写为 <span class="math inline">\(p(x)\sim N(\mu,\sigma^2)\)</span>。</p>
+<p>一种分布的熵由下式给出 <span class="math display">\[
+H(p(x))=-\int p(x)\ln{p(x)}\mathrm{d}x
+\]</span> 单位为奈特，如果对数换为 <span class="math inline">\(\log_2\)</span>，则单位为比特。</p>
+<p>可以证明正态分布在所有具有给定均值和方差的分布中<strong>具有最大熵</strong>。由<strong>中心极限定理</strong>所述，<strong>大量的小的、独立地随机分布的总和等效为正态分布</strong>。由于所有模式——鱼、手写字符、语音——都可以看成是由大量随机过程所组成的某个理想的模式或原型模式，所以<strong>实际上通常会选择正态分布作为实际的概率分布</strong>。</p>
+<h4 id="多维正态分布">多维正态分布</h4>
+<p>设 <span class="math inline">\(d\)</span> 维特征向量 <span class="math display">\[
+\boldsymbol{x}=(x_1,x_2,\cdots,x_d)^T
+\]</span> 则 <span class="math inline">\(d\)</span> 维正态分布定义为
+<span class="math display">\[
+p(\boldsymbol{x})=\frac{1}{(2\pi)^{d/2}|\Sigma|^{1/2}}\exp[-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu})^T\Sigma^{-1}(\boldsymbol{x}-\boldsymbol{\mu})]
+\]</span> 其中 <span class="math inline">\(\Sigma\)</span> 是 <span class="math inline">\(d\)</span> 维的协方差矩阵，<span class="math inline">\(|\Sigma|\)</span> 代表行列式的值，<span class="math inline">\(\Sigma^{-1}\)</span> 代表矩阵的逆，<span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu})^T\)</span>
+表示矩阵的转置（在这里是变为行向量）。</p>
+<p>通常简写为 <span class="math display">\[
+p(\boldsymbol{x})=N(\boldsymbol{\mu},\boldsymbol{\Sigma})
+\]</span> 其中均值 <span class="math display">\[
+\boldsymbol{\mu}=E(\boldsymbol{x})=\int\boldsymbol{x}p(\boldsymbol{x})\mathrm{d}\boldsymbol{x}
+\]</span> 协方差矩阵 <span class="math display">\[
+\Sigma=E[(\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^T]=\int
+(\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^Tp(\boldsymbol{x})\mathrm{d}\boldsymbol{x}
+\]</span> 其中 <span class="math inline">\((\boldsymbol{x}-\boldsymbol{\mu})(\boldsymbol{x}-\boldsymbol{\mu})^T\)</span>
+表示求向量内积。</p>
+<p>其中某个向量的均值可以通过其属性的均值获得，即 <span class="math display">\[
+\begin{align}
+\mu_i&amp;=E(x_i)\\
+\sigma_{ij}^2&amp;=E[(x_i-\mu_i)(x_j-\mu_j)]\\
+&amp;=\iint(x_i-\mu_i)(x_j-\mu_j)p(x_i,x_j)\mathrm{d}{x_i}\mathrm{d}{x_j}
+\end{align}
+\]</span> 当 <span class="math inline">\(i=j\)</span>
+时（对角线元素），<span class="math inline">\(\sigma_{ij}\)</span>
+反映样本 <span class="math inline">\(x_i\)</span> 在 <span class="math inline">\(d\)</span>
+维特征空间<strong>各方向的发散程度</strong>；</p>
+<p>当 <span class="math inline">\(i\neq j\)</span> 时，<span class="math inline">\(\sigma_{ij}\)</span>
+反映<strong>各特征间的统计相关性</strong>。</p>
+<blockquote>
+<p>这里需要严格限定 <span class="math inline">\(\Sigma\)</span>
+是正定矩阵，使得其行列式为正值。</p>
+</blockquote>
+<h4 id="分类器">分类器</h4>
+<p>设各类样本的<strong>类概率密度</strong>均满足正态分布，即 <span class="math display">\[
+p(\boldsymbol{x}|\omega_i)\sim N(\boldsymbol{\mu},\boldsymbol{\Sigma})
+\]</span> 根据最小误差概率决策，判别函数为 <span class="math display">\[
+g_i(\boldsymbol{x})=p(\boldsymbol{x}|\omega_i)p(\omega_i)=\max_{1\leq
+j\leq c}{(p(\boldsymbol{x}|\omega_j),p(\omega_j))}
+\]</span> 或者使用 <span class="math display">\[
+\begin{align}
+g_i(\boldsymbol{x})&amp;=\ln{p(\boldsymbol{x}|\omega_i)}+\ln{p(\omega_i)}\\
+&amp;=-\frac{d}{2}\ln{2\pi}-\frac{1}{2}\ln{|\Sigma_i|}-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_i)^T\Sigma^{-1}_i(\boldsymbol{x}-\boldsymbol{\mu}_i)+\ln{P(\omega_i)}
+\end{align}
+\]</span> 分以下三种情况讨论决策结果。</p>
+<h5 id="情况一sigmasigma2i">情况一：<span class="math inline">\(\Sigma=\sigma^2I\)</span></h5>
+<ul>
+<li>各类协方差矩阵相等，<span class="math inline">\(\Sigma_i=\Sigma_j=\Sigma\)</span></li>
+<li>各特征统计独立，<span class="math inline">\(\sigma_{ij}^2=0,i\neq
+j\)</span></li>
+<li>样本各方向的发散程度一致 <span class="math inline">\(\sigma_{ij}^2=\sigma^2,i=j\)</span></li>
+</ul>
+<p>即 <span class="math display">\[
+\Sigma=\begin{bmatrix}
+\sigma^2 &amp; 0 &amp; \cdots &amp; 0\\
+0 &amp; \sigma^2 &amp; \cdots &amp; 0\\
+\cdots &amp; \cdots &amp; \cdots &amp; \cdots\\
+0 &amp; 0 &amp; \cdots &amp; \sigma^2
+\end{bmatrix}
+\]</span> 此时 <span class="math inline">\(\Sigma=\sigma^2I\)</span>，故
+<span class="math inline">\(\Sigma^{-1}=\frac{1}{\sigma^2}I\)</span>，其中
+<span class="math inline">\(I\)</span> 为单位矩阵。</p>
+<p>故判别函数化简为 <span class="math display">\[
+\begin{align}
+g_i(\boldsymbol{x})&amp;=-\frac{(\boldsymbol{x}-\boldsymbol{\mu}_i)^T(\boldsymbol{x}-\boldsymbol{\mu}_i)}{2\sigma^2}+\ln
+p(\omega_i)\\
+&amp;=-\frac{\begin{Vmatrix}
+\boldsymbol{x}-\boldsymbol{\mu}_i
+\end{Vmatrix}^2}{2\sigma^2}+\ln p(\omega_i)
+\end{align}
+\]</span> 其中 <span class="math inline">\(\begin{Vmatrix}
+\boldsymbol{x}-\boldsymbol{\mu}_i \end{Vmatrix}\)</span>
+是求欧氏距离，即<strong>欧几里得范数</strong>。</p>
+<p>故在此种决策函数下，只需计算 <span class="math inline">\(\boldsymbol{x}\)</span> 到各类样本均值 <span class="math inline">\(\boldsymbol{\mu}_i\)</span>
+的范数，选择范数最小（在空间中称为距离最近）的类别即可。</p>
+<p>情况一也称作<strong>最小距离分类器</strong>。</p>
+<p>对判别函数重整，有 <span class="math display">\[
+g_i(\boldsymbol{x})=\frac{1}{2\sigma^2}(\begin{Vmatrix}\boldsymbol{x}\end{Vmatrix}^2-2\boldsymbol{\mu}_i^T\boldsymbol{x}+\begin{Vmatrix}\boldsymbol{\mu}\end{Vmatrix}^2)+\ln{p(\omega_i)}
+\]</span> 其中 <span class="math inline">\(\begin{Vmatrix}\boldsymbol{x}\end{Vmatrix}^2\)</span>
+对于任意 <span class="math inline">\(i\)</span>
+是相等的，于是乎我们可以把上式等价于 <span class="math display">\[
+g_i(\boldsymbol{x})=\boldsymbol{w}_i^T \boldsymbol{x}+\omega_{i0}
+\]</span> 其中 <span class="math display">\[
+\boldsymbol{w}_i=\frac{1}{\sigma ^2}\boldsymbol{\mu}_i\\
+\omega_{i0}=-\frac{1}{2\sigma^2}\begin{Vmatrix}\boldsymbol{\mu}\end{Vmatrix}^2+\ln{p(\omega_i)}
+\]</span> <span class="math inline">\(\omega_{i0}\)</span> 又称作第
+<span class="math inline">\(i\)</span>
+个方向的<strong>阈值</strong>或<strong>偏置</strong>。</p>
+<p>使用线性判别函数的分类器称为“线性机器”。这类分类器有许多有趣的理论性质。</p>
+<p>此处只需注意到一个线性机器的判定面是一些超平面，它们是由两类问题中可获得最大后验概率的线性方程
+<span class="math inline">\(g_i(\boldsymbol{x})=g_j(\boldsymbol{x})\)</span>
+来确定。</p>
+<p>上式可写为 <span class="math display">\[
+\boldsymbol{w}^T(\boldsymbol{x}-\boldsymbol{x}_0)=0
+\]</span> 其中 <span class="math display">\[
+\boldsymbol{w}=\boldsymbol{\mu}_i-\boldsymbol{\mu}_j
+\]</span> 且 <span class="math display">\[
+\mathbf{x}_{0}=\frac{1}{2}\left(\boldsymbol{\mu}_{i}+\boldsymbol{\mu}_{j}\right)-\frac{\sigma^{2}}{\left\|\boldsymbol{\mu}_{i}-\boldsymbol{\mu}_{j}\right\|^{2}}
+\ln
+\frac{P\left(\omega_{i}\right)}{P\left(\omega_{j}\right)}\left(\boldsymbol{\mu}_{i}-\boldsymbol{\mu}_{j}\right)
+\]</span> 此方程定义了<strong>一个通过 <span class="math inline">\(\boldsymbol{x}_0\)</span> 且与向量 <span class="math inline">\(\boldsymbol{w}\)</span>
+正交</strong>的超平面。</p>
+<blockquote>
+<p>如果 <span class="math inline">\(\sigma^2\)</span>
+相对于范数的平方较小，那么判决边界的位置相对于确切的先验概率值并不敏感。</p>
+</blockquote>
+<h5 id="情况二sigma_isigma_jsigma">情况二：<span class="math inline">\(\Sigma_i=\Sigma_j=\Sigma\)</span></h5>
+<ul>
+<li>各类方差相同，<span class="math inline">\(\Sigma_i=\Sigma_j=\Sigma\)</span></li>
+</ul>
+<p>可以证明，此时判别函数仍满足线性关系，即 <span class="math display">\[
+g_i(\boldsymbol{x})=\boldsymbol{w}_i^T\boldsymbol{x}+\omega_{i0}
+\]</span></p>
+<h5 id="情况三sigma_ineq-sigma_j">情况三：<span class="math inline">\(\Sigma_i\neq \Sigma_j\)</span></h5>
+<ul>
+<li><span class="math inline">\(\Sigma_i\neq \Sigma_j\)</span></li>
+</ul>
+<p>此时判别函数为 <span class="math display">\[
+g_i(\boldsymbol{x})=\boldsymbol{x}^TA_i\boldsymbol{x}+\boldsymbol{w}_i^T+\omega_{i0}
+\]</span> 此分类器为非线性分类器（二次型分类器）。</p>
+<h3 id="实际计算">实际计算</h3>
+<p>两类高斯分布所计算出的贝叶斯判决边界如下，每一类都基于 4
+个数据点。</p>
+<p>以 <span class="math inline">\(\omega_1\)</span> 表示 4
+个黑点的集合，<span class="math inline">\(\omega_2\)</span>
+表示红点集合。</p>
+<figure>
+<img src="/bayesian-decision-theory/模式简图.jpg" alt="模式简图">
+<figcaption aria-hidden="true">模式简图</figcaption>
+</figure>
+<p>由图可知，<span class="math inline">\(\omega_1\)</span>
+的特征向量矩阵为 <span class="math display">\[
+X=\begin{bmatrix}
+2 &amp; 3 &amp; 3 &amp; 4\\
+6 &amp; 8 &amp; 4 &amp; 6
+\end{bmatrix}
+\]</span> 可知特征向量维度 <span class="math inline">\(d=2\)</span></p>
+<p>由均值公式 <span class="math display">\[
+\mu_k=\frac{1}{4}\sum^4_{i=1} x_{ki},k=1,2
+\]</span> 得均值向量为 <span class="math display">\[
+\boldsymbol{\mu}=\begin{bmatrix}
+3\\
+6
+\end{bmatrix}
+\]</span> 由协方差公式 <span class="math display">\[
+\sigma(\boldsymbol{x}_k,\boldsymbol{x}_k)=\frac{1}{n}\sum^n_{i=1}(x_{ki}-\bar{x}_k)^2,k=1,2,\cdots,d
+\]</span> 得协方差为 <span class="math display">\[
+\begin{align}
+\sigma\left(x_{1},
+x_{1}\right)&amp;=\frac{1}{4}\left\{\left(x_{11}-\bar{x}_{1}\right)\left(x_{11}-\bar{x}_{1}\right)+\left(x_{12}-\bar{x}_{1}\right)\left(x_{12}-\bar{x}_{1}\right)+\left(x_{13}-\bar{x}_{1}\right)\left(x_{13}-\bar{x}_{1}\right)+\left(x_{14}-\bar{x}_{1}\right)\left(x_{14}-\bar{x}_{1}\right)\right\}
+\\
+&amp;=\frac{1}{4}\{(2-3)(2-3)+(3-3)(3-3)+(3-3)(3-3)+(4-3)(4-3)\}\\
+&amp;=\frac{1}{2}
+\end{align}
+\]</span></p>
+<blockquote>
+<p>此处 <span class="math inline">\(x_1=\begin{bmatrix}2&amp;3&amp;3&amp;6\end{bmatrix},x_{11}=2,x_{12}=3,\bar{x}_1=3\)</span>，同时忽略其他协方差的计算。</p>
+</blockquote>
+<p>同理可得，协方差矩阵为 <span class="math display">\[
+\Sigma=\begin{bmatrix}
+\frac{1}{2} &amp; 0\\
+0 &amp; 2
+\end{bmatrix}
+\]</span> 对于另一组特征向量 <span class="math display">\[
+X=\begin{bmatrix}
+1 &amp; 3 &amp; 3 &amp; 5\\
+-2 &amp; 0 &amp; -4 &amp; -2
+\end{bmatrix}
+\]</span> 同理可得均值和方差。</p>
+<p>记第一组数据的均值为 <span class="math inline">\(\mu_1\)</span>，协方差矩阵为 <span class="math inline">\(\Sigma_1\)</span>；第二组数据的均值为 <span class="math inline">\(\mu_2\)</span>，协方差矩阵为 <span class="math inline">\(\Sigma_2\)</span>： <span class="math display">\[
+\boldsymbol{\mu}_1=\begin{bmatrix}
+3\\
+6
+\end{bmatrix},
+\boldsymbol{\mu}_2=\begin{bmatrix}
+3\\
+-2
+\end{bmatrix}
+\\
+\Sigma_1=\begin{bmatrix}
+\frac{1}{2} &amp; 0\\
+0 &amp; 2
+\end{bmatrix},
+\Sigma_2=\begin{bmatrix}
+2 &amp; 0\\
+0 &amp; 2
+\end{bmatrix}
+\]</span> 可得逆矩为 <span class="math display">\[
+\Sigma_1^{-1}=\begin{bmatrix}
+2 &amp; 0\\
+0 &amp; \frac{1}{2}
+\end{bmatrix},
+\Sigma_2^{-1}=\begin{bmatrix}
+\frac{1}{2} &amp; 0\\
+0 &amp; \frac{1}{2}
+\end{bmatrix}
+\]</span> 假定两类分布的先验概率相等，即 <span class="math inline">\(P(\omega_1)=P(\omega_2)=0.5\)</span>，代入后可得
+<span class="math inline">\(g_1(\boldsymbol{x})=g_2(\boldsymbol{x})\)</span>
+时的判决边界为 <span class="math display">\[
+x_2=3.514-1.125x_1+0.1875x_1^2
+\]</span></p>
+<blockquote>
+<p>这里由于各类协方差矩阵各不相同，于是套用情况三的公式</p>
+</blockquote>
+<h3 id="实际应用-2">实际应用</h3>
+<h4 id="拼写纠错检查">拼写纠错检查</h4>
+<p>当用户输入了一个不在字典中的单词，我们需要去猜测：“这个家伙到底真正想输入的单词是什么呢？”用形式化的语言来叙述，就是我们需要求得：
+<span class="math display">\[
+P(\text{我们猜测他想输入的单词}|\text{他实际输入的单词})
+\]</span>
+比如用户输入thew，那么猜测他到底想输入the，还是thaw，还是其他的单词？到底哪一个单词的可能性比较大？这时候我们就可以用贝叶斯去求出每个词语的可能性。</p>
+<p>不妨把我们的猜测记为 <span class="math inline">\(h_1,h_2,\cdots,h_n\)</span>，他们都属于一个有限且离散的猜测空间H（单词总共就只有那么多，<span class="math inline">\(H\)</span> 代表
+hypothesis），将用户实际输入的单词记为 <span class="math inline">\(D\)</span>（<span class="math inline">\(D\)</span>
+代表 data，即观测数据），于是问题转为：</p>
+<p><span class="math inline">\(P(\text{我们的猜测1}|\text{他实际输入的单词})\)</span>
+可以表示为 <span class="math inline">\(P(h_1|D)\)</span>，同理对于猜测2，则表示为 <span class="math inline">\(P(h_2|D)\)</span>，我们需要计算这些概率值，取最大值。</p>
+<p>将所有猜测统一记为 <span class="math inline">\(P(H|D)\)</span>，运用贝叶斯公式可以得到 <span class="math display">\[
+P(H|D)=\frac{P(H)P(D|H)}{P(D)}
+\]</span> 由于证据因子 <span class="math inline">\(P(D)\)</span>
+对我们的决策无影响，故计算时将公式简化为 <span class="math display">\[
+P(H|D)\propto P(H)P(D|H)
+\]</span> 即用户实际想输入 the 的可能性大小取决于 the
+本身在词汇表中被使用的可能性（频繁程度）大小和想打 the 却打成 thew
+的可能性大小（似然）的乘积。</p>
+<blockquote>
+<p>抽象理解为给定观测数据，猜测是好是坏取决于“这个猜测本身独立的可能性大小”（先验概率）和“这个猜测生成我们观测到的数据的可能性大小”（似然）的乘积。</p>
+</blockquote>
+<p>有两种模型解决该问题：</p>
+<ul>
+<li>最大似然：最符合观测数据的最有优势（即 <span class="math inline">\(P(D|H)\)</span> 最大）</li>
+<li>奥卡姆剃刀：先验概率 <span class="math inline">\(P(H)\)</span>
+较大的模型有较大的优势。</li>
+</ul>
+<h4 id="医生诊断">医生诊断</h4>
+<p>一个两类识别问题：医生根据病人血液中白细胞的浓度来判断病人是否患血液病。</p>
+<p>根据医学知识和以往的经验，医生知道（先验知识）：</p>
+<ul>
+<li>患病的人，白细胞的浓度服从均值2000，方差1000的正态分布；未患病的人，白细胞的浓度服从均值7000，方差3000的正态分布</li>
+<li>一般人群中，患病的人数比例为0.5%</li>
+</ul>
+<p>当一个人的白细胞浓度是3100，医生应该做出怎样的判断？</p>
+<p>用 <span class="math inline">\(\Omega\)</span> 表示分类集合，有 <span class="math inline">\(\omega_1\)</span> 表示患病，<span class="math inline">\(\omega_2\)</span> 表示未患病；</p>
+<p>用 <span class="math inline">\(x\)</span>
+表示"白细胞浓度"这个随机变量，即选择其作为特征。</p>
+<p>由先验知识我们可以得到先验概率：</p>
+<ul>
+<li><span class="math inline">\(P(\omega_1)=0.5\%,P(\omega_2)=99.5\%\)</span></li>
+<li>白细胞浓度在两种类别下的类条件概率密度：<span class="math inline">\(p(x|\omega_1)\sim N(2000,1000),p(x|\omega_2)\sim
+N(7000,3000)\)</span></li>
+</ul>
+<p>查表可以得到类条件概率： <span class="math display">\[
+P(3100|\omega_1)=2.1785\times10^{-4}\\
+P(3100|\omega_2)=5.7123\times10^{-5}\\
+\]</span> 根据贝叶斯公式，计算得到后验概率： <span class="math display">\[
+\begin{align}
+P(\omega_1|3100)&amp;=1.9\%\\
+P(\omega_2|3100)&amp;=98.1\%
+\end{align}
+\]</span> 故判决为 <span class="math inline">\(\omega_2\)</span>，即医生诊断为：未患病，体征正常。</p>
+]]></content>
+      <tags>
+        <tag>math</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>模式识别-参数估计笔记</title>
+    <url>//parameter-estimate.html</url>
+    <content><![CDATA[<h1 id="模式识别">模式识别</h1>
+<h2 id="前言">前言</h2>
+<p>先验概率是可以通过训练集和先验知识易求得的，但类条件概率密度是难求的，主要的问题有两个：</p>
+<ol type="1">
+<li>很多情况下，已有的训练样本数总是显得太少；</li>
+<li>用于表示特征的向量 <span class="math inline">\(\boldsymbol{x}\)</span>
+的维数过大时，计算负担更大。</li>
+</ol>
+<p>这时候我们一般会像上一章所说的那样，譬如让 <span class="math inline">\(p(\boldsymbol{x}|\omega_j)\sim
+N(\boldsymbol{\mu}|\Sigma)\)</span>，即假设我们求类条件概率密度转化为求<strong>正态分布的参数</strong>，这种方式称作<strong>参数化</strong>，即使得类条件概率密度仅依赖于某些参数（例如在这里是均值和协方差矩阵）。</p>
+<p>也可以让类条件概率密度<strong>参数化</strong>为其他分布密度（例如泊松分布），但此时的问题就转化为——估计（计算）参数。</p>
+<p>而估计（计算）这些参数，主要有两种方式——最大似然估计和贝叶斯参数估计。</p>
+<h2 id="最大似然估计">最大似然估计</h2>
+<h3 id="基本原理">基本原理</h3>
+<p>假设我们有 <span class="math inline">\(c\)</span> 个样本集，<span class="math inline">\(D_1,D_2,\cdots,D_c\)</span>，而任意一个样本集所得到的类条件概率密度
+<span class="math inline">\(p(\boldsymbol{x}|\omega_j)\)</span>
+是互相独立的。在前言中，我们目前的问题是，知道 <span class="math inline">\(p(\boldsymbol{x}|\omega_j)\)</span>
+的形式，但未知其参数，最大似然估计中，将参数写作 <span class="math inline">\(\boldsymbol{\theta}\)</span>
+的形式，每个参数值记作 <span class="math inline">\(\theta_1,\theta_2,\cdots,\theta_p\)</span>（参数向量的维度与特征向量的维度不统一），通常可以写作
+<span class="math inline">\(p(\boldsymbol{x}|\omega_j,\boldsymbol{\theta_j})\)</span>，这表示对于某一类条件概率密度的参数向量函数。</p>
+<blockquote>
+<p>例如已知 <span class="math inline">\(p(x|\omega_j)\sim
+N(\mu,\sigma^2)\)</span>，即一个一维特征类条件概率密度满足正态分布的形式，那么我们求解类条件概率密度问题就转化为求解正态分布的参数
+<span class="math inline">\((\mu,\sigma^2)\)</span>。</p>
+<p>那么我们把参数向量写作 <span class="math inline">\(\boldsymbol{\theta}_j=(\mu,\sigma^2)^T\)</span>，即对于
+<span class="math inline">\(\omega_j\)</span>
+的类条件概率密度的参数向量，写作 <span class="math inline">\(p(x|\omega_j,\boldsymbol{\theta_j})\)</span>，此时特征向量维度为
+1，参数向量维度为 2。</p>
+</blockquote>
+<p>为简化问题，设样本集 <span class="math inline">\(D\)</span> 中有
+<span class="math inline">\(n\)</span> 个样本 <span class="math inline">\(\boldsymbol{x}_1,\boldsymbol{x}_2,\cdots,\boldsymbol{x}_n\)</span>，把上式写作
+<span class="math inline">\(p(D|\boldsymbol{\theta})\)</span>，仅研究对于某个样本集的参数向量的计算，满足
+<span class="math display">\[
+p(D|\boldsymbol{\theta})=\prod^n_{k=1}p(\boldsymbol{x}_k|\boldsymbol{\theta})
+\]</span></p>
+<blockquote>
+<p>采用<strong>属性条件独立性假设</strong>，各个分布独立，其联合分布即各个分布的乘积。</p>
+</blockquote>
+<p>由于 <span class="math inline">\(D\)</span> 是已知的，故实际上 <span class="math inline">\(p(D|\boldsymbol{\theta})\)</span> 是一个关于 <span class="math inline">\(\boldsymbol{\theta}\)</span>
+的<strong>似然函数</strong>。</p>
+<figure>
+<img src="/parameter-estimate/最大似然估计图示.png" alt="最大似然估计图示">
+<figcaption aria-hidden="true">最大似然估计图示</figcaption>
+</figure>
+<p>定义，梯度算子 <span class="math display">\[
+\nabla_{\boldsymbol{\theta}}=\left[\begin{array}{c}
+\frac{\partial}{\partial \theta_{1}} \\
+\vdots \\
+\frac{\partial}{\partial \theta_{p}}
+\end{array}\right]
+\]</span> 定义对数似然函数 <span class="math display">\[
+\begin{align}
+l(\boldsymbol{\theta})
+&amp;=\ln{p(D|\boldsymbol{\theta})}\\
+&amp;=\sum^n_{k=1}\ln{p(\boldsymbol{x}_k|\boldsymbol{\theta})}
+\end{align}
+\]</span></p>
+<blockquote>
+<p>这里主要是将乘积转化为求和，可以更好的运算。</p>
+</blockquote>
+<p>那么，记 <span class="math display">\[
+\hat{\boldsymbol{\theta}}=\arg{\max_{\boldsymbol{\theta}}{l(\boldsymbol{\theta})}}
+\]</span> 且 <span class="math display">\[
+\nabla_{\boldsymbol{\theta}}l=\sum^n_{k=1}\nabla_{\boldsymbol{\theta}}\sum^n_{k=1}\ln{p(\boldsymbol{x}_k|\boldsymbol{\theta})}
+\]</span> 我们得到最大似然估计值 <span class="math inline">\(\boldsymbol{\theta}\)</span> 的必然条件为 <span class="math display">\[
+\nabla_{\boldsymbol{\theta}}l=0
+\]</span></p>
+<blockquote>
+<p>根据此条件得到的 <span class="math inline">\(\hat{\boldsymbol{\theta}}\)</span>
+可能是局部极大值，或是拐点，需要讨论。类似于函数讨论最大值点。</p>
+</blockquote>
+<p>理论上来说，如果训练样本个数越多，其中的样本就越具有代表性，参数值也就越接近真实值。</p>
+<h3 id="正态分布boldsymbolmu-未知">正态分布：<span class="math inline">\(\boldsymbol{\mu}\)</span> 未知</h3>
+<p>根据上一篇文章，可以知道多维正态分布的对数似然函数为 <span class="math display">\[
+l(\boldsymbol{\mu})=-\frac{d}{2}\ln{2\pi}-\frac{1}{2}\ln{|\Sigma_i|}-\frac{1}{2}(\boldsymbol{x}-\boldsymbol{\mu}_i)^T\Sigma^{-1}_i(\boldsymbol{x}-\boldsymbol{\mu}_i)
+\]</span></p>
+<blockquote>
+<p>在这里 <span class="math inline">\(\boldsymbol{\theta}=\boldsymbol{\mu}\)</span>。</p>
+</blockquote>
+<p>求得 <span class="math display">\[
+\nabla_\boldsymbol{\mu}l=\Sigma^{-1}(\boldsymbol{x}_k-\boldsymbol{\mu})
+\]</span> 令 <span class="math display">\[
+\nabla_\boldsymbol{\mu}l=0
+\]</span> 求得 <span class="math display">\[
+\hat{\boldsymbol{\mu}}=\frac{1}{n}\sum^n_{k=1}\boldsymbol{x}_k
+\]</span> 显然最大似然估计的结果满足我们直觉所得。</p>
+<h3 id="正态分布musigma2-未知">正态分布：<span class="math inline">\((\mu,\sigma^2)\)</span> 未知</h3>
+<p>根据上一篇文章，可以知道一维正态分布的对数似然函数为 <span class="math display">\[
+l(\boldsymbol{\theta})=-\frac{1}{2}\ln{(2\pi\theta_2)}-\frac{1}{2\theta_2}(x_k-\theta_1)
+\]</span></p>
+<blockquote>
+<p>在这里 <span class="math inline">\(\boldsymbol{\theta}=(\mu,\sigma^2)^T\)</span>。</p>
+</blockquote>
+<p>求梯度可得 <span class="math display">\[
+\boldsymbol{\nabla}_{\theta}
+\mid=\boldsymbol{\nabla}_{\boldsymbol{\theta}} \ln p\left(x_{k} \mid
+\boldsymbol{\theta}\right)=\left[\begin{array}{c}
+\frac{1}{\theta_{2}}\left(x_{k}-\theta_{1}\right) \\
+-\frac{1}{2 \theta_{2}}+\frac{\left(x_{k}-\theta_{1}\right)^{2}}{2
+\theta_{2}^{2}}
+\end{array}\right]
+\]</span> 易得 <span class="math display">\[
+\hat{\mu}=\frac{1}{n}\sum^n_{k=1}x_k\\
+\hat{\sigma^2}=\frac{1}{n}\sum^n_{k=1}(x_k-\hat{\mu})^2
+\]</span> 对于多元正态分布，我们也可以求得满足直觉的结果。</p>
+<h3 id="估计的偏差">估计的偏差</h3>
+]]></content>
+      <tags>
+        <tag>模式识别</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>模式识别-线性判别函数笔记</title>
+    <url>//linear-discriminant-function.html</url>
+    <content><![CDATA[<h1 id="模式识别">模式识别</h1>
+<h2 id="二类线性判别函数">二类线性判别函数</h2>
+<p>线性判别函数有许多优势，其中一个优势是便于分析和计算。在之前的贝叶斯决策中笔记中曾简单涉及到的贝叶斯判别函数，<strong>当满足某些情况时，判别函数是线性的</strong>。</p>
+<p>我们抽象出这种线性特质，即定义<strong>线性判别函数</strong>形如 <span class="math display">\[
+g(\boldsymbol{x})=\boldsymbol{w}^T\boldsymbol{x}+w_0
+\]</span> 其中，<span class="math inline">\(\boldsymbol{w}\)</span>
+是<strong>权向量</strong>（weight
+vector），决定了特征向量中每个属性在判别函数中的占比；<span class="math inline">\(w_0\)</span>
+是<strong>偏置</strong>（bias），决定了该线性判别函数的位置。</p>
+<p>在这其中，二类线性判别函数在实战中常被用到，故以下仅讨论<strong>二类线性判别函数</strong>的问题，其中可能往往都以<strong>二维二类线性判别函数</strong>为例。</p>
+<p><strong>性质一：权向量 <span class="math inline">\(\boldsymbol{w}\)</span>
+与判别面上任意一个向量正交，即权向量决定了判别边界的方向。</strong></p>
+<blockquote>
+<p>对于一个二维二类线性判别函数，假设判别面上存在任意两点 <span class="math inline">\(x_1,x_2\)</span>，那么其满足 <span class="math display">\[
+\boldsymbol{w}^Tx_1+w_0=\boldsymbol{w}^Tx_2+w_0
+\]</span> 可以改写成 $$ ^T(x_1-x_2)=0 \newcommand{}[1]{</p>
+</blockquote>
+]]></content>
+      <tags>
+        <tag>模式识别</tag>
       </tags>
   </entry>
 </search>

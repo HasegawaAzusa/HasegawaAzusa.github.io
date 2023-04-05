@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://hasegawaazusa.github.io/ecc-note/The%20addition%20law%20on%20an%20elliptic%20curve.png">
 <meta property="og:image" content="https://hasegawaazusa.github.io/ecc-note/Adding%20a%20point%20P%20to%20itself.png">
 <meta property="article:published_time" content="2022-02-11T05:00:00.000Z">
-<meta property="article:modified_time" content="2023-01-20T06:59:49.731Z">
+<meta property="article:modified_time" content="2023-03-30T09:24:01.128Z">
 <meta property="article:author" content="qsDuzou">
 <meta property="article:tag" content="crypto">
 <meta property="article:tag" content="ecc">
@@ -95,7 +95,7 @@
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
         <li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">59</span></a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">100</span></a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">102</span></a></li>
         <li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
@@ -169,7 +169,7 @@ Diffie-Hellman 密钥交换</span></a></li><li class="nav-item nav-level-2"><a c
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">100</span>
+          <span class="site-state-item-count">102</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -492,7 +492,7 @@ P_m+kP_A-n_AkG=P_m+k(n_AG)-n_AkG=P_m
 <blockquote>
 <p>以下使用 sagemath，数据量不能太大</p>
 </blockquote>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1234577</span></span><br><span class="line">b = <span class="number">3213242</span></span><br><span class="line">p = <span class="number">7654319</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line"><span class="comment"># 生成元</span></span><br><span class="line">G = E(<span class="number">5234568</span>, <span class="number">2287747</span>)</span><br><span class="line"><span class="comment"># k = 1584718</span></span><br><span class="line"><span class="comment"># K = k*G</span></span><br><span class="line"><span class="comment"># 公钥</span></span><br><span class="line">K = E(<span class="number">2366653</span>, <span class="number">1424308</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，自动选择bsgs或Pohlig Hellman算法</span></span><br><span class="line">discrete_log(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"><span class="comment"># G.discrete_log(K)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard rho算法</span></span><br><span class="line">discrete_log_rho(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard Lambda算法，能够确定所求值在某一小范围时效率较高</span></span><br><span class="line">discrete_log_lambda(K,G,(<span class="number">1500000</span>,<span class="number">2000000</span>),operation=<span class="string">&#x27;+&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1234577</span></span><br><span class="line">b = <span class="number">3213242</span></span><br><span class="line">p = <span class="number">7654319</span></span><br><span class="line">E = EllipticCurve(GF(p),[a,b])</span><br><span class="line"><span class="comment"># 生成元</span></span><br><span class="line">G = E(<span class="number">5234568</span>, <span class="number">2287747</span>)</span><br><span class="line"><span class="comment"># k = 1584718</span></span><br><span class="line"><span class="comment"># K = k*G</span></span><br><span class="line"><span class="comment"># 公钥</span></span><br><span class="line">K = E(<span class="number">2366653</span>, <span class="number">1424308</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，自动选择bsgs或Pohlig Hellman算法</span></span><br><span class="line">discrete_log(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"><span class="comment"># G.discrete_log(K)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard rho算法</span></span><br><span class="line">discrete_log_rho(K,G,operation=<span class="string">&#x27;+&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 求解私钥，Pollard Lambda(Pollard kangaroo)算法，能够确定所求值在某一小范围时效率较高</span></span><br><span class="line">discrete_log_lambda(K,G,(<span class="number">1500000</span>,<span class="number">2000000</span>),operation=<span class="string">&#x27;+&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="pohlig-hellman-攻击">Pohlig-Hellman 攻击</h2>
 <h3 id="原理">原理</h3>
 <p>我们知道求解离散对数问题已经有较为高效的方法（例如
@@ -611,14 +611,14 @@ P-\cdots-z_{t-1} p^{t-1} P\right)
       <i class="fa fa-chart-line"></i>
     </span>
       <span>站点总字数：</span>
-    <span title="站点总字数">407k</span>
+    <span title="站点总字数">437k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
       <span>站点阅读时长 &asymp;</span>
-    <span title="站点阅读时长">6:10</span>
+    <span title="站点阅读时长">6:37</span>
   </span>
 </div>
 
