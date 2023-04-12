@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -16,8 +16,10 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="有关zip压缩包取证的简要笔记">
 <meta property="og:type" content="article">
@@ -28,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-20T04:00:00.000Z">
 <meta property="article:modified_time" content="2022-11-28T14:21:53.109Z">
-<meta property="article:author" content="qsDuzou">
+<meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="forensics">
 <meta property="article:tag" content="zip">
@@ -65,6 +67,9 @@
       <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
@@ -79,15 +84,46 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">104</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </header>
         
@@ -114,7 +150,9 @@
 
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">qsDuzou</p>
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
   <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
 </div>
 <div class="site-state-wrap animated">
@@ -132,6 +170,14 @@
       </div>
   </nav>
 </div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
 
         </div>
       </div>
@@ -157,8 +203,8 @@
     <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/zip-crack-note.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -578,7 +624,7 @@ ZIP 软件会将其识别为被加密，但实际上并不存在对应的密码�
 <h3 id="破解-2">破解</h3>
 <p>可以使用 Python
 脚本进行爆破，但下面的脚本仅是示例，如果有特别的需求（例如未知明文在已知明文中间段时）需要自行修改脚本。</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">CRCcrack</span>(<span class="params">unknownBytes: <span class="built_in">int</span>, targetCRC: <span class="built_in">int</span>, known: <span class="built_in">bytes</span> = <span class="string">b&#x27;&#x27;</span></span>) -&gt; <span class="built_in">list</span>[<span class="built_in">bytes</span>]:</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    CRC 碰撞</span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        unknownBytes - 未知的字节数</span></span><br><span class="line"><span class="string">        known - 已知明文（默认为拼接）</span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        完整明文</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    rst = []</span><br><span class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(<span class="number">128</span>), repeat=unknownBytes):</span><br><span class="line">        msg = known + <span class="built_in">bytes</span>(m)</span><br><span class="line">        crc = binascii.crc32(msg)</span><br><span class="line">        <span class="keyword">if</span> crc == targetCRC:</span><br><span class="line">            rst.append(msg)</span><br><span class="line">    <span class="keyword">return</span> rst</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(CRCcrack(<span class="number">3</span>, binascii.crc32(<span class="string">b&#x27;123&#x27;</span>)))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">CRCcrack</span>(<span class="params">unknownBytes: <span class="built_in">int</span>, targetCRC: <span class="built_in">int</span>, known: <span class="built_in">bytes</span> = <span class="string">b&#x27;&#x27;</span></span>) -&gt; <span class="built_in">list</span>[<span class="built_in">bytes</span>]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    CRC 碰撞</span></span><br><span class="line"><span class="string">    Parameters:</span></span><br><span class="line"><span class="string">        unknownBytes - 未知的字节数</span></span><br><span class="line"><span class="string">        known - 已知明文（默认为拼接）</span></span><br><span class="line"><span class="string">    Returns:</span></span><br><span class="line"><span class="string">        完整明文</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    rst = []</span><br><span class="line">    <span class="keyword">for</span> m <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(<span class="number">128</span>), repeat=unknownBytes):</span><br><span class="line">        msg = known + <span class="built_in">bytes</span>(m)</span><br><span class="line">        crc = binascii.crc32(msg)</span><br><span class="line">        <span class="keyword">if</span> crc == targetCRC:</span><br><span class="line">            rst.append(msg)</span><br><span class="line">    <span class="keyword">return</span> rst</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(CRCcrack(<span class="number">3</span>, binascii.crc32(<span class="string">b&#x27;123&#x27;</span>)))</span><br></pre></td></tr></table></figure>
 <p>如果仅是碰撞，我们可以使用 GitHub 上的开源项目（<a target="_blank" rel="noopener" href="https://github.com/theonlypwner/crc32">CRC32 Tools</a>）</p>
 <p>使用方法：</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python crc32.py reverse <span class="number">0</span>x4FA83D8C</span><br></pre></td></tr></table></figure>
@@ -686,10 +732,27 @@ CRC 碰撞的原理）。</p>
     
 
     <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/zip-crack-note.html" title="zip压缩包取证笔记">https://hasegawaazusa.github.io/zip-crack-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
           <div class="post-tags">
-              <a href="/tags/note/" rel="tag"># note</a>
-              <a href="/tags/forensics/" rel="tag"># forensics</a>
-              <a href="/tags/zip/" rel="tag"># zip</a>
+              <a href="/tags/note/" rel="tag"><i class="fa fa-tag"></i> note</a>
+              <a href="/tags/forensics/" rel="tag"><i class="fa fa-tag"></i> forensics</a>
+              <a href="/tags/zip/" rel="tag"><i class="fa fa-tag"></i> zip</a>
           </div>
 
         
@@ -723,12 +786,12 @@ CRC 碰撞的原理）。</p>
 
 
 <div class="copyright">
-  &copy; 
+  &copy; 2022 – 
   <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+  <span class="author" itemprop="copyrightHolder"></span>
 </div>
 <div class="wordcount">
   <span class="post-meta-item">
@@ -744,23 +807,16 @@ CRC 碰撞的原理）。</p>
     <span title="站点阅读时长">6:40</span>
   </span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
 
     </div>
   </footer>
 
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
   <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up fa-lg"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -769,7 +825,15 @@ CRC 碰撞的原理）。</p>
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
 
   
 
@@ -778,7 +842,8 @@ CRC 碰撞的原理）。</p>
 
   
 
-
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 

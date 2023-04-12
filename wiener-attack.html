@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -16,8 +16,10 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="wiener attack 相关的笔记">
 <meta property="og:type" content="article">
@@ -29,7 +31,7 @@
 <meta property="og:image" content="https://hasegawaazusa.github.io/wiener-attack/extendwiener-chosen-relations.png">
 <meta property="article:published_time" content="2023-01-14T13:30:00.000Z">
 <meta property="article:modified_time" content="2023-01-21T07:47:01.579Z">
-<meta property="article:author" content="qsDuzou">
+<meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="crypto">
 <meta property="article:tag" content="rsa">
@@ -67,6 +69,9 @@
       <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
@@ -81,15 +86,46 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">104</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </header>
         
@@ -117,7 +153,9 @@ Exponents</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" hr
 
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">qsDuzou</p>
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
   <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
 </div>
 <div class="site-state-wrap animated">
@@ -135,6 +173,14 @@ Exponents</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" hr
       </div>
   </nav>
 </div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
 
         </div>
       </div>
@@ -160,8 +206,8 @@ Exponents</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" hr
     <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/wiener-attack.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -237,7 +283,7 @@ x=[a_0,a_1,a_2,\cdots,a_n]
 \frac{73}{95}=0+\frac{1}{1+\frac{1}{3+\frac{1}{3+\frac{1}{7+}}}}=[0,1,3,3,7]\\
 \pi=[3,7,15,1,292,1,1,1,2,\cdots]
 \]</span> 获取连分数的 Python 脚本如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">continuedFractions</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用辗转相处将分数 x/y 转为连分数的形式</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; list(continuedFractions(73, 95))</span></span><br><span class="line"><span class="string">    [0, 1, 3, 3, 7]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        x - 分子\\</span></span><br><span class="line"><span class="string">        y - 分母</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        连分数</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> y:</span><br><span class="line">        <span class="keyword">yield</span> x // y</span><br><span class="line">        x, y = y, x % y</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">continuedFractions</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用辗转相处将分数 x/y 转为连分数的形式</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; list(continuedFractions(73, 95))</span></span><br><span class="line"><span class="string">    [0, 1, 3, 3, 7]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        x - 分子\\</span></span><br><span class="line"><span class="string">        y - 分母</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        连分数</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> y:</span><br><span class="line">        <span class="keyword">yield</span> x // y</span><br><span class="line">        x, y = y, x % y</span><br></pre></td></tr></table></figure>
 <p>或者我们也可以使用 Sagemath 的函数获取连分数：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = continued_fraction(<span class="number">73</span>/<span class="number">95</span>)</span><br><span class="line"><span class="built_in">print</span>(a.quotient(<span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(a.quotients())</span><br></pre></td></tr></table></figure>
 <h3 id="有理近似收敛分数">有理近似（收敛分数）</h3>
@@ -258,7 +304,7 @@ e=[c_0,c_1,\cdots,c_n]
 而同时需要知道<strong>任何一个有理数与其连分数形式是一一对应的</strong>。</p>
 <p>故实际上对于任何一个有理数我们都可以将其展开成一个对应的收敛分数形式。</p>
 <p>获取收敛分数的 Python 脚本如下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convergents</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        使用辗转相处将分数 x/y 转为渐进分数的形式</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; list(ContinuedFraction.convergents(73, 95))</span></span><br><span class="line"><span class="string">        [(0, 1), (1, 1), (3, 4), (10, 13), (73, 95)]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        `Parameters`:</span></span><br><span class="line"><span class="string">            x - 分子\\</span></span><br><span class="line"><span class="string">            y - 分母</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        `Returns`:</span></span><br><span class="line"><span class="string">            连分数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">    numerators, denominators = [], []</span><br><span class="line">    <span class="keyword">for</span> idx, val <span class="keyword">in</span> <span class="built_in">enumerate</span>(ContinuedFraction.fractions(x, y)):</span><br><span class="line">        <span class="keyword">if</span> idx == <span class="number">0</span>:</span><br><span class="line">            ni, di = val, <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> idx == <span class="number">1</span>:</span><br><span class="line">                ni, di = val * numerators[-<span class="number">1</span>] + <span class="number">1</span>, val</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    ni, di = val * numerators[-<span class="number">1</span>] + numerators[-<span class="number">2</span>], val * denominators[-<span class="number">1</span>] + denominators[-<span class="number">2</span>]</span><br><span class="line">                    numerators.append(ni)</span><br><span class="line">                    denominators.append(di)</span><br><span class="line">                    <span class="keyword">yield</span> ni, di</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">convergents</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        使用辗转相处将分数 x/y 转为渐进分数的形式</span></span><br><span class="line"><span class="string">        &gt;&gt;&gt; list(ContinuedFraction.convergents(73, 95))</span></span><br><span class="line"><span class="string">        [(0, 1), (1, 1), (3, 4), (10, 13), (73, 95)]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        `Parameters`:</span></span><br><span class="line"><span class="string">            x - 分子\\</span></span><br><span class="line"><span class="string">            y - 分母</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        `Returns`:</span></span><br><span class="line"><span class="string">            连分数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">    numerators, denominators = [], []</span><br><span class="line">    <span class="keyword">for</span> idx, val <span class="keyword">in</span> <span class="built_in">enumerate</span>(ContinuedFraction.fractions(x, y)):</span><br><span class="line">        <span class="keyword">if</span> idx == <span class="number">0</span>:</span><br><span class="line">            ni, di = val, <span class="number">1</span></span><br><span class="line">            <span class="keyword">elif</span> idx == <span class="number">1</span>:</span><br><span class="line">                ni, di = val * numerators[-<span class="number">1</span>] + <span class="number">1</span>, val</span><br><span class="line">                <span class="keyword">else</span>:</span><br><span class="line">                    ni, di = val * numerators[-<span class="number">1</span>] + numerators[-<span class="number">2</span>], val * denominators[-<span class="number">1</span>] + denominators[-<span class="number">2</span>]</span><br><span class="line">                    numerators.append(ni)</span><br><span class="line">                    denominators.append(di)</span><br><span class="line">                    <span class="keyword">yield</span> ni, di</span><br></pre></td></tr></table></figure>
 <p>或者我们也可以使用 Sagemath 的函数获取渐进分数：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = continued_fraction(<span class="number">73</span>/<span class="number">95</span>)</span><br><span class="line"><span class="built_in">print</span>(a.convergent(<span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(a.convergents())</span><br></pre></td></tr></table></figure>
 <h3 id="legendres-theorem-连分数定理">Legendre's theorem
@@ -303,7 +349,7 @@ ed=1+k\varphi(N)
 </ol>
 <h3 id="脚本">脚本</h3>
 <p>以下仅给出 Sagemath 脚本：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wienerAttack</span>(<span class="params">N, e</span>):</span></span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    维纳攻击</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        N - p * q\\</span></span><br><span class="line"><span class="string">        e - public key</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        p, q, d</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    cf = continued_fraction(e / N)</span><br><span class="line">    convers = cf.convergents()</span><br><span class="line">    <span class="keyword">for</span> pkd <span class="keyword">in</span> convers:</span><br><span class="line">        <span class="comment"># possible k, d</span></span><br><span class="line">        pk, pd = pkd.as_integer_ratio()</span><br><span class="line">        <span class="keyword">if</span> pk == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># verify</span></span><br><span class="line">        <span class="keyword">if</span> (e * pd - <span class="number">1</span>) % pk != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># possible phi</span></span><br><span class="line">        pphi = (e * pd - <span class="number">1</span>) // pk</span><br><span class="line">        p = var(<span class="string">&#x27;p&#x27;</span>, domain=ZZ)</span><br><span class="line">        roots = solve(p ** <span class="number">2</span> + (pphi - N - <span class="number">1</span>) * p + N, p)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(roots) == <span class="number">2</span>:</span><br><span class="line">            <span class="comment"># possible p, q</span></span><br><span class="line">            pp, pq = roots</span><br><span class="line">            <span class="keyword">if</span> pp * pq == N:</span><br><span class="line">                <span class="keyword">return</span> pp, pq, pd</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">N = <span class="number">507419170088344932990702256911694788408493968749527614421614568612944144764889717229444020813658893362983714454159980719026366361318789415279417172858536381938870379267670180128174798344744371725609827872339512302232610590888649555446972990419313445687852636305518801236132032618350847705234643521557851434711389664130274468354405273873218264222293858509477860634889001898462547712800153111774564939279190835857445378261920532206352364005840238252284065587291779196975457288580812526597185332036342330147250312262816994625317482869849388424397437470502449815132000588425028055964432298176942124697105509057090546600330760364385753313923003549670107599757996810939165300581847068233156887269181096893089415302163770884312255957584660964506028002922164767453287973102961910781312351686488047510932997937700597992705557881172640175117476017503918294534205898046483981707558521558992058512940087192655700351675718815723840568640509355338482631416345193176708501897458649841539192993142790402734898948352382350766125000186026261167277014748183012844440603384989647664190074853086693408529737767147592432979469020671772152652865219092597717869942730499507426269170189547020660681363276871874469322437194397171763927907099922324375991793759</span></span><br><span class="line">e = <span class="number">77310199867448677782081572109343472783781135641712597643597122591443011229091533516758925238949755491395489408922437493670252550920826641442189683907973926843505436730014899918587477913032286153545247063493885982941194996251799882984145155733050069564485120660716110828110738784644223519725613280140006783618393995138076030616463398284819550627612102010214315235269945251741407899692274978642663650687157736417831290404871181902463904311095448368498432147292938825418930527188720696497596867575843476810225152659244529481480993843168383016583068747733118703000287423374094051895724494193455175131120243097065270804457787026492578916584536863548445813916819417857064037664101684455000184987531252344582899589746272173970083733130106407810619258077266603898529285634495710846838011858287024329514491058790557305041389614650730267774482954666726949886313386881066593946789460028399523245777171320319444673551268379126203862576627540177888290265714418064334752499940587750374552330008143708562065940245637685833371348603338834447212248648869514585047871442060412622164276894766238383894693759347590977926306581080390685360615407766600573527565016914830132066428454738135380178959590692145577418811677639050929791996313180297924833690095</span></span><br><span class="line">c = <span class="number">165251729917394529793163344300848992394021337429474789711805041655116845722480301677817165053253655027459227404782607373107477419083333844871948673626672704233977397989843349633720167495862807995411682262559392496273163155214888276398332204954185252030616473235814999366132031184631541209554169938146205402400412307638567132128690379079483633171535375278689326189057930259534983374296873110199636558962144635514392282351103900375366360933088605794654279480277782805401749872568584335215630740265944133347038070337891035560658434763924576508969938866566235926587685108811154229747423410476421860059769485356567301897413767088823807510568561254627099309752215808220067495561412081320541540679503218232020279947159175547517811501280846596226165148013762293861131544331444165070186672186027410082671602892508739473724143698396105392623164025712124329254933353509384748403154342322725203183050328143736631333990445537119855865348221215277608372952942702104088940952142851523651639574409075484106857403651453121036577767672430612728022444370874223001778580387635197325043524719396707713385963432915855227152371800527536048555551237729690663544828830627192867570345853910196397851763591543484023134551876591248557980182981967782409054277224</span></span><br><span class="line">p, q, d = wienerAttack(N, e)</span><br><span class="line">m = <span class="built_in">pow</span>(c, d, N)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">wienerAttack</span>(<span class="params">N, e</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    维纳攻击</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        N - p * q\\</span></span><br><span class="line"><span class="string">        e - public key</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        p, q, d</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    cf = continued_fraction(e / N)</span><br><span class="line">    convers = cf.convergents()</span><br><span class="line">    <span class="keyword">for</span> pkd <span class="keyword">in</span> convers:</span><br><span class="line">        <span class="comment"># possible k, d</span></span><br><span class="line">        pk, pd = pkd.as_integer_ratio()</span><br><span class="line">        <span class="keyword">if</span> pk == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># verify</span></span><br><span class="line">        <span class="keyword">if</span> (e * pd - <span class="number">1</span>) % pk != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># possible phi</span></span><br><span class="line">        pphi = (e * pd - <span class="number">1</span>) // pk</span><br><span class="line">        p = var(<span class="string">&#x27;p&#x27;</span>, domain=ZZ)</span><br><span class="line">        roots = solve(p ** <span class="number">2</span> + (pphi - N - <span class="number">1</span>) * p + N, p)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(roots) == <span class="number">2</span>:</span><br><span class="line">            <span class="comment"># possible p, q</span></span><br><span class="line">            pp, pq = roots</span><br><span class="line">            <span class="keyword">if</span> pp * pq == N:</span><br><span class="line">                <span class="keyword">return</span> pp, pq, pd</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">N = <span class="number">507419170088344932990702256911694788408493968749527614421614568612944144764889717229444020813658893362983714454159980719026366361318789415279417172858536381938870379267670180128174798344744371725609827872339512302232610590888649555446972990419313445687852636305518801236132032618350847705234643521557851434711389664130274468354405273873218264222293858509477860634889001898462547712800153111774564939279190835857445378261920532206352364005840238252284065587291779196975457288580812526597185332036342330147250312262816994625317482869849388424397437470502449815132000588425028055964432298176942124697105509057090546600330760364385753313923003549670107599757996810939165300581847068233156887269181096893089415302163770884312255957584660964506028002922164767453287973102961910781312351686488047510932997937700597992705557881172640175117476017503918294534205898046483981707558521558992058512940087192655700351675718815723840568640509355338482631416345193176708501897458649841539192993142790402734898948352382350766125000186026261167277014748183012844440603384989647664190074853086693408529737767147592432979469020671772152652865219092597717869942730499507426269170189547020660681363276871874469322437194397171763927907099922324375991793759</span></span><br><span class="line">e = <span class="number">77310199867448677782081572109343472783781135641712597643597122591443011229091533516758925238949755491395489408922437493670252550920826641442189683907973926843505436730014899918587477913032286153545247063493885982941194996251799882984145155733050069564485120660716110828110738784644223519725613280140006783618393995138076030616463398284819550627612102010214315235269945251741407899692274978642663650687157736417831290404871181902463904311095448368498432147292938825418930527188720696497596867575843476810225152659244529481480993843168383016583068747733118703000287423374094051895724494193455175131120243097065270804457787026492578916584536863548445813916819417857064037664101684455000184987531252344582899589746272173970083733130106407810619258077266603898529285634495710846838011858287024329514491058790557305041389614650730267774482954666726949886313386881066593946789460028399523245777171320319444673551268379126203862576627540177888290265714418064334752499940587750374552330008143708562065940245637685833371348603338834447212248648869514585047871442060412622164276894766238383894693759347590977926306581080390685360615407766600573527565016914830132066428454738135380178959590692145577418811677639050929791996313180297924833690095</span></span><br><span class="line">c = <span class="number">165251729917394529793163344300848992394021337429474789711805041655116845722480301677817165053253655027459227404782607373107477419083333844871948673626672704233977397989843349633720167495862807995411682262559392496273163155214888276398332204954185252030616473235814999366132031184631541209554169938146205402400412307638567132128690379079483633171535375278689326189057930259534983374296873110199636558962144635514392282351103900375366360933088605794654279480277782805401749872568584335215630740265944133347038070337891035560658434763924576508969938866566235926587685108811154229747423410476421860059769485356567301897413767088823807510568561254627099309752215808220067495561412081320541540679503218232020279947159175547517811501280846596226165148013762293861131544331444165070186672186027410082671602892508739473724143698396105392623164025712124329254933353509384748403154342322725203183050328143736631333990445537119855865348221215277608372952942702104088940952142851523651639574409075484106857403651453121036577767672430612728022444370874223001778580387635197325043524719396707713385963432915855227152371800527536048555551237729690663544828830627192867570345853910196397851763591543484023134551876591248557980182981967782409054277224</span></span><br><span class="line">p, q, d = wienerAttack(N, e)</span><br><span class="line">m = <span class="built_in">pow</span>(c, d, N)</span><br></pre></td></tr></table></figure>
 <h2 id="扩展维纳攻击">扩展维纳攻击</h2>
 <h3 id="wiener-s-approach">Wiener 's Approach</h3>
 <p>我们已知 <span class="math display">\[
@@ -444,7 +490,7 @@ D = diag\begin{pmatrix}
 </figure>
 <h3 id="脚本-1">脚本</h3>
 <p>这里仅给出 Sagemath 的脚本：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">wienerAttack2</span>(<span class="params">N, e1, e2</span>):</span></span><br><span class="line">    a = <span class="number">5</span>/<span class="number">14</span></span><br><span class="line">    D = diagonal_matrix(ZZ, [N, <span class="built_in">int</span>(N^(<span class="number">1</span>/<span class="number">2</span>)), <span class="built_in">int</span>(N^(<span class="number">1</span>+a)), <span class="number">1</span>])</span><br><span class="line">    M = matrix(ZZ, [[<span class="number">1</span>, -N, <span class="number">0</span>, N^<span class="number">2</span>], [<span class="number">0</span>, e1, -e1, -e1*N], [<span class="number">0</span>, <span class="number">0</span>, e2, -e2*N], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, e1*e2]])*D</span><br><span class="line">    L = M.LLL()</span><br><span class="line">    B = vector(ZZ, L[<span class="number">0</span>])</span><br><span class="line">    A = B * M^(-<span class="number">1</span>)</span><br><span class="line">    phi = <span class="built_in">int</span>(A[<span class="number">1</span>]/A[<span class="number">0</span>]*e1)</span><br><span class="line">    d1 = inverse_mod(e1, phi)</span><br><span class="line">    d2 = inverse_mod(e2, phi)</span><br><span class="line">    p = var(<span class="string">&#x27;p&#x27;</span>, domain=ZZ)</span><br><span class="line">    roots = solve(p ** <span class="number">2</span> + (pphi - N - <span class="number">1</span>) * p + N, p)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(roots) == <span class="number">2</span>:</span><br><span class="line">        <span class="comment"># possible p, q</span></span><br><span class="line">        p, q = roots</span><br><span class="line">        <span class="keyword">if</span> p * q == N:</span><br><span class="line">            <span class="keyword">return</span> p, q, d1, d2</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">e1 = <span class="number">114552459553730357961013268333698879659007919035942930313432809776799669181481660306531243618160127922304264986001501784564575128319884991774542682853466808329973362019677284072646678280051091964555611220961719302320547405880386113519147076299481594997799884384012548506240748042365643212774215730304047871679706035596550898944580314923260982768858133395187777029914150064371998328788068888440803565964567662563652062845388379897799506439389461619422933318625765603423604615137217375612091221578339493263160670355032898186792479034771118678394464854413824347305505135625135428816394053078365603937337271798774138959</span></span><br><span class="line">e2 = <span class="number">27188825731727584656624712988703151030126350536157477591935558508817722580343689565924329442151239649607993377452763119541243174650065563589438911911135278704499670302489754540301886312489410648471922645773506837251600244109619850141762795901696503387880058658061490595034281884089265487336373011424883404499124002441860870291233875045675212355287622948427109362925199018383535259913549859747158348931847041907910313465531703810313472674435425886505383646969400166213185676876969805238803587967334447878968225219769481841748776108219650785975942208190380614555719233460250841332020054797811415069533137170950762289</span></span><br><span class="line">N = <span class="number">14922959775784066499316528935316325825140011208871830627653191549546959775167708525042423039865322548420928571524120743831693550123563493981797950912895893476200447083386549353336086899064921878582074346791320104106139965010480614879592357793053342577850761108944086318475849882440272688246818022209356852924215237481460229377544297224983887026669222885987323082324044645883070916243439521809702674295469253723616677245762242494478587807402688474176102093482019417118703747411862420536240611089529331148684440513934609412884941091651594861530606086982174862461739604705354416587503836130151492937714365614194583664241</span></span><br><span class="line">p, q, d1, d2 = wienerAttack2(N, e1, e2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">wienerAttack2</span>(<span class="params">N, e1, e2</span>):</span><br><span class="line">    a = <span class="number">5</span>/<span class="number">14</span></span><br><span class="line">    D = diagonal_matrix(ZZ, [N, <span class="built_in">int</span>(N^(<span class="number">1</span>/<span class="number">2</span>)), <span class="built_in">int</span>(N^(<span class="number">1</span>+a)), <span class="number">1</span>])</span><br><span class="line">    M = matrix(ZZ, [[<span class="number">1</span>, -N, <span class="number">0</span>, N^<span class="number">2</span>], [<span class="number">0</span>, e1, -e1, -e1*N], [<span class="number">0</span>, <span class="number">0</span>, e2, -e2*N], [<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, e1*e2]])*D</span><br><span class="line">    L = M.LLL()</span><br><span class="line">    B = vector(ZZ, L[<span class="number">0</span>])</span><br><span class="line">    A = B * M^(-<span class="number">1</span>)</span><br><span class="line">    phi = <span class="built_in">int</span>(A[<span class="number">1</span>]/A[<span class="number">0</span>]*e1)</span><br><span class="line">    d1 = inverse_mod(e1, phi)</span><br><span class="line">    d2 = inverse_mod(e2, phi)</span><br><span class="line">    p = var(<span class="string">&#x27;p&#x27;</span>, domain=ZZ)</span><br><span class="line">    roots = solve(p ** <span class="number">2</span> + (pphi - N - <span class="number">1</span>) * p + N, p)</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">len</span>(roots) == <span class="number">2</span>:</span><br><span class="line">        <span class="comment"># possible p, q</span></span><br><span class="line">        p, q = roots</span><br><span class="line">        <span class="keyword">if</span> p * q == N:</span><br><span class="line">            <span class="keyword">return</span> p, q, d1, d2</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">e1 = <span class="number">114552459553730357961013268333698879659007919035942930313432809776799669181481660306531243618160127922304264986001501784564575128319884991774542682853466808329973362019677284072646678280051091964555611220961719302320547405880386113519147076299481594997799884384012548506240748042365643212774215730304047871679706035596550898944580314923260982768858133395187777029914150064371998328788068888440803565964567662563652062845388379897799506439389461619422933318625765603423604615137217375612091221578339493263160670355032898186792479034771118678394464854413824347305505135625135428816394053078365603937337271798774138959</span></span><br><span class="line">e2 = <span class="number">27188825731727584656624712988703151030126350536157477591935558508817722580343689565924329442151239649607993377452763119541243174650065563589438911911135278704499670302489754540301886312489410648471922645773506837251600244109619850141762795901696503387880058658061490595034281884089265487336373011424883404499124002441860870291233875045675212355287622948427109362925199018383535259913549859747158348931847041907910313465531703810313472674435425886505383646969400166213185676876969805238803587967334447878968225219769481841748776108219650785975942208190380614555719233460250841332020054797811415069533137170950762289</span></span><br><span class="line">N = <span class="number">14922959775784066499316528935316325825140011208871830627653191549546959775167708525042423039865322548420928571524120743831693550123563493981797950912895893476200447083386549353336086899064921878582074346791320104106139965010480614879592357793053342577850761108944086318475849882440272688246818022209356852924215237481460229377544297224983887026669222885987323082324044645883070916243439521809702674295469253723616677245762242494478587807402688474176102093482019417118703747411862420536240611089529331148684440513934609412884941091651594861530606086982174862461739604705354416587503836130151492937714365614194583664241</span></span><br><span class="line">p, q, d1, d2 = wienerAttack2(N, e1, e2)</span><br></pre></td></tr></table></figure>
 <h2 id="参考论文">参考论文</h2>
 <p>《A New Attack on RSA with Two or Three》</p>
 
@@ -455,10 +501,27 @@ D = diag\begin{pmatrix}
     
 
     <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/wiener-attack.html" title="wiener attack 笔记">https://hasegawaazusa.github.io/wiener-attack.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
           <div class="post-tags">
-              <a href="/tags/note/" rel="tag"># note</a>
-              <a href="/tags/crypto/" rel="tag"># crypto</a>
-              <a href="/tags/rsa/" rel="tag"># rsa</a>
+              <a href="/tags/note/" rel="tag"><i class="fa fa-tag"></i> note</a>
+              <a href="/tags/crypto/" rel="tag"><i class="fa fa-tag"></i> crypto</a>
+              <a href="/tags/rsa/" rel="tag"><i class="fa fa-tag"></i> rsa</a>
           </div>
 
         
@@ -470,8 +533,8 @@ D = diag\begin{pmatrix}
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/common-prime-rsa.html" rel="next" title="Common Prime RSA 笔记">
-                  Common Prime RSA 笔记 <i class="fa fa-chevron-right"></i>
+                <a href="/multi-power-rsa.html" rel="next" title="multi-power-RSA 笔记">
+                  multi-power-RSA 笔记 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -492,12 +555,12 @@ D = diag\begin{pmatrix}
 
 
 <div class="copyright">
-  &copy; 
+  &copy; 2022 – 
   <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+  <span class="author" itemprop="copyrightHolder"></span>
 </div>
 <div class="wordcount">
   <span class="post-meta-item">
@@ -513,23 +576,16 @@ D = diag\begin{pmatrix}
     <span title="站点阅读时长">6:40</span>
   </span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
 
     </div>
   </footer>
 
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
   <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up fa-lg"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -538,7 +594,15 @@ D = diag\begin{pmatrix}
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
 
   
 
@@ -547,7 +611,8 @@ D = diag\begin{pmatrix}
 
   
 
-
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 

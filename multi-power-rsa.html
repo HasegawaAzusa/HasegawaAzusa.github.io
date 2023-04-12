@@ -5,10 +5,10 @@
 <meta name="viewport" content="width=device-width">
 <meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
 
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
 
 <link rel="stylesheet" href="/css/main.css">
 
@@ -16,8 +16,10 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="multi-power-RSA 相关的笔记">
 <meta property="og:type" content="article">
@@ -28,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-14T13:30:00.000Z">
 <meta property="article:modified_time" content="2023-01-21T07:45:14.501Z">
-<meta property="article:author" content="qsDuzou">
+<meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="crypto">
 <meta property="article:tag" content="rsa">
@@ -65,6 +67,9 @@
       <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
   <div class="site-nav-toggle">
     <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
 
@@ -79,15 +84,46 @@
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
 
 
 
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">104</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </header>
         
@@ -117,7 +153,9 @@ theorem (线性模多项式方程定理)</span></a></li><li class="nav-item nav-
 
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">qsDuzou</p>
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
   <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
 </div>
 <div class="site-state-wrap animated">
@@ -135,6 +173,14 @@ theorem (线性模多项式方程定理)</span></a></li><li class="nav-item nav-
       </div>
   </nav>
 </div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
 
         </div>
       </div>
@@ -160,8 +206,8 @@ theorem (线性模多项式方程定理)</span></a></li><li class="nav-item nav-
     <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/multi-power-rsa.html">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="qsDuzou">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
@@ -268,7 +314,7 @@ g=\gcd(x_1+ex_2,N)
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">N=<span class="number">539779851369541956878655738599584730199799866957191805784596190682932284216781781433367450841202917758999300635019369629627621029957135109806205877317954671312041249493462048283611940752235036153024920172209763260723728345918562258401803973624430150143563078517485996070862532682695228590709019451174548520135142052216785774589096706631010293690859363524584240662502290912412366366114571976050857239915691266377257797199583543940504695517331512813468837128344612227973709974625418257243011036826241599265375741977853552204640800449679679351666009764297016524814036295707311913711955324055690490892097177271718850857268982130811714517356073266905474635370690445031512184247179039751734276906533177939993769044135143389748416635981226449566039039202521305851567296884751935162651063209779647359922622084851547605090230221057349511482738300221222563908357379545905837110168948295030747460300104202323692732549831403834387939156877086852393515817984772384147449841124275061609701453997579569931391166586163299940486204581696722731952467570857217406030804590055255431828403195798003509083922294733709507134156466158642941338493323430671502043066148246348074878064089651235355282144209668143249348243220714471988019011613749340243917652821</span></span><br><span class="line">e=<span class="number">8179300978753084587812861894047395225516049110376948812109811319430275614612773726672345893359691900281432484382670047044697374818043512731533402576374645405477207239801498428774783768163880078495448747421425078521981578408638790336528372019271073712013371141939808017049399434858687299480461753638164719404612128939787055797762174745092074547412183349192156638711750872083313795551439465507724807626674514935170104573715458782366469587138508845980490673890245713729782917089910271980557159592807350504157192913530007199510144004848020221181558472160543018733124225266127379373751910439604459368078652499029070936707349862139053913745186413782066470461478961703013591655136140060879250067379283913798867648758171004535775565306842444545755351202796833177560656564652632975685912935281581268141803696686952259539945588609591385807620108279333498170028167338690235117003515264281843953984997958878272347778561933726792473981855755454522886321669676790813189668084373153897754540290867346751033567500922477317530445967753955221454744946208555394588111484610700789566547507402309549957740815535069057837915204852490930168843605732632328017129154852857227895362549146737618906180651623216848500491438142456250653458053922622240299736136335179639180898730269690699965799644757774472147210271111150769048976871249731156387939260749192370361488285775377622944817570292095201906142567403539151179209316853493906909989301225903409448461436855145</span></span><br><span class="line">b=<span class="number">17623328397444755087284107444487160871617682792372566887446834913712379373851213638071138745775127796589871734472781755930251379295485892067473329763997583502625804363418069062645997342172778252731889437</span></span><br><span class="line">r = <span class="number">7</span></span><br><span class="line">idx = (r*(r-<span class="number">1</span>)) / ((r+<span class="number">1</span>)*(r+<span class="number">1</span>))</span><br><span class="line">P.&lt;x&gt; = PolynomialRing(Zmod(N))</span><br><span class="line">f = e * x - b</span><br><span class="line">roots = f.monic().small_roots(beta=idx)</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br></pre></td></tr></table></figure>
 <p>当方程 <span class="math inline">\(ex-z\equiv0\)</span>
 的两个解都未知时，我们需要使用二元 Copper 求解：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">small_roots</span>(<span class="params">f, bounds, m=<span class="number">1</span>, d=<span class="literal">None</span></span>):</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> d:</span><br><span class="line">        d = f.degree()</span><br><span class="line"></span><br><span class="line">    R = f.base_ring()</span><br><span class="line">    N = R.cardinality()</span><br><span class="line"></span><br><span class="line">    f /= f.coefficients().pop(<span class="number">0</span>)</span><br><span class="line">    f = f.change_ring(ZZ)</span><br><span class="line"></span><br><span class="line">    G = <span class="type">Sequence</span>([], f.parent())</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m + <span class="number">1</span>):</span><br><span class="line">        base = N ^ (m - i) * f ^ i</span><br><span class="line">        <span class="keyword">for</span> shifts <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(d), repeat=f.nvariables()):</span><br><span class="line">            g = base * prod(<span class="built_in">map</span>(power, f.variables(), shifts))</span><br><span class="line">            G.append(g)</span><br><span class="line"></span><br><span class="line">    B, monomials = G.coefficient_matrix()</span><br><span class="line">    monomials = vector(monomials)</span><br><span class="line"></span><br><span class="line">    factors = [monomial(*bounds) <span class="keyword">for</span> monomial <span class="keyword">in</span> monomials]</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, factor)</span><br><span class="line">    B = B.dense_matrix().LLL()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;LLL done&quot;</span>)</span><br><span class="line"></span><br><span class="line">    B = B.change_ring(QQ)</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, <span class="number">1</span> / factor)</span><br><span class="line"></span><br><span class="line">    H = <span class="type">Sequence</span>([], f.parent().change_ring(QQ))</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">filter</span>(<span class="literal">None</span>, B * monomials):</span><br><span class="line">        H.append(h)</span><br><span class="line">        I = H.ideal()</span><br><span class="line">        <span class="keyword">if</span> I.dimension() == -<span class="number">1</span>:</span><br><span class="line">            H.pop()</span><br><span class="line">        <span class="keyword">elif</span> I.dimension() == <span class="number">0</span>:</span><br><span class="line">            roots = []</span><br><span class="line">            <span class="keyword">for</span> root <span class="keyword">in</span> I.variety(ring=ZZ):</span><br><span class="line">                root = <span class="built_in">tuple</span>(R(root[var]) <span class="keyword">for</span> var <span class="keyword">in</span> f.variables())</span><br><span class="line">                roots.append(root)</span><br><span class="line">            <span class="keyword">return</span> roots</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = <span class="number">68823589009570846705623113091430161477799561031575612135516351257937127579444</span></span><br><span class="line">b = <span class="number">76549169049080319489163980188997771079750670038002598167961495813084486794567</span></span><br><span class="line">c = <span class="number">99215492498952976642031024510129092308042391285395704888838178561670205468882</span></span><br><span class="line">p = <span class="number">12775129699668988473759438271274836254349225413222075887429387682336494103348583050672280757042383792640084197832605411237644937815012509935794275313643031</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x1 = <span class="number">664406108637237317109372377546194289077117372665932150107678757303243619963182733408311739663233548725195723884930183442927293177078507</span></span><br><span class="line">x2 = <span class="number">269639459994260392015105629865659210391196381140872041084737976688017858324308345528702533444116282512066085580909718347778743354754352</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HiddenBits = <span class="number">64</span></span><br><span class="line">bound = <span class="number">2</span>**HiddenBits - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">P = PolynomialRing(Zmod(p), names=(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>))</span><br><span class="line">(x, y) = P.gens()</span><br><span class="line"></span><br><span class="line">f = y + (x2 &lt;&lt; HiddenBits) - a * (x + (x1 &lt;&lt; HiddenBits))**<span class="number">2</span> - b * (x+(x1&lt;&lt;HiddenBits)) - c</span><br><span class="line">bounds = (bound, bound)</span><br><span class="line">roots = small_roots(f, bounds)</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">small_roots</span>(<span class="params">f, bounds, m=<span class="number">1</span>, d=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> d:</span><br><span class="line">        d = f.degree()</span><br><span class="line"></span><br><span class="line">    R = f.base_ring()</span><br><span class="line">    N = R.cardinality()</span><br><span class="line"></span><br><span class="line">    f /= f.coefficients().pop(<span class="number">0</span>)</span><br><span class="line">    f = f.change_ring(ZZ)</span><br><span class="line"></span><br><span class="line">    G = <span class="type">Sequence</span>([], f.parent())</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m + <span class="number">1</span>):</span><br><span class="line">        base = N ^ (m - i) * f ^ i</span><br><span class="line">        <span class="keyword">for</span> shifts <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(d), repeat=f.nvariables()):</span><br><span class="line">            g = base * prod(<span class="built_in">map</span>(power, f.variables(), shifts))</span><br><span class="line">            G.append(g)</span><br><span class="line"></span><br><span class="line">    B, monomials = G.coefficient_matrix()</span><br><span class="line">    monomials = vector(monomials)</span><br><span class="line"></span><br><span class="line">    factors = [monomial(*bounds) <span class="keyword">for</span> monomial <span class="keyword">in</span> monomials]</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, factor)</span><br><span class="line">    B = B.dense_matrix().LLL()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;LLL done&quot;</span>)</span><br><span class="line"></span><br><span class="line">    B = B.change_ring(QQ)</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, <span class="number">1</span> / factor)</span><br><span class="line"></span><br><span class="line">    H = <span class="type">Sequence</span>([], f.parent().change_ring(QQ))</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">filter</span>(<span class="literal">None</span>, B * monomials):</span><br><span class="line">        H.append(h)</span><br><span class="line">        I = H.ideal()</span><br><span class="line">        <span class="keyword">if</span> I.dimension() == -<span class="number">1</span>:</span><br><span class="line">            H.pop()</span><br><span class="line">        <span class="keyword">elif</span> I.dimension() == <span class="number">0</span>:</span><br><span class="line">            roots = []</span><br><span class="line">            <span class="keyword">for</span> root <span class="keyword">in</span> I.variety(ring=ZZ):</span><br><span class="line">                root = <span class="built_in">tuple</span>(R(root[var]) <span class="keyword">for</span> var <span class="keyword">in</span> f.variables())</span><br><span class="line">                roots.append(root)</span><br><span class="line">            <span class="keyword">return</span> roots</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = <span class="number">68823589009570846705623113091430161477799561031575612135516351257937127579444</span></span><br><span class="line">b = <span class="number">76549169049080319489163980188997771079750670038002598167961495813084486794567</span></span><br><span class="line">c = <span class="number">99215492498952976642031024510129092308042391285395704888838178561670205468882</span></span><br><span class="line">p = <span class="number">12775129699668988473759438271274836254349225413222075887429387682336494103348583050672280757042383792640084197832605411237644937815012509935794275313643031</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x1 = <span class="number">664406108637237317109372377546194289077117372665932150107678757303243619963182733408311739663233548725195723884930183442927293177078507</span></span><br><span class="line">x2 = <span class="number">269639459994260392015105629865659210391196381140872041084737976688017858324308345528702533444116282512066085580909718347778743354754352</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">HiddenBits = <span class="number">64</span></span><br><span class="line">bound = <span class="number">2</span>**HiddenBits - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">P = PolynomialRing(Zmod(p), names=(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;y&#x27;</span>))</span><br><span class="line">(x, y) = P.gens()</span><br><span class="line"></span><br><span class="line">f = y + (x2 &lt;&lt; HiddenBits) - a * (x + (x1 &lt;&lt; HiddenBits))**<span class="number">2</span> - b * (x+(x1&lt;&lt;HiddenBits)) - c</span><br><span class="line">bounds = (bound, bound)</span><br><span class="line">roots = small_roots(f, bounds)</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br></pre></td></tr></table></figure>
 <h2 id="the-second-attack">The Second Attack</h2>
 <h3 id="原理-1">原理</h3>
 <p>设模数 <span class="math inline">\(N=p^rq\)</span>，私钥 <span class="math inline">\((d_1,d_2)\)</span>，如果 <span class="math display">\[
@@ -339,7 +385,7 @@ p_1=\frac{N_1}{q_1}^{\frac{1}{r}}\\
 p_2=\frac{N_2}{q_2}^{\frac{1}{r}}
 \]</span></p>
 <h3 id="脚本-2">脚本</h3>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">N1=<span class="number">170987233913769420505896917437304719816691353833034482461</span></span><br><span class="line">N2=<span class="number">120532911819726882881630714003135237766675602824250965921</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">factorization</span>(<span class="params">N1, N2</span>):</span></span><br><span class="line">    cf = continued_fraction(N2/N1)</span><br><span class="line">    convers = cf.convergents()</span><br><span class="line">    <span class="keyword">for</span> pqq <span class="keyword">in</span> convers:</span><br><span class="line">        q2 = pqq.numerator()</span><br><span class="line">        q1 = pqq.denominator()</span><br><span class="line">        <span class="keyword">if</span> q2 == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> q1 != <span class="number">1</span> <span class="keyword">and</span> N1 % q1 == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> q1, q2</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">factorization(N1, N2)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">N1=<span class="number">170987233913769420505896917437304719816691353833034482461</span></span><br><span class="line">N2=<span class="number">120532911819726882881630714003135237766675602824250965921</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">factorization</span>(<span class="params">N1, N2</span>):</span><br><span class="line">    cf = continued_fraction(N2/N1)</span><br><span class="line">    convers = cf.convergents()</span><br><span class="line">    <span class="keyword">for</span> pqq <span class="keyword">in</span> convers:</span><br><span class="line">        q2 = pqq.numerator()</span><br><span class="line">        q1 = pqq.denominator()</span><br><span class="line">        <span class="keyword">if</span> q2 == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> q1 != <span class="number">1</span> <span class="keyword">and</span> N1 % q1 == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">return</span> q1, q2</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">factorization(N1, N2)</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>参考文献</p>
 <p>《New attacks on RSA with Moduli <span class="math inline">\(N =
@@ -353,23 +399,40 @@ p^rq\)</span>》</p>
     
 
     <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/multi-power-rsa.html" title="multi-power-RSA 笔记">https://hasegawaazusa.github.io/multi-power-rsa.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
           <div class="post-tags">
-              <a href="/tags/note/" rel="tag"># note</a>
-              <a href="/tags/crypto/" rel="tag"># crypto</a>
-              <a href="/tags/rsa/" rel="tag"># rsa</a>
+              <a href="/tags/note/" rel="tag"><i class="fa fa-tag"></i> note</a>
+              <a href="/tags/crypto/" rel="tag"><i class="fa fa-tag"></i> crypto</a>
+              <a href="/tags/rsa/" rel="tag"><i class="fa fa-tag"></i> rsa</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/common-prime-rsa.html" rel="prev" title="Common Prime RSA 笔记">
-                  <i class="fa fa-chevron-left"></i> Common Prime RSA 笔记
+                <a href="/wiener-attack.html" rel="prev" title="wiener attack 笔记">
+                  <i class="fa fa-chevron-left"></i> wiener attack 笔记
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/aes-attack-note.html" rel="next" title="AES攻击笔记">
-                  AES攻击笔记 <i class="fa fa-chevron-right"></i>
+                <a href="/common-prime-rsa.html" rel="next" title="Common Prime RSA 笔记">
+                  Common Prime RSA 笔记 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -390,12 +453,12 @@ p^rq\)</span>》</p>
 
 
 <div class="copyright">
-  &copy; 
+  &copy; 2022 – 
   <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
-    <i class="fa fa-heart"></i>
+    <i class="fa fa-user"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">qsDuzou</span>
+  <span class="author" itemprop="copyrightHolder"></span>
 </div>
 <div class="wordcount">
   <span class="post-meta-item">
@@ -411,23 +474,16 @@ p^rq\)</span>》</p>
     <span title="站点阅读时长">6:40</span>
   </span>
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
 
     </div>
   </footer>
 
   
-  <div class="toggle sidebar-toggle" role="button">
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-    <span class="toggle-line"></span>
-  </div>
-  <div class="sidebar-dimmer"></div>
   <div class="back-to-top" role="button" aria-label="返回顶部">
     <i class="fa fa-arrow-up fa-lg"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
@@ -436,7 +492,15 @@ p^rq\)</span>》</p>
 
   
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
-<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
 
   
 
@@ -445,7 +509,8 @@ p^rq\)</span>》</p>
 
   
 
-
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
 
 
 
