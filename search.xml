@@ -8560,13 +8560,13 @@ vector），决定了特征向量中每个属性在判别函数中的占比；<s
 到判决边界（超平面）的算数距离（正代表在超平面正侧，反之亦然）；使用
 <span class="math inline">\(\frac{\boldsymbol{w}}{\|\boldsymbol{w}\|}\)</span>
 来表示单位向量，那么特征向量 <span class="math inline">\(\boldsymbol{x}\)</span> 可以表示成 <span class="math display">\[
-\bs{x}=\bs{x}_p+r\frac{\bs{w}}{\|\bs{w}\|}
+\boldsymbol{x}=\boldsymbol{x}_p+r\frac{\boldsymbol{w}}{\|\boldsymbol{w}\|}
 \]</span> 其中 <span class="math inline">\(\boldsymbol{x}_p\)</span>
 是特征向量在判决边界上的投影，有 <span class="math inline">\(g(\boldsymbol{x}_p)=0\)</span>。</p>
 <p>代入判决函数，可以得到 <span class="math display">\[
-\boldsymbol{w}^T\boldsymbol{x}+w_0=r\|\bs{w}\|
+\boldsymbol{w}^T\boldsymbol{x}+w_0=r\|\boldsymbol{w}\|
 \]</span> 即 <span class="math display">\[
-r=\frac{g(\bs{x})}{\|\bs{w}\|}
+r=\frac{g(\boldsymbol{x})}{\|\boldsymbol{w}\|}
 \]</span></p>
 </blockquote>
 <p>由<strong>性质二</strong>，我们定义</p>
@@ -8576,7 +8576,7 @@ r=\frac{g(\bs{x})}{\|\bs{w}\|}
 <p><strong>性质三：线性判别函数中的偏置 <span class="math inline">\(w_0\)</span> 表征了原点到判别边界的距离。若 <span class="math inline">\(w_0&gt;0\)</span>，则原点位于判别边界的正面；反之亦然。</strong></p>
 <blockquote>
 <p>我们显然可以得知 <span class="math display">\[
-g(\bs{0})=w_0
+g(\boldsymbol{0})=w_0
 \]</span> 故结论显然。</p>
 </blockquote>
 <h2 id="多类情况下的线性判别函数">多类情况下的线性判别函数</h2>
@@ -8585,8 +8585,8 @@ g(\bs{0})=w_0
 <span class="math inline">\(c\)</span> 个判别函数，且具有以下性质：
 <span class="math display">\[
 \begin{cases}
-g_i(\bs{x})&gt;0 &amp; \bs{x}\in\omega_i\\
-g_i(\bs{x})&lt;0 &amp; \bs{x}\notin\omega_i
+g_i(\boldsymbol{x})&gt;0 &amp; \boldsymbol{x}\in\omega_i\\
+g_i(\boldsymbol{x})&lt;0 &amp; \boldsymbol{x}\notin\omega_i
 \end{cases}
 \]</span> <img src="/linear-discriminant-function/情况一下的多类问题分类界面.png" alt="情况一下的多类问题分类界面"></p>
 <p>当关于特征向量有 <span class="math inline">\(\boldsymbol{x}\)</span>
@@ -8598,11 +8598,11 @@ g_i(\bs{x})&lt;0 &amp; \bs{x}\notin\omega_i
 <h3 id="情况二">情况二</h3>
 <p>如果线性判别边界只能将模式类两两分开，那么需要 <span class="math inline">\(c(c-1)/2\)</span> 个判别函数，且具有以下性质 <span class="math display">\[
 \begin{cases}
-g_{ij}(\bs{x})&gt;0 &amp; \bs{x}\in\omega_i\\
-g_{ij}(\bs{x})&lt;0 &amp; \bs{x}\in\omega_j
+g_{ij}(\boldsymbol{x})&gt;0 &amp; \boldsymbol{x}\in\omega_i\\
+g_{ij}(\boldsymbol{x})&lt;0 &amp; \boldsymbol{x}\in\omega_j
 \end{cases}
 \]</span> 显然，应有 <span class="math display">\[
-g_{ij}(\bs{x})=-g_{ji}(\bs{x})
+g_{ij}(\boldsymbol{x})=-g_{ji}(\boldsymbol{x})
 \]</span> <img src="/linear-discriminant-function/情况二下的多类问题分类界面.png" alt="情况二下的多类问题分类界面"></p>
 <p>当特征向量 <span class="math inline">\(\boldsymbol{x}\)</span>
 满足对所有的 <span class="math inline">\(j\neq i\)</span> 均有 <span class="math inline">\(g_{ij}(\boldsymbol{x})&gt;0\)</span>，那么判决为
@@ -8635,28 +8635,28 @@ g_{ij}(\bs{x})=-g_{ji}(\bs{x})
 <p>我们知道线性判别函数一般具有以下形式 <span class="math display">\[
 g(\boldsymbol{x})=\boldsymbol{w}^T\boldsymbol{x}+w_0=w_1x_1+w_2x_2+\cdots+w_dx_d+w_0
 \]</span> 不妨我们设 <span class="math display">\[
-\bs{a}=\begin{bmatrix}
+\boldsymbol{a}=\begin{bmatrix}
 w_0\\
 w_1\\
 \vdots\\
 w_d
-\end{bmatrix},\bs{y}=\begin{bmatrix}
+\end{bmatrix},\boldsymbol{y}=\begin{bmatrix}
 1\\
 x_1\\
 \vdots\\
 x_d
 \end{bmatrix}
 \]</span> 将原判别函数写成 <span class="math display">\[
-g(\bs{y})=\bs{a}^T\bs{y}
+g(\boldsymbol{y})=\boldsymbol{a}^T\boldsymbol{y}
 \]</span> 其中 <span class="math inline">\(\boldsymbol{a},\boldsymbol{y}\)</span> 的维度均为
 <span class="math inline">\(d+1\)</span> 维。</p>
 <p>我们把这种化简称作<strong>增广化</strong>。</p>
 <p>比如说我们有两类样本 <span class="math display">\[
-\omega_1:\bs{x}_{11}=(0,0),\bs{x}_{12}=(0,1)\\
-\omega_2:\bs{x}_{21}=(1,0),\bs{x}_{22}=(1,1)\\
+\omega_1:\boldsymbol{x}_{11}=(0,0),\boldsymbol{x}_{12}=(0,1)\\
+\omega_2:\boldsymbol{x}_{21}=(1,0),\boldsymbol{x}_{22}=(1,1)\\
 \]</span> 我们对其进行增广化，得到 <span class="math display">\[
-\omega_1:\bs{x}_{11}=(1,0,0),\bs{x}_{12}=(1,0,1)\\
-\omega_2:\bs{x}_{21}=(1,1,0),\bs{x}_{22}=(1,1,1)\\
+\omega_1:\boldsymbol{x}_{11}=(1,0,0),\boldsymbol{x}_{12}=(1,0,1)\\
+\omega_2:\boldsymbol{x}_{21}=(1,1,0),\boldsymbol{x}_{22}=(1,1,1)\\
 \]</span></p>
 <blockquote>
 <p>增广化的结果不唯一，比如说也可以存在增广化结果为 <span class="math inline">\(\boldsymbol{x}_{11}=(0,0,1)\)</span></p>
@@ -8686,9 +8686,9 @@ region）。</p>
 <p>但在计算上，验证某些向量是否被这条直线错误的区别是繁琐的，但学习过程中却又需要大量验证某些向量是否被错误分类了，故我们需要对这些向量进行<strong>规范化</strong>。</p>
 <p>我们不妨令对于所有 <span class="math inline">\(\boldsymbol{y}\in
 \omega_2\)</span> 都有 <span class="math display">\[
-\bs{y}=-\bs{y}
+\boldsymbol{y}=-\boldsymbol{y}
 \]</span> 这样，我们就使得所有的正确分类都有 <span class="math display">\[
-g(\bs{y})&gt;0
+g(\boldsymbol{y})&gt;0
 \]</span> <img src="/linear-discriminant-function/规范化样本.png" alt="规范化样本"></p>
 <p>当我们需要判断某个向量是否被权向量错误分类时，仅需有如下规则：</p>
 <p>若 <span class="math inline">\(g(\boldsymbol{y})&gt;0\)</span>，则
@@ -8699,12 +8699,12 @@ g(\bs{y})&gt;0
 被<strong>错误</strong>分类。</p>
 <p>这极大的简化了运算过程。</p>
 <p>跟随上文，我们有如下被增广化后的向量 <span class="math display">\[
-\omega_1:\bs{x}_{11}=(1,0,0),\bs{x}_{12}=(1,0,1)\\
-\omega_2:\bs{x}_{21}=(1,1,0),\bs{x}_{22}=(1,1,1)\\
+\omega_1:\boldsymbol{x}_{11}=(1,0,0),\boldsymbol{x}_{12}=(1,0,1)\\
+\omega_2:\boldsymbol{x}_{21}=(1,1,0),\boldsymbol{x}_{22}=(1,1,1)\\
 \]</span> 对其进行规范化，有 <span class="math display">\[
 \begin{align}
-&amp;\omega_1:\bs{x}_{11}=(1,0,0),\bs{x}_{12}=(1,0,1)\\
-&amp;\omega_2:\bs{x}_{21}=(-1,-1,0),\bs{x}_{22}=(-1,-1,-1)
+&amp;\omega_1:\boldsymbol{x}_{11}=(1,0,0),\boldsymbol{x}_{12}=(1,0,1)\\
+&amp;\omega_2:\boldsymbol{x}_{21}=(-1,-1,0),\boldsymbol{x}_{22}=(-1,-1,-1)
 \end{align}
 \]</span> 对于满足所有上述条件的向量 <span class="math inline">\(\boldsymbol{a}\)</span>
 都称作是<strong>解向量</strong>，也可以发现，每个学习样本都对解向量做了限制，但解向量也不唯一。</p>
@@ -8717,7 +8717,7 @@ g(\bs{y})&gt;0
 <h3 id="学习算法原理">学习算法原理</h3>
 <p>要求解解向量 <span class="math inline">\(\boldsymbol{a}\)</span>，根据上面的理论我们需要通过学习样本来求解不等式组
 <span class="math display">\[
-\bs{a}^T\bs{y}_i&gt;0,i=1,2,\cdots,n
+\boldsymbol{a}^T\boldsymbol{y}_i&gt;0,i=1,2,\cdots,n
 \]</span>
 但当权向量维度很大，学习样本足够多时，显然<strong>直接求解不等式组是困难的</strong>。</p>
 <p>同时我们希望在样本<strong>线性可分</strong>时，得到的判别函数能够将所有的训练样本正确分类；在样本<strong>线性不可分</strong>时，得到的判别函数产生错误的概率最小（或者称误差最小）。</p>
@@ -8742,7 +8742,8 @@ g(\bs{y})&gt;0
 是一个分段函数，对于这种函数在性质上是不被喜欢的，因为它<strong>不光滑</strong>，无法用现有的高效的数学工具求解函数极小值，对计算机来说可能将要遍历所有的函数值才能找到它的极小值。</p>
 <p>因此，一个更好的选择是<strong>错分样本到判别面的距离之和准则</strong>，也称作<strong>感知器准则</strong>，<strong>感知器准则函数</strong>的定义如下
 <span class="math display">\[
-J_p(\bs{a})=\sum_{\bs{y}\in Y_e}(-\bs{a}^T\bs{y})
+J_p(\boldsymbol{a})=\sum_{\boldsymbol{y}\in
+Y_e}(-\boldsymbol{a}^T\boldsymbol{y})
 \]</span> 即选择了某个解向量 <span class="math inline">\(\boldsymbol{a}\)</span>
 后，被错分的样本到判别面的距离之和，其中 <span class="math inline">\(Y_e\)</span> 代表所有被错分向量的集合。</p>
 <blockquote>
@@ -8785,12 +8786,12 @@ y_n=y_{n-1}-\eta\nabla f(x_{n-1}, y_{n-1})
 \frac{\partial}{\partial y}f(x_{n-1},y_{n-1})
 \end{bmatrix}
 \]</span> 同理如果对于 <span class="math inline">\(J(\boldsymbol{a})\)</span>，有 <span class="math display">\[
-\nabla J(\bs{a})=\begin{bmatrix}
+\nabla J(\boldsymbol{a})=\begin{bmatrix}
 \frac{\partial}{\partial a_1}\\
 \frac{\partial}{\partial a_2}\\
 \vdots\\
 \frac{\partial}{\partial a_{d+1}}\\
-\end{bmatrix}J(\bs{a})
+\end{bmatrix}J(\boldsymbol{a})
 \]</span>
 由于其通过梯度快速下降，故称作<strong>梯度下降法</strong>。</p>
 <h4 id="代码">代码</h4>
@@ -8819,9 +8820,10 @@ f(\boldsymbol{x}_{n-1})|&lt;\theta\)</span>，<span class="math inline">\(\theta
 <h3 id="感知器梯度下降法">感知器梯度下降法</h3>
 <p>在了解了梯度下降算法后，我们回到判别函数 <span class="math inline">\(g(\boldsymbol{y})\)</span> 的感知器准则函数 <span class="math inline">\(J_p(\boldsymbol{a})\)</span>。</p>
 <p>我们由原式可得，<strong>感知器准则函数的梯度</strong>为 <span class="math display">\[
-\nabla J_p=\sum_{\bs{y}\in Y_e}(-\bs{y})
+\nabla J_p=\sum_{\boldsymbol{y}\in Y_e}(-\boldsymbol{y})
 \]</span> 那么我们就可以把梯度下降的公式改写为 <span class="math display">\[
-\bs{a}_{n+1}=\bs{a}_{n}+\eta(n)\sum_{\bs{y}\in Y_e}\bs{y}
+\boldsymbol{a}_{n+1}=\boldsymbol{a}_{n}+\eta(n)\sum_{\boldsymbol{y}\in
+Y_e}\boldsymbol{y}
 \]</span> 结束条件直到 <span class="math inline">\(|\eta(n)\sum_{\boldsymbol{y}\in
 Y_e}\boldsymbol{y}|&lt;\theta\)</span>。</p>
 <h4 id="代码-1">代码</h4>
@@ -8837,7 +8839,8 @@ Y_e}\boldsymbol{y}|&lt;\theta\)</span>。</p>
 <p>固定增量法就是根据以上需求改变的感知器算法，基本思想是每次修改解向量时，不遍历所有样本，而是将学习样本串行输入，<strong>每考察一个样本就对解向量
 <span class="math inline">\(a\)</span> 进行一次修改</strong>。</p>
 <p>即迭代公式为 <span class="math display">\[
-\bs{a}_{n+1}=\bs{a}_{n}+\eta(n)\bs{y},\bs{y}\in Y_e
+\boldsymbol{a}_{n+1}=\boldsymbol{a}_{n}+\eta(n)\boldsymbol{y},\boldsymbol{y}\in
+Y_e
 \]</span> 结束条件直到 <span class="math inline">\(|\boldsymbol{a}_{n+1}-\boldsymbol{a}_{n}|&lt;\theta\)</span>。</p>
 <p>这样做到了每当解向量分类错误时，就修改解向量，在算法时间复杂度不变的情况下，提升了解向量迭代的效率。</p>
 <h4 id="代码-2">代码</h4>
@@ -8860,7 +8863,7 @@ Y_e}\boldsymbol{y}|&lt;\theta\)</span>。</p>
 \lim_{m\to\infty}\frac{\sum^m_{n=1}\eta^2(n)}{(\sum^m_{n=1}\eta(n))^2}=0
 \]</span> 即正项级数 <span class="math inline">\(\eta(n)\)</span>
 发散，但满足一定条件，那么我们可以证明其迭代算法 <span class="math display">\[
-\bs{a}_{n+1}=\bs{a}_{n}+\eta(n)\bs{y}
+\boldsymbol{a}_{n+1}=\boldsymbol{a}_{n}+\eta(n)\boldsymbol{y}
 \]</span> 是一定收敛的。</p>
 <blockquote>
 <p>这也就是为什么在之前的公式中的学习率都以 <span class="math inline">\(\eta(n)\)</span> 表示。</p>
@@ -8870,7 +8873,7 @@ Y_e}\boldsymbol{y}|&lt;\theta\)</span>。</p>
 <p>根据固定增量法进行改进，我们加入裕量（margin）来均衡解向量的结果，使得迭代算法变为：</p>
 <p>当 <span class="math inline">\(\boldsymbol{a}^T\boldsymbol{y}_i\leq
 b\)</span> 时，我们就修改解向量 <span class="math display">\[
-\bs{a}_{n+1}=\bs{a}_{n}+\eta(n)\bs{y}
+\boldsymbol{a}_{n+1}=\boldsymbol{a}_{n}+\eta(n)\boldsymbol{y}
 \]</span></p>
 <h4 id="代码-3">代码</h4>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># Sample</span></span><br><span class="line">omega1 = [(<span class="number">4</span>, <span class="number">28</span>), (<span class="number">7</span>, <span class="number">23</span>), (<span class="number">16</span>, <span class="number">27</span>), (<span class="number">18</span>, <span class="number">30</span>), (<span class="number">2</span>, <span class="number">17</span>), (<span class="number">13</span>, <span class="number">24</span>), (<span class="number">2</span>, <span class="number">24</span>), (<span class="number">12</span>, <span class="number">29</span>), (<span class="number">2</span>, <span class="number">21</span>), (<span class="number">5</span>, <span class="number">26</span>), (<span class="number">2</span>, <span class="number">24</span>), (<span class="number">11</span>, <span class="number">18</span>), (<span class="number">8</span>, <span class="number">28</span>), (<span class="number">3</span>, <span class="number">21</span>), (<span class="number">13</span>, <span class="number">22</span>)]</span><br><span class="line">omega2 = [(<span class="number">14</span>, <span class="number">12</span>), (<span class="number">25</span>, <span class="number">28</span>), (<span class="number">8</span>, <span class="number">7</span>), (<span class="number">26</span>, <span class="number">29</span>), (<span class="number">29</span>, <span class="number">23</span>), (<span class="number">18</span>, <span class="number">1</span>), (<span class="number">19</span>, <span class="number">12</span>), (<span class="number">19</span>, <span class="number">25</span>), (<span class="number">23</span>, <span class="number">17</span>), (<span class="number">30</span>, <span class="number">2</span>), (<span class="number">18</span>, <span class="number">22</span>), (<span class="number">28</span>, <span class="number">17</span>), (<span class="number">24</span>, <span class="number">20</span>), (<span class="number">9</span>, <span class="number">4</span>), (<span class="number">25</span>, <span class="number">14</span>)]</span><br><span class="line">omega1 = np.array(omega1)</span><br><span class="line">omega2 = np.array(omega2)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot</span></span><br><span class="line">x = omega1[:, <span class="number">0</span>]</span><br><span class="line">y = omega1[:, <span class="number">1</span>]</span><br><span class="line">plt.scatter(x, y, s=<span class="number">20</span>, c=<span class="string">&#x27;red&#x27;</span>, marker=<span class="string">&#x27;s&#x27;</span>)</span><br><span class="line">x = omega2[:, <span class="number">0</span>]</span><br><span class="line">y = omega2[:, <span class="number">1</span>]</span><br><span class="line">plt.scatter(x, y, s=<span class="number">20</span>, c=<span class="string">&#x27;green&#x27;</span>, marker=<span class="string">&#x27;s&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Augmented Vector</span></span><br><span class="line">omega1 = np.hstack((omega1, np.ones((<span class="built_in">len</span>(omega1), <span class="number">1</span>))))</span><br><span class="line">omega2 = np.hstack((omega2, np.ones((<span class="built_in">len</span>(omega1), <span class="number">1</span>))))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Normalization</span></span><br><span class="line">omega2 = -omega2</span><br><span class="line">samples = np.vstack([omega1, omega2])</span><br><span class="line">sample_number = <span class="built_in">len</span>(samples)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Laerning Rate</span></span><br><span class="line">eta = <span class="number">0.01</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Criterion Function</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Jp</span>(<span class="params">a, ys</span>):</span><br><span class="line">    rst = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> y <span class="keyword">in</span> ys:</span><br><span class="line">        <span class="keyword">if</span> np.dot(a, y) &lt; <span class="number">0</span>:</span><br><span class="line">            rst += -np.dot(a, y)</span><br><span class="line">    <span class="keyword">return</span> rst</span><br><span class="line"></span><br><span class="line"><span class="comment"># Perceptron Gradient Descent</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">perceptron</span>(<span class="params">samples, eta, theta = <span class="number">0.001</span>, b = <span class="number">0</span></span>):</span><br><span class="line">    count = <span class="number">0</span></span><br><span class="line">    a = np.ones(samples.shape[<span class="number">1</span>])</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        ap = a</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> samples:</span><br><span class="line">            <span class="keyword">if</span> np.dot(a, y) &lt; b:</span><br><span class="line">                a = a + eta * y</span><br><span class="line">        count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> np.linalg.norm(a - ap) &lt; theta:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Perceptron cost %d times iterate.&quot;</span> % count)</span><br><span class="line">    <span class="keyword">return</span> a</span><br><span class="line"></span><br><span class="line"><span class="comment"># Solve Weight Vector</span></span><br><span class="line">a = perceptron(samples, eta, b = <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Turn to Feature Space</span></span><br><span class="line">xs = []</span><br><span class="line">ys = []</span><br><span class="line">xs += [<span class="number">0</span>, <span class="number">20</span>]</span><br><span class="line">ys += [(xs[<span class="number">0</span>] * a[<span class="number">0</span>] + a[<span class="number">2</span>]) / -a[<span class="number">1</span>], (xs[<span class="number">1</span>] * a[<span class="number">0</span>] + a[<span class="number">2</span>]) / -a[<span class="number">1</span>]]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Plot Judgment Boundary</span></span><br><span class="line">plt.plot(xs, ys)</span><br><span class="line"><span class="built_in">print</span>(Jp(a, samples))</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Perceptron cost 7 times iterate.</span></span><br><span class="line"><span class="string">0</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
@@ -8887,7 +8890,7 @@ b\)</span> 时，我们就修改解向量 <span class="math display">\[
 <p>但这与此同时也带来一个灾难性的问题，就是高纬度的计算总是复杂和苦难的，因此
 Fisher 研究的是降维领域。</p>
 <p>由判别函数的式子可知 <span class="math display">\[
-g(\bs{x})=\bs{w}^T\bs{x}
+g(\boldsymbol{x})=\boldsymbol{w}^T\boldsymbol{x}
 \]</span>
 可以理解为特征向量在权向量上的投影，如果说我们对所有的特征向量都做一次投影，应该是下图所示</p>
 <figure>
@@ -8907,33 +8910,34 @@ Fisher 判别准则。</p>
 基本原理：投影后具有最佳可分离性，即最大的类间距离和最小的类内距离。</strong></p>
 <p>我们定义类内距离以投影均值表示，类间距离以投影方差表示，那么想要同时优化两个目标，即想让样本均值之差大，样本方差尽量小，那么定义准则函数
 <span class="math display">\[
-J(\bs{w})=\frac{|\tilde{m}_1-\tilde{m}_2|}{\tilde{s}_1^2+\tilde{s}_2^2}
+J(\boldsymbol{w})=\frac{|\tilde{m}_1-\tilde{m}_2|}{\tilde{s}_1^2+\tilde{s}_2^2}
 \]</span> 那么有样本均值 <span class="math display">\[
-\bs{m}_i=\frac{1}{n_i}\sum\bs{x}
+\boldsymbol{m}_i=\frac{1}{n_i}\sum\boldsymbol{x}
 \]</span> 推导可得 <span class="math display">\[
 \begin{align}
-\tilde{m}_i&amp;=\frac{1}{n_i}\sum g(\bs{x})\\
-&amp;=g(\bs{m}_i)
+\tilde{m}_i&amp;=\frac{1}{n_i}\sum g(\boldsymbol{x})\\
+&amp;=g(\boldsymbol{m}_i)
 \end{align}
 \]</span> 同时 <span class="math display">\[
 \begin{align}
-\tilde{s}_i^2&amp;=\sum(g(\bs{x})-\tilde{m}_i)\\
-&amp;=\sum\bs{w}^T(\bs{x}-\bs{m}_i)(\bs{x}-\bs{m}_i)^T\bs{w}\\
-&amp;=\bs{w}^T\bs{S}_i\bs{w}
+\tilde{s}_i^2&amp;=\sum(g(\boldsymbol{x})-\tilde{m}_i)\\
+&amp;=\sum\boldsymbol{w}^T(\boldsymbol{x}-\boldsymbol{m}_i)(\boldsymbol{x}-\boldsymbol{m}_i)^T\boldsymbol{w}\\
+&amp;=\boldsymbol{w}^T\boldsymbol{S}_i\boldsymbol{w}
 \end{align}
 \]</span> 那么总的就有 <span class="math display">\[
 \begin{align}
-\tilde{s}_1^2+\tilde{s}_2^2&amp;=\bs{w}^T(\bs{S}_1+\bs{S}_2)\bs{w}\\
-&amp;=\bs{w}^T\bs{S}_w\bs{w}\\
-(\tilde{m}_1-\tilde{m}_2)^2&amp;=\bs{w}^T(\bs{m}_1-\bs{m}_2)(\bs{m}_1-\bs{m}_2)^T\bs{w}\\
-&amp;=\bs{w}^T\bs{S}_B\bs{w}
+\tilde{s}_1^2+\tilde{s}_2^2&amp;=\boldsymbol{w}^T(\boldsymbol{S}_1+\boldsymbol{S}_2)\boldsymbol{w}\\
+&amp;=\boldsymbol{w}^T\boldsymbol{S}_w\boldsymbol{w}\\
+(\tilde{m}_1-\tilde{m}_2)^2&amp;=\boldsymbol{w}^T(\boldsymbol{m}_1-\boldsymbol{m}_2)(\boldsymbol{m}_1-\boldsymbol{m}_2)^T\boldsymbol{w}\\
+&amp;=\boldsymbol{w}^T\boldsymbol{S}_B\boldsymbol{w}
 \end{align}
 \]</span> 那么准则函数变为 <span class="math display">\[
-J(\bs{w})=\frac{\bs{w}^T\bs{S}_B\bs{w}}{\bs{w}^T\bs{S}_W\bs{w}}
+J(\boldsymbol{w})=\frac{\boldsymbol{w}^T\boldsymbol{S}_B\boldsymbol{w}}{\boldsymbol{w}^T\boldsymbol{S}_W\boldsymbol{w}}
 \]</span>
 我们知道，我们想要找到的是这个准则函数的最大值，那么此时需要找到该函数的导数为零点。</p>
 <p>可以最终计算得到 <span class="math display">\[
-J&#39;(\bs{w})=0\Rightarrow \bs{w}=\bs{S}_W^{-1}(\bs{m}_1-\bs{m}_2)
+J&#39;(\boldsymbol{w})=0\Rightarrow
+\boldsymbol{w}=\boldsymbol{S}_W^{-1}(\boldsymbol{m}_1-\boldsymbol{m}_2)
 \]</span></p>
 <h3 id="示例">示例</h3>
 <p>现有某商品评分表如下</p>
@@ -8965,19 +8969,19 @@ J&#39;(\bs{w})=0\Rightarrow \bs{w}=\bs{S}_W^{-1}(\bs{m}_1-\bs{m}_2)
 </blockquote>
 <p>然而支持向量的寻找比较困难。</p>
 <p>我们将其转化，由判决函数 <span class="math display">\[
-g(\bs{x})=\bs{w}^T\bs{x}+b
+g(\boldsymbol{x})=\boldsymbol{w}^T\boldsymbol{x}+b
 \]</span> 知道解向量可以任意伸缩，同时保持超平面不变，即 <span class="math inline">\(g(\boldsymbol{x})=0\)</span>。</p>
 <p>现在缩放 <span class="math inline">\(\boldsymbol{w}\)</span> 和 <span class="math inline">\(b\)</span> 使得对 <span class="math inline">\(\omega_1\)</span> 类的支持向量满足 <span class="math inline">\(g(\boldsymbol{x})=1\)</span> 而对 <span class="math inline">\(\omega_2\)</span> 类的支持向量满足 <span class="math inline">\(g(\boldsymbol{x})=-1\)</span>。</p>
 <p>那么可以用方程表示为 <span class="math display">\[
-\bs{w}^T\bs{x}_i+b\geq +1\\
-\bs{w}^T\bs{x}_i+b\leq -1
+\boldsymbol{w}^T\boldsymbol{x}_i+b\geq +1\\
+\boldsymbol{w}^T\boldsymbol{x}_i+b\leq -1
 \]</span> 即 <span class="math display">\[
-z_kg(\bs{x}_k)\geq1
+z_kg(\boldsymbol{x}_k)\geq1
 \]</span> 模式属于 <span class="math inline">\(\omega_1\)</span> 或是
 <span class="math inline">\(\omega_2\)</span> 我们分别令 <span class="math inline">\(z_k=\pm1\)</span>。</p>
 <p>由判决面性质可知，距离 <span class="math inline">\(r\)</span> 满足
 <span class="math display">\[
-r=\frac{g(\bs{x})}{\|\bs{w}\|}
+r=\frac{g(\boldsymbol{x})}{\|\boldsymbol{w}\|}
 \]</span> 定义间隔 <span class="math inline">\(\gamma=\frac{2}{\|\boldsymbol{w}\|}\)</span>，其中可以知道支持向量上满足
 <span class="math inline">\(r=\pm1\)</span>。</p>
 <figure>
@@ -8985,9 +8989,9 @@ r=\frac{g(\bs{x})}{\|\bs{w}\|}
 <figcaption aria-hidden="true">判决函数的支持向量性质</figcaption>
 </figure>
 <p>那么我们更进一步就是想使得间隔 <span class="math inline">\(\gamma\)</span> 最大，不妨定义准则函数 <span class="math display">\[
-J(\bs{w})=\min_a\frac{1}{2}\|\bs{w}\|^2
+J(\boldsymbol{w})=\min_a\frac{1}{2}\|\boldsymbol{w}\|^2
 \]</span> 同时要满足 <span class="math display">\[
-z_kg(\bs{x})\geq 1
+z_kg(\boldsymbol{x})\geq 1
 \]</span>
 但我们想要找到该准则函数的极小值，由于其带有约束条件，不能使用简单直接的梯度下降法。</p>
 <h3 id="不等式约束的极小值">不等式约束的极小值</h3>
@@ -9005,17 +9009,18 @@ f_y(x,y)+\lambda\varphi_y(x,y)=0\\
 \]</span> 解出 <span class="math inline">\(x,y,\lambda\)</span>，其中
 <span class="math inline">\(x,y\)</span> 就是可能的极值点坐标。</p>
 <p>将拉格朗日定理转化为与我们问题相关的形式，问题定义为 <span class="math display">\[
-\min f(\bs{x})\\
-\text{s.t. }h_i(\bs{x})=0,i=1,2,\cdots,l
+\min f(\boldsymbol{x})\\
+\text{s.t. }h_i(\boldsymbol{x})=0,i=1,2,\cdots,l
 \]</span> 作出拉格朗日函数 <span class="math display">\[
-L(\bs{x},\bs{\lambda})=f(\bs{x})-\sum^{l}_{i=1}\lambda_ih_i(\bs{x})
+L(\boldsymbol{x},\boldsymbol{\lambda})=f(\boldsymbol{x})-\sum^{l}_{i=1}\lambda_ih_i(\boldsymbol{x})
 \]</span> 其中，<span class="math inline">\(\boldsymbol{\lambda}=(\lambda_1,\lambda_2,\cdots,\lambda_l)^T\)</span>
 称作<strong>乘子向量</strong>。</p>
 <p>若 <span class="math inline">\(\boldsymbol{x}^*\)</span>
 是局部极小值，那么一定存在 <span class="math inline">\(\boldsymbol{\lambda}^*\)</span> 满足 <span class="math display">\[
-\nabla_xL(\bs{x}^*,\bs{\lambda}^*)=0
+\nabla_xL(\boldsymbol{x}^*,\boldsymbol{\lambda}^*)=0
 \]</span> 即 <span class="math display">\[
-\nabla_xf(\bs{x}^*)-\sum^{l}_{i=1}\lambda^*_i\nabla h_i(\bs{x}^*)=0
+\nabla_xf(\boldsymbol{x}^*)-\sum^{l}_{i=1}\lambda^*_i\nabla
+h_i(\boldsymbol{x}^*)=0
 \]</span></p>
 <h4 id="kt-最优性条件">KT 最优性条件</h4>
 <p>约束优化的一阶必要条件是由 Kuhn 和 Tuchker 于 1951
@@ -9023,8 +9028,9 @@ L(\bs{x},\bs{\lambda})=f(\bs{x})-\sum^{l}_{i=1}\lambda_ih_i(\bs{x})
 点。</p>
 <p>在拉格朗日定理的基础上，增加约束条件，即为 <span class="math display">\[
 \begin{cases}
-\nabla_xf(\bs{x}^*)-\sum^{l}_{i=1}\lambda^*_i\nabla h_i(\bs{x}^*)=0\\
-h_i(\bs{x}^*)\geq0,\lambda_i^*\geq0,\lambda^*_ih_i(\bs{x}^*)=0,i=1,2,\cdots,l
+\nabla_xf(\boldsymbol{x}^*)-\sum^{l}_{i=1}\lambda^*_i\nabla
+h_i(\boldsymbol{x}^*)=0\\
+h_i(\boldsymbol{x}^*)\geq0,\lambda_i^*\geq0,\lambda^*_ih_i(\boldsymbol{x}^*)=0,i=1,2,\cdots,l
 \end{cases}
 \]</span> 这样就可以解决带不等式约束的极小值。</p>
 <h3 id="对偶问题">对偶问题</h3>
