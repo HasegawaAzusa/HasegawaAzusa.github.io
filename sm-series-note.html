@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关国密公布的SM系列算法的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SM系列算法">
+<meta property="og:url" content="https://hasegawaazusa.github.io/sm-series-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关国密公布的SM系列算法的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/sm-series-note/SM2%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/sm-series-note/SM2%E5%85%AC%E9%92%A5%E8%A7%A3%E5%AF%86%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/sm-series-note/SM2%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/sm-series-note/SM2%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E9%AA%8C%E8%AF%81%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/sm-series-note/SM4%20Sbox%E6%95%B0%E6%8D%AE.png">
+<meta property="article:published_time" content="2023-05-01T02:00:00.000Z">
+<meta property="article:modified_time" content="2023-05-24T11:07:03.034Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/sm-series-note/SM2%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/sm-series-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/sm-series-note.html","path":"/sm-series-note.html","title":"SM系列算法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SM系列算法 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">106</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sm-%E7%B3%BB%E5%88%97%E7%AE%97%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">SM 系列算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#sm2"><span class="nav-number">1.1.</span> <span class="nav-text">SM2</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sm2%E5%85%AC%E9%92%A5%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">SM2公钥加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">符号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E4%B8%8E%E5%AF%86%E9%92%A5"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">公钥与密钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86"><span class="nav-number">1.1.1.3.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86"><span class="nav-number">1.1.1.4.</span> <span class="nav-text">解密</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.1.5.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#sm2%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.2.</span> <span class="nav-text">SM2数字签名算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%A6%E5%8F%B7-1"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">符号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%AC%E9%92%A5%E4%B8%8E%E5%AF%86%E9%92%A5-1"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">公钥与密钥</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">用户信息</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AD%BE%E5%90%8D"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">签名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%AA%8C%E8%AF%81"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">1.1.2.6.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sm3"><span class="nav-number">1.2.</span> <span class="nav-text">SM3</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E6%95%B0%E4%B8%8E%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">常数与函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%80%BC"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">初始值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%B8%E9%87%8F"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">常量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B8%83%E5%B0%94%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">布尔函数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BD%AE%E6%8D%A2%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">置换函数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">算法描述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E5%A1%AB%E5%85%85"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">消息填充</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E6%89%A9%E5%B1%95"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">消息扩展</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E5%8E%8B%E7%BC%A9"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">消息压缩</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9D%82%E5%87%91%E8%BF%AD%E4%BB%A3"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">杂凑迭代</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-sm3-%E7%9A%84-kdf"><span class="nav-number">1.2.3.</span> <span class="nav-text">基于 SM3 的 KDF</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sm4"><span class="nav-number">1.3.</span> <span class="nav-text">SM4</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E5%8F%8A%E5%AF%86%E9%92%A5%E5%8F%82%E9%87%8F"><span class="nav-number">1.3.1.</span> <span class="nav-text">密钥及密钥参量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BD%AE%E5%87%BD%E6%95%B0"><span class="nav-number">1.3.2.</span> <span class="nav-text">轮函数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BD%AE%E5%87%BD%E6%95%B0%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">轮函数结构</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%88%E6%88%90%E7%BD%AE%E6%8D%A2"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">合成置换</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2-tau"><span class="nav-number">1.3.2.2.1.</span> <span class="nav-text">非线性变换 \(\tau\)</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%98%E6%8D%A2-l"><span class="nav-number">1.3.2.2.2.</span> <span class="nav-text">线性变换 \(L\)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-1"><span class="nav-number">1.3.3.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-1"><span class="nav-number">1.3.4.</span> <span class="nav-text">解密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E6%89%A9%E5%B1%95"><span class="nav-number">1.3.5.</span> <span class="nav-text">密钥扩展</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">106</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/sm-series-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SM系列算法 | 独奏の小屋">
+      <meta itemprop="description" content="有关国密公布的SM系列算法的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SM系列算法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-05-01 10:00:00" itemprop="dateCreated datePublished" datetime="2023-05-01T10:00:00+08:00">2023-05-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-24 19:07:03" itemprop="dateModified" datetime="2023-05-24T19:07:03+08:00">2023-05-24</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>14k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>13 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关国密公布的SM系列算法的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="sm-系列算法">SM 系列算法</h1>
+<h2 id="sm2">SM2</h2>
+<p>SM2 是椭圆曲线公钥密码算法，是基于 ECC 的非对称加密，又称作
+SM2-ECDSA，主要应用于数字签名。</p>
+<p>国密算法标准中推荐使用的默认值为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="number">0xFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFF</span></span><br><span class="line">n = <span class="number">0xFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFF7203DF6B21C6052B53BBF40939D54123</span></span><br><span class="line">a = <span class="number">0xFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFC</span></span><br><span class="line">b = <span class="number">0x28E9FA9E9D9F5E344D5A9E4BCF6509A7F39789F515AB8F92DDBCBD414D940E93</span></span><br><span class="line">Gx = <span class="number">0x32C4AE2C1F1981195F9904466A39C9948FE30BBFF2660BE1715A4589334C74C7</span></span><br><span class="line">Gy = <span class="number">0xBC3736A2F4F6779C59BDCEE36B692153D0A9877CC62A474002DF32E52139F0A0</span></span><br></pre></td></tr></table></figure>
+<p>其中 <span class="math inline">\(p\)</span> 为有限域规模，<span class="math inline">\((a,b)\)</span> 为椭圆曲线参数，<span class="math inline">\(n\)</span> 为这个椭圆曲线的阶数，<span class="math inline">\(G(G_x,G_y)\)</span> 为基点。</p>
+<p>国密标准规范来源：<a target="_blank" rel="noopener" href="https://www.sca.gov.cn/sca/xxgk/2010-12/17/content_1002386.shtml">https://www.sca.gov.cn/sca/xxgk/2010-12/17/content_1002386.shtml</a></p>
+<h3 id="sm2公钥加密算法">SM2公钥加密算法</h3>
+<h4 id="符号">符号</h4>
+<p><span class="math inline">\(klen\)</span> 指代消息长度，<span class="math inline">\(M\)</span> 指代消息，标准推荐 <span class="math inline">\(\mathrm{KDF}\)</span> 使用 SM3 算法，标准推荐
+<span class="math inline">\(\mathrm{Hash}\)</span> 使用 SM3
+算法（输出必须为 32 字节），<span class="math inline">\(||\)</span>
+表示比特串拼接。</p>
+<h4 id="公钥与密钥">公钥与密钥</h4>
+<ul>
+<li>私钥 <span class="math inline">\(d\)</span> 是 32 byte（256
+bit）的随机数</li>
+<li>公钥 <span class="math inline">\(P=d\cdot G\)</span></li>
+</ul>
+<h4 id="加密">加密</h4>
+<ol type="1">
+<li>产生随机数 <span class="math inline">\(k\in[1,n-1]\)</span></li>
+<li>计算椭圆曲线点 <span class="math inline">\(C_1(x_1,y_1)=k\cdot
+G\)</span></li>
+<li>计算椭圆曲线点 <span class="math inline">\(k\cdot
+P=(x_2,y_2)\)</span></li>
+<li>计算 <span class="math inline">\(t=\mathrm{KDF}(x_2||y_2,klen)\)</span>，如果 <span class="math inline">\(t\)</span> 全为 0 比特串，则回到步骤一重新选取
+<span class="math inline">\(k\)</span></li>
+<li>计算椭圆曲线点 <span class="math inline">\(C_2=M\oplus
+t\)</span></li>
+<li>计算椭圆曲线点 <span class="math inline">\(C_3=\mathrm{Hash}(x_2||M||y_2)\)</span></li>
+<li>输出密文 <span class="math inline">\(C=C_1||C_2||C_3\)</span></li>
+</ol>
+<figure>
+<img src="/sm-series-note/SM2公钥加密算法.png" alt="SM2公钥加密算法">
+<figcaption aria-hidden="true">SM2公钥加密算法</figcaption>
+</figure>
+<h4 id="解密">解密</h4>
+<ol type="1">
+<li>从密文中获取 <span class="math inline">\(C_1\)</span>，验证 <span class="math inline">\(C_1\)</span>
+是否满足曲线方程，不满足则报错推出</li>
+<li>计算椭圆曲线点 <span class="math inline">\(dC_1=(x_2,y_2)\)</span></li>
+<li>计算 <span class="math inline">\(t=\mathrm{KDF}(x_2||y_2,klen)\)</span>，如果 <span class="math inline">\(t\)</span> 全为 0 比特串，则报错退出</li>
+<li>计算 <span class="math inline">\(M&#39;=C_2\oplus t\)</span></li>
+<li>计算 <span class="math inline">\(u=\mathrm{Hash}(x_2||M&#39;||y_2)\)</span>，验证
+<span class="math inline">\(u=C_3\)</span>，不正确则报错退出</li>
+<li>输出明文 <span class="math inline">\(M&#39;\)</span></li>
+</ol>
+<figure>
+<img src="/sm-series-note/SM2公钥解密算法.png" alt="SM2公钥解密算法">
+<figcaption aria-hidden="true">SM2公钥解密算法</figcaption>
+</figure>
+<h4 id="代码">代码</h4>
+<p>基于 Sagemath 的椭圆曲线的运算代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> . <span class="keyword">import</span> sm3</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> overload, <span class="type">Union</span></span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> sage.rings.finite_rings.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> sage.schemes.elliptic_curves.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">default_p = <span class="number">0xFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFF</span></span><br><span class="line">default_n = <span class="number">0xFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFF7203DF6B21C6052B53BBF40939D54123</span></span><br><span class="line">default_a = <span class="number">0xFFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFC</span></span><br><span class="line">default_b = <span class="number">0x28E9FA9E9D9F5E344D5A9E4BCF6509A7F39789F515AB8F92DDBCBD414D940E93</span></span><br><span class="line">default_Gx = <span class="number">0x32C4AE2C1F1981195F9904466A39C9948FE30BBFF2660BE1715A4589334C74C7</span></span><br><span class="line">default_Gy = <span class="number">0xBC3736A2F4F6779C59BDCEE36B692153D0A9877CC62A474002DF32E52139F0A0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">cathex</span>(<span class="params">a: <span class="type">Union</span>[<span class="built_in">int</span>, <span class="built_in">bytes</span>], b: <span class="type">Union</span>[<span class="built_in">int</span>, <span class="built_in">bytes</span>], *args, byte_size = <span class="number">32</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    将多个字节串连接打包成 bytes</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(a, <span class="built_in">bytes</span>):</span><br><span class="line">        a = <span class="built_in">int</span>(a).to_bytes(byte_size, <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(b, <span class="built_in">bytes</span>):</span><br><span class="line">        b = <span class="built_in">int</span>(b).to_bytes(byte_size, <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">    rst = a + b</span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> args:</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">isinstance</span>(c, <span class="built_in">bytes</span>):</span><br><span class="line">            c = <span class="built_in">int</span>(c).to_bytes(byte_size, <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">        rst += c</span><br><span class="line">    <span class="keyword">return</span> rst</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SM2</span>:</span><br><span class="line"><span class="meta">    @overload</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, key: <span class="built_in">int</span>, p: <span class="built_in">int</span> = default_p, a: <span class="built_in">int</span> = default_a, b: <span class="built_in">int</span> = default_b, G: <span class="built_in">tuple</span>[<span class="built_in">int</span>, <span class="built_in">int</span>] = (<span class="params">default_Gx, default_Gy</span>), n: <span class="built_in">int</span> = default_n</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        SM2构造函数</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            private_key: 私钥</span></span><br><span class="line"><span class="string">            p: 模数</span></span><br><span class="line"><span class="string">            a: 椭圆曲线参数</span></span><br><span class="line"><span class="string">            b: 椭圆曲线参数</span></span><br><span class="line"><span class="string">            G: 基点</span></span><br><span class="line"><span class="string">            n: 椭圆曲线阶数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @overload</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, key: <span class="built_in">tuple</span>[<span class="built_in">int</span>, <span class="built_in">int</span>], p: <span class="built_in">int</span> = default_p, a: <span class="built_in">int</span> = default_a, b: <span class="built_in">int</span> = default_b, G: <span class="built_in">tuple</span>[<span class="built_in">int</span>, <span class="built_in">int</span>] = (<span class="params">default_Gx, default_Gy</span>), n: <span class="built_in">int</span> = default_n</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        SM2构造函数</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            public_key: 公钥</span></span><br><span class="line"><span class="string">            p: 模数</span></span><br><span class="line"><span class="string">            a: 椭圆曲线参数</span></span><br><span class="line"><span class="string">            b: 椭圆曲线参数</span></span><br><span class="line"><span class="string">            G: 基点</span></span><br><span class="line"><span class="string">            n: 椭圆曲线阶数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, key, p: <span class="built_in">int</span> = default_p, a: <span class="built_in">int</span> = default_a, b: <span class="built_in">int</span> = default_b, G: <span class="built_in">tuple</span>[<span class="built_in">int</span>, <span class="built_in">int</span>] = (<span class="params">default_Gx, default_Gy</span>), n: <span class="built_in">int</span> = default_n</span>):</span><br><span class="line">        self.__p = p</span><br><span class="line">        self.__a = a</span><br><span class="line">        self.__b = b</span><br><span class="line">        self.__GF = GF(p)</span><br><span class="line">        self.__E = EllipticCurve(self.__GF, [a, b])</span><br><span class="line">        self.__E.set_order(n)</span><br><span class="line">        <span class="keyword">if</span> G <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            self.__G = self.__E.random_point()</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.__G = self.__E(G)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">type</span>(key) <span class="keyword">is</span> <span class="built_in">tuple</span>:</span><br><span class="line">            self.__private_key = <span class="literal">None</span></span><br><span class="line">            self.__public_key = self.__E(key)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.__private_key = key</span><br><span class="line">            self.__public_key = self.__private_key * self.__G</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">private_key</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线私钥</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.__private_key</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">d</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线私钥</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.__private_key</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">public_key</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线公钥</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.__public_key</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">P</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线公钥</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.__public_key</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">a</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线参数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.__a</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">b</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线参数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.__b</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">p</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线模数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.__p</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">GF</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线有限域</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.__GF</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">order</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线阶数</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.E.order()</span><br><span class="line">        </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">E</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.__E</span><br><span class="line"></span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">G</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线基点</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">return</span> self.__G</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encrypt</span>(<span class="params">self, M: <span class="built_in">bytes</span>, k0: <span class="built_in">int</span> = <span class="literal">None</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线公钥加密</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            M: 消息</span></span><br><span class="line"><span class="string">            k0: 指定加密随机数</span></span><br><span class="line"><span class="string">        返回值：</span></span><br><span class="line"><span class="string">            密文C=C1||C2||C3</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        klen = <span class="built_in">len</span>(M)</span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> k0 <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">                k = random.randint(<span class="number">1</span>, self.order - <span class="number">1</span>)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                k = k0</span><br><span class="line">                k0 = <span class="literal">None</span></span><br><span class="line">            C1 = k * self.G</span><br><span class="line">            T1 = k * self.P</span><br><span class="line">            t = sm3.KDF(cathex(T1[<span class="number">0</span>], T1[<span class="number">1</span>]), klen)</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">any</span>(i &gt; <span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> t):</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        C2 = [(Mi ^ ti) <span class="keyword">for</span> Mi, ti <span class="keyword">in</span> <span class="built_in">zip</span>(M, t)]</span><br><span class="line">        C3 = sm3.<span class="built_in">hash</span>(cathex(T1[<span class="number">0</span>], M, T1[<span class="number">1</span>]))</span><br><span class="line">        C = cathex(<span class="string">b&quot;\x04&quot;</span>, C1[<span class="number">0</span>], C1[<span class="number">1</span>], <span class="built_in">bytes</span>(C2), C3)</span><br><span class="line">        <span class="keyword">return</span> C</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decrypt</span>(<span class="params">self, C: <span class="built_in">bytes</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        椭圆曲线公钥解密</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            C: 以C1||C2||C3形式拼接的密文</span></span><br><span class="line"><span class="string">        返回值：</span></span><br><span class="line"><span class="string">            明文消息</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        <span class="keyword">if</span> C[<span class="number">0</span>] != <span class="number">0x04</span>:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">&#x27;SM2的密文起始必须是0x04&#x27;</span>)</span><br><span class="line">        C = C[<span class="number">1</span>:]</span><br><span class="line">        klen = <span class="built_in">len</span>(C) - <span class="number">96</span></span><br><span class="line">        C1 = (<span class="built_in">int</span>.from_bytes(C[:<span class="number">32</span>], <span class="string">&#x27;big&#x27;</span>), <span class="built_in">int</span>.from_bytes(C[<span class="number">32</span>:<span class="number">64</span>], <span class="string">&#x27;big&#x27;</span>))</span><br><span class="line">        <span class="keyword">if</span> C1 <span class="keyword">not</span> <span class="keyword">in</span> self.E:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">&#x27;SM2的密文C1点必须是椭圆上的点&#x27;</span>)</span><br><span class="line">        C1 = self.E(C1)</span><br><span class="line">        C2 = C[<span class="number">64</span>:-<span class="number">32</span>]</span><br><span class="line">        C3 = C[-<span class="number">32</span>:]</span><br><span class="line">        T1 = self.d * C1</span><br><span class="line">        t = sm3.KDF(cathex(T1[<span class="number">0</span>], T1[<span class="number">1</span>]), klen)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">all</span>(i == <span class="number">0</span> <span class="keyword">for</span> i <span class="keyword">in</span> t):</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">&#x27;SM2的KDF计算结果错误&#x27;</span>)</span><br><span class="line">        M = [(Ci ^ ti) <span class="keyword">for</span> Ci, ti <span class="keyword">in</span> <span class="built_in">zip</span>(C2, t)]</span><br><span class="line">        M = <span class="built_in">bytes</span>(M)</span><br><span class="line">        u = sm3.<span class="built_in">hash</span>(cathex(T1[<span class="number">0</span>], M, T1[<span class="number">1</span>]))</span><br><span class="line">        <span class="keyword">if</span> u != C3:</span><br><span class="line">            <span class="keyword">raise</span> RuntimeError(<span class="string">&#x27;SM2消息哈希验证错误&#x27;</span>)</span><br><span class="line">        <span class="keyword">return</span> M</span><br></pre></td></tr></table></figure>
+<h3 id="sm2数字签名算法">SM2数字签名算法</h3>
+<h4 id="符号-1">符号</h4>
+<p><span class="math inline">\(M\)</span> 指代消息，标准推荐 <span class="math inline">\(\mathrm{KDF}\)</span> 使用 SM3 算法，标准推荐
+<span class="math inline">\(\mathrm{Hash}\)</span> 使用 SM3
+算法（输出必须为 32 字节）。</p>
+<h4 id="公钥与密钥-1">公钥与密钥</h4>
+<ul>
+<li>私钥 <span class="math inline">\(d\)</span></li>
+<li>公钥 <span class="math inline">\(P=d\cdot G\)</span></li>
+</ul>
+<h4 id="用户信息">用户信息</h4>
+<p>签名者具有可辨别标识 <span class="math inline">\(ID\)</span>，记
+<span class="math inline">\(ENTL\)</span>
+是可辩别表示的比特大小（占两字节），使用杂凑算法生成 32 字节的杂凑值
+<span class="math inline">\(Z\)</span>。标准推荐使用 SM3
+算法作为杂凑算法。 <span class="math display">\[
+Z=\mathrm{Hash}(ENTL||ID||a||b||G_x||G_y||P_{x}||P_{y})
+\]</span></p>
+<h4 id="签名">签名</h4>
+<ol type="1">
+<li>计算 <span class="math inline">\(e=\mathrm{Hash}(Z||M)\)</span></li>
+<li>产生随机数 <span class="math inline">\(k\in[1,n-1]\)</span></li>
+<li>计算椭圆曲线点 <span class="math inline">\((x_1,y_1)=k\cdot
+G\)</span></li>
+<li>计算 <span class="math inline">\(r=e+x_1\pmod{n}\)</span>，若 <span class="math inline">\(r=0\)</span> 或 <span class="math inline">\(r+k=n\)</span> 则重新选取随机数</li>
+<li>计算 <span class="math inline">\(s=(1+d)^{-1}\cdot(k-r\cdot
+d)\pmod{n}\)</span>，若 <span class="math inline">\(s=0\)</span>
+则重新选取随机数</li>
+<li>输出消息 <span class="math inline">\(M\)</span> 的签名 <span class="math inline">\((r,s)\)</span></li>
+</ol>
+<figure>
+<img src="/sm-series-note/SM2数字签名生成算法.png" alt="SM2数字签名生成算法">
+<figcaption aria-hidden="true">SM2数字签名生成算法</figcaption>
+</figure>
+<h4 id="验证">验证</h4>
+<p>接收到消息 <span class="math inline">\(M&#39;\)</span> 和数字签名
+<span class="math inline">\((r&#39;,s&#39;)\)</span>。</p>
+<ol type="1">
+<li>检验 <span class="math inline">\(r&#39;,s&#39;\in[1,n-1]\)</span>，如果错误则验证失败</li>
+<li>计算 <span class="math inline">\(e&#39;=\mathrm{Hash}(Z||M&#39;)\)</span></li>
+<li>计算 <span class="math inline">\(t=r&#39;+s&#39;\pmod{n}\)</span>，如果 <span class="math inline">\(t=0\)</span> 则验证失败</li>
+<li>计算椭圆曲线点 <span class="math inline">\((x_1&#39;,y_1&#39;)=s&#39;G+tP\)</span></li>
+<li>计算 <span class="math inline">\(R=e&#39;+x_1&#39;\pmod{n}\)</span>，如果 <span class="math inline">\(R=r&#39;\)</span> 则验证通过；否则验证失败。</li>
+</ol>
+<figure>
+<img src="/sm-series-note/SM2数字签名验证算法.png" alt="SM2数字签名验证算法">
+<figcaption aria-hidden="true">SM2数字签名验证算法</figcaption>
+</figure>
+<h4 id="代码-1">代码</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sign</span>(<span class="params">self, e: <span class="built_in">bytes</span>, k0: <span class="built_in">int</span> = <span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    椭圆曲线签名生成</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        e: 数据产生的哈希值</span></span><br><span class="line"><span class="string">        k0: 指定加密随机数</span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        签名(r, s)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">if</span> k0 <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            k = random.randint(<span class="number">1</span>, self.order - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            k = k0</span><br><span class="line">            k0 = <span class="literal">None</span></span><br><span class="line">        T = k * self.G</span><br><span class="line">        r = (<span class="built_in">int</span>.from_bytes(e, <span class="string">&#x27;big&#x27;</span>) + <span class="built_in">int</span>(T[<span class="number">0</span>])) % self.order</span><br><span class="line">        <span class="keyword">if</span> r == <span class="number">0</span> <span class="keyword">or</span> r + k == self.order:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        s = inverse_mod(<span class="number">1</span> + self.d, self.order) * (k - r * self.d) % self.order</span><br><span class="line">        <span class="keyword">if</span> s == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">return</span> (r, s)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">ZHash</span>(<span class="params">self, ID: <span class="built_in">bytes</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    产生32字节的杂凑值Z</span></span><br><span class="line"><span class="string">    输入：</span></span><br><span class="line"><span class="string">        ID: 可辩别标识</span></span><br><span class="line"><span class="string">    输出：</span></span><br><span class="line"><span class="string">        32字节的杂凑值Z</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    ENTL = <span class="built_in">len</span>(ID) * <span class="number">8</span></span><br><span class="line">    <span class="keyword">return</span> sm3.<span class="built_in">hash</span>(cathex(<span class="built_in">int</span>(ENTL).to_bytes(<span class="number">2</span>, <span class="string">&#x27;big&#x27;</span>), ID, self.a, self.b, self.G[<span class="number">0</span>], self.G[<span class="number">1</span>], self.P[<span class="number">0</span>], self.P[<span class="number">1</span>]))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">raw_sign</span>(<span class="params">self, M: <span class="built_in">bytes</span>, ID: <span class="built_in">bytes</span>, k0: <span class="built_in">int</span> = <span class="literal">None</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    椭圆曲线签名生成</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        M: 消息</span></span><br><span class="line"><span class="string">        ID: 可辩别标识</span></span><br><span class="line"><span class="string">        k0: 指定加密随机数</span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        签名(r, s)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    Z = self.ZHash(ID)</span><br><span class="line">    e = sm3.<span class="built_in">hash</span>(Z + M)</span><br><span class="line">    <span class="keyword">return</span> self.sign(e, k0)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">verify</span>(<span class="params">self, e: <span class="built_in">bytes</span>, r: <span class="built_in">int</span>, s: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    椭圆曲线签名验证</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        e: 数据产生的哈希值</span></span><br><span class="line"><span class="string">        r, s: 数字签名</span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        验证是否通过</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> r &lt; <span class="number">1</span> <span class="keyword">or</span> r &gt; self.order - <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">if</span> s &lt; <span class="number">1</span> <span class="keyword">or</span> s &gt; self.order - <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    t = (r + s) % self.order</span><br><span class="line">    <span class="keyword">if</span> t == <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    T = s * self.G + t * self.P</span><br><span class="line">    R = (<span class="built_in">int</span>.from_bytes(e, <span class="string">&#x27;big&#x27;</span>) + <span class="built_in">int</span>(T[<span class="number">0</span>])) % self.order</span><br><span class="line">    <span class="keyword">if</span> R != r:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">False</span></span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">raw_verify</span>(<span class="params">self, M: <span class="built_in">bytes</span>, ID: <span class="built_in">bytes</span>, r: <span class="built_in">int</span>, s: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    椭圆曲线签名验证</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        M: 消息</span></span><br><span class="line"><span class="string">        ID: 可辩别标识</span></span><br><span class="line"><span class="string">        r, s: 数字签名</span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        验证是否通过</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    Z = self.ZHash(ID)</span><br><span class="line">    e = sm3.<span class="built_in">hash</span>(Z + M)</span><br><span class="line">    <span class="keyword">return</span> self.verify(e, r, s)</span><br></pre></td></tr></table></figure>
+<h2 id="sm3">SM3</h2>
+<p>SM3 密码杂凑算法，即哈希算法。</p>
+<p>SM3 适用于商用密码应用中的数字签名和验证，是在 SHA-256
+基础上改进实现的一种算法，其<strong>安全性和 SHA-256 相当</strong>。SM3
+和 MD5 的迭代过程类似，也采用 Merkle-Damgard 结构。消息分组长度为 512
+位，摘要值长度为 256 位。</p>
+<p>整个算法的执行过程可以概括成四个步骤：消息填充、消息扩展、迭代压缩、输出结果。</p>
+<p>国密标准规范来源：<a target="_blank" rel="noopener" href="https://www.sca.gov.cn/sca/xxgk/2010-12/17/content_1002389.shtml">https://www.sca.gov.cn/sca/xxgk/2010-12/17/content_1002389.shtml</a></p>
+<h3 id="常数与函数">常数与函数</h3>
+<h4 id="初始值">初始值</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">IV = [<span class="number">0x7380166f</span>, <span class="number">0x4914b2b9</span>, <span class="number">0x172442d7</span>, <span class="number">0xda8a0600</span>, <span class="number">0xa96f30bc</span>, <span class="number">0x163138aa</span>, <span class="number">0xe38dee4d</span>, <span class="number">0xb0fb0e4e</span>]</span><br></pre></td></tr></table></figure>
+<h4 id="常量">常量</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">T = [<span class="number">0x79cc4519</span>] * <span class="number">16</span> + [<span class="number">0x7a879d8a</span>] * <span class="number">48</span></span><br></pre></td></tr></table></figure>
+<h4 id="布尔函数">布尔函数</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">FF</span>(<span class="params">X: <span class="built_in">int</span>, Y: <span class="built_in">int</span>, Z: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    FFj 布尔函数，调用方式 FF[j](X, Y, Z)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    ...</span><br><span class="line">FF = [<span class="keyword">lambda</span> X, Y, Z: X ^ Y ^ Z] * <span class="number">16</span> + [<span class="keyword">lambda</span> X, Y, Z: (X &amp; Y) | (X &amp; Z) | (Y &amp; Z)] * <span class="number">48</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">GG</span>(<span class="params">X: <span class="built_in">int</span>, Y: <span class="built_in">int</span>, Z: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    GGj 布尔函数，调用方式 GG[j](X, Y, Z)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    ...</span><br><span class="line">GG = [<span class="keyword">lambda</span> X, Y, Z: X ^ Y ^ Z] * <span class="number">16</span> + [<span class="keyword">lambda</span> X, Y, Z: (X &amp; Y) | ((~X) &amp; Z)] * <span class="number">48</span></span><br></pre></td></tr></table></figure>
+<h4 id="置换函数">置换函数</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">ROTL = <span class="keyword">lambda</span> X, P: ((X &lt;&lt; P) | (X &gt;&gt; (<span class="number">32</span> - P))) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">P0</span>(<span class="params">X: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    置换函数 P0</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span>    </span><br><span class="line">    <span class="keyword">return</span> X ^ ROTL(X, <span class="number">9</span>) ^ ROTL(X, <span class="number">17</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">P1</span>(<span class="params">X: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    置换函数 P1</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span>    </span><br><span class="line">    <span class="keyword">return</span> X ^ ROTL(X, <span class="number">15</span>) ^ ROTL(X, <span class="number">23</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="算法描述">算法描述</h3>
+<h4 id="消息填充">消息填充</h4>
+<p>假设消息 <span class="math inline">\(m\)</span> 的长度为 <span class="math inline">\(l\)</span> 比特，将比特 1
+添加到消息末尾，后填充比特 0 直到消息长度为 <span class="math inline">\(l&#39; =448\pmod{512}\)</span>，最后填充比特长度
+<span class="math inline">\(l\)</span> 的 64 位比特串到末尾。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">padding</span>(<span class="params">msg: <span class="built_in">bytes</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    消息填充</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        msg: 消息</span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        填充后的消息，长度为512的倍数</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    pad_length = (<span class="number">448</span> - <span class="built_in">len</span>(msg) * <span class="number">8</span>) % <span class="number">512</span> // <span class="number">8</span> - <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> msg + <span class="string">b&#x27;\x80&#x27;</span> + <span class="built_in">bytes</span>(pad_length) + <span class="built_in">int</span>(<span class="built_in">len</span>(msg) * <span class="number">8</span>).to_bytes(<span class="number">8</span>, <span class="string">&#x27;big&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="消息扩展">消息扩展</h4>
+<p>将 512 位的消息分组扩展为 132 字节的 <span class="math inline">\(W_0,W_1,\cdots,W_{67},W_0&#39;,\cdots,W_{63}&#39;\)</span>，用于压缩函数
+<span class="math inline">\(CF\)</span>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">expand</span>(<span class="params">Bi: <span class="built_in">bytes</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    消息扩展</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        Bi: 64字节512位的消息块</span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        [W[0],...,W[67]],[W_[0],...,W_[63]]</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    W = [<span class="built_in">int</span>.from_bytes(Bi[i:i+<span class="number">4</span>], <span class="string">&#x27;big&#x27;</span>) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(Bi), <span class="number">4</span>)] + [<span class="number">0</span>] * <span class="number">52</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">16</span>, <span class="number">68</span>):</span><br><span class="line">        W[j] = P1(W[j - <span class="number">16</span>] ^ W[j - <span class="number">9</span>] ^ ROTL(W[j - <span class="number">3</span>], <span class="number">15</span>)) ^ ROTL(W[j - <span class="number">13</span>], <span class="number">7</span>) ^ W[j - <span class="number">6</span>]</span><br><span class="line">    W_ = [<span class="number">0</span>] * <span class="number">64</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="number">64</span>):</span><br><span class="line">        W_[j] = W[j] ^ W[j + <span class="number">4</span>]</span><br><span class="line">    <span class="keyword">return</span> W, W_</span><br></pre></td></tr></table></figure>
+<h4 id="消息压缩">消息压缩</h4>
+<p>将消息分组 <span class="math inline">\(B_i\)</span> 扩展后压缩为 16
+字节的杂凑值</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">CF</span>(<span class="params">Vi: <span class="built_in">bytes</span>, Bi: <span class="built_in">bytes</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    消息压缩</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        Vi: 16字节64位的杂凑值</span></span><br><span class="line"><span class="string">        Bi: 64字节512位的消息块</span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        Vi+1: 16字节64位的杂凑值</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    A, B, C, D, E, F, G, H = Vi</span><br><span class="line">    W, W_ = expand(Bi)</span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">64</span>):</span><br><span class="line">        SS1 = ROTL((ROTL(A, <span class="number">12</span>) + E + ROTL(T[j], j % <span class="number">32</span>)) &amp; <span class="number">0xFFFFFFFF</span>, <span class="number">7</span>)</span><br><span class="line">        SS2 = SS1 ^ ROTL(A, <span class="number">12</span>)</span><br><span class="line">        TT1 = (FF[j](A, B, C) + D + SS2 + W_[j]) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line">        TT2 = (GG[j](E, F, G) + H + SS1 + W[j]) &amp; <span class="number">0xFFFFFFFF</span></span><br><span class="line">        D = C</span><br><span class="line">        C = ROTL(B, <span class="number">9</span>)</span><br><span class="line">        B = A</span><br><span class="line">        A = TT1</span><br><span class="line">        H = G</span><br><span class="line">        G = ROTL(F, <span class="number">19</span>)</span><br><span class="line">        F = E</span><br><span class="line">        E = P0(TT2)</span><br><span class="line">    Vii = [A, B, C, D, E, F, G, H]</span><br><span class="line">    <span class="keyword">return</span> [(i ^ j) <span class="keyword">for</span> i, j <span class="keyword">in</span> <span class="built_in">zip</span>(Vi, Vii)]</span><br></pre></td></tr></table></figure>
+<h4 id="杂凑迭代">杂凑迭代</h4>
+<p>对填充过的消息分块后迭代压缩，最终杂凑值为 <span class="math inline">\(V_{i+1}\)</span>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">hash</span>(<span class="params">msg: <span class="built_in">bytes</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    哈希函数</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        msg: 消息</span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        32字节256比特的杂凑值（哈希值）</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    msg = padding(msg)</span><br><span class="line">    hash_count = <span class="built_in">len</span>(msg) // <span class="number">64</span></span><br><span class="line">    B = [msg[i:i+<span class="number">64</span>] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(msg), <span class="number">64</span>)]</span><br><span class="line">    V = [IV] + [<span class="number">0</span>] * hash_count</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(hash_count):</span><br><span class="line">        V[i + <span class="number">1</span>] = CF(V[i], B[i])</span><br><span class="line">    <span class="keyword">return</span> <span class="string">b&#x27;&#x27;</span>.join(<span class="built_in">int</span>(j).to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>) <span class="keyword">for</span> j <span class="keyword">in</span> V[i + <span class="number">1</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="基于-sm3-的-kdf">基于 SM3 的 KDF</h3>
+<p>输入基密钥字节串 <span class="math inline">\(Z\)</span>
+和派生密钥字节长度 <span class="math inline">\(klen\)</span>，输出派生密钥。</p>
+<ol type="1">
+<li>初始化 4 字节 32 比特计数器 <code>ct=0x00000001</code></li>
+<li>从 <code>1</code> 到 <code>klen</code>，计算 <span class="math inline">\(Ha=Ha||\mathrm{Hash}(Z||ct)\)</span></li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">KDF</span>(<span class="params">Z: <span class="built_in">bytes</span>, klen: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    密钥派生算法（非标准实现，基于字节流实现）</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        Z: 基密钥字节串</span></span><br><span class="line"><span class="string">        klen: 派生的密钥字节长度</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> klen &lt; (<span class="number">2</span> ** <span class="number">32</span> - <span class="number">1</span>) * <span class="number">32</span></span><br><span class="line">    ct = <span class="built_in">int</span>(<span class="number">0x00000001</span>)</span><br><span class="line">    Ha = <span class="string">b&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(klen // <span class="number">32</span> + <span class="number">1</span>):</span><br><span class="line">        msg = Z + ct.to_bytes(<span class="number">4</span>, <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">        Ha = Ha + <span class="built_in">hash</span>(msg)</span><br><span class="line">        ct += <span class="number">1</span></span><br><span class="line">    <span class="keyword">return</span> Ha[<span class="number">0</span>:klen]</span><br></pre></td></tr></table></figure>
+<h2 id="sm4">SM4</h2>
+<p>SM4
+分组密码算法，也是无线局域网标准的分组数据算法，是一种对称加密流密码，密钥长度和分组长度均为
+128 比特 16 字节。</p>
+<p>加密算法与密钥扩展算法都采用 32 轮非线性迭代结构，是典型的 Feistel
+密码结构。</p>
+<h3 id="密钥及密钥参量">密钥及密钥参量</h3>
+<p><strong>加密密钥</strong>长度 128 比特 16 字节，每组 32 比特 4
+字节（标准 <code>int32</code>），共 4 组，表示为 <span class="math inline">\(MK=(MK_0,MK_1,MK_2,MK_3)\)</span>。</p>
+<p><strong>轮密钥</strong>每组 32 比特 4 字节，共 32 组，表示为 <span class="math inline">\(rk=(rk_0,rk_1,\cdots,rk_{31})\)</span>，轮密钥用于加密密钥生成。</p>
+<p><span class="math inline">\(FK=(FK_0,FK_1,FK_2,FK_3)\)</span>，每组
+32 比特 4 字节，共 4 组，为系统参数；</p>
+<p><span class="math inline">\(CK=(CK_0,CK_1,\cdots,CK_{31})\)</span>，每组 32
+比特 4 字节，共 32 组，为固定参数，二者都用于密钥扩展算法。</p>
+<h3 id="轮函数">轮函数</h3>
+<h4 id="轮函数结构">轮函数结构</h4>
+<p>设输入为 128 比特 16 字节，每组 32 比特 4 字节，即 <span class="math inline">\((X_0,X_1,X_2,X_3)\)</span>，轮密钥为 <span class="math inline">\(rk\)</span>（32
+组轮密钥中的一个），那么轮函数运算为 <span class="math display">\[
+F(X_0,X_1,X_2,X_3,rk)=X_0\oplus T(X_1\oplus X_2\oplus X_3\oplus rk)
+\]</span></p>
+<h4 id="合成置换">合成置换</h4>
+<p><span class="math inline">\(T\)</span> 变换为可逆变换，由非线性变换
+<span class="math inline">\(\tau\)</span> 和线性变换 <span class="math inline">\(L\)</span> 复合而成，即 <span class="math inline">\(T(X)=L(\tau(X))\)</span>。</p>
+<h5 id="非线性变换-tau">非线性变换 <span class="math inline">\(\tau\)</span></h5>
+<p><span class="math inline">\(\tau\)</span> 由四个并行的 S 盒构成。
+<span class="math display">\[
+\tau(a_0,a_1,a_2,a_3)=(\mathrm{Sbox}(a_0),\mathrm{Sbox}(a_1),\mathrm{Sbox}(a_2),\mathrm{Sbox}(a_3))
+\]</span> 其中 <span class="math inline">\((a_0,a_1,a_2,a_3)\)</span>
+是每组 8 比特 1 字节的输入，且 <span class="math inline">\(\mathrm{Sbox}\)</span> 的数据如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Sbox = [</span><br><span class="line">    <span class="number">0xd6</span>, <span class="number">0x90</span>, <span class="number">0xe9</span>, <span class="number">0xfe</span>, <span class="number">0xcc</span>, <span class="number">0xe1</span>, <span class="number">0x3d</span>, <span class="number">0xb7</span>, <span class="number">0x16</span>, <span class="number">0xb6</span>, <span class="number">0x14</span>, <span class="number">0xc2</span>, <span class="number">0x28</span>, <span class="number">0xfb</span>, <span class="number">0x2c</span>, <span class="number">0x05</span>,</span><br><span class="line">    <span class="number">0x2b</span>, <span class="number">0x67</span>, <span class="number">0x9a</span>, <span class="number">0x76</span>, <span class="number">0x2a</span>, <span class="number">0xbe</span>, <span class="number">0x04</span>, <span class="number">0xc3</span>, <span class="number">0xaa</span>, <span class="number">0x44</span>, <span class="number">0x13</span>, <span class="number">0x26</span>, <span class="number">0x49</span>, <span class="number">0x86</span>, <span class="number">0x06</span>, <span class="number">0x99</span>,</span><br><span class="line">    <span class="number">0x9c</span>, <span class="number">0x42</span>, <span class="number">0x50</span>, <span class="number">0xf4</span>, <span class="number">0x91</span>, <span class="number">0xef</span>, <span class="number">0x98</span>, <span class="number">0x7a</span>, <span class="number">0x33</span>, <span class="number">0x54</span>, <span class="number">0x0b</span>, <span class="number">0x43</span>, <span class="number">0xed</span>, <span class="number">0xcf</span>, <span class="number">0xac</span>, <span class="number">0x62</span>,</span><br><span class="line">    <span class="number">0xe4</span>, <span class="number">0xb3</span>, <span class="number">0x1c</span>, <span class="number">0xa9</span>, <span class="number">0xc9</span>, <span class="number">0x08</span>, <span class="number">0xe8</span>, <span class="number">0x95</span>, <span class="number">0x80</span>, <span class="number">0xdf</span>, <span class="number">0x94</span>, <span class="number">0xfa</span>, <span class="number">0x75</span>, <span class="number">0x8f</span>, <span class="number">0x3f</span>, <span class="number">0xa6</span>,</span><br><span class="line">    <span class="number">0x47</span>, <span class="number">0x07</span>, <span class="number">0xa7</span>, <span class="number">0xfc</span>, <span class="number">0xf3</span>, <span class="number">0x73</span>, <span class="number">0x17</span>, <span class="number">0xba</span>, <span class="number">0x83</span>, <span class="number">0x59</span>, <span class="number">0x3c</span>, <span class="number">0x19</span>, <span class="number">0xe6</span>, <span class="number">0x85</span>, <span class="number">0x4f</span>, <span class="number">0xa8</span>,</span><br><span class="line">    <span class="number">0x68</span>, <span class="number">0x6b</span>, <span class="number">0x81</span>, <span class="number">0xb2</span>, <span class="number">0x71</span>, <span class="number">0x64</span>, <span class="number">0xda</span>, <span class="number">0x8b</span>, <span class="number">0xf8</span>, <span class="number">0xeb</span>, <span class="number">0x0f</span>, <span class="number">0x4b</span>, <span class="number">0x70</span>, <span class="number">0x56</span>, <span class="number">0x9d</span>, <span class="number">0x35</span>,</span><br><span class="line">    <span class="number">0x1e</span>, <span class="number">0x24</span>, <span class="number">0x0e</span>, <span class="number">0x5e</span>, <span class="number">0x63</span>, <span class="number">0x58</span>, <span class="number">0xd1</span>, <span class="number">0xa2</span>, <span class="number">0x25</span>, <span class="number">0x22</span>, <span class="number">0x7c</span>, <span class="number">0x3b</span>, <span class="number">0x01</span>, <span class="number">0x21</span>, <span class="number">0x78</span>, <span class="number">0x87</span>,</span><br><span class="line">    <span class="number">0xd4</span>, <span class="number">0x00</span>, <span class="number">0x46</span>, <span class="number">0x57</span>, <span class="number">0x9f</span>, <span class="number">0xd3</span>, <span class="number">0x27</span>, <span class="number">0x52</span>, <span class="number">0x4c</span>, <span class="number">0x36</span>, <span class="number">0x02</span>, <span class="number">0xe7</span>, <span class="number">0xa0</span>, <span class="number">0xc4</span>, <span class="number">0xc8</span>, <span class="number">0x9e</span>,</span><br><span class="line">    <span class="number">0xea</span>, <span class="number">0xbf</span>, <span class="number">0x8a</span>, <span class="number">0xd2</span>, <span class="number">0x40</span>, <span class="number">0xc7</span>, <span class="number">0x38</span>, <span class="number">0xb5</span>, <span class="number">0xa3</span>, <span class="number">0xf7</span>, <span class="number">0xf2</span>, <span class="number">0xce</span>, <span class="number">0xf9</span>, <span class="number">0x61</span>, <span class="number">0x15</span>, <span class="number">0xa1</span>,</span><br><span class="line">    <span class="number">0xe0</span>, <span class="number">0xae</span>, <span class="number">0x5d</span>, <span class="number">0xa4</span>, <span class="number">0x9b</span>, <span class="number">0x34</span>, <span class="number">0x1a</span>, <span class="number">0x55</span>, <span class="number">0xad</span>, <span class="number">0x93</span>, <span class="number">0x32</span>, <span class="number">0x30</span>, <span class="number">0xf5</span>, <span class="number">0x8c</span>, <span class="number">0xb1</span>, <span class="number">0xe3</span>,</span><br><span class="line">    <span class="number">0x1d</span>, <span class="number">0xf6</span>, <span class="number">0xe2</span>, <span class="number">0x2e</span>, <span class="number">0x82</span>, <span class="number">0x66</span>, <span class="number">0xca</span>, <span class="number">0x60</span>, <span class="number">0xc0</span>, <span class="number">0x29</span>, <span class="number">0x23</span>, <span class="number">0xab</span>, <span class="number">0x0d</span>, <span class="number">0x53</span>, <span class="number">0x4e</span>, <span class="number">0x6f</span>,</span><br><span class="line">    <span class="number">0xd5</span>, <span class="number">0xdb</span>, <span class="number">0x37</span>, <span class="number">0x45</span>, <span class="number">0xde</span>, <span class="number">0xfd</span>, <span class="number">0x8e</span>, <span class="number">0x2f</span>, <span class="number">0x03</span>, <span class="number">0xff</span>, <span class="number">0x6a</span>, <span class="number">0x72</span>, <span class="number">0x6d</span>, <span class="number">0x6c</span>, <span class="number">0x5b</span>, <span class="number">0x51</span>,</span><br><span class="line">    <span class="number">0x8d</span>, <span class="number">0x1b</span>, <span class="number">0xaf</span>, <span class="number">0x92</span>, <span class="number">0xbb</span>, <span class="number">0xdd</span>, <span class="number">0xbc</span>, <span class="number">0x7f</span>, <span class="number">0x11</span>, <span class="number">0xd9</span>, <span class="number">0x5c</span>, <span class="number">0x41</span>, <span class="number">0x1f</span>, <span class="number">0x10</span>, <span class="number">0x5a</span>, <span class="number">0xd8</span>,</span><br><span class="line">    <span class="number">0x0a</span>, <span class="number">0xc1</span>, <span class="number">0x31</span>, <span class="number">0x88</span>, <span class="number">0xa5</span>, <span class="number">0xcd</span>, <span class="number">0x7b</span>, <span class="number">0xbd</span>, <span class="number">0x2d</span>, <span class="number">0x74</span>, <span class="number">0xd0</span>, <span class="number">0x12</span>, <span class="number">0xb8</span>, <span class="number">0xe5</span>, <span class="number">0xb4</span>, <span class="number">0xb0</span>,</span><br><span class="line">    <span class="number">0x89</span>, <span class="number">0x69</span>, <span class="number">0x97</span>, <span class="number">0x4a</span>, <span class="number">0x0c</span>, <span class="number">0x96</span>, <span class="number">0x77</span>, <span class="number">0x7e</span>, <span class="number">0x65</span>, <span class="number">0xb9</span>, <span class="number">0xf1</span>, <span class="number">0x09</span>, <span class="number">0xc5</span>, <span class="number">0x6e</span>, <span class="number">0xc6</span>, <span class="number">0x84</span>,</span><br><span class="line">    <span class="number">0x18</span>, <span class="number">0xf0</span>, <span class="number">0x7d</span>, <span class="number">0xec</span>, <span class="number">0x3a</span>, <span class="number">0xdc</span>, <span class="number">0x4d</span>, <span class="number">0x20</span>, <span class="number">0x79</span>, <span class="number">0xee</span>, <span class="number">0x5f</span>, <span class="number">0x3e</span>, <span class="number">0xd7</span>, <span class="number">0xcb</span>, <span class="number">0x39</span>, <span class="number">0x48</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/sm-series-note/SM4%20Sbox数据.png" alt="SM4 Sbox数据">
+<figcaption aria-hidden="true">SM4 Sbox数据</figcaption>
+</figure>
+<h5 id="线性变换-l">线性变换 <span class="math inline">\(L\)</span></h5>
+<p>非线性变换 <span class="math inline">\(\tau\)</span> 的输出是线性变换
+<span class="math inline">\(L\)</span> 的输入。 <span class="math display">\[
+L(X)=X\oplus (X&lt;&lt;&lt;2)\oplus(X&lt;&lt;&lt;10)\oplus
+(X&lt;&lt;&lt;18)\oplus(X&lt;&lt;&lt;24)
+\]</span> 其中 <span class="math inline">\(X\)</span> 是 32 比特 4
+字节的输入，<span class="math inline">\(&lt;&lt;&lt;\)</span>
+代表循环左移。</p>
+<h3 id="加密-1">加密</h3>
+<p>设明文输入为 <span class="math inline">\((X_0,X_1,X_2,X_3)\)</span>，每组 32 比特 4
+字节；</p>
+<p>密文输出为 <span class="math inline">\((Y_0,Y_1,Y_2,Y_3)\)</span>，每组 32 比特 4
+字节；</p>
+<p>轮密钥为 <span class="math inline">\(rk_i,i=0,1,\cdots,31\)</span>。</p>
+<p>运算过程如下：</p>
+<ol type="1">
+<li>32 次迭代运算：<span class="math inline">\(X_{i+4}=F(X_i,X_{i+1},X_{i+2},X_{i+3},rk_i),i=0,1,\cdots,31\)</span></li>
+<li>反序变换：<span class="math inline">\((Y_0,Y_1,Y_2,Y_3)=(X_{35},X_{34},X_{33},X_{32})\)</span></li>
+</ol>
+<h3 id="解密-1">解密</h3>
+<p>将轮密钥反序即可，即 <span class="math inline">\(rk&#39;=(rk_{31},rk_{30},\cdots,rk_0)\)</span>。</p>
+<h3 id="密钥扩展">密钥扩展</h3>
+<p>轮密钥生成过程为</p>
+<ol type="1">
+<li>计算 <span class="math inline">\((K_0,K_1,K_2,K_3)=(MK_0\oplus
+FK_0,MK_1\oplus FK_1,MK_2\oplus FK_2,MK_3\oplus FK_3)\)</span></li>
+<li>轮密钥 <span class="math inline">\(rk_i=K_{i+4}=K_i\oplus
+T&#39;(K_{i+1}\oplus K_{i+2}\oplus K_{i+3}\oplus
+CK_i),i=0,1,\cdots,31\)</span></li>
+</ol>
+<p>其中，<span class="math inline">\(T&#39;\)</span> 是将线性变换 <span class="math inline">\(L\)</span> 变为 <span class="math inline">\(L&#39;\)</span>： <span class="math display">\[
+L&#39;(X)=X\oplus (X&lt;&lt;&lt;13)\oplus (X&lt;&lt;&lt;23)
+\]</span> 系统参数 <span class="math inline">\(FK\)</span> 为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">FK = [<span class="number">0xa3b1bac6</span>, <span class="number">0x56aa3350</span>, <span class="number">0x677d9197</span>, <span class="number">0xb27022dc</span>]</span><br></pre></td></tr></table></figure>
+<p>固定参数 <span class="math inline">\(CK_i\)</span> 为</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">CK = [</span><br><span class="line">    <span class="number">0x00070e15</span>, <span class="number">0x1c232a31</span>, <span class="number">0x383f464d</span>, <span class="number">0x545b6269</span>,</span><br><span class="line">    <span class="number">0x70777e85</span>, <span class="number">0x8c939aa1</span>, <span class="number">0xa8afb6bd</span>, <span class="number">0xc4cbd2d9</span>,</span><br><span class="line">    <span class="number">0xe0e7eef5</span>, <span class="number">0xfc030a11</span>, <span class="number">0x181f262d</span>, <span class="number">0x343b4249</span>,</span><br><span class="line">    <span class="number">0x50575e65</span>, <span class="number">0x6c737a81</span>, <span class="number">0x888f969d</span>, <span class="number">0xa4abb2b9</span>,</span><br><span class="line">    <span class="number">0xc0c7ced5</span>, <span class="number">0xdce3eaf1</span>, <span class="number">0xf8ff060d</span>, <span class="number">0x141b2229</span>,</span><br><span class="line">    <span class="number">0x30373e45</span>, <span class="number">0x4c535a61</span>, <span class="number">0x686f767d</span>, <span class="number">0x848b9299</span>,</span><br><span class="line">    <span class="number">0xa0a7aeb5</span>, <span class="number">0xbcc3cad1</span>, <span class="number">0xd8dfe6ed</span>, <span class="number">0xf4fb0209</span>,</span><br><span class="line">    <span class="number">0x10171e25</span>, <span class="number">0x2c333a41</span>, <span class="number">0x484f565d</span>, <span class="number">0x646b7279</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/sm-series-note.html" title="SM系列算法">https://hasegawaazusa.github.io/sm-series-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/crypto/" rel="tag"><i class="fa fa-tag"></i> crypto</a>
+              <a href="/tags/math/" rel="tag"><i class="fa fa-tag"></i> math</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/solidity-note.html" rel="prev" title="solidity-note">
+                  <i class="fa fa-chevron-left"></i> solidity-note
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">493k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">7:29</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -29,7 +29,7 @@
 <meta property="og:description" content="有关 pyinstaller 打包的 exe、pyc、pyd 的逆向笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-26T10:00:00.000Z">
-<meta property="article:modified_time" content="2022-10-16T09:04:46.827Z">
+<meta property="article:modified_time" content="2023-05-14T09:28:01.441Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="re">
@@ -92,7 +92,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">104</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">106</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -158,7 +158,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -235,7 +235,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-10-16 17:04:46" itemprop="dateModified" datetime="2022-10-16T17:04:46+08:00">2022-10-16</time>
+      <time title="修改时间：2023-05-14 17:28:01" itemprop="dateModified" datetime="2023-05-14T17:28:01+08:00">2023-05-14</time>
     </span>
 
   
@@ -245,7 +245,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.9k</span>
+      <span>2.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -330,6 +330,10 @@ PyObject_HEAD，以下是各版本的文件头：</p>
 <td>Python 3.10</td>
 <td><code>6f0d0d0a000000000000000000000000</code></td>
 </tr>
+<tr class="odd">
+<td>Python 3.11</td>
+<td><code>a70d0d0a000000000000000000000000</code></td>
+</tr>
 </tbody>
 </table>
 <p>可以注意到，实际上有改变的只有开头的<strong>两个字节</strong>。</p>
@@ -345,6 +349,9 @@ Github主页</a></p>
 <p>将源码输出到文件里面，比如说：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uncompyle6 test.pyc &gt; test.py</span><br></pre></td></tr></table></figure>
 <p>有时候 uncompyle6 可能出于某些原因，反编译失败，这时可以使用<a target="_blank" rel="noopener" href="https://tool.lu/pyc/">在线网站</a>进行反编译。</p>
+<p>有的时候对于某些源码可能无法完全反编译成功，这个时候需要借助工具
+pycdas 反字节码。</p>
+<p>pycdas 需要在 GitHub 上克隆仓库 pycdc 的源码后编译获得。</p>
 <h2 id="反反编译">反反编译</h2>
 <h3 id="更改魔术头">更改魔术头</h3>
 <p>当想要保护我们的 pyc 文件不被反编译，最简单的做法就是更改魔术头，即
@@ -360,6 +367,8 @@ Github主页</a></p>
 <p>pyinstxtractor 会将 exe 文件拆分回单独的 pyc 文件、pyd 文件，并且会在
 pyc 文件中加入当前 python 版本的魔术头
 (如果原代码版本不是所使用的版本，会有 warning 提示，需要注意)。</p>
+<p>特别地，如果 python 版本与 exe 版本不对，会导致 pyz
+无法解压，这时候需要改用基于 xdis 版本的 <a target="_blank" rel="noopener" href="https://github.com/pyinstxtractor/pyinstxtractor-ng">pyinstxtractor</a>。</p>
 <h1 id="pyd-文件">PYD 文件</h1>
 <p>pyd 文件相当于 python 的运行时 dll，在 python 代码中可以直接使用
 <code>import</code> 将 pyd 文件当作模块导入。</p>
@@ -439,13 +448,13 @@ pyc 文件中加入当前 python 版本的魔术头
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">460k</span>
+    <span title="站点总字数">493k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:58</span>
+    <span title="站点阅读时长">7:29</span>
   </span>
 </div>
 

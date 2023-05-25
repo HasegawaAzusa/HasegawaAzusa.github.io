@@ -29,7 +29,7 @@
 <meta property="og:description" content="有关 ecdsa 椭圆曲线数字签名算法的简要笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-25T14:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-25T15:07:47.085Z">
+<meta property="article:modified_time" content="2023-05-19T16:32:55.587Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="crypto">
 <meta property="article:tag" content="ecc">
@@ -92,7 +92,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">104</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">106</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -143,7 +143,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ecdsa-%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">ECDSA 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90"><span class="nav-number">1.1.</span> <span class="nav-text">密钥生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%81%E9%92%A5"><span class="nav-number">1.1.1.</span> <span class="nav-text">私钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E9%92%A5"><span class="nav-number">1.1.2.</span> <span class="nav-text">公钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D"><span class="nav-number">1.2.</span> <span class="nav-text">数字签名</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python-%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">Python 实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecdsa-%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">ECDSA 实例</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ecdsa-%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">ECDSA 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90"><span class="nav-number">1.1.</span> <span class="nav-text">密钥生成</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%81%E9%92%A5"><span class="nav-number">1.1.1.</span> <span class="nav-text">私钥</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%AC%E9%92%A5"><span class="nav-number">1.1.2.</span> <span class="nav-text">公钥</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%97%E7%AD%BE%E5%90%8D"><span class="nav-number">1.2.</span> <span class="nav-text">数字签名</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#python-%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">Python 实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecdsa-%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">ECDSA 实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecdsa-%E6%94%BB%E5%87%BB"><span class="nav-number">4.</span> <span class="nav-text">ECDSA 攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#k-%E8%BE%83%E5%B0%8F"><span class="nav-number">4.1.</span> <span class="nav-text">\(k\) 较小</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#k-%E5%A4%8D%E7%94%A8"><span class="nav-number">4.2.</span> <span class="nav-text">\(k\) 复用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">4.2.1.</span> <span class="nav-text">原理</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#k-%E5%9B%BA%E5%AE%9A%E4%BD%8D"><span class="nav-number">4.3.</span> <span class="nav-text">\(k\) 固定位</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC"><span class="nav-number">4.3.1.</span> <span class="nav-text">基本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9A%E5%89%8D%E7%BC%80"><span class="nav-number">4.3.2.</span> <span class="nav-text">固定前缀</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -158,7 +158,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">104</span>
+          <span class="site-state-item-count">106</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -227,9 +227,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2022-07-25 22:00:00 / 修改时间：23:07:47" itemprop="dateCreated datePublished" datetime="2022-07-25T22:00:00+08:00">2022-07-25</time>
+      <time title="创建时间：2022-07-25 22:00:00" itemprop="dateCreated datePublished" datetime="2022-07-25T22:00:00+08:00">2022-07-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-05-20 00:32:55" itemprop="dateModified" datetime="2023-05-20T00:32:55+08:00">2023-05-20</time>
     </span>
 
   
@@ -239,14 +245,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.5k</span>
+      <span>7.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>2 分钟</span>
+      <span>7 分钟</span>
     </span>
 </div>
 
@@ -293,6 +299,116 @@ k^{-1}\times(\mathrm{H}(m)+d_A\cdot r)\pmod{n}\)</span></li>
 <li><p>题解</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">msg = <span class="string">b&#x27;welcome to ecdsa&#x27;</span></span><br><span class="line">nonce = <span class="number">57872441580840888721108499129165088876046881204464784483281653404168342111855</span></span><br><span class="line">R = <span class="number">0x7b35712a50d463ac5acf7af1675b4b63ba0da23b6452023afddd58d4891ef6e5</span></span><br><span class="line">S = <span class="number">0xa452fc44cc36fa6964d1b4f47392ff0a91350cfd58f11a4645c084d56e387e5c</span></span><br><span class="line">msg = <span class="built_in">int</span>(hashlib.sha256(msg).hexdigest(), <span class="number">16</span>)</span><br><span class="line">n = ecdsa.NIST256p.generator.order()</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">secret = (S * nonce - msg) * gmpy2.invert(R, n) % n</span><br><span class="line"><span class="built_in">print</span>(secret)</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(secret))</span><br></pre></td></tr></table></figure></li>
 </ul>
+<h1 id="ecdsa-攻击">ECDSA 攻击</h1>
+<h2 id="k-较小"><span class="math inline">\(k\)</span> 较小</h2>
+<p>我们考虑一对随机数 <span class="math inline">\((k_0,k_i)\)</span>，有
+<span class="math display">\[
+k_0\equiv m_0s_0^{-1}+d_Ar_0s_0^{-1}\pmod{n}\\
+k_i\equiv m_is_i^{-1}+d_Ar_is_i^{-1}\pmod{n}
+\]</span> 将 <span class="math inline">\(d_A\)</span> 消去，可以得到
+<span class="math display">\[
+k_0-s_0^{-1}s_ir_0r_i^{-1}\cdot
+k_i+s_0^{-1}r_im_ir_i^{-1}-s_0^{-1}m_0\equiv0\pmod{n}
+\]</span> 那么可以从中改写为方程 <span class="math display">\[
+F_i(X,Y)=X+t_iY+u_i
+\]</span> 满足 <span class="math inline">\(F_i(k_i,k_0)=0\pmod{n}\)</span></p>
+<p>其中系数一一对应为 <span class="math display">\[
+t_i=-s_i^{-1}s_0r_ir_0^{-1}\\
+u_i=s_i^{-1}r_im_0r_0^{-1}-s_i^{-1}m_i
+\]</span> 不妨构建格 <span class="math display">\[
+M=\begin{bmatrix}
+N&amp;0&amp;\cdots&amp;0&amp;0&amp;0\\
+0&amp;N&amp;\cdots&amp;0&amp;0&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;N&amp;0&amp;0\\
+-t_1&amp;-t_2&amp;\cdots&amp;-t_d&amp;1&amp;0\\
+-u_1&amp;-u_2&amp;\cdots&amp;-u_d&amp;0&amp;K
+\end{bmatrix}
+\]</span> 可以证明解向量 <span class="math inline">\((k_1,\cdots,k_d,k_0,K)\)</span> 在格中，其中 <span class="math inline">\(K\)</span> 是 <span class="math inline">\(k\)</span> 的上界。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">rs = rs</span><br><span class="line">ss = ss</span><br><span class="line">msgs = msgs</span><br><span class="line">N = ZZ(order)</span><br><span class="line">kbits = <span class="number">64</span></span><br><span class="line">K = <span class="number">2</span> ** kbits</span><br><span class="line">d = <span class="built_in">len</span>(rs) - <span class="number">1</span></span><br><span class="line">ti = []</span><br><span class="line">ui = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, d + <span class="number">1</span>):</span><br><span class="line">    t = -inverse_mod(ss[i], N) * ss[<span class="number">0</span>] * rs[i] * inverse_mod(rs[<span class="number">0</span>], N)</span><br><span class="line">    u = inverse_mod(ss[i], N) * rs[i] * msgs[<span class="number">0</span>] * inverse_mod(rs[<span class="number">0</span>], N) - inverse_mod(ss[i], N) * msgs[i]</span><br><span class="line">    ti.append(t)</span><br><span class="line">    ui.append(u)</span><br><span class="line">P = diagonal_matrix([N] * d)</span><br><span class="line">E = diagonal_matrix([<span class="number">1</span>, K])</span><br><span class="line">R = matrix([-vector(ti), -vector(ui)])</span><br><span class="line">M = block_matrix([[P, <span class="number">0</span>], [R, E]], subdivide=<span class="literal">False</span>)</span><br><span class="line">shortest_vector = M.LLL()[<span class="number">0</span>]</span><br><span class="line">shortest_vector = <span class="built_in">list</span>(shortest_vector)</span><br><span class="line">ks = shortest_vector[d:-<span class="number">1</span>] + shortest_vector[:d]</span><br><span class="line">ks</span><br></pre></td></tr></table></figure>
+<h2 id="k-复用"><span class="math inline">\(k\)</span> 复用</h2>
+<h3 id="原理">原理</h3>
+<p>我们可以知道 <span class="math display">\[
+s\equiv k^{-1}\times(\mathrm{H}(m)+d_A\cdot r)\pmod{n}
+\]</span> 那么当 <span class="math inline">\(k\)</span>
+被泄露时，可以攻击得到 <span class="math display">\[
+d_A=r^{-1}\times(ks-H(m))
+\]</span> 所以 <span class="math inline">\(k\)</span> 需要保密。</p>
+<p>但如果 <span class="math inline">\(k\)</span>
+被重复用于签名，那么也可以立即恢复密钥。</p>
+<p>不妨设 <span class="math inline">\((r,s_1),(r,s_2)\)</span>
+为从相同的 <span class="math inline">\(k\)</span> 生成的签名（<span class="math inline">\(r=(kG)_x\)</span>），那么将有 <span class="math display">\[
+s_1=k^{-1}(H(m_1)+d_Ar)\\
+s_2=k^{-1}(H(m_2)+d_Ar)
+\]</span> 推导可得 <span class="math display">\[
+k(s_1-s_2)=H(m_1)-H(m_2)
+\]</span> 即 <span class="math display">\[
+k=(s_1-s_2)^{-1}(H(m_1)-H(m_2))
+\]</span> 此时我们就从 <span class="math inline">\(k\)</span>
+复用的签名中恢复了 <span class="math inline">\(k\)</span>，从而获取密钥
+<span class="math inline">\(d_A\)</span>。</p>
+<h2 id="k-固定位"><span class="math inline">\(k\)</span> 固定位</h2>
+<h3 id="基本">基本</h3>
+<p>当 <span class="math inline">\(k\)</span>
+拥有相同的前缀时，我们可以看作 <span class="math display">\[
+k_i=k-e_i
+\]</span> 即，存在错误的数，这时可以将转化为 HNP 问题。</p>
+<p>首先，我们有 <span class="math display">\[
+s_i\equiv k_i^{-1}(m_i+d_A\cdot r_i)\pmod{n}
+\]</span> 我们变换方程可以得到 <span class="math display">\[
+k_i\equiv m_is_i^{-1}+d_Ar_is_i^{-1}\pmod{n}
+\]</span> 那么还原 <span class="math inline">\(k_i\)</span> 可以构造格
+<span class="math display">\[
+M=\begin{bmatrix}
+n\\
+&amp; n\\
+&amp; &amp; \ddots\\
+&amp; &amp; &amp; n\\
+r_1s_1^{-1} &amp; r_1s_1^{-2} &amp; \cdots &amp; r_ls_l^{-1} &amp; K/n
+&amp;\\
+m_1s_1^{-1} &amp; m_2s_2^{-1} &amp; \cdots &amp; m_ls_l^{-1} &amp; &amp;
+K
+\end{bmatrix}
+\]</span> 其中 <span class="math inline">\(K\)</span> 是 <span class="math inline">\(k_i\)</span> 的上界。</p>
+<p>例如对于两对签名 <span class="math inline">\((r_1,s_1),(r_2,s_2)\)</span>，由以下代码生成</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"> </span><br><span class="line">gen = ecdsa.NIST256p.generator</span><br><span class="line">order = gen.order()</span><br><span class="line">secret = random.randrange(<span class="number">1</span>,order)</span><br><span class="line"> </span><br><span class="line">pub_key = ecdsa.ecdsa.Public_key(gen, gen * secret)</span><br><span class="line">priv_key = ecdsa.ecdsa.Private_key(pub_key, secret)</span><br><span class="line"> </span><br><span class="line">nonce1 = random.randrange(<span class="number">1</span>, <span class="number">2</span>**<span class="number">127</span>)</span><br><span class="line">nonce2 = random.randrange(<span class="number">1</span>, <span class="number">2</span>**<span class="number">127</span>)</span><br><span class="line"> </span><br><span class="line">msg1 = random.randrange(<span class="number">1</span>, order)</span><br><span class="line">msg2 = random.randrange(<span class="number">1</span>, order)</span><br><span class="line"> </span><br><span class="line">sig1 = priv_key.sign(msg1, nonce1)</span><br><span class="line">sig2 = priv_key.sign(msg2, nonce2)</span><br></pre></td></tr></table></figure>
+<p>我们获得签名后，使用 sagemath 写出代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">order = order</span><br><span class="line">kbits = <span class="number">127</span></span><br><span class="line">r1, s1 = sig1.r, sig1.s</span><br><span class="line">r2, s2 = sig2.r, sig2.s</span><br><span class="line">msg1 = msg1</span><br><span class="line">msg2 = msg2</span><br><span class="line"></span><br><span class="line">N = ZZ(order)</span><br><span class="line">K = <span class="number">2</span> ^ kbits</span><br><span class="line">P = diagonal_matrix([N] * <span class="number">2</span>)</span><br><span class="line">E = diagonal_matrix([K / N, K])</span><br><span class="line">R = matrix([[ZZ(r1) * inverse_mod(s1, N), ZZ(r2) * inverse_mod(s2, N)],</span><br><span class="line">            [ZZ(msg1) * inverse_mod(s1, N), ZZ(msg2) * inverse_mod(s2, N)]])</span><br><span class="line">M = block_matrix([[P, <span class="number">0</span>], [R, E]])</span><br><span class="line">shortest_vector = M.LLL()[<span class="number">1</span>]</span><br><span class="line">k1, k2 = shortest_vector[:<span class="number">2</span>]</span><br><span class="line"><span class="comment"># dA = shortest_vector[2] / K * N</span></span><br><span class="line">dA = (k1 - ZZ(msg1) * inverse_mod(s1, N)) / (ZZ(r1) * inverse_mod(s1, N)) % N</span><br><span class="line">k1, k2, dA</span><br></pre></td></tr></table></figure>
+<p>我们可以从格中寻找到 <span class="math inline">\(k_1,k_2,d_A\)</span>。</p>
+<h3 id="固定前缀">固定前缀</h3>
+<p>我们考虑一对误差 <span class="math inline">\((e_0,e_i)\)</span>，有
+<span class="math display">\[
+k+e_0\equiv m_0s_0^{-1}+d_Ar_0s_0^{-1}\pmod{n}\\
+k+e_i\equiv m_is_i^{-1}+d_Ar_is_i^{-1}\pmod{n}
+\]</span> 相减可得 <span class="math display">\[
+e_0-e_i=(m_0s_0^{-1}-m_is_i^{-1})+(r_0s_0^{-1}-r_is_i^{-1})\cdot
+d_A\pmod{n}
+\]</span> 记 <span class="math inline">\(\tilde{e}_i=e_0-e_i\)</span>，可以从中改写为方程
+<span class="math display">\[
+F_i(X)=A_iX+B_i
+\]</span> 满足 <span class="math inline">\(F_i(d_A)=\tilde{e}_i\pmod{n}\)</span></p>
+<p>其中系数一一对应为 <span class="math display">\[
+A_i=s_0^{-1}-r_is_i^{-1}\\
+B_i=m_0s_0^{-1}-m_is_i^{-1}
+\]</span> 不妨构建格 <span class="math display">\[
+M=\begin{bmatrix}
+N&amp;0&amp;\cdots&amp;0&amp;0&amp;0\\
+0&amp;N&amp;\cdots&amp;0&amp;0&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;N&amp;0&amp;0\\
+A_1&amp;A_2&amp;\cdots&amp;A_d&amp;K/N&amp;0\\
+B_1&amp;B_2&amp;\cdots&amp;B_d&amp;0&amp;K
+\end{bmatrix}
+\]</span> 可以证明解向量 <span class="math inline">\((\tilde{e}_1,\tilde{e}_2,\cdots,\tilde{e}_d,\frac{Kd_A}{N},K)\)</span>
+在格中，其中 <span class="math inline">\(K\)</span> 是 <span class="math inline">\(e_i\)</span> 的上界。</p>
+<p>由如下代码产生存在 <span class="math inline">\(d\)</span> 对 <span class="math inline">\((e_0,e_i)\)</span> 误差的签名，</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"> </span><br><span class="line">gen = ecdsa.NIST256p.generator</span><br><span class="line">order = gen.order()</span><br><span class="line">secret = random.randrange(<span class="number">1</span>,order)</span><br><span class="line"></span><br><span class="line">pub_key = ecdsa.ecdsa.Public_key(gen, gen * secret)</span><br><span class="line">priv_key = ecdsa.ecdsa.Private_key(pub_key, secret)</span><br><span class="line">k = getPrime(<span class="number">256</span>)</span><br><span class="line">nonces = []</span><br><span class="line">msgs = []</span><br><span class="line">rs = []</span><br><span class="line">ss = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">    nonce = k + getPrime(<span class="number">16</span>)</span><br><span class="line">    nonces.append(nonce)</span><br><span class="line">    msg = random.randrange(<span class="number">1</span>, order)</span><br><span class="line">    msgs.append(msg)</span><br><span class="line">    sig = priv_key.sign(msg, nonce)</span><br><span class="line">    rs.append(ZZ(sig.r))</span><br><span class="line">    ss.append(ZZ(sig.s))</span><br><span class="line"></span><br><span class="line">nonces, msgs, rs, ss</span><br></pre></td></tr></table></figure>
+<p>那么在获取到 <code>msgs, rs, ss</code> 后，使用如下代码寻找解</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">order = order</span><br><span class="line">rs = rs</span><br><span class="line">ss = ss</span><br><span class="line">msgs = msgs</span><br><span class="line">kbits = <span class="number">16</span></span><br><span class="line">N = ZZ(order)</span><br><span class="line">K = <span class="number">2</span> ^ kbits</span><br><span class="line"></span><br><span class="line">d = <span class="built_in">len</span>(rs) - <span class="number">1</span></span><br><span class="line">Ai = []</span><br><span class="line">Bi = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, d + <span class="number">1</span>):</span><br><span class="line">    Ai.append(ZZ(rs[<span class="number">0</span>]) * inverse_mod(ss[<span class="number">0</span>], N) - ZZ(rs[i]) * inverse_mod(ss[i], N))</span><br><span class="line">    Bi.append(ZZ(msgs[<span class="number">0</span>]) * inverse_mod(ss[<span class="number">0</span>], N) - ZZ(msgs[i]) * inverse_mod(ss[i], N))</span><br><span class="line"></span><br><span class="line">P = diagonal_matrix([N] * d)</span><br><span class="line">E = diagonal_matrix([K / N, K])</span><br><span class="line">R = matrix([Ai, Bi])</span><br><span class="line">M = block_matrix([[P, <span class="number">0</span>], [R, E]], subdivide=<span class="literal">False</span>)</span><br><span class="line">shortest_vector = M.LLL()[<span class="number">1</span>]</span><br><span class="line">errs = shortest_vector[:d]</span><br><span class="line"><span class="comment"># dA = shortest_vector[d] * N / K</span></span><br><span class="line">dA = (errs[<span class="number">0</span>] - Bi[<span class="number">0</span>]) * inverse_mod(Ai[<span class="number">0</span>], N) % N</span><br><span class="line">dA, errs</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>需要注意的是，从格中还原的 <span class="math inline">\(d_A\)</span>
+可能不准确。</p>
+</blockquote>
 
     </div>
 
@@ -367,13 +483,13 @@ k^{-1}\times(\mathrm{H}(m)+d_A\cdot r)\pmod{n}\)</span></li>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">460k</span>
+    <span title="站点总字数">493k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">6:58</span>
+    <span title="站点阅读时长">7:29</span>
   </span>
 </div>
 
