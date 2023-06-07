@@ -47,13 +47,13 @@ x\equiv 2\pmod{7}
 0\pmod{5}\\
 0\pmod{7}\\
 \end{cases},\
-21=2\times 35\equiv
+21=3\times 7\equiv
 \begin{cases}
 0\pmod{3}\\
 1\pmod{5}\\
 0\pmod{7}\\
 \end{cases},\
-15=2\times 35\equiv
+15=3\times 5\equiv
 \begin{cases}
 0\pmod{3}\\
 0\pmod{5}\\
@@ -64,7 +64,7 @@ x\equiv 2\pmod{7}
 233=2\times 70+3\times 21+2\times 15\equiv
 \begin{cases}
 2\times1+3\times0+2\times0\equiv2\pmod3\\
-2\times0+3\times1+2\times0\equiv2\pmod5\\
+2\times0+3\times1+2\times0\equiv3\pmod5\\
 2\times0+3\times0+2\times1\equiv2\pmod7
 \end{cases}
 \]</span> 故方程组通解为 <span class="math display">\[
@@ -1619,7 +1619,7 @@ Schneier）还是建议大家迁移到Blowfish的继承者Twofish去。</p>
 PhotoShop 有去除水印的功能，同时可以使用截图等手段将水印抹除。</p>
 <p>于是盲水印（Blind-Water-Mask）被发明出来，即字面意思——一种没办法用肉眼直接观察的水印。</p>
 <p>盲水印有着隐蔽性（Imperceptible）、不易移除性（Non-removable）、强健性（Robustness）和明确性（Unambiguous），可以很好的满足当前数字版权保护的所需。</p>
-<h1 id="算法">算法</h1>
+<h1 id="频域隐写技术">频域隐写技术</h1>
 <h2 id="原理">原理</h2>
 <p>盲水印流程图如下：</p>
 <figure>
@@ -1628,11 +1628,32 @@ PhotoShop 有去除水印的功能，同时可以使用截图等手段将水印�
 </figure>
 <h3 id="傅里叶变换">傅里叶变换</h3>
 <p>盲水印用到的傅里叶变换是将信号在<strong>时域</strong>或<strong>空域</strong>的函数转变为用<strong>频域</strong>表示。</p>
-<p>图像是二维离散的，对该二维信号在各个方向上进行一次一维的傅里叶变换即可得到二维频域图，其中二维信号为时域中图像的灰度
-<span class="math inline">\(f(u,v)\)</span>。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># 直接读取为灰度图</span></span><br><span class="line">img = cv2.imread(<span class="string">&#x27;flag.jpg&#x27;</span>,<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 进行快速傅里叶变换</span></span><br><span class="line">f = np.fft.fft2(img)</span><br><span class="line"><span class="comment"># 取绝对值，将复数域映射到实数域</span></span><br><span class="line">s = np.log(np.<span class="built_in">abs</span>(f))</span><br><span class="line">plt.imsave(<span class="string">&#x27;original.jpg&#x27;</span>, s)</span><br><span class="line">plt.imsave(<span class="string">&#x27;original_gray.jpg&#x27;</span>, s, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br></pre></td></tr></table></figure>
-<p>随后我们将图片的低频部分移动到中间，将高频部分移动到外围：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="comment"># 直接读取为灰度图</span></span><br><span class="line">img = cv2.imread(<span class="string">&#x27;flag.jpg&#x27;</span>,<span class="number">0</span>)</span><br><span class="line"><span class="comment"># 进行快速傅里叶变换</span></span><br><span class="line">f = np.fft.fft2(img)</span><br><span class="line"><span class="comment"># 将图像中的低频部分移动到图像的中心</span></span><br><span class="line">fshift = np.fft.fftshift(f)</span><br><span class="line"><span class="comment"># 取绝对值，将复数域映射到实数域</span></span><br><span class="line">s = np.log(np.<span class="built_in">abs</span>(fshift))</span><br><span class="line">plt.imsave(<span class="string">&#x27;center.jpg&#x27;</span>, s)</span><br><span class="line">plt.imsave(<span class="string">&#x27;center_gray.jpg&#x27;</span>, s, cmap=<span class="string">&#x27;gray&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>图像是二维离散的，对该二维信号在各个方向上进行一次一维的傅里叶变换即可得到二维频域图（使用的是离散傅里叶变换
+DFT 算法），其中二维信号为时域中图像的灰度 <span class="math inline">\(f(u,v)\)</span>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> cv2</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="comment"># 直接读取为灰度图</span></span><br><span class="line">img = cv2.imread(<span class="string">&#x27;./lena.jpeg&#x27;</span>, <span class="number">0</span>)</span><br><span class="line"><span class="comment"># 进行快速傅里叶变换</span></span><br><span class="line">f = np.fft.fft2(img)</span><br><span class="line"><span class="comment"># 取绝对值，将复数域映射到实数域</span></span><br><span class="line">s = np.log(np.<span class="built_in">abs</span>(f))</span><br><span class="line">plt.subplot(<span class="number">121</span>)</span><br><span class="line">plt.imshow(img)</span><br><span class="line">plt.subplot(<span class="number">122</span>)</span><br><span class="line">plt.imshow(s)</span><br></pre></td></tr></table></figure>
+<p>我们可以发现灰度信号被转化为了频域信号。</p>
+<figure>
+<img src="/blind-water-mark-note/对图像进行离散傅里叶变换.png" alt="对图像进行离散傅里叶变换">
+<figcaption aria-hidden="true">对图像进行离散傅里叶变换</figcaption>
+</figure>
+<p>如果我们将图片的低频部分移动到中间，将高频部分移动到外围：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 将图像中的低频部分移动到图像的中心</span></span><br><span class="line">fshift = np.fft.fftshift(f)</span><br><span class="line"><span class="comment"># 取绝对值，将复数域映射到实数域</span></span><br><span class="line">s = np.log(np.<span class="built_in">abs</span>(fshift))</span><br><span class="line">plt.subplot(<span class="number">121</span>)</span><br><span class="line">plt.imshow(img)</span><br><span class="line">plt.subplot(<span class="number">122</span>)</span><br><span class="line">plt.imshow(s)</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/blind-water-mark-note/对DFT结果进行fftshift.png" alt="对DFT结果进行fftshift">
+<figcaption aria-hidden="true">对DFT结果进行fftshift</figcaption>
+</figure>
+<p>同样的逆变换就是做相反的操作</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 逆变换</span></span><br><span class="line">ifshift = np.fft.ifftshift(fshift)</span><br><span class="line">iimg = np.fft.ifft2(ifshift)</span><br><span class="line"><span class="comment"># 取绝对值，将复数域映射到实数域</span></span><br><span class="line">s = np.<span class="built_in">abs</span>(iimg)</span><br><span class="line">plt.subplot(<span class="number">121</span>)</span><br><span class="line">plt.imshow(img)</span><br><span class="line">plt.subplot(<span class="number">122</span>)</span><br><span class="line">plt.imshow(s)</span><br></pre></td></tr></table></figure>
+<p>我们可以发现完美地还原了图片。</p>
+<figure>
+<img src="/blind-water-mark-note/DFT和IDFT的结果.png" alt="DFT和IDFT的结果">
+<figcaption aria-hidden="true">DFT和IDFT的结果</figcaption>
+</figure>
+<p>那么根据这个原理，我们在变换和逆变换的中间，加入水印图像即可。</p>
+<figure>
+<img src="/blind-water-mark-note/加入了水印后的DFT.png" alt="加入了水印后的DFT">
+<figcaption aria-hidden="true">加入了水印后的DFT</figcaption>
+</figure>
 <h3 id="水印对称性">水印对称性</h3>
 <p>由于傅里叶变换后，频域图 <span class="math inline">\(f(u, v)\)</span>
 与 <span class="math inline">\(f(-u,-v)\)</span>
@@ -7899,6 +7920,18 @@ BitLocker，用于加密卷和映像，支持使用明文密码和文件来进�
 <img src="/post/image-forensics-note/veracrypt%20operation.gif" alt="veracrypt operation">
 <figcaption aria-hidden="true">veracrypt operation</figcaption>
 </figure>
+<p>当使用 veracrypt
+进行隐藏数据时，没有可识别特征，只能通过密码进行爆破（Hashcat 和 John
+均支持对 veracrypt 哈希值的密码爆破）。</p>
+<blockquote>
+<p>唯一可能识别的特征是，数据是不可读的，同时大小是整的，这是由于加密出来的结果是自选的，一般人类更爱整数。</p>
+</blockquote>
+<p>同时 veracrypt 还存在隐藏卷和隐藏密码，这也是无法寻找特征的技术。</p>
+<p>需要注意的是，veracrypt
+特点是可以使用任意<strong>密钥文件</strong>进行加密，所以密钥的保存较为灵活。</p>
+<p>不过 veracrypt 在解密时存在选项
+<code>在内存中缓存密码和密钥文件</code>，这将导致 veracrypt
+的密码可以在内存映像中找到。</p>
 <h3 id="空白填充">空白填充</h3>
 <p>在主流文件系统中，为保证读写 I/O 效率，通常会将硬盘数据进行对齐，如
 14 kb 文件会占用 16 kb
@@ -9413,8 +9446,14 @@ h_i(\boldsymbol{x}^*)\geq0,\lambda_i^*\geq0,\lambda^*_ih_i(\boldsymbol{x}^*)=0,i
 \max g(u,v)=uc(x)+vh(x)\\
 \text{s.t. }u\geq0,v\geq0
 \]</span></p>
-<h3 id="基本支持向量机代码">基本支持向量机代码</h3>
-<p>一个两类分类问题有以下点 <span class="math display">\[
+<h3 id="支持向量机-1">支持向量机</h3>
+<p>依据上面的原理，我们可以得到支持向量机的模型可以转化为 <span class="math display">\[
+\begin{cases}
+\nabla\frac{1}{2}\|\boldsymbol{w}\|^2-\sum^{l}_{i=1}\lambda_i\nabla(z_kg(x_i)-1)
+=0\\
+z_kg(x_i)-1\geq 0,\lambda_i\geq 0,\lambda_i g(x_i)=0
+\end{cases}
+\]</span> 一个两类分类问题有以下点 <span class="math display">\[
 \omega_1:(1,1),(1,-1)\\
 \omega_2:(-1,1),(-1,-1)
 \]</span> 通过以上知识，可以写出代码</p>
@@ -9423,6 +9462,86 @@ h_i(\boldsymbol{x}^*)\geq0,\lambda_i^*\geq0,\lambda^*_ih_i(\boldsymbol{x}^*)=0,i
 <img src="/linear-discriminant-function/支持向量机的解.png" alt="支持向量机的解">
 <figcaption aria-hidden="true">支持向量机的解</figcaption>
 </figure>
+<blockquote>
+<p>以下是等价问题的转换。</p>
+</blockquote>
+<p>由基本的支持向量机公式，我们有拉格朗日函数 <span class="math display">\[
+L(\boldsymbol{w},\lambda_i)=\frac{1}{2}\|\boldsymbol{w}\|^2-\sum^{l}_{i=1}\lambda_i\nabla(z_kg(\boldsymbol{x}_i)-1)
+\]</span> 令拉格朗日函数偏导为零，代入公式可得 <span class="math display">\[
+\max_\boldsymbol{\lambda}
+L(\boldsymbol{\lambda})=\sum_{i=1}^l\lambda_i-\frac{1}{2}\sum^l_{k,j=1}\lambda_k\lambda_jz_kz_j\boldsymbol{x}_k^T\boldsymbol{x}_j\\
+\text{s.t. }\sum_{i=1}^l\lambda_iz_i=0,\lambda_i\geq 0
+\]</span> 即等价于二次规划问题。</p>
+<p>比如说我们有二分类问题，样本为 <span class="math display">\[
+\omega_1:\boldsymbol{x}_1=(3,3),\boldsymbol{x}_2=(4,3)\\
+\omega_2:\boldsymbol{x}_3=(1,1)
+\]</span> 解 <span class="math display">\[
+\min_\boldsymbol{\lambda}\frac{1}{2}\sum^l_{k,j=1}\lambda_k\lambda_jz_kz_j\boldsymbol{x}_k^T\boldsymbol{x}_j-\sum_{i=1}^l\lambda_i\\
+=\frac{1}{2}(18\lambda_1^2+25\lambda_2^2+2\lambda_3^2+42\lambda_1\lambda_2-12\lambda_1\lambda_3-14\lambda_2\lambda_3)-\lambda_1-\lambda_2-\lambda_3\\
+\text{s.t. }\lambda_1+\lambda_2-\lambda_3=0,\lambda_i\geq0,i=1,2,3
+\]</span> 将约束条件 <span class="math inline">\(\lambda_3=\lambda_1+\lambda_2\)</span>
+带回目标函数得到 <span class="math display">\[
+s(\lambda_1,\lambda_2)=4\lambda_1^2+\frac{13}{2}\lambda_2^2+10\lambda_1\lambda_2-2\lambda_1-2\lambda_2
+\]</span> 求 <span class="math inline">\(\nabla s=0\)</span>，得到 <span class="math inline">\(s(\lambda_1,\lambda_2)\)</span> 在 <span class="math inline">\((\frac{3}{2},-1)\)</span> 上取极值，但不满足 <span class="math inline">\(\lambda_i\geq 0\)</span>
+的约束条件，故在边界上找最小值。</p>
+<p>当 <span class="math inline">\(\lambda_1=0\)</span> 时，最小值 <span class="math inline">\(s(0,\frac{2}{13})=-\frac{2}{13}\)</span>；</p>
+<p>当 <span class="math inline">\(\lambda_2=0\)</span> 时，最小值 <span class="math inline">\(s(\frac{1}{4},0)=-\frac{1}{4}\)</span>。</p>
+<p>故取最小值 <span class="math inline">\(\lambda_1=\frac{1}{4},\lambda_2=0,\lambda_3=\frac{1}{4}\)</span>，这样，<span class="math inline">\(\boldsymbol{x}_1,\boldsymbol{x}_3\)</span>
+为支持向量。</p>
+<p>利用 KT 条件反求得到 <span class="math inline">\(w_1=w_2=\frac{1}{2},b=-2\)</span>，故分离超平面为
+<span class="math display">\[
+\frac{1}{2}x_1+\frac{1}{2}x_2-2=0
+\]</span></p>
+<h3 id="核函数">核函数</h3>
+<p>对于线性不可分问题，我们需要将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分，而映射的特征是基于原本特征的<strong>数学意义上的拓展特征</strong>。</p>
+<p>那么我们就可以将原本的特征向量作映射，将支持向量机的模型拓展为 <span class="math display">\[
+\max_\boldsymbol{\lambda}
+L(\boldsymbol{\lambda})=\sum_{i=1}^l\lambda_i-\frac{1}{2}\sum^l_{k,j=1}\lambda_k\lambda_jz_kz_j\phi(\boldsymbol{x}_k)^T\phi(\boldsymbol{x}_j)\\
+\text{s.t. }\sum_{i=1}^l\lambda_iz_i=0,\lambda_i\geq 0
+\]</span> 其中，<span class="math inline">\(\phi(\boldsymbol{x})\)</span>
+是映射函数，也称核映射，即将 <span class="math inline">\(l\)</span>
+维的特征空间映射到更高维的特征空间。</p>
+<p>那么分离超平面则为 <span class="math display">\[
+f(\boldsymbol{x})=\boldsymbol{w}\phi(\boldsymbol{x})+b
+\]</span> <img src="/linear-discriminant-function/核映射的一个示意图.png" alt="核映射的一个示意图"></p>
+<p>比如说一个可能的核映射函数是从 <span class="math inline">\(R^2\to
+R^3\)</span>，即 <span class="math display">\[
+(x_1,x_2)\to(z_1,z_2,z_3)=(x_1^2,\sqrt{2}x_1x_2,x_2^2)
+\]</span> <img src="/linear-discriminant-function/一个二维到三维的核映射.png" alt="一个二维到三维的核映射"></p>
+<p>但我们知道，如果计算核映射，且计算高纬度的核映射，我们不仅需要设计一个好的核映射，还必须快速的去计算它，这是复杂的。</p>
+<p>那么，我们可以发现，在约束中实际上核映射后的结果仅以内积的形式呈现，不妨我们设计一个核函数
+<span class="math display">\[
+k(\boldsymbol{x}_i,\boldsymbol{x}_j)=\phi(\boldsymbol{x}_i)^T\phi(\boldsymbol{x}_j)
+\]</span>
+这样我们就可以<strong>不显式地设计核映射，而是设计核函数</strong>。（基本想法）</p>
+<p>比如对于上面例子中的核映射，我们可以计算得到其核函数为 <span class="math display">\[
+k(\boldsymbol{x}_i,\boldsymbol{x}_j)=(\boldsymbol{x}_i^2+\boldsymbol{x}_j^2)^2
+\]</span> <img src="/linear-discriminant-function/核函数的一个设计实例.png" alt="核函数的一个设计实例"></p>
+<figure>
+<img src="/linear-discriminant-function/常用核函数.png" alt="常用核函数">
+<figcaption aria-hidden="true">常用核函数</figcaption>
+</figure>
+<h3 id="核支持向量机">核支持向量机</h3>
+<p>基于核函数的思想，我们可以得到一个新的支持向量机模型，即核支持向量机模型
+<span class="math display">\[
+\max_\boldsymbol{\lambda}
+L(\boldsymbol{\lambda})=\sum_{i=1}^l\lambda_i-\frac{1}{2}\sum^l_{k,j=1}\lambda_k\lambda_jz_kz_jk(\boldsymbol{x}_k,\boldsymbol{x}_j)\\
+\text{s.t. }\sum_{i=1}^l\lambda_iz_i=0,\lambda_i\geq 0
+\]</span> 例如对于在二位特征平面上线性不可分问题 XOR
+问题，我们可以设计一个核函数为 <span class="math display">\[
+k(\boldsymbol{x}_i,\boldsymbol{x}_j)=[1+\boldsymbol{x}_i^T\boldsymbol{x}_j]^2
+\]</span> 使其在该空间上是线性可分的，一个可以构成这个核函数的核映射为
+<span class="math display">\[
+\phi(\boldsymbol{x})=(1,\sqrt{2}x_1,\sqrt{2}x_2,\sqrt{2}x_1x_2,x_1^2,x_2^2)
+\]</span> XOR 问题中， <span class="math display">\[
+\omega_1:\boldsymbol{x}_1=(1,1),\boldsymbol{x}_3=(-1,-1)\\
+\omega_2:\boldsymbol{x}_2=(1,-1),\boldsymbol{x}_4=(-1,1)
+\]</span> 计算过程忽略，我们可以得到 <span class="math display">\[
+L(\boldsymbol{\lambda})=\lambda_1+\lambda_2+\lambda_3+\lambda_4\\-\frac{1}{2}(9\lambda_1^2-2\lambda_1\lambda_2-2\lambda_1\lambda_3+2\lambda_1\lambda_4\\+9\lambda_2^2+2\lambda_2\lambda_3-2\lambda_2\lambda_4\\+9\lambda_3^2-2\lambda_3\lambda_4\\+9\lambda_4^2)
+\]</span> 最终得到 <span class="math inline">\(\lambda_1=\lambda_2=\lambda_3=\lambda_4=\frac{1}{8}\)</span>，四个样本均为支持向量。</p>
+<p>最终解得最优分离超平面为 <span class="math display">\[
+f(\boldsymbol{x})=-x_1x_2=0
+\]</span></p>
 ]]></content>
       <tags>
         <tag>模式识别</tag>
@@ -9582,7 +9701,7 @@ Logistic 序列。</li>
 <h2 id="操作系统">操作系统</h2>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">uname</span> -a    				<span class="comment"># 打印所有可用的系统信息</span></span><br><span class="line"><span class="built_in">uname</span> -r    				<span class="comment"># 内核版本</span></span><br><span class="line"><span class="built_in">uname</span> -n    				<span class="comment"># 系统主机名。</span></span><br><span class="line"><span class="built_in">uname</span> -m    				<span class="comment"># 查看系统内核架构（64位/32位）</span></span><br><span class="line"><span class="built_in">uname</span> -mrs    				<span class="comment"># 查看系统内核架构（64位/32位）</span></span><br><span class="line">hostname    				<span class="comment"># 系统主机名</span></span><br><span class="line"><span class="built_in">cat</span> /proc/version    		<span class="comment"># 内核信息</span></span><br><span class="line"><span class="built_in">cat</span> /etc/*-release   		<span class="comment"># 分发信息</span></span><br><span class="line"><span class="built_in">cat</span> /etc/issue       		<span class="comment"># 分发信息</span></span><br><span class="line"><span class="built_in">cat</span> /proc/cpuinfo    		<span class="comment"># CPU信息</span></span><br><span class="line"><span class="built_in">cat</span> /etc/lsb-release		<span class="comment"># Debian based</span></span><br><span class="line"><span class="built_in">cat</span> /etc/redhat-release		<span class="comment"># Redhat based</span></span><br><span class="line"><span class="built_in">ls</span> /boot | grep vmlinuz-	<span class="comment"># 内核版本</span></span><br></pre></td></tr></table></figure>
 <h2 id="环境变量">环境变量</h2>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">env</span>        					<span class="comment"># 显示环境变量</span></span><br><span class="line"><span class="built_in">set</span>        					<span class="comment"># 现实环境变量</span></span><br><span class="line"><span class="built_in">echo</span> %PATH 					<span class="comment"># 路径信息</span></span><br><span class="line"><span class="built_in">history</span>    					<span class="comment"># 显示当前用户的历史命令记录</span></span><br><span class="line"><span class="built_in">pwd</span>        					<span class="comment"># 输出工作目录</span></span><br><span class="line"><span class="built_in">cat</span> /etc/profile   			<span class="comment"># 显示默认系统变量</span></span><br><span class="line"><span class="built_in">cat</span> /etc/shells    			<span class="comment"># 显示可用的shellrc</span></span><br><span class="line"><span class="built_in">cat</span> /etc/bashrc</span><br><span class="line"><span class="built_in">cat</span> ~/.bash_profile</span><br><span class="line"><span class="built_in">cat</span> ~/.bashrc</span><br><span class="line"><span class="built_in">cat</span> ~/.bash_logout</span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">env</span>        					<span class="comment"># 显示环境变量</span></span><br><span class="line"><span class="built_in">set</span>        					<span class="comment"># 现实环境变量</span></span><br><span class="line"><span class="built_in">echo</span> %PATH 					<span class="comment"># 路径信息</span></span><br><span class="line"><span class="built_in">history</span>    					<span class="comment"># 显示当前用户的历史命令记录</span></span><br><span class="line"><span class="built_in">pwd</span>        					<span class="comment"># 输出工作目录</span></span><br><span class="line"><span class="built_in">cat</span> /etc/profile   			<span class="comment"># 显示默认系统变量</span></span><br><span class="line"><span class="built_in">cat</span> /etc/shells    			<span class="comment"># 显示可用的shellrc</span></span><br><span class="line"><span class="built_in">cat</span> /etc/bashrc</span><br><span class="line"><span class="built_in">cat</span> ~/.bash_profile</span><br><span class="line"><span class="built_in">cat</span> ~/.bashrc</span><br><span class="line"><span class="built_in">cat</span> ~/.bash_logout</span><br><span class="line"><span class="built_in">cat</span> /proc/??/environ		<span class="comment"># ??表示两个符号</span></span><br></pre></td></tr></table></figure>
 <h2 id="打印机服务">打印机服务</h2>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">lpstat -a</span><br></pre></td></tr></table></figure>
 <h2 id="用户和群组">用户和群组</h2>
@@ -9695,6 +9814,38 @@ NIC？<em>它是否连接到另一个网络？</em></h4>
 的方式执行命令，当使用命令</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo -u<span class="comment">#-1 id</span></span><br></pre></td></tr></table></figure>
 <p>则会让我们绕过权限保护运行程序。</p>
+<h3 id="pip">pip</h3>
+<p><code>pip</code> 在执行 install 命令时，会自动运行模块中的
+<code>setup.py</code> 脚本。</p>
+<blockquote>
+<p>sudo 或者 SUID 都可以。</p>
+</blockquote>
+<h4 id="fakepip">FakePip</h4>
+<p>参考 <a href="https://github.com/0x00-0x00/FakePip">https://github.com/0x00-0x00/FakePip</a>
+可以做一个反弹 shell，将信息反弹到 VPS 上，仅需命令</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">pip install .</span><br></pre></td></tr></table></figure>
+<h4 id="linux-pip">linux pip</h4>
+<p><code>/dev/tty</code> 可以略过标准输出，直接将信息输出到终端上。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">f = <span class="built_in">open</span>(<span class="string">&quot;/dev/tty&quot;</span>, <span class="string">&quot;w&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">open</span>(<span class="string">&quot;/etc/passwd&quot;</span>).read(), file=f)</span><br></pre></td></tr></table></figure>
+<p>例如写一个 <code>setup.py</code> 如上，随后将其打包成
+ZIP（这是最简单的方式）。</p>
+<blockquote>
+<p>需要注意，压缩包内必须有一个文件夹，文件夹下才是
+<code>setup.py</code>，即</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">- qsdztest.zip</span><br><span class="line">-- qsdztest</span><br><span class="line">--- setup.py</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>直接安装这个 ZIP 文件即可。</p>
+<h4 id="rce.png">rce.png</h4>
+<p>参考 <a href="https://github.com/52piaoyu/linux-pip-rce">https://github.com/52piaoyu/linux-pip-rce</a>，pip
+会忽略图片信息，直接查找 ZIP 进行解压，然后运行其中的
+<code>setup.py</code>，结合上一条，我们可以对 <code>qsdztest.zip</code>
+与图片进行拼接，如</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">cat</span> qsdz.png qsdztest.zip qsdz.png &gt; qsdzrce.png</span><br></pre></td></tr></table></figure>
+<figure>
+<img src="/linux-privilege-escalation-note/qsdzrce.png" alt="qsdzrce">
+<figcaption aria-hidden="true">qsdzrce</figcaption>
+</figure>
+<p>好处是可以直接将图片上传到图床上，方便传播。</p>
 <h2 id="利用内核漏洞">利用内核漏洞</h2>
 <p>比如说对于 Ubuntu 16.04 可以直接查找漏洞的 exp 代码。</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">searchsploit Ubuntu 16.04</span><br></pre></td></tr></table></figure>
@@ -12278,6 +12429,11 @@ jpg）进行隐写和提取，同时也对部分音频格式支持隐写和提�
 的速度要快，缺点是只能看到显示，并不能像 Ps 一样进行微操。</p>
 <p>Analyze 中的 Image Combiner
 功能可以将两张图片进行叠加查看（以像素异或，像素加减等形式）。</p>
+<h2 id="wbstego">wbStego</h2>
+<p>一个隐写工具，支持对 BMP 文件的隐写。</p>
+<h2 id="zbarimg">zbarimg</h2>
+<p>一个好用的 QRCode 自动化识别工具，主要的使用方式是</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zbarimg --raw -Sbinary pic.png</span><br></pre></td></tr></table></figure>
 <h2 id="zsteg">zsteg</h2>
 <p>zsteg 可以快速扫描出 bmp 和 png 等格式中的 lsb、msb
 隐写，但可能存在一定的误差，尤其是对于单信道文本隐藏而言，如果有不确定的情况建议使用
@@ -12386,6 +12542,10 @@ random 算法请加 <code>--oldseed</code> 参数。</p>
 </figure>
 <p>批量重命名的 Python 脚本：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pathlib</span><br><span class="line"></span><br><span class="line">path = <span class="string">&#x27;./images&#x27;</span></span><br><span class="line">path = pathlib.Path(path)</span><br><span class="line"><span class="keyword">for</span> filename <span class="keyword">in</span> path.iterdir():</span><br><span class="line">    name = filename.name</span><br><span class="line">    os.rename(filename, path + name.zfill(<span class="number">8</span>))</span><br></pre></td></tr></table></figure>
+<p>使用 Python 脚本拼接图片</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"></span><br><span class="line">ROW = <span class="number">25</span></span><br><span class="line">COL = <span class="number">25</span></span><br><span class="line">out_filename = <span class="string">&quot;123.png&quot;</span></span><br><span class="line"></span><br><span class="line">imgs = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(ROW * COL):</span><br><span class="line">    filename = <span class="string">f&#x27;./Red Coast/<span class="subst">&#123;i&#125;</span>.png&#x27;</span></span><br><span class="line">    imgs.append(Image.<span class="built_in">open</span>(filename))</span><br><span class="line"></span><br><span class="line">SIZE = imgs[<span class="number">0</span>].size</span><br><span class="line">width, height = ROW * SIZE[<span class="number">0</span>], COL * SIZE[<span class="number">1</span>]</span><br><span class="line">new_img = Image.new(<span class="string">&#x27;RGB&#x27;</span>, (width, height))</span><br><span class="line">row_offset = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(ROW):</span><br><span class="line">    col_offset = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(COL):</span><br><span class="line">        new_img.paste(imgs[i * ROW + j], (row_offset, col_offset))</span><br><span class="line">        col_offset += SIZE[<span class="number">1</span>]</span><br><span class="line">    row_offset += SIZE[<span class="number">0</span>]</span><br><span class="line">new_img.save(out_filename)</span><br></pre></td></tr></table></figure>
+<p>横向或纵向拼接</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> PIL <span class="keyword">import</span> Image</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">H_MODE = <span class="string">&quot;H_MODE&quot;</span>       <span class="comment"># 横向拼接</span></span><br><span class="line">V_MODE = <span class="string">&quot;V_MODE&quot;</span>       <span class="comment"># 纵向拼接</span></span><br><span class="line">DIRNAME = (<span class="string">&#x27;./img/output/png/&#x27;</span>)     <span class="comment"># 图片所在目录</span></span><br><span class="line">MODE = H_MODE</span><br><span class="line"></span><br><span class="line">allimgs = []</span><br><span class="line">dirname, childdir, childfile = <span class="built_in">next</span>(os.walk(DIRNAME))</span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果需要排序为(1,2,...,n)</span></span><br><span class="line"><span class="comment"># childfile = sorted(childfile, key = lambda x: int(x[:-3]))</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> childfile:</span><br><span class="line">    filename = dirname + <span class="string">&#x27;/&#x27;</span> + i</span><br><span class="line">    allimgs.append(Image.<span class="built_in">open</span>(filename))</span><br><span class="line"></span><br><span class="line">width0, height0 = allimgs[<span class="number">0</span>].size</span><br><span class="line"><span class="keyword">if</span> MODE == V_MODE:</span><br><span class="line">    width = width0</span><br><span class="line">    height = height0 * <span class="built_in">len</span>(allimgs)</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    width = width0 * <span class="built_in">len</span>(allimgs)</span><br><span class="line">    height = height0</span><br><span class="line">newimg = Image.new(<span class="string">&#x27;RGB&#x27;</span>, (width, height))</span><br><span class="line"><span class="keyword">for</span> idx, img <span class="keyword">in</span> <span class="built_in">enumerate</span>(allimgs):</span><br><span class="line">    <span class="keyword">if</span> MODE == V_MODE:</span><br><span class="line">        newimg.paste(img, (<span class="number">0</span>, idx * height0, width0, (idx + <span class="number">1</span>) * height0))</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        newimg.paste(img, (idx * width0, <span class="number">0</span>, (idx + <span class="number">1</span>) * width0, height0))</span><br><span class="line">newimg</span><br></pre></td></tr></table></figure>
 <h2 id="拼图">拼图</h2>
 <p>拼图问题我们可以使用
 <code>gaps</code>，一个基于遗传算法的拼图求解器，具有块大小自动检测功能
@@ -12447,6 +12607,25 @@ Linux 里可以直接安装使用。<a href="https://github.com/zed-0xff/zsteg">
 <p>如果想要查看更详细的信息：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">zsteg -a 可疑图片.png</span><br></pre></td></tr></table></figure>
 <p>更多用法请使用 <code>zsteg -h</code> 或者查看 Github 主页。</p>
+<h1 id="bmp-取证">BMP 取证</h1>
+<h2 id="负高度">负高度</h2>
+<p>BMP 图片的高度可以是负的，这将使得 <code>lines[]</code>
+数组翻转（或者说原始图片翻转）。</p>
+<h2 id="保留字节拼图">保留字节拼图</h2>
+<p>在 BMP 头中存在四个保留字节，可能会被用于保存坐标，提取方式类似</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">bfReserved1 = <span class="built_in">int</span>.from_bytes(imgdata[<span class="number">0x06</span>:<span class="number">0x08</span>], <span class="string">&#x27;little&#x27;</span>)</span><br><span class="line">bfReserved2 = <span class="built_in">int</span>.from_bytes(imgdata[<span class="number">0x08</span>:<span class="number">0x0a</span>], <span class="string">&#x27;little&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>拼图后一定要记得把图片顺序先理一遍哦。</p>
+</blockquote>
+<h2 id="pad_bytes">pad_bytes</h2>
+<p>BMP 图片会把数据分成一行一行的，在文件格式中以 <code>lines[]</code>
+数组保存，当图片的数据宽度小于每一行所分配的数据，那么会填充
+<code>pad_bytes</code> 来保证数据格式读取的完整性。</p>
+<p>那么我们可以在 BMP 图片的 <code>lines</code> 数组中隐写数据。</p>
+<p>要计算 <code>pad_bytes</code>，需要从头中获取
+<code>size</code>，<code>size</code> 需要减去头的大小，然后计算
+<code>pad_size = size / height - width * 3</code> 即是
+<code>pad_bytes</code> 数据。</p>
 <h1 id="jpg-取证">JPG 取证</h1>
 <h2 id="简述-1">简述</h2>
 <p>以下的各种图片取证形式仅限于 JPG 图片格式。</p>
@@ -12473,6 +12652,9 @@ windows 软件，可以在 <a href="http://io.acad.athabascau.ca/~grizzlie/Comp6
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">outguess -k password -d hidden.txt in.jpg out.jpg</span><br></pre></td></tr></table></figure>
 <p>解密：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">outguess -k password -r out.jpg hidden.txt</span><br></pre></td></tr></table></figure>
+<h2 id="thumbnail">thumbnail</h2>
+<p><code>thumbnail</code> 是 exif 信息的一部分，是 JPG
+图片用作显示的略缩图，但在现在的系统中往往不被使用。</p>
 <h1 id="png-取证">PNG 取证</h1>
 <h2 id="简述-2">简述</h2>
 <p>以下的各种图片取证形式仅限于 PNG 图片格式。</p>
@@ -15545,6 +15727,12 @@ m_1=-G(0)
 <p>故在 RSA 中同样可以构建两式破解明文。</p>
 <h3 id="代码-4">代码</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">RelatedMessageAttack</span>(<span class="params">g1, g2, c1, c2, N</span>):</span><br><span class="line">    P.&lt;x&gt; = Zmod(N)[]</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">gcd</span>(<span class="params">g1, g2</span>):</span><br><span class="line">        <span class="built_in">print</span>(g1)</span><br><span class="line">        <span class="built_in">print</span>(g2)</span><br><span class="line">        <span class="keyword">while</span> g2:</span><br><span class="line">            g1, g2 = g2, g1 % g2</span><br><span class="line">        <span class="keyword">return</span> g1.monic()</span><br><span class="line">    G = gcd(g1(x) - c1, g2(x) - c2)</span><br><span class="line">    m1 = -G(<span class="number">0</span>)</span><br><span class="line">    <span class="keyword">return</span> m1</span><br><span class="line"></span><br><span class="line">N = <span class="number">8963244108103857378610478915798540027754205184635651624801332901515870452435977078824267979279218575027152343028911705254378598817260939339516835322386427</span></span><br><span class="line">a = <span class="number">259416965926853287275013962386631097709</span></span><br><span class="line">magic = <span class="number">103935716419468143616714177161525414254</span></span><br><span class="line">P.&lt;x&gt; = Zmod(N)[]</span><br><span class="line">x0 = x ^ e</span><br><span class="line">x1 = (x + magic) ^ e</span><br><span class="line"><span class="comment"># 这里可以知道 g(x0), g(x1) 同样是多项式函数</span></span><br><span class="line">y0 = <span class="number">1896722249337161391193797083807118705857637064141055866260977430130447249097804719101078827699386498665026965515554644281163046869672493999194358926022865</span></span><br><span class="line">y1 = <span class="number">4074555112002157403114317690671003025383051142150876016519408756236925988856478235258960189636836867363451314784889114354880607055705753428890566240606935</span></span><br><span class="line">g = <span class="keyword">lambda</span> x: x ** <span class="number">3</span> + a * x + b</span><br><span class="line">RelatedMessageAttack(g(x0), g(x1), y0 ** <span class="number">2</span>, y1 ** <span class="number">2</span>, N)</span><br></pre></td></tr></table></figure>
+<h2 id="已知-poplus-q">已知 <span class="math inline">\(p\oplus
+q\)</span></h2>
+<h3 id="原理-17">原理</h3>
+<p>已知 <span class="math inline">\(x=p\oplus q\)</span>
+的结果，就相当于一个 GF(2) 下的多项式的加法结果已知，同时又因为 <span class="math inline">\(n=pq\)</span>，故其多项式的乘法结果也已知，此时我们仅需简单爆破系数或直接构造矩阵求解即可。</p>
+<p>参考代码：<a href="https://github.com/sliedes/xor_factor">https://github.com/sliedes/xor_factor</a></p>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -16436,6 +16624,16 @@ RSA</strong>公钥和私钥文件。</p>
 <code>+++++ +++++[</code> 的代码。</p>
 <p>需要注意的是对于不同长度的明文，可能会出现不同的头。如果代码头不存在时，需要自己尝试添加
 <code>+</code> 爆破。</p>
+<h1 id="emoji-加密">emoji 加密</h1>
+<p>有关 emoji 表情的加密有很多，需要一个一个尝试。</p>
+<ul>
+<li>Base100</li>
+<li><a href="https://aghorler.github.io/emoji-aes/">emoji-aes</a></li>
+<li><a href="https://foundation.mozilla.org/en/campaigns/codemoji/?utm_source=codemoji.org&amp;utm_content=redirect">Codemoji</a>
+与<a href="https://github.com/pavelvodrazka/ctf-writeups/tree/master/hackyeaster2018/challenges/egg17/files/cracker">暴力破解工具</a></li>
+<li><a href="http://www.atoolbox.net/Tool.php?Id=937">奇怪工具箱的 Emoji
+加密</a></li>
+</ul>
 <h1 id="ocr">OCR</h1>
 <p>有的时候图片所包含的文本太长，手读困难且短时间内无法快速识别，我们就需要使用到
 OCR（光学字符识别），可以帮我们有效提高时间效率。</p>
@@ -16494,6 +16692,10 @@ Decode 区域中的 Tweet 文本框中即可：</p>
 <p>特点就是可以看到大量的空格和TAB相连的情况，具体可以参考<a href="/whitespace-note.html">此博客</a>。</p>
 <p>我们可以使用 <a href="https://vii5ard.github.io/whitespace/">https://vii5ard.github.io/whitespace/</a>
 进行运行和编辑 WhiteSpace 程序。</p>
+<h1 id="wbstego">wbStego</h1>
+<p>wbStego 支持 TXT，HTML，XML 和 PDF 文件。</p>
+<p>HTML，TXT，XML 的隐写会出现大量空白字符，类似 SNOW 隐写。</p>
+<p>PDF 的隐写会出现未知流 <code>&lt;stream&gt;</code>。</p>
 <h1 id="word-隐藏文字">Word 隐藏文字</h1>
 <p>Word 有许多排版方式，其中有一种字体效果是<strong>隐藏</strong>。</p>
 <p>对于这种情况可以直接使用 ctrl + A
@@ -16523,6 +16725,20 @@ Decode 区域中的 Tweet 文本框中即可：</p>
 Python 的 <code>collections.Counter</code>
 进行词频统计，一个简单的题解可能是这样的：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read()</span><br><span class="line"></span><br><span class="line">c = Counter(data)</span><br><span class="line">k = c.most_common()</span><br><span class="line">k = <span class="string">&#x27;&#x27;</span>.join(i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> k)</span><br><span class="line"><span class="built_in">print</span>(k)</span><br></pre></td></tr></table></figure>
+<h1 id="流量分析">流量分析</h1>
+<h2 id="ping-流量包">Ping 流量包</h2>
+<p>Ping 流量可以夹杂有效数据。</p>
+<p>正常的 Ping
+包应该带有的是有序的填充数据，而非无序的（相对而言）。</p>
+<h2 id="错误的-tcp-包">错误的 TCP 包</h2>
+<p>错误的 TCP 包可以夹杂有效数据（或者是其他未被使用的 TCP
+包），因为一个有效流量包中的 TCP 包不应该出现大规模丢包、错包。</p>
+<blockquote>
+<p>Wireshark 标记为黑色。</p>
+</blockquote>
+<p>例如可以通过发送 Sequence Number 不对的 TCP 包，通过 Sequence Number
+来传输数据，此时会出现同一个端口发送了大量错包，导致 Wireshark 识别 TCP
+的 Sequence Number 顺序不对。</p>
 <h1 id="空白字符隐写">空白字符隐写</h1>
 <p>利用空白字符进行隐写的手段很多，目前已经见过的有：</p>
 <ul>
@@ -20364,6 +20580,82 @@ L&#39;(X)=X\oplus (X&lt;&lt;&lt;13)\oplus (X&lt;&lt;&lt;23)
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">FK = [<span class="number">0xa3b1bac6</span>, <span class="number">0x56aa3350</span>, <span class="number">0x677d9197</span>, <span class="number">0xb27022dc</span>]</span><br></pre></td></tr></table></figure>
 <p>固定参数 <span class="math inline">\(CK_i\)</span> 为</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">CK = [</span><br><span class="line">    <span class="number">0x00070e15</span>, <span class="number">0x1c232a31</span>, <span class="number">0x383f464d</span>, <span class="number">0x545b6269</span>,</span><br><span class="line">    <span class="number">0x70777e85</span>, <span class="number">0x8c939aa1</span>, <span class="number">0xa8afb6bd</span>, <span class="number">0xc4cbd2d9</span>,</span><br><span class="line">    <span class="number">0xe0e7eef5</span>, <span class="number">0xfc030a11</span>, <span class="number">0x181f262d</span>, <span class="number">0x343b4249</span>,</span><br><span class="line">    <span class="number">0x50575e65</span>, <span class="number">0x6c737a81</span>, <span class="number">0x888f969d</span>, <span class="number">0xa4abb2b9</span>,</span><br><span class="line">    <span class="number">0xc0c7ced5</span>, <span class="number">0xdce3eaf1</span>, <span class="number">0xf8ff060d</span>, <span class="number">0x141b2229</span>,</span><br><span class="line">    <span class="number">0x30373e45</span>, <span class="number">0x4c535a61</span>, <span class="number">0x686f767d</span>, <span class="number">0x848b9299</span>,</span><br><span class="line">    <span class="number">0xa0a7aeb5</span>, <span class="number">0xbcc3cad1</span>, <span class="number">0xd8dfe6ed</span>, <span class="number">0xf4fb0209</span>,</span><br><span class="line">    <span class="number">0x10171e25</span>, <span class="number">0x2c333a41</span>, <span class="number">0x484f565d</span>, <span class="number">0x646b7279</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h2 id="sm9">SM9</h2>
+<p>SM9 是标识密码算法（Identity-base
+cryptogrphy），又称作身份基密码.</p>
+<p>标准规范来源：<a href="http://www.gmbz.org.cn/main/bzlb.html">http://www.gmbz.org.cn/main/bzlb.html</a></p>
+<h3 id="数字签名算法">数字签名算法</h3>
+<h4 id="标准推荐参数">标准推荐参数</h4>
+<p>使用 256 位的 BN 曲线，椭圆曲线方程为 <span class="math display">\[
+y^2=x^3+b
+\]</span> 曲线参数为：</p>
+<p>参数 <span class="math inline">\(t\)</span>：<code>0x600000000058F98A</code></p>
+<p>迹 <span class="math inline">\(tr(t)=6t^2+1\)</span>：<code>0xD8000000019062ED0000B98B0CB27659</code></p>
+<p>基域特征 <span class="math inline">\(q(t)=36t^4+36t^3+24t^3+6t+1\)</span>：<code>0xB640000002A3A6F1D603AB4FF58EC74521F2934B1A7AEEDBE56F9B27E351457D</code></p>
+<p>方程参数 <span class="math inline">\(b\)</span>：<code>0x05</code></p>
+<p>群的阶 <span class="math inline">\(N(t)=36t^4+36t^3+18t^2+6t+1\)</span>：<code>0xB640000002A3A6F1D603AB4FF58EC74449F2934B18EA8BEEE56EE19CD69ECF25</code></p>
+<p>余因子 <span class="math inline">\(cf=1\)</span></p>
+<p>嵌入次数 <span class="math inline">\(k=12\)</span></p>
+<p>扭曲线的参数 <span class="math inline">\(\beta=\sqrt{-2}\)</span></p>
+<p><span class="math inline">\(k\)</span> 的因子 <span class="math inline">\(d_1=1,d_2=2\)</span></p>
+<p>曲线识别符 <span class="math inline">\(cid\)</span>：<code>0x12</code></p>
+<p>群 <span class="math inline">\(G_1\)</span> 的生成元 <span class="math inline">\(P_1\)</span>：<code>P1=(0x93DE051D62BF718FF5ED0704487D01D6E1E4086909DC3280E8C4E4817C66DDDD, 0x21FE8DDA4F21E607631065125C395BBC1C1C00CBFA6024350C464CD70A3EA616)</code></p>
+<p>群 <span class="math inline">\(G_2\)</span> 的生成元 <span class="math inline">\(P_2\)</span>：</p>
+<p><code>P2x=(0x85AEF3D078640C98597B6027B441A01FF1DD2C190F5E93C454806C11D8806141, 0x3722755292130B08D2AAB97FD34EC120EE265948D19C17ABF9B7213BAF82D65B)</code></p>
+<p><code>P2y=(0x17509B092E845C1266BA0D262CBEE6ED0736A96FA347C8BD856DC76B84EBEB96, 0xA7CF28D519BE3DA65F3170153D278FF247EFBA98A71A08116215BBA5C999A7C7)</code></p>
+<p>双线性对的识别符 <span class="math inline">\(eid\)</span>：<code>0x04</code></p>
+<blockquote>
+<p>扩域相关：</p>
+<p>二次扩张的约化多项式为 <span class="math inline">\(x^2+2\)</span></p>
+<p>四次扩张的约化多项式为 <span class="math inline">\(x^2-\sqrt{-2}\)</span></p>
+<p>十二次扩张的约化多项式为 <span class="math inline">\(x^3-(-2)^{1/6}\)</span></p>
+</blockquote>
+<p>基于 Sagemath 的参数如下</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">t = <span class="number">0x600000000058F98A</span></span><br><span class="line">tr = <span class="number">6</span> * t ** <span class="number">2</span> + <span class="number">1</span></span><br><span class="line">q = <span class="number">36</span> * t ** <span class="number">4</span> + <span class="number">36</span> * t ** <span class="number">3</span> + <span class="number">24</span> * t ** <span class="number">2</span> + <span class="number">6</span> * t + <span class="number">1</span></span><br><span class="line">b = <span class="number">0x05</span></span><br><span class="line">N = <span class="number">36</span> * t ** <span class="number">4</span> + <span class="number">36</span> * t ** <span class="number">3</span> + <span class="number">18</span> * t ** <span class="number">2</span> + <span class="number">6</span> * t + <span class="number">1</span></span><br><span class="line">cf = <span class="number">1</span></span><br><span class="line">k = <span class="number">12</span></span><br><span class="line"></span><br><span class="line">Fq.&lt;x&gt; = GF(q)[]</span><br><span class="line">E = EllipticCurve(Fqd1, [<span class="number">0</span>, b])</span><br><span class="line">Fq2.&lt;u&gt; = GF(p^<span class="number">2</span>, modulus = x ^ <span class="number">2</span> + <span class="number">2</span>)</span><br><span class="line"><span class="comment"># beta = sqrt(Fq2(-2))</span></span><br><span class="line">beta = u</span><br><span class="line">E2 = EllipticCurve(Fqd2, [<span class="number">0</span>, b * beta])</span><br><span class="line"></span><br><span class="line">P1x = <span class="number">0x93DE051D62BF718FF5ED0704487D01D6E1E4086909DC3280E8C4E4817C66DDDD</span></span><br><span class="line">P1y = <span class="number">0x21FE8DDA4F21E607631065125C395BBC1C1C00CBFA6024350C464CD70A3EA616</span></span><br><span class="line">P1 = E((P1x, P1y))</span><br><span class="line"></span><br><span class="line">P2x = <span class="number">0x85AEF3D078640C98597B6027B441A01FF1DD2C190F5E93C454806C11D8806141</span> * u + <span class="number">0x3722755292130B08D2AAB97FD34EC120EE265948D19C17ABF9B7213BAF82D65B</span></span><br><span class="line">P2y = <span class="number">0x17509B092E845C1266BA0D262CBEE6ED0736A96FA347C8BD856DC76B84EBEB96</span> * u + <span class="number">0xA7CF28D519BE3DA65F3170153D278FF247EFBA98A71A08116215BBA5C999A7C7</span></span><br><span class="line">P2 = E2((P2x, P2y))</span><br><span class="line"></span><br><span class="line">eid = <span class="number">0x04</span></span><br></pre></td></tr></table></figure>
+<h4 id="符号-2">符号</h4>
+<h5 id="加密主密钥">加密主密钥</h5>
+<p>加密主密钥（encryption master
+key）处于标识密码密钥分层结构最顶层的密钥，内容为<strong>加密主私钥</strong>和<strong>加密主公钥</strong>，其中加密主公钥是公开的，而加密主私钥由密码生成中心（KGC）秘密保存。KGC
+使用加密主私钥和用户的标识（ID）生成<strong>用户的加密私钥</strong>。</p>
+<h5 id="标识">标识</h5>
+<p>标识（ID）由实体无法否认的信息组成，如电子邮箱、身份证号、电话号码等。</p>
+<h5 id="曲线识别符-cid">曲线识别符 cid</h5>
+<p>用于区分不同椭圆曲线的标识。</p>
+<ul>
+<li><code>0x10</code> 表示 <span class="math inline">\(F_p\)</span>
+上的常曲线，<span class="math inline">\(p\)</span> 是素数，<span class="math inline">\(p&gt;2^{191}\)</span></li>
+<li><code>0x11</code> 表示 <span class="math inline">\(F_p\)</span>
+上的超奇异曲线</li>
+<li><code>0x12</code> 表示 <span class="math inline">\(F_p\)</span>
+上的常曲线及其扭曲线</li>
+</ul>
+<p>标准使用的是 BN 曲线（<span class="math inline">\(a=0,b=5\)</span>），<code>cid=0x12</code>。</p>
+<h5 id="双线性对识别符-eid">双线性对识别符 eid</h5>
+<ul>
+<li><p><code>0x01</code> 表示 Tate 对</p></li>
+<li><p><code>0x02</code> 表示 Weil 对</p></li>
+<li><p><code>0x03</code> 表示 Ate 对</p></li>
+<li><p><code>0x04</code> 表示 R-ate 对</p></li>
+</ul>
+<h4 id="系统签名主密钥和用户签名密钥的产生">系统签名主密钥和用户签名密钥的产生</h4>
+<p>KGC 产生随机数 <span class="math inline">\(ks\in[1,N-1]\)</span>
+作为签名主私钥，计算群 <span class="math inline">\(G_2\)</span> 中的元素
+<span class="math inline">\(P_{pub-s}=ks\cdot P_2\)</span>
+作为签名主公钥，则签名主密钥对为 <span class="math inline">\((ks,P_{pub-s})\)</span>。</p>
+<p><strong>KGC 秘密保存 <span class="math inline">\(ks\)</span>，公开
+<span class="math inline">\(P_{pub-s}\)</span>。</strong></p>
+<p>KGC 选择并公开用一个字节表示签名私钥生成函数识别符 <span class="math inline">\(hid\)</span>。</p>
+<p>用户 A 的标识为 <span class="math inline">\(ID\)</span>，KGC 在有限域
+<span class="math inline">\(F_N\)</span> 上计算 <span class="math inline">\(t_1=H_1(ID||hid,N)+ks\)</span>，若 <span class="math inline">\(t_1=0\)</span>
+则重新计算签名主私钥、更新签名主密钥对；</p>
+<p>随后计算 <span class="math inline">\(t_2=ks\cdot
+t^{-1}\pmod{N}\)</span>；</p>
+<p>最后计算签名私钥 <span class="math inline">\(ds=t_2\cdot
+P_1\)</span>。</p>
+<h4 id="辅助函数">辅助函数</h4>
+<h5 id="密码杂凑函数">密码杂凑函数</h5>
+<p>标准推荐使用 SM3 密码杂凑算法，输出 256 比特 32 字节。</p>
+<h5 id="密码函数-h_1">密码函数 <span class="math inline">\(H_1\)</span></h5>
 ]]></content>
       <tags>
         <tag>crypto</tag>

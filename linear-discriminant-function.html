@@ -46,8 +46,12 @@
 <meta property="og:image" content="https://hasegawaazusa.github.io/linear-discriminant-function/%E6%94%AF%E6%92%91%E5%90%91%E9%87%8F%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
 <meta property="og:image" content="https://hasegawaazusa.github.io/linear-discriminant-function/%E5%88%A4%E5%86%B3%E5%87%BD%E6%95%B0%E7%9A%84%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%80%A7%E8%B4%A8.png">
 <meta property="og:image" content="https://hasegawaazusa.github.io/linear-discriminant-function/%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E7%9A%84%E8%A7%A3.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/linear-discriminant-function/%E6%A0%B8%E6%98%A0%E5%B0%84%E7%9A%84%E4%B8%80%E4%B8%AA%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/linear-discriminant-function/%E4%B8%80%E4%B8%AA%E4%BA%8C%E7%BB%B4%E5%88%B0%E4%B8%89%E7%BB%B4%E7%9A%84%E6%A0%B8%E6%98%A0%E5%B0%84.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/linear-discriminant-function/%E6%A0%B8%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%80%E4%B8%AA%E8%AE%BE%E8%AE%A1%E5%AE%9E%E4%BE%8B.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/linear-discriminant-function/%E5%B8%B8%E7%94%A8%E6%A0%B8%E5%87%BD%E6%95%B0.png">
 <meta property="article:published_time" content="2023-04-03T11:00:00.000Z">
-<meta property="article:modified_time" content="2023-04-23T14:37:40.985Z">
+<meta property="article:modified_time" content="2023-06-07T07:12:21.478Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="模式识别">
 <meta name="twitter:card" content="summary">
@@ -160,7 +164,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">模式识别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E7%B1%BB%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">二类线性判别函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%B1%BB%E6%83%85%E5%86%B5%E4%B8%8B%E7%9A%84%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">多类情况下的线性判别函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%83%85%E5%86%B5%E4%B8%80"><span class="nav-number">1.2.1.</span> <span class="nav-text">情况一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%83%85%E5%86%B5%E4%BA%8C"><span class="nav-number">1.2.2.</span> <span class="nav-text">情况二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%83%85%E5%86%B5%E4%B8%89"><span class="nav-number">1.2.3.</span> <span class="nav-text">情况三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">线性判别函数的学习算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%B9%BF%E5%8C%96"><span class="nav-number">1.3.1.</span> <span class="nav-text">增广化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%84%E8%8C%83%E5%8C%96"><span class="nav-number">1.3.2.</span> <span class="nav-text">规范化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.3.</span> <span class="nav-text">学习算法原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.4.</span> <span class="nav-text">梯度下降算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%A3"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">优劣</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%9B%E9%A1%BF%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="nav-number">1.3.5.</span> <span class="nav-text">牛顿下降法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%A3-1"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">优劣</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%84%9F%E7%9F%A5%E5%99%A8%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="nav-number">1.3.6.</span> <span class="nav-text">感知器梯度下降法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9A%E5%A2%9E%E9%87%8F%E6%B3%95"><span class="nav-number">1.3.7.</span> <span class="nav-text">固定增量法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="nav-number">1.3.7.1.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E5%A2%9E%E9%87%8F%E6%A2%AF%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.8.</span> <span class="nav-text">变增量梯度算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%A6%E8%A3%95%E9%87%8F%E7%9A%84%E6%84%9F%E7%9F%A5%E5%99%A8%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.9.</span> <span class="nav-text">带裕量的感知器算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-3"><span class="nav-number">1.3.9.1.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fisher-%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB"><span class="nav-number">1.4.</span> <span class="nav-text">Fisher 线性判别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.4.2.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA"><span class="nav-number">1.5.</span> <span class="nav-text">支持向量机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F"><span class="nav-number">1.5.1.</span> <span class="nav-text">支持向量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E7%AD%89%E5%BC%8F%E7%BA%A6%E6%9D%9F%E7%9A%84%E6%9E%81%E5%B0%8F%E5%80%BC"><span class="nav-number">1.5.2.</span> <span class="nav-text">不等式约束的极小值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%97%E6%A0%BC%E6%9C%97%E6%97%A5%E5%AE%9A%E7%90%86"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">朗格朗日定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kt-%E6%9C%80%E4%BC%98%E6%80%A7%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">KT 最优性条件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-number">1.5.3.</span> <span class="nav-text">对偶问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA%E4%BB%A3%E7%A0%81"><span class="nav-number">1.5.4.</span> <span class="nav-text">基本支持向量机代码</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">模式识别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E7%B1%BB%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.</span> <span class="nav-text">二类线性判别函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E7%B1%BB%E6%83%85%E5%86%B5%E4%B8%8B%E7%9A%84%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">多类情况下的线性判别函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%83%85%E5%86%B5%E4%B8%80"><span class="nav-number">1.2.1.</span> <span class="nav-text">情况一</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%83%85%E5%86%B5%E4%BA%8C"><span class="nav-number">1.2.2.</span> <span class="nav-text">情况二</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%83%85%E5%86%B5%E4%B8%89"><span class="nav-number">1.2.3.</span> <span class="nav-text">情况三</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB%E5%87%BD%E6%95%B0%E7%9A%84%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.</span> <span class="nav-text">线性判别函数的学习算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A2%9E%E5%B9%BF%E5%8C%96"><span class="nav-number">1.3.1.</span> <span class="nav-text">增广化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%84%E8%8C%83%E5%8C%96"><span class="nav-number">1.3.2.</span> <span class="nav-text">规范化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.3.</span> <span class="nav-text">学习算法原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.4.</span> <span class="nav-text">梯度下降算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.3.4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.3.4.2.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%A3"><span class="nav-number">1.3.4.3.</span> <span class="nav-text">优劣</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%9B%E9%A1%BF%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="nav-number">1.3.5.</span> <span class="nav-text">牛顿下降法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E5%8A%A3-1"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">优劣</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%84%9F%E7%9F%A5%E5%99%A8%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="nav-number">1.3.6.</span> <span class="nav-text">感知器梯度下降法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">1.3.6.1.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9A%E5%A2%9E%E9%87%8F%E6%B3%95"><span class="nav-number">1.3.7.</span> <span class="nav-text">固定增量法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-2"><span class="nav-number">1.3.7.1.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%98%E5%A2%9E%E9%87%8F%E6%A2%AF%E5%BA%A6%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.8.</span> <span class="nav-text">变增量梯度算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%A6%E8%A3%95%E9%87%8F%E7%9A%84%E6%84%9F%E7%9F%A5%E5%99%A8%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.9.</span> <span class="nav-text">带裕量的感知器算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-3"><span class="nav-number">1.3.9.1.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#fisher-%E7%BA%BF%E6%80%A7%E5%88%A4%E5%88%AB"><span class="nav-number">1.4.</span> <span class="nav-text">Fisher 线性判别</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-2"><span class="nav-number">1.4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.4.2.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA"><span class="nav-number">1.5.</span> <span class="nav-text">支持向量机</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F"><span class="nav-number">1.5.1.</span> <span class="nav-text">支持向量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E7%AD%89%E5%BC%8F%E7%BA%A6%E6%9D%9F%E7%9A%84%E6%9E%81%E5%B0%8F%E5%80%BC"><span class="nav-number">1.5.2.</span> <span class="nav-text">不等式约束的极小值</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%97%E6%A0%BC%E6%9C%97%E6%97%A5%E5%AE%9A%E7%90%86"><span class="nav-number">1.5.2.1.</span> <span class="nav-text">朗格朗日定理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#kt-%E6%9C%80%E4%BC%98%E6%80%A7%E6%9D%A1%E4%BB%B6"><span class="nav-number">1.5.2.2.</span> <span class="nav-text">KT 最优性条件</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E5%81%B6%E9%97%AE%E9%A2%98"><span class="nav-number">1.5.3.</span> <span class="nav-text">对偶问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA-1"><span class="nav-number">1.5.4.</span> <span class="nav-text">支持向量机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%87%BD%E6%95%B0"><span class="nav-number">1.5.5.</span> <span class="nav-text">核函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E6%94%AF%E6%8C%81%E5%90%91%E9%87%8F%E6%9C%BA"><span class="nav-number">1.5.6.</span> <span class="nav-text">核支持向量机</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -252,7 +256,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-04-23 22:37:40" itemprop="dateModified" datetime="2023-04-23T22:37:40+08:00">2023-04-23</time>
+      <time title="修改时间：2023-06-07 15:12:21" itemprop="dateModified" datetime="2023-06-07T15:12:21+08:00">2023-06-07</time>
     </span>
 
   
@@ -262,14 +266,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>20k</span>
+      <span>23k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>18 分钟</span>
+      <span>21 分钟</span>
     </span>
 </div>
 
@@ -799,8 +803,14 @@ h_i(\boldsymbol{x}^*)\geq0,\lambda_i^*\geq0,\lambda^*_ih_i(\boldsymbol{x}^*)=0,i
 \max g(u,v)=uc(x)+vh(x)\\
 \text{s.t. }u\geq0,v\geq0
 \]</span></p>
-<h3 id="基本支持向量机代码">基本支持向量机代码</h3>
-<p>一个两类分类问题有以下点 <span class="math display">\[
+<h3 id="支持向量机-1">支持向量机</h3>
+<p>依据上面的原理，我们可以得到支持向量机的模型可以转化为 <span class="math display">\[
+\begin{cases}
+\nabla\frac{1}{2}\|\boldsymbol{w}\|^2-\sum^{l}_{i=1}\lambda_i\nabla(z_kg(x_i)-1)
+=0\\
+z_kg(x_i)-1\geq 0,\lambda_i\geq 0,\lambda_i g(x_i)=0
+\end{cases}
+\]</span> 一个两类分类问题有以下点 <span class="math display">\[
 \omega_1:(1,1),(1,-1)\\
 \omega_2:(-1,1),(-1,-1)
 \]</span> 通过以上知识，可以写出代码</p>
@@ -809,6 +819,86 @@ h_i(\boldsymbol{x}^*)\geq0,\lambda_i^*\geq0,\lambda^*_ih_i(\boldsymbol{x}^*)=0,i
 <img src="/linear-discriminant-function/支持向量机的解.png" alt="支持向量机的解">
 <figcaption aria-hidden="true">支持向量机的解</figcaption>
 </figure>
+<blockquote>
+<p>以下是等价问题的转换。</p>
+</blockquote>
+<p>由基本的支持向量机公式，我们有拉格朗日函数 <span class="math display">\[
+L(\boldsymbol{w},\lambda_i)=\frac{1}{2}\|\boldsymbol{w}\|^2-\sum^{l}_{i=1}\lambda_i\nabla(z_kg(\boldsymbol{x}_i)-1)
+\]</span> 令拉格朗日函数偏导为零，代入公式可得 <span class="math display">\[
+\max_\boldsymbol{\lambda}
+L(\boldsymbol{\lambda})=\sum_{i=1}^l\lambda_i-\frac{1}{2}\sum^l_{k,j=1}\lambda_k\lambda_jz_kz_j\boldsymbol{x}_k^T\boldsymbol{x}_j\\
+\text{s.t. }\sum_{i=1}^l\lambda_iz_i=0,\lambda_i\geq 0
+\]</span> 即等价于二次规划问题。</p>
+<p>比如说我们有二分类问题，样本为 <span class="math display">\[
+\omega_1:\boldsymbol{x}_1=(3,3),\boldsymbol{x}_2=(4,3)\\
+\omega_2:\boldsymbol{x}_3=(1,1)
+\]</span> 解 <span class="math display">\[
+\min_\boldsymbol{\lambda}\frac{1}{2}\sum^l_{k,j=1}\lambda_k\lambda_jz_kz_j\boldsymbol{x}_k^T\boldsymbol{x}_j-\sum_{i=1}^l\lambda_i\\
+=\frac{1}{2}(18\lambda_1^2+25\lambda_2^2+2\lambda_3^2+42\lambda_1\lambda_2-12\lambda_1\lambda_3-14\lambda_2\lambda_3)-\lambda_1-\lambda_2-\lambda_3\\
+\text{s.t. }\lambda_1+\lambda_2-\lambda_3=0,\lambda_i\geq0,i=1,2,3
+\]</span> 将约束条件 <span class="math inline">\(\lambda_3=\lambda_1+\lambda_2\)</span>
+带回目标函数得到 <span class="math display">\[
+s(\lambda_1,\lambda_2)=4\lambda_1^2+\frac{13}{2}\lambda_2^2+10\lambda_1\lambda_2-2\lambda_1-2\lambda_2
+\]</span> 求 <span class="math inline">\(\nabla s=0\)</span>，得到 <span class="math inline">\(s(\lambda_1,\lambda_2)\)</span> 在 <span class="math inline">\((\frac{3}{2},-1)\)</span> 上取极值，但不满足 <span class="math inline">\(\lambda_i\geq 0\)</span>
+的约束条件，故在边界上找最小值。</p>
+<p>当 <span class="math inline">\(\lambda_1=0\)</span> 时，最小值 <span class="math inline">\(s(0,\frac{2}{13})=-\frac{2}{13}\)</span>；</p>
+<p>当 <span class="math inline">\(\lambda_2=0\)</span> 时，最小值 <span class="math inline">\(s(\frac{1}{4},0)=-\frac{1}{4}\)</span>。</p>
+<p>故取最小值 <span class="math inline">\(\lambda_1=\frac{1}{4},\lambda_2=0,\lambda_3=\frac{1}{4}\)</span>，这样，<span class="math inline">\(\boldsymbol{x}_1,\boldsymbol{x}_3\)</span>
+为支持向量。</p>
+<p>利用 KT 条件反求得到 <span class="math inline">\(w_1=w_2=\frac{1}{2},b=-2\)</span>，故分离超平面为
+<span class="math display">\[
+\frac{1}{2}x_1+\frac{1}{2}x_2-2=0
+\]</span></p>
+<h3 id="核函数">核函数</h3>
+<p>对于线性不可分问题，我们需要将样本从原始空间映射到一个更高维的特征空间，使得样本在这个特征空间内线性可分，而映射的特征是基于原本特征的<strong>数学意义上的拓展特征</strong>。</p>
+<p>那么我们就可以将原本的特征向量作映射，将支持向量机的模型拓展为 <span class="math display">\[
+\max_\boldsymbol{\lambda}
+L(\boldsymbol{\lambda})=\sum_{i=1}^l\lambda_i-\frac{1}{2}\sum^l_{k,j=1}\lambda_k\lambda_jz_kz_j\phi(\boldsymbol{x}_k)^T\phi(\boldsymbol{x}_j)\\
+\text{s.t. }\sum_{i=1}^l\lambda_iz_i=0,\lambda_i\geq 0
+\]</span> 其中，<span class="math inline">\(\phi(\boldsymbol{x})\)</span>
+是映射函数，也称核映射，即将 <span class="math inline">\(l\)</span>
+维的特征空间映射到更高维的特征空间。</p>
+<p>那么分离超平面则为 <span class="math display">\[
+f(\boldsymbol{x})=\boldsymbol{w}\phi(\boldsymbol{x})+b
+\]</span> <img src="/linear-discriminant-function/核映射的一个示意图.png" alt="核映射的一个示意图"></p>
+<p>比如说一个可能的核映射函数是从 <span class="math inline">\(R^2\to
+R^3\)</span>，即 <span class="math display">\[
+(x_1,x_2)\to(z_1,z_2,z_3)=(x_1^2,\sqrt{2}x_1x_2,x_2^2)
+\]</span> <img src="/linear-discriminant-function/一个二维到三维的核映射.png" alt="一个二维到三维的核映射"></p>
+<p>但我们知道，如果计算核映射，且计算高纬度的核映射，我们不仅需要设计一个好的核映射，还必须快速的去计算它，这是复杂的。</p>
+<p>那么，我们可以发现，在约束中实际上核映射后的结果仅以内积的形式呈现，不妨我们设计一个核函数
+<span class="math display">\[
+k(\boldsymbol{x}_i,\boldsymbol{x}_j)=\phi(\boldsymbol{x}_i)^T\phi(\boldsymbol{x}_j)
+\]</span>
+这样我们就可以<strong>不显式地设计核映射，而是设计核函数</strong>。（基本想法）</p>
+<p>比如对于上面例子中的核映射，我们可以计算得到其核函数为 <span class="math display">\[
+k(\boldsymbol{x}_i,\boldsymbol{x}_j)=(\boldsymbol{x}_i^2+\boldsymbol{x}_j^2)^2
+\]</span> <img src="/linear-discriminant-function/核函数的一个设计实例.png" alt="核函数的一个设计实例"></p>
+<figure>
+<img src="/linear-discriminant-function/常用核函数.png" alt="常用核函数">
+<figcaption aria-hidden="true">常用核函数</figcaption>
+</figure>
+<h3 id="核支持向量机">核支持向量机</h3>
+<p>基于核函数的思想，我们可以得到一个新的支持向量机模型，即核支持向量机模型
+<span class="math display">\[
+\max_\boldsymbol{\lambda}
+L(\boldsymbol{\lambda})=\sum_{i=1}^l\lambda_i-\frac{1}{2}\sum^l_{k,j=1}\lambda_k\lambda_jz_kz_jk(\boldsymbol{x}_k,\boldsymbol{x}_j)\\
+\text{s.t. }\sum_{i=1}^l\lambda_iz_i=0,\lambda_i\geq 0
+\]</span> 例如对于在二位特征平面上线性不可分问题 XOR
+问题，我们可以设计一个核函数为 <span class="math display">\[
+k(\boldsymbol{x}_i,\boldsymbol{x}_j)=[1+\boldsymbol{x}_i^T\boldsymbol{x}_j]^2
+\]</span> 使其在该空间上是线性可分的，一个可以构成这个核函数的核映射为
+<span class="math display">\[
+\phi(\boldsymbol{x})=(1,\sqrt{2}x_1,\sqrt{2}x_2,\sqrt{2}x_1x_2,x_1^2,x_2^2)
+\]</span> XOR 问题中， <span class="math display">\[
+\omega_1:\boldsymbol{x}_1=(1,1),\boldsymbol{x}_3=(-1,-1)\\
+\omega_2:\boldsymbol{x}_2=(1,-1),\boldsymbol{x}_4=(-1,1)
+\]</span> 计算过程忽略，我们可以得到 <span class="math display">\[
+L(\boldsymbol{\lambda})=\lambda_1+\lambda_2+\lambda_3+\lambda_4\\-\frac{1}{2}(9\lambda_1^2-2\lambda_1\lambda_2-2\lambda_1\lambda_3+2\lambda_1\lambda_4\\+9\lambda_2^2+2\lambda_2\lambda_3-2\lambda_2\lambda_4\\+9\lambda_3^2-2\lambda_3\lambda_4\\+9\lambda_4^2)
+\]</span> 最终得到 <span class="math inline">\(\lambda_1=\lambda_2=\lambda_3=\lambda_4=\frac{1}{8}\)</span>，四个样本均为支持向量。</p>
+<p>最终解得最优分离超平面为 <span class="math display">\[
+f(\boldsymbol{x})=-x_1x_2=0
+\]</span></p>
 
     </div>
 
@@ -881,13 +971,13 @@ h_i(\boldsymbol{x}^*)\geq0,\lambda_i^*\geq0,\lambda^*_ih_i(\boldsymbol{x}^*)=0,i
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">493k</span>
+    <span title="站点总字数">503k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">7:29</span>
+    <span title="站点阅读时长">7:37</span>
   </span>
 </div>
 
