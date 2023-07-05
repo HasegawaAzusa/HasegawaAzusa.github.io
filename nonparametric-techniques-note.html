@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关非参数技术的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-非参数技术笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/nonparametric-techniques-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关非参数技术的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/nonparametric-techniques-note/%E6%A9%99%E5%AD%90%E8%BF%98%E6%98%AF%E6%9F%9A%E5%AD%90%EF%BC%9F.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/nonparametric-techniques-note/%E7%A5%9E%E7%A7%98%E7%9A%84%E6%B0%B4%E6%9E%9C.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/nonparametric-techniques-note/%E6%9C%80%E5%A4%9A%E7%9A%84%E9%82%BB%E5%B1%85.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/nonparametric-techniques-note/%E9%A9%AC%E6%B0%8F%E8%B7%9D%E7%A6%BB%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/nonparametric-techniques-note/%E5%87%A0%E7%A7%8D%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/nonparametric-techniques-note/K%E5%9D%87%E5%80%BC%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/nonparametric-techniques-note/%E8%A5%BF%E7%93%9C%E6%95%B0%E6%8D%AE%E9%9B%86.png">
+<meta property="article:published_time" content="2023-06-18T01:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-19T09:02:27.365Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/nonparametric-techniques-note/%E6%A9%99%E5%AD%90%E8%BF%98%E6%98%AF%E6%9F%9A%E5%AD%90%EF%BC%9F.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/nonparametric-techniques-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/nonparametric-techniques-note.html","path":"/nonparametric-techniques-note.html","title":"模式识别-非参数技术笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>模式识别-非参数技术笔记 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">111</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9D%9E%E5%8F%82%E6%95%B0%E6%8A%80%E6%9C%AF"><span class="nav-number">1.</span> <span class="nav-text">非参数技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#k-%E6%9C%80%E8%BF%91%E9%82%BB%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">K 最近邻算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%9D%E7%A6%BB%E5%BA%A6%E9%87%8F"><span class="nav-number">1.1.2.</span> <span class="nav-text">距离度量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.1.3.</span> <span class="nav-text">代码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">1.1.4.</span> <span class="nav-text">优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E6%88%90%E5%88%86%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">主成分分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E5%B7%AE"><span class="nav-number">1.2.2.</span> <span class="nav-text">方差</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.3.</span> <span class="nav-text">基变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pca-%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.4.</span> <span class="nav-text">PCA 算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.2.5.</span> <span class="nav-text">示例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%81%9A%E7%B1%BB"><span class="nav-number">1.3.</span> <span class="nav-text">聚类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#k-%E5%9D%87%E5%80%BC%E7%AE%97%E6%B3%95"><span class="nav-number">1.3.2.</span> <span class="nav-text">K 均值算法</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/nonparametric-techniques-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="模式识别-非参数技术笔记 | 独奏の小屋">
+      <meta itemprop="description" content="有关非参数技术的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          模式识别-非参数技术笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-18 09:00:00" itemprop="dateCreated datePublished" datetime="2023-06-18T09:00:00+08:00">2023-06-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-19 17:02:27" itemprop="dateModified" datetime="2023-06-19T17:02:27+08:00">2023-06-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关非参数技术的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="非参数技术">非参数技术</h1>
+<h2 id="k-最近邻算法">K 最近邻算法</h2>
+<h3 id="原理">原理</h3>
+<p>K 最近邻算法（KNN）的原理很简单，我们考虑我们已知数据</p>
+<figure>
+<img src="/nonparametric-techniques-note/橙子还是柚子？.png" alt="橙子还是柚子？">
+<figcaption aria-hidden="true">橙子还是柚子？</figcaption>
+</figure>
+<p>这是我们现有的数据，假如说存在一个<strong>神秘的水果</strong></p>
+<figure>
+<img src="/nonparametric-techniques-note/神秘的水果.png" alt="神秘的水果">
+<figcaption aria-hidden="true">神秘的水果</figcaption>
+</figure>
+<p>我们判断它是橙子还是柚子的依据就是，来看谁是它最多的<strong>邻居</strong>。</p>
+<figure>
+<img src="/nonparametric-techniques-note/最多的邻居.png" alt="最多的邻居">
+<figcaption aria-hidden="true">最多的邻居</figcaption>
+</figure>
+<p>我们可以计算得到，在<strong>三个邻居</strong>范围内，橙子比柚子多，所以，这个水果很有可能是橙子。</p>
+<p>这就是 KNN 算法的基本原理，K 是其中的<strong>三</strong>。</p>
+<h3 id="距离度量">距离度量</h3>
+<p>闵可夫斯基距离公式为 <span class="math display">\[
+L_p(\boldsymbol{x}_i,\boldsymbol{x}_j)=(\sum_{l=1}^n|x_i^{(l)}-x_j^{(l)}|^p)^{\frac{1}{p}}
+\]</span> 如果 <span class="math inline">\(p=2\)</span>，那么就是欧式距离 <span class="math display">\[
+L_2(\boldsymbol{x}_i,\boldsymbol{x}_j)=(\sum_{l=1}^n|x_i^{(l)}-x_j^{(l)}|^2)^{\frac{1}{2}}
+\]</span> 如果 <span class="math inline">\(p=1\)</span>，那么就是曼哈顿距离 <span class="math display">\[
+L_1(\boldsymbol{x}_i,\boldsymbol{x}_j)=\sum_{l=1}^n|x_i^{(l)}-x_j^{(l)}|
+\]</span> 如果 <span class="math inline">\(p=\infin\)</span>，那么就是切比雪夫距离 <span class="math display">\[
+L_\infin(\boldsymbol{x}_i,\boldsymbol{x}_j)=\max|x_i^{(l)}-x_j^{(l)}|
+\]</span>
+但是考虑到样本各个特征属性之间的尺度并不一定，相关性也不一定，特别是各个维度之间的分布（方差）不同，此时就需要使用<strong>马氏距离</strong>。</p>
+<figure>
+<img src="/nonparametric-techniques-note/马氏距离解决问题.png" alt="马氏距离解决问题">
+<figcaption aria-hidden="true">马氏距离解决问题</figcaption>
+</figure>
+<p>马氏距离公式为 <span class="math display">\[
+d_{Mahalanobis}=\sqrt{(\boldsymbol{x}-\boldsymbol{y})^T\Sigma^{-1}(\boldsymbol{x}-\boldsymbol{y})}
+\]</span> 其中，<span class="math inline">\(\Sigma\)</span>
+是<strong>协方差矩阵</strong>。</p>
+<figure>
+<img src="/nonparametric-techniques-note/几种距离度量之间的关系.png" alt="几种距离度量之间的关系">
+<figcaption aria-hidden="true">几种距离度量之间的关系</figcaption>
+</figure>
+<p>每一个彩色的平面由距离原点为 1 的点所形成。</p>
+<h3 id="代码">代码</h3>
+<p>仅考虑两类样本，借助 <code>numpy</code> 计算闵可夫斯基距离。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">distance</span>(<span class="params">x: <span class="built_in">list</span>, y: <span class="built_in">list</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    计算闵可夫斯基距离</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">len</span>(x) == <span class="built_in">len</span>(y)</span><br><span class="line">    p = <span class="built_in">len</span>(x)</span><br><span class="line">    <span class="keyword">return</span> np.linalg.norm(np.array(x, np.float64) - np.array(y, np.float64), <span class="built_in">ord</span> = p)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">KNN</span>(<span class="params">omega1: <span class="built_in">list</span>[<span class="built_in">list</span>], omega2: <span class="built_in">list</span>[<span class="built_in">list</span>], x: <span class="built_in">list</span>, K: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        omega1: 第一类样本，一个二维矩阵，行是单个样本</span></span><br><span class="line"><span class="string">        omega2: 第二类样本，一个二维矩阵，行是单个样本</span></span><br><span class="line"><span class="string">        x: 待分类样本</span></span><br><span class="line"><span class="string">        K: k近邻</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    dis = []</span><br><span class="line">    <span class="comment"># 计算所有待分类样本与已知样本的距离</span></span><br><span class="line">    <span class="keyword">for</span> o1 <span class="keyword">in</span> omega1:</span><br><span class="line">        dis.append((distance(x, o1), <span class="string">&quot;o1&quot;</span>))</span><br><span class="line">    <span class="keyword">for</span> o2 <span class="keyword">in</span> omega2:</span><br><span class="line">        dis.append((distance(x, o2), <span class="string">&quot;o2&quot;</span>))</span><br><span class="line">    <span class="comment"># 按距离排序，取K个邻居</span></span><br><span class="line">    kdis = <span class="built_in">sorted</span>(dis, key = <span class="keyword">lambda</span> x: x[<span class="number">0</span>])[:K]</span><br><span class="line">    <span class="comment"># 获取这K个邻居的类别</span></span><br><span class="line">    komega = [d[<span class="number">1</span>] <span class="keyword">for</span> d <span class="keyword">in</span> kdis]</span><br><span class="line">    <span class="comment"># 计算K个邻居中为omega1的个数</span></span><br><span class="line">    nn = komega.count(<span class="string">&quot;o1&quot;</span>)</span><br><span class="line">    <span class="comment"># K-nn即omega2的个数</span></span><br><span class="line">    <span class="keyword">if</span> nn &gt; K - nn:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;omega1&quot;</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;omega2&quot;</span></span><br><span class="line"></span><br><span class="line">omega1 = [</span><br><span class="line">    [<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>], [<span class="number">0</span>, -<span class="number">1</span>]</span><br><span class="line">]</span><br><span class="line">omega2 = [</span><br><span class="line">    [<span class="number">0</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">2</span>], [<span class="number">0</span>, -<span class="number">2</span>], [-<span class="number">2</span>, <span class="number">0</span>]</span><br><span class="line">]</span><br><span class="line">x = [<span class="number">1</span>, <span class="number">2</span>]</span><br><span class="line">KNN(omega1, omega2, x, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="优缺点">优缺点</h3>
+<p>如果 K
+推向正无穷，那么就会利用全部的训练样本做训练，哪一类样本多就属于哪一类，会导致<strong>欠拟合</strong>，训练误差加大。</p>
+<p>如果 K
+值小，则模型复杂度较高，容易发生过拟合，而且预测结果对近邻实例点非常敏感，容易被<strong>噪声</strong>（noise）影响。</p>
+<p>在应用中，通常采用交叉验证法来选取最优的 K
+值，一般取奇数（保证不会出现两类邻居数量相等）。</p>
+<p>KNN
+不对样本做任何假设和分布估计，是一种懒惰算法，常用于作为一个基准分类器，比较容易解决多雷问题，且足够多训练数据下，KNN
+可以实现任意分布数据的贝叶斯误差收敛（泛一致性）。</p>
+<p>简言之，足够多训练数据下，KNN
+分类器收敛到贝叶斯分类器（误差收敛）。</p>
+<p>缺点是计算空间大，需要存储全部训练样本的信息，且计算开销大，需要计算测试样本与每一个训练样本的距离，同时同样容易陷入维数灾难，较少的训练样本性能一般也不太好。</p>
+<h2 id="主成分分析">主成分分析</h2>
+<h3 id="简介">简介</h3>
+<p>主成分分析（Principal Component Analysis,
+PCA）是统计学上常用的方法，通常是为了找出数据中<strong>最主要</strong>的元素和结构，去除噪音和冗余，将原有的复杂数据降维，揭示隐藏在复杂数据背后的简单结构。</p>
+<p>PCA
+的功能是简化复杂数据到低维空间，从而发现数据中隐藏的简单结构。</p>
+<p>其简单且无参数限制，被誉为应用线性代数最价值的结果之一。</p>
+<p>PCA 的目标是去除冗余，并发现重要特征。</p>
+<p>不同于 LDA（最小化类内散度和最大化类间距离），它是单纯的降维。</p>
+<h3 id="方差">方差</h3>
+<p>一般来说，方差是对于全体而言的，即 <span class="math display">\[
+\sigma^2=\frac{1}{n}\sum_{i=1}^n(x_i-\mu)^2
+\]</span> 其中，<span class="math inline">\(\mu\)</span>
+是全体均值，<span class="math inline">\(n\)</span> 是全体数量。</p>
+<p>但是考虑到，如果要计算所有的数据，负担太大，所以我们一般采用随机采样，然后计算这部分样本的方差，即<strong>样本方差</strong>
+<span class="math display">\[
+s^2=\frac{1}{n-1}\sum^n_{i=1}(x_i-\mu)^2
+\]</span> 其中，<span class="math inline">\(n-1\)</span>
+是贝塞尔矫正，为了平衡自由度降低导致计算得到的样本方差减低。</p>
+<p>但对于多维数据，我们并不能直接使用方差公式，此时需要改为用<strong>协方差</strong>
+<span class="math display">\[
+Cov(\boldsymbol{x},\boldsymbol{y})=\frac{1}{n-1}\sum^n_{i=1}(x_i-\bar{x})(y_i-\bar{y})
+\]</span> 协方差矩阵用于描述多维度之间的相关性。</p>
+<p><strong>协方差绝对值越大，其相关关系越明显。</strong></p>
+<p><strong>而方差的大小决定了数据在某一方向上的分散程度。</strong></p>
+<p>考虑一组数据</p>
+<table>
+<thead>
+<tr class="header">
+<th>房价（百万元）</th>
+<th>面积（百平米）</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td>10</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>1</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>7</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>3</td>
+</tr>
+</tbody>
+</table>
+<p>那么我们可以写出代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">data = [</span><br><span class="line">    [<span class="number">10</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">3</span>],</span><br><span class="line">    [<span class="number">10</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">3</span>]</span><br><span class="line">]</span><br><span class="line">np.cov(data)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">array([[14.3, 14.3],</span></span><br><span class="line"><span class="string">       [14.3, 14.3]])</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>可以发现，两类样本之间相关程度大，且在 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 方向分散程度一致。</p>
+<h3 id="基变换">基变换</h3>
+<p>考虑原坐标系为直角坐标系，则其的基（basis）为 <span class="math display">\[
+\begin{bmatrix}
+1&amp;0\\
+0&amp;1
+\end{bmatrix}
+\]</span> 考虑我们想将坐标 <span class="math inline">\((3,2)\)</span>
+转换到新正交基坐标系 <span class="math display">\[
+\begin{bmatrix}
+1/\sqrt{2}&amp;1/\sqrt{2}\\
+-1/\sqrt{2}&amp;1/\sqrt{2}
+\end{bmatrix}
+\]</span> 那么仅需计算 <span class="math display">\[
+\begin{bmatrix}
+1/\sqrt{2}&amp;1/\sqrt{2}\\
+-1/\sqrt{2}&amp;1/\sqrt{2}
+\end{bmatrix}\begin{pmatrix}
+3\\
+2
+\end{pmatrix}=\begin{pmatrix}
+5/\sqrt{2}\\
+-1/\sqrt{2}
+\end{pmatrix}
+\]</span> 同样的如果对三个点 <span class="math inline">\((1,1),(2,2),(3,3)\)</span>
+变换到新坐标系下，则计算 <span class="math display">\[
+\begin{bmatrix}
+1/\sqrt{2}&amp;1/\sqrt{2}\\
+-1/\sqrt{2}&amp;1/\sqrt{2}
+\end{bmatrix}\begin{pmatrix}
+1&amp;2&amp;3\\
+1&amp;2&amp;3
+\end{pmatrix}=\begin{pmatrix}
+2/\sqrt{2}&amp;4/\sqrt{2}&amp;6/\sqrt{2}\\
+0&amp;0&amp;0
+\end{pmatrix}
+\]</span>
+因此，基变换（坐标变换）可以被表示为矩阵相乘，使用矩阵对向量空间进行旋转（向量旋转）。</p>
+<h3 id="pca-算法">PCA 算法</h3>
+<p>基本数学工具是<strong>矩阵对角化</strong>。</p>
+<p>考虑房价与面积的数据，我们对矩阵进行矩阵对角化，得到</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">data = [</span><br><span class="line">    [<span class="number">10</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">3</span>],</span><br><span class="line">    [<span class="number">10</span>, <span class="number">2</span>, <span class="number">1</span>, <span class="number">7</span>, <span class="number">3</span>]</span><br><span class="line">]</span><br><span class="line">C = np.cov(data)</span><br><span class="line">eig_val, eig_vec = np.linalg.eig(C)</span><br><span class="line">eigC = np.diagflat(eig_val)</span><br><span class="line">eigC</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">array([[28.6,  0. ],</span></span><br><span class="line"><span class="string">       [ 0. ,  0. ]])</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>可以发现，矩阵对角化后显然仅有第一列数据是有意义的，而第二列数据的方差为
+0，其是无意义的。</p>
+<p>算法步骤如下：</p>
+<ol type="1">
+<li>将原始数据按列组成 <span class="math inline">\(n\times m\)</span>
+矩阵 <span class="math inline">\(X\)</span></li>
+<li>将 <span class="math inline">\(X\)</span>
+的每一行进行去中心化（零均值化），即减去这一行的均值</li>
+<li>求出协方差矩阵 <span class="math inline">\(C=\frac{1}{m}XX^T\)</span>（除以 <span class="math inline">\(m-1\)</span> 或者忽略都可以）</li>
+<li>求出协方差矩阵的特征值和特征向量</li>
+<li>将特征向量按特征值大小从上到下按行排列成矩阵，取前 <span class="math inline">\(k\)</span> 行组成矩阵 <span class="math inline">\(P\)</span>，即将矩阵从 <span class="math inline">\(n\)</span> 维降低到 <span class="math inline">\(k\)</span> 维。</li>
+<li><span class="math inline">\(Y=PX\)</span> 即为降维到 <span class="math inline">\(k\)</span> 维后的数据。</li>
+</ol>
+<h3 id="示例">示例</h3>
+<p>考虑 5 个二维样本 <span class="math display">\[
+X=\begin{bmatrix}
+-1&amp;-1&amp;0&amp;2&amp;0\\
+-2&amp;0&amp;0&amp;1&amp;1
+\end{bmatrix}
+\]</span> 去中心化（样本本身已经中心化了）。</p>
+<p>求协方差矩阵 <span class="math display">\[
+C=\frac{1}{5}\begin{bmatrix}
+-1&amp;-1&amp;0&amp;2&amp;0\\
+-2&amp;0&amp;0&amp;1&amp;1
+\end{bmatrix}\begin{bmatrix}
+-1&amp;-2\\
+-1&amp;0\\
+0&amp;0\\
+2&amp;1\\
+0&amp;1
+\end{bmatrix}=\begin{bmatrix}
+1.2&amp;0.8\\
+0.8&amp;1.2
+\end{bmatrix}
+\]</span> 求特征值及特征向量 <span class="math display">\[
+\lambda_1=2,\lambda_2=0.4\\
+c_1=(1,1)^T,c_2=(-1,1)^T
+\]</span> 那么可以得到标准化正交基（标准化需要向量长度为 1）为 <span class="math display">\[
+P=\begin{bmatrix}
+1/\sqrt{2}&amp;1/\sqrt{2}\\
+-1/\sqrt{2}&amp;1/\sqrt{2}
+\end{bmatrix}
+\]</span> 只选取特征值最大投影方向进行降维，那么 <span class="math display">\[
+Y=\begin{pmatrix}
+-3/\sqrt{2}&amp;-1/\sqrt{2}&amp;0&amp;3/\sqrt{2}&amp;-1/\sqrt{2}
+\end{pmatrix}
+\]</span></p>
+<blockquote>
+<p>这里是计算 <span class="math inline">\(Y&#39;=PX\)</span>，随后仅取第一行，因为第一行的特征值为
+2，是最大值。</p>
+</blockquote>
+<p>使用 <code>numpy</code> 可以写出代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line">X = [</span><br><span class="line">    [-<span class="number">1</span>, -<span class="number">1</span>, <span class="number">0</span>, <span class="number">2</span>, <span class="number">0</span>],</span><br><span class="line">    [-<span class="number">2</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>]</span><br><span class="line">]</span><br><span class="line">C = np.cov(X)</span><br><span class="line">eig_val, eig_vec = np.linalg.eig(C)</span><br><span class="line"><span class="built_in">print</span>(eig_val)</span><br><span class="line">Y = eig_vec @ X</span><br><span class="line">Y = Y[<span class="number">0</span>]</span><br><span class="line"><span class="built_in">print</span>(Y)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">[2.5 0.5]</span></span><br><span class="line"><span class="string">[ 0.70710678 -0.70710678  0.          0.70710678 -0.70710678]</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="聚类">聚类</h2>
+<h3 id="原理-1">原理</h3>
+<p>聚类目标：将数据集中的样本划分为若干个通常不相交的子集。</p>
+<p>聚类既可以作为一个单独过程（用于找寻数据内在的分布结构），也可作为分类等其他学习任务的前驱过程。</p>
+<h3 id="k-均值算法">K 均值算法</h3>
+<p>K 均值算法又称 K-means 算法，K 是聚类算法中类的个数，means
+是均值算法，故算法本身是采用均值算法把数据分成 K 类的算法。</p>
+<figure>
+<img src="/nonparametric-techniques-note/K均值算法流程.png" alt="K均值算法流程">
+<figcaption aria-hidden="true">K均值算法流程</figcaption>
+</figure>
+<p>在聚类任务中，我们通常定义一个聚类准则函数来评价聚类结果的质量，可以类比线性分类中的损失函数。</p>
+<p>如果聚类质量不满足要求，就要重复执行聚类过程，以优化结果。</p>
+<p>最常用的是误差平方和准则 <span class="math display">\[
+J_c=\sum^c_{j=1}\sum^{n_j}_{k=1}\|x_k-m_j\|^2
+\]</span> 其中 <span class="math inline">\(m_j=\frac{1}{n_j}\sum^{n_j}_{j=1}x_j\)</span>，是该集合的中心，用来代表
+K 个类型。</p>
+<p>而 <span class="math inline">\(J_c\)</span>
+是样本和集合中心的函数，在样本集 <span class="math inline">\(X\)</span>
+给定的情况下，<span class="math inline">\(J_c\)</span> 的取值取决于
+<span class="math inline">\(c\)</span> 个集合中心。</p>
+<p>试验样本聚合成 <span class="math inline">\(c\)</span>
+个类型时，所产生的总误差平方和 <span class="math inline">\(J_c\)</span>
+越小越好。</p>
+<p>考虑以下西瓜数据集，来运行 K 均值算法。</p>
+<figure>
+<img src="/nonparametric-techniques-note/西瓜数据集.png" alt="西瓜数据集">
+<figcaption aria-hidden="true">西瓜数据集</figcaption>
+</figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">distance</span>(<span class="params">x: <span class="built_in">list</span>, y: <span class="built_in">list</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    计算闵可夫斯基距离</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    p = <span class="built_in">len</span>(x)</span><br><span class="line">    <span class="keyword">return</span> np.linalg.norm(np.array(x, np.float64) - np.array(y, np.float64), <span class="built_in">ord</span> = p)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">Kmeans</span>(<span class="params">X: <span class="built_in">list</span>[<span class="built_in">tuple</span>[<span class="built_in">int</span>, <span class="built_in">int</span>]], K: <span class="built_in">int</span>, <span class="built_in">round</span>: <span class="built_in">int</span> = <span class="number">1</span></span>):</span><br><span class="line">    mu = random.choices(X, k = K)</span><br><span class="line">    colors = random.choices(<span class="string">&#x27;bgrcmyk&#x27;</span>, k = K)</span><br><span class="line">    <span class="comment"># mu = [X[5], X[11], X[26]]</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">round</span>):</span><br><span class="line">        omegas = [[] <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(K)]</span><br><span class="line">        <span class="keyword">for</span> x <span class="keyword">in</span> X:</span><br><span class="line">            dis = [distance(x, m) <span class="keyword">for</span> m <span class="keyword">in</span> mu]</span><br><span class="line">            idx = np.argmin(dis)</span><br><span class="line">            omegas[idx].append(x)</span><br><span class="line">        mu = [np.mean(omega, axis=<span class="number">0</span>, dtype = np.float64) <span class="keyword">for</span> omega <span class="keyword">in</span> omegas]</span><br><span class="line">        plt.subplot(<span class="built_in">round</span>, <span class="number">1</span>, i + <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">for</span> c, omega <span class="keyword">in</span> <span class="built_in">zip</span>(colors, omegas):</span><br><span class="line">            plt.scatter([p[<span class="number">0</span>] <span class="keyword">for</span> p <span class="keyword">in</span> omega], [p[<span class="number">1</span>] <span class="keyword">for</span> p <span class="keyword">in</span> omega], c = c, s = <span class="number">20</span>)</span><br><span class="line">    <span class="keyword">return</span> omegas</span><br><span class="line">X = [</span><br><span class="line">    (<span class="number">0.697</span>, <span class="number">0.46</span>), (<span class="number">0.774</span>, <span class="number">0.376</span>), (<span class="number">0.634</span>, <span class="number">0.264</span>), (<span class="number">0.608</span>, <span class="number">0.318</span>), (<span class="number">0.556</span>, <span class="number">0.215</span>),</span><br><span class="line">    (<span class="number">0.403</span>, <span class="number">0.237</span>), (<span class="number">0.481</span>, <span class="number">0.149</span>), (<span class="number">0.437</span>, <span class="number">0.211</span>), (<span class="number">0.666</span>, <span class="number">0.091</span>), (<span class="number">0.243</span>, <span class="number">0.267</span>),</span><br><span class="line">    (<span class="number">0.245</span>, <span class="number">0.057</span>), (<span class="number">0.343</span>, <span class="number">0.099</span>), (<span class="number">0.639</span>, <span class="number">0.161</span>), (<span class="number">0.657</span>, <span class="number">0.198</span>), (<span class="number">0.36</span>, <span class="number">0.37</span>),</span><br><span class="line">    (<span class="number">0.593</span>, <span class="number">0.042</span>), (<span class="number">0.719</span>, <span class="number">0.103</span>), (<span class="number">0.359</span>, <span class="number">0.188</span>), (<span class="number">0.339</span>, <span class="number">0.241</span>), (<span class="number">0.282</span>, <span class="number">0.257</span>),</span><br><span class="line">    (<span class="number">0.748</span>, <span class="number">0.232</span>), (<span class="number">0.714</span>, <span class="number">0.346</span>), (<span class="number">0.483</span>, <span class="number">0.312</span>), (<span class="number">0.478</span>, <span class="number">0.437</span>), (<span class="number">0.525</span>, <span class="number">0.369</span>),</span><br><span class="line">    (<span class="number">0.751</span>, <span class="number">0.489</span>), (<span class="number">0.532</span>, <span class="number">0.472</span>), (<span class="number">0.473</span>, <span class="number">0.376</span>), (<span class="number">0.725</span>, <span class="number">0.445</span>), (<span class="number">0.446</span>, <span class="number">0.459</span>)</span><br><span class="line">]</span><br><span class="line">Kmeans(X, <span class="number">3</span>, <span class="built_in">round</span> = <span class="number">5</span>)</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/nonparametric-techniques-note.html" title="模式识别-非参数技术笔记">https://hasegawaazusa.github.io/nonparametric-techniques-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/" rel="tag"><i class="fa fa-tag"></i> 模式识别</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/neural-network-note.html" rel="prev" title="模式识别-神经网络笔记">
+                  <i class="fa fa-chevron-left"></i> 模式识别-神经网络笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/laplace-transform-note.html" rel="next" title="拉普拉斯变换笔记">
+                  拉普拉斯变换笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">538k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:09</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关拉普拉斯变换的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="拉普拉斯变换笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/laplace-transform-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关拉普拉斯变换的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/laplace-transform-note/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E7%9A%84%E6%8B%89%E6%B0%8F%E5%8F%98%E6%8D%A2%E5%AF%B9%E7%85%A7%E8%A1%A8.png">
+<meta property="article:published_time" content="2023-06-22T12:45:56.000Z">
+<meta property="article:modified_time" content="2023-06-22T15:28:20.151Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="信号与系统">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/laplace-transform-note/%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E7%9A%84%E6%8B%89%E6%B0%8F%E5%8F%98%E6%8D%A2%E5%AF%B9%E7%85%A7%E8%A1%A8.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/laplace-transform-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/laplace-transform-note.html","path":"/laplace-transform-note.html","title":"拉普拉斯变换笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>拉普拉斯变换笔记 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">111</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8B%89%E6%99%AE%E6%8B%89%E6%96%AF%E5%8F%98%E6%8D%A2"><span class="nav-number">1.</span> <span class="nav-text">拉普拉斯变换</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%87%BD%E6%95%B0%E7%9A%84%E6%8B%89%E6%B0%8F%E5%8F%98%E6%8D%A2"><span class="nav-number">1.2.</span> <span class="nav-text">常用函数的拉氏变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B6%E8%B7%83%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.1.</span> <span class="nav-text">阶跃函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E6%95%B0%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.2.</span> <span class="nav-text">指数函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%82%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.3.</span> <span class="nav-text">幂函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%B2%E6%BF%80%E5%87%BD%E6%95%B0"><span class="nav-number">1.2.4.</span> <span class="nav-text">冲激函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E7%85%A7%E8%A1%A8"><span class="nav-number">1.2.5.</span> <span class="nav-text">对照表</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%80%A7%E8%B4%A8"><span class="nav-number">1.3.</span> <span class="nav-text">基本性质</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E5%8F%A0%E5%8A%A0"><span class="nav-number">1.3.1.</span> <span class="nav-text">线性（叠加）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E5%88%86%E6%80%A7"><span class="nav-number">1.3.2.</span> <span class="nav-text">微分性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%AF%E5%88%86%E6%80%A7"><span class="nav-number">1.3.3.</span> <span class="nav-text">积分性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A7%AF%E5%88%86%E5%BE%AE%E5%88%86%E6%80%A7%E8%B4%A8"><span class="nav-number">1.3.4.</span> <span class="nav-text">积分微分性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%B6%E7%A7%BB%E6%80%A7"><span class="nav-number">1.3.5.</span> <span class="nav-text">时移性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%91%E7%A7%BB%E6%80%A7"><span class="nav-number">1.3.6.</span> <span class="nav-text">频移性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%BA%E5%BA%A6%E5%8F%98%E5%8C%96"><span class="nav-number">1.3.7.</span> <span class="nav-text">尺度变化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%80%BC%E5%AE%9A%E7%90%86"><span class="nav-number">1.3.8.</span> <span class="nav-text">初值定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%88%E5%80%BC%E5%AE%9A%E7%90%86"><span class="nav-number">1.3.9.</span> <span class="nav-text">终值定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF"><span class="nav-number">1.3.10.</span> <span class="nav-text">卷积</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%89%E6%B0%8F%E9%80%86%E5%8F%98%E6%8D%A2"><span class="nav-number">1.4.</span> <span class="nav-text">拉氏逆变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E6%9E%9C%E8%BD%AC%E6%8D%A2"><span class="nav-number">1.4.1.</span> <span class="nav-text">结果转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%A0%E5%BC%8F%E5%88%86%E8%A7%A3"><span class="nav-number">1.4.2.</span> <span class="nav-text">因式分解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%95%99%E6%95%B0%E5%AE%9A%E7%90%86"><span class="nav-number">1.4.3.</span> <span class="nav-text">留数定理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%95%99%E6%95%B0%E5%AE%9A%E7%90%86-plus"><span class="nav-number">1.4.4.</span> <span class="nav-text">留数定理 Plus</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/laplace-transform-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="拉普拉斯变换笔记 | 独奏の小屋">
+      <meta itemprop="description" content="有关拉普拉斯变换的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          拉普拉斯变换笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-06-22 20:45:56 / 修改时间：23:28:20" itemprop="dateCreated datePublished" datetime="2023-06-22T20:45:56+08:00">2023-06-22</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关拉普拉斯变换的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="拉普拉斯变换">拉普拉斯变换</h1>
+<h2 id="定义">定义</h2>
+<p>拉普拉斯变换（Laplace transform）是傅里叶变换的 Plus
+版本，它在傅里叶变换的基础条件上进行优化，使得对于任意情况的函数都能做拉普拉斯变换。</p>
+<p><strong>拉普拉斯正变换</strong>的定义如下 <span class="math display">\[
+F(s)=\int^{+\infty}_0f(t)e^{-st}dt
+\]</span> 其中，<span class="math inline">\(s=\sigma+\mathrm{j}\omega\)</span>
+是一个复平面上的数。</p>
+<p>拉氏变换的唯一条件是 <span class="math inline">\(\sigma&gt;0\)</span>，即 <span class="math inline">\(s\)</span> 是复数平面中右半平面的数。</p>
+<p><strong>拉普拉斯逆变换</strong>的定义如下 <span class="math display">\[
+\newcommand{\j}{\mathrm{j}}
+f(t)=\frac{1}{2\pi\j}\int^{\sigma+\j\infty}_{\sigma-\j\infty}F(s)e^{st}\mathrm{d}{s}
+\]</span> 在复变函数中，我们将 <span class="math inline">\(f(t)\)</span>
+称作<strong>原函数</strong>，<span class="math inline">\(F(s)\)</span>
+称作<strong>象函数</strong>（像函数），它们自己构成一对互逆变换，常记作
+<span class="math inline">\(\mathscr{L}[f(t)]\)</span> 和 <span class="math inline">\(\mathscr{L}^{-1}[F(s)]\)</span>。</p>
+<h2 id="常用函数的拉氏变换">常用函数的拉氏变换</h2>
+<h3 id="阶跃函数">阶跃函数</h3>
+<p><span class="math display">\[
+u(t)\to \frac{1}{s}
+\]</span></p>
+<h3 id="指数函数">指数函数</h3>
+<p><span class="math display">\[
+e^{-at}\to \frac{1}{a+s}
+\]</span></p>
+<h3 id="幂函数">幂函数</h3>
+<p><span class="math display">\[
+t^n\to \frac{n!}{s^{n+1}}
+\]</span></p>
+<p>简单的有， <span class="math display">\[
+t\to \frac{1}{s^2}\\
+t^2\to \frac{2!}{s^3}
+\]</span></p>
+<h3 id="冲激函数">冲激函数</h3>
+<p><span class="math display">\[
+\delta(t)\to 1
+\]</span></p>
+<p>特别地，如果是 <span class="math inline">\(t=t_0\)</span>
+时刻的冲激函数，此时有 <span class="math display">\[
+\delta(t-t_0)\to e^{st_0}
+\]</span> 这是拉氏变换的<strong>时移特性</strong>。</p>
+<h3 id="对照表">对照表</h3>
+<figure>
+<img src="/laplace-transform-note/常用函数的拉氏变换对照表.png" alt="常用函数的拉氏变换对照表">
+<figcaption aria-hidden="true">常用函数的拉氏变换对照表</figcaption>
+</figure>
+<h2 id="基本性质">基本性质</h2>
+<h3 id="线性叠加">线性（叠加）</h3>
+<p><span class="math display">\[
+K_1f_1(t)+K_2f_2(t)\to K_1F_1(s)+K_2F_2(s)
+\]</span></p>
+<p>比如说 <span class="math inline">\(f(t)=\sin{(\omega t)}\)</span>
+的拉氏变换，考虑 <span class="math display">\[
+\sin{\omega t}=\frac{e^{\mathrm{j}\omega t}-e^{-\mathrm{j}\omega
+t}}{2\mathrm{j}}
+\]</span> 同时有 <span class="math display">\[
+e^{\mathrm{j}\omega t}\to \frac{1}{s-\mathrm{j}\omega}\\
+e^{-\mathrm{j}\omega t}\to \frac{1}{s+\mathrm{j}\omega}
+\]</span> 那么由叠加性可解 <span class="math display">\[
+\sin{\omega
+t}=\frac{1}{2\mathrm{j}}[\frac{1}{s-\mathrm{j}\omega}-\frac{1}{s+\mathrm{j}\omega}]=\frac{\omega}{s^2+\omega^2}
+\]</span></p>
+<h3 id="微分性">微分性</h3>
+<p><span class="math display">\[
+\frac{\mathrm{d}}{\mathrm{d}t}f(t)\to sF(s)-f(0)
+\]</span></p>
+<p>其中，<span class="math inline">\(f(0)\)</span> 是 <span class="math inline">\(f(t)\)</span> 在 <span class="math inline">\(t=0\)</span> 时的起始值。</p>
+<h3 id="积分性">积分性</h3>
+<p><span class="math display">\[
+\int^t_{-\infin} f(\tau)\mathrm{d}\tau\to
+\frac{F(s)}{s}+\frac{f^{-1}(0)}{s}
+\]</span></p>
+<p>其中，<span class="math inline">\(f^{-1}(0)\)</span> 是 <span class="math inline">\(\int^0_{-\infin}
+f(\tau)\mathrm{d}\tau\)</span>。</p>
+<h3 id="积分微分性质">积分微分性质</h3>
+<p>可以看出，如果 <span class="math inline">\(f(t)\)</span>
+是零初值函数，那么</p>
+<p>当 <span class="math inline">\(F(s)\)</span> 除以 <span class="math inline">\(s\)</span> 时，相当于对原函数积分；</p>
+<p>当 <span class="math inline">\(F(s)\)</span> 乘以 <span class="math inline">\(s\)</span> 时，相当于对原函数微分。</p>
+<p>所以我们也会将 <span class="math inline">\(\frac{1}{s}\)</span>
+称作积分环节；<span class="math inline">\(s\)</span> 称作微分环节。</p>
+<p>同时，在频域上也有相关的性质。 <span class="math display">\[
+\frac{\mathrm{d}}{\mathrm{d}s}F(s)\to -tf(t)\\
+\int^\infin_sF(s)\mathrm{d}s\to\frac{f(t)}{t}
+\]</span></p>
+<h3 id="时移性">时移性</h3>
+<p><span class="math display">\[
+f(t-t_0)\cdot u(t-t_0)\to F(s)\cdot e^{-st_0}
+\]</span></p>
+<p>换句话说，当你在时域平移时，频域会乘以 <span class="math inline">\(e^{-st_0}\)</span>（增强或减弱）。</p>
+<h3 id="频移性">频移性</h3>
+<p><span class="math display">\[
+f(t)e^{-at}\to F(s+a)
+\]</span></p>
+<h3 id="尺度变化">尺度变化</h3>
+<p><span class="math display">\[
+f(at)\to \frac{1}{a}F(\frac{s}{a})
+\]</span></p>
+<p>相当于时域缩小 <span class="math inline">\(a\)</span>
+倍，频域就会扩大 <span class="math inline">\(a\)</span>
+倍，反之亦然。</p>
+<h3 id="初值定理">初值定理</h3>
+<p><span class="math display">\[
+\lim_{t\to0}f(t)=\lim_{s\to\infty}s\cdot F(s)
+\]</span></p>
+<p>即时域的初值可以转化为频域的终值。</p>
+<h3 id="终值定理">终值定理</h3>
+<p><span class="math display">\[
+\lim_{t\to\infty}f(t)=\lim_{s\to0}s\cdot F(s)
+\]</span></p>
+<p>即时域的终值可以转化为频域的初值。</p>
+<h3 id="卷积">卷积</h3>
+<p><span class="math display">\[
+f_1(t)*f_2(t)\to F_1(s)F_2(s)
+\]</span></p>
+<p>与傅里叶变换一样，时域卷积可以转化为频域乘积。</p>
+<p>同理，频域卷积也相当于时域乘积 <span class="math display">\[
+\frac{1}{2\pi\mathrm{j}}[F_1(s)*F_2(s)]\to f_1(t)f_2(t)
+\]</span></p>
+<h2 id="拉氏逆变换">拉氏逆变换</h2>
+<h3 id="结果转换">结果转换</h3>
+<p>一般来说一个拉氏正变换的结果一般是有理分式，即 <span class="math display">\[
+F(s)=\frac{a_ms^m+a_{m-1}s^{m-1}+\cdots+a_0}{b_ns^n+b_{n-1}s^{n-1}+\cdots+b_0}
+\]</span> 其中，<span class="math inline">\(a_i,b_i\)</span>
+均为实数，<span class="math inline">\(m,n\)</span> 均为正整数。</p>
+<p>同时，我们也可以改写成另一种形式，即 <span class="math display">\[
+F(s)=\frac{a_m(s-z_1)(s-z_2)\cdots(s-z_m)}{b_n(s-p_1)(s-p_2)\cdots(s-p_n)}
+\]</span> 我们把 <span class="math inline">\(z_1,z_2,\cdots,z_m\)</span>
+称作 <span class="math inline">\(F(s)\)</span> 的零点；而 <span class="math inline">\(p_1,p_2,\cdots,p_n\)</span> 称作 <span class="math inline">\(F(s)\)</span> 的极点。</p>
+<h3 id="因式分解">因式分解</h3>
+<p>考虑对于所有有理式可因式分解（或部分分解）为 <span class="math display">\[
+F(s)=\frac{K_1}{s-p_1}+\frac{K_2}{s-p_2}+\cdots
+\]</span> 那么自然我们可以运用公式对其进行逆变换 <span class="math display">\[
+f(t)=K_1e^{p_1t}+K_2e^{p_2t}+\cdots
+\]</span></p>
+<h3 id="留数定理">留数定理</h3>
+<p>考虑因式分解后的结果中，我们主要求的是未知量 <span class="math inline">\(K_1,K_2,\cdots\)</span>，那么不妨对式子进行变形
+<span class="math display">\[
+(s-p_1)F(s)=K_1+(s-p_1)\frac{K_2}{s-p_2}+\cdots
+\]</span> 那么当 <span class="math inline">\(s=p_1\)</span> 时的值，就是
+<span class="math inline">\(K_1\)</span> 的值，即 <span class="math display">\[
+(p_1-p_1)F(p_1)=K_1
+\]</span> 考虑如下函数的逆变换 <span class="math display">\[
+F(s)=\frac{10(s+2)(s+5)}{s(s+1)(s+3)}
+\]</span> 假设其形式是 <span class="math display">\[
+F(s)=\frac{K_1}{s}+\frac{K_2}{s+1}+\frac{K_3}{s+3}
+\]</span> 那么 <span class="math display">\[
+K_1=sF(s)|_{s=0}=\frac{10\times(0+2)\times(0+5)}{(0+1)(0+3)}=\frac{100}{3}
+\]</span> 同理 <span class="math display">\[
+K_2=-20,K_3=-\frac{10}{3}
+\]</span> 那么得到因式分解结果为 <span class="math display">\[
+F(s)=\frac{100}{3s}-\frac{20}{s+1}-\frac{10}{3(s+3)}
+\]</span> 那么其逆变换结果 <span class="math display">\[
+f(t)=\frac{100}{3}-20e^{-t}-\frac{10}{3}e^{-3t}
+\]</span> 特别地，如果极点有重根，例如 <span class="math display">\[
+F(s)=\frac{1}{s(s+1)^2}
+\]</span> 那么将会考虑分解为 <span class="math display">\[
+F(s)=\frac{1}{s(s+1)^2}=\frac{A}{s}+\frac{B}{s+1}+\frac{C}{(s+1)^2}
+\]</span> 然后同理，依次计算 <span class="math display">\[
+A=\lim_{s\to0}sF(s)=1\\
+B=\lim_{s\to1}(s+1)^2F&#39;(s)=-1\\
+C=\lim_{s\to1}(s+1)^2F(s)=1
+\]</span> 那么有逆变换结果 <span class="math display">\[
+f(t)=1-e^{-t}+te^{-t}
+\]</span> 更扩展的，假设是 <span class="math inline">\(n\)</span>
+阶重根（极点），那么计算 <span class="math display">\[
+K_n=\frac{1}{(n-1)!}\frac{\mathrm{d}^{n-1}}{\mathrm{d}^{n-1}s}(s+p_n)^nF(s)
+\]</span></p>
+<h3 id="留数定理-plus">留数定理 Plus</h3>
+<p>考虑公式 <span class="math display">\[
+\newcommand{\j}{\mathrm{j}}
+f(t)=\frac{1}{2\pi\j}\int^{\sigma+\j\infty}_{\sigma-\j\infty}F(s)e^{st}\mathrm{d}{s}
+\]</span> 拉普拉斯逆变换等于 <span class="math inline">\(F(s)e^{st}\)</span> 的所有留数之和。</p>
+<p>记在 <span class="math inline">\(s=p_i\)</span> 极点处的留数为 <span class="math inline">\(r_i\)</span>，那么 <span class="math display">\[
+F(s)\to \sum^n_{i=1}r_i
+\]</span> 一般不作考点。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/laplace-transform-note.html" title="拉普拉斯变换笔记">https://hasegawaazusa.github.io/laplace-transform-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E4%BF%A1%E5%8F%B7%E4%B8%8E%E7%B3%BB%E7%BB%9F/" rel="tag"><i class="fa fa-tag"></i> 信号与系统</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/nonparametric-techniques-note.html" rel="prev" title="模式识别-非参数技术笔记">
+                  <i class="fa fa-chevron-left"></i> 模式识别-非参数技术笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/discrete-time-system-note.html" rel="next" title="离散时间系统">
+                  离散时间系统 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">538k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:09</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

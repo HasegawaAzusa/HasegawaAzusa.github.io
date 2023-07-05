@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关神经网络的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="模式识别-神经网络笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/neural-network-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关神经网络的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/M-P%E7%A5%9E%E7%BB%8F%E5%85%83%E6%A8%A1%E5%9E%8B.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/%E7%90%86%E6%83%B3%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0-%E9%98%B6%E8%B7%83%E5%87%BD%E6%95%B0.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/sigmoid%E6%BF%80%E6%B4%BB%E5%87%BD%E6%95%B0.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/%E7%BA%BF%E6%80%A7%E4%BF%AE%E6%AD%A3%E5%8D%95%E5%85%83.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/%E4%B8%A4%E4%B8%AA%E8%BE%93%E5%85%A5%E7%A5%9E%E7%BB%8F%E5%85%83%E7%9A%84%E4%B8%A4%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E6%84%9F%E7%9F%A5%E6%9C%BA.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/%E5%BC%82%E6%88%96%E9%97%AE%E9%A2%98%E7%9A%84%E5%A4%9A%E5%B1%82%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/%E5%A4%9A%E5%B1%82%E5%89%8D%E9%A6%88%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/%E5%85%A8%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C%E7%A4%BA%E6%84%8F%E5%9B%BE.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E8%AE%A1%E7%AE%97%E7%A4%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/%E7%A5%9E%E7%BB%8F%E5%85%83%E7%9A%84%E5%A0%86%E5%8F%A0.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/BP%E7%AE%97%E6%B3%95%E7%A4%BA%E4%BE%8B%E7%BD%91%E7%BB%9C.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/%E8%BE%93%E5%87%BA%E5%B1%82%E7%9A%84%E8%AE%A1%E7%AE%97.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/neural-network-note/%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E9%80%92.png">
+<meta property="article:published_time" content="2023-06-01T14:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-19T01:39:42.056Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="模式识别">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/neural-network-note/M-P%E7%A5%9E%E7%BB%8F%E5%85%83%E6%A8%A1%E5%9E%8B.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/neural-network-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/neural-network-note.html","path":"/neural-network-note.html","title":"模式识别-神经网络笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>模式识别-神经网络笔记 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">111</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB"><span class="nav-number">1.</span> <span class="nav-text">模式识别</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.1.</span> <span class="nav-text">神经网络</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A5%9E%E7%BB%8F%E5%85%83%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">神经元模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%84%9F%E7%9F%A5%E6%9C%BA"><span class="nav-number">1.1.2.</span> <span class="nav-text">感知机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%B1%82%E7%BD%91%E7%BB%9C"><span class="nav-number">1.1.3.</span> <span class="nav-text">多层网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E8%BF%9E%E6%8E%A5%E7%BD%91%E7%BB%9C"><span class="nav-number">1.1.4.</span> <span class="nav-text">全连接网络</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8D%E5%90%91%E4%BC%A0%E6%92%AD%E7%AE%97%E6%B3%95"><span class="nav-number">1.1.5.</span> <span class="nav-text">反向传播算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E7%AD%96%E7%95%A5"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">更新策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E9%80%86%E4%BC%A0%E9%80%92"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">误差逆传递</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B7%E7%A7%AF%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C"><span class="nav-number">1.2.</span> <span class="nav-text">卷积神经网络</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/neural-network-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="模式识别-神经网络笔记 | 独奏の小屋">
+      <meta itemprop="description" content="有关神经网络的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          模式识别-神经网络笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-01 22:00:00" itemprop="dateCreated datePublished" datetime="2023-06-01T22:00:00+08:00">2023-06-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-06-19 09:39:42" itemprop="dateModified" datetime="2023-06-19T09:39:42+08:00">2023-06-19</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>15k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>14 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关神经网络的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="模式识别">模式识别</h1>
+<h2 id="神经网络">神经网络</h2>
+<h3 id="神经元模型">神经元模型</h3>
+<p>神经网络中最基本的成分是神经元（neuron）模型，在 M-P
+神经元模型中，每个神经元与 <span class="math inline">\(n\)</span>
+个其他神经元连接（connect），接受 <span class="math inline">\(n\)</span>
+个神经元传递过来的输入信号，这些输入信号通过带权重的连接进行传递，神经元接收到的总输入值将与神经元的阈值（偏置）进行比较，然后通过“激活函数”（activation
+function）处理以产生神经元的输出。</p>
+<figure>
+<img src="/neural-network-note/M-P神经元模型.png" alt="M-P神经元模型">
+<figcaption aria-hidden="true">M-P神经元模型</figcaption>
+</figure>
+<p>理想值的激活函数是阶跃函数 <span class="math inline">\(\mathrm{sgn}(x)\)</span>，对于任意输入只有 0 和 1
+的输出。</p>
+<figure>
+<img src="/neural-network-note/理想激活函数-阶跃函数.png" alt="理想激活函数-阶跃函数">
+<figcaption aria-hidden="true">理想激活函数-阶跃函数</figcaption>
+</figure>
+<p>但由于阶跃函数具有不连续，不光滑等不太好的性质，因此常用 Sigmoid 或者
+ReLU
+函数作为激活函数（对于模型的训练常常使用的是类梯度下降法，而类梯度下降法要求函数必须连续光滑）。</p>
+<figure>
+<img src="/neural-network-note/sigmoid激活函数.png" alt="sigmoid激活函数">
+<figcaption aria-hidden="true">sigmoid激活函数</figcaption>
+</figure>
+<p>sigmoid 函数又叫挤压函数，它的作用是将任意值挤压到 <span class="math inline">\([0,1]\)</span> 范围内。</p>
+<p>把这样许多个神经元按一定层次结构连接起来，就得到了神经网络。</p>
+<p>在现实应用中，往往会选择更合适的 ReLU 函数，即线性修正单元（Rectified
+Linear Unit），它的梯度仅能取 0 和 1，当输入小于 0 时，梯度为
+0；当输入大于 0 时，梯度为 1。</p>
+<p>好处是，ReLU 的梯度的连乘不会收敛到 0，连乘的结果也只可能是两个值：0
+或 1。</p>
+<p>此时，如果梯度值为 1，梯度保持值不变进行前向传播；如果值为
+0，梯度从该位置停止前向传播。</p>
+<figure>
+<img src="/neural-network-note/线性修正单元.png" alt="线性修正单元">
+<figcaption aria-hidden="true">线性修正单元</figcaption>
+</figure>
+<p>使用 ReLU
+的好处是，梯度下降的速度快，而且模型更加仿生，同时可以避免<strong>梯度消失</strong>或者<strong>梯度爆炸</strong>问题。</p>
+<p>但缺点是，神经元死亡问题。</p>
+<blockquote>
+<p>当 ReLU 函数的输出值为 0 时，ReLU 的导数也为 0，因此会导致 <span class="math inline">\(\Delta w\)</span> 一直为 0，进而导致 <span class="math inline">\(w\)</span>
+无法被更新，因此会导致这个神经元永久性死亡（一直输出 0）。</p>
+</blockquote>
+<h3 id="感知机">感知机</h3>
+<p>如果我们以神经网络的方式抽象感知器，可以发现它是由两层神经元组成的神经网络，如下图所示。</p>
+<figure>
+<img src="/neural-network-note/两个输入神经元的两层神经网络感知机.png" alt="两个输入神经元的两层神经网络感知机">
+<figcaption aria-hidden="true">两个输入神经元的两层神经网络感知机</figcaption>
+</figure>
+<p>输入层接收外界输入信号后传递给输出层，输出层是 M-P 神经元。</p>
+<p>感知机（Perceptron）能容易地实现逻辑与、或、非运算。</p>
+<ul>
+<li>与：令 <span class="math inline">\(w_1=w_2=1,b=-2\)</span>，则 <span class="math inline">\(y=f(1\cdot x_1+1\cdot x_2-2)\)</span>，仅在 <span class="math inline">\(x_1=x_2=1\)</span> 时，输出 <span class="math inline">\(y=1\)</span></li>
+<li>或：令 <span class="math inline">\(w_1=w_2=1,b=-0.5\)</span>，则
+<span class="math inline">\(y=f(1\cdot x_1+1\cdot
+x_2-0.5)\)</span>，仅在 <span class="math inline">\(x_1=11\)</span> 或
+<span class="math inline">\(x_2=1\)</span> 时，输出 <span class="math inline">\(y=1\)</span></li>
+<li>非：令 <span class="math inline">\(w_1=-0.6,w_2=0,b=0.5\)</span>，则
+<span class="math inline">\(y=f(-0.6\cdot x_1+0\cdot
+x_2+0.5)\)</span>，仅在 <span class="math inline">\(x_1=1\)</span>
+时，输出 <span class="math inline">\(y=1\)</span>；当 <span class="math inline">\(x_1=0\)</span> 时，输出 <span class="math inline">\(y=0\)</span></li>
+</ul>
+<p>更一般地，我们可以把阈值（偏置）看作是<strong>哑节点</strong>（dummy
+node），即像是线性分类中我们会增广权重矩阵，将偏置放入权重矩阵中，同样的哑节点也是一个固定输入的节点，这样我们就可以只训练权重而不用管阈值（偏置）。</p>
+<p>感知机的学习规则非常简单，类似于感知器，对于训练样本 <span class="math inline">\((\boldsymbol{x},y)\)</span>，若感知机输出为 <span class="math inline">\(\hat{y}\)</span>（预测输出），则将权重调整 <span class="math display">\[
+w_i\gets w_i+\Delta w_i\\
+\Delta w_i=\eta(y-\hat{y})x_i
+\]</span> 其中 <span class="math inline">\(\eta\in (0,1)\)</span>
+称为学习率。</p>
+<p>可以发现，如果说感知机对训练样本预测正确，即 <span class="math inline">\(y=\hat{y}\)</span>，则感知器不发生变化；否则将根据错误程度进行权重调整。</p>
+<p>我们可以将 <span class="math inline">\(w_1,w_2\)</span>
+写成权重的形式，则可以得知该感知机的分类平面为 <span class="math display">\[
+g(\boldsymbol{x})=\boldsymbol{w}^T\boldsymbol{x}+b
+\]</span>
+不难发现，感知机可以处理的问题都是线性可分问题，这与感知器算法相比毫无优势可言。</p>
+<p>但感知机是多层神经网络的开始，可以从与、或、非问题中发现，其可以从中提取新特征。</p>
+<h3 id="多层网络">多层网络</h3>
+<p>一个二输入两层感知机网络，在平面上可以做线性二分类问题。但是在处理非线性问题，如异或问题时，还是难以解决。</p>
+<p>以异或问题举例，为了解决该问题，有人提出，一条线无法分类，那么我们使用两条线即可。</p>
+<figure>
+<img src="/neural-network-note/异或问题的多层网络结构.png" alt="异或问题的多层网络结构">
+<figcaption aria-hidden="true">异或问题的多层网络结构</figcaption>
+</figure>
+<p>我们引入两个感知机，从两个角度解决原特征无法解决的问题，然后再通过输出层输出结果，这样我们就从单元线性的角度解决了整体非线性问题。</p>
+<p>更一般的，常见的多层神经网络是如图所示的层级结构，每层神经元与下一层神经元全连接，神经元之间不存在同层连接也不存在跨层连接（现代神经网络模型中，残差网络
+ResNet
+存在跨层连接），我们把这样的神经网络模型成为<strong>多层前馈神经网络</strong>（multi-layer
+feedforward neural networks）。</p>
+<figure>
+<img src="/neural-network-note/多层前馈神经网络结构示意图.png" alt="多层前馈神经网络结构示意图">
+<figcaption aria-hidden="true">多层前馈神经网络结构示意图</figcaption>
+</figure>
+<p>其中输入层神经元接收外界输入，隐层与输出层神经元对信号进行加工，最终结果由输出层神经输出；换言之，输入层神经元仅是接受输入，不进行函数处理，隐层与输出层包含功能神经元。</p>
+<p>而神经网络的学习过程，就是根据训练数据来调整神经元之间的连接权重，以及每个功能神经元的阈值（偏置）。</p>
+<p>或者说，<strong>神经网络学习到的东西都蕴含在连接权重和阈值（偏置）中</strong>。</p>
+<h3 id="全连接网络">全连接网络</h3>
+<p>对于多层前馈神经网络，又称作是全连接网络，可以看作如下图所示的结构。</p>
+<figure>
+<img src="/neural-network-note/全连接网络示意图.png" alt="全连接网络示意图">
+<figcaption aria-hidden="true">全连接网络示意图</figcaption>
+</figure>
+<p>所谓深度网络，是指有许多的隐藏层的神经网络。</p>
+<p>一个实际的计算例子示意图为</p>
+<figure>
+<img src="/neural-network-note/神经网络计算示例.png" alt="神经网络计算示例">
+<figcaption aria-hidden="true">神经网络计算示例</figcaption>
+</figure>
+<p>我们可以发现，输入向量 <span class="math inline">\(\boldsymbol{x}\)</span>
+会被传递给第一个隐藏层，然后每个神经元输出一个值，作为新的输入向量传递给下一个隐藏层。</p>
+<p>不妨我们给每个神经元都定义一个权重 <span class="math inline">\(\boldsymbol{w}\)</span> 和偏置 <span class="math inline">\(b\)</span>，那么对于某一个神经元的输出可以写成
+<span class="math display">\[
+y_i=\sigma(\boldsymbol{w}_i^T\boldsymbol{x}+b_i)=\sigma(z_i)
+\]</span> 其中 <span class="math inline">\(\sigma(z)\)</span>
+是一个激活函数。</p>
+<p>而对于<strong>同一个隐藏层</strong>，不难发现，如果把一个隐藏层看作是黑盒函数的话，那么它将是一个输入向量、输出向量的向量函数，即
+<span class="math display">\[
+f(\boldsymbol{x})=\boldsymbol{y}=\begin{bmatrix}
+y_1\\
+y_2\\
+\vdots\\
+y_l
+\end{bmatrix}
+\]</span> 例如对于第一个隐藏层可以写作 <span class="math display">\[
+f(\begin{bmatrix}1\\-1\end{bmatrix})=\begin{bmatrix}\sigma(\boldsymbol{w}_1^T\boldsymbol{x}+b_1)\\\sigma(\boldsymbol{w}_2^T\boldsymbol{x}+b_2)\end{bmatrix}=\begin{bmatrix}\sigma(4)\\\sigma(-2)\end{bmatrix}=\begin{bmatrix}0.98\\0.12\end{bmatrix}
+\]</span>
+我们不妨以层为单位建立数学模型，可以发现每一层拥有一个<strong>权重矩阵</strong>和<strong>偏置向量</strong>。权重矩阵由同一层的所有神经元的权重向量组成，偏置向量由同一层的所有神经元的偏置组成。</p>
+<p>即对于一个隐藏层，有偏置矩阵和偏置向量 <span class="math display">\[
+W=\begin{bmatrix}
+\boldsymbol{w}_1\\
+\boldsymbol{w}_2\\
+\vdots\\
+\boldsymbol{w}_l
+\end{bmatrix},\boldsymbol{b}=\begin{bmatrix}
+b_1\\
+b_2\\
+\vdots\\
+b_l
+\end{bmatrix}
+\]</span> 那么一个隐藏层所代表的数学模型为 <span class="math display">\[
+f(\boldsymbol{x})=\sigma(W\boldsymbol{x}+\boldsymbol{b})
+\]</span> 这是一个向量函数，输入一个向量，输出一个向量。其中 <span class="math inline">\(\sigma\)</span> 函数代表对每一行的值进行激活。</p>
+<p>有时为了训练的方便，我们也会对输入向量进行增广化，使得偏置向量与权重矩阵堆叠，即
+<span class="math display">\[
+f(\boldsymbol{x})=\begin{bmatrix}W\\\boldsymbol{b}\end{bmatrix}\begin{bmatrix}\boldsymbol{x}\\1\end{bmatrix}=A\begin{bmatrix}\boldsymbol{x}\\1\end{bmatrix}
+\]</span> 其中， <span class="math display">\[
+A=\begin{bmatrix}
+\boldsymbol{w}_1\\
+\boldsymbol{w}_2\\
+\vdots\\
+\boldsymbol{w}_l\\
+\boldsymbol{b}
+\end{bmatrix}
+\]</span> 基于 <code>numpy</code> 我们可以写出代码</p>
+<p><code>Layer</code> 神经网络层级描述代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> typing <span class="keyword">import</span> Protocol</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Activation</span>(<span class="title class_ inherited__">Protocol</span>):</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">active</span>(<span class="params">self, x: np.float64</span>) -&gt; np.float64:</span><br><span class="line">        ...</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">diff</span>(<span class="params">self, x: np.float64</span>) -&gt; np.float64:</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Sigmoid</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    激活函数 1/(1+e^(-x))</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">active</span>(<span class="params">self, x: np.float64</span>) -&gt; np.float64:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">diff</span>(<span class="params">self, x: np.float64</span>) -&gt; np.float64:</span><br><span class="line">        <span class="keyword">return</span> self.active(x) * (<span class="number">1</span> - self.active(x))</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">ReLU</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    线性激活单元</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">active</span>(<span class="params">self, x: np.float64</span>) -&gt; np.float64:</span><br><span class="line">        y = x</span><br><span class="line">        y[x &lt;= <span class="number">0</span>] = np.float64(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> y</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">diff</span>(<span class="params">self, x: np.float64</span>) -&gt; np.float64:</span><br><span class="line">        y = np.ones(x.size, x.dtype)</span><br><span class="line">        y[x &lt;= <span class="number">0</span>] = np.float64(<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> y</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Layer</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    神经网络层级类</span></span><br><span class="line"><span class="string">    属性：</span></span><br><span class="line"><span class="string">        weight: 该层级的权重矩阵，由该层级所包含的神经元的权重组成</span></span><br><span class="line"><span class="string">        bias: 该层级的偏置向量，由该层级所包含的神经元的偏置组成</span></span><br><span class="line"><span class="string">        activation: 该神经网络层级的所有神经元的激活函数</span></span><br><span class="line"><span class="string">        eta: 学习率</span></span><br><span class="line"><span class="string">        _next: 该层级所连接的下一层级</span></span><br><span class="line"><span class="string">        _prev: 该层级所连接的上一层级</span></span><br><span class="line"><span class="string">        _in: 该层级的上一次输入</span></span><br><span class="line"><span class="string">        _out: 该层级的上一次输出</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    weight: np.ndarray</span><br><span class="line">    bias: np.ndarray</span><br><span class="line">    activation: Activation</span><br><span class="line">    eta: np.float64</span><br><span class="line">    _<span class="built_in">next</span>: <span class="string">&#x27;Layer&#x27;</span></span><br><span class="line">    _prev: <span class="string">&#x27;Layer&#x27;</span></span><br><span class="line">    _<span class="keyword">in</span>: np.ndarray</span><br><span class="line">    _out: np.ndarray</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, weight: np.ndarray, bias: np.ndarray, _<span class="built_in">next</span>: <span class="string">&#x27;Layer&#x27;</span> = <span class="literal">None</span>, _prev: <span class="string">&#x27;Layer&#x27;</span> = <span class="literal">None</span>, activation: Activation = Sigmoid(<span class="params"></span>), eta: np.float64 = <span class="number">1</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            weight: 该层级的权重矩阵，一个二维矩阵</span></span><br><span class="line"><span class="string">                    第一个维度代表不同的神经元，第二个维度代表来自哪个神经元的输入</span></span><br><span class="line"><span class="string">            bias: 该层级的偏置向量，一个向量</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.weight = np.array(weight, dtype = np.float64)</span><br><span class="line">        self.bias = np.array(bias, dtype = np.float64)</span><br><span class="line">        self._<span class="built_in">next</span> = _<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">if</span> _<span class="built_in">next</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            self._<span class="built_in">next</span>._prev = self</span><br><span class="line">        self._prev = _prev</span><br><span class="line">        <span class="keyword">if</span> _prev <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            self._prev._<span class="built_in">next</span> = self</span><br><span class="line">        self.activation = activation</span><br><span class="line">        self.eta = eta</span><br><span class="line">        self._<span class="keyword">in</span> = np.array([], dtype = np.float64)</span><br><span class="line">        self._out = np.array([], dtype = np.float64)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x: np.ndarray</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        正向传播</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            x: 输入向量</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self._<span class="keyword">in</span> = np.array(x, dtype = np.float64)</span><br><span class="line">        self._out = self.activation.active(np.dot(self.weight, self._<span class="keyword">in</span>) + self.bias)</span><br><span class="line">        <span class="keyword">if</span> self._<span class="built_in">next</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            self._<span class="built_in">next</span>.forward(self._out)</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">backward</span>(<span class="params">self, delta: np.ndarray</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        反向传播</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            delta: 误差</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        diff = self.activation.diff(np.dot(self.weight, self._<span class="keyword">in</span>) + self.bias)</span><br><span class="line">        <span class="keyword">if</span> self._prev <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            self._prev.backward(np.dot(self.weight.T, (delta * diff)))</span><br><span class="line">        self.weight = self.weight - self.eta * np.dot((diff * delta).reshape(-<span class="number">1</span>, <span class="number">1</span>), self._<span class="keyword">in</span>.reshape((<span class="number">1</span>, -<span class="number">1</span>)))</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> <span class="string">f&quot;Layer(weight=<span class="subst">&#123;self.weight&#125;</span>, bias=<span class="subst">&#123;self.bias&#125;</span>, in=<span class="subst">&#123;self._<span class="keyword">in</span>&#125;</span>, out=<span class="subst">&#123;self._out&#125;</span>, activation=<span class="subst">&#123;self.activation.__class__&#125;</span>)&quot;</span></span><br></pre></td></tr></table></figure>
+<p><code>Network</code> 神经网络描述代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Network</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    神经网络类</span></span><br><span class="line"><span class="string">    属性：</span></span><br><span class="line"><span class="string">        layers: 该神经网络所包含的所有层级</span></span><br><span class="line"><span class="string">        _in: 该神经网络的上次输入</span></span><br><span class="line"><span class="string">        _out: 该神经网络的上次输出</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    head_layer: Layer</span><br><span class="line">    tail_layer: Layer</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, head_layer: Layer, tail_layer: Layer = <span class="literal">None</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            head_layer: 该神经网络的第一个神经元层级</span></span><br><span class="line"><span class="string">            tail_layer: 该神经网络的最后一个神经元层级（输出层级）</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.head_layer = head_layer</span><br><span class="line">        <span class="keyword">if</span> tail_layer <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">            self.tail_layer = head_layer</span><br><span class="line">            <span class="keyword">while</span> self.tail_layer._<span class="built_in">next</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                self.tail_layer = self.tail_layer._<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            self.tail_layer = tail_layer</span><br><span class="line">        self._<span class="keyword">in</span> = np.array([], dtype = np.float64)</span><br><span class="line">        self._out = np.array([], dtype = np.float64)</span><br><span class="line"></span><br><span class="line"><span class="meta">    @classmethod</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">create</span>(<span class="params">cls, layers: <span class="built_in">list</span>[Layer]</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        根据给定的层级参数，创建一个神经网络</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            layer_args: 给定的层级参数，每一个元素都是一个元组，元组元素为(权重矩阵，偏置向量)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        head_layer = layers[<span class="number">0</span>]</span><br><span class="line">        layer = head_layer</span><br><span class="line">        <span class="keyword">for</span> l <span class="keyword">in</span> layers[<span class="number">1</span>:]:</span><br><span class="line">            l._prev = layer</span><br><span class="line">            layer._<span class="built_in">next</span> = l</span><br><span class="line">            layer = l</span><br><span class="line">        <span class="keyword">return</span> cls(head_layer, layer)</span><br><span class="line">    </span><br><span class="line"><span class="meta">    @property</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">layers</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        神经元的所有层级列表</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        _layers = [self.head_layer]</span><br><span class="line">        <span class="keyword">while</span> _layers[-<span class="number">1</span>]._<span class="built_in">next</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            _layers.append(_layers[-<span class="number">1</span>]._<span class="built_in">next</span>)</span><br><span class="line">        <span class="keyword">return</span> _layers</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">error</span>(<span class="params">self, x: np.ndarray, y: np.ndarray</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        获取该输入输出在该网络的均方误差</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self.head_layer.forward(x)</span><br><span class="line">        E = self.tail_layer._out - y</span><br><span class="line">        <span class="keyword">return</span> np.dot(E, E) / <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x: np.ndarray</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        正向传播</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            x: 输入向量</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        self._<span class="keyword">in</span> = np.array(x, dtype = np.float64)</span><br><span class="line">        self.head_layer.forward(self._<span class="keyword">in</span>)</span><br><span class="line">        self._out = self.tail_layer._out</span><br><span class="line">        <span class="keyword">return</span> self._out</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">out_list</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        获取所有层级的上一次输出</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        layer = self.head_layer</span><br><span class="line">        out = []</span><br><span class="line">        <span class="keyword">while</span> layer <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">            out.append(layer._out)</span><br><span class="line">            layer = layer._<span class="built_in">next</span></span><br><span class="line">        <span class="keyword">return</span> out</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">back_propagate</span>(<span class="params">self, x: np.ndarray, y: np.ndarray</span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        反向传播</span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">            x: 输入向量</span></span><br><span class="line"><span class="string">            y: 预期输出向量</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        x = np.array(x, dtype = np.float64)</span><br><span class="line">        y = np.array(y, dtype = np.float64)</span><br><span class="line">        self.head_layer.forward(x)</span><br><span class="line">        E = self.tail_layer._out - y</span><br><span class="line">        self.tail_layer.backward(E)</span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line">            </span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__repr__</span>(<span class="params">self</span>):</span><br><span class="line">        _<span class="built_in">repr</span> = <span class="string">f&quot;Network(head_layer=<span class="subst">&#123;self.head_layer&#125;</span>, tail_layer=<span class="subst">&#123;self.tail_layer&#125;</span>, in=<span class="subst">&#123;self._<span class="keyword">in</span>&#125;</span>, out=<span class="subst">&#123;self._out&#125;</span>)&quot;</span></span><br><span class="line">        <span class="keyword">return</span> _<span class="built_in">repr</span></span><br></pre></td></tr></table></figure>
+<p>其中使用 <code>weight</code> 描述权重矩阵，<code>bias</code>
+描述偏置向量，<code>_next</code>
+表示与该层连接的下一层，<code>_prev</code> 表示与该层连接的上一层。</p>
+<p>在这里我们只关注正向传播算法，根据以上理论，输入一个向量 <span class="math inline">\(x\)</span>，那么将输出权重矩阵乘以输入加上偏置的结果。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">self, x: np.ndarray</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    正向传播</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        x: 输入向量</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    self._<span class="keyword">in</span> = np.array(x, dtype = np.float64)</span><br><span class="line">    self._out = self.activation.active(np.dot(self.weight, x) + self.bias)</span><br><span class="line">    <span class="keyword">if</span> self._<span class="built_in">next</span> <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        self._<span class="built_in">next</span>.forward(self._out)</span><br><span class="line">    <span class="keyword">return</span> self</span><br></pre></td></tr></table></figure>
+<p>如上代码，接受的输入向量将与该层的权重矩阵相乘，加上偏置后使用激活函数进行激活，得到该层的输出；如果该层与其他层相连接，那么将该层的输出作为下一层的输入传播下去；直到该层为最终层（输出层），结束传播。</p>
+<p>我们通过代码创建一个三层的神经网络（不计算输入层），其中
+<code>create</code>
+的参数为一个列表，列表中每个元素都应该是一个二元元组，二元元组由每一层的权重矩阵和偏置组成，作为神经网络的参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">network = Network.create([</span><br><span class="line">    ([[<span class="number">1</span>, -<span class="number">2</span>], [-<span class="number">1</span>, <span class="number">1</span>]], [<span class="number">1</span>, <span class="number">0</span>]),</span><br><span class="line">    ([[<span class="number">2</span>, -<span class="number">1</span>], [-<span class="number">2</span>, -<span class="number">1</span>]], [<span class="number">0</span>, <span class="number">0</span>]),</span><br><span class="line">    ([[<span class="number">3</span>, -<span class="number">1</span>], [-<span class="number">1</span>, <span class="number">4</span>]], [-<span class="number">2</span>, <span class="number">2</span>])</span><br><span class="line">])</span><br></pre></td></tr></table></figure>
+<p>我们使用向量 <code>(1,-1)</code> 进行正向传播，结果与理论相符。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">x = [<span class="number">1</span>, -<span class="number">1</span>]</span><br><span class="line">network.forward(x)</span><br><span class="line"><span class="built_in">print</span>(network.out_list())</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">[array([0.98201379, 0.11920292]), array([0.86351831, 0.11073744]), array([0.61770478, 0.82912398])]</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>其中，<code>out_list</code>
+函数是获取神经网络中层与层之间传递的输出向量。</p>
+<p>对于整一个神经网络，我们也可以看作是一个向量函数，内部层与层做线性运算，即
+<span class="math display">\[
+f(\begin{bmatrix}1\\-1\end{bmatrix})=\begin{bmatrix}0.62\\0.83\end{bmatrix},f(\begin{bmatrix}0\\0\end{bmatrix})=\begin{bmatrix}0.51\\0.85\end{bmatrix}
+\]</span> <img src="/neural-network-note/神经元的堆叠.png" alt="神经元的堆叠"></p>
+<h3 id="反向传播算法">反向传播算法</h3>
+<h4 id="更新策略">更新策略</h4>
+<p>在感知器模型中，我们会使用梯度下降算法来训练我们的模型，但神经网络是一个参数庞大的模型，如果正向的对所有神经元都计算梯度，那么毫无疑问计算量是巨大的。</p>
+<p>为了更高效的计算梯度，我们使用反向传播算法（backpropagation）。</p>
+<p>首先我们通过正向传播，我们可以得到我们的输出值（预测值）<span class="math inline">\(\hat{\boldsymbol{y}}\)</span>，我们的目标是使输出值（预测值）
+<span class="math inline">\(\hat{\boldsymbol{y}}\)</span>
+与目标值（样本值）<span class="math inline">\(\boldsymbol{y}\)</span>
+相接近，使得神经网络可以正确地将输入映射到输出。</p>
+<p>例如对于下图网络，我们输入向量 <span class="math inline">\((0.05,0.10)\)</span>，网络输出向量 <span class="math inline">\((0.75,0.77)\)</span>，但我们想要它输出目标向量
+<span class="math inline">\((0.01,0.99)\)</span>。</p>
+<figure>
+<img src="/neural-network-note/BP算法示例网络.png" alt="BP算法示例网络">
+<figcaption aria-hidden="true">BP算法示例网络</figcaption>
+</figure>
+<p>那么首先我们需要定义一个误差函数（损失函数），用于判断输出与目标的偏差，一般使用最常见的均方根误差函数
+<span class="math display">\[
+E=\frac{1}{2}\sum^l_{i=1}(\hat{y}_i-y_i)^2=\frac{1}{2}(\hat{\boldsymbol{y}}-\boldsymbol{y})^T(\hat{\boldsymbol{y}}-\boldsymbol{y})
+\]</span> 其中 <span class="math inline">\(\hat{y}_i,y_i\)</span>
+代表向量 <span class="math inline">\(\hat{\boldsymbol{y}},\boldsymbol{y}\)</span> 的第
+<span class="math inline">\(i\)</span> 个元素。</p>
+<p>独立看待第 <span class="math inline">\(i\)</span>
+个输出的均方根误差函数，可以写成 <span class="math display">\[
+E_i=\frac{1}{2}(\hat{y}_i-y_i)^2
+\]</span> <strong>以下推导部分，仅对向量的第 <span class="math inline">\(k\)</span>
+个元素指明小标，常量忽略小标。</strong></p>
+<p>反向传播算法基于梯度下降策略，对于某一个连接权重而言，我们有 <span class="math display">\[
+w_k\gets w_k+\Delta w_k\\
+\Delta w_k=-\eta\frac{\partial E}{\partial w_k}
+\]</span> <img src="/neural-network-note/输出层的计算.png" alt="输出层的计算"></p>
+<p>求误差对权重的梯度，那么根据链式法则，有 <span class="math display">\[
+\frac{\partial E}{\partial w_k}=\frac{\partial E}{\partial
+y}\frac{\partial y}{\partial z}\frac{\partial z}{\partial w_k}
+\]</span></p>
+<blockquote>
+<p>单个输出的误差受该神经元的输出影响；该神经元的输出受激活函数的输入影响；激活函数的输入受权重（和偏置）的影响。</p>
+</blockquote>
+<p>其中 <span class="math display">\[
+\frac{\partial E}{\partial y}=-(\hat{y}-y)
+\]</span> 在输出时即可确定这个值； <span class="math display">\[
+y=\sigma(\boldsymbol{w}^T\boldsymbol{x}+b)=\sigma(z)\\
+\frac{\partial y}{\partial z}=\frac{\partial \sigma}{\partial
+z}=\sigma&#39;(z)
+\]</span> 在正向传播时就可以确定这个值； <span class="math display">\[
+z=\boldsymbol{w}^T\boldsymbol{x}+b\\
+\frac{\partial z}{\partial w_k}=x_k
+\]</span> 即输入向量各分量之和。</p>
+<p>那么，误差对权重的梯度即为 <span class="math display">\[
+\frac{\partial E}{\partial w_k}=
+-(\hat{y}-y)\sigma&#39;(z)x_k
+\]</span> 不妨定义 <span class="math inline">\(\delta=-(\hat{y}-y)=y-\hat{y}\)</span>，即<strong>误差对权重的梯度可以写为</strong>
+<span class="math display">\[
+\frac{\partial E}{\partial w_k}=
+\delta\sigma&#39;(z)x_k
+\]</span> 考虑到对于每一个神经元，都有权重向量 <span class="math display">\[
+\boldsymbol{w}=\begin{bmatrix}
+w_1\\
+w_2\\
+\vdots\\
+w_l
+\end{bmatrix}
+\]</span>
+那么<strong>单个神经元的输出误差对其权重向量的梯度可以写为</strong>
+<span class="math display">\[
+\frac{\partial E}{\partial \boldsymbol{w}}=\begin{bmatrix}
+\frac{\partial E}{\partial w_1}\\
+\frac{\partial E}{\partial w_2}\\
+\vdots\\
+\frac{\partial E}{\partial w_l}
+\end{bmatrix}
+=\begin{bmatrix}
+\delta\sigma&#39;(z)x_1\\
+\delta\sigma&#39;(z)x_2\\
+\vdots\\
+\delta\sigma&#39;(z)x_l\\
+\end{bmatrix}
+\]</span> 其中 <span class="math inline">\(\sigma&#39;(z)=\sigma&#39;(\boldsymbol{w}^T\boldsymbol{x}+b)\)</span>。</p>
+<p>而一个神经层级的输出误差可以写成 <span class="math display">\[
+\boldsymbol{E}=\begin{bmatrix}
+E_1\\
+E_2\\
+\vdots\\
+E_l
+\end{bmatrix}
+\]</span> 那么其的误差可以定义为 <span class="math display">\[
+\Delta=\begin{bmatrix}
+\delta_1\\
+\delta_2\\
+\vdots\\
+\delta_l
+\end{bmatrix}
+=\begin{bmatrix}
+y_1-\hat{y}_1\\
+y_2-\hat{y}_2\\
+\vdots\\
+y_l-\hat{y}_l
+\end{bmatrix}
+\]</span> 那么一个神经层级的输出误差对其权重的梯度可以写为 <span class="math display">\[
+\frac{\partial \boldsymbol{E}}{\partial W}=\begin{bmatrix}
+\frac{\partial E_1}{\partial \boldsymbol{w}^T_1}\\
+\frac{\partial E_2}{\partial \boldsymbol{w}^T_2}\\
+\vdots\\
+\frac{\partial E_l}{\partial \boldsymbol{w}^T_l}
+\end{bmatrix}
+=\begin{bmatrix}
+\delta_1\sigma&#39;(z_1)x_{1}&amp;
+\delta_1\sigma&#39;(z_1)x_{2}&amp;
+\cdots&amp;
+\delta_1\sigma&#39;(z_1)x_{l}\\
+\delta_2\sigma&#39;(z_2)x_{1}&amp;
+\delta_2\sigma&#39;(z_2)x_{2}&amp;
+\cdots&amp;
+\delta_2\sigma&#39;(z_2)x_{l}\\
+\vdots&amp;\vdots&amp;\vdots&amp;\vdots\\
+\delta_l\sigma&#39;(z_l)x_{1}&amp;
+\delta_l\sigma&#39;(z_l)x_{2}&amp;
+\cdots&amp;
+\delta_l\sigma&#39;(z_l)x_{l}
+\end{bmatrix}
+\]</span>
+结果是一个跟权重矩阵同大小的矩阵，梯度矩阵的每一行是对每个神经元权重向量的更新，每一列是对上一层连接权重的更新。</p>
+<h4 id="误差逆传递">误差逆传递</h4>
+<p>我们从上面的推导可以发现，梯度下降法中的重点是求解 <span class="math inline">\(\delta\)</span>，这是因为 <span class="math inline">\(\sigma&#39;(z)\)</span> 和 <span class="math inline">\(x\)</span> 都可以在正向传播中求得，而 <span class="math inline">\(\delta\)</span> 却不行。</p>
+<p><span class="math inline">\(\delta=y-\hat{y}\)</span>，即神经元输出减去对这个神经元的预期输出，显然，除了输出层神经元的预期输出是我们确定的以外，我们无法直接获取到隐藏层的神经元预期输出。</p>
+<p>为了获取到隐藏层的误差，我们需要做一些数学推导。</p>
+<p>首先需要明确的是，我们仅需要误差 <span class="math inline">\(\delta\)</span> 而非 <span class="math inline">\(E,\hat{y}\)</span>。</p>
+<p>考虑单一隐藏层神经元，我们有 <span class="math display">\[
+\frac{\partial E}{\partial w_k}=\frac{\partial E}{\partial
+y}\frac{\partial y}{\partial z}\frac{\partial z}{\partial w_k}
+\]</span>
+但是特别的是，这里的隐藏神经元的误差由下一层的误差<strong>影响</strong>，即
+<span class="math display">\[
+\frac{\partial E}{\partial y}=\frac{\partial
+(E_1+E_2+\cdots+E_l)}{\partial y}
+\]</span></p>
+<blockquote>
+<p>注意，这里的用词是影响而非等于，所以仅仅是偏导相等。</p>
+</blockquote>
+<p>其中，<span class="math inline">\(E_1,E_2,\cdots,E_l\)</span>
+是下一层的误差函数。</p>
+<p>那么根据链式法则肯定有 <span class="math display">\[
+\frac{\partial E_i}{\partial y}=\frac{\partial E_i}{\partial
+z_i}\frac{\partial z_i}{\partial y}
+\]</span> 其中，<span class="math inline">\(z_i=\boldsymbol{w}^T\boldsymbol{y}+b\)</span>，<span class="math inline">\(y\)</span> 是 <span class="math inline">\(\boldsymbol{y}\)</span>
+的其中一个元素（<strong>忽略了小标</strong>），<span class="math inline">\(z_i\)</span> 是对于下一层第 <span class="math inline">\(i\)</span>
+个神经元的网络输入（乘以权重后的）。</p>
+<blockquote>
+<p>下一层神经元的输出误差受下一层神经元的输入影响；下一层神经元的输入受该层神经元的输出影响。</p>
+</blockquote>
+<p>那么有 <span class="math display">\[
+\frac{\partial E_i}{\partial
+z_i}=-(\hat{y}_i-y_i)\sigma&#39;(z_i)=\delta_i\sigma&#39;(z_i)\\
+\frac{\partial z_i}{\partial y}=w_i
+\]</span>
+输出误差对输入的梯度可以由<strong>更新策略</strong>中的推导得到，而<strong>下一层的网络输入对这一层的输出的梯度是这两个神经元连接的权重系数</strong>。</p>
+<p>那么 <span class="math display">\[
+\frac{\partial E_i}{\partial y}=\delta_i\sigma&#39;(z_i)w_i\\
+\frac{\partial E}{\partial
+y}=\delta_1\sigma&#39;(z_1)w_1+\delta_2\sigma&#39;(z_2)w_2+\cdots+\delta_l\sigma&#39;(z_l)w_l
+\]</span>
+我们发现，下一层的误差被乘以权重和导数来反向传播到上一层了，故这也是为什么反向传播算法又称作<strong>误差逆传播算法</strong>。</p>
+<figure>
+<img src="/neural-network-note/误差逆传递.png" alt="误差逆传递">
+<figcaption aria-hidden="true">误差逆传递</figcaption>
+</figure>
+<h4 id="总结">总结</h4>
+<p>在神经网络中，每一层都可以看作是一个向量函数 <span class="math inline">\(f(\boldsymbol{x})=W\boldsymbol{x}+\boldsymbol{b}\)</span>，我们不妨记每一层（隐藏层与输出层）依次为
+<span class="math inline">\(f_1(\boldsymbol{x}),f_2(\boldsymbol{x}),\cdots,f_d(\boldsymbol{x})\)</span>，其中
+<span class="math inline">\(d\)</span>
+为网络深度；每一层的权重矩阵和偏置向量为 <span class="math inline">\(W_1,W_2,\cdots,W_d\)</span> 和 <span class="math inline">\(\boldsymbol{b}_1,\boldsymbol{b}_2,\cdots,\boldsymbol{b}_d\)</span>。</p>
+<p>权重矩阵由同一层的所有神经元的权重向量组成，偏置向量由同一层的所有神经元的偏置组成。</p>
+<p>即对于一个隐藏层，有偏置矩阵和偏置向量 <span class="math display">\[
+W=\begin{bmatrix}
+\boldsymbol{w}_1\\
+\boldsymbol{w}_2\\
+\vdots\\
+\boldsymbol{w}_l
+\end{bmatrix},\boldsymbol{b}=\begin{bmatrix}
+b_1\\
+b_2\\
+\vdots\\
+b_l
+\end{bmatrix}
+\]</span> 我们有 <span class="math display">\[
+\boldsymbol{y}_1=f_1(\boldsymbol{x})\\
+\boldsymbol{y}_2=f_2(\boldsymbol{y}_1)\\
+\vdots\\
+\boldsymbol{y}_d=f_d(\boldsymbol{y}_{d-1})
+\]</span> 其中，<span class="math inline">\(\boldsymbol{y}_d\)</span>
+即是神经网络的输出，以上行为即<strong>正向传播</strong>。</p>
+<p>记输出层误差为 <span class="math inline">\(\boldsymbol{\delta}_d=\boldsymbol{y}_d-\boldsymbol{y}\)</span>，其中
+<span class="math inline">\(\boldsymbol{y}\)</span> 为目标输出向量。</p>
+<p>那么误差向前传递，<span class="math inline">\(\boldsymbol{\delta}_i=W_{i+1}^T\boldsymbol{\delta}_{i+1}\)</span>，其中
+<span class="math inline">\(i=0,1,\cdots,d-1\)</span>。</p>
+<p>权重矩阵从输出层向前递归，更新策略为 <span class="math display">\[
+W&#39;_i=W_i+\eta\Delta W_i\\
+\Delta
+W_i=\boldsymbol{\delta}_i\sigma&#39;(\boldsymbol{z})\boldsymbol{x}_i\\
+\sigma&#39;(\boldsymbol{z})
+=\begin{bmatrix}
+\sigma&#39;(z_1)\\
+\sigma&#39;(z_2)\\
+\vdots\\
+\sigma&#39;(z_l)\\
+\end{bmatrix}\\
+\]</span> 在代码中，对于每一层写有 <code>backward</code>
+函数，用于传递误差更新权重矩阵。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">backward</span>(<span class="params">self, delta: np.ndarray</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    反向传播</span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        delta: 误差</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    diff = self.activation.diff(np.dot(self.weight, self._<span class="keyword">in</span>) + self.bias)</span><br><span class="line">    <span class="keyword">if</span> self._prev <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">        self._prev.backward(np.dot(self.weight.T, (delta * diff)))</span><br><span class="line">    self.weight = self.weight - self.eta * np.dot((diff * delta).reshape(-<span class="number">1</span>, <span class="number">1</span>), self._<span class="keyword">in</span>.reshape((<span class="number">1</span>, -<span class="number">1</span>)))</span><br></pre></td></tr></table></figure>
+<p>其中 <code>delta</code> 为误差值 <span class="math inline">\(\boldsymbol{\delta}\)</span>，<code>diff</code> 为
+<span class="math inline">\(\sigma&#39;(\boldsymbol{z})\)</span>。</p>
+<h2 id="卷积神经网络">卷积神经网络</h2>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/neural-network-note.html" title="模式识别-神经网络笔记">https://hasegawaazusa.github.io/neural-network-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%A8%A1%E5%BC%8F%E8%AF%86%E5%88%AB/" rel="tag"><i class="fa fa-tag"></i> 模式识别</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/sm-series-note.html" rel="prev" title="SM系列算法">
+                  <i class="fa fa-chevron-left"></i> SM系列算法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/nonparametric-techniques-note.html" rel="next" title="模式识别-非参数技术笔记">
+                  模式识别-非参数技术笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">538k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:09</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

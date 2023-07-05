@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关离散时间系统的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="离散时间系统">
+<meta property="og:url" content="https://hasegawaazusa.github.io/discrete-time-system-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关离散时间系统的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/discrete-time-system-note/%E7%A6%BB%E6%95%A3%E6%97%B6%E9%97%B4%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%9B%BE%E5%BD%A2.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/discrete-time-system-note/%E5%B0%BA%E5%BA%A6%E5%8F%98%E5%8C%96%E7%A4%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/discrete-time-system-note/%E6%8C%87%E6%95%B0%E5%BA%8F%E5%88%97%E5%9B%BE%E5%83%8F.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/discrete-time-system-note/%E6%AD%A3%E5%BC%A6%E5%BA%8F%E5%88%97%E5%9B%BE%E5%83%8F.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/discrete-time-system-note/%E7%A6%BB%E6%95%A3%E6%97%B6%E9%97%B4%E7%B3%BB%E7%BB%9F%E7%A4%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/discrete-time-system-note/%E5%9D%87%E5%8C%80%E6%80%A7%E5%92%8C%E5%8F%A0%E5%8A%A0%E6%80%A7%E7%A4%BA%E4%BE%8B.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/discrete-time-system-note/%E5%B7%AE%E5%88%86%E6%96%B9%E7%A8%8B%E7%A4%BA%E4%BE%8B%E7%B3%BB%E7%BB%9F.png">
+<meta property="article:published_time" content="2023-06-23T06:00:00.000Z">
+<meta property="article:modified_time" content="2023-07-05T04:51:08.095Z">
+<meta property="article:author" content="qsdz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/discrete-time-system-note/%E7%A6%BB%E6%95%A3%E6%97%B6%E9%97%B4%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%9B%BE%E5%BD%A2.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/discrete-time-system-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/discrete-time-system-note.html","path":"/discrete-time-system-note.html","title":"离散时间系统"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>离散时间系统 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">111</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A6%BB%E6%95%A3%E6%97%B6%E9%97%B4%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.</span> <span class="nav-text">离散时间系统</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%AB%98%E4%B8%AD%E6%95%B0%E5%AD%A6%E6%95%B0%E5%88%97"><span class="nav-number">1.1.</span> <span class="nav-text">高中数学——数列</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.1.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%89%E5%B7%AE%E6%95%B0%E5%88%97"><span class="nav-number">1.1.2.</span> <span class="nav-text">等差数列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%89%E6%AF%94%E6%95%B0%E5%88%97"><span class="nav-number">1.1.3.</span> <span class="nav-text">等比数列</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A6%BB%E6%95%A3%E6%97%B6%E9%97%B4%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.</span> <span class="nav-text">离散时间信号</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%8F%E5%88%97"><span class="nav-number">1.2.1.</span> <span class="nav-text">序列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%A7%E8%B4%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">性质</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%80%A7"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">线性性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B3%E7%A7%BB%E6%80%A7"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">平移性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E8%A4%B6"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">反褶</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%BA%E5%BA%A6%E5%8F%98%E5%8C%96"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">尺度变化</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%8F%E5%85%B8%E5%BA%8F%E5%88%97"><span class="nav-number">1.2.3.</span> <span class="nav-text">经典序列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%BD%8D%E6%A0%B7%E5%80%BC%E4%BF%A1%E5%8F%B7"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">单位样值信号</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E4%BD%8D%E9%98%B6%E8%B7%83%E5%BA%8F%E5%88%97"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">单位阶跃序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9F%A9%E5%BD%A2%E5%BA%8F%E5%88%97"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">矩形序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%9C%E5%8F%98%E5%BA%8F%E5%88%97"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">斜变序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%87%E6%95%B0%E5%BA%8F%E5%88%97"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">指数序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A3%E5%BC%A6%E5%BA%8F%E5%88%97"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">正弦序列</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%8D%E6%8C%87%E6%95%B0%E5%BA%8F%E5%88%97"><span class="nav-number">1.2.3.7.</span> <span class="nav-text">复指数序列</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E5%8F%B7%E7%9A%84%E5%88%86%E8%A7%A3"><span class="nav-number">1.2.4.</span> <span class="nav-text">信号的分解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.3.</span> <span class="nav-text">数学模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E5%AD%A6%E6%A8%A1%E5%9E%8B-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">数学模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9D%87%E5%8C%80%E6%80%A7%E4%B8%8E%E5%8F%A0%E5%8A%A0%E6%80%A7"><span class="nav-number">1.3.2.</span> <span class="nav-text">均匀性与叠加性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%AE%E5%88%86%E6%96%B9%E7%A8%8B"><span class="nav-number">1.3.3.</span> <span class="nav-text">差分方程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BE%AE%E5%88%86"><span class="nav-number">1.3.4.</span> <span class="nav-text">微分</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%B3%BB%E6%95%B0%E7%BA%BF%E6%80%A7%E5%B7%AE%E5%88%86%E6%96%B9%E7%A8%8B%E7%9A%84%E6%B1%82%E8%A7%A3"><span class="nav-number">1.3.5.</span> <span class="nav-text">常系数线性差分方程的求解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E7%A8%8B%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.3.5.1.</span> <span class="nav-text">方程表示</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%AD%E4%BB%A3%E6%B3%95"><span class="nav-number">1.3.5.2.</span> <span class="nav-text">迭代法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%B6%E5%9F%9F%E7%BB%8F%E5%85%B8%E6%B3%95"><span class="nav-number">1.3.5.3.</span> <span class="nav-text">时域经典法</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">111</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/discrete-time-system-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="离散时间系统 | 独奏の小屋">
+      <meta itemprop="description" content="有关离散时间系统的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          离散时间系统
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-06-23 14:00:00" itemprop="dateCreated datePublished" datetime="2023-06-23T14:00:00+08:00">2023-06-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-05 12:51:08" itemprop="dateModified" datetime="2023-07-05T12:51:08+08:00">2023-07-05</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关离散时间系统的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="离散时间系统">离散时间系统</h1>
+<h2 id="高中数学数列">高中数学——数列</h2>
+<h3 id="基本概念">基本概念</h3>
+<p>在高中数学中，曾学过概念数列，数列是一组<strong>序列</strong>，即有序数的列表，例如
+<span class="math display">\[
+\{x_0,x_1,\cdots,x_n\}
+\]</span>
+其中有无穷数列、有穷数列的区分，又有周期数列、非周期序列的区分。</p>
+<p>如果一个数列可以用表达式描述，那么记作 <span class="math display">\[
+a_n=f(n)
+\]</span> 其中，<span class="math inline">\(n\in\Zeta\)</span>。</p>
+<p>而在高中阶段，研究的最多的是<strong>等差数列</strong>和<strong>等比数列</strong>。</p>
+<h3 id="等差数列">等差数列</h3>
+<p>考虑一个数列，其前一个值与后一个值的差值是恒定的，记作 <span class="math display">\[
+a_{n+1}-a_n=d
+\]</span> 其中，<span class="math inline">\(d\)</span> 是恒定常数。</p>
+<p>那么我们把这样一个组合的数列称作是<strong>等差数列</strong>，这样的一个数列为
+<span class="math display">\[
+\{a_0,a_0+d,\cdots,a_0+nd\}
+\]</span> 很自然，我们可以使用一个表达式描述它，即 <span class="math display">\[
+a_n=a_0+nd
+\]</span> <span class="math inline">\(a_0\)</span>
+是数列<strong>首项元素</strong>，<span class="math inline">\(d\)</span>
+是数列<strong>公差</strong>。</p>
+<p>等差数列的求和也是容易的，我们记 <span class="math inline">\(S_n\)</span> 为一个数列的前 <span class="math inline">\(n\)</span> 项元素和，对等差数列而言，有 <span class="math display">\[
+S_n=a_0+a_1+\cdots+a_n=\frac{(a_0+a_n)n}{2}
+\]</span> 描述为，<strong>等差数列的前 <span class="math inline">\(n\)</span> 项和为首项加末项的和，乘以 <span class="math inline">\(n\)</span> 除以 <span class="math inline">\(2\)</span>。</strong></p>
+<h3 id="等比数列">等比数列</h3>
+<p>考虑一个数列，其前一个值与后一个值的比值是恒定的，记作 <span class="math display">\[
+\frac{a_{n+1}}{a_n}=q
+\]</span> 其中，<span class="math inline">\(q\)</span> 是恒定常数。</p>
+<p>那么我们把这样一个组合的数列称作是<strong>等差数列</strong>，这样的一个数列为
+<span class="math display">\[
+\{a_0,a_0q,\cdots,a_0q^{n-1}\}
+\]</span> 很自然，我们可以使用一个表达式描述它，即 <span class="math display">\[
+a_n=a_0q^{n-1}
+\]</span> <span class="math inline">\(a_0\)</span>
+是数列<strong>首项元素</strong>，<span class="math inline">\(q\)</span>
+是数列<strong>公比</strong>。</p>
+<p>等比数列的求和也是容易的，我们记 <span class="math inline">\(S_n\)</span> 为一个数列的前 <span class="math inline">\(n\)</span> 项元素和，对等比数列而言，有 <span class="math display">\[
+S_n=a_0+a_1+\cdots+a_n=\frac{a_1(1-q^n)}{(1-q)}
+\]</span> 这里需要注意的是，公比 <span class="math inline">\(q&gt;1\)</span> 才成立，如果公比 <span class="math inline">\(q=1\)</span>，这也是一个等比数列，但此时其前 <span class="math inline">\(n\)</span> 项和为 <span class="math inline">\(S_n=na_0\)</span>。</p>
+<h2 id="离散时间信号">离散时间信号</h2>
+<h3 id="序列">序列</h3>
+<p>离散时间信号可以看作是连续时间信号的采样结果，它是时间上不连续的<strong>序列</strong>，通常给出函数值的离散时刻间隔是均匀的。如果该时间间隔为
+<span class="math inline">\(T\)</span>，那么定义以 <span class="math inline">\(x(nT)\)</span>
+描述该离散时间信号，一般为方便描述会取 <span class="math inline">\(nT\)</span> 为整数，那么可以简写为 <span class="math display">\[
+x(n)=\{\cdots,x_{-1},x_0,x_1,\cdots\}
+\]</span> 这与高中的数列知识类似的，只是扩展了负整数域。</p>
+<figure>
+<img src="/discrete-time-system-note/离散时间信号的图形.png" alt="离散时间信号的图形">
+<figcaption aria-hidden="true">离散时间信号的图形</figcaption>
+</figure>
+<p>其中，虚线是沿着序列值描绘的一条曲线，一般称作是离散时间信号的<strong>包络线</strong>。</p>
+<h3 id="性质">性质</h3>
+<p>与连续时间信号一样的，离散时间信号也有一些基本的性质。</p>
+<h4 id="线性性">线性性</h4>
+<p><span class="math display">\[
+z(n)=x(n)+y(n)
+\]</span></p>
+<p>可以看作是两个序列对应值相加，最终得到新序列。 <span class="math display">\[
+z(n)=x(n)y(n)
+\]</span> 数学上的理解，可以将 <span class="math inline">\(x(n),y(n)\)</span>
+描述成一个多项式，然后对它们进行多项式乘法，得到的新的多项式就是新序列。</p>
+<h4 id="平移性">平移性</h4>
+<p><span class="math display">\[
+z(n)=x(n-m)
+\]</span></p>
+<p>这表示了让 <span class="math inline">\(x(n)\)</span>
+序列向右平移（后移） <span class="math inline">\(m\)</span> 个单位，其中
+<span class="math inline">\(m\in\Zeta\)</span>。</p>
+<p>同样的，向左移动（前移）<span class="math inline">\(m\)</span>
+个单位为 <span class="math display">\[
+z(n)=x(n+m)
+\]</span></p>
+<blockquote>
+<p>左加右减。</p>
+</blockquote>
+<h4 id="反褶">反褶</h4>
+<p><span class="math display">\[
+z(n)=x(-n)
+\]</span></p>
+<p>这表示将序列图像沿着 <span class="math inline">\(y\)</span>
+轴做对称。</p>
+<h4 id="尺度变化">尺度变化</h4>
+<p><span class="math display">\[
+z(n)=x(an)
+\]</span></p>
+<p><span class="math inline">\(a\)</span> 必须是一个整数，这代表将 <span class="math inline">\(x(n)\)</span>
+压缩，这会使得某些点（序列值）去除。</p>
+<p>同样的，我们也可以将 <span class="math inline">\(x(n)\)</span>
+扩展，即 <span class="math display">\[
+z(n)=x(\frac{n}{a})
+\]</span> 这会使得某些点（序列值）补 <span class="math inline">\(0\)</span>。</p>
+<p>因此，这种运算也称作是序列的<strong>重排</strong>。</p>
+<p>例如序列 <span class="math inline">\(x(n)\)</span> 为阶梯序列，即
+<span class="math display">\[
+x(n)=\{0,1,2,\cdots,n\}
+\]</span> 那么对其进行尺度变化 <span class="math inline">\(x(2n),x(\frac{n}{2})\)</span>。</p>
+<figure>
+<img src="/discrete-time-system-note/尺度变化示例.png" alt="尺度变化示例">
+<figcaption aria-hidden="true">尺度变化示例</figcaption>
+</figure>
+<h3 id="经典序列">经典序列</h3>
+<h4 id="单位样值信号">单位样值信号</h4>
+<p>单位样值信号（unit sample / unit
+impulse），即单位取样、单位脉冲、单位冲激。 <span class="math display">\[
+\delta(n)=\begin{cases}
+1&amp;(n=0)\\
+0&amp;(n\neq 0)
+\end{cases}
+\]</span> 即强定义 <span class="math inline">\(\delta(0)=1\)</span>，其余点均为 <span class="math inline">\(0\)</span>。</p>
+<h4 id="单位阶跃序列">单位阶跃序列</h4>
+<p><span class="math display">\[
+u(n)=\begin{cases}
+1&amp;(n\geq 0)\\
+0&amp;(n&lt;0)
+\end{cases}
+\]</span></p>
+<p>其中需要注意的是，连续时间信号中 <span class="math inline">\(u(0)\)</span> 处一般不定义或定义为 <span class="math inline">\(\frac{1}{2}\)</span>，但在离散时间信号中，强定义为
+<span class="math inline">\(u(0)=1\)</span>。</p>
+<h4 id="矩形序列">矩形序列</h4>
+<p><span class="math display">\[
+R_N(n)=\begin{cases}
+n&amp;(0\leq n\leq N-1)\\
+0&amp;(n&lt;0,n\geq N)
+\end{cases}
+\]</span></p>
+<p>即从 <span class="math inline">\(n=0\)</span> 开始，到 <span class="math inline">\(n=N-1\)</span> 处，共有 <span class="math inline">\(N\)</span> 个幅度为 <span class="math inline">\(1\)</span> 的数值，其余点皆为零，即共有 <span class="math inline">\(N\)</span> 个为 <span class="math inline">\(1\)</span> 的序列点。</p>
+<p>同样的可以用单位阶跃序列描述，即 <span class="math display">\[
+R_N(n)=u(n)-u(n-N)
+\]</span></p>
+<h4 id="斜变序列">斜变序列</h4>
+<p><span class="math display">\[
+x(n)=nu(n)
+\]</span></p>
+<p>即序列 <span class="math display">\[
+\{\cdots,0,0,1,2,\cdots\}
+\]</span> 它的包络线是斜变函数 <span class="math inline">\(f(t)=t\)</span>。</p>
+<h4 id="指数序列">指数序列</h4>
+<p><span class="math display">\[
+x(n)=a^nu(n)
+\]</span></p>
+<p>需要注意的是，如果 <span class="math inline">\(a&lt;0\)</span>，那么将会出现正负跳变的序列图像。</p>
+<figure>
+<img src="/discrete-time-system-note/指数序列图像.png" alt="指数序列图像">
+<figcaption aria-hidden="true">指数序列图像</figcaption>
+</figure>
+<h4 id="正弦序列">正弦序列</h4>
+<p><span class="math display">\[
+x(n)=\sin{(n\omega_0)}
+\]</span></p>
+<p>其中，<span class="math inline">\(\omega_0\)</span>
+是<strong>正弦序列的频率</strong>，它反映序列值周期性重复的速率。</p>
+<p>当 <span class="math inline">\(T=\frac{2\pi}{\omega_0}\)</span>
+为整数时，代表正弦序列值每 <span class="math inline">\(T\)</span>
+个后就重复；当 <span class="math inline">\(T\)</span> 为有理数时，写成
+<span class="math inline">\(T=\frac{p}{q}\)</span>
+形式，代表代表正弦序列值每 <span class="math inline">\(pq\)</span>
+个后就重复。这两种情况称正弦序列 <span class="math inline">\(x(n)\)</span> 具有周期性。</p>
+<p><strong>无论正弦序列是否具有周期性，都固有称 <span class="math inline">\(\omega_0\)</span> 为它的频率。</strong></p>
+<figure>
+<img src="/discrete-time-system-note/正弦序列图像.png" alt="正弦序列图像">
+<figcaption aria-hidden="true">正弦序列图像</figcaption>
+</figure>
+<p>而正弦序列的得来是从正弦波中抽样，考虑连续信号为 <span class="math display">\[
+f(t)=\sin{(\Omega_0t)}
+\]</span> 那么抽样值写作 <span class="math display">\[
+x(n)=f(nT)=\sin{(n\Omega_0T)}
+\]</span> 此时我们称，<span class="math inline">\(T\)</span>
+是<strong>抽样间隔时间</strong>，<span class="math inline">\(f_s=\frac{1}{T}\)</span>
+是<strong>抽样频率</strong>，<span class="math inline">\(\omega_0=\frac{\Omega_0}{f_s}\)</span>
+是<strong>正弦序列的频率</strong>。</p>
+<p>与正弦序列相对应的还有余弦序列 <span class="math display">\[
+x(n)=\cos{n\omega_0}
+\]</span></p>
+<h4 id="复指数序列">复指数序列</h4>
+<p>序列也可以取复数值，称为<strong>复序列</strong>。</p>
+<p>复指数序列定义为 <span class="math display">\[
+x(n)=e^{\mathrm{j}\omega_0n}=\cos{(\omega_0n)}+\mathrm{j}\sin{(\omega_0n)}
+\]</span> 对于单位复指数序列，有 <span class="math display">\[
+|x(n)|=1\\
+\arg[x(n)]=\omega_0n
+\]</span></p>
+<h3 id="信号的分解">信号的分解</h3>
+<p>最常见的离散信号分解是将其变为任意冲激序列的加权、延迟之和 <span class="math display">\[
+x(n)=\sum^{\infin}_{m=-\infin}x(m)\delta(n-m)
+\]</span></p>
+<h2 id="数学模型">数学模型</h2>
+<h3 id="数学模型-1">数学模型</h3>
+<p>一个离散时间系统，其激励信号 <span class="math inline">\(x(n)\)</span> 是一个序列，响应信号 <span class="math inline">\(y(n)\)</span> 是另一个序列，图解可看作</p>
+<figure>
+<img src="/discrete-time-system-note/离散时间系统示例.png" alt="离散时间系统示例">
+<figcaption aria-hidden="true">离散时间系统示例</figcaption>
+</figure>
+<p>同样在离散时间系统中我们也仅考虑线性、时不变系统，即 LTI 系统。</p>
+<h3 id="均匀性与叠加性">均匀性与叠加性</h3>
+<p>若输入为 <span class="math display">\[
+c_1x_1(n)+c_2x_2(n)
+\]</span> 那么输出为 <span class="math display">\[
+c_1y_1(n)+c_2y_2(n)
+\]</span> <img src="/discrete-time-system-note/均匀性和叠加性示例.png" alt="均匀性和叠加性示例"></p>
+<h3 id="差分方程">差分方程</h3>
+<p>在连续时间信号中，微分方程由连续信号的积分和微分线性叠加组成。</p>
+<p>而在离散时间信号中，使用<strong>差分方程</strong>描述系统，其中差分方程由平移信号线性叠加组成，如
+<span class="math inline">\(x(n+1),x(n+2),\cdots,x(n-1),x(n-2),\cdots\)</span>。</p>
+<figure>
+<img src="/discrete-time-system-note/差分方程示例系统.png" alt="差分方程示例系统">
+<figcaption aria-hidden="true">差分方程示例系统</figcaption>
+</figure>
+<p>如图所示系统，我们可以写出差分方程 <span class="math display">\[
+y(n)-ay(n-1)=x(n)
+\]</span> 这是一个常系数线性差分方程（difference
+equation），或称递归关系式（recurrence relation）。</p>
+<p>一般情况下，差分方程等式左端由未知序列 <span class="math inline">\(y(n)\)</span> 及其移位序列 <span class="math inline">\(y(n-1),y(n-2),\cdots\)</span> 线性叠加组成。</p>
+<p>标准化最高项为 <span class="math inline">\(y(n)\)</span>，如果方程移位项存在 <span class="math inline">\(y(n-N)\)</span>，<span class="math inline">\(N\)</span> 最大，那么我们就称作这个差分方程为
+<span class="math inline">\(N\)</span> 阶差分方程。</p>
+<h3 id="微分">微分</h3>
+<p>考虑对与连续时间系统，有 <span class="math display">\[
+\frac{\mathrm{d}}{\mathrm{d}t}y(t)\approx
+\frac{y[(n+1)T]-y(nT)}{T},T\approx0
+\]</span> 即当 <span class="math inline">\(T\)</span>
+较小时，满足连续时间模型的微分约等于差分方程形式。</p>
+<p>即，在离散时间系统中，有 <span class="math display">\[
+\frac{y(n+1)-y(n)}{T}\approx Ay(n)+x(n)
+\]</span></p>
+<h3 id="常系数线性差分方程的求解">常系数线性差分方程的求解</h3>
+<h4 id="方程表示">方程表示</h4>
+<p>常系数线性差分方程的一般形式可表示为 <span class="math display">\[
+a_0y(n)+a_1y(n-1)+\cdots+a_{N-1}y(n-N+1)+a_Ny(n-N)=\\
+b_0x(n)+b_1x(n-1)+\cdots+b_{N-1}x(n-N+1)+b_Nx(n-N)\\
+\sum^N_{k=0}a_ky(n-k)=\sum^M_{r=0}b_rx(n-r)
+\]</span></p>
+<h4 id="迭代法">迭代法</h4>
+<p>依次迭代，通过数学归纳法得到解。</p>
+<p>例如差分方程 <span class="math display">\[
+y(n+1)=ay(n)+x(n)\\
+x(n)=\delta(n)
+\]</span> 已知 <span class="math inline">\(n\geq 0\)</span>
+开始有信号。</p>
+<p>那么，根据迭代法从 <span class="math inline">\(0\)</span> 至 <span class="math inline">\(n\)</span> 有 <span class="math display">\[
+y(0)=ay(-1)+1=1\\
+y(1)=ay(0)+0=a\\
+y(2)=ay(1)+0=a^2\\
+\vdots\\
+y(n)=ay(n-1)+0=a^n
+\]</span> 因此可以归纳出 <span class="math display">\[
+y(n)=a^nu(n)
+\]</span></p>
+<h4 id="时域经典法">时域经典法</h4>
+<p>求解<strong>齐次解</strong>和<strong>特解</strong>，然后代入边界条件求解。</p>
+<p>或者是求解<strong>零输入响应</strong>与<strong>零状态响应</strong>，利用卷积的方法求零状态响应即可。</p>
+<p>首先，提取差分方程的<strong>特征方程</strong>，即 <span class="math display">\[
+a_0\lambda^N+a_1\lambda^{N-1}+\cdots+a_{N-1}\lambda+a_N=0
+\]</span> 我们将特征方程的解 <span class="math inline">\(\lambda_1,\lambda_2,\cdots,\lambda_N\)</span>
+称为差分方程的<strong>特征根</strong>。</p>
+<p>在没有重根的情况下，差分方程的其次解为 <span class="math display">\[
+C_1\lambda_1^n+C_2\lambda_2^n+\cdots+C_N\lambda_N^n
+\]</span> 如果存在重根，那么对于 <span class="math inline">\(K\)</span>
+阶重根的部分将改写为 <span class="math display">\[
+(C_1n^{K-1}+C_2n^{K-2}+\cdots+C_{K-1}n+C_K)\lambda_1^n
+\]</span> 如果存在共轭复根 <span class="math inline">\(\lambda_1=\sigma+\mathrm{j}\omega,\lambda_2=\sigma-\mathrm{j}\omega\)</span>，那么将对共轭复根改写成
+<span class="math display">\[
+e^{\sigma x}(C_1\cos{\omega x}+C_2\sin{\omega x})
+\]</span> 例如 <span class="math display">\[
+y(n)-2y(n-1)+2y(n-2)-2y(n-3)+y(n-4)=0
+\]</span> 列出特征方程 <span class="math display">\[
+\lambda^4-2\lambda^3+2\lambda^2-2\lambda+1=0\\
+(\lambda-1)^2 (\lambda^2+1)=0
+\]</span> 求得 <span class="math display">\[
+\lambda_1=\lambda_2=1\\
+\lambda_3=\mathrm{j},\lambda_4=-\mathrm{j}
+\]</span> 可以写出齐次解形式 <span class="math display">\[
+y(n)=(C_1n+C_2)(1)^n+P\cos(\frac{n\pi}{2})+Q\sin{(\frac{n\pi}{2})}
+\]</span> 特解的形式一般由激励信号决定，比如说差分方程 <span class="math display">\[
+y(n)+2y(n-1)=x(n)-x(n-1)
+\]</span> 激励函数是 <span class="math inline">\(x(n)=n^2\)</span>。</p>
+<p>将激励函数代入，可得右端为 <span class="math display">\[
+2n-1
+\]</span> 那么由系数一一对应可得，左端形式应该为 <span class="math display">\[
+D_1n+D_2
+\]</span> 代入比较系数可得 <span class="math display">\[
+3D_1=2\\
+3D_2-2D_1=-1
+\]</span> 解得 <span class="math display">\[
+D_1=\frac{2}{3},D_2=\frac{1}{9}
+\]</span> 零状态响应即 <span class="math inline">\(n&lt;0\)</span>
+时，<span class="math inline">\(y(n)=0\)</span> 的响应。</p>
+<p>零输入响应与齐次解的形式相同，代入系统状态即可。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/discrete-time-system-note.html" title="离散时间系统">https://hasegawaazusa.github.io/discrete-time-system-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/laplace-transform-note.html" rel="prev" title="拉普拉斯变换笔记">
+                  <i class="fa fa-chevron-left"></i> 拉普拉斯变换笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/z-transform-note.html" rel="next" title="z变换与z域分析">
+                  z变换与z域分析 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">538k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:09</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
