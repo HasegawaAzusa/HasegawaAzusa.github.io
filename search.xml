@@ -2997,7 +2997,7 @@ N-1=2g(2gab+a+b)=2gh
 \]</span> 定义 <span class="math inline">\(\gamma\)</span> 表示共因子
 <span class="math inline">\(g\)</span> 的相对于 <span class="math inline">\(N\)</span> 的大小，即 <span class="math inline">\(g=N^\gamma\)</span>。考虑 <span class="math inline">\(g\leq N^{1/2}\)</span>，故 <span class="math inline">\(0\leq\gamma\leq1/2\)</span>。</p>
 <h2 id="生成算法">生成算法</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gcd</span><br><span class="line"><span class="keyword">except</span> NameError:</span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gen_prime</span>(<span class="params">nbits: <span class="built_in">int</span>, gamma: <span class="built_in">float</span></span>):</span><br><span class="line">    g = getPrime(<span class="built_in">int</span>(nbits * gamma))</span><br><span class="line">    alpha = <span class="number">0.5</span> - gamma</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        a = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">        p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> isPrime(p):</span><br><span class="line">            b = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">            q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">            h = <span class="number">2</span> * g * a * b + a + b</span><br><span class="line">            <span class="keyword">while</span> <span class="keyword">not</span> isPrime(q) <span class="keyword">or</span> isPrime(h) <span class="keyword">or</span> gcd(a, b) != <span class="number">1</span>:</span><br><span class="line">                b = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">                q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> p, q</span><br><span class="line"><span class="built_in">print</span>(gen_prime(<span class="number">512</span>, <span class="number">0.48</span>))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gcd</span><br><span class="line"><span class="keyword">except</span> NameError:</span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gen_prime</span>(<span class="params">nbits: <span class="built_in">int</span>, gamma: <span class="built_in">float</span></span>):</span><br><span class="line">    g = getPrime(<span class="built_in">int</span>(nbits * gamma))</span><br><span class="line">    alpha = <span class="number">0.5</span> - gamma</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        a = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">        p = <span class="number">2</span> * g * a + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> isPrime(p):</span><br><span class="line">            b = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">            q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">            h = <span class="number">2</span> * g * a * b + a + b</span><br><span class="line">            <span class="keyword">while</span> <span class="keyword">not</span> isPrime(q) <span class="keyword">or</span> isPrime(h) <span class="keyword">or</span> gcd(a, b) != <span class="number">1</span>:</span><br><span class="line">                b = getRandomNBitInteger(<span class="built_in">int</span>(alpha * nbits))</span><br><span class="line">                h = <span class="number">2</span> * g * a * b + a + b</span><br><span class="line">                q = <span class="number">2</span> * g * b + <span class="number">1</span></span><br><span class="line">            <span class="keyword">return</span> p, q</span><br><span class="line"><span class="built_in">print</span>(gen_prime(<span class="number">512</span>, <span class="number">0.48</span>))</span><br></pre></td></tr></table></figure>
 <h2 id="攻击">攻击</h2>
 <h3 id="gamma-接近于-12"><span class="math inline">\(\gamma\)</span>
 接近于 <span class="math inline">\(1/2\)</span></h3>
@@ -3006,7 +3006,7 @@ N-1=2g(2gab+a+b)=2gh
 <p>此时我们只需修改 <code>Pollard's rho method</code> 的 <span class="math inline">\(x_i\)</span> 函数。</p>
 <p>在 Mckee&amp;Pinch 的论文<a href="https://citeseerx.ist.psu.edu/doc_view/pid/64294c404088b69a519614510b8d12b4809a6b10">《Further
 Attacks on Server-Aided RSA Cryptosystems》</a>中指出将 <span class="math inline">\(f(x)=x^2+1\)</span> 修改为 <span class="math inline">\(f(x)=x^{N-1}+3\pmod{N}\)</span> 是最优解。</p>
-<p>由于 <span class="math inline">\(N-1=2gh\)</span> 且 <span class="math inline">\(p-1=ga\)</span>，故最多只有一个值不在 <span class="math inline">\(x^{N-1}\mod{p}\)</span> 的环中。</p>
+<p>由于 <span class="math inline">\(N-1=2gh\)</span> 且 <span class="math inline">\(p-1=2ga\)</span>，故最多只有一个值不在 <span class="math inline">\(x^{N-1}\mod{p}\)</span> 的环中。</p>
 <p>算法实现如下：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    gcd</span><br><span class="line"><span class="keyword">except</span> NameError:</span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">rho</span>(<span class="params">N</span>):</span><br><span class="line">    f = <span class="keyword">lambda</span> x: (<span class="built_in">pow</span>(x, N-<span class="number">1</span>, N) + <span class="number">3</span>) % N</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="comment"># 加快入环速度</span></span><br><span class="line">        t = random.randint(<span class="number">2</span>, N)</span><br><span class="line">        h = f(t)</span><br><span class="line">        step_times = <span class="number">0</span></span><br><span class="line">        step_limit = <span class="number">2</span></span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> step_times &lt; step_limit:</span><br><span class="line">                step_times = <span class="number">0</span></span><br><span class="line">                step_limit *= <span class="number">2</span></span><br><span class="line">                t = h</span><br><span class="line">                h = f(h)</span><br><span class="line">            p = gcd(<span class="built_in">abs</span>(<span class="built_in">int</span>(t) - <span class="built_in">int</span>(h)), N)</span><br><span class="line">            <span class="keyword">if</span> p == N:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">elif</span> p &gt; <span class="number">1</span>:</span><br><span class="line">                <span class="keyword">return</span> (p, N // p)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                h = f(h)</span><br><span class="line">                step_times += <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rho(<span class="number">84236796025318186855187782611491334781897277899439717384242559751095347166978304126358295609924321812851255222430530001043539925782811895605398187299748256080526691975084042025794113521587064616352833904856626744098904922117855866813505228134381046907659080078950018430266048447119221001098505107823645953039</span>))</span><br></pre></td></tr></table></figure>
 <p>故事实证明 <span class="math inline">\(\gamma\)</span>
@@ -4631,7 +4631,7 @@ b=y_1^2-x_1^3-ax_1
 [(y_1^2-y_2^2)-(x_1^3-x_2^3)](x_1-x_3)=a(x_1-x_2)(x_1-x_3)\pmod{p}\\
 [(y_1^2-y_3^2)-(x_1^3-x_3^3)](x_1-x_2)=a(x_1-x_3)(x_1-x_2)\pmod{p}
 \]</span> 两式相减可得 <span class="math display">\[
-[(y_1^2-y_2^2)-(x_1^3-x_2^3)]-[(y_1^2-y_3^2)-(x_1^3-x_3^3)]=0\pmod{p}
+[(y_1^2-y_2^2)-(x_1^3-x_2^3)](x_1-x_3)-[(y_1^2-y_3^2)-(x_1^3-x_3^3)](x_1-x_2)=0\pmod{p}
 \]</span> 即 <span class="math inline">\(p\)</span> 的公倍数。</p>
 <h2 id="查看-ecc-的-pem-密钥文件信息">查看 ECC 的 pem 密钥文件信息</h2>
 <p>使用 openssl</p>
@@ -11038,7 +11038,7 @@ N^{0.99}\)</span>，且 Sarkar’s method 与存在范围 <span class="math inli
 <h3 id="题目">题目</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> bytes_to_long, getPrime</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> msg</span><br><span class="line"><span class="keyword">from</span> sympy <span class="keyword">import</span> nextprime</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> invert</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"></span><br><span class="line">flag = <span class="string">&#x27;d3ctf&#123;&#x27;</span>+md5(msg).hexdigest()+<span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line">p = getPrime(<span class="number">256</span>)</span><br><span class="line">q = getPrime(<span class="number">256</span>)</span><br><span class="line"><span class="keyword">assert</span> p &gt; q</span><br><span class="line">n = p * q</span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">m = bytes_to_long(msg)</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br><span class="line"></span><br><span class="line">N = <span class="built_in">pow</span>(p, <span class="number">7</span>) * q</span><br><span class="line">phi = <span class="built_in">pow</span>(p, <span class="number">6</span>) * (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d1 = getPrime(<span class="number">2000</span>)</span><br><span class="line">d2 = nextprime(d1 + getPrime(<span class="number">1000</span>))</span><br><span class="line">e1 = invert(d1, phi)</span><br><span class="line">e2 = invert(d2, phi)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;c = <span class="subst">&#123;c&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;N = <span class="subst">&#123;N&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;e1 = <span class="subst">&#123;e1&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;e2 = <span class="subst">&#123;e2&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">c = 2420624631315473673388732074340410215657378096737020976722603529598864338532404224879219059105950005655100728361198499550862405660043591919681568611707967</span></span><br><span class="line"><span class="string">N = 1476751427633071977599571983301151063258376731102955975364111147037204614220376883752032253407881568290520059515340434632858734689439268479399482315506043425541162646523388437842149125178447800616137044219916586942207838674001004007237861470176454543718752182312318068466051713087927370670177514666860822341380494154077020472814706123209865769048722380888175401791873273850281384147394075054950169002165357490796510950852631287689747360436384163758289159710264469722036320819123313773301072777844457895388797742631541101152819089150281489897683508400098693808473542212963868834485233858128220055727804326451310080791</span></span><br><span class="line"><span class="string">e1 = 425735006018518321920113858371691046233291394270779139216531379266829453665704656868245884309574741300746121946724344532456337490492263690989727904837374279175606623404025598533405400677329916633307585813849635071097268989906426771864410852556381279117588496262787146588414873723983855041415476840445850171457530977221981125006107741100779529209163446405585696682186452013669643507275620439492021019544922913941472624874102604249376990616323884331293660116156782891935217575308895791623826306100692059131945495084654854521834016181452508329430102813663713333608459898915361745215871305547069325129687311358338082029</span></span><br><span class="line"><span class="string">e2 = 1004512650658647383814190582513307789549094672255033373245432814519573537648997991452158231923692387604945039180687417026069655569594454408690445879849410118502279459189421806132654131287284719070037134752526923855821229397612868419416851456578505341237256609343187666849045678291935806441844686439591365338539029504178066823886051731466788474438373839803448380498800384597878814991008672054436093542513518012957106825842251155935855375353004898840663429274565622024673235081082222394015174831078190299524112112571718817712276118850981261489528540025810396786605197437842655180663611669918785635193552649262904644919</span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
 <p>exp 如下</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">r = <span class="number">7</span></span><br><span class="line"></span><br><span class="line">N = <span class="number">1476751427633071977599571983301151063258376731102955975364111147037204614220376883752032253407881568290520059515340434632858734689439268479399482315506043425541162646523388437842149125178447800616137044219916586942207838674001004007237861470176454543718752182312318068466051713087927370670177514666860822341380494154077020472814706123209865769048722380888175401791873273850281384147394075054950169002165357490796510950852631287689747360436384163758289159710264469722036320819123313773301072777844457895388797742631541101152819089150281489897683508400098693808473542212963868834485233858128220055727804326451310080791</span></span><br><span class="line"></span><br><span class="line">e1 = <span class="number">425735006018518321920113858371691046233291394270779139216531379266829453665704656868245884309574741300746121946724344532456337490492263690989727904837374279175606623404025598533405400677329916633307585813849635071097268989906426771864410852556381279117588496262787146588414873723983855041415476840445850171457530977221981125006107741100779529209163446405585696682186452013669643507275620439492021019544922913941472624874102604249376990616323884331293660116156782891935217575308895791623826306100692059131945495084654854521834016181452508329430102813663713333608459898915361745215871305547069325129687311358338082029</span></span><br><span class="line">e2 = <span class="number">1004512650658647383814190582513307789549094672255033373245432814519573537648997991452158231923692387604945039180687417026069655569594454408690445879849410118502279459189421806132654131287284719070037134752526923855821229397612868419416851456578505341237256609343187666849045678291935806441844686439591365338539029504178066823886051731466788474438373839803448380498800384597878814991008672054436093542513518012957106825842251155935855375353004898840663429274565622024673235081082222394015174831078190299524112112571718817712276118850981261489528540025810396786605197437842655180663611669918785635193552649262904644919</span></span><br><span class="line"></span><br><span class="line">c = <span class="number">2420624631315473673388732074340410215657378096737020976722603529598864338532404224879219059105950005655100728361198499550862405660043591919681568611707967</span></span><br><span class="line"></span><br><span class="line">x = polygen(Zmod(N))</span><br><span class="line">f = e1 * e2 * x - (e2 - e1)</span><br><span class="line">f = f.monic()</span><br><span class="line"></span><br><span class="line">roots = f.small_roots(beta=((r - <span class="number">1</span>) / (r + <span class="number">1</span>) - <span class="number">0.01</span>), epsilon=<span class="number">0.05</span>)</span><br><span class="line"></span><br><span class="line">res = gmpy2.iroot(gmpy2.gcd(<span class="built_in">int</span>(f(roots[<span class="number">0</span>])), N), r - <span class="number">1</span>)</span><br><span class="line"><span class="keyword">assert</span> res[<span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;p =&quot;</span>, res[<span class="number">0</span>])</span><br><span class="line">p = res[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">q = N // (p**<span class="number">7</span>)</span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = inverse(<span class="number">0x10001</span>, phi)</span><br><span class="line">msg = long_to_bytes(power_mod(c, d, n))</span><br><span class="line"><span class="built_in">print</span>(msg)</span><br><span class="line">flag = <span class="string">&#x27;d3ctf&#123;&#x27;</span> + md5(msg).hexdigest() + <span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> md5</span><br><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line"></span><br><span class="line">r = <span class="number">7</span></span><br><span class="line"></span><br><span class="line">N = <span class="number">1476751427633071977599571983301151063258376731102955975364111147037204614220376883752032253407881568290520059515340434632858734689439268479399482315506043425541162646523388437842149125178447800616137044219916586942207838674001004007237861470176454543718752182312318068466051713087927370670177514666860822341380494154077020472814706123209865769048722380888175401791873273850281384147394075054950169002165357490796510950852631287689747360436384163758289159710264469722036320819123313773301072777844457895388797742631541101152819089150281489897683508400098693808473542212963868834485233858128220055727804326451310080791</span></span><br><span class="line"></span><br><span class="line">e1 = <span class="number">425735006018518321920113858371691046233291394270779139216531379266829453665704656868245884309574741300746121946724344532456337490492263690989727904837374279175606623404025598533405400677329916633307585813849635071097268989906426771864410852556381279117588496262787146588414873723983855041415476840445850171457530977221981125006107741100779529209163446405585696682186452013669643507275620439492021019544922913941472624874102604249376990616323884331293660116156782891935217575308895791623826306100692059131945495084654854521834016181452508329430102813663713333608459898915361745215871305547069325129687311358338082029</span></span><br><span class="line">e2 = <span class="number">1004512650658647383814190582513307789549094672255033373245432814519573537648997991452158231923692387604945039180687417026069655569594454408690445879849410118502279459189421806132654131287284719070037134752526923855821229397612868419416851456578505341237256609343187666849045678291935806441844686439591365338539029504178066823886051731466788474438373839803448380498800384597878814991008672054436093542513518012957106825842251155935855375353004898840663429274565622024673235081082222394015174831078190299524112112571718817712276118850981261489528540025810396786605197437842655180663611669918785635193552649262904644919</span></span><br><span class="line"></span><br><span class="line">c = <span class="number">2420624631315473673388732074340410215657378096737020976722603529598864338532404224879219059105950005655100728361198499550862405660043591919681568611707967</span></span><br><span class="line"></span><br><span class="line">x = polygen(Zmod(N))</span><br><span class="line">f = e1 * e2 * x - (e2 - e1)</span><br><span class="line">f = f.monic()</span><br><span class="line"></span><br><span class="line">roots = f.small_roots(beta=((r - <span class="number">1</span>) / (r + <span class="number">1</span>) - <span class="number">0.01</span>), epsilon=<span class="number">0.05</span>)</span><br><span class="line"></span><br><span class="line">res = gmpy2.iroot(gmpy2.gcd(<span class="built_in">int</span>(f(roots[<span class="number">0</span>])), N), r - <span class="number">1</span>)</span><br><span class="line"><span class="keyword">assert</span> res[<span class="number">1</span>]</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;p =&quot;</span>, res[<span class="number">0</span>])</span><br><span class="line">p = res[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">q = N // (p ** r)</span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = inverse(<span class="number">0x10001</span>, phi)</span><br><span class="line">msg = long_to_bytes(power_mod(c, d, n))</span><br><span class="line"><span class="built_in">print</span>(msg)</span><br><span class="line">flag = <span class="string">&#x27;d3ctf&#123;&#x27;</span> + md5(msg).hexdigest() + <span class="string">&#x27;&#125;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(flag)</span><br></pre></td></tr></table></figure>
 <h2 id="the-third-attack">The Third Attack</h2>
 <h3 id="原理-2">原理</h3>
 <p>设 <span class="math inline">\(N_1=p_1^rq_1,N_2=p_2^rq_2\)</span>，其中 <span class="math inline">\(p_1&gt;p_2\)</span>，如果 <span class="math display">\[
@@ -15681,8 +15681,7 @@ g=\gcd(a^{n!}-1,N)
 </blockquote>
 <p>可以借助 Python 模块 <code>primefac</code> 进行分解：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -m primefac -vs -m=p-1 32849718197337581823002243717057659218502519004386996660885100592872201948834155543125924395614928962750579667346279456710633774501407292473006312537723894221717638059058796679686953564471994009285384798450493756900459225040360430847240975678450171551048783818642467506711424027848778367427338647282428667393241157151675410661015044633282064056800913282016363415202171926089293431012379261585078566301060173689328363696699811123592090204578098276704877408688525618732848817623879899628629300385790344366046641825507767709276622692835393219811283244303899850483748651722336996164724553364097066493953127153066970594638491950199605713033004684970381605908909693802373826516622872100822213645899846325022476318425889580091613323747640467299866189070780620292627043349618839126919699862580579994887507733838561768581933029077488033326056066378869170169389819542928899483936705521710423905128732013121538495096959944889076705471928490092476616709838980562233255542325528398956185421193665359897664110835645928646616337700617883946369110702443135980068553511927115723157704586595844927607636003501038871748639417378062348085980873502535098755568810971926925447913858894180171498580131088992227637341857123607600275137768132347158657063692388249513</span><br></pre></td></tr></table></figure>
-<h2 id="n-多项式分解"><span class="math inline">\(N\)</span>
-多项式分解</h2>
+<h2 id="p-进数攻击"><span class="math inline">\(p\)</span> 进数攻击</h2>
 <h3 id="原理-15">原理</h3>
 <p>首先我们知道多项式分解的复杂度在于其项数的多少和系数的大小，同时任意一个数我们可以使用多项式来表达，比如说数字
 1234567890 可以表达为： <span class="math display">\[
@@ -15696,8 +15695,14 @@ P(5)=1234567890
 \]</span> 甚至是 <span class="math display">\[
 P_{1000}=x^{3} + 234x^{2} + 567x + 890\\
 P(1000)=1234567890
-\]</span> 可以发现，在不同的进制下，多项式的复杂度会发生改变。</p>
-<p>于是乎有可能出现在十进制下多项式复杂，分解时间复杂度高，但其他进制下多项式简单，分解时间复杂度低。</p>
+\]</span> 可以发现，在不同的 <span class="math inline">\(p\)</span>
+进数下，多项式的复杂度会发生改变。</p>
+<p>于是乎有可能出现在十进制下多项式复杂，分解时间复杂度高，但在 <span class="math inline">\(p\)</span>
+进数下多项式简单，分解时间复杂度低。</p>
+<blockquote>
+<p><span class="math inline">\(p\)</span>
+进数也被用于证明费马大定理。</p>
+</blockquote>
 <h3 id="实例-3">实例</h3>
 <p>分解因数</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">N = <span class="number">264048827496427248021277383801027180195275776366915828865010362454006394906519399441496561006668252031429735502465174250525698696973129422193405161920872162928097673289330345041221985548078586423910246601720647996170161319016119241836415788315729493164331517547663558380515400720081995290120793014108439083514403659082115510258023834737471488528527557960636984676435543300074504679264476413252780514962473070445293528877641502742438571110744667739728450283295649865745629276142949963507003094791773183928894536793857609738113546410753895719242547720815692998871947957214118354127328586542848234994500987288641595105</span></span><br></pre></td></tr></table></figure>
@@ -20192,15 +20197,25 @@ CRC 碰撞的原理）。</p>
 <h2 id="pell-方程">Pell 方程</h2>
 <p>Pell 方程是指形如 <span class="math display">\[
 x^2-Dy^2=1
-\]</span> 的二元二次方程，主要研究的是满足这个方程的整数解 <span class="math inline">\((x_i,y_i)\)</span> 和最小整数解 <span class="math inline">\((x_0,y_0)\)</span>。</p>
+\]</span> 的二元二次方程，，其中 <span class="math inline">\(D\)</span>
+为正整数，主要研究的是满足这个方程的整数解 <span class="math inline">\((x_i,y_i)\)</span> 和最小整数解 <span class="math inline">\((x_0,y_0)\)</span>。</p>
 <p>通常我们使用连分数来求解其整数解，将 <span class="math inline">\(\sqrt{D}\)</span> 写成连分数的形式，即 <span class="math display">\[
 \sqrt{D}=[a_0;a_1,a_2,\cdots,a_{n-1},a_n]
 \]</span> 如果 Pell 方程有解，总会找到 <span class="math inline">\(a_n\)</span> 满足 <span class="math inline">\(a_i=2a_0\)</span>，那么连分数 <span class="math display">\[
 [a_0;a_1,a_2,\cdots,a_{n-1}]
 \]</span> 可能是 Pell 方程的一组解 <span class="math display">\[
 \frac{x}{y}=[a_0;a_1,a_2,\cdots,a_{n-1}]
-\]</span> sagemath 求解代码如下</p>
+\]</span> Sagemath 求解代码如下</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">D = <span class="number">1117</span></span><br><span class="line">interval = <span class="number">200</span></span><br><span class="line">cf = continued_fraction(sqrt(D))</span><br><span class="line">a0 = cf[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(interval):</span><br><span class="line">    <span class="keyword">if</span> a0 * <span class="number">2</span> == cf[i]:</span><br><span class="line">        c = cf.convergent(i - <span class="number">1</span>)</span><br><span class="line">        x, y = c.as_integer_ratio()</span><br><span class="line">        <span class="keyword">if</span> x**<span class="number">2</span> - D * y**<span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">            <span class="built_in">print</span>((x, y))</span><br></pre></td></tr></table></figure>
+<p>一个更特殊的求解方式是，不妨设佩尔方程的解为 <span class="math display">\[
+(x_1,y_1),(x_2,y_2),\cdots,(x_d,y_d)
+\]</span> 那么求解第 <span class="math inline">\(i+j\)</span>
+个解的公式为 <span class="math display">\[
+x_{i+j}=x_ix_j+Dy_iy_j\\
+y_{i+j}=x_iy_j+x_jy_i
+\]</span> 例如当 <span class="math inline">\(D=1117\)</span> 时的解已知
+<span class="math inline">\((x_1,y_1)\)</span> 和 <span class="math inline">\((x_2,y_2)\)</span>，那么求解得到 <span class="math inline">\((x_3,y_3)\)</span> 为</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x1, y1 = (<span class="number">87897747594260774254246835664214545379849</span>, <span class="number">2629972211566463612149241455626172190220</span>)</span><br><span class="line">x2, y2 = (<span class="number">15452028064288751455987343781568665778822611449292997550027848699978973103390525601</span>, <span class="number">462337267264377629956081365965549206173112084990468349927211645593553260365753560</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">addition</span>(<span class="params">p1, p2</span>):</span><br><span class="line">    x1,y1 = p1</span><br><span class="line">    x2,y2 = p2</span><br><span class="line">    <span class="keyword">return</span> ((x1*x2+D*y1*y2), (x1*y2+x2*y1))</span><br><span class="line">addition((x1, y1), (x2, y2))</span><br></pre></td></tr></table></figure>
 <h2 id="卡迈尔数">卡迈尔数</h2>
 <p>卡迈尔数是指一系列合数（相对于质数）<span class="math inline">\(n\)</span> 有得性质：使所有与 <span class="math inline">\(n\)</span> 互素的整数 <span class="math inline">\(b\)</span>，满足 <span class="math display">\[
 b^{n-1}\equiv1\pmod{n}
@@ -20263,6 +20278,63 @@ na^{p-1}\equiv n\pmod{p},n\in\Z\\
 a^{p-2}\equiv a^{-1}\pmod{p}\\
 a^b\equiv a^{b\pmod{p-1}}\pmod{p},b\in\Z\\
 \]</span></p>
+<h2 id="高次剩余">高次剩余</h2>
+<p>对于同余式 <span class="math inline">\(X^n\equiv
+d\pmod{p}\)</span></p>
+<p>当 <span class="math inline">\(n|p-1\)</span> 时，满足 <span class="math display">\[
+d^{\frac{p-1}{n}}\equiv 1\pmod{p}
+\]</span> 才有解，此时解数为 <span class="math inline">\(n\)</span>；</p>
+<p>当 <span class="math inline">\(n\)</span> 无法整除 <span class="math inline">\(p-1\)</span>，满足 <span class="math display">\[
+d^{\frac{p-1}{k}}\equiv 1\pmod{p}
+\]</span> 其中 <span class="math inline">\(k=\gcd(n,p-1)\)</span>，此时解数为 <span class="math inline">\(k\)</span>。</p>
+<h2 id="hensel-lifting">Hensel Lifting</h2>
+<p>亨塞尔提升（Hensel
+Lifting），即亨塞尔引理，规定了素数模幂多项式的根被提升到模更高幂的根的条件。</p>
+<p>例如说已知 <span class="math inline">\(x_1\)</span> 满足如下方程
+<span class="math display">\[
+x_1^e\equiv a\pmod{p}
+\]</span> 即 <span class="math inline">\(x_1\)</span> 是 <span class="math inline">\(a\)</span> 在模 <span class="math inline">\(p\)</span> 下的 <span class="math inline">\(e\)</span> 次方根，求解 <span class="math display">\[
+x_k^e\equiv a\pmod{p^k}
+\]</span> 其中，<span class="math inline">\(x_k\)</span> 是 <span class="math inline">\(a\)</span> 在模 <span class="math inline">\(p^k\)</span> 下的 <span class="math inline">\(e\)</span> 次方根。</p>
+<blockquote>
+<p>这里仅考虑首一单项式。</p>
+</blockquote>
+<p>亨塞尔引理告诉我们有如下公式用于求解 <span class="math inline">\(x_k\)</span> <span class="math display">\[
+x_{k+1}=x_k-\frac{f(x_k)}{f&#39;(x_1)}\pmod{p^{k+1}}
+\]</span> 推导如下，</p>
+<p>我们考虑在模 <span class="math inline">\(p^{k+1}\)</span> 下的方程
+<span class="math display">\[
+x_{k+1}^e\equiv a\pmod{p^{k+1}}
+\]</span> 那么必然在降幂下有同余方程 <span class="math display">\[
+x_{k+1}^e\equiv a\pmod{p^k}
+\]</span> 同时存在 <span class="math inline">\(a\)</span> 在模 <span class="math inline">\(p\)</span> 下的 <span class="math inline">\(e\)</span> 次方根为 <span class="math inline">\(x_1\)</span> 满足 <span class="math display">\[
+x_k^e\equiv a\pmod{p^k}
+\]</span> 那么显然，<span class="math inline">\(x_k\)</span> 与 <span class="math inline">\(x_{k+1}\)</span> 存在关系为 <span class="math display">\[
+x_{k+1}=x_{k}+p^kv
+\]</span> 问题的关键就变为了求解 <span class="math inline">\(v\)</span>。</p>
+<p>运用二项式定理，可以得到 <span class="math display">\[
+\begin{align}
+x_{k+1}^e&amp;=(x_k+p^kv)^e\\
+&amp;=x_1^e+ex_1^{e-1}p^kv+\cdots+(p^kv)^e\\
+&amp;=x_1^e+ex_1^{e-1}p^kv\pmod{p^{k+1}}
+\end{align}
+\]</span> 由 <span class="math inline">\(x_{k+1}^e\equiv
+a\pmod{p^{k+1}}\)</span> 可得 <span class="math display">\[
+a-x_k^e\equiv ex_k^{e-1}p^kv\pmod{p^{k+1}}
+\]</span> 我们知道，<span class="math inline">\(ex_k^{e-1}\)</span>
+不可能整除 <span class="math inline">\(p\)</span>，必然有 <span class="math inline">\(\gcd{(ex_1^{e-1}p^k,p^{k+1})}=p^k\)</span>；</p>
+<p>同时由于 <span class="math inline">\(x_k^e\equiv
+a\pmod{p^k}\)</span>，必然有 <span class="math inline">\(a-x_k^e\)</span> 整除 <span class="math inline">\(p^k\)</span>。</p>
+<p>所以上式的式子左右两边同时整除 <span class="math inline">\(p^k\)</span>，那么化简得到 <span class="math display">\[
+\frac{a-x_k^e}{p^k}\equiv ex_k^{e-1}v\pmod{p}
+\]</span> 即 <span class="math display">\[
+v\equiv \frac{a-x_k^e}{ex_k^{e-1}p^k}\pmod{p}
+\]</span> 所以我们最终得到了一个迭代公式 <span class="math display">\[
+x_{k+1}=x_k+\frac{a-x_k^e}{ex_k^{e-1}}\pmod{p^{k+1}}
+\]</span> 代码如下</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">hensel_lifting</span>(<span class="params">m, c, e, p, k</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    满足pow(m, e, p) == c % p</span></span><br><span class="line"><span class="string">    求解m % (p ** k)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">pow</span>(m, e, p) == c % p</span><br><span class="line">    mk = <span class="built_in">int</span>(m % p)</span><br><span class="line">    t = <span class="built_in">int</span>(m * <span class="built_in">pow</span>(c, -<span class="number">1</span>, p) % p)</span><br><span class="line">    pk = <span class="built_in">int</span>(p)</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k):</span><br><span class="line">        pk *= p</span><br><span class="line">        x = (c - <span class="built_in">pow</span>(mk, e, pk)) % pk</span><br><span class="line">        y = (x * t * <span class="built_in">pow</span>(e, -<span class="number">1</span>, p)) % pk</span><br><span class="line">        mk = mk + y</span><br><span class="line">    <span class="keyword">return</span> mk</span><br></pre></td></tr></table></figure>
+<p>可以试着校验</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> getPrime</span><br><span class="line"></span><br><span class="line">p = getPrime(<span class="number">128</span>)</span><br><span class="line">m = getPrime(<span class="number">512</span>)</span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">k = <span class="number">5</span></span><br><span class="line">n = p ** k</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br><span class="line">mk = hensel_lifting(m, c, e, p, k)</span><br><span class="line"><span class="built_in">print</span>(mk == m)</span><br></pre></td></tr></table></figure>
 <h2 id="数学黑洞">数学黑洞</h2>
 <h3 id="黑洞">123 黑洞</h3>
 <h4 id="算法">算法</h4>
@@ -22022,6 +22094,93 @@ x(n)*h(n)=X(z)H(z)
 ]]></content>
       <tags>
         <tag>信号与系统</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pell方程与群的笔记</title>
+    <url>//pell-equation-group-note.html</url>
+    <content><![CDATA[<h1 id="pell-方程与群">Pell 方程与群</h1>
+<h2 id="pell-方程的解组成的群">Pell 方程的解组成的群</h2>
+<p>Pell 方程是指形如 <span class="math display">\[
+x^2-Dy^2=1
+\]</span> 的二元二次方程，其中 <span class="math inline">\(D\)</span>
+为正整数。</p>
+<p>对于模 <span class="math inline">\(n\)</span> 的 Pell 方程，我们有
+<span class="math display">\[
+x^2-Dy^2\equiv 1\pmod{n}
+\]</span> 在这个群上，根据 Pell 方程的性质，有元素加法 <span class="math display">\[
+(x_3,y_3)=(x_1,y_1)\oplus (x_2,y_2)=(x_1x_2+Dy_1y_2,x_1y_2+x_2y_1)
+\]</span> 有数乘 <span class="math display">\[
+e\otimes (x,y)=\overbrace{(x,y)\oplus
+(x,y)\oplus\cdots\oplus(x,y)}^{\text {e }}
+\]</span> 显然，其是一个阶数为 <span class="math inline">\(p-1\)</span>
+加法循环群 <span class="math inline">\(C_p\)</span>。</p>
+<p>我们可以对这个循环群做一个同构映射 <span class="math inline">\(\psi:C_p\to F_p^*\)</span>，定义如下 <span class="math display">\[
+\psi:(1,0)\to1\\
+\psi:(x,y)\to x-ay\pmod{p}
+\]</span> 其中，<span class="math inline">\((x,y)\in C_p\)</span>，<span class="math inline">\(a^2\equiv D\pmod{p}\)</span>。</p>
+<p><span class="math inline">\(\psi^{-1}:F_p^*\to C_p\)</span> 定义如下
+<span class="math display">\[
+\psi^{-1}:1\to (1,0)\\
+\psi^{-1}:u\to (\frac{u+u^{-1}}{2},\frac{u^{-1}-u}{2a})\pmod{p}
+\]</span> 由于其循环群性质，一定存在 <span class="math inline">\(k\equiv
+1\pmod{p-1}\)</span> 满足 <span class="math display">\[
+k\otimes (x,y)\equiv (x,y)\pmod{p}
+\]</span> 如果说 <span class="math inline">\(n=pq\)</span>，其中 <span class="math inline">\(p,q\)</span>
+为大素数，那么我们同样可以定义同构映射 <span class="math inline">\(\psi:C_n\to Z_n^*\)</span>，有 <span class="math display">\[
+\psi:(1,0)\to1\\
+\psi:(x,y)\to x-ay\pmod{n}
+\]</span> 其中，<span class="math inline">\((x,y)\in C_n\)</span>，<span class="math inline">\(a^2\equiv D\pmod{n}\)</span>。</p>
+<p><span class="math inline">\(\psi^{-1}:Z_n^*\to C_n\)</span> 定义如下
+<span class="math display">\[
+\psi^{-1}:1\to (1,0)\\
+\psi^{-1}:u\to (\frac{u+u^{-1}}{2},\frac{u^{-1}-u}{2a})\pmod{n}
+\]</span> 在这之上，我们可以将数乘改写为幂乘，即 <span class="math display">\[
+i\otimes (x,y)\equiv (x-ay)^i\pmod{n}
+\]</span> 同时，该循环群性质一定存在 <span class="math inline">\(k\equiv
+1\pmod{\mathrm{lcm}(p-1,q-1)}\)</span> 有 <span class="math display">\[
+(x,y)\equiv k\otimes(x,y)\pmod{n}
+\]</span></p>
+<h2 id="pell-方程群与-rsa">Pell 方程群与 RSA</h2>
+<h3 id="密钥生成">密钥生成</h3>
+<p>如 RSA 一样，接收者需要选择大素数 <span class="math inline">\(p,q\)</span>，令 <span class="math inline">\(n=pq\)</span> 且 <span class="math inline">\(N=\mathrm{lcm}(p-1,q-1)\)</span>。</p>
+<p>同时接收者选取一个整数 <span class="math inline">\(e\)</span> 满足
+<span class="math inline">\(\gcd(e,N)=1\)</span>，那么解密密钥就是 <span class="math inline">\(d=e^{-1}\pmod{N}\)</span>。</p>
+<p>那么公钥对为 <span class="math inline">\((e,n)\)</span>，私钥是 <span class="math inline">\((p,q,d)\)</span>。</p>
+<h3 id="传输方案一">传输方案一</h3>
+<h4 id="加密">加密</h4>
+<p>假设发送者想要传输的信息是 <span class="math inline">\(M_y\in
+Z_n^*\)</span>，那么</p>
+<ol type="1">
+<li>计算 <span class="math inline">\(Z_1\equiv
+M_xM_y\pmod{n},Y=M_y\)</span>，其中 <span class="math inline">\(M_x\)</span> 随机选取。</li>
+<li>在环 <span class="math inline">\(Z_n\)</span> 上解方程 <span class="math inline">\(X-aY\equiv Z_1,X+aY=Z_1^{-1}\)</span>。</li>
+<li>计算 <span class="math inline">\(X\equiv
+\frac{Z_1+Z_1^{-1}}{2}\pmod{n},Y\equiv
+\frac{Z_1^{-1}-X}{Y}\pmod{n},D\equiv a^2\pmod{n}\)</span>，那么 <span class="math inline">\((X,Y)\)</span> 是佩尔方程 <span class="math inline">\(x^2-Dy^2\equiv 1\pmod{n}\)</span> 的解。</li>
+<li>计算 <span class="math inline">\((C_x,C_y)\equiv e\otimes
+(X,Y)\)</span>。</li>
+<li>发送 <span class="math inline">\((C_x,C_y,a)\)</span>
+给接收者。</li>
+</ol>
+<h4 id="解密">解密</h4>
+<ol type="1">
+<li>计算 <span class="math inline">\(C\equiv
+C_x-aC_y\pmod{n}\)</span></li>
+<li>计算 <span class="math inline">\(M\equiv C^d\pmod{n}\)</span></li>
+<li>计算 <span class="math inline">\(X\equiv
+\frac{M^{-1}+M}{2}\pmod{n},Y\equiv\frac{M^{-1}-M}{2a}\pmod{n}\)</span>，显然
+<span class="math inline">\(Z_1\equiv X,Y\equiv M_y\)</span></li>
+<li>计算 <span class="math inline">\(M_x\equiv
+\frac{M}{Y}\pmod{n},M_y=Y\)</span></li>
+</ol>
+<h4 id="代码">代码</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> getPrime, bytes_to_long, inverse</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pell_addition</span>(<span class="params">p1, p2, n</span>):</span><br><span class="line">    x1, y1 = p1</span><br><span class="line">    x2, y2 = p2</span><br><span class="line">    <span class="keyword">return</span> (x1 * x2 + D * y1 * y2) % n, (x1 * y2 + x2 * y1) % n</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pell_nummul</span>(<span class="params">k, p, n</span>):</span><br><span class="line">    ret = p</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k):</span><br><span class="line">        ret = pell_addition(ret, p, n)</span><br><span class="line">    <span class="keyword">return</span> ret</span><br><span class="line"></span><br><span class="line">flag = <span class="string">b&quot;flag&#123;fake_flag&#125;&quot;</span></span><br><span class="line">p = getPrime(<span class="number">256</span>)</span><br><span class="line">q = getPrime(<span class="number">256</span>)</span><br><span class="line">n = p * q</span><br><span class="line">N = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line">Mx = random.getrandbits(<span class="number">30</span> * <span class="number">8</span>)</span><br><span class="line">My = bytes_to_long(flag)</span><br><span class="line">Z1 = (Mx * My) % n</span><br><span class="line">inv_Z1 = inverse(Z1, n)</span><br><span class="line">inv_2 = inverse(<span class="number">2</span>, n)</span><br><span class="line">X = ((Z1 + inv_Z1) * inv_2) % n</span><br><span class="line">Y = My</span><br><span class="line">inv_Y = inverse(Y, n)</span><br><span class="line">a = ((inv_Z1 - X) * inv_Y) % n</span><br><span class="line">D = (a * a) % n</span><br><span class="line"></span><br><span class="line">C = pell_nummul(e, (X, Y), n)</span><br><span class="line">Cx, Cy = C</span><br><span class="line"><span class="keyword">assert</span> (Cx ** <span class="number">2</span> - a ** <span class="number">2</span> * Cy ** <span class="number">2</span>) % n == <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;n = &#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;e = &#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;a = &#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;C = &#125;</span>&quot;</span>)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">n = 10875869887787663804047839718193475543686118884019867572490803738648470308993079737759024578860813280711311716156127433305656013081574096984215062308086369</span></span><br><span class="line"><span class="string">e = 65537</span></span><br><span class="line"><span class="string">a = 10116438763770833335071963736482633275409537527635919273281738401076055253869316673041392938506765451934508925012357512109305204520982892722901613311800701</span></span><br><span class="line"><span class="string">C = (4849960393113794464754080440760696916372299516798584397604977732217190475324711280614363849676614028060514423502894807465940532815099018702845064455373256, 2090931220172552969273275305442140295254277142601056005437730699641113025524595059533700684844894262935856020588590490821984640023923039365658842315589801)</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>需要私钥 <span class="math inline">\(p,q\)</span> 才可解密</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p = <span class="number">110074976061845580741863727679250881593298868143338959238797850091713336013909</span></span><br><span class="line">q = <span class="number">98804199436546420052453170362402913799134300214316056984844454343092057022941</span></span><br><span class="line">n = <span class="number">10875869887787663804047839718193475543686118884019867572490803738648470308993079737759024578860813280711311716156127433305656013081574096984215062308086369</span></span><br><span class="line">N = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line">a = <span class="number">10116438763770833335071963736482633275409537527635919273281738401076055253869316673041392938506765451934508925012357512109305204520982892722901613311800701</span></span><br><span class="line">Cxy = (<span class="number">4849960393113794464754080440760696916372299516798584397604977732217190475324711280614363849676614028060514423502894807465940532815099018702845064455373256</span>, <span class="number">2090931220172552969273275305442140295254277142601056005437730699641113025524595059533700684844894262935856020588590490821984640023923039365658842315589801</span>)</span><br><span class="line">Cx, Cy = Cxy</span><br><span class="line"><span class="keyword">assert</span> (Cx ** <span class="number">2</span> - a ** <span class="number">2</span> * Cy ** <span class="number">2</span>) % n == <span class="number">1</span></span><br><span class="line"></span><br><span class="line">D = (a * a) % n</span><br><span class="line">C = (Cx - a * Cy) % n</span><br><span class="line">d = inverse(e, N)</span><br><span class="line">M = <span class="built_in">pow</span>(C, d, n)</span><br><span class="line">inv_M = inverse(M, n)</span><br><span class="line">inv_2 = inverse(<span class="number">2</span>, n)</span><br><span class="line">inv_a = inverse(a, n)</span><br><span class="line">X = (inv_M + M) * inv_2 % n</span><br><span class="line">Y = (inv_M - M) * inv_2 * inv_a % n</span><br><span class="line">My = Y</span><br><span class="line">Mx = M * inverse(Y, n) % n</span><br><span class="line"><span class="built_in">print</span>(Mx, My)</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>crypto</tag>
       </tags>
   </entry>
 </search>
