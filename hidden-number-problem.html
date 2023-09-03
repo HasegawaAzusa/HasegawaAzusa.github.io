@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关隐藏数问题的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="隐藏数问题">
+<meta property="og:url" content="https://hasegawaazusa.github.io/hidden-number-problem.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关隐藏数问题的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-04-07T09:00:00.000Z">
+<meta property="article:modified_time" content="2023-08-08T17:41:39.549Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="crypto">
+<meta property="article:tag" content="math">
+<meta property="article:tag" content="lattice">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/hidden-number-problem.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/hidden-number-problem.html","path":"/hidden-number-problem.html","title":"隐藏数问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>隐藏数问题 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">113</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hnp-%E9%97%AE%E9%A2%98"><span class="nav-number">1.</span> <span class="nav-text">HNP 问题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#lhnp%E7%BA%BF%E6%80%A7%E9%9A%90%E8%97%8F%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">LHNP(线性隐藏数问题)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.1.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mihnp%E6%A8%A1%E5%8F%8D%E9%9A%90%E8%97%8F%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">MIHNP(模反隐藏数问题)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">1.2.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-1"><span class="nav-number">1.2.2.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">1.2.3.</span> <span class="nav-text">扩展</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-2"><span class="nav-number">1.2.4.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#echnp%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E9%9A%90%E8%97%8F%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.</span> <span class="nav-text">ECHNP(椭圆曲线隐藏数问题)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-2"><span class="nav-number">1.3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B-3"><span class="nav-number">1.3.2.</span> <span class="nav-text">实例</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hssp%E9%9A%90%E5%AD%90%E9%9B%86%E5%92%8C%E9%97%AE%E9%A2%98"><span class="nav-number">1.4.</span> <span class="nav-text">HSSP(隐子集和问题)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-3"><span class="nav-number">1.4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">1.4.2.</span> <span class="nav-text">算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E6%AD%A3%E4%BA%A4%E6%A0%BC%E6%94%BB%E5%87%BB"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">第一步：正交格攻击</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E6%81%A2%E5%A4%8D-boldx_iboldalpha"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">第二步：恢复 \(\bold{x}_i,\bold{\alpha}\)</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">1.4.3.</span> <span class="nav-text">代码</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/hidden-number-problem.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="隐藏数问题 | 独奏の小屋">
+      <meta itemprop="description" content="有关隐藏数问题的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          隐藏数问题
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-04-07 17:00:00" itemprop="dateCreated datePublished" datetime="2023-04-07T17:00:00+08:00">2023-04-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-09 01:41:39" itemprop="dateModified" datetime="2023-08-09T01:41:39+08:00">2023-08-09</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>18k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>16 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关隐藏数问题的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="hnp-问题">HNP 问题</h1>
+<p>HNP 问题，即 Hidden Number Problem。</p>
+<h2 id="lhnp线性隐藏数问题">LHNP(线性隐藏数问题)</h2>
+<h3 id="原理">原理</h3>
+<p>LHNP，即 <em>The Linear Hidden Number
+Problem</em>，线性隐藏数问题。</p>
+<p>定义是从形如 <span class="math display">\[
+c_i=r_i\cdot x+e_i\pmod{p}
+\]</span> 的一组方程组恢复 <span class="math inline">\(s\)</span>。</p>
+<p>即 <span class="math display">\[
+\begin{cases}
+c_1=r_1\cdot x+e_1\\
+c_2=r_2\cdot x+e_2\\
+\ \ \ \ \ \ \vdots\\
+c_n=r_t\cdot x+e_t\\
+\end{cases}\pmod{p}
+\]</span> 将单个方程可以转化为 <span class="math display">\[
+e_i=c_i-r_i\cdot x+k_ip
+\]</span> 我们可以构造出矩阵 <span class="math display">\[
+M=\begin{bmatrix}
+p\\
+&amp; p\\
+&amp; &amp; \ddots\\
+&amp; &amp; &amp; p\\
+-r_1 &amp; -r_2 &amp; \cdots &amp; -r_n &amp; K/p &amp;\\
+c_1 &amp; c_2 &amp; \cdots &amp; c_n &amp; &amp; K
+\end{bmatrix}
+\]</span> 其中 <span class="math inline">\(K\)</span> 为 <span class="math inline">\(e_i\)</span> 的上界，<span class="math inline">\(k_i\)</span>
+为常系数，用于占位便于格出最短向量，该矩阵满足 <span class="math display">\[
+(k_1,k_2,\cdots,k_t,x,1)M=(e_1,e_2,\cdots,e_t,Kx/p,K)
+\]</span> 其中 <span class="math inline">\((e_1,e_2,\cdots,e_t,Kx/p,K)\)</span>
+可证在格中，那么我们进行 LLL 算法即可得到该向量，并且可以从中还原 <span class="math inline">\(x\)</span>。</p>
+<h3 id="实例">实例</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">t = <span class="number">30</span></span><br><span class="line">p = getPrime(<span class="number">512</span>)</span><br><span class="line">x = getPrime(<span class="number">512</span>)</span><br><span class="line"><span class="keyword">while</span> x &gt; p:</span><br><span class="line">    x = getPrime(<span class="number">512</span>)</span><br><span class="line">rs = []</span><br><span class="line">cs = []</span><br><span class="line">ss = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(t):</span><br><span class="line">    r = getPrime(<span class="number">512</span>)</span><br><span class="line">    s = getPrime(<span class="number">400</span>)</span><br><span class="line">    c = (r * x + s) % p</span><br><span class="line">    rs.append(r)</span><br><span class="line">    cs.append(c)</span><br><span class="line">    ss.append(s)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;p = <span class="subst">&#123;p&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;rs = <span class="subst">&#123;rs&#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;cs = <span class="subst">&#123;cs&#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>从上面代码我们可以获取三十个方程满足 <span class="math display">\[
+c_i=r_i\cdot x+s_i\pmod{p}
+\]</span> 构造格后 LLL 算法即可得到 <span class="math inline">\(x\)</span>。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">p = p</span><br><span class="line">rs = rs</span><br><span class="line">cs = cs</span><br><span class="line">t = <span class="built_in">len</span>(rs)</span><br><span class="line">kbits = <span class="number">400</span></span><br><span class="line">K = <span class="number">2</span> ** kbits</span><br><span class="line"></span><br><span class="line">P = identity_matrix(t) * p</span><br><span class="line">RC = matrix([[-<span class="number">1</span>, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">1</span>]]) * matrix([rs, cs])</span><br><span class="line">KP = matrix([[K / p, <span class="number">0</span>], [<span class="number">0</span>, K]])</span><br><span class="line">M = block_matrix([[P, <span class="number">0</span>], [RC, KP]], subdivide=<span class="literal">False</span>)</span><br><span class="line">shortest_vector = M.LLL()</span><br><span class="line">x = shortest_vector[<span class="number">1</span>, -<span class="number">2</span>] / K * p % p</span><br><span class="line"><span class="built_in">print</span>(x)</span><br></pre></td></tr></table></figure>
+<h2 id="mihnp模反隐藏数问题">MIHNP(模反隐藏数问题)</h2>
+<h3 id="原理-1">原理</h3>
+<p>MIHNP，即 <em>The Modular Inversion Hidden Number
+Problem</em>，模反隐藏数问题。</p>
+<p>针对的是形如 <span class="math display">\[
+h_i=(s+t_i)^{-1}-e_i\pmod{p}
+\]</span> 其中，<span class="math inline">\(e\)</span>
+是误差（error），满足 <span class="math inline">\(|e|\leq
+\frac{p}{2^{k+1}}\)</span>，从 <span class="math inline">\(d\)</span> 个
+<span class="math inline">\((h_i,t_i)\)</span> 对中恢复 <span class="math inline">\(s\)</span> 即模反隐藏数问题。</p>
+<p>考虑其中一个方程，有 <span class="math display">\[
+(h_0+e_0)(s+t_0)\equiv 1\pmod{p}
+\]</span> 那么可以改写成 <span class="math inline">\(s\)</span> 的表达式
+<span class="math display">\[
+s\equiv
+\frac{1-(h_0+e_0)t_0}{h_0+e_0}\equiv\frac{1}{h_0+e_0}-t_0\pmod{p}
+\]</span> 如果我们有另外一个对 <span class="math inline">\((h_1,t_1)\)</span>，那么可以写作 <span class="math display">\[
+(h_1+e_1)(s+t_1)\equiv 1\pmod{p}
+\]</span> 将 <span class="math inline">\(s\)</span> 改写为用 <span class="math inline">\((h_0,t_0)\)</span> 对表示 <span class="math display">\[
+1\equiv (h_1+e_1)(\frac{1}{h_0+e_0}-t_0+t_1)\pmod{p}
+\]</span> 展开可写成方程 <span class="math display">\[
+(h_0+e_0)(h_1+e_1)(t_0-t_1)+(e_0-e_1)+(h_0-h_1)\equiv 0\pmod{p}
+\]</span> 那么其中只有 <span class="math inline">\((e_0,e_1)\)</span>
+对未知，我们仅需构造方程后进行二元 Coppersmith 还原这两个小根即可。</p>
+<h3 id="实例-1">实例</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> random, os</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line">flag = <span class="string">&#x27;flag&#123;th1s_1s_fl4g&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">p = random.getrandbits(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&gt; mod =&#x27;</span>, p)</span><br><span class="line">secret = random.randint(<span class="number">1</span>, p-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">XennyOracle</span>():</span><br><span class="line">    r = getPrime(<span class="number">512</span>)</span><br><span class="line">    d = invert(secret+r, p) - getPrime(<span class="number">246</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&gt; r =&#x27;</span>, r)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&gt; d =&#x27;</span>, d)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">task</span>():</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">        op = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line">        <span class="keyword">if</span> op == <span class="number">1</span>:</span><br><span class="line">            XennyOracle()</span><br><span class="line">        <span class="keyword">elif</span> op == <span class="number">2</span>:</span><br><span class="line">            ss = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> ss == secret:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;flag: &#x27;</span>, flag)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    task()</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Error. try again.&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>根据如上代码，可以得到关系式 <span class="math display">\[
+d=\frac{1}{\mathrm{secret}+r}-e\pmod{p}
+\]</span> 其中我们需要两对 <span class="math inline">\((d,r)\)</span>。</p>
+<blockquote>
+<p>mod =
+103749960487318496535753127992597646596574197997346604494391500263407540367515232654243412375033616945349248057185120615722859917113041268644784351010497818179758334399774566693302975715253680868349322945783661543444012109390796753316368646224473385493551959776211868508124173853146220498072369988662598365737</p>
+<p>r =
+7554447571265160138826769036234163274945140724778979915009852024745364483862510066425251491305987868229626094117437547971483604358422085703908125935180533</p>
+<p>d =
+101985344200009891162621238301457902327130889519486305921303529965809795092552155000675574294868973653091733390024027051635945224775240336861956431150596823874553394527629780608016246850565741640968516986406244424459268316383289944793625444505084150632372055950924768521047738331629715715251235824065754062421</p>
+<p>r =
+13090253437847914840731392679465737677743543688720968701737801038380918192995977693627043510294249352189923663339210839369051093420312059888494671044789773</p>
+<p>d =
+67171614284124458946714888283433754454833311156850027624019964385885510153022868877446836813353331293804301964862035632895563688487758460098403813402145815716073796080437726175478667720783792797395845065060542295820029322704256388851730482630855413455182090758448749461531342234199684253932837821327563402710</p>
+</blockquote>
+<p>构造二元方程</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">mod = <span class="number">103749960487318496535753127992597646596574197997346604494391500263407540367515232654243412375033616945349248057185120615722859917113041268644784351010497818179758334399774566693302975715253680868349322945783661543444012109390796753316368646224473385493551959776211868508124173853146220498072369988662598365737</span></span><br><span class="line">r1 = <span class="number">7554447571265160138826769036234163274945140724778979915009852024745364483862510066425251491305987868229626094117437547971483604358422085703908125935180533</span></span><br><span class="line">d1 = <span class="number">101985344200009891162621238301457902327130889519486305921303529965809795092552155000675574294868973653091733390024027051635945224775240336861956431150596823874553394527629780608016246850565741640968516986406244424459268316383289944793625444505084150632372055950924768521047738331629715715251235824065754062421</span></span><br><span class="line">r2 = <span class="number">13090253437847914840731392679465737677743543688720968701737801038380918192995977693627043510294249352189923663339210839369051093420312059888494671044789773</span></span><br><span class="line">d2 = <span class="number">67171614284124458946714888283433754454833311156850027624019964385885510153022868877446836813353331293804301964862035632895563688487758460098403813402145815716073796080437726175478667720783792797395845065060542295820029322704256388851730482630855413455182090758448749461531342234199684253932837821327563402710</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">small_roots</span>(<span class="params">f, bounds, m=<span class="number">1</span>, d=<span class="literal">None</span></span>):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> d:</span><br><span class="line">        d = f.degree()</span><br><span class="line"></span><br><span class="line">    R = f.base_ring()</span><br><span class="line">    N = R.cardinality()</span><br><span class="line"></span><br><span class="line">    f /= f.coefficients().pop(<span class="number">0</span>)</span><br><span class="line">    f = f.change_ring(ZZ)</span><br><span class="line"></span><br><span class="line">    G = <span class="type">Sequence</span>([], f.parent())</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(m + <span class="number">1</span>):</span><br><span class="line">        base = N ^ (m - i) * f ^ i</span><br><span class="line">        <span class="keyword">for</span> shifts <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(d), repeat=f.nvariables()):</span><br><span class="line">            g = base * prod(<span class="built_in">map</span>(power, f.variables(), shifts))</span><br><span class="line">            G.append(g)</span><br><span class="line"></span><br><span class="line">    B, monomials = G.coefficient_matrix()</span><br><span class="line">    monomials = vector(monomials)</span><br><span class="line"></span><br><span class="line">    factors = [monomial(*bounds) <span class="keyword">for</span> monomial <span class="keyword">in</span> monomials]</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, factor)</span><br><span class="line">    B = B.dense_matrix().LLL()</span><br><span class="line">    </span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;LLL done&quot;</span>)</span><br><span class="line"></span><br><span class="line">    B = B.change_ring(QQ)</span><br><span class="line">    <span class="keyword">for</span> i, factor <span class="keyword">in</span> <span class="built_in">enumerate</span>(factors):</span><br><span class="line">        B.rescale_col(i, <span class="number">1</span> / factor)</span><br><span class="line"></span><br><span class="line">    H = <span class="type">Sequence</span>([], f.parent().change_ring(QQ))</span><br><span class="line">    <span class="keyword">for</span> h <span class="keyword">in</span> <span class="built_in">filter</span>(<span class="literal">None</span>, B * monomials):</span><br><span class="line">        H.append(h)</span><br><span class="line">        I = H.ideal()</span><br><span class="line">        <span class="keyword">if</span> I.dimension() == -<span class="number">1</span>:</span><br><span class="line">            H.pop()</span><br><span class="line">        <span class="keyword">elif</span> I.dimension() == <span class="number">0</span>:</span><br><span class="line">            roots = []</span><br><span class="line">            <span class="keyword">for</span> root <span class="keyword">in</span> I.variety(ring=ZZ):</span><br><span class="line">                root = <span class="built_in">tuple</span>(R(root[var]) <span class="keyword">for</span> var <span class="keyword">in</span> f.variables())</span><br><span class="line">                roots.append(root)</span><br><span class="line">            <span class="keyword">return</span> roots</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> []</span><br><span class="line"></span><br><span class="line">Fp.&lt;e1, e2&gt; = Zmod(mod)[]</span><br><span class="line">f = (d1 + e1) * (d2 + e2) * (r1 - r2) + e1 - e2 + d1 - d2</span><br><span class="line">roots = small_roots(f, (<span class="number">2</span> ** <span class="number">246</span>, <span class="number">2</span> ** <span class="number">246</span>))</span><br><span class="line"><span class="built_in">print</span>(roots)</span><br><span class="line">e1, e2 = roots[<span class="number">0</span>]</span><br><span class="line">s1 = inverse_mod(ZZ(d1 + e1), mod) - r1</span><br><span class="line">s2 = inverse_mod(ZZ(d2 + e2), mod) - r2</span><br><span class="line"><span class="built_in">print</span>(s1 == s2)</span><br><span class="line"><span class="built_in">print</span>(s1)</span><br></pre></td></tr></table></figure>
+<p>输出如下</p>
+<blockquote>
+<p>LLL done</p>
+<p>[(110376508622719622460215737752126153337071479266224099409237079274751233023,
+105599366105793964194530868572953367123126433936636879204012605915941896157)]</p>
+<p>True</p>
+<p>53379746320881385658533052144390270941298506554594791554301088574708911821601622941503571564466589181259916168325928415646767240609719266256878030902014359933013735963354498961369838802171449182939387573660896489128177385885182722953047765671114102309583476608373333611398704410882862602499435963602566386559</p>
+</blockquote>
+<h3 id="扩展">扩展</h3>
+<p>我们由上述方程 <span class="math display">\[
+(h_0+e_0)(h_1+e_1)(t_0-t_1)+(e_0-e_1)+(h_0-h_1)\equiv 0\pmod{p}
+\]</span> 可以变形为 <span class="math display">\[
+(t_0-t_1)e_0e_1+(h_1(t_0-t_1)+1)e_0+(h_0(t_0-t_1)-1)e_1+h_0h_1(t_0-t_1)+h_0-h_1=0\pmod{p}
+\]</span> 即可以改写成一个关于 <span class="math inline">\(e_0,e_1\)</span> 的方程 <span class="math display">\[
+F_i(X,Y)=A_iXY+B_iX+C_iY+D_j
+\]</span> 满足 <span class="math inline">\(F_i(e_0,
+e_i)=0\pmod{p}\)</span></p>
+<p>其中系数一一对应为 <span class="math display">\[
+A_i=t_0-t_i\\
+B_i=h_i(t_0-t_i)+1\\
+C_i=h_0(t_0-t_i)-1\\
+D_i=h_0h_i(t_0-t_i)+h_0-h_i
+\]</span></p>
+<blockquote>
+<p>这里是，对于任意 <span class="math inline">\((e_0,e_i)\)</span>
+对均成立此方程。</p>
+</blockquote>
+<p>自然地，对于 <span class="math inline">\(d\)</span> 个 <span class="math inline">\((e_0,e_i)\)</span> 对，我们可以列出方程组 <span class="math display">\[
+\boldsymbol{v}=(1,e_1,\cdots,e_d,e_0,e_0e_1,\cdots,e_0e_d,k_1,\cdots,k_d)\\
+R=\begin{bmatrix}
+D_1&amp;D_2&amp;\cdots&amp;D_d\\
+C_1&amp;0&amp;\cdots&amp;0\\
+0&amp;C_2&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;C_d\\
+B_1&amp;B_2&amp;\cdots&amp;B_d\\
+A_1&amp;0&amp;\cdots&amp;0\\
+0&amp;A_2&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;A_d\\
+\end{bmatrix}
+,P=\begin{bmatrix}
+p&amp;0&amp;\cdots&amp;0\\
+0&amp;p&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;p
+\end{bmatrix}\\
+\boldsymbol{v}\begin{bmatrix}R\\P\end{bmatrix}=\boldsymbol{0}
+\]</span> 为了解出方程中的 <span class="math inline">\((e_0,\cdots,e_d)\)</span>，不妨构造格 <span class="math display">\[
+M=\begin{bmatrix}
+E&amp;R\\
+0&amp;P
+\end{bmatrix}
+\]</span> 其中 <span class="math display">\[
+E=\begin{bmatrix}
+1&amp;0&amp;\cdots&amp;0&amp;0&amp;\cdots&amp;0\\
+0&amp;2^{-k}&amp;\cdots&amp;0&amp;0&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;2^{-k}&amp;0&amp;\cdots&amp;0\\
+0&amp;0&amp;\cdots&amp;0&amp;2^{-2k}&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;0&amp;0&amp;\cdots&amp;2^{-2k}
+\end{bmatrix}
+\]</span> 其中，<span class="math inline">\(k\)</span> 是 <span class="math inline">\(e_i\)</span> 的位数</p>
+<p>使得 <span class="math display">\[
+\boldsymbol{v}M=(1,\frac{e_1}{2^{k}},\cdots,\frac{e_d}{2^{k}},\frac{e_0}{2^{k}},\frac{e_0e_1}{2^{2k}},\cdots,\frac{e_0e_d}{2^{2k}},0,\cdots,0)
+\]</span> 这个解向量很小，可以证明在格内。</p>
+<h3 id="实例-2">实例</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> random, os</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line">flag = <span class="string">&#x27;flag&#123;th1s_1s_fl4g&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">p = random.getrandbits(<span class="number">1024</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&gt; mod =&#x27;</span>, p)</span><br><span class="line">secret = random.randint(<span class="number">1</span>, p-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">XennyOracle</span>():</span><br><span class="line">    r = getPrime(<span class="number">512</span>)</span><br><span class="line">    d = invert(secret+r, p) - getPrime(<span class="number">328</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&gt; r =&#x27;</span>, r)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;&gt; d =&#x27;</span>, d)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">task</span>():</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">16</span>):</span><br><span class="line">        op = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line">        <span class="keyword">if</span> op == <span class="number">1</span>:</span><br><span class="line">            XennyOracle()</span><br><span class="line">        <span class="keyword">elif</span> op == <span class="number">2</span>:</span><br><span class="line">            ss = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> ss == secret:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;flag: &#x27;</span>, flag)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    task()</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Error. try again.&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>我们迭代十五次获取到 ds 和 rs。</p>
+<p>还原 <span class="math inline">\(secret\)</span> 的代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">p = mod</span><br><span class="line">hs = ds</span><br><span class="line">ts = rs</span><br><span class="line">k = <span class="number">328</span></span><br><span class="line">d = <span class="built_in">len</span>(hs) - <span class="number">1</span></span><br><span class="line">Ai = []</span><br><span class="line">Bi = []</span><br><span class="line">Ci = []</span><br><span class="line">Di = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, d + <span class="number">1</span>):</span><br><span class="line">    Ai.append(ts[<span class="number">0</span>] - ts[i])</span><br><span class="line">    Bi.append(hs[i] * Ai[-<span class="number">1</span>] + <span class="number">1</span>)</span><br><span class="line">    Ci.append(hs[<span class="number">0</span>] * Ai[-<span class="number">1</span>] - <span class="number">1</span>)</span><br><span class="line">    Di.append(hs[<span class="number">0</span>] * hs[i] * Ai[-<span class="number">1</span>] + hs[<span class="number">0</span>] - hs[i])</span><br><span class="line">R = block_matrix([matrix(Di), diagonal_matrix(Ci), matrix(Bi), diagonal_matrix(Ai)], ncols=<span class="number">1</span>)</span><br><span class="line">P = diagonal_matrix(ZZ, [p] * d)</span><br><span class="line">E = block_diagonal_matrix([matrix([<span class="number">1</span>]), diagonal_matrix([<span class="number">2</span>^(-k)] * (d + <span class="number">1</span>)), diagonal_matrix([<span class="number">4</span>^(-k)] * d)])</span><br><span class="line">M = block_matrix([[E, R], [<span class="number">0</span>, P]])</span><br><span class="line">shortest_vector = M.LLL()[<span class="number">0</span>]</span><br><span class="line">es = shortest_vector[<span class="number">1</span>:d+<span class="number">2</span>] * <span class="number">2</span> ^ k</span><br><span class="line">es = <span class="built_in">list</span>(es[-<span class="number">1</span>:]) + <span class="built_in">list</span>(es[:-<span class="number">1</span>])</span><br><span class="line">s = inverse_mod(ZZ(hs[<span class="number">0</span>] + es[<span class="number">0</span>]), p) - ts[<span class="number">0</span>]</span><br><span class="line"><span class="built_in">print</span>(s)</span><br></pre></td></tr></table></figure>
+<h2 id="echnp椭圆曲线隐藏数问题">ECHNP(椭圆曲线隐藏数问题)</h2>
+<h3 id="原理-2">原理</h3>
+<p>ECC 加密中，公开对通常是 <span class="math inline">\((tG,P+tG)\)</span>，其中 <span class="math inline">\(tG\)</span> 是公钥，<span class="math inline">\(P+tG\)</span> 是密文。</p>
+<p>如果说我们拥有一个预言机，我们可以选择公钥生成密文，即使密文出现一定的错误，我们也可以还原出明文
+<span class="math inline">\(P_x\)</span>。</p>
+<p>我们知道对任意的 <span class="math inline">\(t\)</span> 可以成立
+<span class="math display">\[
+O_{P,G}(t)=(P+tG)_x=\left(\frac{y_P-y_Q}{x_P-x_Q}\right)^2-x_P-x_Q-e_t\pmod{p}
+\]</span> 其中，<span class="math inline">\(Q=tG\)</span>。</p>
+<p>不妨令 <span class="math display">\[
+h_t=(P+tG)_x
+\]</span> 那么有 <span class="math display">\[
+(h_t+e_t+x_P+x_Q)(x_P-x_Q)^2=(y_P-y_Q)^2=x_P^3+ax_P+b-2y_Py_Q+y_Q^2\pmod{p}
+\]</span> 优先选择 <span class="math inline">\(t=0\)</span>，那么我们有
+<span class="math display">\[
+h_0=x_P-e_0
+\]</span> 考虑 <span class="math inline">\(y_P\)</span>
+是我们不需要的数据，将其化简得到 <span class="math display">\[
+y_P=\frac{x_P^3+ax_P+b+y_Q^2-(h_0+e_0+x_P+x_Q)(x_P-x_Q)}{2y_Q}
+\]</span> 不妨考虑共轭对 <span class="math inline">\((P+Q)_x,(P-Q)_x\)</span></p>
+<p>令 <span class="math display">\[
+s_{P+Q}=\frac{y_P-y_Q}{x_P-x_Q},s_{P-Q}=\frac{y_P-y_{-Q}}{x_P-x_{-Q}}
+\]</span> 我们尝试消去 <span class="math inline">\(y_P\)</span>，有
+<span class="math display">\[
+\begin{align}
+(P+Q)_x+(P-Q)_x&amp;=s_{P+Q}^2-x_P-x_Q+s_{P-Q}^2-x_P-x_Q\\
+&amp;=2\left(\frac{x_Qx_P^2+(a+x_Q^2)x_P+ax_Q+2b}{(x_P-x_Q)^2}\right)
+\end{align}
+\]</span> 那么 <span class="math inline">\(h_i=(P+Q)_x-e_i\)</span>
+和其共轭 <span class="math inline">\(h_{-i}=(P-Q)_x-e_{-i}\)</span>
+可以构造 <span class="math inline">\(\tilde{h}_i=h_i+h_{-i}\)</span>，<span class="math inline">\(\tilde{e}_i=e_i+e_{-i}\)</span>，再加上 <span class="math inline">\(x_P=h_0+e_0\)</span>，我们可以得到 <span class="math display">\[
+\tilde{h}_i+\tilde{e}_i=2\left(\frac{x_Q(h_0+e_0)^2+(a+x_Q^2)(h_0+e_0)+ax_Q+2b}{(h_0+e_0-x_Q)^2}\right)
+\]</span> 我们再把分母上的 <span class="math inline">\((h_0+e_0-x_Q)^2\)</span>
+左乘，化简，我们可以改写为一个关于 <span class="math inline">\(e_0,\tilde{e}_t\)</span> 的方程 <span class="math display">\[
+\begin{align}
+F_i(X,Y)&amp;=X^2Y+(\tilde{h}_i-2x_Q)X^2+2(h_0-x_Q)XY+2[\tilde{h}_i(h_0-x_Q)-2h_0x_Q-a-x_Q^2]X+(h_0-x_Q)^2Y+[\tilde{h}_i(h_0-x_Q)^2-2h_0^2x_Q-2(a+x_Q^2)h_0-2ax_Q-4b]\\
+&amp;=X^2Y+A_iX^2+A_{0,i}XY+B_iX+B_{0,i}Y+C_i
+\end{align}
+\]</span> 满足 <span class="math inline">\(F_i(e_0,
+\tilde{e}_i)=0\pmod{p},Q=iG\)</span></p>
+<p>其中系数一一对应为 <span class="math display">\[
+A_i=\tilde{h}_i-2x_Q\\
+A_{0,i}=2(h_0-x_Q)\\
+B_i=2[\tilde{h}_i(h_0-x_Q)-2h_0x_Q-a-x_Q^2]\\
+B_{0,i}=(h_0-x_Q)^2\\
+C_i=\tilde{h}_i(h_0-x_Q)^2-2h_0^2x_Q-2(a+x_Q^2)h_0-2ax_Q-4b
+\]</span> 自然地，对于 <span class="math inline">\(d\)</span> 个 <span class="math inline">\((e_0,\tilde{e}_i)\)</span> 对，我们可以列出方程组
+<span class="math display">\[
+\boldsymbol{v}=(1,e_0,\tilde{e}_1,\cdots,\tilde{e}_d,e_0^2,e_0\tilde{e}_1,\cdots,e_0\tilde{e}_d,k_1,\cdots,k_d)\\
+R=\begin{bmatrix}
+-C_1&amp;-C_2&amp;\cdots&amp;-C_d\\
+-B_1&amp;-B_2&amp;\cdots&amp;-B_d\\
+-B_{0,1}&amp;0&amp;\cdots&amp;0\\
+0&amp;-B_{0,2}&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;-B_{0,d}\\
+-A_1&amp;-A_2&amp;\cdots&amp;-A_d\\
+-A_{0,1}&amp;0&amp;\cdots&amp;0\\
+0&amp;-A_{0,2}&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;-A_{0,d}\\
+\end{bmatrix}
+,P=\begin{bmatrix}
+p&amp;0&amp;\cdots&amp;0\\
+0&amp;p&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;p
+\end{bmatrix}\\
+\boldsymbol{v}\begin{bmatrix}R\\P\end{bmatrix}=\begin{bmatrix}e_0^2\tilde{e}_1,\cdots,e_0^2\tilde{e}_d\end{bmatrix}
+\]</span> 为了解出方程中的 <span class="math inline">\((e_0,\cdots,e_d)\)</span>，不妨构造格 <span class="math display">\[
+M=\begin{bmatrix}
+E&amp;R\\
+0&amp;P
+\end{bmatrix}
+\]</span> 其中 <span class="math display">\[
+E=\begin{bmatrix}
+2^{3k}&amp;0&amp;\cdots&amp;0&amp;0&amp;\cdots&amp;0\\
+0&amp;2^{2k}&amp;\cdots&amp;0&amp;0&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;2^{2k}&amp;0&amp;\cdots&amp;0\\
+0&amp;0&amp;\cdots&amp;0&amp;2^{k}&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;0&amp;0&amp;\cdots&amp;2^{k}
+\end{bmatrix}
+\]</span> 其中，<span class="math inline">\(k\)</span> 是 <span class="math inline">\(e_i\)</span> 的位数</p>
+<p>使得 <span class="math display">\[
+\boldsymbol{v}M=(2^{3k},e_02^{2k},\tilde{e}_12^{2k},\cdots,\tilde{e}_d2^{2k},e_0^22^{k},e_0\tilde{e}_12^{k},\cdots,e_0\tilde{e}_d2^k,e_0^2\tilde{e}_1,\cdots,e_0^2\tilde{e}_d)
+\]</span> 这个解向量可以证明在格内。</p>
+<h3 id="实例-3">实例</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line">p = getPrime(<span class="number">1024</span>)</span><br><span class="line">a = getPrime(<span class="number">200</span>)</span><br><span class="line">b = getPrime(<span class="number">200</span>)</span><br><span class="line">E = EllipticCurve(GF(p), [a, b])</span><br><span class="line">R = E.random_element()</span><br><span class="line">P = E.random_element()</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&gt; mod =&#x27;</span>, p)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&gt; a =&#x27;</span>, a)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&gt; b =&#x27;</span>, b)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;&gt; R = (<span class="subst">&#123;R[<span class="number">0</span>]&#125;</span>, <span class="subst">&#123;R[<span class="number">1</span>]&#125;</span>)&#x27;</span>, )</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">XennyOracle</span>(<span class="params">t</span>):</span><br><span class="line">    O = P + t*R</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">int</span>(O[<span class="number">0</span>]) - getPrime(<span class="number">163</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">task</span>():</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">30</span>):</span><br><span class="line">        op = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line">        <span class="keyword">if</span> op == <span class="number">1</span>:</span><br><span class="line">            XennyOracle(<span class="built_in">int</span>(<span class="built_in">input</span>()))</span><br><span class="line">        <span class="keyword">elif</span> op == <span class="number">2</span>:</span><br><span class="line">            ss = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> ss == P[<span class="number">0</span>]:</span><br><span class="line">                <span class="built_in">print</span>(<span class="string">&#x27;flag: &#x27;</span>, flag)</span><br><span class="line"></span><br><span class="line"><span class="keyword">try</span>:</span><br><span class="line">    task()</span><br><span class="line"><span class="keyword">except</span> Exception:</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;Error. try again.&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>我们可以从中获取椭圆曲线的参数，点 <span class="math inline">\(G\)</span> 和 14 对 <span class="math inline">\((e_0,\tilde{e}_i)\)</span>，还原脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">p = p</span><br><span class="line">a = a</span><br><span class="line">b = b</span><br><span class="line">E = EllipticCurve(GF(p), [a, b])</span><br><span class="line">G = E((x, y))</span><br><span class="line">hs = hs</span><br><span class="line">k = <span class="number">163</span></span><br><span class="line">d = <span class="built_in">len</span>(hs) - <span class="number">1</span></span><br><span class="line">Ai = []</span><br><span class="line">A0i = []</span><br><span class="line">Bi = []</span><br><span class="line">B0i = []</span><br><span class="line">Ci = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, d + <span class="number">1</span>):</span><br><span class="line">    Q = i * G</span><br><span class="line">    xQ = ZZ(Q[<span class="number">0</span>])</span><br><span class="line">    Ai.append(hs[i] - <span class="number">2</span> * xQ)</span><br><span class="line">    A0i.append(<span class="number">2</span> * (hs[<span class="number">0</span>] - xQ))</span><br><span class="line">    Bi.append(<span class="number">2</span> * (hs[i] * (hs[<span class="number">0</span>] - xQ) - <span class="number">2</span> * hs[<span class="number">0</span>] * xQ - a - xQ ^ <span class="number">2</span>))</span><br><span class="line">    B0i.append((hs[<span class="number">0</span>] - xQ) ^ <span class="number">2</span>)</span><br><span class="line">    Ci.append(hs[i] * (hs[<span class="number">0</span>] - xQ) ^ <span class="number">2</span> - <span class="number">2</span> * ((hs[<span class="number">0</span>] ^ <span class="number">2</span> +a) * xQ + (a + xQ ^ <span class="number">2</span>) * hs[<span class="number">0</span>] + <span class="number">2</span> * b))</span><br><span class="line">R = block_matrix(ZZ, [-matrix(Ci), -matrix(Bi), -diagonal_matrix(B0i), -matrix(Ai), -diagonal_matrix(A0i)], ncols=<span class="number">1</span>)</span><br><span class="line">P = diagonal_matrix(ZZ, [p] * d)</span><br><span class="line">E = block_diagonal_matrix([matrix([<span class="number">8</span>^k]), diagonal_matrix([<span class="number">4</span>^k] * (d + <span class="number">1</span>)), diagonal_matrix([<span class="number">2</span>^k] * (d + <span class="number">1</span>))])</span><br><span class="line">M = block_matrix([[E, R], [<span class="number">0</span>, P]])</span><br><span class="line">shortest_vector = M.LLL()[<span class="number">0</span>]</span><br><span class="line">es = shortest_vector[<span class="number">1</span>:d+<span class="number">1</span>] / <span class="number">4</span> ^ k</span><br><span class="line">xP = ZZ(hs[<span class="number">0</span>] + es[<span class="number">0</span>])</span><br><span class="line"><span class="built_in">print</span>(xP)</span><br></pre></td></tr></table></figure>
+<h2 id="hssp隐子集和问题">HSSP(隐子集和问题)</h2>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://link.springer.com/content/pdf/10.1007/3-540-48405-1_3.pdf">The
+Hardness of the Hidden Subset Sum Problem and Its Cryptographic
+Implications</a></p>
+<p><a target="_blank" rel="noopener" href="https://eprint.iacr.org/2020/461.pdf">A Polynomial-Time
+Algorithm for Solving the Hidden Subset Sum Problem</a></p>
+</blockquote>
+<h3 id="原理-3">原理</h3>
+<p>HSSP，即 <em>Hidden Subset Sum Problem</em>，隐子集和问题。</p>
+<p>使用 Nguyen-Stern Algorithm 求解，内部使用正交格实现。</p>
+<p>在 HSSP 中，主要针对的是给予一个模数 <span class="math inline">\(M\)</span> 和结果向量 <span class="math inline">\(\bold{h}=(h_1,\cdots,h_m)\)</span>，满足 <span class="math display">\[
+\bold{h}=\alpha_1\bold{x}_1+\alpha_2\bold{x}_2+\cdots+\alpha_n\bold{x}_n\pmod{M}
+\]</span> 其中我们需要还原向量 <span class="math inline">\(\bold{\alpha}=(\alpha_1,\cdots,\alpha_n)\)</span>
+和向量 <span class="math inline">\(\bold{x}_i\in\{0,1\}^m\)</span>。</p>
+<p>Nguyen-Stern 算法主要分两步：</p>
+<ol type="1">
+<li>从样本 <span class="math inline">\(\bold{h}\)</span>
+中，计算得到正交格 <span class="math inline">\(\bar{\mathcal{L}}_\bold{x}\)</span>，其中 <span class="math inline">\(\mathcal{L}_\bold{x}\)</span> 从 <span class="math inline">\(\bold{x}_i\)</span> 生成。</li>
+<li>从正交格 <span class="math inline">\(\bar{\mathcal{L}}_\bold{x}\)</span> 中，恢复隐向量
+<span class="math inline">\(\bold{x}_i\)</span>。从 <span class="math inline">\(\bold{h},\bold{x}_i,M\)</span> 中恢复权重向量
+<span class="math inline">\(\alpha_i\)</span>。</li>
+</ol>
+<h3 id="算法">算法</h3>
+<h4 id="第一步正交格攻击">第一步：正交格攻击</h4>
+<p>首先计算格 <span class="math inline">\(\mathcal{L}_0\)</span>，需要满足条件 <span class="math inline">\(\gcd(h_1,M)=1\)</span>，其次将向量改写为 <span class="math inline">\(\bold{h}=(h_1,\bold{h}&#39;),\bold{u}=(u_1,\bold{u}&#39;)\)</span>，那么可以从
+<span class="math inline">\(\bold{u}\in \mathcal{L}_0\)</span> 得到
+<span class="math display">\[
+u_1\cdot h_1+\bold{u}&#39;\cdot \bold{h}&#39;\equiv 0\pmod{M}
+\]</span> 即 <span class="math display">\[
+u_1+\bold{u}&#39;\cdot \bold{h}&#39;\cdot h_1^{-1}\equiv 0\pmod{M}
+\]</span> 此时化为 SVP 问题，改写成 <span class="math display">\[
+(k,\bold{u}&#39;)\mathcal{L}_0=\bold{u}\newline
+\mathcal{L}_0=\begin{bmatrix}
+M&amp;\newline
+-\bold{h}&#39;\cdot h_1^{-1}&amp;\bold{I}_{m-1}
+\end{bmatrix}
+\]</span> 其中，<span class="math inline">\(m\)</span> 是 <span class="math inline">\(\bold{h}\)</span> 的维度。</p>
+<p>那么我们对 <span class="math inline">\(\mathcal{L}_0\)</span>
+进行格规约，即可得到 <span class="math inline">\(\bold{u}_1,\cdots,\bold{u}_m\)</span>，其中前
+<span class="math inline">\(m-n\)</span> 个向量 <span class="math inline">\(\bold{u}_1,\cdots,\bold{u}_{m-n}\)</span> 组成格
+<span class="math inline">\(\mathcal{L}_{\bold{x}}^{\perp}\)</span>。</p>
+<p>随后我们进行正交格规约，计算 <span class="math inline">\(\bar{\mathcal{L}}_\bold{x}=(\mathcal{L}_{\bold{x}}^{\perp})^{\perp}\)</span>，这是由一组向量
+<span class="math inline">\((\bold{c}_1,\cdots,\bold{c}_n)\)</span>
+生成的。</p>
+<h4 id="第二步恢复-boldx_iboldalpha">第二步：恢复 <span class="math inline">\(\bold{x}_i,\bold{\alpha}\)</span></h4>
+<p>由于 LLL 算法本身的限制，我们得到的基向量 <span class="math inline">\((\bold{c}_1,\cdots,\bold{c}_n)\)</span> 可能要比
+<span class="math inline">\((\bold{x}_1,\cdots,\bold{x}_n)\)</span>
+大，而原始向量组一定是 <span class="math inline">\(L_\bold{x}\)</span>
+中最短的向量之一。</p>
+<p>因此这里需要选择用 BKZ 算法以获得更好的基，但此时改变了格的形式，因为
+<span class="math inline">\(\bold{x}_i\pm \bold{x}_j,i\neq j\)</span>
+也可能很短，所以还需要额外的一步去还原原始向量。</p>
+<p>这样我们得到 <span class="math inline">\((\bold{x}_1,\cdots,\bold{x}_n)\)</span>，再通过解方程的方式求解
+<span class="math inline">\(\bold{\alpha}=(\alpha_1,\cdots,\alpha_n)\)</span>。</p>
+<h3 id="代码">代码</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">ortholattice</span>(<span class="params">h, M</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    生成一个在模M下与h正交的格L0，满足`L0*h%M==0`</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        h - 一个向量(vector)</span></span><br><span class="line"><span class="string">        M - 模数</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        一个在ZZ域内的，在模M下与h正交的矩阵</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    m = <span class="built_in">len</span>(h)</span><br><span class="line">    L0 = identity_matrix(Zmod(M), m)</span><br><span class="line">    L0[<span class="number">1</span>:, <span class="number">0</span>] = -h[<span class="number">1</span>:] * inverse_mod(h[<span class="number">0</span>], M)</span><br><span class="line">    L0 = L0.change_ring(ZZ)</span><br><span class="line">    L0[<span class="number">0</span>, <span class="number">0</span>] = M</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> L0</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">kernelLLL</span>(<span class="params">L_perp</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    求解$(L^\perp)^\perp$以找到$L$，同时使用LLL化简格</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    n = L_perp.nrows()</span><br><span class="line">    m = L_perp.ncols()</span><br><span class="line">    <span class="keyword">if</span> m &lt; <span class="number">2</span> * n:</span><br><span class="line">        <span class="comment"># 不满足NS正交格攻击的条件</span></span><br><span class="line">        <span class="comment"># 需要注意的是在multivariate攻击中条件有变</span></span><br><span class="line">        <span class="keyword">return</span> L_perp.right_kernel_matrix()</span><br><span class="line">    <span class="comment"># 乘以K是为了满足LLL算法的条件</span></span><br><span class="line">    K = <span class="number">2</span> ** (m // <span class="number">2</span>) * L_perp.height()</span><br><span class="line">    L_l = block_matrix(<span class="number">2</span>, <span class="number">1</span>, [K * L_perp, identity_matrix(ZZ, m)])</span><br><span class="line">    L = L_l.T.LLL().T</span><br><span class="line"></span><br><span class="line">    <span class="keyword">assert</span> L[:n, :m-n] == <span class="number">0</span>, <span class="string">&quot;理论上会压缩这部分向量&quot;</span></span><br><span class="line">    Ke = L[n:, :m-n].T</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Ke</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">allones</span>(<span class="params">v</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    将合解的向量取绝对值，不合理的向量返回None</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        v - 解向量</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        合解的向量或None</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">all</span>(vi <span class="keyword">in</span> [<span class="number">0</span>, <span class="number">1</span>] <span class="keyword">for</span> vi <span class="keyword">in</span> v):</span><br><span class="line">        <span class="keyword">return</span> v</span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">all</span>(vi <span class="keyword">in</span> [<span class="number">0</span>, -<span class="number">1</span>] <span class="keyword">for</span> vi <span class="keyword">in</span> v):</span><br><span class="line">        <span class="keyword">return</span> -v</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">recovery</span>(<span class="params">Lx</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    恢复原始解向量组，顺序不一定</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        Lx - 通过BKZ算法恢复的基</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        原始解向量组</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="comment"># 正确的解</span></span><br><span class="line">    Lv = [allones(v) <span class="keyword">for</span> v <span class="keyword">in</span> Lx <span class="keyword">if</span> allones(v)]</span><br><span class="line">    <span class="keyword">for</span> vi <span class="keyword">in</span> Lv:</span><br><span class="line">        <span class="keyword">for</span> vj <span class="keyword">in</span> Lx:</span><br><span class="line">            <span class="comment"># 如果vj-vi是解</span></span><br><span class="line">            v = allones(vj - vi)</span><br><span class="line">            <span class="keyword">if</span> v <span class="keyword">and</span> v <span class="keyword">not</span> <span class="keyword">in</span> Lv:</span><br><span class="line">                Lv.append(v)</span><br><span class="line">            <span class="comment"># 如果vj+vi是解</span></span><br><span class="line">            v = allones(vj + vi)</span><br><span class="line">            <span class="keyword">if</span> v <span class="keyword">and</span> v <span class="keyword">not</span> <span class="keyword">in</span> Lv:</span><br><span class="line">                Lv.append(v)</span><br><span class="line">    <span class="keyword">return</span> matrix(ZZ, Lv)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">NSAttack</span>(<span class="params">n, h, p</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    NS攻击，`m=len(h)`</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        n - 向量组大小（权重维度）</span></span><br><span class="line"><span class="string">        h - 结果向量</span></span><br><span class="line"><span class="string">        p - 模数</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        乱序的原始向量组</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    h = vector(h)</span><br><span class="line">    m = <span class="built_in">len</span>(h)</span><br><span class="line">    L0 = ortholattice(h, p)</span><br><span class="line">    <span class="comment"># 格出向量u，向量u满足u*h%M==0</span></span><br><span class="line">    L1 = L0.LLL()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;[+] LLL done.&#x27;</span>)</span><br><span class="line">    <span class="comment"># 向量u组成新格Lx_perp</span></span><br><span class="line">    Lx_perp = L1[:m-n]</span><br><span class="line">    <span class="comment"># 求解$(Lx^\perp)^\perp$</span></span><br><span class="line">    Lx = kernelLLL(Lx_perp)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;[+] Lx solved.&#x27;</span>)</span><br><span class="line">    <span class="comment"># 格规约Lx，化简格，便于运行BKZ算法</span></span><br><span class="line">    Lx_bar = Lx.LLL()</span><br><span class="line">    <span class="comment"># 使用BKZ算法，获得更好的基</span></span><br><span class="line">    <span class="keyword">for</span> beta <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>, n, <span class="number">10</span>):</span><br><span class="line">        <span class="comment"># 如果基都落在-1,0,1中，那么说明可以提前退出BKZ算法</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">all</span>(<span class="built_in">all</span>(i <span class="keyword">in</span> [-<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> vec) <span class="keyword">for</span> vec <span class="keyword">in</span> Lx_bar):</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        Lx_bar = Lx_bar.BKZ(block_size=beta)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;[+] BKZ done.&#x27;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 求解$(\bold&#123;x&#125;1,\cdots,\bold&#123;x&#125;_n)$</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&#x27;[+] recovery X.&#x27;</span>)</span><br><span class="line">    X = recovery(Lx_bar)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> X</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/hidden-number-problem.html" title="隐藏数问题">https://hasegawaazusa.github.io/hidden-number-problem.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/crypto/" rel="tag"><i class="fa fa-tag"></i> crypto</a>
+              <a href="/tags/math/" rel="tag"><i class="fa fa-tag"></i> math</a>
+              <a href="/tags/lattice/" rel="tag"><i class="fa fa-tag"></i> lattice</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/linear-discriminant-function.html" rel="prev" title="模式识别-线性判别函数笔记">
+                  <i class="fa fa-chevron-left"></i> 模式识别-线性判别函数笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/control-system-mathematical-model.html" rel="next" title="自动控制原理-控制系统数学模型">
+                  自动控制原理-控制系统数学模型 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">560k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:29</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
