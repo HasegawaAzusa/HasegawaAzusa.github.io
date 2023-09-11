@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hasegawaazusa.github.io/audio-forensics-note/silenteye%20encrypted.png">
 <meta property="article:published_time" content="2022-05-31T12:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-29T04:10:33.090Z">
+<meta property="article:modified_time" content="2023-09-05T07:22:47.939Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="misc">
@@ -94,7 +94,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">113</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">116</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -145,7 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9F%B3%E9%A2%91%E5%8F%96%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">音频取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deepsound"><span class="nav-number">1.2.</span> <span class="nav-text">deepsound</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dtmf"><span class="nav-number">1.3.</span> <span class="nav-text">DTMF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lsb-%E9%9A%90%E5%86%99"><span class="nav-number">1.4.</span> <span class="nav-text">lsb 隐写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#morse-code"><span class="nav-number">1.5.</span> <span class="nav-text">Morse-Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sstv"><span class="nav-number">1.6.</span> <span class="nav-text">SSTV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%91%E8%B0%B1%E5%9B%BE%E9%9A%90%E5%86%99"><span class="nav-number">1.7.</span> <span class="nav-text">频谱图隐写</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wav-%E5%8F%96%E8%AF%81"><span class="nav-number">2.</span> <span class="nav-text">WAV 取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#silenteye"><span class="nav-number">2.1.</span> <span class="nav-text">silenteye</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#steghide"><span class="nav-number">2.2.</span> <span class="nav-text">steghide</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wavsteg"><span class="nav-number">2.3.</span> <span class="nav-text">WavSteg</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mp3-%E5%8F%96%E8%AF%81"><span class="nav-number">3.</span> <span class="nav-text">MP3 取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mp3stego"><span class="nav-number">3.1.</span> <span class="nav-text">Mp3stego</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9F%B3%E9%A2%91%E5%8F%96%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">音频取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#audacity"><span class="nav-number">1.2.</span> <span class="nav-text">Audacity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deepsound"><span class="nav-number">1.3.</span> <span class="nav-text">deepsound</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dtmf"><span class="nav-number">1.4.</span> <span class="nav-text">DTMF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg"><span class="nav-number">1.5.</span> <span class="nav-text">FFmpeg</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lsb-%E9%9A%90%E5%86%99"><span class="nav-number">1.6.</span> <span class="nav-text">lsb 隐写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#morse-code"><span class="nav-number">1.7.</span> <span class="nav-text">Morse-Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sstv"><span class="nav-number">1.8.</span> <span class="nav-text">SSTV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%91%E8%B0%B1%E5%9B%BE%E9%9A%90%E5%86%99"><span class="nav-number">1.9.</span> <span class="nav-text">频谱图隐写</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wav-%E5%8F%96%E8%AF%81"><span class="nav-number">2.</span> <span class="nav-text">WAV 取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#silenteye"><span class="nav-number">2.1.</span> <span class="nav-text">silenteye</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#steghide"><span class="nav-number">2.2.</span> <span class="nav-text">steghide</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wavsteg"><span class="nav-number">2.3.</span> <span class="nav-text">WavSteg</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mp3-%E5%8F%96%E8%AF%81"><span class="nav-number">3.</span> <span class="nav-text">MP3 取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mp3stego"><span class="nav-number">3.1.</span> <span class="nav-text">Mp3stego</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -160,13 +160,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">62</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -237,7 +237,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2022-07-29 12:10:33" itemprop="dateModified" datetime="2022-07-29T12:10:33+08:00">2022-07-29</time>
+      <time title="修改时间：2023-09-05 15:22:47" itemprop="dateModified" datetime="2023-09-05T15:22:47+08:00">2023-09-05</time>
     </span>
 
   
@@ -247,14 +247,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.4k</span>
+      <span>2.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -269,6 +269,17 @@
         <h1 id="音频取证">音频取证</h1>
 <h2 id="简述">简述</h2>
 <p>音频同样也是一个可以隐写其他数据的数据格式，常见的例如 lsb 隐写。</p>
+<h2 id="audacity">Audacity</h2>
+<p>Audacity
+是一款优秀的音频分析软件，可以进行录制、编辑、可视化音轨等操作。</p>
+<p>在 Audacity
+中可以查看频谱图，以便于寻找是否存在频谱图隐写的操作（同时可以尝试修改采样率，以便获取更多的信息）。</p>
+<p>如果想要导入 mp4 等多媒体流的音频流，需要为 Audacity 下载额外的
+FFmpeg 库，注意需要根据不同的版本号选择对应的库：<a target="_blank" rel="noopener" href="https://lame.buanzo.org/ffmpeg.php">https://lame.buanzo.org/ffmpeg.php</a>。</p>
+<blockquote>
+<p>优先选择 exe 安装文件，并默认安装路径，否则 Audacity
+可能无法正常识别。</p>
+</blockquote>
 <h2 id="deepsound">deepsound</h2>
 <p>DeepSound 支持 wave、flac、wma、ape 和音频 CD
 数据类型的隐写，并且可以保留文件名。</p>
@@ -283,6 +294,18 @@ multifrequency)，即双音多频，由高频群和低频群组成，高低频�
 包管理工具即可安装。</p>
 <p>使用方式：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dtmf2num audio.wav</span><br></pre></td></tr></table></figure>
+<h2 id="ffmpeg">FFmpeg</h2>
+<p>FFmpeg 是万能的格式转换软件，它可以提取出各种格式中的音频流。</p>
+<p>使用命令 <code>ffmpeg -i input.mp4</code>
+可以扫描出文件中所携带的各种流，扫描结果可能展示为
+<code>Stream #0:0[0x1](und): Video</code>，其中 <code>0:0</code>
+是内置编号，<code>Video</code> 代表这个流是音频流。</p>
+<p>使用命令 <code>-map</code> 可以指定编号导出流，导出时最好加上
+<code>-c copy</code>，否则它将使用全新方式导出（速度会慢），例如
+<code>ffmpeg -i input.mp4 -map 0:2 output.mp3</code>。</p>
+<blockquote>
+<p>如果只是导出音频，更推荐使用 Audacity。</p>
+</blockquote>
 <h2 id="lsb-隐写">lsb 隐写</h2>
 <h2 id="morse-code">Morse-Code</h2>
 <p>摩尔斯电码是只使用 0 和 1
@@ -295,6 +318,14 @@ multifrequency)，即双音多频，由高频群和低频群组成，高低频�
 <p>使用方式：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">morse2ascii audio.wav</span><br></pre></td></tr></table></figure>
 <h2 id="sstv">SSTV</h2>
+<p>慢扫描电视（Slow-scan
+television），是一种图像传输方式，将图像信息转化为高频率（也可能是低频率）的音频信息（也可以是其他波信息，例如电磁波），以波为载体传输信息。</p>
+<p>比较多使用 MMSSTV 作为制作和转换（接收）SSTV
+信息的工具，但需要安装虚拟声卡，使得输入输出都为虚拟声卡线路（默认为
+Line1）。</p>
+<p>MMSSTV 默认设置可能需要设置为
+24000（正好是声卡设置的一半），然后你应该得到清晰的图像。</p>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://amsat-uk.org/beginners/iss-sstv/">https://amsat-uk.org/beginners/iss-sstv/</a></p>
 <h2 id="频谱图隐写">频谱图隐写</h2>
 <p>有时候会将关键信息隐藏在频谱图部分，可以使用 Audacity
 软件查看频谱图部分得到隐藏信息。</p>
@@ -408,13 +439,13 @@ multifrequency)，即双音多频，由高频群和低频群组成，高低频�
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">560k</span>
+    <span title="站点总字数">592k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:29</span>
+    <span title="站点阅读时长">8:58</span>
   </span>
 </div>
 

