@@ -214,7 +214,7 @@ f\cdot h=g\pmod{p}=g+kp
 (f,-k)M=(f,g)\newline
 M=\begin{bmatrix}
 1&amp;h\newline
-0&amp;g
+0&amp;p
 \end{bmatrix}
 \]</span> 可以证明向量 <span class="math inline">\((f,g)\)</span> 在格
 <span class="math inline">\(M\)</span> 上，即 SVP 问题。</p>
@@ -4325,6 +4325,7 @@ y=\log_a{x}\pmod{p}
 为椭圆曲线上的基点（一般是随机选取的一点）。</p>
 <p>由上式可知<strong>公钥</strong>由<strong>私钥</strong>生成。</p>
 <h2 id="数字签名">数字签名</h2>
+<h3 id="生成">生成</h3>
 <ol type="1">
 <li>随机生成一个临时密钥 <span class="math inline">\(k\)</span></li>
 <li>计算 <span class="math inline">\(P=k\cdot G\)</span>，其中 <span class="math inline">\(G\)</span> 为椭圆曲线上的基点</li>
@@ -4338,9 +4339,23 @@ y=\log_a{x}\pmod{p}
 k^{-1}\times(\mathrm{H}(m)+d_A\cdot r)\pmod{n}\)</span></li>
 <li>最终 <span class="math inline">\((r,s)\)</span> 即为数字签名</li>
 </ol>
+<h3 id="验证">验证</h3>
+<ol type="1">
+<li>校验 <span class="math inline">\(r,s\in[1,n-1]\)</span></li>
+<li>计算哈希值 <span class="math inline">\(h=\mathrm{H}(m)\)</span></li>
+<li>计算 <span class="math inline">\(w=s^{-1}\pmod{n}\)</span></li>
+<li>计算 <span class="math inline">\(u_1=hw,u_2=rw\)</span></li>
+<li>计算 <span class="math inline">\(X=(x_1,y_1)=u_1G+u_2Q\)</span></li>
+<li>如果 <span class="math inline">\(X\)</span>
+不存在，那么签名错误；否则计算 <span class="math inline">\(v=x_1\pmod{n}\)</span></li>
+<li>当 <span class="math inline">\(v=r\)</span> 时，签名正确</li>
+</ol>
 <h1 id="python-实现">Python 实现</h1>
 <p>一般来说仅使用 Python 的话我们需要使用 <code>ecdsa</code> 模块。</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="comment"># 使用 NIST256p 椭圆生成密钥</span></span><br><span class="line">gen = ecdsa.NIST256p.generator</span><br><span class="line"><span class="comment"># 获取该椭圆模数</span></span><br><span class="line">order = gen.order()</span><br><span class="line"><span class="comment"># 生成私钥d_A</span></span><br><span class="line">d_A = random.randrange(<span class="number">1</span>, order-<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 生成公私钥对象</span></span><br><span class="line">public_key = ecdsa.ecdsa.Public_key(gen, gen * d_A)</span><br><span class="line">private_key = ecdsa.ecdsa.Private_key(public_key, d_A)</span><br><span class="line"><span class="comment"># 签名信息</span></span><br><span class="line">m = <span class="string">&quot;message&quot;</span></span><br><span class="line">Hm = <span class="built_in">int</span>(hashlib.sha1(message.encode(<span class="string">&quot;utf8&quot;</span>)).hexdigest(),<span class="number">16</span>)</span><br><span class="line"><span class="comment"># 临时密钥</span></span><br><span class="line">k = random.randrange(<span class="number">1</span>, order-<span class="number">1</span>)</span><br><span class="line"><span class="comment"># 签名</span></span><br><span class="line">signature = private_key.sign(Hm, k)</span><br><span class="line">r = signature.r </span><br><span class="line">s = signature.s </span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其默认哈希函数为 sha1。</p>
+</blockquote>
 <h1 id="ecdsa-实例">ECDSA 实例</h1>
 <ul>
 <li><p>题目</p>
@@ -4387,7 +4402,7 @@ d_A=r^{-1}\times(ks-H(m))
 被重复用于签名，那么也可以立即恢复密钥。</p>
 <p>不妨设 <span class="math inline">\((r,s_1),(r,s_2)\)</span>
 为从相同的 <span class="math inline">\(k\)</span> 生成的签名（<span class="math inline">\(r=(kG)_x\)</span>），那么将有 <span class="math display">\[
-s_1=k^{-1}(H(m_1)+d_Ar)\\
+s_1=k^{-1}(H(m_1)+d_Ar)\newline
 s_2=k^{-1}(H(m_2)+d_Ar)
 \]</span> 推导可得 <span class="math display">\[
 k(s_1-s_2)=H(m_1)-H(m_2)
@@ -4397,11 +4412,30 @@ k=(s_1-s_2)^{-1}(H(m_1)-H(m_2))
 复用的签名中恢复了 <span class="math inline">\(k\)</span>，从而获取密钥
 <span class="math inline">\(d_A\)</span>。</p>
 <h2 id="k-固定位"><span class="math inline">\(k\)</span> 固定位</h2>
-<h3 id="基本">基本</h3>
+<h3 id="爆破">爆破</h3>
 <p>当 <span class="math inline">\(k\)</span>
 拥有相同的前缀时，我们可以看作 <span class="math display">\[
 k_i=k-e_i
-\]</span> 即，存在错误的数，这时可以将转化为 HNP 问题。</p>
+\]</span> 不妨设 <span class="math inline">\((r_1,s_1),(r_2,s_2)\)</span> 为从相同的 <span class="math inline">\(k\)</span> 生成的签名（<span class="math inline">\(r_i=(k_iG)_x\)</span>），那么将有 <span class="math display">\[
+s_1=k_1^{-1}(H(m_1)+d_Ar_1)\newline
+s_2=k_2^{-1}(H(m_2)+d_Ar_2)
+\]</span> 推导可得 <span class="math display">\[
+(k+e_1)s_1=H(m_1)+d_Ar_1\newline
+(k+e_2)s_2=H(m_2)+d_Ar_2
+\]</span> 相减可得 <span class="math display">\[
+e_1-e_2=H(m_1)/s_1-H(m_2)/s_2+d_A(r_1/s_1-r_2/s_2)
+\]</span> 即 <span class="math display">\[
+d_A=[(e_1-e_2)-(H(m_1)/s_1-H(m_2)/s_2)](r_1/s_1-r_2/s_2)^{-1}
+\]</span> 简单爆破求解 <span class="math inline">\(e_1-e_2\)</span>
+即可。</p>
+<p>题目</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> Crypto.Util.strxor <span class="keyword">import</span> strxor <span class="keyword">as</span> xor</span><br><span class="line"></span><br><span class="line">p = getPrime(<span class="number">256</span>)</span><br><span class="line">gen = <span class="keyword">lambda</span>: p + getPrime(<span class="number">16</span>)</span><br><span class="line">pad = <span class="keyword">lambda</span> m: m + os.urandom(<span class="number">32</span> - <span class="built_in">len</span>(m) % <span class="number">32</span>)</span><br><span class="line"></span><br><span class="line">key = os.urandom(<span class="number">30</span>)</span><br><span class="line">sk = ecdsa.SigningKey.from_secret_exponent(</span><br><span class="line">    secexp=bytes_to_long(key),</span><br><span class="line">    curve=ecdsa.SECP256k1</span><br><span class="line">)</span><br><span class="line">sig1 = sk.sign(data=<span class="string">b&#x27;This is the first message.&#x27;</span>, k=gen())</span><br><span class="line">sig2 = sk.sign(data=<span class="string">b&#x27;Here is another message.&#x27;</span>, k=gen())</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;sig1 = &#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;sig2 = &#125;</span>&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"></span><br><span class="line">order = ecdsa.SECP256k1.generator.order()</span><br><span class="line"></span><br><span class="line">r1, s1 = ecdsa.keys.sigdecode_string(sig1, order)</span><br><span class="line">r2, s2 = ecdsa.keys.sigdecode_string(sig2, order)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;(r1, s1) = &#125;</span>&quot;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&quot;<span class="subst">&#123;(r2, s2) = &#125;</span>&quot;</span>)</span><br><span class="line"></span><br><span class="line">msg1 = hashlib.sha1(<span class="string">b&#x27;This is the first message.&#x27;</span>).digest()</span><br><span class="line">msg2 = hashlib.sha1(<span class="string">b&#x27;Here is another message.&#x27;</span>).digest()</span><br><span class="line"></span><br><span class="line">msg1 = bytes_to_long(msg1)</span><br><span class="line">msg2 = bytes_to_long(msg2)</span><br><span class="line"></span><br><span class="line">msg1_bar = msg1 * <span class="built_in">pow</span>(s1, -<span class="number">1</span>, order)</span><br><span class="line">msg2_bar = msg2 * <span class="built_in">pow</span>(s2, -<span class="number">1</span>, order)</span><br><span class="line">r1_bar = r1 * <span class="built_in">pow</span>(s1, -<span class="number">1</span>, order)</span><br><span class="line">r2_bar = r2 * <span class="built_in">pow</span>(s2, -<span class="number">1</span>, order)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(-<span class="number">2</span>**<span class="number">16</span>, <span class="number">2</span>**<span class="number">16</span>):</span><br><span class="line">    dA = (i - (msg1_bar - msg2_bar)) * <span class="built_in">pow</span>(r1_bar - r2_bar, -<span class="number">1</span>, order) % order</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    TODO: dA forge.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="hnp">HNP</h3>
+<p>由于 <span class="math display">\[
+k_i=k-e_i
+\]</span> 存在错误的数，还可以将其转化为 HNP 问题。</p>
 <p>首先，我们有 <span class="math display">\[
 s_i\equiv k_i^{-1}(m_i+d_A\cdot r_i)\pmod{n}
 \]</span> 我们变换方程可以得到 <span class="math display">\[
@@ -4422,7 +4456,7 @@ K
 <p>例如对于两对签名 <span class="math inline">\((r_1,s_1),(r_2,s_2)\)</span>，由以下代码生成</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"> </span><br><span class="line">gen = ecdsa.NIST256p.generator</span><br><span class="line">order = gen.order()</span><br><span class="line">secret = random.randrange(<span class="number">1</span>,order)</span><br><span class="line"> </span><br><span class="line">pub_key = ecdsa.ecdsa.Public_key(gen, gen * secret)</span><br><span class="line">priv_key = ecdsa.ecdsa.Private_key(pub_key, secret)</span><br><span class="line"> </span><br><span class="line">nonce1 = random.randrange(<span class="number">1</span>, <span class="number">2</span>**<span class="number">127</span>)</span><br><span class="line">nonce2 = random.randrange(<span class="number">1</span>, <span class="number">2</span>**<span class="number">127</span>)</span><br><span class="line"> </span><br><span class="line">msg1 = random.randrange(<span class="number">1</span>, order)</span><br><span class="line">msg2 = random.randrange(<span class="number">1</span>, order)</span><br><span class="line"> </span><br><span class="line">sig1 = priv_key.sign(msg1, nonce1)</span><br><span class="line">sig2 = priv_key.sign(msg2, nonce2)</span><br></pre></td></tr></table></figure>
 <p>我们获得签名后，使用 sagemath 写出代码如下</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">order = order</span><br><span class="line">kbits = <span class="number">127</span></span><br><span class="line">r1, s1 = sig1.r, sig1.s</span><br><span class="line">r2, s2 = sig2.r, sig2.s</span><br><span class="line">msg1 = msg1</span><br><span class="line">msg2 = msg2</span><br><span class="line"></span><br><span class="line">N = ZZ(order)</span><br><span class="line">K = <span class="number">2</span> ^ kbits</span><br><span class="line">P = diagonal_matrix([N] * <span class="number">2</span>)</span><br><span class="line">E = diagonal_matrix([K / N, K])</span><br><span class="line">R = matrix([[ZZ(r1) * inverse_mod(s1, N), ZZ(r2) * inverse_mod(s2, N)],</span><br><span class="line">            [ZZ(msg1) * inverse_mod(s1, N), ZZ(msg2) * inverse_mod(s2, N)]])</span><br><span class="line">M = block_matrix([[P, <span class="number">0</span>], [R, E]])</span><br><span class="line">shortest_vector = M.LLL()[<span class="number">1</span>]</span><br><span class="line">k1, k2 = shortest_vector[:<span class="number">2</span>]</span><br><span class="line"><span class="comment"># dA = shortest_vector[2] / K * N</span></span><br><span class="line">dA = (k1 - ZZ(msg1) * inverse_mod(s1, N)) / (ZZ(r1) * inverse_mod(s1, N)) % N</span><br><span class="line">k1, k2, dA</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">order = order</span><br><span class="line">kbits = <span class="number">127</span></span><br><span class="line">r1, s1 = sig1.r, sig1.s</span><br><span class="line">r2, s2 = sig2.r, sig2.s</span><br><span class="line">msg1 = msg1</span><br><span class="line">msg2 = msg2</span><br><span class="line"></span><br><span class="line">N = ZZ(order)</span><br><span class="line">K = <span class="number">2</span> ^ kbits</span><br><span class="line">P = diagonal_matrix([N] * <span class="number">2</span>)</span><br><span class="line">E = diagonal_matrix([K / N, K])</span><br><span class="line">R = matrix([[ZZ(r1) * inverse_mod(s1, N), ZZ(r2) * inverse_mod(s2, N)],</span><br><span class="line">            [ZZ(msg1) * inverse_mod(s1, N), ZZ(msg2) * inverse_mod(s2, N)]])</span><br><span class="line">M = block_matrix([[P, ZZ(<span class="number">0</span>)], [R, E]])</span><br><span class="line">shortest_vector = M.LLL()[<span class="number">1</span>]</span><br><span class="line">k1, k2 = shortest_vector[:<span class="number">2</span>]</span><br><span class="line"><span class="comment"># dA = shortest_vector[2] / K * N</span></span><br><span class="line">dA = (k1 - ZZ(msg1) * inverse_mod(s1, N)) / (ZZ(r1) * inverse_mod(s1, N)) % N</span><br><span class="line">k1, k2, dA</span><br></pre></td></tr></table></figure>
 <p>我们可以从格中寻找到 <span class="math inline">\(k_1,k_2,d_A\)</span>。</p>
 <h3 id="固定前缀">固定前缀</h3>
 <p>我们考虑一对误差 <span class="math inline">\((e_0,e_i)\)</span>，有
@@ -4453,7 +4487,7 @@ B_1&amp;B_2&amp;\cdots&amp;B_d&amp;0&amp;K
 <p>由如下代码产生存在 <span class="math inline">\(d\)</span> 对 <span class="math inline">\((e_0,e_i)\)</span> 误差的签名，</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> ecdsa</span><br><span class="line"><span class="keyword">import</span> random</span><br><span class="line"> </span><br><span class="line">gen = ecdsa.NIST256p.generator</span><br><span class="line">order = gen.order()</span><br><span class="line">secret = random.randrange(<span class="number">1</span>,order)</span><br><span class="line"></span><br><span class="line">pub_key = ecdsa.ecdsa.Public_key(gen, gen * secret)</span><br><span class="line">priv_key = ecdsa.ecdsa.Private_key(pub_key, secret)</span><br><span class="line">k = getPrime(<span class="number">256</span>)</span><br><span class="line">nonces = []</span><br><span class="line">msgs = []</span><br><span class="line">rs = []</span><br><span class="line">ss = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">3</span>):</span><br><span class="line">    nonce = k + getPrime(<span class="number">16</span>)</span><br><span class="line">    nonces.append(nonce)</span><br><span class="line">    msg = random.randrange(<span class="number">1</span>, order)</span><br><span class="line">    msgs.append(msg)</span><br><span class="line">    sig = priv_key.sign(msg, nonce)</span><br><span class="line">    rs.append(ZZ(sig.r))</span><br><span class="line">    ss.append(ZZ(sig.s))</span><br><span class="line"></span><br><span class="line">nonces, msgs, rs, ss</span><br></pre></td></tr></table></figure>
 <p>那么在获取到 <code>msgs, rs, ss</code> 后，使用如下代码寻找解</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">order = order</span><br><span class="line">rs = rs</span><br><span class="line">ss = ss</span><br><span class="line">msgs = msgs</span><br><span class="line">kbits = <span class="number">16</span></span><br><span class="line">N = ZZ(order)</span><br><span class="line">K = <span class="number">2</span> ^ kbits</span><br><span class="line"></span><br><span class="line">d = <span class="built_in">len</span>(rs) - <span class="number">1</span></span><br><span class="line">Ai = []</span><br><span class="line">Bi = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, d + <span class="number">1</span>):</span><br><span class="line">    Ai.append(ZZ(rs[<span class="number">0</span>]) * inverse_mod(ss[<span class="number">0</span>], N) - ZZ(rs[i]) * inverse_mod(ss[i], N))</span><br><span class="line">    Bi.append(ZZ(msgs[<span class="number">0</span>]) * inverse_mod(ss[<span class="number">0</span>], N) - ZZ(msgs[i]) * inverse_mod(ss[i], N))</span><br><span class="line"></span><br><span class="line">P = diagonal_matrix([N] * d)</span><br><span class="line">E = diagonal_matrix([K / N, K])</span><br><span class="line">R = matrix([Ai, Bi])</span><br><span class="line">M = block_matrix([[P, <span class="number">0</span>], [R, E]], subdivide=<span class="literal">False</span>)</span><br><span class="line">shortest_vector = M.LLL()[<span class="number">1</span>]</span><br><span class="line">errs = shortest_vector[:d]</span><br><span class="line"><span class="comment"># dA = shortest_vector[d] * N / K</span></span><br><span class="line">dA = (errs[<span class="number">0</span>] - Bi[<span class="number">0</span>]) * inverse_mod(Ai[<span class="number">0</span>], N) % N</span><br><span class="line">dA, errs</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">order = order</span><br><span class="line">rs = rs</span><br><span class="line">ss = ss</span><br><span class="line">msgs = msgs</span><br><span class="line">kbits = <span class="number">16</span></span><br><span class="line">N = ZZ(order)</span><br><span class="line">K = <span class="number">2</span> ^ kbits</span><br><span class="line"></span><br><span class="line">d = <span class="built_in">len</span>(rs) - <span class="number">1</span></span><br><span class="line">Ai = []</span><br><span class="line">Bi = []</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, d + <span class="number">1</span>):</span><br><span class="line">    Ai.append(ZZ(rs[<span class="number">0</span>]) * inverse_mod(ss[<span class="number">0</span>], N) - ZZ(rs[i]) * inverse_mod(ss[i], N))</span><br><span class="line">    Bi.append(ZZ(msgs[<span class="number">0</span>]) * inverse_mod(ss[<span class="number">0</span>], N) - ZZ(msgs[i]) * inverse_mod(ss[i], N))</span><br><span class="line"></span><br><span class="line">P = diagonal_matrix([N] * d)</span><br><span class="line">E = diagonal_matrix([K / N, K])</span><br><span class="line">R = matrix([Ai, Bi])</span><br><span class="line">M = block_matrix([[P, ZZ(<span class="number">0</span>)], [R, E]], subdivide=<span class="literal">False</span>)</span><br><span class="line">shortest_vector = M.LLL()[<span class="number">1</span>]</span><br><span class="line">errs = shortest_vector[:d]</span><br><span class="line"><span class="comment"># dA = shortest_vector[d] * N / K</span></span><br><span class="line">dA = (errs[<span class="number">0</span>] - Bi[<span class="number">0</span>]) * inverse_mod(Ai[<span class="number">0</span>], N) % N</span><br><span class="line">dA, errs</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>需要注意的是，从格中还原的 <span class="math inline">\(d_A\)</span>
 可能不准确。</p>
@@ -12413,6 +12447,10 @@ PNG 图片用 Apple 自家的 PNG 解码器解码就可以分为 2
 <p>图片取证主要包括隐写 (Steganography)，拼图，读图等。</p>
 <p>同时图片又有多种格式，包括但不限于 GIP, PNG, JPEG 等。</p>
 <p>以下的各种图片取证形式不限于单一格式。</p>
+<h2 id="f5-steganography">F5-steganography</h2>
+<p>一款针对 TRUE COLOR 模式保存图片信息的 BMP、GIF 和 JPEG
+的隐写软件，使用 stegdetect 工具可以检测到。</p>
+<p>仓库链接 <a href="https://github.com/matthewgao/F5-steganography">F5-steganography</a>。</p>
 <h2 id="gimp">gimp</h2>
 <p>gimp
 是一款开源图片编辑软件，它有个很特别的功能是从数据中读取图片，这可以导致如果你不了解某个数据是哪种图片类型时，其依旧可以正常显示图片内容（需要将后缀改成
@@ -15349,10 +15387,27 @@ a^b\equiv a^{b\pmod{p-1}}\pmod{p},b\in\Z\newline
 <h2 id="解密">解密</h2>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">p=<span class="number">447685307</span></span><br><span class="line">q=<span class="number">2037</span></span><br><span class="line">e=<span class="number">17</span></span><br><span class="line">c=<span class="number">704796792</span></span><br><span class="line">n = p * q</span><br><span class="line">phi = (p - <span class="number">1</span>) * (q - <span class="number">1</span>)</span><br><span class="line">d = <span class="built_in">pow</span>(e, -<span class="number">1</span>, phi)</span><br><span class="line"><span class="comment"># 旧版本python需要使用gmpy2库求解逆元</span></span><br><span class="line"><span class="comment"># import gmpy2</span></span><br><span class="line"><span class="comment"># d = gmpy2.invert(e, phi)</span></span><br><span class="line">m = <span class="built_in">pow</span>(c, d, n)</span><br></pre></td></tr></table></figure>
 <h2 id="读取参数">读取参数</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./tmp/pubkey.pem&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    key = RSA.importKey(f)</span><br><span class="line">    N = key.n</span><br><span class="line">    e = key.e  </span><br></pre></td></tr></table></figure>
+<h3 id="工具">工具</h3>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> RSA</span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./tmp/pubkey.pem&#x27;</span>, <span class="string">&#x27;r&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    key = RSA.importKey(f)</span><br><span class="line">    N = key.n</span><br><span class="line">    e = key.e</span><br></pre></td></tr></table></figure>
 <p>也可以使用在线网站：<a href="http://www.hiencode.com/pub_asys.html">http://www.hiencode.com/pub_asys.html</a></p>
 <p>或者使用 openssl 的 rsa 工具，例如：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl rsa -<span class="keyword">in</span> pub.key -text</span><br></pre></td></tr></table></figure>
+<h3 id="手读">手读</h3>
+<p>实际上 PEM 文件是遵循 ASN.1 格式的文件。</p>
+<p>尝试生成一个密钥文件</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">openssl genpkey -algorithm rsa -out private_key.pem -pkeyopt rsa_keygen_bits:1024</span><br></pre></td></tr></table></figure>
+<p>得到文件 <code>private_key.pem</code></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-----BEGIN PRIVATE KEY-----</span><br><span class="line">MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOwGgqETvFHiR8Dg</span><br><span class="line">GBXtvWt/PxpyxUPcLCw06qaMctQ75ooqsSmEn95TlsHypN7ZxI9NUMRrRMo22ffl</span><br><span class="line">jZrPBfseJ81igemIYbThQg90miIU/FYd2G952zk4CX/clSszWeONDwSYDm6RfzOJ</span><br><span class="line">TnwUXyC41yoOoeIpo0v20kxKlAFVAgMBAAECgYEA2iFKKMOsj6Co38A7gkitfuOi</span><br><span class="line">1jaryQN6b4CYPEQg+7RAZAEAqnY/qaFm+ufdJ3frCOVTd7QLZzc6SriEHkamJqBf</span><br><span class="line">1ylfevyjHL9FhSprkqMMUF2qrGG6ZEzxMQ1rltymN4xpR0zagyvbKpBOIK5reyIk</span><br><span class="line">4aCsu/mu4+etOctq1CECQQD4T1lmKxp8tQoRKrzbHT0GYEO+zBCBDNe68i8qT9Ox</span><br><span class="line">4dXYWwrzLtA0R8XSmKlyr+kbT7ukOxnN29JgtRR6SFVPAkEA81XEUiEG/TXgIFIA</span><br><span class="line">8NuviVsrc8v7X5HdC4XkmfCFJxCROm5N4XWL4AwE4MVfaSGRKa9QovGzmpeSYKaP</span><br><span class="line">qGBeGwJBAIA62fv8/mywQUakP2sYKk+EnveFAnDiZPXR47GCD9yot3pHadwzrKmS</span><br><span class="line">9wHOfJMRbNwBzPD+5FB+2KHAYZbUi9kCQEBi2FCW9p93aveCW0dgCcGBgyzfs4Ll</span><br><span class="line">OKT857En6EOe6Z6ZYzgd/0XoSD4lW4qY3C04e1CyPcDRDGVQjUCTRzMCQGfuop7q</span><br><span class="line">2zfXztkIfLOxXkiYogjxJGTRRTCF48gyF/WKLhUbR76Gzd6VfDtaoDdpz3hGfy82</span><br><span class="line">VEu5qg9fzchFlEw=</span><br><span class="line">-----END PRIVATE KEY-----</span><br></pre></td></tr></table></figure>
+<p>对于参数每 48 个字节用一行 64 字符的 base64
+表示，直接解码可以得到十六进制下参数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">30820277020100300d06092a864886f70d0101010500048202613082025d02010002818100ec0682a113bc51e247c0e01815edbd6b7f3f1a72c543dc2c2c34eaa68c72d43be68a2ab129849fde5396c1f2a4ded9c48f4d50c46b44ca36d9f7e58d9acf05fb1e27cd6281e98861b4e1420f749a2214fc561dd86f79db3938097fdc952b3359e38d0f04980e6e917f33894e7c145f20b8d72a0ea1e229a34bf6d24c4a940155020301000102818100da214a28c3ac8fa0a8dfc03b8248ad7ee3a2d636abc9037a6f80983c4420fbb440640100aa763fa9a166fae7dd2777eb08e55377b40b67373a4ab8841e46a626a05fd7295f7afca31cbf45852a6b92a30c505daaac61ba644cf1310d6b96dca6378c69474cda832bdb2a904e20ae6b7b2224e1a0acbbf9aee3e7ad39cb6ad421024100f84f59662b1a7cb50a112abcdb1d3d066043becc10810cd7baf22f2a4fd3b1e1d5d85b0af32ed03447c5d298a972afe91b4fbba43b19cddbd260b5147a48554f024100f355c4522106fd35e0205200f0dbaf895b2b73cbfb5f91dd0b85e499f0852710913a6e4de1758be00c04e0c55f69219129af50a2f1b39a979260a68fa8605e1b024100803ad9fbfcfe6cb04146a43f6b182a4f849ef7850270e264f5d1e3b1820fdca8b77a4769dc33aca992f701ce7c93116cdc01ccf0fee4507ed8a1c06196d48bd902404062d85096f69f776af7825b476009c181832cdfb382e538a4fce7b127e8439ee99e9963381dff45e8483e255b8a98dc2d387b50b23dc0d10c65508d40934733024067eea29eeadb37d7ced9087cb3b15e4898a208f12464d1453085e3c83217f58a2e151b47be86cdde957c3b5aa03769cf78467f2f36544bb9aa0f5fcdc845944c</span><br></pre></td></tr></table></figure>
+<p>使用在线 ASN.1 解码网站：<a href="https://lapo.it/asn1js">https://lapo.it/asn1js</a></p>
+<figure>
+<img src="/rsa-note/RSA参数解码结果.png" alt="RSA参数解码结果">
+<figcaption aria-hidden="true">RSA参数解码结果</figcaption>
+</figure>
+<p>如果是损坏的或者是人为混淆过的
+PEM，可以用上面这段标准字节流一一对照分析。</p>
 <h2 id="poly-rsa">Poly-RSA</h2>
 <h3 id="加密-1">加密</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">flag = <span class="built_in">list</span>(<span class="string">b&#x27;watevr&#123;RSA_from_ikea_is_fun_but_insecure#k20944uehdjfnjd335uro&#125;&#x27;</span>)</span><br><span class="line">p = <span class="number">43753</span></span><br><span class="line"><span class="comment">## Univariate Polynomial Ring in y over Finite Field of size p</span></span><br><span class="line">R.&lt;y&gt; = GF(p)[]</span><br><span class="line"></span><br><span class="line"><span class="comment">## Analogous to the primes in Z</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">gen_irreducable_poly</span>(<span class="params">deg</span>):</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        out = R.random_element(degree=deg)</span><br><span class="line">        <span class="keyword">if</span> out.is_irreducible():</span><br><span class="line">            <span class="keyword">return</span> out</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">## Polynomial &quot;primes&quot;</span></span><br><span class="line">P = gen_irreducable_poly(ZZ.random_element(length, <span class="number">2</span>*length))</span><br><span class="line">Q = gen_irreducable_poly(ZZ.random_element(length, <span class="number">2</span>*length))</span><br><span class="line"></span><br><span class="line"><span class="comment">## Public exponent key</span></span><br><span class="line">e = <span class="number">65537</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Modulus</span></span><br><span class="line">N = P*Q</span><br><span class="line"></span><br><span class="line"><span class="comment">## Univariate Quotient Polynomial Ring in x over Finite Field of size 659 with modulus N(x)</span></span><br><span class="line">S.&lt;x&gt; = R.quotient(N)</span><br><span class="line"></span><br><span class="line"><span class="comment">## Encrypt</span></span><br><span class="line">m = S(flag)</span><br><span class="line">c = m^e</span><br></pre></td></tr></table></figure>
@@ -15577,6 +15632,10 @@ m_p^k\equiv c_p^{d_p&#39;}\pmod{p}
 <span class="math inline">\(m_p\)</span>。</p>
 <p>那么对于 <span class="math inline">\(n=pq\)</span>，我们首先计算出
 <span class="math inline">\(m_p\)</span> 和 <span class="math inline">\(m_q\)</span> 后，对其进行 CRT 即可求出 <span class="math inline">\(m\)</span>。</p>
+<blockquote>
+<p>需要注意 <span class="math inline">\(ed=1+k\varphi(N)\)</span>，如果说 <span class="math inline">\(g=gcd(e,\varphi(N))\)</span> 恰好为 <span class="math inline">\(k\)</span> 的因子，可以考虑求解 <span class="math inline">\(d=e^{-1}\pmod{\varphi(N)/g}\)</span>，使得其满足
+<span class="math inline">\(ed=1+\frac{k}{g}\varphi(N)\)</span>，一样可以求解明文。</p>
+</blockquote>
 <h3 id="代码-1">代码</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> itertools</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">AMM</span>(<span class="params">delta: <span class="built_in">int</span>, r: <span class="built_in">int</span>, q: <span class="built_in">int</span>, <span class="built_in">all</span>: <span class="built_in">bool</span> = <span class="literal">False</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用AMM算法进行有限域开根，即求delta^(1/r)%q下的解</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameter`:</span></span><br><span class="line"><span class="string">        delta - 底数</span></span><br><span class="line"><span class="string">        r - 根指数</span></span><br><span class="line"><span class="string">        q - 模数</span></span><br><span class="line"><span class="string">        all - 是否返回所有解</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Return`:</span></span><br><span class="line"><span class="string">        delta^(1/r)%q下的一个根</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    </span><br><span class="line">    <span class="keyword">if</span> (q - <span class="number">1</span>) % r != <span class="number">0</span>:</span><br><span class="line">        <span class="keyword">raise</span> Exception(<span class="string">&quot;使用AMM算法需要满足e||(q-1)&quot;</span>)</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 1</span></span><br><span class="line">    Fq = GF(q)</span><br><span class="line">    delta = Fq(delta)</span><br><span class="line">    rho = Fq.random_element()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># step 2</span></span><br><span class="line">    <span class="keyword">while</span> rho ** ((q - <span class="number">1</span>) // r) == <span class="number">1</span>:</span><br><span class="line">        rho = Fq.random_element()</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 3</span></span><br><span class="line">    <span class="comment"># step 3.1</span></span><br><span class="line">    t = <span class="number">0</span></span><br><span class="line">    s = q - <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> s % r == <span class="number">0</span>:</span><br><span class="line">        t += <span class="number">1</span></span><br><span class="line">        s //= r</span><br><span class="line">    <span class="comment"># step 3.2</span></span><br><span class="line">    k = <span class="number">1</span></span><br><span class="line">    <span class="keyword">while</span> (k * s + <span class="number">1</span>) % r != <span class="number">0</span>:</span><br><span class="line">        k += <span class="number">1</span></span><br><span class="line">    alpha = (k * s + <span class="number">1</span>) // r</span><br><span class="line">    <span class="comment"># step 3.3</span></span><br><span class="line">    a = rho ** (r ** t - <span class="number">1</span> * s)</span><br><span class="line">    b = delta ** (r * alpha - <span class="number">1</span>)</span><br><span class="line">    c = rho ** s</span><br><span class="line">    h = <span class="number">1</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment"># step 4</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, t):</span><br><span class="line">        d = b ** <span class="built_in">pow</span>(r, t - <span class="number">1</span> - i, q - <span class="number">1</span>)</span><br><span class="line">        j = <span class="number">0</span> <span class="keyword">if</span> d == <span class="number">1</span> <span class="keyword">else</span> -d.log(a)</span><br><span class="line">        b *= (c ** r) ** j</span><br><span class="line">        h *= c ** j</span><br><span class="line">        c **= r</span><br><span class="line"></span><br><span class="line">    <span class="comment"># step 5</span></span><br><span class="line">    root = <span class="built_in">int</span>(delta ** alpha * h)</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">all</span>:</span><br><span class="line">        <span class="keyword">return</span> root</span><br><span class="line">    </span><br><span class="line">    <span class="comment"># if all is True, generate all roots to return</span></span><br><span class="line">    <span class="comment"># 2 ^ (q - 1) == 1 (mod q) because of Fermat&#x27;s little theorem</span></span><br><span class="line">    g = <span class="built_in">pow</span>(<span class="number">2</span>, (q - <span class="number">1</span>) // r, q)</span><br><span class="line">    <span class="comment"># find all primitive i-th roots of 1</span></span><br><span class="line">    ith_roots = [<span class="built_in">pow</span>(g, i, q) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(r)]</span><br><span class="line">    <span class="keyword">return</span> [<span class="built_in">int</span>(root * ith_root % q) <span class="keyword">for</span> ith_root <span class="keyword">in</span> ith_roots]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">decrypt</span>(<span class="params">c, e, p</span>):</span><br><span class="line">    k = gcd(e, p - <span class="number">1</span>)</span><br><span class="line">    dp = <span class="built_in">pow</span>(e // k, -<span class="number">1</span>, p - <span class="number">1</span>)</span><br><span class="line">    mp = <span class="built_in">pow</span>(c, dp, p)</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">list</span>(<span class="built_in">set</span>(AMM(mp, k, p, <span class="literal">True</span>)))</span><br><span class="line"></span><br><span class="line">p = <span class="number">90015842079287188147863599089252975950229149674532065188179308662941668349067</span></span><br><span class="line">q = <span class="number">115639966729427613784046359856154071033236356854800852136894409690977637028073</span></span><br><span class="line">e = <span class="number">458759</span></span><br><span class="line">c = <span class="number">9377489940941407443668888914142468523442868076408679603369421619879641628020535221060883892082291144102991625695716628752564422493350476912185008866541091</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;gcd(e, p - <span class="number">1</span>) = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;gcd(e, q - <span class="number">1</span>) = &#125;</span>&#x27;</span>)</span><br><span class="line"></span><br><span class="line">mps = decrypt(c, e, p)</span><br><span class="line">mqs = decrypt(c, e, q)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;mps = &#125;</span>&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;mqs = &#125;</span>&#x27;</span>)</span><br><span class="line">ms = []</span><br><span class="line"><span class="keyword">for</span> mp, mq <span class="keyword">in</span> itertools.product(mps, mqs):</span><br><span class="line">    ms.append(CRT([mp, mq], [p, q]))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;ms = &#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="pq-高位相同"><span class="math inline">\(p,q\)</span>
@@ -16936,9 +16995,14 @@ Decode 区域中的 Tweet 文本框中即可：</p>
 <img src="/text-forensics-note/zero-width隐写解密.png" alt="zero-width隐写解密">
 <figcaption aria-hidden="true">zero-width隐写解密</figcaption>
 </figure>
-<p>该网站可以自由选择加解密参数，通常只用选择文本中存在的零宽字符。但缺点是该网站对零宽字符的支持过少。</p>
+<p>该网站可以自由选择加解密参数，通常<strong>只用选择文本中存在的零宽字符</strong>。但缺点是该网站对零宽字符的支持过少。</p>
 <p>还可以使用网站：<a href="https://yuanfux.github.io/zero-width-web/">https://yuanfux.github.io/zero-width-web/</a></p>
-<p>该网站的优势是支持所有的零宽字符解密，但缺点是无法自由选择你想要的零宽字符。</p>
+<p>该网站的优势是支持所有的零宽字符，但缺点是无法自由选择你想要的零宽字符。</p>
+<p>原理是对每个字符的每两位用零宽字符转码，比如说最经典的单表替换是</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">zero_character_mapping = &#123;</span><br><span class="line">    <span class="string">&#x27;\u200c&#x27;</span>: <span class="string">&#x27;00&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;\u200d&#x27;</span>: <span class="string">&#x27;01&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;\u202c&#x27;</span>: <span class="string">&#x27;10&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;\ufeff&#x27;</span>: <span class="string">&#x27;11&#x27;</span>,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>330k 所写的零宽隐写每个字符使用 Unicode
+表示，一个字符用十六位、八个零宽字符表示，相当于 base4。</p>
+<p>yuanfux 的零宽隐写相当于 base5。</p>
 <h1 id="词频隐写">词频隐写</h1>
 <p>将关键信息转换成冗余字符后打乱顺序，用词频顺序进行解密，一般来说会利用
 Python 的 <code>collections.Counter</code>
@@ -20416,9 +20480,10 @@ ZIPX），如果输入密码长度超过 64 字节，它会使用 PBKDF2
     <url>//number-theory-note.html</url>
     <content><![CDATA[<h1 id="数论知识笔记">数论知识笔记</h1>
 <h2 id="pell-方程">Pell 方程</h2>
+<h3 id="标准型">标准型</h3>
 <p>Pell 方程是指形如 <span class="math display">\[
 x^2-Dy^2=1
-\]</span> 的二元二次方程，，其中 <span class="math inline">\(D\)</span>
+\]</span> 的二元二次方程，其中 <span class="math inline">\(D\)</span>
 为正整数，主要研究的是满足这个方程的整数解 <span class="math inline">\((x_i,y_i)\)</span> 和最小整数解 <span class="math inline">\((x_0,y_0)\)</span>。</p>
 <p>通常我们使用连分数来求解其整数解，将 <span class="math inline">\(\sqrt{D}\)</span> 写成连分数的形式，即 <span class="math display">\[
 \sqrt{D}=[a_0;a_1,a_2,\cdots,a_{n-1},a_n]
@@ -20426,7 +20491,8 @@ x^2-Dy^2=1
 [a_0;a_1,a_2,\cdots,a_{n-1}]
 \]</span> 可能是 Pell 方程的一组解 <span class="math display">\[
 \frac{x}{y}=[a_0;a_1,a_2,\cdots,a_{n-1}]
-\]</span> Sagemath 求解代码如下</p>
+\]</span> &gt; 实际上对于方程 <span class="math inline">\(x^2-Dy^2=C\)</span> 可以证明解 <span class="math inline">\((x,y)\)</span> 一定是 <span class="math inline">\(\sqrt{D}\)</span> 的一个有理近似。</p>
+<p>Sagemath 求解代码如下</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">D = <span class="number">1117</span></span><br><span class="line">interval = <span class="number">200</span></span><br><span class="line">cf = continued_fraction(sqrt(D))</span><br><span class="line">a0 = cf[<span class="number">0</span>]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(interval):</span><br><span class="line">    <span class="keyword">if</span> a0 * <span class="number">2</span> == cf[i]:</span><br><span class="line">        c = cf.convergent(i - <span class="number">1</span>)</span><br><span class="line">        x, y = c.as_integer_ratio()</span><br><span class="line">        <span class="keyword">if</span> x**<span class="number">2</span> - D * y**<span class="number">2</span> == <span class="number">1</span>:</span><br><span class="line">            <span class="built_in">print</span>((x, y))</span><br></pre></td></tr></table></figure>
 <p>一个更特殊的求解方式是，不妨设佩尔方程的解为 <span class="math display">\[
 (x_1,y_1),(x_2,y_2),\cdots,(x_d,y_d)
@@ -20436,7 +20502,53 @@ x_{i+j}=x_ix_j+Dy_iy_j\\
 y_{i+j}=x_iy_j+x_jy_i
 \]</span> 例如当 <span class="math inline">\(D=1117\)</span> 时的解已知
 <span class="math inline">\((x_1,y_1)\)</span> 和 <span class="math inline">\((x_2,y_2)\)</span>，那么求解得到 <span class="math inline">\((x_3,y_3)\)</span> 为</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">x1, y1 = (<span class="number">87897747594260774254246835664214545379849</span>, <span class="number">2629972211566463612149241455626172190220</span>)</span><br><span class="line">x2, y2 = (<span class="number">15452028064288751455987343781568665778822611449292997550027848699978973103390525601</span>, <span class="number">462337267264377629956081365965549206173112084990468349927211645593553260365753560</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">addition</span>(<span class="params">p1, p2</span>):</span><br><span class="line">    x1,y1 = p1</span><br><span class="line">    x2,y2 = p2</span><br><span class="line">    <span class="keyword">return</span> ((x1*x2+D*y1*y2), (x1*y2+x2*y1))</span><br><span class="line">addition((x1, y1), (x2, y2))</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">D = <span class="number">1117</span></span><br><span class="line">x1, y1 = (<span class="number">87897747594260774254246835664214545379849</span>, <span class="number">2629972211566463612149241455626172190220</span>)</span><br><span class="line">x2, y2 = (<span class="number">15452028064288751455987343781568665778822611449292997550027848699978973103390525601</span>, <span class="number">462337267264377629956081365965549206173112084990468349927211645593553260365753560</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">addition</span>(<span class="params">p1, p2</span>):</span><br><span class="line">    x1,y1 = p1</span><br><span class="line">    x2,y2 = p2</span><br><span class="line">    <span class="keyword">return</span> ((x1*x2+D*y1*y2), (x1*y2+x2*y1))</span><br><span class="line">addition((x1, y1), (x2, y2))</span><br></pre></td></tr></table></figure>
+<p>理论上我们仅需要知道一个解，我们就可以得到无穷多 Pell 方程的解。</p>
+<p>推导过程为，考虑两组解满足 <span class="math display">\[
+x_1^2-Dy_1^2=1\newline
+x_2^2-Dy_2^2=1
+\]</span> 两式相乘结果为 <span class="math display">\[
+(x_1^2-Dy_1^2)(x_2^2-Dy_2^2)=1
+\]</span> 化简可得 <span class="math display">\[
+(x_1x_2+Dy_1y_2)^2-D(x_1y_2+x_2y_1)^2=1
+\]</span> 故显然 <span class="math inline">\((x_1x_2+Dy_1y_2,x_1y_2+x_2y_1)\)</span>
+也是佩尔方程的整数解。</p>
+<h3 id="非标准型">非标准型</h3>
+<p>Pell 方程是指形如 <span class="math display">\[
+x^2-Dy^2=C
+\]</span> 的二元二次方程，其中 <span class="math inline">\(D\)</span>
+为正整数，<span class="math inline">\(C\)</span>
+为任意整数，主要研究的是满足这个方程的整数解 <span class="math inline">\((x_i,y_i)\)</span>。</p>
+<p>考虑标准型方程 <span class="math display">\[
+r^2-Ds^2=1
+\]</span> 我们可以轻松求出一个整数解 <span class="math inline">\((r,s)\)</span> 满足方程。</p>
+<p>我们同样通过连分数求解 <span class="math inline">\((x_0,y_0)\)</span>
+满足 <span class="math display">\[
+x_0^2-Dy_0^2=C
+\]</span> 那么两式相乘，得到 <span class="math display">\[
+(x_0^2-Dy_0^2)(r^2-Ds^2)=C
+\]</span> 可以化简得到 <span class="math display">\[
+(x_0r+Dy_0s)^2-D(x_0s+y_0r)=C
+\]</span> 故显然 <span class="math inline">\((x_0r+Dy_0s,x_0s+y_0r)\)</span>
+也是该非标准型佩尔方程的整数解。</p>
+<p>就算是对于方程 <span class="math display">\[
+Ax^2+Bx+Cy^2+Dy+E=0
+\]</span> 我们也可以配方化为 <span class="math display">\[
+x^2-Dy^2=C
+\]</span> 来进行求解整数解。</p>
+<h3 id="代码">代码</h3>
+<p>需要用到 Sagemath 的 <code>continued_fraction</code>。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> sage.<span class="built_in">all</span> <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">pell_roots</span>(<span class="params">D: <span class="built_in">int</span>, C: <span class="built_in">int</span> = <span class="number">1</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    求佩尔方程$x^2-Dy^2=C$的整数解(x,y)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    参数：</span></span><br><span class="line"><span class="string">        D: 佩尔方程参数</span></span><br><span class="line"><span class="string">        C: 佩尔方程常数，默认为1</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    返回值：</span></span><br><span class="line"><span class="string">        迭代器，整数解(x,y)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    intervals = <span class="number">2</span>**<span class="number">10</span></span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">get_a_root</span>(<span class="params">D: <span class="built_in">int</span>, C: <span class="built_in">int</span></span>):</span><br><span class="line">        <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">        获得佩尔方程$x^2-Dy^2=C$的一个整数解(x,y)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        参数：</span></span><br><span class="line"><span class="string">        D: 佩尔方程参数</span></span><br><span class="line"><span class="string">        C: 佩尔方程常数，默认为1</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">        返回值：</span></span><br><span class="line"><span class="string">            整数解(x,y)，如果在intervals限制内求解失败，返回(0,0)</span></span><br><span class="line"><span class="string">        &quot;&quot;&quot;</span></span><br><span class="line">        cf = continued_fraction(sqrt(D))</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, intervals):</span><br><span class="line">            c = cf.convergent(i - <span class="number">1</span>)</span><br><span class="line">            x, y = c.as_integer_ratio()</span><br><span class="line">            <span class="keyword">if</span> x**<span class="number">2</span> - D * y**<span class="number">2</span> == C:</span><br><span class="line">                <span class="keyword">return</span> x, y</span><br><span class="line">        <span class="keyword">for</span> y <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, intervals):</span><br><span class="line">            x2 = C + D * y**<span class="number">2</span></span><br><span class="line">            <span class="keyword">if</span> x2 &lt;= <span class="number">0</span>:</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line">            x = isqrt(x2)</span><br><span class="line">            <span class="keyword">if</span> x ** <span class="number">2</span> == x2:</span><br><span class="line">                <span class="keyword">return</span> x, y</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">    </span><br><span class="line">    r, s = get_a_root(D, <span class="number">1</span>)</span><br><span class="line">    x, y = get_a_root(D, C)</span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        <span class="keyword">yield</span> x, y</span><br><span class="line">        x, y = x * r + D * y * s, r * y + s * x</span><br><span class="line"></span><br><span class="line">D = <span class="number">7</span></span><br><span class="line">C = <span class="number">2</span></span><br><span class="line">x, y = <span class="built_in">next</span>(pell_roots(D, C))</span><br><span class="line"><span class="built_in">print</span>(x**<span class="number">2</span> - D * y**<span class="number">2</span> == C)</span><br></pre></td></tr></table></figure>
+<h3 id="毕达哥拉斯三元组">毕达哥拉斯三元组</h3>
+<p>毕达哥拉斯三元组指的是形如 <span class="math display">\[
+x^2+y^2=z^2
+\]</span> 方程的整数解，即整勾股数。</p>
+<p>当 <span class="math inline">\(x=2mn\)</span> 时，<span class="math inline">\(y=m^2-n^2,z=m^2+n^2\)</span>。</p>
+<blockquote>
+<p>最简单的情况为，<span class="math inline">\(x\)</span> 是偶数，那么
+<span class="math inline">\(m=1,n=x/2\)</span> 即可。</p>
+</blockquote>
+<p>奇数情况时，<span class="math inline">\(y=(a^2-1)/2,z=(a^2+1)/2\)</span>。</p>
 <h2 id="卡迈尔数">卡迈尔数</h2>
 <p>卡迈尔数是指一系列合数（相对于质数）<span class="math inline">\(n\)</span> 有得性质：使所有与 <span class="math inline">\(n\)</span> 互素的整数 <span class="math inline">\(b\)</span>，满足 <span class="math display">\[
 b^{n-1}\equiv1\pmod{n}
@@ -23346,5 +23458,323 @@ opcode，如何根据特有的魔术方法、属性等找到突破口是关键�
       <tags>
         <tag>nodejs</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>最优化方法——理论基础</title>
+    <url>//optimization-method-basis-note.html</url>
+    <content><![CDATA[<h1 id="最优化方法">最优化方法</h1>
+<h2 id="基本理论">基本理论</h2>
+<h3 id="引子">引子</h3>
+<p>一个简单的函数极值问题是这样的，给予一个<strong>连续可微函数</strong>
+<span class="math inline">\(f(x)\)</span>，我们想要找到它什么时候取得最小值，最小值是多少，即
+<span class="math display">\[
+\min{f(x)}
+\]</span>
+在正常的数学学习中我们知道，想要找到一个函数的最小值，我们需要<strong>知道它的导数，和导数的导数</strong>
+<span class="math display">\[
+\min{f(x)}\to f&#39;(x)=0,f&#39;&#39;(x)&gt;0
+\]</span> 这是找到极小值的充要条件。</p>
+<p>这是一个最简单的优化问题，例如说找到某个产品成本在某个区间的极小值。</p>
+<p>但现实中往往并不会只有单一变量因素，更多的是针对多变量函数的优化问题，例如<strong>神经网络的参数优化</strong>。</p>
+<p>例如我们想要求得 <span class="math display">\[
+\min{f(x,y,z)}
+\]</span> 那么自然地想要知道这个多元函数的“导数”，“导数的导数”。</p>
+<h3 id="多元函数的导数矩阵">多元函数的导数矩阵</h3>
+<p><strong>连续可微多元函数</strong>的”导数“其实就是<strong>梯度</strong>，定义为
+<span class="math display">\[
+\nabla f(\mathbf{x})=\begin{pmatrix}
+\frac{\partial f(\mathbf{x})}{\partial x_1},
+\cdots,
+\frac{\partial f(\mathbf{x})}{\partial x_n}
+\end{pmatrix}^T=D(f)^T
+\]</span> 我们一般定义梯度的转置才是<strong>多元函数的导数矩阵</strong>
+<span class="math inline">\(D(f)\)</span>。</p>
+<blockquote>
+<p>因为梯度的定义是列向量，导数矩阵是行向量。</p>
+</blockquote>
+<p>对于<strong>连续可微的向量值函数</strong> <span class="math inline">\(F=\begin{pmatrix}F_1,\cdots,F_m\end{pmatrix}\)</span>，其导数矩阵又称作是雅可比（jacobi）矩阵
+<span class="math display">\[
+F&#39;(x)=\begin{bmatrix}
+\frac{\partial F_1(\mathbf{x})}{\partial x_1}&amp;
+\cdots&amp;
+\frac{\partial F_1(\mathbf{x})}{\partial x_n}\\
+\vdots&amp;\ddots&amp;\vdots\\
+\frac{\partial F_m(\mathbf{x})}{\partial x_1}&amp;
+\cdots&amp;
+\frac{\partial F_m(\mathbf{x})}{\partial x_n}
+\end{bmatrix}
+\]</span> 例如向量值函数 <span class="math display">\[
+\mathbf{f}(\mathbf{x})=\begin{bmatrix}
+\sin{x_1}+\cos{x_2}\\
+e^{2x_1+x_2}\\
+2x_1^2+x_1x_2
+\end{bmatrix}
+\]</span> 可以求得雅可比矩阵为 <span class="math display">\[
+\mathbf{f}&#39;(\mathbf{x})=\begin{bmatrix}
+\cos{x_1}&amp;-\sin{x_2}\\
+2e^{2x_1+x_2}&amp;e^{2x_1+x_2}\\
+4x_1+x_2&amp;x_1
+\end{bmatrix}
+\]</span>
+而连续可微多元函数的“导数的导数”，也被称为海森（hessian）矩阵，定义为
+<span class="math display">\[
+D^2(f)=\nabla^2f(\mathbf{x})=\begin{bmatrix}
+\frac{\partial^2 f(\mathbf{x})}{\partial
+x_1^2}&amp;\cdots&amp;\frac{\partial^2 f(\mathbf{x})}{\partial
+x_1\partial x_n}\\
+\vdots&amp;\ddots&amp;\vdots\\
+\frac{\partial^2 f(\mathbf{x})}{\partial x_n\partial
+x_1}&amp;\cdots&amp;\frac{\partial^2 f(\mathbf{x})}{\partial x_n^2}
+\end{bmatrix}
+\]</span> 例如函数 <span class="math display">\[
+f(x_1,x_2)=\left(x_{1} - x_{2}\right)^{2} + 4 \, x_{1} x_{2} +
+e^{\left(x_{1} + x_{2}\right)}
+\]</span> 其海森矩阵为 <span class="math display">\[
+\nabla^2 f(x_1,x_2)=\begin{bmatrix}
+e^{\left(x_{1} + x_{2}\right)} + 2 &amp; e^{\left(x_{1} + x_{2}\right)}
++ 2 \\
+e^{\left(x_{1} + x_{2}\right)} + 2 &amp; e^{\left(x_{1} + x_{2}\right)}
++ 2
+\end{bmatrix}
+\]</span></p>
+<h3 id="泰勒公式">泰勒公式</h3>
+<p>一元函数的泰勒展开式为 <span class="math display">\[
+f(x)=\frac{f(x_0)}{0!}+\frac{f(x_0)}{1!}(x-x_0)+\cdots+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+R_n(x)
+\]</span> 其中，<span class="math inline">\(R_n(x)\)</span>
+称作余项，用于表示和平衡误差。完全展开后也被称作是<strong>泰勒级数</strong>
+<span class="math display">\[
+f(x)\sum^{\infin}_{k=0}\frac{f^{k}(x_0)}{k!}(x-x_0)^k
+\]</span> 考虑推广到多元函数，有如下定义 <span class="math display">\[
+f(\mathbf{x})=f(\mathbf{x}_0)+\frac{D(f)}{1!}(\mathbf{x}-\mathbf{x}_0)+(\mathbf{x}-\mathbf{x}_0)^T\frac{D^2(f)}{2!}(\mathbf{x}-\mathbf{x}_0)+o(\|\mathbf{x}-\mathbf{x}_0\|)^2
+\]</span> 其中，<span class="math inline">\(o(\|\mathbf{x}-\mathbf{x}_0\|)^2\)</span>
+是二次余项，用于表示和平衡误差。</p>
+<p>例如多元函数 <span class="math inline">\(f(\mathbf{x})=x_1e^{-x_2}+x_2+1,\mathbf{x}_0=(1,0)^T\)</span>，那么忽略三次及更高次项（展开三项）得到
+<span class="math display">\[
+D(f)=\begin{bmatrix}
+e^{-x_2}&amp;-x_1e^{-x_2}+1
+\end{bmatrix}\newline
+D^2(f)=\begin{bmatrix}
+0&amp;-e^{-x_2}\\
+-e^{-x_2}&amp;x_1e^{-x_2}
+\end{bmatrix}\newline
+f(\mathbf{x})=2+\begin{bmatrix}
+1&amp;0
+\end{bmatrix}\begin{bmatrix}
+x_1-1\\
+x_2
+\end{bmatrix}+\frac{1}{2}\begin{bmatrix}
+x_1-1&amp;x_2
+\end{bmatrix}\begin{bmatrix}
+0&amp;-1\\
+-1&amp;1
+\end{bmatrix}\begin{bmatrix}
+x_1-1\\
+x_2
+\end{bmatrix}+\cdots
+\newline
+=1+x_1+x_2-x_1x_2+\frac{1}{2}x_2^2+\cdots
+\]</span></p>
+<h3 id="凸集与凸函数">凸集与凸函数</h3>
+<p>定义集合 <span class="math inline">\(D\subset
+R^n\)</span>，对于其中任意两点 <span class="math inline">\(x,y\in
+D\)</span>，任意实数 <span class="math inline">\(\alpha\in[0,1]\)</span>，满足 <span class="math display">\[
+\alpha x+(1-\alpha)y\in D
+\]</span> 我们就称集合 <span class="math inline">\(D\)</span>
+为凸集。</p>
+<blockquote>
+<p><span class="math inline">\(R^n\)</span> 代表每个元素都有 <span class="math inline">\(n\)</span> 维长度。</p>
+</blockquote>
+<p>实际上对于元素 <span class="math inline">\(x,y\)</span>
+来说，定义公式即为直线。直观上而言，凸集就是空间中内部无洞，边界又不向内凹的一些点的集合。</p>
+<blockquote>
+<p>一个在凸集上的多元函数，类比于一元函数的光滑。</p>
+</blockquote>
+<p>由此推广，<strong>凸函数定义为函数图形上任意两点的线段总是位于曲线弧的上方</strong>。</p>
+<figure>
+<img src="/optimization-method-basis-note/凸函数的图像性质.png" alt="凸函数的图像性质">
+<figcaption aria-hidden="true">凸函数的图像性质</figcaption>
+</figure>
+<p>我们喜欢类似凸函数这样光滑、连续、可微的函数，显而易见地它必然有极小值，也就是说，对于一个多元凸函数，我们可以类似<strong>引子</strong>那样，找到它的极小值和极小值点。</p>
+<p>那么现在的问题就在于，<strong>怎么去寻找一个多元凸函数</strong>。</p>
+<h3 id="正负定二次型">正（负）定二次型</h3>
+<p>对于一个 <span class="math inline">\(n\)</span> 元二次齐次函数 <span class="math display">\[
+f(x_1,x_2\cdots,x_n)=a_{11}x_1^2+a_{22}x_2^2+\cdots+a_{nn}x_n^2\newline
++2a_{12}x_1x_2+2a_{13}x_1x_3+\cdots+2a_{n-1,n}x_{n-1}x_{n}
+\]</span> 称作<strong>二次型</strong>，取 <span class="math inline">\(a_{ij}=a_{ji}\)</span>，那么 <span class="math inline">\(2a_{ij}x_ix_j=a_{ij}x_ix_j+a_{ji}x_jx_i\)</span>，于是可以把二次型记作
+<span class="math display">\[
+f(x_1,x_2,\cdots,x_n)=\sum^n_{i,j=1}a_{ij}x_ix_j
+\]</span> 同时也可以写作矩阵形式 <span class="math display">\[
+\mathbf{A}=\begin{bmatrix}
+a_{11}&amp;a_{12}&amp;\cdots&amp;a_{1n}\\
+a_{21}&amp;a_{22}&amp;\cdots&amp;a_{2n}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+a_{n1}&amp;a_{n2}&amp;\cdots&amp;a_{nn}
+\end{bmatrix}
+x=\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}\\
+f(x_1,x_2,\cdots,x_n)=\mathbf{x}^T\mathbf{A}\mathbf{x}
+\]</span> 其中 <span class="math inline">\(A\)</span>
+为对称矩阵，称作是<strong>二次型的矩阵</strong>。</p>
+<p>对于二次型矩阵，我们定义，如果对于任意 <span class="math inline">\(\mathbf{x}_0\neq 0\)</span>，如果有</p>
+<p><span class="math inline">\(f(\mathbf{x}_0)&gt;0\)</span>，则称 <span class="math inline">\(f\)</span>
+是<strong>正定二次型</strong>，对应的实对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为<strong>正定矩阵</strong>；</p>
+<p><span class="math inline">\(f(\mathbf{x}_0)&lt;0\)</span>，则称 <span class="math inline">\(f\)</span>
+是<strong>负定二次型</strong>，对应的实对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为<strong>负定矩阵</strong>。</p>
+<blockquote>
+<p><span class="math inline">\(f(\mathbf{x}_0)\geq 0\)</span>，则称
+<span class="math inline">\(f\)</span>
+是<strong>半正定二次型</strong>，对应的实对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为<strong>半正定矩阵</strong>；</p>
+<p><span class="math inline">\(f(\mathbf{x}_0)\leq 0\)</span>，则称
+<span class="math inline">\(f\)</span>
+是<strong>半负定二次型</strong>，对应的实对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为<strong>半负定矩阵</strong>；</p>
+<p><span class="math inline">\(f(\mathbf{x}_0)\)</span> 可正可负，则称
+<span class="math inline">\(f\)</span>
+是<strong>不定型二次型</strong>，对应的实对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为<strong>不定型矩阵</strong>。</p>
+</blockquote>
+<p>由此可知，<strong>对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为正定矩阵的充要条件是特征值全为正</strong>。</p>
+<p>除了使用特征值判断正定型，还有一个充要条件是是计算<strong>顺序主子式</strong>均为正，即
+<span class="math display">\[
+a_{11}&gt;0,\begin{vmatrix}
+a_{11}&amp;a_{12}\\
+a_{21}&amp;a_{22}
+\end{vmatrix}&gt;0,\cdots,\begin{vmatrix}
+a_{11}&amp;\cdots&amp;a_{1n}\\
+\vdots&amp;\ddots&amp;\vdots\\
+a_{21}&amp;\cdots&amp;a_{22}
+\end{vmatrix}&gt;0
+\]</span> 这个定理也称作是<strong>霍尔维茨定理</strong>。</p>
+<p>而判断负定型的充要条件是 <span class="math display">\[
+a_{11}&lt;0,\begin{vmatrix}
+a_{11}&amp;a_{12}\\
+a_{21}&amp;a_{22}
+\end{vmatrix}&gt;0,\cdots,(-1)^k\begin{vmatrix}
+a_{11}&amp;\cdots&amp;a_{1n}\\
+\vdots&amp;\ddots&amp;\vdots\\
+a_{21}&amp;\cdots&amp;a_{22}
+\end{vmatrix}&gt;0
+\]</span> 即<strong>奇数阶主子式为负，偶数阶主子式为正</strong>。</p>
+<p><strong>其他情况为不定型。</strong></p>
+<h3 id="多元凸函数">多元凸函数</h3>
+<p>了解正定矩阵的判定，是为了引出以下定理：</p>
+<p><strong>如果 <span class="math inline">\(f(x_1,\cdots,x_n):C\subset
+R^n\to R^1\)</span> 为二次可微多元函数，<span class="math inline">\(C\)</span> 为凸集。那么 <span class="math inline">\(f\)</span> 在 <span class="math inline">\(C\)</span>
+上为凸函数的充要条件是海森（hessian）矩阵 <span class="math inline">\(D^2(f)\)</span> 在 <span class="math inline">\(C\)</span> 上处处半正定。</strong></p>
+<p>例如 <span class="math inline">\(f(x_1,x_2)=10-2(x_2-x_1^2)^2,C=\{(x_1,x_2)|-11\leq
+x_1\leq 1,-1\leq x_2\leq 1\}\)</span>，我们计算其海森矩阵 <span class="math display">\[
+D^2(f)=\begin{bmatrix}
+8(x_2-3x_1^2)&amp;8x_1\\
+8x_1&amp;-4
+\end{bmatrix}
+\]</span> 可知由于其在 <span class="math inline">\((0,1)\)</span>
+处结果为 <span class="math inline">\(\begin{bmatrix} 8&amp;0\\ 0&amp;-4
+\end{bmatrix}\)</span>，是不定矩阵，因此 <span class="math inline">\(f\)</span> 在 <span class="math inline">\(C\)</span>
+上并非<strong>处处</strong>半正定，故其不是凸函数。</p>
+<h3 id="无约束最优化问题">无约束最优化问题</h3>
+<p>回到最开始的引子，求解多元函数最优化问题 <span class="math display">\[
+\min f(\mathbf{x}),\mathbf{x}\in R^n
+\]</span> 那么根据以上多元函数的性质和定理，我们可以知道，<strong>使得
+<span class="math inline">\(D(f)=0\)</span> 且 <span class="math inline">\(D^2(f)\)</span>
+为半正定时，称此点为极小值点</strong>。</p>
+<p>换句话说，<strong>如果 <span class="math inline">\(f(\mathbf{x})\)</span> 在 <span class="math inline">\(R^n\)</span>
+上是凸函数且一阶可微，那么其极小值点的充要条件为 <span class="math inline">\(D(f)=0\)</span>。</strong></p>
+]]></content>
+  </entry>
+  <entry>
+    <title>电力电子技术笔记</title>
+    <url>//power-electornics-tech-note.html</url>
+    <content><![CDATA[<h1 id="电力电子技术">电力电子技术</h1>
+<h2 id="电力电子器件">电力电子器件</h2>
+<h3 id="不可控器件电力二极管">不可控器件——电力二极管</h3>
+<h4 id="工作特性">工作特性</h4>
+<figure>
+<img src="/power-electornics-tech-note/功率二极管的伏安特性.png" alt="功率二极管的伏安特性">
+<figcaption aria-hidden="true">功率二极管的伏安特性</figcaption>
+</figure>
+<p>主要利用其<strong>正向导通，反向截止</strong>的工作特性，一般在整流电路中使用。</p>
+<figure>
+<img src="/power-electornics-tech-note/单相半波不可控整流带电阻性负载电路图.png" alt="单相半波不可控整流带电阻性负载电路图">
+<figcaption aria-hidden="true">单相半波不可控整流带电阻性负载电路图</figcaption>
+</figure>
+<h4 id="参数选型">参数选型</h4>
+<p><strong>正向平均电流</strong>，<strong>额定电流</strong>，<strong>通态平均电流</strong>，<strong>等效直流电流</strong>，即通过二极管的电流在一个周期内的<strong>平均值</strong>，计算公式为
+<span class="math display">\[
+I_{FR}=\frac{1}{T}\int_0^Ti\mathrm{d}t
+\]</span> 假设一个正弦半波电流的最大值为 <span class="math inline">\(I_m\)</span>，我们可以计算得到其正向平均电流为
+<span class="math display">\[
+I_{FR}=\frac{1}{2\pi}\int^\pi_0I_m\sin{(\omega t)}\mathrm{d}{(\omega
+t)}=\frac{1}{\pi}I_{m}
+\]</span>
+<strong>最大允许的全周期均方根正向电流</strong>，<strong>有效值电流</strong>，按照电流的发热效应来定义，采用<strong>有效值相等</strong>的原则进行计算，<strong>额定电流</strong>应<strong>留有
+1.5-2 倍的裕量</strong>。计算公式如下所示： <span class="math display">\[
+I_{Frms}=\sqrt{\frac{1}{T}\int_0^Ti^2\mathrm{d}t}
+\]</span> 假设一个正弦半波电流的最大值为 <span class="math inline">\(I_m\)</span>，我们可以计算得到其最大允许的全周期均方根正向电流为
+<span class="math display">\[
+I_{Frms}=\frac{1}{2\pi}\sqrt{\int^\pi_0(I_m\sin{\omega
+t})^2\mathrm{d}{(\omega
+t)}}=\frac{1}{2}I_m=\frac{2}{\pi}I_{FR}=1.57I_{FR}
+\]</span>
+即<strong>正弦半波的电流有效值是峰值的一半</strong>，<strong>额定电流比上电流有效值至少要为
+<span class="math inline">\(1/1.57\)</span></strong>，一般来说会向上浮动
+1.5-2 倍。</p>
+<p>比如说已知通过的电流波形有效值为 <span class="math inline">\(I_D\)</span>，那么选取效率二极管时，选取额定电流为
+<span class="math inline">\(2/1.57\times I_D\)</span> 的效率二极管。</p>
+<blockquote>
+<p>额定 100A 的二极管理论上可以通过 157A 的电流有效值。</p>
+</blockquote>
+<p><strong>反向重复峰值电压</strong>，一般指电压峰值 <span class="math inline">\(U_M\)</span>，<strong>额定电压</strong>的选取一般是其的
+1.5-2 倍。</p>
+<blockquote>
+<p>国家正常电压和频率是 220V/50Hz，其中 220V 是电压有效值，需要取 <span class="math inline">\(\sqrt{2}\)</span> 倍有效值才为峰值，即
+311V，故一般额定电压的选取是 622V。</p>
+</blockquote>
+<h3 id="半控型器件晶闸管">半控型器件——晶闸管</h3>
+<h4 id="工作特性-1">工作特性</h4>
+<p>在二极管的<strong>正向导通，反向截止</strong>的基础上，增添一个门级电流机制，即<strong>只有门级有触发电流的情况下晶闸管才可以导通</strong>。</p>
+<h4 id="参数选型-1">参数选型</h4>
+<p>与二极管一样，<strong>额定电流应与电流有效值之比大于
+1/1.57，选取裕量为 1.5-2 倍；额定电压应是电压峰值的 1.5-2
+倍</strong>。</p>
+<h4 id="控制电路数量关系">控制电路数量关系</h4>
+<h5 id="输出电压平均值-u_d-与输出电流平均值-i_d">输出电压平均值 <span class="math inline">\(U_d\)</span> 与输出电流平均值 <span class="math inline">\(I_d\)</span></h5>
+<p><span class="math display">\[
+U_d=\frac{1}{2\pi}\int^{\pi}_{\alpha}\sqrt{2}U_2\sin{(\omega
+t)}\mathrm{d}(\omega t)=0.45U_2\frac{1+\cos{\alpha}}{2}
+\]</span></p>
+<p>其中，<span class="math inline">\(U_d\)</span>
+也是<strong>平均直流输出电压</strong>，<span class="math inline">\(U_2\)</span>
+是<strong>输入电压有效值</strong>。</p>
+<p>我们可以知道当 <span class="math inline">\(\alpha=0\)</span>
+时，<span class="math inline">\(U_d=0.45U_2\)</span>，<span class="math inline">\(\alpha=\pi\)</span> 时，<span class="math inline">\(U_d=0\)</span>，故控制角的移相范围应该是 <span class="math inline">\([0,\pi]\)</span>。 <span class="math display">\[
+I_d=0.45\frac{U_2}{R_L}\frac{1+\cos{\alpha}}{2}
+\]</span> 其中，<span class="math inline">\(R_L\)</span>
+是<strong>负载电阻</strong>。</p>
+<h5 id="输出电压有效值-u-与输出电流有效值-i">输出电压有效值 <span class="math inline">\(U\)</span> 与输出电流有效值 <span class="math inline">\(I\)</span></h5>
+<p><span class="math display">\[
+U=\sqrt{\frac{1}{2\pi}\int^{\pi}_{\alpha}[\sqrt{2}U_2\sin{(\omega
+t)}]^2\mathrm{d}(\omega
+t)}=U_2\sqrt{\frac{1}{4\pi}\sin{2\alpha}+\frac{\pi-\alpha}{2\pi}}
+\]</span></p>
+<p>其中，<span class="math inline">\(U_2\)</span>
+是<strong>输入电压有效值</strong>。 <span class="math display">\[
+I=\frac{U}{R_L}=\frac{U_2}{R_L}\sqrt{\frac{1}{4\pi}\sin{2\alpha}+\frac{\pi-\alpha}{2\pi}}
+\]</span> 其中，<span class="math inline">\(U_2\)</span>
+是<strong>输入电压有效值</strong>，<span class="math inline">\(R_L\)</span> 是<strong>负载电阻</strong>。</p>
+<h5 id="晶闸管电流有效值和变压器二次侧电流有效值">晶闸管电流有效值和变压器二次侧电流有效值</h5>
+<p>单相半波可控整流器中，有 <span class="math display">\[
+I_T=I_2=I=\frac{U_2}{R_L}\sqrt{\frac{1}{4\pi}\sin{2\alpha}+\frac{\pi-\alpha}{2\pi}}
+\]</span> 其中，<span class="math inline">\(I_T\)</span>
+是晶闸管电流有效值，<span class="math inline">\(I_2\)</span>
+是输入电流。</p>
+]]></content>
   </entry>
 </search>

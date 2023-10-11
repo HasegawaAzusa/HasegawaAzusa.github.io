@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关最优化方法——理论基础的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最优化方法——理论基础">
+<meta property="og:url" content="https://hasegawaazusa.github.io/optimization-method-basis-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关最优化方法——理论基础的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/optimization-method-basis-note/%E5%87%B8%E5%87%BD%E6%95%B0%E7%9A%84%E5%9B%BE%E5%83%8F%E6%80%A7%E8%B4%A8.png">
+<meta property="article:published_time" content="2023-09-12T07:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-25T14:24:31.805Z">
+<meta property="article:author" content="qsdz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/optimization-method-basis-note/%E5%87%B8%E5%87%BD%E6%95%B0%E7%9A%84%E5%9B%BE%E5%83%8F%E6%80%A7%E8%B4%A8.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/optimization-method-basis-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/optimization-method-basis-note.html","path":"/optimization-method-basis-note.html","title":"最优化方法——理论基础"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>最优化方法——理论基础 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">118</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">最优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA"><span class="nav-number">1.1.</span> <span class="nav-text">基本理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%AD%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0%E7%9F%A9%E9%98%B5"><span class="nav-number">1.1.2.</span> <span class="nav-text">多元函数的导数矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%B0%E5%8B%92%E5%85%AC%E5%BC%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">泰勒公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B8%E9%9B%86%E4%B8%8E%E5%87%B8%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.4.</span> <span class="nav-text">凸集与凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E8%B4%9F%E5%AE%9A%E4%BA%8C%E6%AC%A1%E5%9E%8B"><span class="nav-number">1.1.5.</span> <span class="nav-text">正（负）定二次型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%85%83%E5%87%B8%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.6.</span> <span class="nav-text">多元凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.7.</span> <span class="nav-text">无约束最优化问题</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/optimization-method-basis-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="最优化方法——理论基础 | 独奏の小屋">
+      <meta itemprop="description" content="有关最优化方法——理论基础的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          最优化方法——理论基础
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-09-12 15:00:00" itemprop="dateCreated datePublished" datetime="2023-09-12T15:00:00+08:00">2023-09-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-09-25 22:24:31" itemprop="dateModified" datetime="2023-09-25T22:24:31+08:00">2023-09-25</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关最优化方法——理论基础的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="最优化方法">最优化方法</h1>
+<h2 id="基本理论">基本理论</h2>
+<h3 id="引子">引子</h3>
+<p>一个简单的函数极值问题是这样的，给予一个<strong>连续可微函数</strong>
+<span class="math inline">\(f(x)\)</span>，我们想要找到它什么时候取得最小值，最小值是多少，即
+<span class="math display">\[
+\min{f(x)}
+\]</span>
+在正常的数学学习中我们知道，想要找到一个函数的最小值，我们需要<strong>知道它的导数，和导数的导数</strong>
+<span class="math display">\[
+\min{f(x)}\to f&#39;(x)=0,f&#39;&#39;(x)&gt;0
+\]</span> 这是找到极小值的充要条件。</p>
+<p>这是一个最简单的优化问题，例如说找到某个产品成本在某个区间的极小值。</p>
+<p>但现实中往往并不会只有单一变量因素，更多的是针对多变量函数的优化问题，例如<strong>神经网络的参数优化</strong>。</p>
+<p>例如我们想要求得 <span class="math display">\[
+\min{f(x,y,z)}
+\]</span> 那么自然地想要知道这个多元函数的“导数”，“导数的导数”。</p>
+<h3 id="多元函数的导数矩阵">多元函数的导数矩阵</h3>
+<p><strong>连续可微多元函数</strong>的”导数“其实就是<strong>梯度</strong>，定义为
+<span class="math display">\[
+\nabla f(\mathbf{x})=\begin{pmatrix}
+\frac{\partial f(\mathbf{x})}{\partial x_1},
+\cdots,
+\frac{\partial f(\mathbf{x})}{\partial x_n}
+\end{pmatrix}^T=D(f)^T
+\]</span> 我们一般定义梯度的转置才是<strong>多元函数的导数矩阵</strong>
+<span class="math inline">\(D(f)\)</span>。</p>
+<blockquote>
+<p>因为梯度的定义是列向量，导数矩阵是行向量。</p>
+</blockquote>
+<p>对于<strong>连续可微的向量值函数</strong> <span class="math inline">\(F=\begin{pmatrix}F_1,\cdots,F_m\end{pmatrix}\)</span>，其导数矩阵又称作是雅可比（jacobi）矩阵
+<span class="math display">\[
+F&#39;(x)=\begin{bmatrix}
+\frac{\partial F_1(\mathbf{x})}{\partial x_1}&amp;
+\cdots&amp;
+\frac{\partial F_1(\mathbf{x})}{\partial x_n}\\
+\vdots&amp;\ddots&amp;\vdots\\
+\frac{\partial F_m(\mathbf{x})}{\partial x_1}&amp;
+\cdots&amp;
+\frac{\partial F_m(\mathbf{x})}{\partial x_n}
+\end{bmatrix}
+\]</span> 例如向量值函数 <span class="math display">\[
+\mathbf{f}(\mathbf{x})=\begin{bmatrix}
+\sin{x_1}+\cos{x_2}\\
+e^{2x_1+x_2}\\
+2x_1^2+x_1x_2
+\end{bmatrix}
+\]</span> 可以求得雅可比矩阵为 <span class="math display">\[
+\mathbf{f}&#39;(\mathbf{x})=\begin{bmatrix}
+\cos{x_1}&amp;-\sin{x_2}\\
+2e^{2x_1+x_2}&amp;e^{2x_1+x_2}\\
+4x_1+x_2&amp;x_1
+\end{bmatrix}
+\]</span>
+而连续可微多元函数的“导数的导数”，也被称为海森（hessian）矩阵，定义为
+<span class="math display">\[
+D^2(f)=\nabla^2f(\mathbf{x})=\begin{bmatrix}
+\frac{\partial^2 f(\mathbf{x})}{\partial
+x_1^2}&amp;\cdots&amp;\frac{\partial^2 f(\mathbf{x})}{\partial
+x_1\partial x_n}\\
+\vdots&amp;\ddots&amp;\vdots\\
+\frac{\partial^2 f(\mathbf{x})}{\partial x_n\partial
+x_1}&amp;\cdots&amp;\frac{\partial^2 f(\mathbf{x})}{\partial x_n^2}
+\end{bmatrix}
+\]</span> 例如函数 <span class="math display">\[
+f(x_1,x_2)=\left(x_{1} - x_{2}\right)^{2} + 4 \, x_{1} x_{2} +
+e^{\left(x_{1} + x_{2}\right)}
+\]</span> 其海森矩阵为 <span class="math display">\[
+\nabla^2 f(x_1,x_2)=\begin{bmatrix}
+e^{\left(x_{1} + x_{2}\right)} + 2 &amp; e^{\left(x_{1} + x_{2}\right)}
++ 2 \\
+e^{\left(x_{1} + x_{2}\right)} + 2 &amp; e^{\left(x_{1} + x_{2}\right)}
++ 2
+\end{bmatrix}
+\]</span></p>
+<h3 id="泰勒公式">泰勒公式</h3>
+<p>一元函数的泰勒展开式为 <span class="math display">\[
+f(x)=\frac{f(x_0)}{0!}+\frac{f(x_0)}{1!}(x-x_0)+\cdots+\frac{f^{(n)}(x_0)}{n!}(x-x_0)^n+R_n(x)
+\]</span> 其中，<span class="math inline">\(R_n(x)\)</span>
+称作余项，用于表示和平衡误差。完全展开后也被称作是<strong>泰勒级数</strong>
+<span class="math display">\[
+f(x)\sum^{\infin}_{k=0}\frac{f^{k}(x_0)}{k!}(x-x_0)^k
+\]</span> 考虑推广到多元函数，有如下定义 <span class="math display">\[
+f(\mathbf{x})=f(\mathbf{x}_0)+\frac{D(f)}{1!}(\mathbf{x}-\mathbf{x}_0)+(\mathbf{x}-\mathbf{x}_0)^T\frac{D^2(f)}{2!}(\mathbf{x}-\mathbf{x}_0)+o(\|\mathbf{x}-\mathbf{x}_0\|)^2
+\]</span> 其中，<span class="math inline">\(o(\|\mathbf{x}-\mathbf{x}_0\|)^2\)</span>
+是二次余项，用于表示和平衡误差。</p>
+<p>例如多元函数 <span class="math inline">\(f(\mathbf{x})=x_1e^{-x_2}+x_2+1,\mathbf{x}_0=(1,0)^T\)</span>，那么忽略三次及更高次项（展开三项）得到
+<span class="math display">\[
+D(f)=\begin{bmatrix}
+e^{-x_2}&amp;-x_1e^{-x_2}+1
+\end{bmatrix}\newline
+D^2(f)=\begin{bmatrix}
+0&amp;-e^{-x_2}\\
+-e^{-x_2}&amp;x_1e^{-x_2}
+\end{bmatrix}\newline
+f(\mathbf{x})=2+\begin{bmatrix}
+1&amp;0
+\end{bmatrix}\begin{bmatrix}
+x_1-1\\
+x_2
+\end{bmatrix}+\frac{1}{2}\begin{bmatrix}
+x_1-1&amp;x_2
+\end{bmatrix}\begin{bmatrix}
+0&amp;-1\\
+-1&amp;1
+\end{bmatrix}\begin{bmatrix}
+x_1-1\\
+x_2
+\end{bmatrix}+\cdots
+\newline
+=1+x_1+x_2-x_1x_2+\frac{1}{2}x_2^2+\cdots
+\]</span></p>
+<h3 id="凸集与凸函数">凸集与凸函数</h3>
+<p>定义集合 <span class="math inline">\(D\subset
+R^n\)</span>，对于其中任意两点 <span class="math inline">\(x,y\in
+D\)</span>，任意实数 <span class="math inline">\(\alpha\in[0,1]\)</span>，满足 <span class="math display">\[
+\alpha x+(1-\alpha)y\in D
+\]</span> 我们就称集合 <span class="math inline">\(D\)</span>
+为凸集。</p>
+<blockquote>
+<p><span class="math inline">\(R^n\)</span> 代表每个元素都有 <span class="math inline">\(n\)</span> 维长度。</p>
+</blockquote>
+<p>实际上对于元素 <span class="math inline">\(x,y\)</span>
+来说，定义公式即为直线。直观上而言，凸集就是空间中内部无洞，边界又不向内凹的一些点的集合。</p>
+<blockquote>
+<p>一个在凸集上的多元函数，类比于一元函数的光滑。</p>
+</blockquote>
+<p>由此推广，<strong>凸函数定义为函数图形上任意两点的线段总是位于曲线弧的上方</strong>。</p>
+<figure>
+<img src="/optimization-method-basis-note/凸函数的图像性质.png" alt="凸函数的图像性质">
+<figcaption aria-hidden="true">凸函数的图像性质</figcaption>
+</figure>
+<p>我们喜欢类似凸函数这样光滑、连续、可微的函数，显而易见地它必然有极小值，也就是说，对于一个多元凸函数，我们可以类似<strong>引子</strong>那样，找到它的极小值和极小值点。</p>
+<p>那么现在的问题就在于，<strong>怎么去寻找一个多元凸函数</strong>。</p>
+<h3 id="正负定二次型">正（负）定二次型</h3>
+<p>对于一个 <span class="math inline">\(n\)</span> 元二次齐次函数 <span class="math display">\[
+f(x_1,x_2\cdots,x_n)=a_{11}x_1^2+a_{22}x_2^2+\cdots+a_{nn}x_n^2\newline
++2a_{12}x_1x_2+2a_{13}x_1x_3+\cdots+2a_{n-1,n}x_{n-1}x_{n}
+\]</span> 称作<strong>二次型</strong>，取 <span class="math inline">\(a_{ij}=a_{ji}\)</span>，那么 <span class="math inline">\(2a_{ij}x_ix_j=a_{ij}x_ix_j+a_{ji}x_jx_i\)</span>，于是可以把二次型记作
+<span class="math display">\[
+f(x_1,x_2,\cdots,x_n)=\sum^n_{i,j=1}a_{ij}x_ix_j
+\]</span> 同时也可以写作矩阵形式 <span class="math display">\[
+\mathbf{A}=\begin{bmatrix}
+a_{11}&amp;a_{12}&amp;\cdots&amp;a_{1n}\\
+a_{21}&amp;a_{22}&amp;\cdots&amp;a_{2n}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+a_{n1}&amp;a_{n2}&amp;\cdots&amp;a_{nn}
+\end{bmatrix}
+x=\begin{pmatrix}
+x_1\\
+x_2\\
+\vdots\\
+x_n
+\end{pmatrix}\\
+f(x_1,x_2,\cdots,x_n)=\mathbf{x}^T\mathbf{A}\mathbf{x}
+\]</span> 其中 <span class="math inline">\(A\)</span>
+为对称矩阵，称作是<strong>二次型的矩阵</strong>。</p>
+<p>对于二次型矩阵，我们定义，如果对于任意 <span class="math inline">\(\mathbf{x}_0\neq 0\)</span>，如果有</p>
+<p><span class="math inline">\(f(\mathbf{x}_0)&gt;0\)</span>，则称 <span class="math inline">\(f\)</span>
+是<strong>正定二次型</strong>，对应的实对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为<strong>正定矩阵</strong>；</p>
+<p><span class="math inline">\(f(\mathbf{x}_0)&lt;0\)</span>，则称 <span class="math inline">\(f\)</span>
+是<strong>负定二次型</strong>，对应的实对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为<strong>负定矩阵</strong>。</p>
+<blockquote>
+<p><span class="math inline">\(f(\mathbf{x}_0)\geq 0\)</span>，则称
+<span class="math inline">\(f\)</span>
+是<strong>半正定二次型</strong>，对应的实对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为<strong>半正定矩阵</strong>；</p>
+<p><span class="math inline">\(f(\mathbf{x}_0)\leq 0\)</span>，则称
+<span class="math inline">\(f\)</span>
+是<strong>半负定二次型</strong>，对应的实对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为<strong>半负定矩阵</strong>；</p>
+<p><span class="math inline">\(f(\mathbf{x}_0)\)</span> 可正可负，则称
+<span class="math inline">\(f\)</span>
+是<strong>不定型二次型</strong>，对应的实对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为<strong>不定型矩阵</strong>。</p>
+</blockquote>
+<p>由此可知，<strong>对称矩阵 <span class="math inline">\(\mathbf{A}\)</span>
+为正定矩阵的充要条件是特征值全为正</strong>。</p>
+<p>除了使用特征值判断正定型，还有一个充要条件是是计算<strong>顺序主子式</strong>均为正，即
+<span class="math display">\[
+a_{11}&gt;0,\begin{vmatrix}
+a_{11}&amp;a_{12}\\
+a_{21}&amp;a_{22}
+\end{vmatrix}&gt;0,\cdots,\begin{vmatrix}
+a_{11}&amp;\cdots&amp;a_{1n}\\
+\vdots&amp;\ddots&amp;\vdots\\
+a_{21}&amp;\cdots&amp;a_{22}
+\end{vmatrix}&gt;0
+\]</span> 这个定理也称作是<strong>霍尔维茨定理</strong>。</p>
+<p>而判断负定型的充要条件是 <span class="math display">\[
+a_{11}&lt;0,\begin{vmatrix}
+a_{11}&amp;a_{12}\\
+a_{21}&amp;a_{22}
+\end{vmatrix}&gt;0,\cdots,(-1)^k\begin{vmatrix}
+a_{11}&amp;\cdots&amp;a_{1n}\\
+\vdots&amp;\ddots&amp;\vdots\\
+a_{21}&amp;\cdots&amp;a_{22}
+\end{vmatrix}&gt;0
+\]</span> 即<strong>奇数阶主子式为负，偶数阶主子式为正</strong>。</p>
+<p><strong>其他情况为不定型。</strong></p>
+<h3 id="多元凸函数">多元凸函数</h3>
+<p>了解正定矩阵的判定，是为了引出以下定理：</p>
+<p><strong>如果 <span class="math inline">\(f(x_1,\cdots,x_n):C\subset
+R^n\to R^1\)</span> 为二次可微多元函数，<span class="math inline">\(C\)</span> 为凸集。那么 <span class="math inline">\(f\)</span> 在 <span class="math inline">\(C\)</span>
+上为凸函数的充要条件是海森（hessian）矩阵 <span class="math inline">\(D^2(f)\)</span> 在 <span class="math inline">\(C\)</span> 上处处半正定。</strong></p>
+<p>例如 <span class="math inline">\(f(x_1,x_2)=10-2(x_2-x_1^2)^2,C=\{(x_1,x_2)|-11\leq
+x_1\leq 1,-1\leq x_2\leq 1\}\)</span>，我们计算其海森矩阵 <span class="math display">\[
+D^2(f)=\begin{bmatrix}
+8(x_2-3x_1^2)&amp;8x_1\\
+8x_1&amp;-4
+\end{bmatrix}
+\]</span> 可知由于其在 <span class="math inline">\((0,1)\)</span>
+处结果为 <span class="math inline">\(\begin{bmatrix} 8&amp;0\\ 0&amp;-4
+\end{bmatrix}\)</span>，是不定矩阵，因此 <span class="math inline">\(f\)</span> 在 <span class="math inline">\(C\)</span>
+上并非<strong>处处</strong>半正定，故其不是凸函数。</p>
+<h3 id="无约束最优化问题">无约束最优化问题</h3>
+<p>回到最开始的引子，求解多元函数最优化问题 <span class="math display">\[
+\min f(\mathbf{x}),\mathbf{x}\in R^n
+\]</span> 那么根据以上多元函数的性质和定理，我们可以知道，<strong>使得
+<span class="math inline">\(D(f)=0\)</span> 且 <span class="math inline">\(D^2(f)\)</span>
+为半正定时，称此点为极小值点</strong>。</p>
+<p>换句话说，<strong>如果 <span class="math inline">\(f(\mathbf{x})\)</span> 在 <span class="math inline">\(R^n\)</span>
+上是凸函数且一阶可微，那么其极小值点的充要条件为 <span class="math inline">\(D(f)=0\)</span>。</strong></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/optimization-method-basis-note.html" title="最优化方法——理论基础">https://hasegawaazusa.github.io/optimization-method-basis-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/nodejs-note.html" rel="prev" title="nodejs相关攻击笔记">
+                  <i class="fa fa-chevron-left"></i> nodejs相关攻击笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/power-electornics-tech-note.html" rel="next" title="电力电子技术笔记">
+                  电力电子技术笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">606k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">9:11</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
