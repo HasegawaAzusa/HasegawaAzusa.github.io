@@ -13974,6 +13974,12 @@ Sagemath、Python 代码即可。</p>
 <img src="/sagemath-get-started/VSCode使用Sagemath的示例.png" alt="VSCode使用Sagemath的示例">
 <figcaption aria-hidden="true">VSCode使用Sagemath的示例</figcaption>
 </figure>
+<p>如果有需要，也可以使用 <code>help()</code> 函数获取 Sagemath
+函数的帮助文档。</p>
+<figure>
+<img src="/sagemath-get-started/Sagemath与help函数.png" alt="Sagemath与help函数">
+<figcaption aria-hidden="true">Sagemath与help函数</figcaption>
+</figure>
 <p>其他的，可以参考网络上的文章。</p>
 ]]></content>
       <tags>
