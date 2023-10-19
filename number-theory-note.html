@@ -29,7 +29,7 @@
 <meta property="og:description" content="有关数论知识的简要笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-04-05T05:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-21T07:43:11.700Z">
+<meta property="article:modified_time" content="2023-10-15T10:34:26.516Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="math">
@@ -235,7 +235,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-21 15:43:11" itemprop="dateModified" datetime="2023-09-21T15:43:11+08:00">2023-09-21</time>
+      <time title="修改时间：2023-10-15 18:34:26" itemprop="dateModified" datetime="2023-10-15T18:34:26+08:00">2023-10-15</time>
     </span>
 
   
@@ -451,7 +451,7 @@ v\equiv \frac{a-x_k^e}{ex_k^{e-1}p^k}\pmod{p}
 \]</span> 所以我们最终得到了一个迭代公式 <span class="math display">\[
 x_{k+1}=x_k+\frac{a-x_k^e}{ex_k^{e-1}}\pmod{p^{k+1}}
 \]</span> 代码如下</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">hensel_lifting</span>(<span class="params">m, c, e, p, k</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    满足pow(m, e, p) == c % p</span></span><br><span class="line"><span class="string">    求解m % (p ** k)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">pow</span>(m, e, p) == c % p</span><br><span class="line">    mk = <span class="built_in">int</span>(m % p)</span><br><span class="line">    t = <span class="built_in">int</span>(m * <span class="built_in">pow</span>(c, -<span class="number">1</span>, p) % p)</span><br><span class="line">    pk = <span class="built_in">int</span>(p)</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k):</span><br><span class="line">        pk *= p</span><br><span class="line">        x = (c - <span class="built_in">pow</span>(mk, e, pk)) % pk</span><br><span class="line">        y = (x * t * <span class="built_in">pow</span>(e, -<span class="number">1</span>, p)) % pk</span><br><span class="line">        mk = mk + y</span><br><span class="line">    <span class="keyword">return</span> mk</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">hensel_lifting</span>(<span class="params">m, c, e, p, k</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    满足pow(m, e, p) == c % p</span></span><br><span class="line"><span class="string">    求解m % (p ** k)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">pow</span>(m, e, p) == c % p</span><br><span class="line">    mk = <span class="built_in">int</span>(m % p)</span><br><span class="line">    t = <span class="built_in">int</span>(m * <span class="built_in">pow</span>(c, -<span class="number">1</span>, p) % p)</span><br><span class="line">    pk = <span class="built_in">int</span>(p)</span><br><span class="line">    <span class="keyword">for</span> _ <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, k):</span><br><span class="line">        pk *= p</span><br><span class="line">        x = <span class="built_in">int</span>((c - <span class="built_in">pow</span>(mk, e, pk)) % pk)</span><br><span class="line">        y = <span class="built_in">int</span>((x * t * <span class="built_in">int</span>(<span class="built_in">pow</span>(e, -<span class="number">1</span>, p))) % pk)</span><br><span class="line">        mk = mk + y</span><br><span class="line">    <span class="keyword">return</span> mk</span><br></pre></td></tr></table></figure>
 <p>可以试着校验</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> getPrime</span><br><span class="line"></span><br><span class="line">p = getPrime(<span class="number">128</span>)</span><br><span class="line">m = getPrime(<span class="number">512</span>)</span><br><span class="line">e = <span class="number">0x10001</span></span><br><span class="line">k = <span class="number">5</span></span><br><span class="line">n = p ** k</span><br><span class="line">c = <span class="built_in">pow</span>(m, e, n)</span><br><span class="line">mk = hensel_lifting(m, c, e, p, k)</span><br><span class="line"><span class="built_in">print</span>(mk == m)</span><br></pre></td></tr></table></figure>
 <h2 id="数学黑洞">数学黑洞</h2>
@@ -617,13 +617,13 @@ conjecture，之所以翻译为冰雹猜想，是因为这样一个序列像冰�
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">606k</span>
+    <span title="站点总字数">613k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:11</span>
+    <span title="站点阅读时长">9:17</span>
   </span>
 </div>
 

@@ -29,8 +29,10 @@
 <meta property="og:description" content="有关最优化方法——理论基础的简要笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hasegawaazusa.github.io/optimization-method-basis-note/%E5%87%B8%E5%87%BD%E6%95%B0%E7%9A%84%E5%9B%BE%E5%83%8F%E6%80%A7%E8%B4%A8.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/optimization-method-basis-note/%E6%9C%80%E9%80%9F%E4%B8%8B%E9%99%8D%E6%B3%95%E5%92%8C%E7%89%9B%E9%A1%BF%E6%B3%95.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/optimization-method-basis-note/%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BB%88%E6%AD%A2%E5%87%86%E5%88%99.png">
 <meta property="article:published_time" content="2023-09-12T07:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-25T14:24:31.805Z">
+<meta property="article:modified_time" content="2023-10-11T07:45:38.944Z">
 <meta property="article:author" content="qsdz">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://hasegawaazusa.github.io/optimization-method-basis-note/%E5%87%B8%E5%87%BD%E6%95%B0%E7%9A%84%E5%9B%BE%E5%83%8F%E6%80%A7%E8%B4%A8.png">
@@ -142,7 +144,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">最优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA"><span class="nav-number">1.1.</span> <span class="nav-text">基本理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%AD%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0%E7%9F%A9%E9%98%B5"><span class="nav-number">1.1.2.</span> <span class="nav-text">多元函数的导数矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%B0%E5%8B%92%E5%85%AC%E5%BC%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">泰勒公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B8%E9%9B%86%E4%B8%8E%E5%87%B8%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.4.</span> <span class="nav-text">凸集与凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E8%B4%9F%E5%AE%9A%E4%BA%8C%E6%AC%A1%E5%9E%8B"><span class="nav-number">1.1.5.</span> <span class="nav-text">正（负）定二次型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%85%83%E5%87%B8%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.6.</span> <span class="nav-text">多元凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.7.</span> <span class="nav-text">无约束最优化问题</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">最优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%90%86%E8%AE%BA"><span class="nav-number">1.1.</span> <span class="nav-text">基本理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%AD%90"><span class="nav-number">1.1.1.</span> <span class="nav-text">引子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%85%83%E5%87%BD%E6%95%B0%E7%9A%84%E5%AF%BC%E6%95%B0%E7%9F%A9%E9%98%B5"><span class="nav-number">1.1.2.</span> <span class="nav-text">多元函数的导数矩阵</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%B0%E5%8B%92%E5%85%AC%E5%BC%8F"><span class="nav-number">1.1.3.</span> <span class="nav-text">泰勒公式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%87%B8%E9%9B%86%E4%B8%8E%E5%87%B8%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.4.</span> <span class="nav-text">凸集与凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A3%E8%B4%9F%E5%AE%9A%E4%BA%8C%E6%AC%A1%E5%9E%8B"><span class="nav-number">1.1.5.</span> <span class="nav-text">正（负）定二次型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E5%85%83%E5%87%B8%E5%87%BD%E6%95%B0"><span class="nav-number">1.1.6.</span> <span class="nav-text">多元凸函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%BA%A6%E6%9D%9F%E6%9C%80%E4%BC%98%E5%8C%96%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.7.</span> <span class="nav-text">无约束最优化问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%BA%A6%E6%9D%9F%E9%97%AE%E9%A2%98%E7%9A%84%E7%AE%97%E6%B3%95%E6%A1%86%E6%9E%B6"><span class="nav-number">1.1.8.</span> <span class="nav-text">无约束问题的算法框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8B%E9%99%8D%E6%96%B9%E5%90%91"><span class="nav-number">1.1.9.</span> <span class="nav-text">下降方向</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E6%95%9B%E6%80%A7%E4%B8%8E%E6%94%B6%E6%95%9B%E9%80%9F%E5%BA%A6"><span class="nav-number">1.1.10.</span> <span class="nav-text">收敛性与收敛速度</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%88%E6%AD%A2%E5%87%86%E5%88%99"><span class="nav-number">1.1.11.</span> <span class="nav-text">终止准则</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -234,7 +236,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-25 22:24:31" itemprop="dateModified" datetime="2023-09-25T22:24:31+08:00">2023-09-25</time>
+      <time title="修改时间：2023-10-11 15:45:38" itemprop="dateModified" datetime="2023-10-11T15:45:38+08:00">2023-10-11</time>
     </span>
 
   
@@ -244,14 +246,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.4k</span>
+      <span>6.4k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>5 分钟</span>
+      <span>6 分钟</span>
     </span>
 </div>
 
@@ -488,6 +490,59 @@ D^2(f)=\begin{bmatrix}
 为半正定时，称此点为极小值点</strong>。</p>
 <p>换句话说，<strong>如果 <span class="math inline">\(f(\mathbf{x})\)</span> 在 <span class="math inline">\(R^n\)</span>
 上是凸函数且一阶可微，那么其极小值点的充要条件为 <span class="math inline">\(D(f)=0\)</span>。</strong></p>
+<h3 id="无约束问题的算法框架">无约束问题的算法框架</h3>
+<p>最优化问题中最常见的就是神经网络的参数学习问题，由于一个神经网络可能涉及到成千上万乃至百万级的参数，维度十分的高，每一次计算方程
+<span class="math inline">\(\nabla f=0\)</span>
+显然是巨大的工作量，所以一般在计算机中使用迭代的方式去逼近（寻找）解。</p>
+<p>从瞎子爬山到优化方法，我们可以总结出这样的算法框架：</p>
+<ol type="1">
+<li><p>给定初始点 <span class="math inline">\(x^{(0)}\in
+R^{n}\)</span>，精度 <span class="math inline">\(\epsilon&gt;0\)</span>，令 <span class="math inline">\(k=0\)</span></p></li>
+<li><p>若终止条件满足精度（例如 <span class="math inline">\(\|\nabla
+f(x^{(k)})\|\leq \epsilon\)</span>），则终止算法，得解 <span class="math inline">\(x^{(k)}\)</span>；否则进行下一步</p></li>
+<li><p>确定下降方向 <span class="math inline">\(d^{(k)}\)</span> 使得
+<span class="math display">\[
+\nabla f(x^{(k)})^T d^{k}&lt;0
+\]</span></p></li>
+<li><p>确定步长 <span class="math inline">\(a_k&gt;0\)</span> 使得 <span class="math display">\[
+f(x^{(k)}+a_kd^{(k)})&lt;f(x^{(k)})
+\]</span></p></li>
+<li><p>令 <span class="math inline">\(x^{(k+1)}=x^{(k)}+a_kd^{(k)},k=k+1\)</span>，回到第二步</p></li>
+</ol>
+<p>在这样的算法框架中，我们需要确定如下几个细节：</p>
+<ol type="1">
+<li>下降方向</li>
+<li>终止条件</li>
+<li>步长的选取（线性搜索）</li>
+</ol>
+<h3 id="下降方向">下降方向</h3>
+<p>下降方向的确定有许多种算法思路，其中最常见的就是两种：最速下降法（梯度下降法）和牛顿法。</p>
+<p>梯度下降法公式如下 <span class="math display">\[
+x^{k+1}=x^k-a^k\nabla f(x^k)
+\]</span> 牛顿法公式如下 <span class="math display">\[
+x^{k+1}=x^k-a^k(\nabla^2 f(x^k))^{-1}\nabla f(x^k)
+\]</span> <img src="/optimization-method-basis-note/最速下降法和牛顿法.png" alt="最速下降法和牛顿法"></p>
+<h3 id="收敛性与收敛速度">收敛性与收敛速度</h3>
+<p>当一个算法只有当<strong>选定初始点</strong>后产生的点列<strong>才</strong>收敛于
+<span class="math inline">\(x^*\)</span>，我们称该算法为<strong>局部收敛</strong>的算法；</p>
+<p>当一个算法<strong>任意初始点</strong>产生的点列<strong>都</strong>收敛于
+<span class="math inline">\(x^*\)</span>，我们称该算法为<strong>全局收敛</strong>的算法。</p>
+<p><strong>局部收敛是全局收敛的基础</strong>。</p>
+<p>我们定义收敛速度的公式如下 <span class="math display">\[
+\lim_{k\to \infin}\frac{\|x_{k+1}-x^*\|}{\|x_k-x^*\|^p}=\theta
+\]</span> 若 <span class="math inline">\(p=1\)</span> 且 <span class="math inline">\(0&lt;\theta&lt;1\)</span>，则称该算法具有<strong>线性收敛速度</strong>（或<strong>线性收敛的</strong>）；</p>
+<p>若 <span class="math inline">\(p=1\)</span> 且 <span class="math inline">\(\theta=0\)</span>，则称该算法具有<strong>超线性收敛速度</strong>（或<strong>超线性收敛的</strong>）；</p>
+<p>若 <span class="math inline">\(p=2\)</span> 且 <span class="math inline">\(0&lt;\theta&lt;\infin\)</span>，则称该算法具有<strong>平方收敛速度</strong>（或<strong>平方收敛的</strong>）；</p>
+<p>一般地，若 <span class="math inline">\(p&gt;2\)</span> 且 <span class="math inline">\(0&lt;\theta&lt;\infin\)</span>，则称该算法具有
+<strong><span class="math inline">\(p\)</span> 阶收敛速度</strong>（或
+<strong><span class="math inline">\(p\)</span> 阶收敛的</strong>）。</p>
+<h3 id="终止准则">终止准则</h3>
+<p>对于一种算法，应该有某种终止准则使得迭代算法结束。</p>
+<p>常用的终止准则有：</p>
+<figure>
+<img src="/optimization-method-basis-note/常用的终止准则.png" alt="常用的终止准则">
+<figcaption aria-hidden="true">常用的终止准则</figcaption>
+</figure>
 
     </div>
 
@@ -557,13 +612,13 @@ D^2(f)=\begin{bmatrix}
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">606k</span>
+    <span title="站点总字数">613k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:11</span>
+    <span title="站点阅读时长">9:17</span>
   </span>
 </div>
 
