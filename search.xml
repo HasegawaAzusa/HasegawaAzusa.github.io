@@ -13864,7 +13864,8 @@ Debian 系统不保证可适用）</li>
 </ul>
 <p>以上软件的安装均不作赘述，在网上有很多资料可供参考。</p>
 <h2 id="安装-1">安装</h2>
-<p>使用 apt 安装即可</p>
+<p>进入 WSL 终端（如果不知道如何打开，可以使用 Powershell 直接输入 bash
+命令调用），使用 apt 安装即可</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">apt install sagemath</span><br></pre></td></tr></table></figure>
 <p>大概有 1G ~ 2G 左右大小。</p>
 <p>安装完后即可，如果 Python 版本和系统版本合适，它将依赖于系统的 Python
