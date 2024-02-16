@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关Dual RSA的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dual RSA——双生RSA">
+<meta property="og:url" content="https://hasegawaazusa.github.io/dual-rsa-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关Dual RSA的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-01T08:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-17T12:44:10.393Z">
+<meta property="article:author" content="qsdz">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/dual-rsa-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/dual-rsa-note.html","path":"/dual-rsa-note.html","title":"Dual RSA——双生RSA"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Dual RSA——双生RSA | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#dual-rsa"><span class="nav-number">1.</span> <span class="nav-text">Dual RSA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E5%87%BB"><span class="nav-number">1.2.</span> <span class="nav-text">攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC"><span class="nav-number">1.2.1.</span> <span class="nav-text">基本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%B4%E8%BF%91%E8%BE%B9%E7%95%8C"><span class="nav-number">1.2.2.</span> <span class="nav-text">临近边界</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/dual-rsa-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Dual RSA——双生RSA | 独奏の小屋">
+      <meta itemprop="description" content="有关Dual RSA的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Dual RSA——双生RSA
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-11-01 16:00:00" itemprop="dateCreated datePublished" datetime="2023-11-01T16:00:00+08:00">2023-11-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-11-17 20:44:10" itemprop="dateModified" datetime="2023-11-17T20:44:10+08:00">2023-11-17</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>4.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关Dual RSA的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="dual-rsa">Dual RSA</h1>
+<h2 id="定义">定义</h2>
+<p>Dual RSA 是一种 RSA
+变体，目的是减少公钥和私钥的存储空间要求，本质上是不同的模数共享同一个公钥和私钥指数。</p>
+<p>比如说，对于两个模数 <span class="math inline">\(N_1,N_2\)</span>，满足 <span class="math display">\[
+ed=1\pmod{\varphi(N_1)}\newline
+ed=1\pmod{\varphi(N_2)}
+\]</span> 即满足 <span class="math display">\[
+ed=1+k_1\varphi(N_1)\newline
+ed=1+k_2\varphi(N_2)
+\]</span> 为生成这样的公钥，可以采用以下方法生成模数。</p>
+<p>输入 <span class="math inline">\((n_e,n)\)</span>，其中 <span class="math inline">\(n_e\)</span> 表示 <span class="math inline">\(e\)</span> 的位数，<span class="math inline">\(n\)</span> 表示 <span class="math inline">\(N\)</span> 的位数，且要满足 <span class="math inline">\(n_e&lt;n/2\)</span>，为方便表示，令 <span class="math inline">\(n_t=n/2-n_e\)</span></p>
+<ol type="1">
+<li>随机选择 <span class="math inline">\(n_e\)</span> 位的 <span class="math inline">\(x_1\)</span> 和 <span class="math inline">\(n_t\)</span> 位的 <span class="math inline">\(x_2\)</span>，使得 <span class="math inline">\(p_1=x_1x_2+1\)</span> 是素数</li>
+<li>随机选择 <span class="math inline">\(n_t\)</span> 位的 <span class="math inline">\(y_2\)</span>，使得 <span class="math inline">\(p_2=x_1y_2+1\)</span> 是素数</li>
+<li>随机选择 <span class="math inline">\(n_e\)</span> 位的 <span class="math inline">\(y_1\)</span>，使得 <span class="math inline">\(q_1=y_1y_2+1\)</span> 是素数</li>
+<li>随机选择 <span class="math inline">\(n_e\)</span> 位的 <span class="math inline">\(e\)</span>，使得 <span class="math inline">\(\gcd(x_1x_2y_1u_2,e)=1\)</span>；计算 <span class="math inline">\(d,k_1\)</span> 满足 <span class="math inline">\(ed=1+k_1x_1x_2y_1y_2\)</span>，使得 <span class="math inline">\(q_2=k_1x_2+1\)</span> 是素数（其中 <span class="math inline">\(k_2=y_1\)</span>）</li>
+<li>返回 <span class="math inline">\(N_1=p_1q_1,N_2=p_2q_2\)</span></li>
+</ol>
+<p>一个生成三模数的代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">genKey</span>(<span class="params">nbits, dbits</span>):</span><br><span class="line">    bbits = (nbits // <span class="number">2</span> - dbits) // <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        a = getRandomNBitInteger(dbits)</span><br><span class="line">        b = getRandomNBitInteger(bbits)</span><br><span class="line">        c = getRandomNBitInteger(bbits)</span><br><span class="line">        p1 = a * b * c + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> isPrime(p1):</span><br><span class="line">            <span class="comment"># print(&quot;p1 =&quot;, p1)</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        d = getRandomNBitInteger(dbits)</span><br><span class="line">        p2 = b * c * d + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> isPrime(p2):</span><br><span class="line">            <span class="comment"># print(&quot;p2 =&quot;, p2)</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        e = getRandomNBitInteger(bbits)</span><br><span class="line">        f = getRandomNBitInteger(bbits)</span><br><span class="line">        q1 = e * d * f + <span class="number">1</span></span><br><span class="line">        p3 = a * e * f + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> isPrime(q1) <span class="keyword">and</span> isPrime(p3):</span><br><span class="line">            <span class="comment"># print(&quot;p3 =&quot;, p3)</span></span><br><span class="line">            <span class="comment"># print(&quot;q1 =&quot;, q1)</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        d_ = getRandomNBitInteger(dbits)</span><br><span class="line">        <span class="keyword">if</span> GCD(a * b * c * d * e * f, d_) != <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        e_ = inverse(d_, a * b * c * d * e * f)</span><br><span class="line">        k1 = (e_ * d_ - <span class="number">1</span>) // (a * b * c * d * e * f)</span><br><span class="line">        <span class="keyword">assert</span> e_ * d_ == (a * b * c * d * e * f) * k1 + <span class="number">1</span></span><br><span class="line">        q2 = k1 * e * f + <span class="number">1</span></span><br><span class="line">        q3 = k1 * b * c + <span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> isPrime(q2) <span class="keyword">and</span> isPrime(q3):</span><br><span class="line">            <span class="comment"># print(&quot;q2 =&quot;, q2)</span></span><br><span class="line">            <span class="comment"># print(&quot;q3 =&quot;, q3)</span></span><br><span class="line">            <span class="comment"># print(&quot;e =&quot;, e_)</span></span><br><span class="line">            <span class="comment"># print(&quot;d =&quot;, d_)</span></span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    n1 = p1 * q1</span><br><span class="line">    n2 = p2 * q2</span><br><span class="line">    n3 = p3 * q3</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">pow</span>(<span class="built_in">pow</span>(<span class="number">0xdeadbeef</span>, e_, n1), d_, n1) == <span class="number">0xdeadbeef</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">pow</span>(<span class="built_in">pow</span>(<span class="number">0xdeadbeef</span>, e_, n2), d_, n2) == <span class="number">0xdeadbeef</span></span><br><span class="line">    <span class="keyword">assert</span> <span class="built_in">pow</span>(<span class="built_in">pow</span>(<span class="number">0xdeadbeef</span>, e_, n3), d_, n3) == <span class="number">0xdeadbeef</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span>(e_, n1, n2, n3)</span><br></pre></td></tr></table></figure>
+<h2 id="攻击">攻击</h2>
+<h3 id="基本">基本</h3>
+<p>对于模数对 <span class="math inline">\((N_1,N_2)\)</span>，满足 <span class="math display">\[
+ed=1+k_1\varphi(N_1)\newline
+ed=1+k_2\varphi(N_2)
+\]</span> 可以写成 <span class="math display">\[
+ed=1+k_1N_1-k_1s_1\newline
+ed=1+k_1N_2-k_2s_2
+\]</span> 其中，<span class="math inline">\(s_1=p_1+q_1-1,s_2=p_2+q_2-1\)</span>。</p>
+<p>那么可以建立方程 <span class="math display">\[
+\mathcal{B}=\begin{bmatrix}
+A&amp;e&amp;e\\
+0&amp;-N_1&amp;0\\
+0&amp;0&amp;-N_2
+\end{bmatrix}\newline
+(d,k_1,k_2)\mathcal{B}=(Ad,1-k_1s_1,1-k_2s_2)
+\]</span> 其中，<span class="math inline">\(A=eN^{-1/2}\)</span>（<span class="math inline">\(\|A\|=n_e-n/2\)</span>）。</p>
+<p>对于更多模数，同理 <span class="math display">\[
+\mathcal{B}=\begin{bmatrix}
+A&amp;e&amp;\cdots&amp;e\\
+&amp;-N_1\\
+&amp;&amp;\ddots\\
+&amp;&amp;&amp;-N_l
+\end{bmatrix}
+\]</span> 那么，对于三模数的攻击代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">e = <span class="number">272785315258275494478303901715994595013215169713087273945370833673873860340153367010424559026764907254821416435761617347240970711252213646287464416524071944646705551816941437389777294159359383356817408302841561284559712640940354294840597133394851851877857751302209309529938795265777557840238332937938235024502686737802184255165075195042860413556866222562167425361146312096189555572705076252573222261842045286782816083933952875990572937346408235562417656218440227</span></span><br><span class="line">n1 = <span class="number">473173031410877037287927970398347001343136400938581274026578368211539730987889738033351265663756061524526288423355193643110804217683860550767181983527932872361546531994961481442866335447011683462904976896894011884907968495626837219900141842587071512040734664898328709989285205714628355052565784162841441867556282849760230635164284802614010844226671736675222842060257156860013384955769045790763119616939897544697150710631300004180868397245728064351907334273953201</span></span><br><span class="line">n2 = <span class="number">327163771871802208683424470007561712270872666244394076667663345333853591836596054597471607916850284565474732679392694515656845653581599800514388800663813830528483334021178531162556250468743461443904645773493383915711571062775922446922917130005772040139744330987272549252540089872170217864935146429898458644025927741607569303966038195226388964722300472005107075179204987774627759625183739199425329481632596633992804636690274844290983438078815836605603147141262181</span></span><br><span class="line">n3 = <span class="number">442893163857502334109676162774199722362644200933618691728267162172376730137502879609506615568680508257973678725536472848428042122350184530077765734033425406055810373669798840851851090476687785235612051747082232947418290952863499263547598032467577778461061567081620676910480684540883879257518083587862219344609851852177109722186714811329766477552794034774928983660538381764930765795290189612024799300768559485810526074992569676241537503405494203262336327709010421</span></span><br><span class="line"></span><br><span class="line">A = e / ZZ(isqrt(n1))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;A = &#125;</span>&#x27;</span>)</span><br><span class="line">B = matrix.diagonal([A, -n1, -n2, -n3], sparse=<span class="literal">False</span>)</span><br><span class="line">B[<span class="number">0</span>, <span class="number">1</span>:] = e</span><br><span class="line">L = B.LLL()</span><br><span class="line"></span><br><span class="line">d = L[<span class="number">0</span>, <span class="number">0</span>]</span><br><span class="line">d = d // A</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;d = &#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p>但该种攻击方式要求 <span class="math inline">\(n_d&lt;n/3\)</span>，即 <span class="math inline">\(d\)</span> 的位数要小于 <span class="math inline">\(N\)</span> 的位数的三分之一左右。</p>
+<blockquote>
+<p>这是一种估算，不一定精确。</p>
+</blockquote>
+<h3 id="临近边界">临近边界</h3>
+<p>如果对于上面的格无法格规约出解，但是参数比较接近边界，可以考虑小范围爆破
+<span class="math display">\[
+\mathcal{B}=\begin{bmatrix}
+A_0&amp;0&amp;e&amp;\cdots&amp;e\\
+&amp;A_1&amp;ed_h&amp;\cdots&amp;ed_h\\
+&amp;&amp;-N_1\\
+&amp;&amp;&amp;\ddots\\
+&amp;&amp;&amp;&amp;-N_l
+\end{bmatrix}\newline
+(d_s,1,k_1,\cdots,k_l)\mathcal{B}=(A_0d_s,A_1,1-k_1s_1,\cdots,1-k_ls_l)
+\]</span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/dual-rsa-note.html" title="Dual RSA——双生RSA">https://hasegawaazusa.github.io/dual-rsa-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/line-search-note.html" rel="prev" title="最优化方法——线搜索技术">
+                  <i class="fa fa-chevron-left"></i> 最优化方法——线搜索技术
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/derivative-based-optimization-method.html" rel="next" title="最优化方法——基于导数的优化">
+                  最优化方法——基于导数的优化 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">678k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">10:17</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

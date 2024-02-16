@@ -1,0 +1,2543 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关计算机网络的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/compute-network-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关计算机网络的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E5%BF%B5%E5%9B%BE.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E4%BB%A5%E4%B8%BB%E6%9C%BA%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E8%81%94%E6%9C%BA%E7%BB%88%E7%AB%AF%E7%B3%BB%E7%BB%9F.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E4%BB%A5%E9%80%9A%E4%BF%A1%E5%AD%90%E7%BD%91%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E4%B8%BB%E6%9C%BA%E4%BA%92%E8%BF%9E.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E6%BC%94%E5%8F%98%E9%98%B6%E6%AE%B51.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E4%B8%A4%E5%B1%82%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E6%BC%94%E5%8F%98%E9%98%B6%E6%AE%B52.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%AB.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E7%A1%AC%E4%BB%B6%E9%83%A8%E5%88%86.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E8%BD%AF%E4%BB%B6%E9%83%A8%E5%88%86.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E6%8C%89%E5%9C%B0%E5%9F%9F%E5%88%92%E5%88%86.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E6%8C%89%E5%9C%B0%E5%9F%9F%E5%88%92%E5%88%862.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E6%8C%89%E5%9C%B0%E5%9F%9F%E5%88%92%E5%88%863.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E5%9B%BE.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%841.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%842.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%843.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E4%B8%AD%E7%BB%A7%E5%99%A8%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E4%BB%A5%E9%9B%86%E7%BA%BF%E5%99%A8%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E6%98%9F%E5%9E%8B%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E4%BB%A5%E9%9B%86%E7%BA%BF%E5%99%A8%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E4%BA%8C%E7%BA%A7%E6%98%9F%E5%9E%8B%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E4%BA%A4%E6%8D%A2%E6%9C%BA%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E7%BD%91%E7%BB%9C%E5%88%86%E6%AE%B5%E7%A4%BA%E6%84%8F.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E7%BD%91%E5%8D%A1%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/%E5%B1%80%E5%9F%9F%E7%BD%91%E5%85%B8%E5%9E%8B%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/image-20231128091254591.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/image-20240107214801925.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/compute-network-note/image-20240108001536999.png">
+<meta property="article:published_time" content="2023-11-20T13:00:00.000Z">
+<meta property="article:modified_time" content="2024-01-09T14:57:54.516Z">
+<meta property="article:author" content="qsdz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/compute-network-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E5%BF%B5%E5%9B%BE.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/compute-network-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/compute-network-note.html","path":"/compute-network-note.html","title":"计算机网络笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算机网络笔记 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C"><span class="nav-number">1.</span> <span class="nav-text">计算机网络</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E5%B1%95"><span class="nav-number">1.1.2.</span> <span class="nav-text">发展</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5%E4%B8%BB%E6%9C%BA%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E8%81%94%E6%9C%BA%E7%BB%88%E7%AB%AF%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">以主机为中心的联机终端系统</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5%E9%80%9A%E4%BF%A1%E5%AD%90%E7%BD%91%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E4%B8%BB%E6%9C%BA%E4%BA%92%E8%BF%9E"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">以通信子网为中心的主机互连</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E4%BF%A1%E5%AD%90%E7%BD%91%E7%9A%84%E6%BC%94%E5%8F%98"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">通信子网的演变</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BB%A5%E5%B1%82%E6%AC%A1%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%BA%E6%A0%87%E5%87%86%E7%9A%84%E7%BD%91%E7%BB%9C"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">以层次体系结构为标准的网络</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD"><span class="nav-number">1.1.3.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%84%E6%88%90"><span class="nav-number">1.1.4.</span> <span class="nav-text">组成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.5.</span> <span class="nav-text">分类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%89%E5%9C%B0%E5%9F%9F%E8%8C%83%E5%9B%B4%E5%88%92%E5%88%86"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">按地域范围划分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%89%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">按拓扑结构分类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8C%89%E9%80%9A%E4%BF%A1%E4%BC%A0%E6%92%AD%E6%96%B9%E5%BC%8F%E5%88%86%E7%B1%BB"><span class="nav-number">1.1.5.3.</span> <span class="nav-text">按通信传播方式分类</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E9%80%9A%E4%BF%A1%E8%BF%9E%E6%8E%A5%E8%AE%BE%E5%A4%87"><span class="nav-number">1.2.</span> <span class="nav-text">网络通信连接设备</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%AD%E7%BB%A7%E5%99%A8repeater"><span class="nav-number">1.2.1.</span> <span class="nav-text">中继器(Repeater)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9B%86%E7%BA%BF%E5%99%A8hub"><span class="nav-number">1.2.2.</span> <span class="nav-text">集线器(Hub)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E6%A1%A5bridge"><span class="nav-number">1.2.3.</span> <span class="nav-text">网桥(Bridge)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B9%BF%E6%92%AD%E4%B8%8E%E5%86%B2%E7%AA%81"><span class="nav-number">1.2.4.</span> <span class="nav-text">广播与冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%BA%A4%E6%8D%A2%E6%9C%BAswitch"><span class="nav-number">1.2.5.</span> <span class="nav-text">网络交换机(Switch)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.2.5.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E6%9C%BA%E7%9A%84%E4%B8%89%E7%A7%8D%E8%BD%AC%E5%8F%91%E6%96%B9%E5%BC%8F"><span class="nav-number">1.2.5.2.</span> <span class="nav-text">交换机的三种转发方式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A4%E6%8D%A2%E7%BD%91%E7%BB%9C%E7%9A%84%E5%B8%A6%E5%AE%BD"><span class="nav-number">1.2.5.3.</span> <span class="nav-text">交换网络的带宽</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A5%BD%E5%A4%84"><span class="nav-number">1.2.5.4.</span> <span class="nav-text">好处</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%89%B9%E7%82%B9"><span class="nav-number">1.2.5.5.</span> <span class="nav-text">特点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E5%8D%A1nic"><span class="nav-number">1.2.6.</span> <span class="nav-text">网卡(NIC)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B-1"><span class="nav-number">1.2.6.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD-1"><span class="nav-number">1.2.6.2.</span> <span class="nav-text">功能</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%AF%E7%94%B1%E5%99%A8router"><span class="nav-number">1.2.7.</span> <span class="nav-text">路由器(Router)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E5%9F%9F%E7%BD%91lan"><span class="nav-number">1.3.</span> <span class="nav-text">局域网(LAN)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E7%82%B9-1"><span class="nav-number">1.3.1.</span> <span class="nav-text">特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B8%E5%9E%8B%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84"><span class="nav-number">1.3.2.</span> <span class="nav-text">典型拓扑结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.3.3.</span> <span class="nav-text">基本类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82"><span class="nav-number">1.3.4.</span> <span class="nav-text">数据链路层</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B1%80%E5%9F%9F%E7%BD%91%E7%9A%84%E5%BA%94%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">局域网的应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E6%A6%82%E5%BF%B5"><span class="nav-number">1.4.1.</span> <span class="nav-text">子网划分概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E6%8E%A9%E7%A0%81"><span class="nav-number">1.4.2.</span> <span class="nav-text">子网掩码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5-1"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">概念</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%9F%90%E4%B8%AA-ip-%E5%9C%B0%E5%9D%80%E6%89%80%E5%9C%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">判断某个 IP
+地址所在的网络地址</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#section"><span class="nav-number">1.4.2.2.1.</span> <span class="nav-text">1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#section-1"><span class="nav-number">1.4.2.2.2.</span> <span class="nav-text">2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#section-2"><span class="nav-number">1.4.2.2.3.</span> <span class="nav-text">3</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%A4%9A%E4%B8%AA-ip-%E5%9C%B0%E5%9D%80%E6%98%AF%E5%90%A6%E5%9C%A8%E5%90%8C%E4%B8%80%E4%B8%AA%E5%AD%90%E7%BD%91%E4%B8%8B"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">判断多个 IP
+地址是否在同一个子网下</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#section-3"><span class="nav-number">1.4.2.3.1.</span> <span class="nav-text">1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#section-4"><span class="nav-number">1.4.2.3.2.</span> <span class="nav-text">2</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%9C%E7%94%A8"><span class="nav-number">1.4.2.4.</span> <span class="nav-text">作用</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%90%E7%BD%91%E5%88%92%E5%88%86%E5%BA%94%E7%94%A8"><span class="nav-number">1.4.3.</span> <span class="nav-text">子网划分应用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E5%AD%90%E7%BD%91%E4%B8%AA%E6%95%B0%E5%92%8C%E5%AD%90%E7%BD%91%E5%9C%B0%E5%9D%80"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">计算子网个数和子网地址</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#section-5"><span class="nav-number">1.4.3.1.1.</span> <span class="nav-text">1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#section-6"><span class="nav-number">1.4.3.1.2.</span> <span class="nav-text">2</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E4%B8%BB%E6%9C%BA%E6%95%B0%E5%88%92%E5%88%86%E5%AD%90%E7%BD%91"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">通过主机数划分子网</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#section-7"><span class="nav-number">1.4.3.2.1.</span> <span class="nav-text">1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#section-8"><span class="nav-number">1.4.3.2.2.</span> <span class="nav-text">2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#section-9"><span class="nav-number">1.4.3.2.3.</span> <span class="nav-text">3</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%9A%E8%BF%87%E5%AD%90%E7%BD%91%E6%95%B0%E5%88%92%E5%88%86%E5%AD%90%E7%BD%91"><span class="nav-number">1.4.3.3.</span> <span class="nav-text">通过子网数划分子网</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#section-10"><span class="nav-number">1.4.3.3.1.</span> <span class="nav-text">1</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A6%82%E5%BF%B5%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">概念总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%AB%A0"><span class="nav-number">2.1.</span> <span class="nav-text">第一章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E7%AB%A0"><span class="nav-number">2.2.</span> <span class="nav-text">第二章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E7%AB%A0"><span class="nav-number">2.3.</span> <span class="nav-text">第三章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%9B%9B%E7%AB%A0"><span class="nav-number">2.4.</span> <span class="nav-text">第四章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%BA%94%E7%AB%A0"><span class="nav-number">2.5.</span> <span class="nav-text">第五章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AD%E7%AB%A0"><span class="nav-number">2.6.</span> <span class="nav-text">第六章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B8%83%E7%AB%A0"><span class="nav-number">2.7.</span> <span class="nav-text">第七章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%85%AB%E7%AB%A0"><span class="nav-number">2.8.</span> <span class="nav-text">第八章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E4%B9%9D%E7%AB%A0"><span class="nav-number">2.9.</span> <span class="nav-text">第九章</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AC%AC%E5%8D%81%E7%AB%A0"><span class="nav-number">2.10.</span> <span class="nav-text">第十章</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/compute-network-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算机网络笔记 | 独奏の小屋">
+      <meta itemprop="description" content="有关计算机网络的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-11-20 21:00:00" itemprop="dateCreated datePublished" datetime="2023-11-20T21:00:00+08:00">2023-11-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-01-09 22:57:54" itemprop="dateModified" datetime="2024-01-09T22:57:54+08:00">2024-01-09</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>24k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>22 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关计算机网络的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="计算机网络">计算机网络</h1>
+<h2 id="基本概念">基本概念</h2>
+<h3 id="概念">概念</h3>
+<p>计算机网络是指将地理位置不同的具有<strong>独立功能</strong>的<strong>多台计算机</strong>以及一些<strong>外部设备</strong>，通过一些<strong>通讯设备与线路</strong>连接起来，在<strong>网络操作系统、网络管理软件和网络通信协议</strong>的管理下，实现<strong>资源共享和信息传递</strong>的计算机互联系统。</p>
+<blockquote>
+<p>例如个人计算机和服务器等互相通过网线、路由器、交换机等串联起来。</p>
+</blockquote>
+<p>特点是</p>
+<ol type="1">
+<li>计算机之间相互独立自治</li>
+<li>通信线路</li>
+<li>网络协议</li>
+<li>资源共享</li>
+</ol>
+<figure>
+<img src="/compute-network-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%A6%82%E5%BF%B5%E5%9B%BE.png" alt="计算机网络概念图">
+<figcaption aria-hidden="true">计算机网络概念图</figcaption>
+</figure>
+<blockquote>
+<p>重点是<strong>自治</strong>与<strong>互联</strong>。</p>
+<p><strong>主控-从属</strong>（一台主控机与多台从属机）和<strong>主控-终端</strong>（个人计算机以及打印机终端）类型的系统不构成计算机网络。</p>
+<p>一定是以有线方式（铜线、光纤等）或无线方式（红外、无线电、卫星等）互相连接的通信网络。</p>
+</blockquote>
+<h3 id="发展">发展</h3>
+<p>发展阶段如下所示：</p>
+<ol type="1">
+<li>以<strong>主机为中心</strong>的联机终端系统（计算机—终端系统）</li>
+<li>以<strong>通信子网</strong>为中心的主机互连（计算机—计算机网络）</li>
+<li>以<strong>层次体系结构</strong>为标准的网络（层次化结构，对每层进行了精确定义）</li>
+</ol>
+<h4 id="以主机为中心的联机终端系统">以主机为中心的联机终端系统</h4>
+<figure>
+<img src="/compute-network-note/%E4%BB%A5%E4%B8%BB%E6%9C%BA%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E8%81%94%E6%9C%BA%E7%BB%88%E7%AB%AF%E7%B3%BB%E7%BB%9F.png" alt="以主机为中心的联机终端系统">
+<figcaption aria-hidden="true">以主机为中心的联机终端系统</figcaption>
+</figure>
+<p>例如飞机订票系统</p>
+<ul>
+<li>HOST：航空公司总部</li>
+<li>Terminals：订票点</li>
+<li>通信线路：电话线路</li>
+</ul>
+<p>这样其构成了一个以主机为中心的联机终端系统，用户在订票点进行订票，数据通过电话线路发往航空公司总部进行处理。</p>
+<p>缺点如下</p>
+<ol type="1">
+<li>主机负荷重：既要进行数据处理，还要负责收发通信</li>
+<li>线路利用率低</li>
+<li>集中控制方式，可靠性低</li>
+</ol>
+<blockquote>
+<p>如果主机失联或出现故障，整个网络将瘫痪。</p>
+</blockquote>
+<p>那么最直接的改进措施就是，配置多个主机管理多个终端，主机与主机之间再进行互联通信，这样一台主机失联或出现故障，其他主机仍然能维持网络稳定性。</p>
+<p>即分割成终端集中器（近距离或远距离）和前端处理机（<em>Front End
+Processor, FEP</em>）进行通信任务的分离。</p>
+<h4 id="以通信子网为中心的主机互连">以通信子网为中心的主机互连</h4>
+<figure>
+<img src="/compute-network-note/%E4%BB%A5%E9%80%9A%E4%BF%A1%E5%AD%90%E7%BD%91%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E4%B8%BB%E6%9C%BA%E4%BA%92%E8%BF%9E.png" alt="以通信子网为中心的主机互连">
+<figcaption aria-hidden="true">以通信子网为中心的主机互连</figcaption>
+</figure>
+<h4 id="通信子网的演变">通信子网的演变</h4>
+<figure>
+<img src="/compute-network-note/%E6%BC%94%E5%8F%98%E9%98%B6%E6%AE%B51.png" alt="演变阶段1">
+<figcaption aria-hidden="true">演变阶段1</figcaption>
+</figure>
+<p>此时抽象出了两层网络系统：</p>
+<ol type="1">
+<li>由CCP组成的传输网络——通信子网，提供信息传输服务</li>
+<li>建立在通信子网基础上的主机集合——资源子网，提供计算资源</li>
+</ol>
+<figure>
+<img src="/compute-network-note/%E4%B8%A4%E5%B1%82%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84.png" alt="两层网络结构">
+<figcaption aria-hidden="true">两层网络结构</figcaption>
+</figure>
+<p>那么这样，在通信子网的基础上可以拥有多个资源子网，共享通信子网的服务。</p>
+<figure>
+<img src="/compute-network-note/%E6%BC%94%E5%8F%98%E9%98%B6%E6%AE%B52.png" alt="演变阶段2">
+<figcaption aria-hidden="true">演变阶段2</figcaption>
+</figure>
+<p>因特网（Internet）的前身<strong>ARPANET</strong>就是这么一个网络。</p>
+<p>但是在此基础上，人们发现不同的网络设备之间可能存在不同的传输协议，这也就是说，虽然同在一个网络下，但却无法做到<strong>互联</strong>（或资源共享），那么此时便需要进行标准化，使得不同网络设备之间可以互相兼容。</p>
+<h4 id="以层次体系结构为标准的网络">以层次体系结构为标准的网络</h4>
+<p>也就是说，不同网络设备之间的<strong>兼容性</strong>和<strong>互操作性</strong>是推动网络体系结构标准化的原动力，而兼容性和互操作性的最终目的仍然是<strong>资源共享</strong>。</p>
+<p>以此出现了 OSI，<em>Open System Interconnection/Recommended
+Model</em>，即开放系统互联参考模型。</p>
+<p>但 OSI
+抽象了七个层次，只说明了要做什么，但未标准化怎么做，十分复杂，于是乎实际使用的标准是
+TCP/IP，即互联网的骨干协议。</p>
+<p>从结构上看，TCP/IP是OSI参考模型的简化版本（其中的四层）。</p>
+<h3 id="功能">功能</h3>
+<p>功能主要有以下几大块：</p>
+<ul>
+<li>数据通信（Communication Medium）</li>
+<li>资源共享（Resource Sharing）
+<ul>
+<li>软件，硬件，数据库资源的共享</li>
+</ul></li>
+<li>分布式处理（Distributed Processing）
+<ul>
+<li>降低软件设计的复杂性，大大提高工作效率、降低成本</li>
+</ul></li>
+<li>提供高可靠性服务（High Reliability）
+<ul>
+<li>利用可替代的资源，提供连续的高可靠服务（云服务）</li>
+</ul></li>
+<li>节省投资（Saving Money）
+<ul>
+<li>替代昂贵的大中型系统</li>
+</ul></li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1.png" alt="数据通信">
+<figcaption aria-hidden="true">数据通信</figcaption>
+</figure>
+<figure>
+<img src="/compute-network-note/%E8%B5%84%E6%BA%90%E5%85%B1%E4%BA%AB.png" alt="资源共享">
+<figcaption aria-hidden="true">资源共享</figcaption>
+</figure>
+<h3 id="组成">组成</h3>
+<ul>
+<li>硬件
+<ul>
+<li>主机（服务器）</li>
+<li>网络节点
+<ul>
+<li>端节点：计算机终端</li>
+<li>中间节点：通信控制处理机（交换机）、网络连接设备（路由器、调制解调器即Modem）</li>
+</ul></li>
+<li>通信链路：信息传输的通道
+<ul>
+<li>传输介质：同轴电缆、双绞线、光纤</li>
+</ul></li>
+</ul></li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E7%A1%AC%E4%BB%B6%E9%83%A8%E5%88%86.png" alt="计算机网络的硬件部分">
+<figcaption aria-hidden="true">计算机网络的硬件部分</figcaption>
+</figure>
+<ul>
+<li>软件
+<ul>
+<li>网络操作系统：Linux、UNIX、NetWare、Windows</li>
+<li>通信软件、网络协议软件：TCP/IP、IPX/SPX、IEEE802标准</li>
+<li>网络管理或安全控制软件</li>
+<li>网络应用软件：通讯程序QQ、IE浏览器等</li>
+</ul></li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E8%BD%AF%E4%BB%B6%E9%83%A8%E5%88%86.png" alt="计算机网络的软件部分">
+<figcaption aria-hidden="true">计算机网络的软件部分</figcaption>
+</figure>
+<h3 id="分类">分类</h3>
+<h4 id="按地域范围划分">按地域范围划分</h4>
+<ul>
+<li>个人区域网（Personal Area Network, PAN）</li>
+<li>局域网（Local Area Network, LAN）</li>
+<li>城域网（Metropolitan Area Network, MAN）</li>
+<li>广域网（Wide Area Network, WAN）</li>
+<li>互联网（Internet）</li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E6%8C%89%E5%9C%B0%E5%9F%9F%E5%88%92%E5%88%86.png" alt="按地域划分1">
+<figcaption aria-hidden="true">按地域划分1</figcaption>
+</figure>
+<figure>
+<img src="/compute-network-note/%E6%8C%89%E5%9C%B0%E5%9F%9F%E5%88%92%E5%88%862.png" alt="按地域划分2">
+<figcaption aria-hidden="true">按地域划分2</figcaption>
+</figure>
+<figure>
+<img src="/compute-network-note/%E6%8C%89%E5%9C%B0%E5%9F%9F%E5%88%92%E5%88%863.png" alt="按地域划分3">
+<figcaption aria-hidden="true">按地域划分3</figcaption>
+</figure>
+<h4 id="按拓扑结构分类">按拓扑结构分类</h4>
+<p>首先计算机网络可以用图论描述</p>
+<ul>
+<li>点
+<ul>
+<li>端接系统：PC、服务器、PDA等</li>
+<li>交换设备、节点设备：路由器、集中器、交换机等</li>
+</ul></li>
+<li>边
+<ul>
+<li>通信链路：光纤、线缆、无线链路等</li>
+</ul></li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%8B%93%E6%89%91%E5%9B%BE.png" alt="计算机网络拓扑图">
+<figcaption aria-hidden="true">计算机网络拓扑图</figcaption>
+</figure>
+<p>那么其拓扑结构可分为</p>
+<ul>
+<li>星形拓扑结构</li>
+<li>树形拓扑结构</li>
+<li>总线型拓扑结构</li>
+<li>不规则（网状）拓扑结构</li>
+<li>全连接（网状型拓展）拓扑结构</li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%841.png" alt="拓扑结构1">
+<figcaption aria-hidden="true">拓扑结构1</figcaption>
+</figure>
+<figure>
+<img src="/compute-network-note/%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%842.png" alt="拓扑结构2">
+<figcaption aria-hidden="true">拓扑结构2</figcaption>
+</figure>
+<figure>
+<img src="/compute-network-note/%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%843.png" alt="拓扑结构3">
+<figcaption aria-hidden="true">拓扑结构3</figcaption>
+</figure>
+<h4 id="按通信传播方式分类">按通信传播方式分类</h4>
+<ul>
+<li><p><strong>点对点传输方式的网络</strong>：一条通信线路连结两台设备，假如没有直接相连的线路，数据为了能从源端到达目的端，可能需要经过一台或多台中间设备的接收、存储、转发，直至目的结点。</p>
+<ul>
+<li><p>信源与信宿之间的通信需经过一台和多台中间设备进行传输。</p></li>
+<li><p>网状、环型、树型</p></li>
+</ul></li>
+<li><p>广播方式网络：一台计算机发送的信息可被网络上所有的计算机接收。</p>
+<ul>
+<li>星型、总线型、蜂窝型、无线（微波、卫星）</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>局域网络通常使用广播方式，广域网络通常使用点对点方式（也有例外）。</p>
+</blockquote>
+<p>传播方式的选择主要考虑以下几点</p>
+<ul>
+<li>可靠性：考虑通信介质、连接设备发生故障时受影响设备的情况。尽可能提高可靠性，以保证所有数据流能准确接收。</li>
+<li>可维护性：安装和维护的相对难易程度，尽可能使故障检测和故障隔离比较方便。</li>
+<li>费用：需要考虑适合特定应用的线路、设备费用和安装费用。</li>
+<li>灵活性：要考虑在今后扩展或改动时能容易的重新配置网络拓扑结构，能方便地处理原有站点的删除和新站点的加入。</li>
+<li>响应时间和吞吐量：要为用户提供尽可能短的响应时间和最大的吞吐量。</li>
+</ul>
+<h2 id="网络通信连接设备">网络通信连接设备</h2>
+<h3 id="中继器repeater">中继器(Repeater)</h3>
+<ul>
+<li><p>工作在<strong>物理层</strong>。</p></li>
+<li><p>功能</p>
+<ul>
+<li><p>信号再生</p></li>
+<li><p>整型</p></li>
+<li><p>放大</p></li>
+<li><p>在网段之间复制比特流（发送和转发）</p></li>
+</ul></li>
+<li><p>特点</p>
+<ul>
+<li>不进行存储——信号延迟小</li>
+<li>不检查错误——会扩散错误</li>
+<li>不对信息进行任何过滤</li>
+<li>可进行介质转换——如无屏蔽双绞线（UTP）转光纤</li>
+<li>用中继器连接的<strong>多个网段</strong>是一个冲突域</li>
+</ul></li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E4%B8%AD%E7%BB%A7%E5%99%A8%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png" alt="中继器概念结构">
+<figcaption aria-hidden="true">中继器概念结构</figcaption>
+</figure>
+<h3 id="集线器hub">集线器(Hub)</h3>
+<ul>
+<li><strong>多端口的</strong>中继器，工作在<strong>物理层</strong></li>
+<li>特点
+<ul>
+<li>具有与中继器相同的特点</li>
+<li>可改变网络物理拓扑结构，从总线连接性改为星形连接</li>
+<li>逻辑上仍然是一个总线型共享介质网络</li>
+<li>集线器一般都有少量的容错能力和网络</li>
+</ul></li>
+<li>以集线器为核心的网络的特点
+<ul>
+<li>所有主机共享带宽（共用一根主线）</li>
+<li>无法限制冲突和广播</li>
+<li>适用于小型网络</li>
+</ul></li>
+<li>功能
+<ul>
+<li>集线器把来自不同计算机网络设备的电缆集中配置于一体，是多个网络电缆的中间转接设备，像树的主干一样，集线器是各分枝的汇集点，是对网络进行集中管理的主要设备</li>
+<li>利用集线器可以组建成星型或者树型拓扑结构的共享式网络。由于联在集线器上的所有节点均争用同一个上行总线，处于同一冲突域内，所以在集线器内所连接节点数目太多，造成冲突也就可能会过于频繁</li>
+</ul></li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E4%BB%A5%E9%9B%86%E7%BA%BF%E5%99%A8%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E6%98%9F%E5%9E%8B%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png" alt="以集线器为中心的星型拓扑结构">
+<figcaption aria-hidden="true">以集线器为中心的星型拓扑结构</figcaption>
+</figure>
+<figure>
+<img src="/compute-network-note/%E4%BB%A5%E9%9B%86%E7%BA%BF%E5%99%A8%E4%B8%BA%E4%B8%AD%E5%BF%83%E7%9A%84%E4%BA%8C%E7%BA%A7%E6%98%9F%E5%9E%8B%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png" alt="以集线器为中心的二级星型拓扑结构">
+<figcaption aria-hidden="true">以集线器为中心的二级星型拓扑结构</figcaption>
+</figure>
+<h3 id="网桥bridge">网桥(Bridge)</h3>
+<ul>
+<li>存储转发设备，工作在<strong>数据链路层</strong></li>
+<li>用网桥连接的多个网络对外呈现为一个单独的物理网络
+<ul>
+<li>具有唯一的网络地址</li>
+</ul></li>
+<li>根据路径选择方法可分为两种网桥
+<ul>
+<li>透明网桥（Transparency Bridge）
+<ul>
+<li>由网桥负责路由选择，网桥和路由对站点透明</li>
+<li>以太网中最常用</li>
+</ul></li>
+<li>源选径网桥（Source Routing Bridge）
+<ul>
+<li>由源站点负责路由选择，网桥和路由对站点不透明</li>
+</ul></li>
+</ul></li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E4%BA%A4%E6%8D%A2%E6%9C%BA%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png" alt="交换机概念结构">
+<figcaption aria-hidden="true">交换机概念结构</figcaption>
+</figure>
+<h3 id="广播与冲突">广播与冲突</h3>
+<ul>
+<li>广播：向网络上的所有设备发送数据</li>
+<li>广播域：网络上<strong>所有能够接收到广播的设备的集合</strong></li>
+<li>冲突：不同数据的数据帧<strong>同时</strong>上传，使得收发错误</li>
+<li>冲突域：以网桥、交换机或路由器为边界，在冲突域中的任意两台主机同时发送数据都会产生冲突</li>
+</ul>
+<p><strong>一个广播域包含一个或多个冲突域。</strong></p>
+<figure>
+<img src="/compute-network-note/%E7%BD%91%E7%BB%9C%E5%88%86%E6%AE%B5%E7%A4%BA%E6%84%8F.png" alt="网络分段示意">
+<figcaption aria-hidden="true">网络分段示意</figcaption>
+</figure>
+<p>网桥的优缺点如下：</p>
+<ul>
+<li>优点
+<ul>
+<li>可实现不同类型的局域网（LAN）互联</li>
+<li>能够隔离错误帧，不会使错误扩散</li>
+<li>限制了冲突域的范围</li>
+<li>隔离故障</li>
+</ul></li>
+<li>缺点
+<ul>
+<li>无法控制广播</li>
+<li>只能用存储转发的方式，速度比较慢</li>
+<li>无流量控制，负载重时会出现丢帧现象</li>
+</ul></li>
+</ul>
+<h3 id="网络交换机switch">网络交换机(Switch)</h3>
+<h4 id="简介">简介</h4>
+<ul>
+<li>工作在<strong>数据链路层</strong>，与网桥类似</li>
+<li>网络交换机端口数多，并且交换速度快，可以看作是<strong>多端口的高速网桥</strong></li>
+<li>交换机的优点
+<ul>
+<li>交换速度快，可实现线速转发</li>
+<li>能解决网络主干上的通信拥挤问题</li>
+<li>端口密度高，一台交换机可连接多个网段，降低了组网成本</li>
+</ul></li>
+<li>工作原理与网桥类似：
+<ul>
+<li>学习源地址 （构造转发表）</li>
+<li>过滤本网段帧 （隔离冲突域）</li>
+<li>转发异网段帧 （交换）</li>
+<li>广播未知帧</li>
+</ul></li>
+</ul>
+<h4 id="交换机的三种转发方式">交换机的三种转发方式</h4>
+<ul>
+<li>存储转发（Store and forward）
+<ul>
+<li>整个帧完整接收后，对帧进行差错检验，然后再进行转发操作。</li>
+<li>优点：进行差错校验，错误不会扩散到目的网段。</li>
+<li>缺点：延迟比较大。</li>
+</ul></li>
+<li>直通转发（Cut-through）
+<ul>
+<li>只要收到帧的前6个字节（目的MAC地址），就开始进行转发操作。</li>
+<li>优点：交换延迟小。</li>
+<li>缺点：无法进行差错校验，帧错误会扩散到目的网段。</li>
+</ul></li>
+<li>无碎片直通转发（Fragment free cut-through）
+<ul>
+<li>接收到一帧的前64字节后，再进行转发操作。小于64字节的帧不转发。
+<ul>
+<li>因为帧出错的主要原因是冲突，而以太网的帧至少为64B，所以小于64字节的帧必然是冲突造成的帧碎片（错误帧）。</li>
+</ul></li>
+<li>优点：交换速度较快，并且降低了错误帧转发的概率。</li>
+<li>缺点：长度大于64字节的错误帧仍然会转发，转发延时大于直通转发。</li>
+</ul></li>
+</ul>
+<h4 id="交换网络的带宽">交换网络的带宽</h4>
+<p>网络总带宽=每个端口的带宽×端口数</p>
+<p>例如说一个8端口交换机，每端口带宽BW=10Mb/s，那么网络总带宽最高为
+80Mb/s。</p>
+<p>但对于集线器而言，10Mb/s
+的8端口集线器网络总带宽仍然是10Mb/s，每端口带宽BW=1.25Mb/s。</p>
+<h4 id="好处">好处</h4>
+<ul>
+<li>分割冲突（碰撞）域——减少了冲突；</li>
+<li>允许建立多个连接——提高了网络总体带宽；</li>
+<li>减少每个网段中的站点数——提高了站点平均拥有带宽；</li>
+<li>允许全双工连接——提高带宽；</li>
+<li>能够连接不同速度的网段。</li>
+</ul>
+<h4 id="特点">特点</h4>
+<p>以网桥或交换机为核心的网络的特点</p>
+<ul>
+<li>每个网段独享带宽
+<ul>
+<li>最佳可达到每台主机独享带宽</li>
+</ul></li>
+<li>可以限制冲突，但不能限制广播
+<ul>
+<li>有可能产生广播风暴</li>
+</ul></li>
+<li>适用于小型网络到大型园区网络
+<ul>
+<li>大型网络中需解决广播问题</li>
+</ul></li>
+</ul>
+<h3 id="网卡nic">网卡(NIC)</h3>
+<h4 id="简介-1">简介</h4>
+<ul>
+<li>网络接口卡的简称，又称为通信适配器，是局域网中最基本的连接设备，计算机与局域网之间的连接和通信都是是通过网卡来实现的。</li>
+<li>网卡是一种外设卡，插在计算机总线插槽内或外部接口上，一端和计算机相连，另一端与传输介质相连接。</li>
+<li>网络接口卡（网卡）是连接主机与网络的基本设备
+<ul>
+<li>每台主机都应配置一个或多个网卡</li>
+<li>每个网卡都有一个或多个网络接口</li>
+<li>不能独立工作，必须依赖于宿主主机</li>
+</ul></li>
+<li>连接不同的局域网需要使用不同的网卡
+<ul>
+<li>以太网卡</li>
+<li>令牌环网卡</li>
+<li>FDDI 网卡</li>
+<li>ATM 网卡</li>
+</ul></li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E7%BD%91%E5%8D%A1%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png" alt="网卡概念结构">
+<figcaption aria-hidden="true">网卡概念结构</figcaption>
+</figure>
+<h4 id="功能-1">功能</h4>
+<ul>
+<li>数据缓存
+<ul>
+<li>匹配主机数据处理速率与网络的传输速率</li>
+</ul></li>
+<li>封装/解封装
+<ul>
+<li>加上控制字段 → 以帧为单位进行传输 → 卸下控制字段</li>
+</ul></li>
+<li>介质访问控制
+<ul>
+<li>CSMA/CD 、 Token Passing</li>
+</ul></li>
+<li>串/并转换
+<ul>
+<li>将主机的并行数据转换成串行位流</li>
+</ul></li>
+<li>数据编码/解码
+<ul>
+<li>转换为适合网络介质传输的信号形式</li>
+</ul></li>
+<li>数据发送/接收
+<ul>
+<li>一是负责将要发送的数据转换为网络上其它设备能够识别的格式，再将其数据包通过通信介质送入到网络中；</li>
+<li>二是负责接受网络上传来的数据包，将其转变为本地计算机能够识别的格式。</li>
+</ul></li>
+</ul>
+<h3 id="路由器router">路由器(Router)</h3>
+<ul>
+<li>工作在<strong>网络层</strong></li>
+<li>功能：
+<ul>
+<li>在网络之间转发网络分组；</li>
+<li>提供逻辑地址，以识别互联网上的主机；</li>
+<li>为网络分组寻找最佳传输路径；</li>
+<li>实现子网隔离，限制广播风暴。(
+目的地址无法识别时，路由器将其丢弃，而不是广播—— 比较网络交换机 )</li>
+<li>提供广域网服务。</li>
+</ul></li>
+<li>应用：把LAN局域网连入广域网或作为广域网的核心连接设备。</li>
+<li>路由器与交换机的主要区别：<strong>用路由器连接起来的若干个网络</strong>
+，它们仍是各自<strong>独立</strong>的。要想从一个网络访问用路由器连接起来的另一个网络中的站点，必须指定该站点的逻辑地址（<strong>IP
+地址</strong>），通过广播是无法与之进行通信的。</li>
+</ul>
+<figure>
+<img src="/compute-network-note/%E8%B7%AF%E7%94%B1%E5%99%A8%E6%A6%82%E5%BF%B5%E7%BB%93%E6%9E%84.png" alt="路由器概念结构">
+<figcaption aria-hidden="true">路由器概念结构</figcaption>
+</figure>
+<h2 id="局域网lan">局域网(LAN)</h2>
+<h3 id="特点-1">特点</h3>
+<p>局域网的特点除了具备<strong>结构简单、数据传输率高，可行性高，实际投资少且技术更新发展迅速等</strong>基本特征外，还具有以下特点：</p>
+<ul>
+<li>覆盖范围小。局域网是一种私有网络，一般在一座建筑物内或建筑物附近，一-
+认为其覆盖距离为0.1~25km</li>
+<li>局域网的经营管理权属于某个单位所有，而广域网通常由服务提供商提供
+局域网的经营管理权属于某个单位所有，而广域网通常由服务提供商提供</li>
+<li>带宽高，数据传输速度高，误码率低。
+带宽高，数据传输速度高，误码率低。局域网的数据传输速率一般为0M~1000M
+bit/s，误码率一般在10-8~10-10之间</li>
+<li>数据传输延时小。
+数据传输延时小。局域网中的传输延时很小，一般在几毫秒到几十毫秒之间</li>
+<li>局域网便于安装、维护和扩充，建网成本低、周期短
+局域网便于安装、维护和扩充，建网成本低、周期短</li>
+<li>采用ISO 推荐的OSI/Rm 参考模型中的有关标准——IEEE802参考模型</li>
+</ul>
+<h3 id="典型拓扑结构">典型拓扑结构</h3>
+<figure>
+<img src="/compute-network-note/%E5%B1%80%E5%9F%9F%E7%BD%91%E5%85%B8%E5%9E%8B%E6%8B%93%E6%89%91%E7%BB%93%E6%9E%84.png" alt="局域网典型拓扑结构">
+<figcaption aria-hidden="true">局域网典型拓扑结构</figcaption>
+</figure>
+<h3 id="基本类型">基本类型</h3>
+<ul>
+<li>共享式局域网：<strong>以中继器/集线器为中心</strong>搭建的局域网，<strong>同一个广播域，同一个冲突域</strong>，共享带宽，网络传输效率低下</li>
+<li>交换式局域网：<strong>以网桥/交换机为中心</strong>搭建的局域网，<strong>同一个广播域，不同的冲突域</strong>，独立带宽，网络传输效率高</li>
+</ul>
+<p>在局域网的基础上，又细分为</p>
+<ul>
+<li>以太网（802.3）</li>
+<li>无线局域网（802.11）</li>
+<li>个域网，蓝牙（802.15）</li>
+<li>无线城域网（802.16）</li>
+</ul>
+<h3 id="数据链路层">数据链路层</h3>
+<p>依据IEEE802标准，将数据链路层划分为两个子层：</p>
+<ul>
+<li>LLC，<em>Logical Link Control</em>，逻辑链路控制，与介质拓扑无关
+<ul>
+<li>完成通信链路的建立、维护和释放，<strong>为高层协议与MAC层之间提层之间提供统一的接口</strong>，进行帧发送、接收及流量控制等工作。</li>
+</ul></li>
+<li>MAC，<em>Media Access Control</em>，介质访问控制，与介质拓扑相关
+<ul>
+<li>负责完成介质访问控制，进行合理的信道分配，<strong>实现局域网多个设备共享单一信道资源设备共享单一信道资源,以及数据帧的组装和拆装、MAC地址识别及差错检测地址识别及差错检测</strong>。</li>
+</ul></li>
+</ul>
+<p>很显然，对不同的LAN
+标准，它们的LLC子层都是一样的，区别仅在MAC子层（和物理层）。</p>
+<h2 id="局域网的应用">局域网的应用</h2>
+<h3 id="子网划分概念">子网划分概念</h3>
+<p>为什么要划分子网？</p>
+<ul>
+<li>IP分类不合理，地址空间利用率低
+<ul>
+<li>美国的某些机构拥有的地址空间甚至比其他一些国家的全部地址空间还大</li>
+</ul></li>
+<li>每个网络都指定一个网络地址将使路由表太大
+<ul>
+<li>增加了路由器成本</li>
+<li>查找路由耗时增加</li>
+<li>路由器之间交换的路由信息增加</li>
+</ul></li>
+<li>两级IP地址不够灵活，地址不够灵活
+<ul>
+<li>不能充分利用已申请到的地址资源扩充新的网络</li>
+</ul></li>
+<li>如何在现有的地址范围中建立多个网络？</li>
+</ul>
+<p>在一个拥有<strong>多个物理网络</strong>的单位，将<strong>一个网络块分成几个部分</strong>供多个物理网络使用，但这个单位对外<strong>仍然表现为一个网络</strong>，这就是子网划分，<strong>分割一个大型网络得到的一系列小网络就称为子网</strong>。
+子网划分技术是一种 IP 地址复用方式，它是将 IP
+地址中原来的主机部分，我们也称之为本地部分，进一步划分为“物理网络”部分和“主机”部分，其中“物理网络”用于标识同一
+IP 网络地址下的不同物理网络，即我们所说的“子网”。</p>
+<blockquote>
+<p>即原本的分类编址是以<code>网络号-主机号</code>进行编址，现在进一步将主机号二次划分，变成结构<code>网络号-子网号-主机号</code>。</p>
+<p>网络号（Network ID），子网号（Subnet ID），主机号（Host
+ID），下文可能以首字母开头表示其组成位数，即<code>N-S-H</code>。</p>
+<p>例如 IP 地址 <code>195.10.20.0</code>，其为一个C
+类地址，假定只有最后7位是主机号，那么 <code>N=24,S=1,H=7</code>。</p>
+</blockquote>
+<p>首先明确，当主机号为最小（主机号全为0）时，表示的是本网络；</p>
+<p>当主机号为最大（主机号全为1）时，表示的是网络的广播地址。</p>
+<blockquote>
+<p>所以实际上一个（子）网络下可分配地址应该为 <span class="math inline">\(2^H-2\)</span>。</p>
+</blockquote>
+<p>但是我们要如何表示一个子网呢？或者说如何知道该子网下的子网号和主机号有多少位呢？</p>
+<h3 id="子网掩码">子网掩码</h3>
+<h4 id="概念-1">概念</h4>
+<p>子网掩码的功能就是判断该子网下的子网号和主机号有多少位。</p>
+<p>基于 ABC 类地址的编址基础上，子网掩码分为
+<code>255.xxx.xxx.xxx</code>，<code>255.255.xxx.xxx</code> 和
+<code>255.255.255.xxx</code>。</p>
+<p>其中连续的 1 表示的是主机号的位数。</p>
+<p>在此之上划分 <code>xxx</code> 中的网段，连续的 1
+表示的是子网号的位数，之后跟着的连续的 0 表示的是子网下的主机号。</p>
+<p>例如<code>192.168.10.129</code> 的子网掩码为
+<code>255.255.255.192</code>，其中 IP 地址是 C 类地址，对于
+<code>255.255.255.xxx</code> 我们仅关注 <code>xxx</code>，即
+<code>192</code>，改写成二进制为
+<code>1100 0000</code>，那么确定该网络的子网划分为
+<code>H-S-H=24-2-6</code>。</p>
+<figure>
+<img src="/compute-network-note/image-20231128091254591.png" alt="image-20231128091254591">
+<figcaption aria-hidden="true">image-20231128091254591</figcaption>
+</figure>
+<h4 id="判断某个-ip-地址所在的网络地址">判断某个 IP
+地址所在的网络地址</h4>
+<blockquote>
+<p>网络地址如果相同，则两个所分配网络地址的计算机可以直接连通（通过集线器）。</p>
+</blockquote>
+<h5 id="section">1</h5>
+<p>例如 IP 地址 <code>172.168.50.10</code>，子网掩码为
+<code>255.255.192.0</code>。</p>
+<blockquote>
+<p>很显然这是一个 B 类地址，对于 <code>255.255.xxx.xxx</code> 我们仅关注
+<code>xxx.xxx</code>，即 <code>192.0</code>，转换为二进制为
+<code>1100 0000.0000 0000</code>，显然网段划分为
+<code>N-S-H=16-2-14</code>。</p>
+</blockquote>
+<p>将 IP 地址与子网掩码对应相与（位运算），即可获得其
+<code>网络号-子网号</code> 的部分，即网络地址。</p>
+<blockquote>
+<p>因为网络号和子网号下子网掩码都为连续的 1，而主机号为连续的
+0，相与会使得 IP 地址中的主机号全变为 0。</p>
+</blockquote>
+<p>计算为
+<code>172&amp;255=172</code>，<code>168&amp;255=168</code>，<code>50&amp;192=0</code>，<code>10&amp;0=0</code>，故其网络地址为
+<code>172.168.0.0/18</code>。</p>
+<blockquote>
+<p>网络地址中的 <code>18</code>
+表示的是网络号+子网号的位数（<code>N+S</code>），即子网掩码中连续的 1
+的个数。</p>
+</blockquote>
+<h5 id="section-1">2</h5>
+<p>例如 IP 地址 <code>141.14.72.24</code>，子网掩码
+<code>255.255.192.0</code>。</p>
+<blockquote>
+<p>易得 <code>N-S-H=16-2-14</code></p>
+</blockquote>
+<p>计算为
+<code>141&amp;255=141</code>，<code>14&amp;255=14</code>，<code>72&amp;192=64</code>，<code>24&amp;0=0</code>，故其网络地址为
+<code>141.14.64.0/18</code>。</p>
+<h5 id="section-2">3</h5>
+<p>例如 IP 地址 <code>141.14.72.24</code>，子网掩码
+<code>255.255.224.0</code>。</p>
+<blockquote>
+<p>易得 <code>N-S-H=16-3-13</code></p>
+</blockquote>
+<p>计算为
+<code>141&amp;255=141</code>，<code>14&amp;255=14</code>，<code>72&amp;192=64</code>，<code>24&amp;0=0</code>，故其网络地址为
+<code>141.14.64.0/19</code>。</p>
+<p>虽然似乎网络地址和 <code>141.14.64.0/18</code>
+很相似，但由于主机号和子网号总位数（子网掩码不同）不同，故实际上这两个
+IP 不可以直接通信。</p>
+<h4 id="判断多个-ip-地址是否在同一个子网下">判断多个 IP
+地址是否在同一个子网下</h4>
+<p>换句话说，如果两个 IP
+地址具有完全相同的子网地址，它们在同一子网中。</p>
+<p>同时，如果两个 IP 地址在同一个子网下，它们的子网掩码一定相同。</p>
+<h5 id="section-3">1</h5>
+<p>IP 地址
+<code>202.114.80.1</code>，<code>202.114.80.16</code>，子网掩码为
+<code>255.255.255.224</code>。</p>
+<blockquote>
+<p>易得 <code>N-S-H=24-3-5</code>。</p>
+</blockquote>
+<p>相与得到子网地址为
+<code>202.114.80.0/27</code>，<code>202.114.80.0/27</code>，故二者属于同一个网段，可以直接通信。</p>
+<h5 id="section-4">2</h5>
+<p>IP 地址
+<code>202.114.80.1</code>，<code>202.114.80.130</code>，子网掩码为
+<code>255.255.255.224</code>。</p>
+<blockquote>
+<p>易得 <code>N-S-H=24-3-5</code>。</p>
+</blockquote>
+<p>相与得到子网地址为
+<code>202.114.80.0/27</code>，<code>202.114.80.128/27</code>，故二者不属于同一个网段，无法直接通信。</p>
+<h4 id="作用">作用</h4>
+<ol type="1">
+<li><p><strong>充分利用IP地址，减少地址空间浪费。</strong>它可将一个网络划分为多个子网，增加了灵活性，便于网络管理。</p></li>
+<li><p>便于网络设备尽快地区分本子网地址和非本子网的地址。用来判断<strong>任意两个IP地址是否属于同一子网</strong>，这时只有在同一子网的计算机才能"直接"互通。</p></li>
+</ol>
+<h3 id="子网划分应用">子网划分应用</h3>
+<p>首先明确，对于 <code>N-S-H</code> 我们可以知道，最大子网数为 <span class="math inline">\(2^S\)</span>，最大主机数为 <span class="math inline">\(2^H-2\)</span>。</p>
+<blockquote>
+<p>主机数需要减去网络地址（主机号全为0）和广播地址（主机号全为1）。</p>
+</blockquote>
+<h4 id="计算子网个数和子网地址">计算子网个数和子网地址</h4>
+<p>如果说我们需要将一个网络划分为 12 个子网，那么子网位数最小可以选择为
+<code>S=4</code>，即 <span class="math inline">\(2^4=16&gt;12\)</span>。</p>
+<h5 id="section-5">1</h5>
+<p>某单位分配到一个B类IP地址，其网络号为
+<code>129.250.0.0</code>，子网掩码为
+<code>255.255.224.0</code>，计算出可以划分的子网个数，并算出每个子网的网络地址。</p>
+<p>根据地址类型和子网掩码我们可以知道
+<code>N-S-H=16-3-13</code>，故最大子网数为 <span class="math inline">\(2^S=8\)</span>，共 8
+个子网，每个子网的网络地址如下</p>
+<ul>
+<li><code>129.250.0.0/19</code></li>
+<li><code>129.250.32.0/19</code></li>
+<li><code>129.250.64.0/19</code></li>
+<li><code>129.250.96.0/19</code></li>
+<li><code>129.250.128.0/19</code></li>
+<li><code>129.250.160.0/19</code></li>
+<li><code>129.250.192.0/19</code></li>
+<li><code>129.250.224.0/19</code></li>
+</ul>
+<h5 id="section-6">2</h5>
+<p>办公室内有一台计算机，IP 地址为<code>192.45.165.243</code>
+，子网掩码为<code>255.255.255.224</code>
+，则该机所在的网络属于哪类网络？其网络是否进行了子网划分？若划分，网络地址与广播地址分别为多少？可分为几个子网，并写出每个子网号？</p>
+<p>IP 地址以 <code>192</code> 开头，显然是 C 类地址。</p>
+<p>根据地址类型和子网掩码可以得到
+<code>H-S-N=24-3-5</code>，故进行了划分，划分的子网数为 <span class="math inline">\(2^S=8\)</span>。</p>
+<p>那么显然网络地址为 IP 地址与子网掩码相与，得到
+<code>192.45.165.224/27</code>；广播地址为
+<code>192.45.165.255/27</code>。</p>
+<p>子网号为</p>
+<ul>
+<li><code>192.45.165.0/27</code></li>
+<li><code>192.45.165.32/27</code></li>
+<li><code>192.45.165.64/27</code></li>
+<li><code>192.45.165.96/27</code></li>
+<li><code>192.45.165.128/27</code></li>
+<li><code>192.45.165.160/27</code></li>
+<li><code>192.45.165.192/27</code></li>
+<li><code>192.45.165.224/27</code></li>
+</ul>
+<h4 id="通过主机数划分子网">通过主机数划分子网</h4>
+<p>首先明确以下关系，</p>
+<table>
+<thead>
+<tr class="header">
+<th>主机位数</th>
+<th>IP地址数</th>
+<th>最大主机数</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>2</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>8</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>16</td>
+<td>14</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>32</td>
+<td>30</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td>64</td>
+<td>62</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td>128</td>
+<td>126</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td>256</td>
+<td>254</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td>512</td>
+<td>510</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td>1024</td>
+<td>1022</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>2048</td>
+<td>2046</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td>4096</td>
+<td>4094</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td>8192</td>
+<td>8190</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td>16384</td>
+<td>16382</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td>32768</td>
+<td>32766</td>
+</tr>
+</tbody>
+</table>
+<p>将待分配的主机数从大到小排列，逐一选取满足主机数的最小主机位数，如待分配主机数为
+56，则选取主机位数 <code>H=6</code>。</p>
+<p>其次从网络地址开始往后分配。</p>
+<h5 id="section-7">1</h5>
+<p>局域网 VLAN1 的主机数为 38；</p>
+<p>局域网 VLAN2 的主机数为 46；</p>
+<p>局域网 VLAN3 的主机数为 56。</p>
+<p>IP 为 C 类地址，<code>202.207.175.0</code>，如何进行子网划分？</p>
+<p>从大到小排列 VLAN3、VLAN2、VLAN1（56、46、38）。</p>
+<p>为 VLAN3 分配，选取 <code>H=6</code> 满足最大主机数
+<code>62&gt;56</code>，那么分配 IP 地址为
+<code>202.207.175.1-202.207.175.62</code>，<code>N-S-H=24-2-6</code>，故子网掩码为
+<code>255.255.255.192</code>，网络地址为
+<code>202.207.175.0</code>，广播地址为 <code>202.207.175.63</code>。</p>
+<p>下一网段从 <code>202.207.175.64</code> 开始。</p>
+<blockquote>
+<p>从
+<code>202.207.175.0-202.207.175.63</code>，掐头去尾除去网络地址和广播地址，下一网段开始地址要+1。</p>
+</blockquote>
+<p>为 VLAN2 分配，选取 <code>H=6</code> 满足最大主机数
+<code>62&gt;46</code>，那么分配 IP 地址为
+<code>202.207.175.65-202.207.175.126</code>，<code>N-S-H=24-2-6</code>，故子网掩码为
+<code>255.255.255.192</code>，网络地址为
+<code>202.207.175.64</code>，广播地址为
+<code>202.207.175.127</code>。</p>
+<p>下一网段从 <code>202.207.175.128</code> 开始。</p>
+<blockquote>
+<p>从
+<code>202.207.175.64-202.207.175.127</code>，掐头去尾除去网络地址和广播地址，下一网段开始地址要+1。</p>
+</blockquote>
+<p>为 VLAN1 分配，选取 <code>H=6</code> 满足最大主机数
+<code>62&gt;38</code>，那么分配 IP 地址为
+<code>202.207.175.129-202.207.175.190</code>，<code>N-S-H=24-2-6</code>，故子网掩码为
+<code>255.255.255.192</code>，网络地址为
+<code>202.207.175.128</code>，广播地址为
+<code>202.207.175.191</code>。</p>
+<p>下一网段从 <code>202.207.175.192</code> 开始。</p>
+<blockquote>
+<p>从
+<code>202.207.175.128-202.207.175.191</code>，掐头去尾除去网络地址和广播地址，下一网段开始地址要+1。</p>
+</blockquote>
+<p>故子网划分完毕，如下所示</p>
+<ul>
+<li>VLAN1: IP 分配
+<code>202.207.175.129-202.207.175.190</code>，子网掩码
+<code>255.255.255.192</code></li>
+<li>VLAN2: IP 分配 <code>202.207.175.65-202.207.175.126</code>，子网掩码
+<code>255.255.255.192</code></li>
+<li>VLAN3: IP 分配 <code>202.207.175.1-202.207.175.62</code>，子网掩码
+<code>255.255.255.192</code></li>
+</ul>
+<blockquote>
+<p><strong>以下是标准做法。</strong></p>
+<p>首先明确网络至少需要划分 3 个子网，那么选取 <code>S=2</code> 有 <span class="math inline">\(2^S=4&gt;3\)</span>，故子网掩码为
+<code>255.255.255.192</code>，此时 <code>N-S-H=24-2-6</code>。</p>
+<p>计算最大主机个数为 <span class="math inline">\(2^H-2=62\)</span>
+均满足主机数要求。</p>
+<p>为每个子网划分 IP 地址，那么有</p>
+<ul>
+<li>VLAN1: <code>202.207.175.1-202.207.175.62</code></li>
+<li>VLAN2: <code>202.207.175.65-202.207.175.126</code></li>
+<li>VLAN3: <code>202.207.175.129-202.207.175.190</code></li>
+</ul>
+<blockquote>
+<p>例如说 <code>202.207.175.1-202.207.175.62</code> 网段，去掉了网络地址
+<code>202.207.175.0</code> 和广播地址 <code>202.207.175.63</code>。</p>
+</blockquote>
+</blockquote>
+<h5 id="section-8">2</h5>
+<p>局域网 VLAN1 的主机数为 100；</p>
+<p>局域网 VLAN2 的主机数为 50；</p>
+<p>局域网 VLAN3 的主机数为 50。</p>
+<p>IP 为 C 类地址，<code>192.168.10.0</code>，如何进行子网划分？</p>
+<p>从大到小排列 VLAN1、VLAN2、VLAN3（100、50、50）。</p>
+<p>为 VLAN1 分配，选取 <code>H=7</code> 满足最大主机数
+<code>126&gt;100</code>，那么分配 IP 地址为
+<code>192.168.10.1-192.168.10.126</code>，<code>N-S-H=24-1-7</code>，故子网掩码为
+<code>255.255.255.128</code>，网络地址为
+<code>192.168.10.0</code>，广播地址为 <code>192.168.10.127</code>。</p>
+<p>下一网段从 <code>192.168.10.128</code> 开始。</p>
+<p>为 VLAN2 分配，选取 <code>H=6</code> 满足最大主机数
+<code>62&gt;46</code>，那么分配 IP 地址为
+<code>192.168.10.129-192.168.10.190</code>，<code>N-S-H=24-2-6</code>，故子网掩码为
+<code>255.255.255.192</code>，网络地址为
+<code>192.168.10.128</code>，广播地址为
+<code>192.168.10.191</code>。</p>
+<p>下一网段从 <code>202.207.175.192</code> 开始。</p>
+<p>为 VLAN1 分配，选取 <code>H=6</code> 满足最大主机数
+<code>62&gt;38</code>，那么分配 IP 地址为
+<code>192.168.10.193-192.168.10.254</code>，<code>N-S-H=24-2-6</code>，故子网掩码为
+<code>255.255.255.192</code>，网络地址为
+<code>192.168.10.192</code>，广播地址为
+<code>192.168.10.255</code>。</p>
+<p>故子网划分完毕，如下所示</p>
+<ul>
+<li>VLAN1: IP 分配 <code>192.168.10.1-192.168.10.126</code>，子网掩码
+<code>255.255.255.128</code></li>
+<li>VLAN2: IP 分配 <code>192.168.10.129-192.168.10.190</code>，子网掩码
+<code>255.255.255.192</code></li>
+<li>VLAN3: IP 分配 <code>192.168.10.193-192.168.10.254</code>，子网掩码
+<code>255.255.255.192</code></li>
+</ul>
+<blockquote>
+<p><strong>以下是标准做法。</strong></p>
+<p>首先明确网络至少需要划分 3 个子网，那么选取 <code>S=2</code> 有 <span class="math inline">\(2^S=4&gt;3\)</span>，故子网掩码为
+<code>255.255.255.192</code>，此时 <code>N-S-H=24-2-6</code>。</p>
+<p>计算最大主机个数为 <span class="math inline">\(2^H-2=62\)</span>
+不满足主机数要求。</p>
+<p>此时需要<strong>二级子网</strong>。</p>
+<p>二级子网是，使用不同的子网掩码，使得一级子网的子网掩码是二级子网的子网掩码的前缀，例如
+<code>255.255.255.192</code> 和 <code>255.255.255.224</code>
+是一级子网掩码和二级子网掩码。</p>
+<blockquote>
+<p><code>192</code> 的二进制是 <code>1100 0000</code>，<code>224</code>
+的二进制是 <code>1110 0000</code>。</p>
+</blockquote>
+<p>那么选取第一级子网中 <code>S=1</code>，有 <span class="math inline">\(2^S=2\)</span>，故子网掩码为
+<code>255.255.255.128</code>。</p>
+<p>计算最大主机个数为 <span class="math inline">\(2^H-2=126&gt;100\)</span>，满足 VLAN1
+的主机数。</p>
+<p>故 VLAN1 的 IP 地址范围为
+<code>192.168.10.129-192.168.10.254</code>，子网掩码为
+<code>255.255.255.128</code>。</p>
+<blockquote>
+<p>这里选取子网号为 1 的网段给 VLAN1 使用，实际上也可以选取子网号为 0
+的网段。</p>
+</blockquote>
+<p>而 VLAN2 和 VLAN3 共用一个子网网段，选取第二级子网中
+<code>S=1</code>，有 <span class="math inline">\(2^S=2\)</span>，故子网掩码为
+<code>255.255.255.192</code>。</p>
+<blockquote>
+<p>这里相当于当一级子网 <code>192.168.10.0</code> 当作网络号（其中
+<code>N=24+1</code>），对其进行子网划分。</p>
+</blockquote>
+<p>故 VLAN2 的 IP 地址范围为
+<code>192.168.10.1-192.168.10.62</code>，子网掩码为
+<code>255.255.255.192</code>；</p>
+<p>故 VLAN3 的 IP 地址范围为
+<code>192.168.10.65-192.168.10.126</code>，子网掩码为
+<code>255.255.255.192</code>。</p>
+</blockquote>
+<h5 id="section-9">3</h5>
+<p>局域网 VLAN1 的主机数为 10；</p>
+<p>局域网 VLAN2 的主机数为 20；</p>
+<p>局域网 VLAN3 的主机数为 30；</p>
+<p>局域网 VLAN4 的主机数为 15；</p>
+<p>局域网 VLAN5 的主机数为 20。</p>
+<p>IP 为 C 类地址，<code>192.168.2.0</code>，如何进行子网划分？</p>
+<p>首先明确网络至少需要划分 5 个子网，那么选取 <code>S=3</code> 有 <span class="math inline">\(2^S=8&gt;5\)</span>，故子网掩码为
+<code>255.255.255.224</code>，此时 <code>N-S-H=24-3-5</code>。</p>
+<p>计算最大主机个数为 <span class="math inline">\(2^H-2=30\)</span>
+恰好满足主机数要求。</p>
+<p>为每个子网划分 IP 地址，那么有</p>
+<ul>
+<li>VLAN1: <code>192.168.2.1-192.168.2.30</code></li>
+<li>VLAN2: <code>192.168.2.33-192.168.2.62</code></li>
+<li>VLAN3: <code>192.168.2.65-192.168.2.94</code></li>
+<li>VLAN4: <code>192.168.2.97-192.168.2.126</code></li>
+<li>VLAN5: <code>192.168.2.129-192.168.2.158</code></li>
+</ul>
+<h4 id="通过子网数划分子网">通过子网数划分子网</h4>
+<h5 id="section-10">1</h5>
+<p>一家集团公司有 12 家子公司，每家子公司又有 4 个部门。上级给出一个
+<code>172.16.0.0/16</code>
+的网段，让给每家子公司以及子公司的部门分配网段。</p>
+<p>由 <span class="math inline">\(2^S=16&gt;12\)</span>，选取 <span class="math inline">\(S=4\)</span> 分配一级子网给子公司。</p>
+<p>子公司分配的 IP 地址为</p>
+<ol type="1">
+<li><code>10101100.00010000.00000000.00000000/20</code>
+【<code>172.16.0.0/20</code>】</li>
+<li><code>10101100.00010000.00010000.00000000/20</code>
+【<code>172.16.16.0/20</code>】</li>
+<li><code>10101100.00010000.00100000.00000000/20</code>
+【<code>172.16.32.0/20</code>】</li>
+<li><code>10101100.00010000.00110000.00000000/20</code>
+【<code>172.16.48.0/20</code>】</li>
+<li><code>10101100.00010000.01000000.00000000/20</code>
+【<code>172.16.64.0/20</code>】</li>
+<li><code>10101100.00010000.01010000.00000000/20</code>
+【<code>172.16.80.0/20</code>】</li>
+<li><code>10101100.00010000.01100000.00000000/20</code>
+【<code>172.16.96.0/20</code>】</li>
+<li><code>10101100.00010000.01110000.00000000/20</code>
+【<code>172.16.112.0/20</code>】</li>
+<li><code>10101100.00010000.10000000.00000000/20</code>
+【<code>172.16.128.0/20</code>】</li>
+<li><code>10101100.00010000.10010000.00000000/20</code>
+【<code>172.16.144.0/20</code>】</li>
+<li><code>10101100.00010000.10100000.00000000/20</code>
+【<code>172.16.160.0/20</code>】</li>
+<li><code>10101100.00010000.10110000.00000000/20</code>
+【<code>172.16.176.0/20</code>】</li>
+<li><code>10101100.00010000.11000000.00000000/20</code>
+【<code>172.16.192.0/20</code>】</li>
+<li><code>10101100.00010000.11010000.00000000/20</code>
+【<code>172.16.208.0/20</code>】</li>
+<li><code>10101100.00010000.11100000.00000000/20</code>
+【<code>172.16.224.0/20</code>】</li>
+<li><code>10101100.00010000.11110000.00000000/20</code>
+【<code>172.16.240.0/20</code>】</li>
+</ol>
+<p>以 <code>172.16.0.0/20</code> 为例，为四个部分进行子网划分。</p>
+<p>由 <span class="math inline">\(2^S=4\)</span>，选取 <span class="math inline">\(S=2\)</span> 分配二级子网给部门。</p>
+<ol type="1">
+<li><code>10101100.00010000.00000000.00000000/22</code>
+【<code>172.16.0.0/22</code>】</li>
+<li><code>10101100.00010000.00000100.00000000/22</code>
+【<code>172.16.4.0/22</code>】</li>
+<li><code>10101100.00010000.00001000.00000000/22</code>
+【<code>172.16.8.0/22</code>】</li>
+<li><code>10101100.00010000.00001100.00000000/22</code>
+【<code>172.16.12.0/22</code>】</li>
+</ol>
+<h1 id="概念总结">概念总结</h1>
+<h2 id="第一章">第一章</h2>
+<ul>
+<li>计算机网络的概念：计算机网络是指将地理位置不同的具有<strong>独立功能</strong>的<strong>多台计算机</strong>以及一些<strong>外部设备</strong>，通过一些<strong>通讯设备与线路</strong>连接起来，在<strong>网络操作系统、网络管理软件和网络通信协议</strong>的管理下，实现<strong>资源共享和信息传递</strong>的计算机互联系统。
+<ul>
+<li>计算机之间相互独立自治</li>
+<li>通信线路</li>
+<li>网络协议</li>
+<li>资源共享</li>
+</ul></li>
+<li><strong>计算机网络：相互连接的自治计算机的集合</strong>
+<ul>
+<li><strong>自治</strong>：独立运行，不依赖于其他计算机</li>
+<li><strong>互联</strong>：以有线或无线方式连接</li>
+</ul></li>
+<li>网络发展的三个阶段（体系结构）
+<ul>
+<li>以<strong>主机为中心</strong>的联机终端系统</li>
+<li>以<strong>通信子网</strong>为中心的主机互联</li>
+<li>以<strong>层次体系结构</strong>（OSI,
+TCP/IP）为标准的网络（现今）</li>
+</ul></li>
+<li>主机网络演变名词解析
+<ul>
+<li>CCP：处理主机之间通信任务的专用计算机</li>
+<li>通信子网：<strong>CCP</strong>组成的传输网络，提供信息传输服务</li>
+<li>资源子网：建立在<strong>通信子网</strong>基础上的主机集合，提供计算资源</li>
+<li>公用数据通信网：PSTN, X.25</li>
+<li>ARPANET：<strong>因特网</strong>前身</li>
+<li>体系结构标准化：不同网络设备之间的<strong>兼容性</strong>和<strong>互操作性</strong></li>
+</ul></li>
+<li>计算机网络功能
+<ul>
+<li>数据通信：文件传输，音频交换</li>
+<li>资源共享：硬件，软件，数据库</li>
+<li>分布式处理</li>
+<li>提供高可靠性服务</li>
+<li>节省投资</li>
+</ul></li>
+<li>计算机网络组成
+<ul>
+<li>硬件
+<ul>
+<li>主机（服务器）</li>
+<li>网络节点
+<ul>
+<li>端节点：计算机终端</li>
+<li>中间节点：交换机，路由器，调制解调器</li>
+</ul></li>
+<li>通信链路：信息传输的通道
+<ul>
+<li>传输介质：同轴电缆，双绞线，光纤</li>
+</ul></li>
+</ul></li>
+<li>软件
+<ul>
+<li>网络操作系统：Linux, NetWare, Windows</li>
+<li>通信软件，网络协议（TCP/IP, IPX/SPX, IEEE802）</li>
+<li>网络管理/安全控制软件</li>
+<li>网络应用软件：浏览器</li>
+</ul></li>
+</ul></li>
+<li>计算机网络分类
+<ul>
+<li>按地域范围分类
+<ul>
+<li>个人局域网(PAN)：十米以内</li>
+<li>局域网(LAN)：几米到十几千米，拓扑结构为总线型的环</li>
+<li>城域网(MAN)：几十到几百公里，一座城市内，拓扑结构为总线型</li>
+<li>广域网(WAN)：数百到数千公里，拓扑结构不规则，一般为点到点</li>
+<li>互联网(Internet)：各种计算机终端设备通过<strong>局域网或其他技术接入城域网，再由城域网接入广域网，大量广域网互联</strong>形成遍布全球的大型互联网。</li>
+</ul></li>
+<li>按拓扑结构分类
+<ul>
+<li>点：终端设备（PC，服务器，PDA），交换/节点设备（路由器，交换机）</li>
+<li>边：通信链路（光纤等，上文有）</li>
+<li>星形
+<ul>
+<li>结构简单，单点故障不影响全网</li>
+<li>增删节点及维护管理容易</li>
+<li>故障隔离与检测容易</li>
+<li>使用线缆多，成本高，性能依赖于中心节点</li>
+</ul></li>
+<li>树形
+<ul>
+<li>结构简单，成本低，扩充节点方便灵活，故障隔离容易</li>
+<li>性能依赖于树根，如果根节点发生故障网络崩溃</li>
+</ul></li>
+<li>总线
+<ul>
+<li>组网费用低，结构简单</li>
+<li>所有主机共享同一总线，主机的增多必然会引起网络性能的下降</li>
+<li>总线出现故障整个网络崩溃</li>
+<li>通信范围受到总线限制</li>
+<li>需要有介质访问控制规程以防止冲突</li>
+</ul></li>
+<li>环形
+<ul>
+<li>不易发生地址冲突</li>
+<li>节点过多会加大传输时延，影响传输效率</li>
+<li>环某处断开会导致整个系统失效</li>
+<li>节点的加入和撤出更复杂</li>
+</ul></li>
+<li>网状
+<ul>
+<li>网络可靠性大大提高，信号传输快</li>
+<li>某一线路或节点故障不影响整个网络</li>
+<li>网络控制软件复杂，硬件成本高，不利于管理和维护</li>
+</ul></li>
+<li>全连接
+<ul>
+<li>只适用于节点少的广域网</li>
+</ul></li>
+</ul></li>
+<li>按通信传播方式分类
+<ul>
+<li>点对点：通信需穿过一台或多台中间设备，网状，环形，树形，广域网</li>
+<li>广播：星形，总线型，蜂窝型，无线（微波，卫星），局域网</li>
+</ul></li>
+<li>网络设计原则
+<ul>
+<li>可靠性</li>
+<li>可维护性</li>
+<li>费用</li>
+<li>灵活性</li>
+<li>响应时间和吞吐量</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="第二章">第二章</h2>
+<ul>
+<li><p>计算机网络体系结构</p>
+<ul>
+<li>定义：层（分层与功能）、协议、层间接口（服务与接口）的集合</li>
+<li>主流：OSI/RM，TCP/IP</li>
+<li>优点
+<ul>
+<li>独立性强</li>
+<li>适应性强</li>
+<li>易于实现和维护</li>
+</ul></li>
+</ul></li>
+<li><p>分层原理</p>
+<ul>
+<li>实体：任意可发送或接收信息的<strong>硬件或软件</strong></li>
+<li>对等层：两个<strong>不同系统</strong>的<strong>同级结构</strong></li>
+<li>对等实体：不同系统<strong>对等层</strong>的两个<strong>实体</strong></li>
+<li>接口：定义<strong>相邻层</strong>的交互（上下均可）</li>
+<li>服务：通过<strong>接口</strong>提供给相邻上层（只能上不能下）</li>
+<li>协议：OSI/RM，TCP/IP</li>
+<li><strong>禁止</strong>对等层<strong>直接</strong>通信，物理通信只在<strong>最底层</strong>完成</li>
+<li>上层<strong>使用</strong>下层提供的服务</li>
+<li>下层向上层<strong>提供</strong>服务</li>
+</ul></li>
+<li><p>通信协议</p>
+<ul>
+<li><table style="width:100%;">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 35%">
+<col style="width: 33%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>OSI/RM</th>
+<th>功能</th>
+<th>实体</th>
+<th>数据单位</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>7应用层</td>
+<td>为网络应用提供服务</td>
+<td>协议</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>6表示层</td>
+<td>数据表示</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>5会话层</td>
+<td>在用户间建立会话关系</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>4传输层</td>
+<td>不同主机进程间的通信</td>
+<td>网关</td>
+<td>数据段segment</td>
+</tr>
+<tr class="odd">
+<td>3网络层</td>
+<td>在主机间传输分组，通信子网层</td>
+<td>路由器，三层交换机</td>
+<td>分组packet</td>
+</tr>
+<tr class="even">
+<td>2数据链路层</td>
+<td>在节点间可靠地传输帧</td>
+<td>交换机，网桥</td>
+<td>帧frame</td>
+</tr>
+<tr class="odd">
+<td>1物理层</td>
+<td>位流的透明传输</td>
+<td>中继器，集线器，调制解调器</td>
+<td>位bit</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>协议数据单元PDU</p>
+<ul>
+<li>封装：在数据前面加上专属于本层的协议头</li>
+<li>拆封：将本层的协议头去除</li>
+</ul></li>
+<li><table>
+<thead>
+<tr class="header">
+<th>TCP/IP</th>
+<th>OSI/RM</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4应用层</td>
+<td>7，6，5</td>
+<td>FTP，SMTP，HTTP</td>
+</tr>
+<tr class="even">
+<td>3传输层</td>
+<td>4</td>
+<td>TCP/UDP</td>
+</tr>
+<tr class="odd">
+<td>2网络互连层</td>
+<td>3</td>
+<td>把数据分组发往目标网络或主机</td>
+</tr>
+<tr class="even">
+<td>1网络接口层</td>
+<td>2，1</td>
+<td>负责与物理网络的连接</td>
+</tr>
+</tbody>
+</table></li>
+<li><p>TCP：<strong>面向连接的</strong>传输协议，把报文分段传输后排序，并且存在校验，是<strong>可靠的</strong>，如文件传输</p></li>
+<li><p>UDP：<strong>无连接的</strong>传输协议，不需要排序和校验的场合使用，是<strong>不可靠的</strong>，如IP电话，视频会议，直播</p></li>
+<li><p>TCP三次握手：<strong>SYN</strong>-&gt;SYN+ACK-&gt;<strong>ACK</strong>（我粗他浅）</p></li>
+<li><p>TCP四次挥手：<strong>FIN</strong>-&gt;ACK-&gt;FIN-&gt;<strong>ACK</strong>（我粗他浅）</p></li>
+<li><p>TCP/IP模型的成功</p>
+<ul>
+<li>开放的协议标准</li>
+<li>独立于特定的网络硬件</li>
+<li>统一的网络地址分配方案</li>
+<li>标准化高层协议</li>
+</ul></li>
+<li><p>共同点</p>
+<ul>
+<li>协议彼此互相独立</li>
+<li>都存在层次结构，传输层和网络层</li>
+</ul></li>
+<li><p>不同点</p>
+<ul>
+<li>OSI明确服务、接口和协议，TCP没有</li>
+<li>OSI发明在协议前，TCP发明在协议后</li>
+<li>OSI网络层支持无连接和面向连接，传输层只支持面向连接</li>
+<li>TCP网络层只支持无连接，传输层支持无连接和面向连接</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="第三章">第三章</h2>
+<ul>
+<li>数据通信的一些概念
+<ul>
+<li>三关键：数据，信息，信号</li>
+<li>发送方将要发送的<strong>数据转换成信号</strong>通过<strong>物理信道</strong>传送到数据接收方的过程</li>
+<li>三要素：信源（来源），信宿（目标），信道（通信介质）</li>
+<li>实际信道的缺点
+<ul>
+<li>损耗：信噪比S/N降低</li>
+<li>延迟：信号产生畸变</li>
+<li>噪声：破坏信号，产生误码</li>
+</ul></li>
+<li>信道
+<ul>
+<li>物理信道：用来传输信号的物理通道</li>
+<li>逻辑信道：发送端和接收端之间传输信息的数据连接通路</li>
+</ul></li>
+<li>五个基本过程（实际不需要完整的五个阶段）
+<ul>
+<li>建立物理连接</li>
+<li>建立逻辑链接</li>
+<li><strong>数据传输</strong></li>
+<li>断开逻辑链接</li>
+<li>断开物理连接</li>
+</ul></li>
+<li>两项内容：<strong>数据传输</strong>和通信控制</li>
+<li>将携带<strong>信息</strong>的<strong>数据</strong>用物理<strong>信号</strong>形式传输
+<ul>
+<li>编码</li>
+<li>调制</li>
+<li>解调</li>
+<li>解码</li>
+</ul></li>
+<li>通信方式：数字通信（便于用计算机进行处理）或模拟通信</li>
+<li>数据传输速率
+<ul>
+<li>单位时间内所能传输的数据量</li>
+<li>单位为bps或b/s（比特每秒，位每秒）</li>
+<li>数据传输速率由单位脉冲宽度（每位所占时间）决定</li>
+<li><span class="math inline">\(S=1/T\times\log_2N\)</span>，其中N为一个脉冲信号代表的有效状态数，是2的整数倍，T为数字信号脉冲重复周期</li>
+<li>单位进制为1000！！！即1024b/s也是1.024kb/s</li>
+</ul></li>
+<li>信道的最大数据传输率
+<ul>
+<li>奈奎斯特公式：用于无噪声理想低通信道
+<ul>
+<li><span class="math inline">\(C=2W\log_2
+M\)</span>，其中C是数据传输率（b/s），W为带宽（Hz），M为信号编码级数</li>
+<li>带宽3.1kHz，级数M=2时，最大数据率是6200b/s</li>
+</ul></li>
+<li>Shannon公式：用于有噪声干扰信道
+<ul>
+<li><span class="math inline">\(C=W\log_2(1+S/N)\)</span>，其中C是传输率（b/s），W为带宽（Hz），S/N为信噪比</li>
+<li>带宽3.1kHz，S/N=2000，则最大信噪比为34kb/s</li>
+</ul></li>
+<li>信噪比分贝公式转换：<span class="math inline">\(S/N_{dB}=10\log_{10}S/N\)</span>，30dB转换为1000。</li>
+</ul></li>
+<li>波特率：码元传输的速率
+<ul>
+<li><span class="math inline">\(R_{bit}=R_{baud}\log_2
+M\)</span>，其中M为信号级数，<span class="math inline">\(R_{bit}\)</span>为比特率，<span class="math inline">\(R_{baud}\)</span>为波特率</li>
+<li>波特率9600，级数M=2时，比特率9600b/s</li>
+</ul></li>
+<li>误码率：错误码元（或bit）的个数占总码元（或bit）的比例</li>
+<li>带宽：本意最高频率减去最低频率即是带宽，现意<strong>单位时间内的最高传输速率</strong>
+<ul>
+<li>4波长信道，每信道传输速率为2.5Gb/s，带宽10Gb/s</li>
+<li>传统以太网每秒传输1千万比特，带宽10Mb/s</li>
+<li>每秒至少播放三十帧，分辨率640x480，256色图像，带宽为？
+<ul>
+<li>一个像素为1byte</li>
+<li>一张图片640x480x8bit=2457600bit</li>
+<li>每秒传输30*2457600b/s=73728000b/s=73.728Mb/s</li>
+</ul></li>
+</ul></li>
+<li>吞吐量：表示在单位时间内通过某个网络（或信道、交换设备）的数据量，显然吞吐量受<strong>网络带宽</strong>或<strong>网络额定速率</strong>的限制</li>
+<li>时延：信息从网络一端传送到另一端所需的时间
+<ul>
+<li>发送时延=数据位数/信道带宽</li>
+<li>传播时延=距离/介质中信号的传播速度（约为0.7c）</li>
+<li>时延带宽乘积=带宽×传播时延
+<ul>
+<li>某信道的时延带宽乘积为100万比特，这意味着第一个比特到达目的端时，源端已发送了100万比特</li>
+</ul></li>
+<li>往返时延=2x传播时延</li>
+</ul></li>
+</ul></li>
+<li>数字信号编码
+<ul>
+<li>曼彻斯特：高变低为0，低变高为1</li>
+<li>差分曼彻斯特：有跳变为0，无跳变为1</li>
+<li>不归零码NRZ：-5V为1，+5V为0</li>
+<li>采样定理：模拟信号最高频率为F，那么采样频率必须为2F以上，否则无法恢复原始信号</li>
+<li>模数转换三步骤：采样，量化，编码，最终得到PCM（脉码调制）信号</li>
+</ul></li>
+<li>信道复用技术：
+<ul>
+<li>频分复用FDM</li>
+<li>波分复用WDM</li>
+<li><strong>时分复用TDM</strong>
+<ul>
+<li>ATDM</li>
+<li>STDM
+<ul>
+<li>随机访问
+<ul>
+<li>集中控制：轮询</li>
+<li>分散控制：令牌（令牌环网）</li>
+</ul></li>
+<li>受控访问
+<ul>
+<li>CSMA</li>
+<li>CSMA/CD（以太网）</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>码分复用CDM</li>
+</ul></li>
+<li>数据传输方式
+<ul>
+<li>单双工通信
+<ul>
+<li>单工：只能上行或只能下行</li>
+<li>半双工：可以上行或下行</li>
+<li>全双工：可以上下行同时</li>
+</ul></li>
+<li>基带频带宽带
+<ul>
+<li>基带传输：不需要调制，以太网、局域网</li>
+<li>频带传输：需要调制和解调，电话网络</li>
+<li>宽带传输：需要调制和解调高频信号（几十兆Hz到几百兆Hz），闭路电视</li>
+</ul></li>
+<li>串行并行
+<ul>
+<li>串行：计算机网络</li>
+<li>并行：同时收发，计算机内部总线</li>
+</ul></li>
+</ul></li>
+<li>数据交换技术
+<ul>
+<li>电路交换
+<ul>
+<li>在通信双方之间建立一条临时专用线路</li>
+<li>数据传输是端到端的，面向连接的</li>
+<li>建立连接后，传输延迟小</li>
+<li>建立连接的时间长，线路利用率低，无纠错机制</li>
+<li>电话网络</li>
+</ul></li>
+<li>报文交换
+<ul>
+<li>以报文为单位进行存储-转发交换</li>
+<li>数据传输不是端到端的，是无连接的</li>
+<li>整个报文一起发送</li>
+<li>没有建立拆除连接的时间成本</li>
+<li>线路利用率高</li>
+<li>有纠错机制，传输可靠性高</li>
+<li>但报文大小不一，存储麻烦</li>
+<li>大报文的存储转发延时长，对存储容量要求高</li>
+<li>出错后需要整个报文重发</li>
+<li>电报</li>
+</ul></li>
+<li>分组交换
+<ul>
+<li>将报文分割成若干个大小相等的分组（
+将报文分割成若干个大小相等的分组（Packet）进行存储转发</li>
+<li>数据传输不是端到端的，是无连接的</li>
+<li>有强大的纠错机制、流量控制、拥塞控制和路由选择功能</li>
+<li>速度快，转发延时小，效率高，容错性好</li>
+<li>需要分割报文和重组报文，对端站点有一定负担</li>
+<li>最优选择</li>
+<li>两种交换方式
+<ul>
+<li>数据包方式
+<ul>
+<li>各分组<strong>独立地确定路由</strong>（传输路径）</li>
+<li>不能保证分组按需到达，需要重排</li>
+</ul></li>
+<li>虚电路方式
+<ul>
+<li>通信前预先建立一条逻辑连接</li>
+<li>虚电路是由其路径上的所有交换机中的路由表定义的</li>
+<li>提供的是面向连接的服务，但是是虚电路，并不是物理电路</li>
+<li>保证分组按序到达</li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="第四章">第四章</h2>
+<ul>
+<li>网络通信介质
+<ul>
+<li><strong>双绞线</strong>：分<strong>交叉线</strong>和<strong>直通线</strong>，标准有T568A和T568B</li>
+<li>同轴电缆</li>
+<li><strong>光纤</strong></li>
+<li>无线介质：无线电，地面微波，同步卫星</li>
+</ul></li>
+</ul>
+<h2 id="第五章">第五章</h2>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 9%">
+<col style="width: 21%">
+<col style="width: 40%">
+<col style="width: 7%">
+<col style="width: 7%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>OSI层次</th>
+<th>地址类型</th>
+<th>设备</th>
+<th>功能</th>
+<th>冲突域</th>
+<th>广播域</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>传输层及以上</td>
+<td>端口</td>
+<td>网关，调制解调器</td>
+<td>隔离输入，物理级别的防火墙</td>
+<td>隔离</td>
+<td>隔离</td>
+</tr>
+<tr class="even">
+<td>网络层</td>
+<td>IP地址</td>
+<td>路由器，三层交换机</td>
+<td>不做广播，转发分组，端点各自独立</td>
+<td>隔离</td>
+<td>隔离</td>
+</tr>
+<tr class="odd">
+<td>数据链路层</td>
+<td>MAC地址</td>
+<td>网桥，交换机，网卡</td>
+<td>存储转发，对外呈现为单独的物理网络</td>
+<td>隔离</td>
+<td>不隔离</td>
+</tr>
+<tr class="even">
+<td>物理层</td>
+<td>无</td>
+<td>中继器，集线器</td>
+<td>发送和转发，只做复制</td>
+<td>不隔离</td>
+<td>不隔离</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>广播与冲突
+<ul>
+<li>广播：向网络上的所有设备发送数据</li>
+<li>广播域：网络上<strong>所有能够接收到广播的设备的集合</strong></li>
+<li>冲突：不同数据的数据帧<strong>同时</strong>上传，使得收发错误</li>
+<li>冲突域：以网桥、交换机或路由器为边界，在冲突域中的任意两台主机同时发送数据都会产生冲突</li>
+<li><strong>一个广播域包含一个或多个冲突域。</strong></li>
+</ul></li>
+<li>中继器
+<ul>
+<li>复制比特流，信号整形和放大</li>
+<li>不进行存储——信号延迟小</li>
+<li>不检查错误——会扩散错误</li>
+<li>不对信息进行任何过滤</li>
+<li>可进行介质转换——如UTP转光纤</li>
+</ul></li>
+<li>集线器
+<ul>
+<li>多端口中继器，与中继器一致</li>
+<li>可改变拓扑结构：总线变星形</li>
+<li>逻辑上是总线型<strong>共享介质网络</strong></li>
+<li>无法限制冲突和广播</li>
+<li>所有主机共享带宽
+<ul>
+<li>5个机器连接一个带宽5MHz的集线器，平均每个机器带宽为1MHz</li>
+</ul></li>
+<li>适用于小型网络</li>
+<li>按结构形式划分类型
+<ul>
+<li>独立式</li>
+<li>堆叠式</li>
+<li>模块化</li>
+</ul></li>
+</ul></li>
+<li>网桥
+<ul>
+<li>具有唯一的网络地址</li>
+<li>根据路径选择方式，有两种网桥
+<ul>
+<li>透明网桥：网桥负责路由选择，对站点透明</li>
+<li>源选径网桥：源站点负责路由选择，对站点不透明</li>
+</ul></li>
+<li>有<strong>寻址和路由选择</strong>的能力，路由选择采用<strong>查表法</strong>
+<ul>
+<li>网桥的<strong>转发表</strong>描述了到达每个站点的路由</li>
+<li>转发表由端口号和MAC地址组成
+<ul>
+<li>MAC地址在接收端口中，过滤</li>
+<li>MAC地址在转发端口中，转发（交换）</li>
+<li>MAC地址不在表里，广播</li>
+</ul></li>
+<li>拥有逆向自学习能力</li>
+</ul></li>
+<li>能实现不同类型的LAN互连</li>
+<li>隔离错误帧，不会扩散冲突（错误），限制了冲突域，隔离故障</li>
+<li>无法控制广播，只能存储转发，没有流量控制</li>
+</ul></li>
+<li>交换机
+<ul>
+<li>多端口高速网桥，与网桥一致</li>
+<li>每个端口为一个冲突域，可以带宽累加
+<ul>
+<li>交换机n端口带宽均为BW，那么网络总带宽为<span class="math inline">\(\frac{BW*n}{2}\)</span>~<span class="math inline">\(BW*n\)</span></li>
+<li>集线器此时平均每个端口带宽为<span class="math inline">\(\frac{BW}{n}\)</span></li>
+</ul></li>
+<li>转发方式
+<ul>
+<li>存储转发：当帧接收完毕再转发</li>
+<li>直通转发：帧接收了就转发</li>
+<li>无碎片直通转发：一个帧一个帧的转发</li>
+</ul></li>
+<li>允许全双工连接，提高了网络总带宽，能连接不同速率的网段</li>
+<li>一般作为LAN核心主干连接设备，适用于小型网络和大型园区网络</li>
+</ul></li>
+<li>网卡NIC
+<ul>
+<li>通信适配器，是局域网中最基本的连接设备，计算机与局域网之间的连接和通信都是是通过网卡来实现的</li>
+<li>不能独立工作，必须依赖于宿主主机</li>
+<li>连接不同的局域网需要不同的网卡
+<ul>
+<li>以太网卡</li>
+<li>令牌环网卡</li>
+<li>FDDI网卡</li>
+<li>ATM网卡</li>
+</ul></li>
+<li>功能
+<ul>
+<li>数据缓存</li>
+<li>封装，拆封</li>
+<li>介质访问控制</li>
+<li>串并转换</li>
+<li>数据编码，解码</li>
+<li>数据发送，接收</li>
+</ul></li>
+<li>拥有唯一的物理地址（MAC）</li>
+</ul></li>
+<li>路由器
+<ul>
+<li>在网络之间转发网络分组</li>
+<li>提供逻辑地址，以识别互联网上的主机</li>
+<li>为网络分组寻找最佳传输路径</li>
+<li>实现子网隔离，限制广播风暴（目的地址无法识别直接过滤而非广播）</li>
+<li>LAN局域网接入广域网或作为广域网的核心连接设备</li>
+<li>用路由器连接起来的若干个网络，它们仍是各自<strong>独立</strong>的</li>
+<li>寻径与转发
+<ul>
+<li><strong>路由表</strong>保存到达其他网络的路由信息，包含<strong>目的网络地址，传输路径和传输开销</strong></li>
+<li>根据目的网络地址查找路由表并确定分组转发路径的过程称为<strong>路由选择</strong></li>
+<li>建立、更新路由表的算法称为<strong>路由算法</strong></li>
+<li>自动学习、记忆网络的变化并根据路由算法重新计算路由的协议称为<strong>路由选择协议</strong></li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="第六章">第六章</h2>
+<ul>
+<li>局域网
+<ul>
+<li>结构简单、数据传输率高，可行性高，实际投资少且技术更新发展迅速</li>
+<li>覆盖范围小</li>
+<li>局域网的经营管理权属于某个单位所有，广域网通常由服务提供商提供</li>
+<li>带宽高，数据传输速度高，<strong>误码率</strong>低</li>
+<li>数据传输延时小</li>
+<li>局域网便于安装、维护和扩充，建网成本低，周期短</li>
+<li>采用ISO推荐的OSI/RM参考模型</li>
+</ul></li>
+<li>局域网关键技术
+<ul>
+<li>拓扑结构：<strong>总线型、星形</strong>、环形、树形</li>
+<li>介质访问方法：<strong>CSMA/CD</strong>，Token-passing</li>
+<li>信号传输形式：<strong>基带</strong>，宽带</li>
+</ul></li>
+<li>局域网基本类型
+<ul>
+<li>共享式局域网：所有端口均是同一个冲突域，带宽低（集线器）</li>
+<li>交换式局域网：每个端口是一个独立冲突域，带宽高（交换机）</li>
+</ul></li>
+<li>局域网体系结构
+<ul>
+<li>数据链路层：按功能划分两个子层，对于不同的LAN标准，它们的LLC子层都是一样的，区别仅在MAC层（和物理层）
+<ul>
+<li>逻辑链路层 LLC：与介质、拓扑无关
+<ul>
+<li>完成通信链路的建立、维护和释放</li>
+<li>为<strong>高层协议与MAC层之间</strong>提供统一的接口</li>
+<li>进行帧发送、接收及流量控制等工作</li>
+</ul></li>
+<li>介质访问控制 MAC：与介质、拓扑相关
+<ul>
+<li>负责完成介质访问控制，进行合理的信道分配</li>
+<li>实现局域网多个设备共享单一信道资源</li>
+<li>数据帧的组装和拆装</li>
+<li>MAC地址识别及差错检测</li>
+</ul></li>
+</ul></li>
+<li>物理层
+<ul>
+<li>两个接口：连接单元接口AUI，介质相关接口MDI</li>
+</ul></li>
+</ul></li>
+<li>IEEE802主要标准
+<ul>
+<li>802.2 逻辑链路控制</li>
+<li>802.3 CSMA/CD（以太网）</li>
+</ul></li>
+<li>以太网
+<ul>
+<li>标识方法以速率，信号方式和介质类型组成：10 Base 5
+<ul>
+<li>10表示速率是10Mb/s</li>
+<li>Base表示是基带（Broad是宽带）</li>
+<li>5表示每段最大长度为5百米（或介质类型T F X）</li>
+</ul></li>
+<li>任何站点发送数据时都遵循CSMA/CD协议</li>
+<li>每个站点都可以接收其他站点的数据（广播信道）</li>
+<li>只有地址与帧目的地址匹配才接收数据，否则忽略</li>
+</ul></li>
+<li>介质访问控制方法（信道分配）
+<ul>
+<li>主要内容：特定时刻，加以控制</li>
+<li>主要方法
+<ul>
+<li>CSMA/CD：带冲突检测的载波侦听多路访问
+<ul>
+<li>发前先听、空闲即发送、边发边听、冲突时退避</li>
+<li>时间槽：能够检测到冲突的时间区间，为<strong>传播时延</strong>的两倍</li>
+<li>控制简单，延迟时间段，速度快</li>
+<li>冲突数量增长会使网络速度大幅度下降</li>
+</ul></li>
+<li>令牌环</li>
+<li>令牌总线</li>
+</ul></li>
+</ul></li>
+<li>以太网类型
+<ul>
+<li>粗缆以太网：总线型拓扑</li>
+<li>细缆以太网：总线型拓扑</li>
+<li>快速以太网：只支持双绞线和光纤，集线器的星型结构</li>
+<li>共享式以太网：集线器的星型结构，集线器内部总线结构</li>
+<li>千兆位以太网：网络分布计算、计算机视频、网络存储</li>
+<li>全双工以太网：传输速率快</li>
+<li>万兆位以太网：只使用光纤，不适用CSMA/CD协议</li>
+</ul></li>
+<li>令牌网
+<ul>
+<li>拓扑结构为点到点的环形</li>
+<li>传输介质为光纤</li>
+<li>一般使用UNIX操作系统</li>
+<li>拿到令牌的站点才可以发送帧，没有拿到令牌的站点需要等待</li>
+<li>维护复杂，实现困难</li>
+</ul></li>
+<li>FDDI
+<ul>
+<li>传输速率100Mb/s，由光纤组成的双环构成，可靠性高</li>
+<li>同样使用令牌传递的方式进行介质访问控制</li>
+<li>正常情况下，主环工作；出现问题时，从次环绕过故障</li>
+<li>消除了数据冲突，双环结构提高了容错，内建的网络管理能力</li>
+<li>保证预知的，确定的时延，网络覆盖范围最大</li>
+<li>协议复杂，安装和管理困难，价格昂贵</li>
+</ul></li>
+<li>WLAN无线局域网
+<ul>
+<li>固定基础设施，如基站</li>
+</ul></li>
+<li>WPAN无线局域网
+<ul>
+<li>自组织，如笔记本热点</li>
+<li>蓝牙，ZigBee系统</li>
+</ul></li>
+<li>局域网扩展
+<ul>
+<li>物理层使用中继器或集线器，只能互联<strong>相同类型</strong>的网络</li>
+<li>数据链路层使用网桥或交换机</li>
+<li>网络层使用路由器，可以互联<strong>不同类型</strong>的网络</li>
+</ul></li>
+</ul>
+<h2 id="第七章">第七章</h2>
+<ul>
+<li>IPv4：IPv4由32位组成，分为两段，网络号net-id和主机号host-id
+<ul>
+<li>一个主机可以有多个IP地址</li>
+<li><figure>
+<img src="/compute-network-note/image-20240107214801925.png" alt="image-20240107214801925">
+<figcaption aria-hidden="true">image-20240107214801925</figcaption>
+</figure></li>
+<li>A类地址范围 <code>1.0.0.0~127.255.255.255</code></li>
+<li>B类地址范围 <code>128.0.0.0~191.255.255.255</code></li>
+<li>C类地址范围 <code>192.0.0.0~223.255.255.255</code></li>
+<li>流量类型
+<ul>
+<li>单播：点对点，一对一，端对端</li>
+<li>组播：一对多</li>
+<li>广播：一对所有</li>
+</ul></li>
+<li>一些地址概念
+<ul>
+<li>多播地址的作用
+<ul>
+<li>只能用于目的地址，不能用于源地址</li>
+<li>跟公网绝缘（无关联），可通过硬件任意使用</li>
+<li>范围 <code>224.0.0.0~239.255.255.255</code></li>
+<li>相比于广播方式，不会因为发送给不需要的IP浪费带宽</li>
+<li>相比于单播方式，也不会因为IP包重复方式浪费带宽</li>
+</ul></li>
+<li>广播地址：host-id全为1的地址</li>
+<li>网络地址：host-id全为0的地址</li>
+<li>网段：地址区间
+<ul>
+<li>不同网段需要使用路由器或者三层交换机进行通信</li>
+</ul></li>
+<li>192.168.1.10的分析
+<ul>
+<li><code>192</code>，显然C类地址</li>
+<li>网络地址<code>192.168.1.0</code></li>
+<li>广播地址<code>192.168.1.255</code></li>
+<li>网段<code>192.168.1.0~192.168.1.255</code>，或<code>192.168.1</code></li>
+<li>可使用网络号<code>192.168.1.1~192.168.1.254</code>（掐头去尾）</li>
+</ul></li>
+<li>约定俗成
+<ul>
+<li>A类地址网络号为<code>10</code>是私人使用</li>
+<li>B类地址网络号为<code>172.16~172.32</code>是私人使用</li>
+<li>C类地址网络号为<code>192.168.0~192.168.255</code>是私人使用</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li>IPv6：IPv6由128位组成，分为两段，网络号net-id和主机号host-id，十六位为一组，四组十六进制数
+<ul>
+<li><code>105.220.136.100.255.255.255.255.0.0.18.128.140.10.255.255</code></li>
+<li><code>69DC:8864:FFFF:FFFF:0:1280:8C0A:FFFF</code></li>
+</ul></li>
+<li>NAT网络地址转换模式
+<ul>
+<li>将非法互联网IP地址转化为合法互联网IP地址</li>
+<li>一般由网关或路由器实现</li>
+<li>对主机号进行二次划分，称作子网划分，得到subnet-id</li>
+</ul></li>
+<li>子网掩码，IP和子网掩码做位运算与，得到网段
+<ul>
+<li><code>172.168.50.10</code>子网掩码<code>255.255.192.0</code>分析</li>
+<li><code>172.168</code>，B类地址</li>
+<li>相与得到网段<code>172.168.0</code>，即<code>172.168.0.0~172.168.0.255</code></li>
+<li>网络地址<code>172.168.0.0/18</code>，其中<code>18</code>表示CIDR长度，即主机号与子网号的总位数</li>
+<li>广播地址<code>172.168.0.63</code>，主机号只有<code>6</code>位</li>
+<li>网络地址相同（包括CIDR）则可互通</li>
+</ul></li>
+<li>最大子网数 <span class="math inline">\(2^n\)</span>，其中<span class="math inline">\(n\)</span>为子网位数</li>
+<li>最大主机数为<span class="math inline">\(2^k-2\)</span>，其中<span class="math inline">\(k\)</span>为主机位数</li>
+<li>网段划分方法
+<ul>
+<li>二层交换机
+<ul>
+<li>同属于一个VLAN且同属于一个网段才可通信</li>
+<li>VLAN将不同端口划分为不同广播域</li>
+</ul></li>
+<li>路由器
+<ul>
+<li>使用路由表直接索引，可以直接通信</li>
+</ul></li>
+<li>单臂路由+二层交换机
+<ul>
+<li>通过配置也可以使得不同VLAN互通</li>
+</ul></li>
+<li>三层交换机
+<ul>
+<li>不同网段不同VLAN也可互通，应用最多</li>
+</ul></li>
+</ul></li>
+</ul>
+<h2 id="第八章">第八章</h2>
+<ul>
+<li><p>网络互联</p>
+<ul>
+<li><p>网络互连接：指在物理网络之间必须存在一条或一条以上的<strong>物理连接线路</strong></p></li>
+<li><p>网络互通信：是指在<strong>网络互连接</strong>的基础上，网络之间可以进行数据交换的手段</p></li>
+<li><p>网络互操作：是指网络中计算机之间具有透明地访问对方资源的能力，而这种能力是建立在<strong>互连接</strong>与<strong>互通信</strong>基础之上，通过高层软件实现的</p></li>
+</ul></li>
+<li><p>LAN-LAN互联</p>
+<ul>
+<li>同构网：具有相同传输性质的通信协议的局域网互联</li>
+<li>异构网：两种完全不同传输性质和不同通信协议的局域网互联，目前不同类型的网络之间的互联大多是异构网互连
+<ul>
+<li>使用<strong>网桥或路由器</strong>进行互联</li>
+</ul></li>
+</ul></li>
+<li><p>LAN-WAN互联</p>
+<ul>
+<li>使得局域网可以接入更大范围的网络体系中，一般使用<strong>路由器</strong>互联</li>
+<li>WAN：PSTN-数字交换+电话交换，ISDN，DDN，PSDN</li>
+<li>典型分组交换网：X.25网、帧中继网FR、ATM</li>
+</ul></li>
+<li><p>WAN-WAN互联</p>
+<ul>
+<li>一般在<strong>政府的电信部门或国际组织间</strong>进行，将不同地区的网络互联</li>
+<li>使用网关或路由器</li>
+</ul></li>
+<li><p>LAN-WAN-LAN互联</p>
+<ul>
+<li>如果两个局域网地理位置<strong>相隔很远</strong>，可以<strong>通过广域网实现两个局域网的互联</strong></li>
+<li>帧中继分组交换网</li>
+</ul></li>
+<li><p>网关</p>
+<ul>
+<li>应用层，传输层，实现<strong>不同网络传输协议</strong>的翻译和转换工作</li>
+<li>协议网关：协议转换器，实现不同体系结构、不同协议网络的互联</li>
+<li>安全网关：防火墙</li>
+<li>功能
+<ul>
+<li>连接不同协议的网络</li>
+<li>协议转换</li>
+<li>网络安全</li>
+<li>网络管理</li>
+</ul></li>
+<li>N种网络就要作N(N-1)种转换，全连接</li>
+<li><figure>
+<img src="/compute-network-note/image-20240108001536999.png" alt="image-20240108001536999">
+<figcaption aria-hidden="true">image-20240108001536999</figcaption>
+</figure></li>
+</ul></li>
+<li><p>网络接入技术</p>
+<ul>
+<li>接入方式
+<ul>
+<li>有线接入
+<ul>
+<li>基于传统公用电话网（PSTN）的拨号接入
+<ul>
+<li>SLIP/PPP：个人在家或单位使用计算机接入，需要<strong>拨号上网</strong>
+<ul>
+<li>SLIP：串行线路IP协议</li>
+<li>PPP：点对点协议</li>
+</ul></li>
+<li>使用调制解调器，电话普及率高，速率低，通信质量差</li>
+</ul></li>
+<li>ISDN接入
+<ul>
+<li>综合业务数字网，是PSTN的升级版</li>
+<li>使用ISDN终端配接器，简称TA，<strong>电话机、调制解调器、传真机等设备</strong>必须接在TA的后面。</li>
+</ul></li>
+<li>ADSL接入
+<ul>
+<li>使用<strong>双绞电话线</strong>提供宽带服务，拥有三个信息通道
+<ul>
+<li>高速下行通道：用于下载信息</li>
+<li>中速双工通道：用于上传信息</li>
+<li>老式电话服务通道：用于普通电话服务</li>
+</ul></li>
+<li>无需拨号上网，可以同时连接多个设备，需要使用ADSL Modem和滤波器</li>
+<li>提供专线方式和虚拟拨号方式，但不满足企业大带宽上行通道的需求</li>
+</ul></li>
+<li>基于有线电视网的Cable Modem接入
+<ul>
+<li>CATV有线电视网，用于传输电视信号的网络，但是单向下行传输，需要改造</li>
+<li>HFC混合光纤同轴电缆网，是对CATV的<strong>一种</strong>改造，使用<strong>光纤代替同轴电缆</strong>，要接入Cable
+Modem</li>
+<li>是<strong>非对称式数据传输</strong>（上下行速率不一致，以上均是），传输距离远，有较强的抗干扰能力</li>
+<li>即插即用，安装方便，但共享网络带宽</li>
+</ul></li>
+<li>局域网接入
+<ul>
+<li>使用路由器通过<strong>专线</strong>与ISP相连（目前还使用NAT技术）</li>
+<li>专线类型
+<ul>
+<li>DDN数字数据网</li>
+<li>ISDN综合业务数据网</li>
+</ul></li>
+<li>连接速率高，操作方便，但费用昂贵，不过是目前主流</li>
+</ul></li>
+</ul></li>
+<li>无线接入
+<ul>
+<li>WIFI</li>
+<li>蓝牙</li>
+</ul></li>
+</ul></li>
+<li>分类
+<ul>
+<li>用户单机接入：通过调制解调器接入互联网</li>
+<li>局域网接入：通过路由器接入互联网</li>
+<li>ISP：因特网服务提供商，中国电信的CHINANET等
+<ul>
+<li>为用户提供Internet接入服务</li>
+<li>为用户提供各类信息服务</li>
+<li>为申请接入Internet的用户计算机分配IP地址</li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li><p>共享Internet接入技术</p>
+<ul>
+<li>提供私有IP地址访问Internet的方法，能对用户<strong>访问时间、访问地点、信息流量</strong>进行统计，还能作为防火墙</li>
+<li>代理服务器模式
+<ul>
+<li>代理服务器是局域网和ISP之间的中间代理机构，负责转发、控制和记录</li>
+<li>WinGate，Winproxy等网关软件</li>
+<li>加快对网络的访问速度，拥有很强的控制管理能力，但<strong>无法支持新出现的网络应用</strong></li>
+</ul></li>
+<li>NAT网络地址转换模式：参考上文，控制管理能力较弱</li>
+</ul></li>
+<li><p>无线接入技术</p>
+<ul>
+<li>无线局域网方式：WIFI</li>
+<li>移动上网卡（SIM卡）</li>
+</ul></li>
+</ul>
+<h2 id="第九章">第九章</h2>
+<ul>
+<li>万维网WWW
+<ul>
+<li>是分布式超媒体系统，是超文本系统的扩充，可以包含图像、声音、视频等</li>
+<li>浏览器=万维网客户程序，万维网服务器=网页相关文档所在计算机</li>
+<li>使用统一资源定位符URL定位文档</li>
+<li>使用超文本传送协议HTTP进行传输</li>
+<li>使用超文本标记语言HTML来显示页面</li>
+<li>使用搜索引擎查找信息</li>
+</ul></li>
+<li>统一资源定位符URL：定位资源和访问方法，<strong>抽象的识别方法</strong>，具体为<code>&lt;协议&gt;://&lt;主机&gt;:&lt;端口&gt;/&lt;路径&gt;</code>，大小写无关</li>
+<li>超文本传送协议HTTP是面向事务的，无连接的，基于TCP协议的应用层协议</li>
+<li>DNS域名系统
+<ul>
+<li>将URL与IP地址作转换，方便记忆，层次结构为树状分布式</li>
+<li>域名从末尾到开始计算，用<strong>点</strong>分割，<code>四级域名.三级域名.二级域名.顶级域名</code>
+<ul>
+<li>www.szu.edu.cn分析</li>
+<li>顶级域名cn-&gt;二级域名edu-&gt;三级域名szu-&gt;四级域名www</li>
+</ul></li>
+<li>一般来说三级域名及以上都是自定义的</li>
+<li>顶级域名TLD
+<ul>
+<li>国家顶级域名nTLD
+<ul>
+<li>cn表示中国</li>
+<li>us表示美国</li>
+<li>uk表示英国</li>
+</ul></li>
+<li>通用顶级域名gTLD
+<ul>
+<li>com公司和企业</li>
+<li>net网络服务机构</li>
+<li>org非营利性组织</li>
+<li>edu美国专用教育机构</li>
+<li>gov美国专用政府部门</li>
+<li>mil美国专用军事部门</li>
+<li>int国际组织</li>
+</ul></li>
+</ul></li>
+<li>二级域名
+<ul>
+<li>由分布各地的Inter
+NIC子机构负责管理，如CNNIC，一般基于<strong>组名</strong>划分</li>
+</ul></li>
+<li>IP地址、域名DN、域名系统DNS担负着因特网上计算机主机的唯一定位工作。</li>
+</ul></li>
+<li>域名服务器
+<ul>
+<li>根域名服务器
+<ul>
+<li>所有根域名服务器一定知道顶级域名服务器的域名和IP地址</li>
+<li>13个不同IP地址的根域名服务器，从a~m，例如<code>a.rootservers.net</code></li>
+</ul></li>
+<li>顶级域名服务器（TLD服务器）
+<ul>
+<li>负责所有注册的二级域名</li>
+</ul></li>
+<li>权限域名服务器
+<ul>
+<li>负责一个区的域名服务器</li>
+</ul></li>
+<li>本地域名服务器
+<ul>
+<li>所有终端服务器都可以拥有一个本地域名服务器，比如说ISP、大学、学院，也会称作默认域名服务器</li>
+</ul></li>
+<li>主机向本地域名服务器的查询是<strong>递归查询</strong>，主机-&gt;本地-&gt;根-&gt;顶级-&gt;权限-&gt;本地，直到返回结果</li>
+<li>本地域名服务器向根域名服务器的查询是<strong>迭代查询</strong>，本地-&gt;根-&gt;顶级-&gt;权限-&gt;本地，直到返回结果</li>
+</ul></li>
+<li>电子邮件服务
+<ul>
+<li>用户代理（软件）：Outlook，Gmail</li>
+<li>邮件服务器</li>
+<li>简单邮件传送协议SMTP：<strong>邮件服务器和邮件服务器间</strong>的传输协议</li>
+<li>邮局协议POP3：<strong>客户端远程管理在服务器上的电子邮件</strong>，可以把邮件存储到本地主机，也可以在本地主机操作修改邮件服务器邮件</li>
+<li>网际报文存取协议IMAP：Outlook用于获取邮件信息，下载邮件的协议</li>
+<li>因特网邮件扩展协议MINE</li>
+</ul></li>
+</ul>
+<h2 id="第十章">第十章</h2>
+<ul>
+<li>网络安全
+<ul>
+<li>对个人而言：信息泄露</li>
+<li>对企业而言：财产损失</li>
+<li>对国家而言：影响社会稳定运行、战争领域应用、信息战、观念操控</li>
+</ul></li>
+<li>攻击类型
+<ul>
+<li>被动攻击
+<ul>
+<li>窃听</li>
+<li>流量分析</li>
+<li>电磁波监听</li>
+<li>光缆监听</li>
+<li>手机监听</li>
+</ul></li>
+<li>主动攻击
+<ul>
+<li>篡改，更改报文流，发生于未对用户进行<strong>分类和标识</strong>，存在<strong>系统漏洞</strong>，设置<strong>简单口令</strong></li>
+<li>拒绝服务攻击：攻击者向服务器不间断地发送大量数据，使得该服务器无法提供正常服务甚至完全瘫痪
+<ul>
+<li>PING风暴</li>
+<li>同步包风暴，SYN风暴</li>
+<li>EMAIL炸弹，电子邮件攻击</li>
+<li>Land攻击，回环攻击</li>
+</ul></li>
+<li>伪造、恶意程序（木马、病毒）</li>
+</ul></li>
+</ul></li>
+<li>网络安全关键技术：网络的<strong>安全性和可靠性</strong>需求
+<ul>
+<li>防火墙技术：在两个网络通讯时执行的一种访问控制尺度，即是分离器，也是限制器，还是分析器
+<ul>
+<li>简单包过滤、应用代理、状态检测防火墙</li>
+<li>网络级防火墙：分组过滤路由器，根据规则进行转发或过滤</li>
+<li>应用级防火墙：应用网关，代理服务器，设置IP分组过滤表</li>
+<li>功能：<strong>服务控制，方向控制，用户控制，行为控制</strong></li>
+</ul></li>
+<li>数据加密技术：一次一密、DES、IDEA、AES、RSA</li>
+<li>数据签名技术：私钥加密，公钥验证，DSA，ECDSA，防否认，防伪造，具有保密性</li>
+</ul></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/compute-network-note.html" title="计算机网络笔记">https://hasegawaazusa.github.io/compute-network-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/agcd-note.html" rel="prev" title="AGCD近似最大公约数问题">
+                  <i class="fa fa-chevron-left"></i> AGCD近似最大公约数问题
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/optimality-conditions-note.html" rel="next" title="最优化方法——最优性条件">
+                  最优化方法——最优性条件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">678k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">10:17</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

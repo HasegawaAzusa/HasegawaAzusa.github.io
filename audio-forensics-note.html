@@ -21,16 +21,16 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
 
-    <meta name="description" content="有关各种音频格式的隐写和取证的简要笔记">
+    <meta name="description" content="有关各种音视频格式的隐写和取证的简要笔记">
 <meta property="og:type" content="article">
-<meta property="og:title" content="音频取证笔记">
+<meta property="og:title" content="音视频取证笔记">
 <meta property="og:url" content="https://hasegawaazusa.github.io/audio-forensics-note.html">
 <meta property="og:site_name" content="独奏の小屋">
-<meta property="og:description" content="有关各种音频格式的隐写和取证的简要笔记">
+<meta property="og:description" content="有关各种音视频格式的隐写和取证的简要笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hasegawaazusa.github.io/audio-forensics-note/silenteye%20encrypted.png">
 <meta property="article:published_time" content="2022-05-31T12:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-05T07:22:47.939Z">
+<meta property="article:modified_time" content="2023-11-28T12:18:07.356Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="misc">
@@ -43,10 +43,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/audio-forensics-note.html","path":"/audio-forensics-note.html","title":"音频取证笔记"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/audio-forensics-note.html","path":"/audio-forensics-note.html","title":"音视频取证笔记"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>音频取证笔记 | 独奏の小屋</title>
+<title>音视频取证笔记 | 独奏の小屋</title>
   
 
 
@@ -94,7 +94,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">118</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -145,7 +145,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9F%B3%E9%A2%91%E5%8F%96%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">音频取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#audacity"><span class="nav-number">1.2.</span> <span class="nav-text">Audacity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deepsound"><span class="nav-number">1.3.</span> <span class="nav-text">deepsound</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dtmf"><span class="nav-number">1.4.</span> <span class="nav-text">DTMF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg"><span class="nav-number">1.5.</span> <span class="nav-text">FFmpeg</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lsb-%E9%9A%90%E5%86%99"><span class="nav-number">1.6.</span> <span class="nav-text">lsb 隐写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#morse-code"><span class="nav-number">1.7.</span> <span class="nav-text">Morse-Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sstv"><span class="nav-number">1.8.</span> <span class="nav-text">SSTV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%91%E8%B0%B1%E5%9B%BE%E9%9A%90%E5%86%99"><span class="nav-number">1.9.</span> <span class="nav-text">频谱图隐写</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wav-%E5%8F%96%E8%AF%81"><span class="nav-number">2.</span> <span class="nav-text">WAV 取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#silenteye"><span class="nav-number">2.1.</span> <span class="nav-text">silenteye</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#steghide"><span class="nav-number">2.2.</span> <span class="nav-text">steghide</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wavsteg"><span class="nav-number">2.3.</span> <span class="nav-text">WavSteg</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mp3-%E5%8F%96%E8%AF%81"><span class="nav-number">3.</span> <span class="nav-text">MP3 取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mp3stego"><span class="nav-number">3.1.</span> <span class="nav-text">Mp3stego</span></a></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%9F%B3%E9%A2%91%E5%8F%96%E8%AF%81"><span class="nav-number">1.</span> <span class="nav-text">音频取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#audacity"><span class="nav-number">1.2.</span> <span class="nav-text">Audacity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deepsound"><span class="nav-number">1.3.</span> <span class="nav-text">deepsound</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dtmf"><span class="nav-number">1.4.</span> <span class="nav-text">DTMF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ffmpeg"><span class="nav-number">1.5.</span> <span class="nav-text">FFmpeg</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lsb-%E9%9A%90%E5%86%99"><span class="nav-number">1.6.</span> <span class="nav-text">lsb 隐写</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mid-%E6%96%87%E4%BB%B6"><span class="nav-number">1.7.</span> <span class="nav-text">mid 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#morse-code"><span class="nav-number">1.8.</span> <span class="nav-text">Morse-Code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sstv"><span class="nav-number">1.9.</span> <span class="nav-text">SSTV</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%91%E8%B0%B1%E5%9B%BE%E9%9A%90%E5%86%99"><span class="nav-number">1.10.</span> <span class="nav-text">频谱图隐写</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#wav-%E5%8F%96%E8%AF%81"><span class="nav-number">2.</span> <span class="nav-text">WAV 取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#silenteye"><span class="nav-number">2.1.</span> <span class="nav-text">silenteye</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#steghide"><span class="nav-number">2.2.</span> <span class="nav-text">steghide</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wavsteg"><span class="nav-number">2.3.</span> <span class="nav-text">WavSteg</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#mp3-%E5%8F%96%E8%AF%81"><span class="nav-number">3.</span> <span class="nav-text">MP3 取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mp3stego"><span class="nav-number">3.1.</span> <span class="nav-text">Mp3stego</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%A7%86%E9%A2%91%E5%8F%96%E8%AF%81"><span class="nav-number">4.</span> <span class="nav-text">视频取证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#videoencode"><span class="nav-number">4.1.</span> <span class="nav-text">VideoEncode</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#videoshuff"><span class="nav-number">4.2.</span> <span class="nav-text">VideoShuff</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#videostego"><span class="nav-number">4.3.</span> <span class="nav-text">VideoStego</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -160,13 +160,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -214,12 +214,12 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="音频取证笔记 | 独奏の小屋">
-      <meta itemprop="description" content="有关各种音频格式的隐写和取证的简要笔记">
+      <meta itemprop="name" content="音视频取证笔记 | 独奏の小屋">
+      <meta itemprop="description" content="有关各种音视频格式的隐写和取证的简要笔记">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          音频取证笔记
+          音视频取证笔记
         </h1>
 
         <div class="post-meta-container">
@@ -237,7 +237,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-05 15:22:47" itemprop="dateModified" datetime="2023-09-05T15:22:47+08:00">2023-09-05</time>
+      <time title="修改时间：2023-11-28 20:18:07" itemprop="dateModified" datetime="2023-11-28T20:18:07+08:00">2023-11-28</time>
     </span>
 
   
@@ -247,7 +247,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>2.1k</span>
+      <span>2.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -258,7 +258,7 @@
     </span>
 </div>
 
-            <div class="post-description">有关各种音频格式的隐写和取证的简要笔记</div>
+            <div class="post-description">有关各种音视频格式的隐写和取证的简要笔记</div>
         </div>
       </header>
 
@@ -307,6 +307,10 @@ multifrequency)，即双音多频，由高频群和低频群组成，高低频�
 <p>如果只是导出音频，更推荐使用 Audacity。</p>
 </blockquote>
 <h2 id="lsb-隐写">lsb 隐写</h2>
+<h2 id="mid-文件">mid 文件</h2>
+<p>mid 文件是谱面文件，记录了各种音谱的内容，各类音乐制作软件都支持导出
+mid 文件。</p>
+<p>可以使用 MidiEditor 进行查看，内部谱面、音乐可能记录有关键信息。</p>
 <h2 id="morse-code">Morse-Code</h2>
 <p>摩尔斯电码是只使用 0 和 1
 两种状态的二进制代码，电报、短期通讯都是使用该种编码，主要由短促的点信号（代表
@@ -365,6 +369,16 @@ Line1）。</p>
 <code>svega_stego.mp3.txt</code> 中。</p>
 <p>加密命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">encode -E hidden_text.txt -P password svega.wav svega_stego.mp3</span><br></pre></td></tr></table></figure>
+<h1 id="视频取证">视频取证</h1>
+<h2 id="videoencode">VideoEncode</h2>
+<p>加密视频。</p>
+<p>GitHub 仓库。</p>
+<h2 id="videoshuff">VideoShuff</h2>
+<p>将视频帧置乱，但特征较为明显。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Myitian/VideoShuffle">仓库地址</a>。</p>
+<h2 id="videostego">VideoStego</h2>
+<p>支持 MP4 文件的隐写。</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/JavDomGom/videostego">仓库地址</a>。</p>
 
     </div>
 
@@ -382,7 +396,7 @@ Line1）。</p>
   </li>
   <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://hasegawaazusa.github.io/audio-forensics-note.html" title="音频取证笔记">https://hasegawaazusa.github.io/audio-forensics-note.html</a>
+      <a href="https://hasegawaazusa.github.io/audio-forensics-note.html" title="音视频取证笔记">https://hasegawaazusa.github.io/audio-forensics-note.html</a>
   </li>
   <li class="post-copyright-license">
       <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -428,7 +442,7 @@ Line1）。</p>
 
 <div class="copyright">
   &copy; 2022 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -439,13 +453,13 @@ Line1）。</p>
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">617k</span>
+    <span title="站点总字数">678k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:21</span>
+    <span title="站点阅读时长">10:17</span>
   </span>
 </div>
 

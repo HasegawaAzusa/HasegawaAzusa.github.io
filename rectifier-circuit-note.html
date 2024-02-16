@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关电力电子技术交流直流变换器部分的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="电力电子技术——交流直流变换器">
+<meta property="og:url" content="https://hasegawaazusa.github.io/rectifier-circuit-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关电力电子技术交流直流变换器部分的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/%E5%8D%8A%E6%B3%A2%E6%95%B4%E6%B5%81%E7%94%B5%E8%B7%AF%E5%9B%BE.webp">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/%E5%8D%8A%E6%B3%A2%E6%95%B4%E6%B5%81%E6%B3%A2%E5%BD%A2.webp">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116145239432.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116150322429.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116150357544.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116150037539.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116145947942.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116150432724.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116150931924.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116151743092.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116151830461.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116152409877.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116154152226.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116154643471.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116155748050.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116154909803.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116155828730.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116155648190.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116155619974.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116155910760.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116162146135.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116162025132.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116162234335.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116162623937.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116162539022.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116163340716.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116163107150.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116163153601.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116164714987.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116164659302.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116164726949.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/image-20231116165333024.png">
+<meta property="article:published_time" content="2023-10-01T00:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-16T14:10:46.610Z">
+<meta property="article:author" content="qsdz">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/rectifier-circuit-note/%E5%8D%8A%E6%B3%A2%E6%95%B4%E6%B5%81%E7%94%B5%E8%B7%AF%E5%9B%BE.webp">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/rectifier-circuit-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/rectifier-circuit-note.html","path":"/rectifier-circuit-note.html","title":"电力电子技术——交流直流变换器"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>电力电子技术——交流直流变换器 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%94%B5%E5%8A%9B%E7%94%B5%E5%AD%90%E6%8A%80%E6%9C%AF"><span class="nav-number">1.</span> <span class="nav-text">电力电子技术</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%A4%E6%B5%81%E7%9B%B4%E6%B5%81%E5%8F%98%E6%8D%A2%E5%99%A8"><span class="nav-number">1.1.</span> <span class="nav-text">交流直流变换器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E7%9B%B8%E5%8D%8A%E6%B3%A2%E4%B8%8D%E5%8F%AF%E6%8E%A7%E6%95%B4%E6%B5%81"><span class="nav-number">1.1.1.</span> <span class="nav-text">单相半波不可控整流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E7%9B%B8%E5%85%A8%E6%B3%A2%E4%B8%8D%E5%8F%AF%E6%8E%A7%E6%95%B4%E6%B5%81"><span class="nav-number">1.1.2.</span> <span class="nav-text">单相全波不可控整流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E7%9B%B8%E5%8D%8A%E6%B3%A2%E5%8D%8A%E6%8E%A7%E6%95%B4%E6%B5%81"><span class="nav-number">1.1.3.</span> <span class="nav-text">单相半波半控整流</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E7%9B%B8%E5%85%A8%E6%B3%A2%E5%8D%8A%E6%8E%A7%E6%95%B4%E6%B5%81"><span class="nav-number">1.1.4.</span> <span class="nav-text">单相全波半控整流</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8D%E7%94%B5%E5%8A%A8%E5%8A%BF%E8%B4%9F%E8%BD%BD"><span class="nav-number">1.1.4.1.</span> <span class="nav-text">反电动势负载</span></a></li></ol></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/rectifier-circuit-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="电力电子技术——交流直流变换器 | 独奏の小屋">
+      <meta itemprop="description" content="有关电力电子技术交流直流变换器部分的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          电力电子技术——交流直流变换器
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-01 08:00:00" itemprop="dateCreated datePublished" datetime="2023-10-01T08:00:00+08:00">2023-10-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-11-16 22:10:46" itemprop="dateModified" datetime="2023-11-16T22:10:46+08:00">2023-11-16</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.1k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关电力电子技术交流直流变换器部分的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="电力电子技术">电力电子技术</h1>
+<h2 id="交流直流变换器">交流直流变换器</h2>
+<p>交流直流变换器，<em>AC to DC
+converter</em>，又称整流电路，是最早出现的电力电子电路，目的是将<strong>交流电转化为直流电</strong>。</p>
+<p>按<strong>组成器件</strong>可以分为<strong>不可控、半控、全控</strong>电路三种。</p>
+<p>按<strong>电路结构</strong>可以分为<strong>桥式和零式</strong>电路两种。</p>
+<p>按交流输入相数可以分为<strong>单相和三相</strong>电路。</p>
+<h3 id="单相半波不可控整流">单相半波不可控整流</h3>
+<figure>
+<img src="/rectifier-circuit-note/半波整流电路图.webp" alt="半波整流电路图">
+<figcaption aria-hidden="true">半波整流电路图</figcaption>
+</figure>
+<p>回忆模电的半波整流电路，考虑当电压正向时，二极管导通；电压反向时，二极管截止。</p>
+<p>理想波形如下</p>
+<figure>
+<img src="/rectifier-circuit-note/半波整流波形.webp" alt="半波整流波形">
+<figcaption aria-hidden="true">半波整流波形</figcaption>
+</figure>
+<p>仿真电路如下</p>
+<p><img src="/rectifier-circuit-note/image-20231116145239432.png"></p>
+<p>那么仿真波形如下</p>
+<p><img src="/rectifier-circuit-note/image-20231116150322429.png"></p>
+<p>如果此时带感性负载，则整流时会存在一定延时，即</p>
+<p><img src="/rectifier-circuit-note/image-20231116150357544.png"></p>
+<p>为避免出现延时的情况，我们在这之上添加一个二极管为其续流。</p>
+<p>理想电路图</p>
+<p><img src="/rectifier-circuit-note/image-20231116150037539.png"></p>
+<p>仿真图如下</p>
+<p><img src="/rectifier-circuit-note/image-20231116145947942.png"></p>
+<p>在续流二极管的作用下，电感的反馈电压被截止，波形又回归良好</p>
+<p><img src="/rectifier-circuit-note/image-20231116150432724.png"></p>
+<h3 id="单相全波不可控整流">单相全波不可控整流</h3>
+<p>半波整流虽然效果很好，但效率太低，一个周期的电能只有半个周期被利用上，我们希望整个周期都能被利用上，那么可以使用桥式整流方式。</p>
+<p><img src="/rectifier-circuit-note/image-20231116150931924.png"></p>
+<p>在桥式整流中，每次只有两个二极管导通，分别是1、4和2、3轮流导通。</p>
+<p>仿真电路图如下所示</p>
+<p><img src="/rectifier-circuit-note/image-20231116151743092.png"></p>
+<p>仿真波形如下所示</p>
+<p><img src="/rectifier-circuit-note/image-20231116151830461.png"></p>
+<h3 id="单相半波半控整流">单相半波半控整流</h3>
+<p>理论电路和波形图如下所示</p>
+<p><img src="/rectifier-circuit-note/image-20231116152409877.png"></p>
+<p>其中 VT 是晶闸管。</p>
+<p>我们使用晶闸管的开关特性（通过一个信号触发晶闸管导通，直到出现反向电压使其截止，故称为半控）来控制电压的输出，从而可以控制输出电压的有效值。</p>
+<p>其中 <span class="math inline">\(\alpha\)</span>
+是晶闸管的控制角，代表了晶闸管在一定相位内是正在等待控制信号的；<span class="math inline">\(\theta\)</span>
+是晶闸管的导通角，代表了晶闸管导通的相位大小，其中满足 <span class="math display">\[
+\alpha+\theta=180\degree
+\]</span> 仿真电路图如下</p>
+<p><img src="/rectifier-circuit-note/image-20231116154152226.png"></p>
+<p>其中控制信号采用 pulse
+generator（矩形信号发生器）模块实现，调整其周期（Period）与电压周期一致，占空比（Pulse
+Width）与晶闸管的控制无关，延迟相位（Phase delay）设置为 <span class="math inline">\(\alpha/360\degree\times T\)</span>，其中 <span class="math inline">\(T\)</span> 是设定的周期，<span class="math inline">\(\alpha\)</span> 是控制角。</p>
+<p>输出波形如下</p>
+<p><img src="/rectifier-circuit-note/image-20231116154643471.png"></p>
+<p>在面对电感性负载时，会出现明显的延迟信号</p>
+<p><img src="/rectifier-circuit-note/image-20231116155748050.png"></p>
+<p><img src="/rectifier-circuit-note/image-20231116154909803.png"></p>
+<p>同样的，我们可以为其添加续流二极管，使电感的反馈电压被续流二极管截止。</p>
+<p><img src="/rectifier-circuit-note/image-20231116155828730.png"></p>
+<p>仿真电路图如下</p>
+<p><img src="/rectifier-circuit-note/image-20231116155648190.png"></p>
+<p>仿真波形如下</p>
+<p><img src="/rectifier-circuit-note/image-20231116155619974.png"></p>
+<p>但需要注意，此时输出电流发生了一定的变化，如果提高电感大小，那么变化将会与理论一致。</p>
+<p><img src="/rectifier-circuit-note/image-20231116155910760.png"></p>
+<p>}电源电压正半波 <span class="math inline">\(u_2&gt;0\)</span>，晶闸管电压 <span class="math inline">\(u_{AK}&gt;0\)</span>。<span class="math inline">\(\omega
+t=\alpha\)</span>，触发晶闸管导通，负载上有输出电压和电流，续流二极管VDR承受反向电压而处于断态。</p>
+<p>}电源电压负半波 <span class="math inline">\(u_2&lt;0\)</span>，通过续流二极管VDR使晶闸管承受反向电压而关断。电感的感应电压使VDR承受正向电压导通续流，负载两端的电压仅为续流二极管的管压降。如果电感足够大，续流二极管一直导通到下一周期晶闸管导通，使
+<span class="math inline">\(u_d\)</span> 连续。</p>
+<p>电感性负载加续流二极管后，输出电压波形与电阻性负载波形相同，续流二极管可以起到提高输出电压的作用。在大电感负载时负载电流波形连续且近似一条直线，流过晶闸管的电流波形和流过续流二极管的电流波形是矩形波。</p>
+<h3 id="单相全波半控整流">单相全波半控整流</h3>
+<p>同理，我们希望能利用整个周期的电能而非半个周期的电能，故在此基础上升级为桥式电路。</p>
+<p><img src="/rectifier-circuit-note/image-20231116162146135.png"></p>
+<p>同样的，同一时间内只有 VT1、VT3 或 VT2、VT4 导通。</p>
+<p>仿真电路图如下</p>
+<p><img src="/rectifier-circuit-note/image-20231116162025132.png"></p>
+<p>仿真波形如下</p>
+<p><img src="/rectifier-circuit-note/image-20231116162234335.png"></p>
+<p>在电源电压u2正半波，晶闸管VT1、VT4承受正向电压。假设四个晶闸管的漏电阻相等，则在0～α区间由于四个晶闸管都不导通，uAK1，4=1/2
+u2。在ωt=α处触发晶闸管VT1、VT4导通，电流沿a→VT1→R→VT4→b流通，此时负载上输出电压ud=u2。电源电压反向施加到晶闸管VT2、VT3上，处于关断状态，到ωt=π时，因电源电压过零，晶闸管VT1、VT4阳极电流也下降为零而关断。</p>
+<p>在电源电压负半波，晶闸管VT2、VT3承受正向电压，在π～π+α区间，uAK2，3=1/2
+u2，在ωt=π+α处触发晶闸管VT2、VT3，元件导通，电流沿b→VT3→R→VT2→a流通，电源电压沿正半周期的方向施加到负载电阻上，负载上有输出电压
+ud=-u2。此时电源电压反向施加到晶闸管VT1、VT4上，使其处于关断状态。到ωt=2π，电源电压再次过零，VT2、VT3阳极电流也下降为零而关断。</p>
+<p>0～180º。α=0º时，输出电压最高；α=180º时，输出电压最小。晶闸管承受最大反向电压Um是相电压峰值，晶闸管承受最大正向电压是Um/2。</p>
+<p>当变为电感性负载时，显然会出现延迟现象</p>
+<p><img src="/rectifier-circuit-note/image-20231116162623937.png"></p>
+<p><img src="/rectifier-circuit-note/image-20231116162539022.png"></p>
+<p>从波形可以看出α＞90º输出电压波形正负面积相同，平均值为零，所以移相范围是0～90º。控制角α在0～90º之间变化时，晶闸管导通角θ≡π，导通角θ与控制角α无关。</p>
+<p>同样的，可以通过引入续流二极管来解决这一影响。</p>
+<p><img src="/rectifier-circuit-note/image-20231116163340716.png"></p>
+<p><img src="/rectifier-circuit-note/image-20231116163107150.png"></p>
+<p><img src="/rectifier-circuit-note/image-20231116163153601.png"></p>
+<p>但同理，需要注意输出电流波形发生了变化。</p>
+<h4 id="反电动势负载">反电动势负载</h4>
+<p>需要注意的是，晶闸管本身的开关特性决定了，如果受到反电动势，（当瞬时电动势小于反电动势时）将会立即截止，如果引入了反电动势负载，将会使得导通角变小。</p>
+<p>这提前 <span class="math inline">\(\delta\)</span>
+相位提前截止称为<strong>停止导电角</strong>。</p>
+<blockquote>
+<p>反电动势负载的实际情况是直流电动机。</p>
+</blockquote>
+<p><img src="/rectifier-circuit-note/image-20231116164714987.png"></p>
+<p><img src="/rectifier-circuit-note/image-20231116164659302.png"></p>
+<p><img src="/rectifier-circuit-note/image-20231116164726949.png"></p>
+<p>可以发现有明显的提前截止的波形存在，同时需要注意输出电流会受到反电动势的影响。</p>
+<p>在阻感性负载下，可以看到更明显的现象</p>
+<p><img src="/rectifier-circuit-note/image-20231116165333024.png"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/rectifier-circuit-note.html" title="电力电子技术——交流直流变换器">https://hasegawaazusa.github.io/rectifier-circuit-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/power-electornics-tech-note.html" rel="prev" title="电力电子技术笔记">
+                  <i class="fa fa-chevron-left"></i> 电力电子技术笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/special-structured-prime-note.html" rel="next" title="特殊结构N分解笔记">
+                  特殊结构N分解笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">678k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">10:17</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

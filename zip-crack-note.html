@@ -29,7 +29,7 @@
 <meta property="og:description" content="有关zip压缩包取证的简要笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-07-20T04:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-07T11:44:14.984Z">
+<meta property="article:modified_time" content="2024-02-03T12:11:17.153Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="forensics">
@@ -92,7 +92,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">118</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -144,7 +144,7 @@
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
             <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#zip-%E6%A0%BC%E5%BC%8F%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">ZIP 格式详解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0"><span class="nav-number">1.1.</span> <span class="nav-text">简述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.</span> <span class="nav-text">数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%95%B0%E6%8D%AE%E5%9D%97zipfilerecord"><span class="nav-number">1.2.1.</span> <span class="nav-text">文件数据块（ZIPFILERECORD）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#version"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">Version</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#flags"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">Flags</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#compression"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">Compression</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#crc"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">Crc</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E7%9B%AE%E5%BD%95%E5%9D%97zipdirentry"><span class="nav-number">1.2.2.</span> <span class="nav-text">文件目录块（ZIPDIRENTRY）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zip-%E5%B0%BE%E5%9D%97zipendlocator"><span class="nav-number">1.2.3.</span> <span class="nav-text">ZIP
-尾块（ZIPENDLOCATOR）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zip-%E7%A0%B4%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">ZIP 破解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%AA%E5%8A%A0%E5%AF%86"><span class="nav-number">2.1.</span> <span class="nav-text">伪加密</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3"><span class="nav-number">2.1.2.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%B1%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4"><span class="nav-number">2.2.</span> <span class="nav-text">弱密码爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">破解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#section"><span class="nav-number">2.2.2.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#crc-%E7%A2%B0%E6%92%9E"><span class="nav-number">2.3.</span> <span class="nav-text">CRC 碰撞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%8E%E6%96%87%E6%94%BB%E5%87%BB"><span class="nav-number">2.4.</span> <span class="nav-text">明文攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-3"><span class="nav-number">2.4.2.</span> <span class="nav-text">破解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">2.4.3.</span> <span class="nav-text">注意</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E6%98%8E%E6%96%87%E6%94%BB%E5%87%BB"><span class="nav-number">2.5.</span> <span class="nav-text">深入明文攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-4"><span class="nav-number">2.5.2.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%BF%E5%AF%86%E7%A0%81%E5%93%88%E5%B8%8C"><span class="nav-number">2.6.</span> <span class="nav-text">长密码哈希</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">特殊实例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E6%97%B6%E9%97%B4%E6%88%B3%E4%BD%9C%E4%B8%BA%E5%AF%86%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">以时间戳作为密码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-5"><span class="nav-number">3.1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-5"><span class="nav-number">3.1.2.</span> <span class="nav-text">破解</span></a></li></ol></li></ol></li></ol></div>
+尾块（ZIPENDLOCATOR）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#zip-%E7%A0%B4%E8%A7%A3"><span class="nav-number">2.</span> <span class="nav-text">ZIP 破解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%AA%E5%8A%A0%E5%AF%86"><span class="nav-number">2.1.</span> <span class="nav-text">伪加密</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">2.1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3"><span class="nav-number">2.1.2.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%B1%E5%AF%86%E7%A0%81%E7%88%86%E7%A0%B4"><span class="nav-number">2.2.</span> <span class="nav-text">弱密码爆破</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">2.2.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-1"><span class="nav-number">2.2.2.</span> <span class="nav-text">破解</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#section"><span class="nav-number">2.2.2.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#crc-%E7%A2%B0%E6%92%9E"><span class="nav-number">2.3.</span> <span class="nav-text">CRC 碰撞</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-2"><span class="nav-number">2.3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%98%8E%E6%96%87%E6%94%BB%E5%87%BB"><span class="nav-number">2.4.</span> <span class="nav-text">明文攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-3"><span class="nav-number">2.4.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-3"><span class="nav-number">2.4.2.</span> <span class="nav-text">破解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E6%84%8F"><span class="nav-number">2.4.3.</span> <span class="nav-text">注意</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B7%B1%E5%85%A5%E6%98%8E%E6%96%87%E6%94%BB%E5%87%BB"><span class="nav-number">2.5.</span> <span class="nav-text">深入明文攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-4"><span class="nav-number">2.5.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-4"><span class="nav-number">2.5.2.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%95%BF%E5%AF%86%E7%A0%81%E5%93%88%E5%B8%8C"><span class="nav-number">2.6.</span> <span class="nav-text">长密码哈希</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%89%B9%E6%AE%8A%E5%AE%9E%E4%BE%8B"><span class="nav-number">3.</span> <span class="nav-text">特殊实例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A5%E6%97%B6%E9%97%B4%E6%88%B3%E4%BD%9C%E4%B8%BA%E5%AF%86%E7%A0%81"><span class="nav-number">3.1.</span> <span class="nav-text">以时间戳作为密码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-5"><span class="nav-number">3.1.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A0%B4%E8%A7%A3-5"><span class="nav-number">3.1.2.</span> <span class="nav-text">破解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E6%96%87%E5%AF%86%E7%A0%81"><span class="nav-number">3.2.</span> <span class="nav-text">中文密码</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -159,13 +159,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -236,7 +236,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-07 19:44:14" itemprop="dateModified" datetime="2023-09-07T19:44:14+08:00">2023-09-07</time>
+      <time title="修改时间：2024-02-03 20:11:17" itemprop="dateModified" datetime="2024-02-03T20:11:17+08:00">2024-02-03</time>
     </span>
 
   
@@ -246,7 +246,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>5.1k</span>
+      <span>5.3k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -630,6 +630,10 @@ ZIP 软件会将其识别为被加密，但实际上并不存在对应的密码�
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python crc32.py reverse <span class="number">0</span>x4FA83D8C</span><br></pre></td></tr></table></figure>
 <p>需要注意的是，因为 CRC-32 是哈希算法的一种，所以可能会存在多个明文的
 CRC-32 值相等。</p>
+<blockquote>
+<p>CRC32 Tools
+不带有特殊字符，如果明文存在特殊字符需要手动添加在脚本中。</p>
+</blockquote>
 <h2 id="明文攻击">明文攻击</h2>
 <h3 id="原理-3">原理</h3>
 <p>ZIP
@@ -644,6 +648,8 @@ CRC-32 值相等。</p>
 <code>GBK</code>）可能导致压缩出来的大小不同，所以各种编码都需要尝试一次。</li>
 <li>不同的压缩软件压缩出来的文件可能会导致 ARCHPR 报错，一般推荐
 Bandizip 与 WinRAR 都尝试一次。</li>
+<li>铭记：WinRAR 可能修改了 Deflate 算法，不同版本、不同系统下的压缩内容
+ARCHPR 可能无法识别。</li>
 </ul>
 <h2 id="深入明文攻击">深入明文攻击</h2>
 <h3 id="原理-4">原理</h3>
@@ -729,6 +735,8 @@ ZIPX），如果输入密码长度超过 64 字节，它会使用 PBKDF2
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line">a = time.struct_time((<span class="number">2019</span>,<span class="number">5</span>,<span class="number">17</span>,<span class="number">8</span>,<span class="number">25</span>,<span class="number">28</span>,-<span class="number">1</span>,-<span class="number">1</span>,-<span class="number">1</span>))</span><br><span class="line"><span class="built_in">print</span>(time.mktime(a))</span><br></pre></td></tr></table></figure>
 <p>得到结果 <code>1558052728.0</code>，设置掩码
 <code>15580?????.??</code> 或者 <code>15580?????.?</code> 爆破即可。</p>
+<h2 id="中文密码">中文密码</h2>
+<p>中文密码在不同的系统上可能会以不同的编码作为输入，在中文Windows系统中大多使用GBK。</p>
 
     </div>
 
@@ -792,7 +800,7 @@ ZIPX），如果输入密码长度超过 64 字节，它会使用 PBKDF2
 
 <div class="copyright">
   &copy; 2022 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -803,13 +811,13 @@ ZIPX），如果输入密码长度超过 64 字节，它会使用 PBKDF2
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">617k</span>
+    <span title="站点总字数">678k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:21</span>
+    <span title="站点阅读时长">10:17</span>
   </span>
 </div>
 

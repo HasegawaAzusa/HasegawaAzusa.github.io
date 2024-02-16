@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关线搜索技术的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最优化方法——线搜索技术">
+<meta property="og:url" content="https://hasegawaazusa.github.io/line-search-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关线搜索技术的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/line-search-note/%E8%BF%AD%E4%BB%A3%E6%AC%A1%E6%95%B0%E4%B8%8E%E6%AD%A5%E9%95%BF%E7%9A%84%E5%85%B3%E7%B3%BB.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/line-search-note/Armijo%E5%87%86%E5%88%99%E7%AE%97%E6%B3%95.png">
+<meta property="article:published_time" content="2023-10-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-13T03:41:36.177Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="最优化方法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/line-search-note/%E8%BF%AD%E4%BB%A3%E6%AC%A1%E6%95%B0%E4%B8%8E%E6%AD%A5%E9%95%BF%E7%9A%84%E5%85%B3%E7%B3%BB.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/line-search-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/line-search-note.html","path":"/line-search-note.html","title":"最优化方法——线搜索技术"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>最优化方法——线搜索技术 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">最优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E6%90%9C%E7%B4%A2%E6%8A%80%E6%9C%AF"><span class="nav-number">1.1.</span> <span class="nav-text">线搜索技术</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B2%BE%E7%A1%AE%E7%BA%BF%E6%90%9C%E7%B4%A2"><span class="nav-number">1.1.1.</span> <span class="nav-text">精确线搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E7%B2%BE%E7%A1%AE%E7%BA%BF%E6%90%9C%E7%B4%A2"><span class="nav-number">1.1.2.</span> <span class="nav-text">非精确线搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#armijo-%E5%87%86%E5%88%99"><span class="nav-number">1.1.3.</span> <span class="nav-text">Armijo 准则</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/line-search-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="最优化方法——线搜索技术 | 独奏の小屋">
+      <meta itemprop="description" content="有关线搜索技术的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          最优化方法——线搜索技术
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-10-31 00:00:00" itemprop="dateCreated datePublished" datetime="2023-10-31T00:00:00+08:00">2023-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-11-13 11:41:36" itemprop="dateModified" datetime="2023-11-13T11:41:36+08:00">2023-11-13</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.4k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关线搜索技术的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="最优化方法">最优化方法</h1>
+<h2 id="线搜索技术">线搜索技术</h2>
+<p>线搜索技术，又称一维搜索技术，是指求解但变量函数的极小值，是多变量求解问题的一个特例，也是多变量求解问题的一部分（一般用于确定步长
+<span class="math inline">\(\alpha_k\)</span>）。</p>
+<p><strong>下降方向</strong>我们一般以最速下降法为例，显然 <span class="math inline">\(d_k\)</span>
+就是梯度的负方向，是好寻找的，那么此时步长的寻找就很重要了。</p>
+<p>我们想要取得一个步长 <span class="math inline">\(\alpha_k\)</span>
+使得<strong>下降速度</strong>快，即令 <span class="math display">\[
+\varphi(\alpha)=f(x_k+\alpha d_k)
+\]</span> 使得 <span class="math display">\[
+\varphi(\alpha)&lt;\varphi(0)
+\]</span> 这使得选取的步长能够使得下降速度快，这也是一维搜索问题。</p>
+<h3 id="精确线搜索">精确线搜索</h3>
+<p>精确线搜索主打找到一个最快的下降速度，即使得 <span class="math inline">\(\varphi(\alpha)\)</span>
+是最小值，这样下降速度就足够快。</p>
+<p>此时我们不妨直接对其求导，得到 <span class="math display">\[
+\varphi&#39;(\alpha)=\nabla f(x_k+\alpha d_k)^Td_k
+\]</span>
+如果方程简单，我们直接解方程即可；如果方程不简单，我们可以用数值方法求得近似解。</p>
+<p>例如求解函数 <span class="math display">\[
+f(\mathrm{x})=2x_1^2+x_2^2\newline
+\mathrm{x}_1=(1,1)&#39;\newline
+\epsilon=\frac{1}{10}
+\]</span> 求解精确步长 <span class="math inline">\(\alpha_1\)</span>。</p>
+<p>首先可以求得函数的梯度为 <span class="math display">\[
+\nabla f(\mathrm{x})=\begin{bmatrix}
+4x_1\\
+2x_2
+\end{bmatrix}
+\]</span> 那么下降方向为 <span class="math display">\[
+\mathrm{d}_1=-\nabla f(\mathrm{x}_1)=\begin{bmatrix}
+-4\\
+-2
+\end{bmatrix}\newline
+\|\mathrm{d}_1\|=2\sqrt{5}&gt;\frac{1}{10}
+\]</span> 建立函数 <span class="math display">\[
+\begin{align}
+\varphi(\alpha)&amp;=f(\mathrm{x}_1+\alpha\mathrm{d}_1)\\
+&amp;=f(\begin{bmatrix}
+1\\
+1
+\end{bmatrix}+\alpha\begin{bmatrix}
+-4\\
+-2
+\end{bmatrix})\\
+&amp;=f(\begin{bmatrix}
+1-4\alpha\\
+1-2\alpha
+\end{bmatrix})\\
+&amp;=2(1-4\alpha)^2+(1-2\alpha)^2
+\end{align}
+\]</span> 求导可得 <span class="math display">\[
+\varphi&#39;(\alpha)=-16(1-4\alpha)-4(1-2\alpha)
+\]</span> 由 <span class="math inline">\(\varphi&#39;(\alpha)=0\)</span>
+求得 <span class="math display">\[
+\alpha_1=\frac{5}{18}
+\]</span> 故迭代后，有 <span class="math display">\[
+\mathrm{x}_2=\mathrm{x}_1+\alpha_1\mathrm{d}_1=\begin{bmatrix}
+-\frac{1}{9}\\
+\frac{4}{9}
+\end{bmatrix}
+\]</span></p>
+<h3 id="非精确线搜索">非精确线搜索</h3>
+<p>但是我们考虑到，每次都要进行求导运算的话，（解导数方程的）计算量是很大的，同时在距离最优解尚远时，并不需要<strong>下降速度最快</strong>，我们只需要<strong>下降速度较快</strong>即可。</p>
+<p>但是不同的步长，也会使得迭代次数不同，如下图所示（由 <span class="math inline">\(\eta\)</span> 表示步长）：</p>
+<figure>
+<img src="/line-search-note/迭代次数与步长的关系.png" alt="迭代次数与步长的关系">
+<figcaption aria-hidden="true">迭代次数与步长的关系</figcaption>
+</figure>
+<p>所以，即使是非精确的步长选取，也不能乱选。</p>
+<p>最通用的非精确线搜索算法是 <strong>Armijo 准则</strong>。</p>
+<h3 id="armijo-准则">Armijo 准则</h3>
+<p>给定一个 <span class="math inline">\(\beta\in(0,1),\sigma\in(0,0.5)\)</span>，令步长因子为
+<span class="math inline">\(\alpha_k=\beta^{m_k}\)</span>，其中 <span class="math inline">\(m_k\)</span> 是满足下列不等式的最小非负整数 <span class="math display">\[
+f(\mathrm{x}_k+\beta^{m}\mathrm{d}_k)\leq f(\mathrm{x}_k)+\sigma \beta^m
+\nabla f(\mathrm{x}_k)^T\mathrm{d}_k
+\]</span> 一般来说，我们令 <span class="math inline">\(m=0\)</span>
+开始，逐步自增，直到满足上式条件后结束迭代。</p>
+<p>算法的优势是不需要解方程，仅需要少量迭代就可以找到合适的步长。</p>
+<p>比如说问题 <span class="math display">\[
+f(\mathrm{x})=\frac{1}{2}x_1^2+x_2^2\newline
+\mathrm{x}_0=(1,1)&#39;,\mathrm{d}_0=(1,-1)&#39;\newline
+\beta=0.5,\sigma=0.9
+\]</span> 先求梯度，得到 <span class="math display">\[
+\begin{align}
+\nabla f(\mathrm{x}_0)&amp;=\begin{bmatrix}
+x_1\\
+2x_2
+\end{bmatrix}\newline
+&amp;=\begin{bmatrix}
+1\\
+2
+\end{bmatrix}
+\end{align}
+\]</span> 那么 <span class="math display">\[
+\nabla f(\mathrm{x}_0)^T\mathrm{d}_0=-1&lt;0
+\]</span> 那么可以确定，<span class="math inline">\(\mathrm{d}_0\)</span> 是函数在 <span class="math inline">\(\mathrm{x}_0\)</span> 的一个下降方向。</p>
+<p>那么 Armijo 准则的条件式化简为 <span class="math display">\[
+f(\begin{bmatrix}
+1\\
+1
+\end{bmatrix}+\alpha\begin{bmatrix}
+1\\
+-1
+\end{bmatrix})=\frac{1}{2}(1+\alpha)^2+(1-\alpha)^2\leq
+\frac{3}{2}-0.9\alpha
+\]</span> 即 <span class="math display">\[
+\frac{3}{2}\alpha^2-0.1\alpha\leq 0
+\]</span> 解得 <span class="math display">\[
+\alpha\leq\frac{1}{15}
+\]</span> 那么尝试求解近似解，当 <span class="math inline">\(m=4\)</span> 时，满足 <span class="math display">\[
+\alpha=0.5^4=0.0625\leq\frac{1}{15}
+\]</span> <img src="/line-search-note/Armijo准则算法.png" alt="Armijo准则算法"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/line-search-note.html" title="最优化方法——线搜索技术">https://hasegawaazusa.github.io/line-search-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 最优化方法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/special-structured-prime-note.html" rel="prev" title="特殊结构N分解笔记">
+                  <i class="fa fa-chevron-left"></i> 特殊结构N分解笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/dual-rsa-note.html" rel="next" title="Dual RSA——双生RSA">
+                  Dual RSA——双生RSA <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">678k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">10:17</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

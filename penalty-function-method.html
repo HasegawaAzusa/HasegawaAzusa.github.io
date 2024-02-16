@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关罚函数法的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最优化方法——罚函数法">
+<meta property="og:url" content="https://hasegawaazusa.github.io/penalty-function-method.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关罚函数法的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/penalty-function-method/%E5%86%85%E7%82%B9%E6%B3%95%E8%AF%A6%E7%BB%86%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/penalty-function-method/%E5%A4%96%E7%82%B9%E6%B3%95%E8%AF%A6%E7%BB%86%E7%AE%97%E6%B3%95.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/penalty-function-method/PH%E7%AE%97%E6%B3%95%E8%AF%A6%E7%BB%86%E7%AE%97%E6%B3%95.png">
+<meta property="article:published_time" content="2023-12-09T10:00:00.000Z">
+<meta property="article:modified_time" content="2024-01-05T16:15:07.645Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="最优化方法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/penalty-function-method/%E5%86%85%E7%82%B9%E6%B3%95%E8%AF%A6%E7%BB%86%E7%AE%97%E6%B3%95.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/penalty-function-method.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/penalty-function-method.html","path":"/penalty-function-method.html","title":"最优化方法——罚函数法"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>最优化方法——罚函数法 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">最优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%9A%E5%87%BD%E6%95%B0%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">罚函数法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%85%E7%82%B9%E6%B3%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">内点法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%96%E7%82%B9%E6%B3%95%E5%A4%96%E7%BD%9A%E5%87%BD%E6%95%B0%E6%B3%95"><span class="nav-number">1.1.2.</span> <span class="nav-text">外点法（外罚函数法）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B9%98%E5%AD%90%E6%B3%95"><span class="nav-number">1.1.3.</span> <span class="nav-text">乘子法</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/penalty-function-method.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="最优化方法——罚函数法 | 独奏の小屋">
+      <meta itemprop="description" content="有关罚函数法的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          最优化方法——罚函数法
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-12-09 18:00:00" itemprop="dateCreated datePublished" datetime="2023-12-09T18:00:00+08:00">2023-12-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-01-06 00:15:07" itemprop="dateModified" datetime="2024-01-06T00:15:07+08:00">2024-01-06</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2.8k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关罚函数法的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="最优化方法">最优化方法</h1>
+<h2 id="罚函数法">罚函数法</h2>
+<p>最优性条件告诉我们，什么时候有最优解，但实际应用往往受到非线性、非凸性、不可导的限制。</p>
+<p>罚函数法的基本思想是将原始优化问题加上一个罚项，将约束问题转化为无约束问题。这个罚项惩罚了不满足约束条件的解，使得最优解在满足约束的同时尽量接近原问题的最优解。罚函数法的优势在于可以处理一些不光滑、非凸、不可导的约束问题，并且在迭代的过程中逐渐逼近约束条件。</p>
+<h3 id="内点法">内点法</h3>
+<p>内点法一般只适用于不等式约束的优化问题： <span class="math display">\[
+\begin{align}
+\min &amp;f(x),x\in R^n\\
+\text{s.t. }g_i(x)&amp;\geq 0,i=1,\cdots,m
+\end{align}
+\]</span> 其中，记<strong>可行域</strong> <span class="math inline">\(D=\{x\in R^n:g_i(x)\geq
+0,i=1,\cdots,m\}\)</span></p>
+<p>内点法也属于罚方法的范畴，其基本思想是保持每一个迭代点 <span class="math inline">\(x_k\)</span> 是可行域 <span class="math inline">\(D\)</span> 的内点,
+可行域的边界被筑起一道很高的“围墙”作为障碍，当迭代点靠近边界时，增广目标函数值骤然增大，以示“惩罚”，并阻止迭代点穿越边界。</p>
+<p>因此，内点法也称为内罚函数法或障碍函数法，它只是用于可行域的内点集非空的情形，即
+<span class="math display">\[
+D=\{x\in R^n:g_i(x)\geq 0,i=1,\cdots,m\}\neq \emptyset
+\]</span> 我们需要构造一个<strong>增广目标函数</strong> <span class="math display">\[
+H(x,\tau)=f(x)+\tau\bar{H}(x)
+\]</span> 其中，<span class="math inline">\(\bar{H}(x)\)</span>
+是<strong>障碍函数</strong>，它需要满足如下性质：当 <span class="math inline">\(x\)</span> 在 <span class="math inline">\(D\)</span> 中趋向于边界时，至少有一个 <span class="math inline">\(g_i(x)\)</span> 趋向于 0，而 <span class="math inline">\(\bar{H}(x)\)</span> 要趋向于无穷大。</p>
+<p>故一般来说我们会取约束函数的对数或倒数，即 <span class="math display">\[
+\bar{H}(x)=-\sum^m_{i=1}\ln g_i(x)\newline
+\bar{H}(x)=\sum^m_{i=1}\frac{1}{g_i(x)}
+\]</span> <strong>这样就将原问题近似成了障碍问题。</strong></p>
+<blockquote>
+<p>会有人问，为什么要做这样的近似（降级），我直接解原问题不就完事了？</p>
+<p>对于内点法这样是不适用的。例如，解 KKT
+条件的时候，矩阵不一定满秩。</p>
+<p>此近似问题的近似精度会随着 <span class="math inline">\(\tau\)</span>
+减小而不断改进，并可以证明当 <span class="math inline">\(\tau\)</span>
+趋向 0 时近似问题与原问题的解是一样的。</p>
+</blockquote>
+<p>例如含不等式的约束问题 <span class="math display">\[
+\begin{align}
+\min &amp;f(x)=-x\newline
+\text{s.t. } &amp;c(x)=x+1\leq 0
+\end{align}
+\]</span> 取障碍函数 <span class="math inline">\(\bar{H}(x)=-\frac{1}{x+1}\)</span>，则罚函数为
+<span class="math display">\[
+H(x,\tau)=-x-\frac{\tau}{x+1}
+\]</span> 则原问题近似为求解无约束问题 <span class="math display">\[
+\min H(x,\tau)
+\]</span> 求导 <span class="math display">\[
+\frac{\partial{H}}{\partial{x}}=-1+\frac{\tau}{(x+1)^2}=0
+\]</span> 可得 <span class="math display">\[
+\bar{x}(\tau)=-1-\sqrt{\tau}
+\]</span> 那么有 <span class="math display">\[
+\lim_{\tau\to0}\bar{x}(\tau)=\lim_{\tau\to0}(-1-\sqrt{\tau})=-1=x^*
+\]</span> 下面给出内点法的详细算法步骤</p>
+<figure>
+<img src="/penalty-function-method/%E5%86%85%E7%82%B9%E6%B3%95%E8%AF%A6%E7%BB%86%E7%AE%97%E6%B3%95.png" alt="内点法详细算法">
+<figcaption aria-hidden="true">内点法详细算法</figcaption>
+</figure>
+<p>由上述算法可以看出，内点法的优点是结构简单，适应性强。
+但是随着迭代过程的进行，罚参数 <span class="math inline">\(\tau_k\)</span>
+将变得越来越小，趋向于零，使得增广目标函数的病态性越来越严重，这给无约束子问题的求解带来了数值实现上的困难，以致导致迭代的失败。
+此外，内点法的初始点 <span class="math inline">\(x_0\)</span>
+要求是一个严格的可行点，一般来说这也是比较麻烦甚至困难的。</p>
+<h3 id="外点法外罚函数法">外点法（外罚函数法）</h3>
+<p>对于有约束的极值点问题 <span class="math display">\[
+\begin{align}
+\min &amp;f(x),x\in R^n\\
+\text{s.t. }g_i(x)&amp;\geq 0,i=1,\cdots,m\\
+h_j(x)&amp;= 0,j=1,\cdots,l
+\end{align}
+\]</span> 记可行域为 <span class="math display">\[
+D=\left\{x\middle|\begin{align}
+g_i(x)&amp;\geq 0,i=1,\cdots,m\\
+h_j(x)&amp;= 0,j=1,\cdots,l
+\end{align}\right\}
+\]</span> 构造罚函数 <span class="math display">\[
+\bar{H}(x)=\sum^l_{i=1}h_i^2(x)+\sum^m_{i=1}[\min\{0,g_i(x)\}]^2
+\]</span> 和增广目标函数 <span class="math display">\[
+H(x,\tau)=f(x)+\tau\bar{H}(x)
+\]</span> 不难发现，当 <span class="math inline">\(x\in D\)</span>
+时，即 <span class="math inline">\(x\)</span> 为可行点时，<span class="math inline">\(H(x,\tau)=f(x)\)</span>，此时目标函数没有受到额外惩罚；只有当
+<span class="math inline">\(x\)</span>
+为不可行点时，目标函数受到了额外的惩罚，其中 <span class="math inline">\(\tau\)</span> 越大，惩罚越重。</p>
+<p>故当 <span class="math inline">\(\tau&gt;0\)</span> 充分大时，要使得
+<span class="math inline">\(H(x,\tau)\)</span> 极小，罚函数 <span class="math inline">\(\bar{H}(x)\)</span>
+也需要充分小才行。故通过这样的方式逼近极小值点。</p>
+<blockquote>
+<p>与内点法相反，是求取 <span class="math inline">\(\lim_{\tau\to\infin}\bar{x}(\tau)\)</span>。</p>
+</blockquote>
+<figure>
+<img src="/penalty-function-method/%E5%A4%96%E7%82%B9%E6%B3%95%E8%AF%A6%E7%BB%86%E7%AE%97%E6%B3%95.png" alt="外点法详细算法">
+<figcaption aria-hidden="true">外点法详细算法</figcaption>
+</figure>
+<p>由上述算法可知，外罚函数法结构简单，可以直接调用无约束优化算法的通用程序，因而容易编程实现。
+缺点是：</p>
+<ol type="1">
+<li><span class="math inline">\(x_k\)</span>
+往往不是可行点，这对于某些实际问题是难以接受的</li>
+<li>罚参数 <span class="math inline">\(\tau_k\)</span>
+的选取比较困难，取的过小，可能起不到“惩罚”的作用，而取得过大则可能造成
+<span class="math inline">\(H(x,\tau)\)</span>
+的海森阵的条件数很大，从而带来数值技术上的困难</li>
+<li>注意到 <span class="math inline">\(\bar{H}(x)\)</span>
+一般是不可微的，因而难以直接使用利用导数的优化算法，从而收敛速度缓慢。</li>
+</ol>
+<h3 id="乘子法">乘子法</h3>
+<p>由于外罚函数法中的罚参数 <span class="math inline">\(\tau_k\to\infin\)</span>，因此增广目标函数变得“越来越病态”。</p>
+<p>增广目标函数的这种病态性质是外罚函数法的主要缺点，而这种缺陷在乘子法中由于引入拉格朗日函数及加上适当的罚函数而得以有效的克服。</p>
+<p>考虑等式优化问题 <span class="math display">\[
+\begin{align}
+\min &amp;f(x),x\in R^n\\
+\text{s.t. }h_j(x)&amp;= 0,j=1,\cdots,l
+\end{align}
+\]</span> 那么对于拉格朗日函数 <span class="math display">\[
+L(x,\lambda)=f(x)-\lambda^Th(x)
+\]</span> 一定有 KT 点 <span class="math inline">\((x^*,\lambda^*)\)</span> 等价原问题为 <span class="math display">\[
+\begin{align}
+\min &amp;L(x,\lambda^*),x\in R^n\\
+\text{s.t. }h_j(x)&amp;= 0,j=1,\cdots,l
+\end{align}
+\]</span> 此时便可以使用外点法求解问题，其增广目标函数为 <span class="math display">\[
+H(x,\lambda^*,\tau)=L(x,\lambda^*)+\frac{\tau}{2}\|h(x)\|^2
+\]</span> <img src="/penalty-function-method/PH%E7%AE%97%E6%B3%95%E8%AF%A6%E7%BB%86%E7%AE%97%E6%B3%95.png" alt="PH算法详细算法"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/penalty-function-method.html" title="最优化方法——罚函数法">https://hasegawaazusa.github.io/penalty-function-method.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 最优化方法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/optimality-conditions-note.html" rel="prev" title="最优化方法——最优性条件">
+                  <i class="fa fa-chevron-left"></i> 最优化方法——最优性条件
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">678k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">10:17</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

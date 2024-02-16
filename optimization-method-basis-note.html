@@ -32,8 +32,9 @@
 <meta property="og:image" content="https://hasegawaazusa.github.io/optimization-method-basis-note/%E6%9C%80%E9%80%9F%E4%B8%8B%E9%99%8D%E6%B3%95%E5%92%8C%E7%89%9B%E9%A1%BF%E6%B3%95.png">
 <meta property="og:image" content="https://hasegawaazusa.github.io/optimization-method-basis-note/%E5%B8%B8%E7%94%A8%E7%9A%84%E7%BB%88%E6%AD%A2%E5%87%86%E5%88%99.png">
 <meta property="article:published_time" content="2023-09-12T07:00:00.000Z">
-<meta property="article:modified_time" content="2023-10-11T07:45:38.944Z">
+<meta property="article:modified_time" content="2024-01-09T07:25:52.067Z">
 <meta property="article:author" content="qsdz">
+<meta property="article:tag" content="最优化方法">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://hasegawaazusa.github.io/optimization-method-basis-note/%E5%87%B8%E5%87%BD%E6%95%B0%E7%9A%84%E5%9B%BE%E5%83%8F%E6%80%A7%E8%B4%A8.png">
 
@@ -93,7 +94,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">118</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -159,13 +160,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -236,7 +237,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-11 15:45:38" itemprop="dateModified" datetime="2023-10-11T15:45:38+08:00">2023-10-11</time>
+      <time title="修改时间：2024-01-09 15:25:52" itemprop="dateModified" datetime="2024-01-09T15:25:52+08:00">2024-01-09</time>
     </span>
 
   
@@ -453,7 +454,7 @@ a_{21}&amp;a_{22}
 \end{vmatrix}&gt;0,\cdots,\begin{vmatrix}
 a_{11}&amp;\cdots&amp;a_{1n}\\
 \vdots&amp;\ddots&amp;\vdots\\
-a_{21}&amp;\cdots&amp;a_{22}
+a_{n1}&amp;\cdots&amp;a_{n2}
 \end{vmatrix}&gt;0
 \]</span> 这个定理也称作是<strong>霍尔维茨定理</strong>。</p>
 <p>而判断负定型的充要条件是 <span class="math display">\[
@@ -479,7 +480,9 @@ D^2(f)=\begin{bmatrix}
 8x_1&amp;-4
 \end{bmatrix}
 \]</span> 可知由于其在 <span class="math inline">\((0,1)\)</span>
-处结果为 <span class="math inline">\(\begin{bmatrix} 8&amp;0\\ 0&amp;-4
+处结果为 <span class="math inline">\(\begin{bmatrix}
+8&amp;0\\
+0&amp;-4
 \end{bmatrix}\)</span>，是不定矩阵，因此 <span class="math inline">\(f\)</span> 在 <span class="math inline">\(C\)</span>
 上并非<strong>处处</strong>半正定，故其不是凸函数。</p>
 <h3 id="无约束最优化问题">无约束最优化问题</h3>
@@ -509,11 +512,11 @@ f(x^{(k)}+a_kd^{(k)})&lt;f(x^{(k)})
 \]</span></p></li>
 <li><p>令 <span class="math inline">\(x^{(k+1)}=x^{(k)}+a_kd^{(k)},k=k+1\)</span>，回到第二步</p></li>
 </ol>
-<p>在这样的算法框架中，我们需要确定如下几个细节：</p>
+<p><strong>在这样的算法框架中，我们需要确定如下几个细节：</strong></p>
 <ol type="1">
-<li>下降方向</li>
-<li>终止条件</li>
-<li>步长的选取（线性搜索）</li>
+<li><strong>下降方向</strong></li>
+<li><strong>终止条件</strong></li>
+<li><strong>步长的选取（线性搜索）</strong></li>
 </ol>
 <h3 id="下降方向">下降方向</h3>
 <p>下降方向的确定有许多种算法思路，其中最常见的就是两种：最速下降法（梯度下降法）和牛顿法。</p>
@@ -568,6 +571,9 @@ x^{k+1}=x^k-a^k(\nabla^2 f(x^k))^{-1}\nabla f(x^k)
 </ul>
 </div>
 
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 最优化方法</a>
+          </div>
 
         
 
@@ -601,7 +607,7 @@ x^{k+1}=x^k-a^k(\nabla^2 f(x^k))^{-1}\nabla f(x^k)
 
 <div class="copyright">
   &copy; 2022 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -612,13 +618,13 @@ x^{k+1}=x^k-a^k(\nabla^2 f(x^k))^{-1}\nabla f(x^k)
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">617k</span>
+    <span title="站点总字数">678k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:21</span>
+    <span title="站点阅读时长">10:17</span>
   </span>
 </div>
 

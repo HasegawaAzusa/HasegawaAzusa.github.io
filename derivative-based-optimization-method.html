@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关基于导数的最优化方法的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="最优化方法——基于导数的优化">
+<meta property="og:url" content="https://hasegawaazusa.github.io/derivative-based-optimization-method.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关基于导数的最优化方法的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/derivative-based-optimization-method/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95matlab%E4%BB%A3%E7%A0%81.png">
+<meta property="article:published_time" content="2023-11-02T02:00:00.000Z">
+<meta property="article:modified_time" content="2023-11-13T06:53:18.675Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="最优化方法">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/derivative-based-optimization-method/%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95matlab%E4%BB%A3%E7%A0%81.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/derivative-based-optimization-method.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/derivative-based-optimization-method.html","path":"/derivative-based-optimization-method.html","title":"最优化方法——基于导数的优化"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>最优化方法——基于导数的优化 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.</span> <span class="nav-text">最优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%AF%BC%E6%95%B0%E7%9A%84%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">基于导数的优化方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="nav-number">1.1.1.</span> <span class="nav-text">梯度下降法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%9B%E9%A1%BF%E4%B8%8B%E9%99%8D%E6%B3%95"><span class="nav-number">1.1.2.</span> <span class="nav-text">牛顿下降法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%BB%E5%B0%BC%E7%89%9B%E9%A1%BF%E6%B3%95"><span class="nav-number">1.1.3.</span> <span class="nav-text">阻尼牛顿法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%9B%E9%A1%BF%E6%B3%95%E4%B8%8E%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%9A%84%E6%AF%94%E8%BE%83"><span class="nav-number">1.1.4.</span> <span class="nav-text">牛顿法与梯度下降的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="nav-number">1.1.5.</span> <span class="nav-text">非线性最小二乘法</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">126</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">64</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/derivative-based-optimization-method.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="最优化方法——基于导数的优化 | 独奏の小屋">
+      <meta itemprop="description" content="有关基于导数的最优化方法的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          最优化方法——基于导数的优化
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-11-02 10:00:00" itemprop="dateCreated datePublished" datetime="2023-11-02T10:00:00+08:00">2023-11-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-11-13 14:53:18" itemprop="dateModified" datetime="2023-11-13T14:53:18+08:00">2023-11-13</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关基于导数的最优化方法的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="最优化方法">最优化方法</h1>
+<h2 id="基于导数的优化方法">基于导数的优化方法</h2>
+<h3 id="梯度下降法">梯度下降法</h3>
+<p>梯度下降法，也称最速下降法。</p>
+<p>可以从<a href="/linear-discriminant-function.html#%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95">另一篇博客</a>中了解详细内容。</p>
+<p>算法描述如下</p>
+<ol type="1">
+<li>选取初始点 <span class="math inline">\(\mathrm{x}_1\in
+R^n\)</span>，容许误差 <span class="math inline">\(0\leq \epsilon\ll
+1\)</span>，令 <span class="math inline">\(k=1\)</span>。</li>
+<li>计算梯度 <span class="math inline">\(\mathrm{g}_k=\nabla
+f(\mathrm{x}_k)\)</span>，如果 <span class="math inline">\(\|\mathrm{g}_k\|\leq
+\epsilon\)</span>，算法停止，输出 <span class="math inline">\(\mathrm{x}_k\)</span>
+为近似最优解；否则继续。</li>
+<li>取下降方向为梯度负方向 <span class="math inline">\(\mathrm{d}_k=-\mathrm{g}_k\)</span>。</li>
+<li>由线搜索技术确定步长 <span class="math inline">\(\alpha_k\)</span>。</li>
+<li>令 <span class="math inline">\(\mathrm{x}_{k+1}=\mathrm{x}_k+\alpha_k\mathrm{d}_k\)</span>，同时
+<span class="math inline">\(k=k+1\)</span>，回到第二步。</li>
+</ol>
+<figure>
+<img src="/derivative-based-optimization-method/梯度下降法matlab代码.png" alt="梯度下降法matlab代码">
+<figcaption aria-hidden="true">梯度下降法matlab代码</figcaption>
+</figure>
+<p>梯度下降法往往是局部最优解，所以对于许多问题并不是最优的下降算法。</p>
+<blockquote>
+<p>但是在神经网络的优化方法中，梯度下降法表现优异。</p>
+</blockquote>
+<h3 id="牛顿下降法">牛顿下降法</h3>
+<p>在<a href="/linear-discriminant-function.html#牛顿下降法">另一篇博客</a>中也可以略见一二。</p>
+<p>牛顿迭代法的基本公式是 <span class="math display">\[
+x_{k+1}=x_k-\frac{f(x_k)}{f&#39;(x_k)}
+\]</span>
+这种算法的下降速度是极快的，对于许多优化问题都会选择牛顿法求解。</p>
+<blockquote>
+<p>例如平方根倒数问题。</p>
+</blockquote>
+<p>基于牛顿法和最速下降法，改进出牛顿下降法公式为 <span class="math display">\[
+\mathrm{x}_{k+1}=\mathrm{x}_k-\nabla^2f(\mathrm{x}_k)^{-1}\nabla
+f(\mathrm{x}_k)
+\]</span></p>
+<blockquote>
+<p>为方便理解可以表示成 <span class="math display">\[
+\mathrm{x}_{k+1}=\mathrm{x}_k-\frac{\nabla
+f(\mathrm{x}_k)}{\nabla^2f(\mathrm{x}_k)}
+\]</span> 即比值为一次导和二次导的比值。</p>
+</blockquote>
+<p>算法描述如下：</p>
+<ol type="1">
+<li>选取初始点 <span class="math inline">\(\mathrm{x}_1\in
+R^n\)</span>，容许误差 <span class="math inline">\(0\leq \epsilon\ll
+1\)</span>，令 <span class="math inline">\(k=1\)</span>。</li>
+<li>计算梯度 <span class="math inline">\(\mathrm{g}_k=\nabla
+f(\mathrm{x}_k)\)</span>，如果 <span class="math inline">\(\|\mathrm{g}_k\|\leq
+\epsilon\)</span>，算法停止，输出 <span class="math inline">\(\mathrm{x}_k\)</span>
+为近似最优解；否则继续。</li>
+<li>计算 <span class="math inline">\(\mathrm{G}_k=\nabla^2
+f(\mathrm{x}_k)\)</span>，求解线性方程得到 <span class="math inline">\(\mathrm{d}_k:\mathrm{G}_kd_k=-\mathrm{g}_k\)</span></li>
+<li>令 <span class="math inline">\(\mathrm{x}_{k+1}=\mathrm{x}_k+\mathrm{d}_k\)</span>，同时
+<span class="math inline">\(k=k+1\)</span>，回到第二步。</li>
+</ol>
+<blockquote>
+<p>逆矩求法 <span class="math display">\[
+\begin{bmatrix}
+a&amp;b\\
+c&amp;d
+\end{bmatrix}^{-1}=\frac{1}{ad-bc}\begin{bmatrix}
+d&amp;-b\\
+-c&amp;a
+\end{bmatrix}
+\]</span></p>
+</blockquote>
+<p><strong>当初始点远离极小点时，牛顿法可能不收敛。</strong></p>
+<h3 id="阻尼牛顿法">阻尼牛顿法</h3>
+<p>在牛顿法的基础上，增加了沿牛顿方向的线搜索，迭代公式变为 <span class="math display">\[
+\mathrm{x}_{k+1}=\mathrm{x}_k+\alpha_k\mathrm{d}_k
+\]</span> 其中，<span class="math inline">\(\mathrm{d}_k=-\nabla^2f(\mathrm{x}_k)^{-1}\nabla
+f(\mathrm{x}_k)\)</span>。</p>
+<h3 id="牛顿法与梯度下降的比较">牛顿法与梯度下降的比较</h3>
+<ol type="1">
+<li>牛顿法是二阶收敛，梯度下降是一阶收敛，所以显然牛顿法收敛速度会更快。</li>
+<li>从几何上来说，牛顿法就是用一个二次曲面去拟合当前所处位置的局部曲面，而梯度下降是用一个平面去拟合当前的局部曲面，通常情况下二次曲面拟合度更优。</li>
+<li>牛顿法收敛速度相比梯度下降法常常较快，但计算开销大。</li>
+<li>牛顿法对初始值有一定要求，在非凸优化问题中（如神经网络训练），牛顿法很容易陷入鞍点（牛顿法步长会越来越小），而梯度下降法很容易逃离鞍点（因此在神经网络训练中一般使用梯度下降法，高维空间的神经网络中存在大量鞍点）。</li>
+<li>梯度下降法在靠近最优点时会震荡，因此步长调整在梯度下降法中是必要的，具体有
+adagrad, adadelta, rmsprop, adam 等一系列自适应学习率的算法。</li>
+</ol>
+<h3 id="非线性最小二乘法">非线性最小二乘法</h3>
+<p>非线性最小二乘问题是求向量 <span class="math inline">\(\mathrm{x}\in
+R^n\)</span> 使得 <span class="math inline">\(\|F(\mathrm{x})\|^2\)</span> 最小。</p>
+<p>记 <span class="math inline">\(F(\mathrm{x})=[F_1(\mathrm{x}),\cdots,F_m(\mathrm{x})]^T\)</span>，问题一般写作
+<span class="math display">\[
+\min_{\mathrm{x}\in R^n}
+f(\mathrm{x})=\frac{1}{2}\|F(\mathrm{x})\|^2=\frac{1}{2}\sum^m_{i=1}F_i^2(\mathrm{x})
+\]</span> 对函数计算梯度和二阶梯度 <span class="math display">\[
+g(\mathrm{x})=\nabla
+f(\mathrm{x})=J(\mathrm{x})^TF(\mathrm{x})=\sum^m_{i=1}F_i(\mathrm{x})\nabla
+F_i(\mathrm{x})\newline
+G(\mathrm{x})=\nabla^2f(\mathrm{x})=J(\mathrm{x})^TJ(\mathrm{x})+S(\mathrm{x})
+\]</span> 其中， <span class="math display">\[
+J(\mathrm{x})=F&#39;(\mathrm{x})=[\nabla F_1(\mathrm{x}),\cdots,\nabla
+F_m(\mathrm{x})]^T\newline
+S(\mathrm{x})=\sum^m_{i=1}F_i(\mathrm{x})\nabla^2F_i(\mathrm{x})
+\]</span> 根据牛顿法，我们可以写出求解非线性最小二乘问题的迭代公式 <span class="math display">\[
+\mathrm{x}_{k+1}=\mathrm{x}_k-(J_k^TJ_k+S_k)^{-1}J_k^TF(\mathrm{x}_k)
+\]</span> 但是考虑到 <span class="math inline">\(S_k\)</span>
+计算量较大，所以忽略这一项，这样就得到了求解非线性最小二乘法的高斯牛顿迭代算法
+<span class="math display">\[
+\mathrm{x}_{k+1}=\mathrm{x}_k+\mathrm{d}_k^{GN}
+\]</span> 其中， <span class="math display">\[
+\mathrm{d}_k^{GN}=-(J_k^TJ_k)^{-1}J_k^TF(\mathrm{x}_k)
+\]</span> 容易验证 <span class="math inline">\(\mathrm{d}_k^{GN}\)</span> 是优化问题 <span class="math display">\[
+\min_{\mathrm{d}\in R^n}\frac{1}{2}\|F(\mathrm{x}_k)+J_k\mathrm{d}\|^2
+\]</span> 的最优解。</p>
+<blockquote>
+<p>若向量函数 <span class="math inline">\(F(\mathrm{x})\)</span>
+的雅可比矩阵是列满秩的，则可以保证方向是下降方向。</p>
+</blockquote>
+<p>优点：</p>
+<ol type="1">
+<li>对于零残量问题，即 <span class="math inline">\(f(\mathrm{x}^*)=0\)</span>，有局部二阶收敛速度。</li>
+<li>对于小残量问题，即 <span class="math inline">\(f(\mathrm{x})\)</span>
+较小，或接近于线性，有快的局部收敛速度。</li>
+<li>对于线性最小二乘问题，一步达到极小点。</li>
+</ol>
+<p>缺点：</p>
+<ol type="1">
+<li>对于不是很严重的大残量问题，有较慢的收敛速度。</li>
+<li>对于残量很大的问题或者 <span class="math inline">\(f(\mathrm{x})\)</span>
+的非线性程度很大的问题，不收敛。</li>
+<li>如果 <span class="math inline">\(A(\mathrm{x}_k)\)</span>
+不满秩，方法没有定义。</li>
+<li>不一定总体收敛。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/derivative-based-optimization-method.html" title="最优化方法——基于导数的优化">https://hasegawaazusa.github.io/derivative-based-optimization-method.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%9C%80%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95/" rel="tag"><i class="fa fa-tag"></i> 最优化方法</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/dual-rsa-note.html" rel="prev" title="Dual RSA——双生RSA">
+                  <i class="fa fa-chevron-left"></i> Dual RSA——双生RSA
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/agcd-note.html" rel="next" title="AGCD近似最大公约数问题">
+                  AGCD近似最大公约数问题 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">678k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">10:17</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

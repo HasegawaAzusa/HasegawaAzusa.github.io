@@ -29,7 +29,7 @@
 <meta property="og:description" content="hashcat 的使用笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-23T07:00:00.000Z">
-<meta property="article:modified_time" content="2023-09-07T08:07:28.680Z">
+<meta property="article:modified_time" content="2023-11-13T09:03:22.473Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="crypto">
@@ -91,7 +91,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">62</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">118</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">64</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">126</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -143,7 +143,7 @@
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
             <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#hashcat-%E7%AE%80%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">Hashcat 简述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%8F%82%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">常用参数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#a-%E7%A0%B4%E8%A7%A3%E6%A8%A1%E5%BC%8F"><span class="nav-number">2.1.</span> <span class="nav-text">-a 破解模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8E%A9%E7%A0%81%E5%AD%97%E7%AC%A6%E9%9B%86"><span class="nav-number">2.2.</span> <span class="nav-text">掩码字符集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hash-id-%E5%AF%B9%E7%85%A7%E8%A1%A8"><span class="nav-number">2.3.</span> <span class="nav-text">hash id 对照表</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B%E6%BC%94%E7%A4%BA"><span class="nav-number">3.</span> <span class="nav-text">实例演示</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%97%E5%85%B8%E8%BF%9B%E8%A1%8C%E7%88%86%E7%A0%B4"><span class="nav-number">3.1.</span> <span class="nav-text">使用字典进行爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8C%87%E5%AE%9A%E5%AD%97%E7%AC%A6%E9%9B%86%E7%88%86%E7%A0%B4"><span class="nav-number">3.2.</span> <span class="nav-text">使用指定字符集爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%AD%97%E5%85%B8%E6%8E%A9%E7%A0%81%E8%BF%9B%E8%A1%8C%E7%88%86%E7%A0%B4"><span class="nav-number">3.3.</span> <span class="nav-text">使用字典+掩码进行爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%8E%A9%E7%A0%81%E5%AD%97%E5%85%B8%E8%BF%9B%E8%A1%8C%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.4.</span> <span class="nav-text">使用掩码+字典进行破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql4.15%E7%9A%84-password-%E5%87%BD%E6%95%B0"><span class="nav-number">3.5.</span> <span class="nav-text">Mysql4.1&#x2F;5的 PASSWORD
-函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sha512crypt-6-sha512-unix%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.6.</span> <span class="nav-text">sha512crypt \(6\), SHA512 (Unix)破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows-nt-hashlm-hash%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.7.</span> <span class="nav-text">Windows NT-hash，LM-hash破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mssql-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.8.</span> <span class="nav-text">mssql 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#luks-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.9.</span> <span class="nav-text">LUKS 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wordpress-%E5%AF%86%E7%A0%81-hash-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.10.</span> <span class="nav-text">wordpress 密码 hash 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#discuz-%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81-hash-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.11.</span> <span class="nav-text">discuz 用户密码 hash 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rar-%E5%8E%8B%E7%BC%A9%E5%8C%85%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.12.</span> <span class="nav-text">RAR 压缩包密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zip-%E5%8E%8B%E7%BC%A9%E5%8C%85%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.13.</span> <span class="nav-text">ZIP 压缩包密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#office-%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.14.</span> <span class="nav-text">office 密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#keepass-%E7%88%86%E7%A0%B4"><span class="nav-number">3.15.</span> <span class="nav-text">Keepass 爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wifi-%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.16.</span> <span class="nav-text">WIFI 密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%8C%85%E5%97%85%E6%8E%A2"><span class="nav-number">3.17.</span> <span class="nav-text">网络包嗅探</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE"><span class="nav-number">4.</span> <span class="nav-text">使用建议</span></a></li></ol></div>
+函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sha512crypt-6-sha512-unix%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.6.</span> <span class="nav-text">sha512crypt \(6\), SHA512 (Unix)破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows-nt-hashlm-hash%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.7.</span> <span class="nav-text">Windows NT-hash，LM-hash破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mssql-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.8.</span> <span class="nav-text">mssql 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#luks-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.9.</span> <span class="nav-text">LUKS 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wordpress-%E5%AF%86%E7%A0%81-hash-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.10.</span> <span class="nav-text">wordpress 密码 hash 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#discuz-%E7%94%A8%E6%88%B7%E5%AF%86%E7%A0%81-hash-%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.11.</span> <span class="nav-text">discuz 用户密码 hash 破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rar-%E5%8E%8B%E7%BC%A9%E5%8C%85%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.12.</span> <span class="nav-text">RAR 压缩包密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zip-%E5%8E%8B%E7%BC%A9%E5%8C%85%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.13.</span> <span class="nav-text">ZIP 压缩包密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#office-%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.14.</span> <span class="nav-text">office 密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#keepass-%E7%88%86%E7%A0%B4"><span class="nav-number">3.15.</span> <span class="nav-text">Keepass 爆破</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#netntlmv2-%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.16.</span> <span class="nav-text">NetNTLMv2 密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wifi-%E5%AF%86%E7%A0%81%E7%A0%B4%E8%A7%A3"><span class="nav-number">3.17.</span> <span class="nav-text">WIFI 密码破解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%8C%85%E5%97%85%E6%8E%A2"><span class="nav-number">3.18.</span> <span class="nav-text">网络包嗅探</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE"><span class="nav-number">4.</span> <span class="nav-text">使用建议</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -158,13 +158,13 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">118</span>
+          <span class="site-state-item-count">126</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">62</span>
+        <span class="site-state-item-count">64</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -235,7 +235,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-09-07 16:07:28" itemprop="dateModified" datetime="2023-09-07T16:07:28+08:00">2023-09-07</time>
+      <time title="修改时间：2023-11-13 17:03:22" itemprop="dateModified" datetime="2023-11-13T17:03:22+08:00">2023-11-13</time>
     </span>
 
   
@@ -245,14 +245,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>17k</span>
+      <span>20k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>15 分钟</span>
+      <span>18 分钟</span>
     </span>
 </div>
 
@@ -1911,6 +1911,20 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; keepass2john.exe .\clients.kdbx</span><br><span class="line">clients:$keepass$*2*9090908*0*f7d1170d7371a17281aa3f2a26c7388ca5725c21fcbc29d2ace56292eff8eb79*da67f7ac407dca58cbdf4470f411f0f816b93e09e691cc4fbe0d9ce4acaa28c0*706a344c94d1eb4d7e356d67c6b3189b*ef40e4466434309c67248c2ad1e6bb0d4319447268f862c53a196e4ca12e29a0*7ff7758edbc9b8cde051228494e36af1edd750edc398e84422268956dc942876</span><br></pre></td></tr></table></figure>
 <p>然后再使用 hashcat 爆破</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -a 3 -m 13400 $keepass$*2*9090908*0*f7d1170d7371a17281aa3f2a26c7388ca5725c21fcbc29d2ace56292eff8eb79*da67f7ac407dca58cbdf4470f411f0f816b93e09e691cc4fbe0d9ce4acaa28c0*706a344c94d1eb4d7e356d67c6b3189b*ef40e4466434309c67248c2ad1e6bb0d4319447268f862c53a196e4ca12e29a0*7ff7758edbc9b8cde051228494e36af1edd750edc398e84422268956dc942876 --force ?d?d?d?d</span><br></pre></td></tr></table></figure>
+<h2 id="netntlmv2-密码破解">NetNTLMv2 密码破解</h2>
+<p>NTLMSSP 包分为三部分，Negotiate、Challenge 和 Authenticate。</p>
+<p>首先进行抓包，得到 NTLMSSP 包（主要关注 Challenge 和
+Authenticate），其中寻找到相应信息组成哈希，格式为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">username::domain:ServerChallenge:NTproofstring:modifiedntlmv2response</span><br></pre></td></tr></table></figure>
+<p>可以直接获取 NTLMSSP 的 base64 值，然后使用脚本组装</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">from</span> scapy.layers <span class="keyword">import</span> ntlm</span><br><span class="line"></span><br><span class="line">auth_b64 = <span class="string">&#x27;TlRMTVNTUAADAAAAGAAYAIIAAABYAVgBmgAAABIAEgBYAAAACAAIAGoAAAAQABAAcgAAABAAEADyAQAAFYKI4goAYUoAAAAPVS6RhfnytMqt5hsgL2wgnFcASQBEAEcARQBUAEwATABDAGoAYQBjAGsAQwBMAEkARQBOAFQAMAAxAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAC0dJFcrFf5UQENDHFmWXTABAQAAAAAAAAQNlisC7dkB5plBR9ajSvIAAAAAAgASAFcASQBEAEcARQBUAEwATABDAAEACABEAEMAMAAxAAQAJABXAGkAZABnAGUAdABMAEwAQwAuAEkAbgB0AGUAcgBuAGEAbAADAC4ARABDADAAMQAuAFcAaQBkAGcAZQB0AEwATABDAC4ASQBuAHQAZQByAG4AYQBsAAUAJABXAGkAZABnAGUAdABMAEwAQwAuAEkAbgB0AGUAcgBuAGEAbAAHAAgABA2WKwLt2QEGAAQAAgAAAAgAMAAwAAAAAAAAAAAAAAAAMAAAB4zcUgkQdiJn5ASItgAyg1xqN2BNHpvj7O5YgC+1+RUKABAAAAAAAAAAAAAAAAAAAAAAAAkAIABIAFQAVABQAC8AMQA5ADIALgAxADYAOAAuADAALgAxAAAAAAAAAAAAlbkMmv5SCuQVUPyZtIn4uA==&#x27;</span></span><br><span class="line">chal_b64 = <span class="string">&#x27;TlRMTVNTUAACAAAAEgASADgAAAAVgoniKvcbXKckYmgAAAAAAAAAALQAtABKAAAACgA5OAAAAA9XAEkARABHAEUAVABMAEwAQwACABIAVwBJAEQARwBFAFQATABMAEMAAQAIAEQAQwAwADEABAAkAFcAaQBkAGcAZQB0AEwATABDAC4ASQBuAHQAZQByAG4AYQBsAAMALgBEAEMAMAAxAC4AVwBpAGQAZwBlAHQATABMAEMALgBJAG4AdABlAHIAbgBhAGwABQAkAFcAaQBkAGcAZQB0AEwATABDAC4ASQBuAHQAZQByAG4AYQBsAAcACAAEDZYrAu3ZAQAAAAA=&#x27;</span></span><br><span class="line"></span><br><span class="line">auth_bytes = base64.b64decode(auth_b64)</span><br><span class="line">chal_bytes = base64.b64decode(chal_b64)</span><br><span class="line"></span><br><span class="line">auth = ntlm.NTLM_Header(auth_bytes)</span><br><span class="line">chal = ntlm.NTLM_Header(chal_bytes)</span><br><span class="line">payload = <span class="built_in">dict</span>(auth.Payload)</span><br><span class="line"><span class="built_in">hash</span> = <span class="string">f&quot;<span class="subst">&#123;payload[<span class="string">&#x27;UserName&#x27;</span>]&#125;</span>::<span class="subst">&#123;payload[<span class="string">&#x27;DomainName&#x27;</span>]&#125;</span>:<span class="subst">&#123;chal.ServerChallenge.<span class="built_in">hex</span>()&#125;</span>:<span class="subst">&#123;payload[<span class="string">&#x27;NtChallengeResponse&#x27;</span>].NTProofStr.<span class="built_in">hex</span>()&#125;</span>:<span class="subst">&#123;payload[<span class="string">&#x27;NtChallengeResponse&#x27;</span>].original[<span class="number">16</span>:].<span class="built_in">hex</span>()&#125;</span>&quot;</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hash</span>)</span><br></pre></td></tr></table></figure>
+<p>例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jack::WIDGETLLC:2af71b5ca7246268:2d1d24572b15fe544043431c59965d30:0101000000000000040d962b02edd901e6994147d6a34af200000000020012005700490044004700450054004c004c004300010008004400430030003100040024005700690064006700650074004c004c0043002e0049006e007400650072006e0061006c0003002e0044004300300031002e005700690064006700650074004c004c0043002e0049006e007400650072006e0061006c00050024005700690064006700650074004c004c0043002e0049006e007400650072006e0061006c0007000800040d962b02edd90106000400020000000800300030000000000000000000000000300000078cdc520910762267e40488b60032835c6a37604d1e9be3ecee58802fb5f9150a001000000000000000000000000000000000000900200048005400540050002f003100390032002e003100360038002e0030002e0031000000000000000000</span><br></pre></td></tr></table></figure>
+<p>使用 john 或 hashcat 爆破即可，hashcat 哈希代码为 5600，即</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -m 5600 hash.txt table.txt</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/45b85006641a">https://www.jianshu.com/p/45b85006641a</a></p>
+</blockquote>
 <h2 id="wifi-密码破解">WIFI 密码破解</h2>
 <p>首先先把握手包转化为 hccapx 格式</p>
 <blockquote>
@@ -2018,7 +2032,7 @@
 
 <div class="copyright">
   &copy; 2022 – 
-  <span itemprop="copyrightYear">2023</span>
+  <span itemprop="copyrightYear">2024</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
@@ -2029,13 +2043,13 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">617k</span>
+    <span title="站点总字数">678k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">9:21</span>
+    <span title="站点阅读时长">10:17</span>
   </span>
 </div>
 
