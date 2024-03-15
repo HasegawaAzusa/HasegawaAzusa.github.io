@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关计算方法的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算方法笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/numerical-method-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关计算方法的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E6%9C%89%E6%95%88%E6%95%B0%E5%AD%97%E6%A0%B7%E5%BC%8F.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E6%95%B0%E5%80%BC%E5%AE%9E%E9%AA%8C1.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E6%95%B0%E5%80%BC%E5%AE%9E%E9%AA%8C2.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%B5%AE%E7%82%B9%E7%B2%BE%E5%BA%A6.png">
+<meta property="article:published_time" content="2024-03-07T02:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-14T12:13:08.352Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="math">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E6%9C%89%E6%95%88%E6%95%B0%E5%AD%97%E6%A0%B7%E5%BC%8F.png">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/numerical-method-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/numerical-method-note.html","path":"/numerical-method-note.html","title":"计算方法笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>计算方法笔记 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">129</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">计算方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE"><span class="nav-number">1.2.</span> <span class="nav-text">误差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E8%AF%AF%E5%B7%AE%E4%B8%8E%E7%9B%B8%E5%AF%B9%E8%AF%AF%E5%B7%AE"><span class="nav-number">1.3.</span> <span class="nav-text">绝对误差与相对误差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E6%95%88%E6%95%B0%E5%AD%97"><span class="nav-number">1.4.</span> <span class="nav-text">有效数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD"><span class="nav-number">1.5.</span> <span class="nav-text">误差的传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E5%88%99%E8%BF%90%E7%AE%97%E7%9A%84%E8%AF%AF%E5%B7%AE%E4%BC%A0%E6%92%AD"><span class="nav-number">1.6.</span> <span class="nav-text">四则运算的误差传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E4%BC%A0%E6%92%AD%E4%BE%8B%E9%A2%98"><span class="nav-number">1.7.</span> <span class="nav-text">误差传播例题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#section"><span class="nav-number">1.7.1.</span> <span class="nav-text">1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#section-1"><span class="nav-number">1.7.2.</span> <span class="nav-text">2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#section-2"><span class="nav-number">1.7.3.</span> <span class="nav-text">3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E6%94%B9%E5%96%84"><span class="nav-number">1.8.</span> <span class="nav-text">误差改善</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">1.8.1.</span> <span class="nav-text">选择数值稳定的算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E4%B8%A4%E4%B8%AA%E7%9B%B8%E8%BF%91%E7%9A%84%E6%95%B0%E7%9B%B8%E5%87%8F"><span class="nav-number">1.8.2.</span> <span class="nav-text">避免两个相近的数相减</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E5%A4%A7%E6%95%B0%E5%90%83%E5%B0%8F%E6%95%B0%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.8.3.</span> <span class="nav-text">避免大数“吃”小数现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E7%BB%9D%E5%AF%B9%E5%80%BC%E5%A4%AA%E5%B0%8F%E7%9A%84%E6%95%B0%E4%BD%9C%E9%99%A4%E6%95%B0"><span class="nav-number">1.8.4.</span> <span class="nav-text">避免绝对值太小的数作除数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8C%96%E8%AE%A1%E7%AE%97%E6%AD%A5%E9%AA%A4%E5%87%8F%E5%B0%91%E8%BF%90%E7%AE%97%E6%AC%A1%E6%95%B0"><span class="nav-number">1.8.5.</span> <span class="nav-text">简化计算步骤，减少运算次数</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/numerical-method-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="计算方法笔记 | 独奏の小屋">
+      <meta itemprop="description" content="有关计算方法的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算方法笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-03-07 10:00:00" itemprop="dateCreated datePublished" datetime="2024-03-07T10:00:00+08:00">2024-03-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-03-14 20:13:08" itemprop="dateModified" datetime="2024-03-14T20:13:08+08:00">2024-03-14</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>6.6k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>6 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关计算方法的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="基本概念">基本概念</h1>
+<h2 id="计算方法">计算方法</h2>
+<p><strong>数值计算方法</strong>是科学计算的核心，研究对象是那些<strong>在理论上有解，而无求解公式或计算量过大必须借助计算机实现的数学问题。</strong></p>
+<p>简单而言就是容忍一定的误差，通过一个改进的在计算机上迭代的计算方法获取原解的<strong>近似解</strong>。</p>
+<p>而数值计算方法主要有两大方向：</p>
+<ul>
+<li>数值算法的<strong>构造</strong>：针对数值问题研究可在计算机上执行且行之有效的计算公式（计算方法）</li>
+<li>算法的理论<strong>分析</strong>：主要包括误差分析（数值问题的性态，数值方法的截断误差，舍入误差，稳定性，收敛性等）和复杂性分析</li>
+</ul>
+<p>也就是说，我们希望找到一种合理的算法能够降低其复杂度的同时保证结果的合理性。</p>
+<h2 id="误差">误差</h2>
+<p>首先明确，数值方法得到的都是<strong>近似解</strong>而非真解。</p>
+<p>那么误差的定义就是真解与近似解之间的偏差，即 <span class="math display">\[
+e=x-x^*
+\]</span> 其中 <span class="math inline">\(x^*\)</span>
+是近似解的表示符号。</p>
+<p>误差分为四类：</p>
+<ol type="1">
+<li>模型误差（model error）</li>
+<li>观测误差（observational error）</li>
+<li>截断误差（truncation error）</li>
+<li>舍入误差（round-off error）</li>
+</ol>
+<p>前两者是客观存在的误差，这是原问题模型本身或测量方法所存在的误差；</p>
+<p>后两者是<strong>计算方法</strong>所引起的误差，这是我们所需要关注的。</p>
+<p>由简化问题所引起的误差称为<strong>截断误差</strong>或<strong>方法误差</strong>，例如我们通常会将三角函数进行泰勒展开
+<span class="math display">\[
+\cos x=1-\frac{x^2}{2!}+\frac{x^4}{4!}-\frac{x^6}{6!}+\cdots
+\]</span> 随后截断一部分做近似计算 <span class="math display">\[
+\cos x\approx 1-\frac{x^2}{2!}
+\]</span> 这样便会产生误差 <span class="math display">\[
+e=\frac{x^4}{4!}-\frac{x^6}{6!}+\cdots
+\]</span> 通过交错级数审敛法可以得知这里的截断误差 <span class="math inline">\(e&lt;\frac{x^4}{4!}\)</span>。</p>
+<p>舍入误差主要是针对计算机的存储问题，比如说标准通用 CPU 都支持的 IEEE
+浮点数标准，可能会使得每次计算时都存在一定的舍入。</p>
+<p>少量的舍入误差还好，但是一般数值方法都需要大量迭代，多次的舍入误差会导致结果出现很大的波动。</p>
+<h2 id="绝对误差与相对误差">绝对误差与相对误差</h2>
+<p>假定 <span class="math inline">\(x^*\)</span> 是准确值 <span class="math inline">\(x\)</span> 的一个近似值。</p>
+<p>那么其<strong>绝对误差</strong>（absolute error）为 <span class="math display">\[
+e=x-x^*
+\]</span> 但是往往在实际计算中，我们无法确定准确值 <span class="math inline">\(x\)</span> 的大小，也就是说我们无法确定绝对误差
+<span class="math inline">\(e\)</span>。</p>
+<p>所以为了方便研究分析，实际会使用<strong>绝对误差限</strong>（absolute
+error bound）来断定其上限，符号为 <span class="math inline">\(\epsilon\)</span>，定义为 <span class="math display">\[
+|e|=|x-x^*|\leq \epsilon
+\]</span></p>
+<blockquote>
+<p>或者可以写作 <span class="math display">\[
+x^*-\epsilon\leq x\leq x^*+\epsilon
+\]</span></p>
+</blockquote>
+<p>但是绝对误差不能满足所有的计算需要，因为近似值和真值可能十分小，那么得到的误差就会极其小，<strong>无法通过绝对误差的大小刻画近似值的准确程度</strong>，那么就需要<strong>相对误差</strong>（relative
+error） <span class="math display">\[
+\begin{align}
+e_r=\frac{e}{x}=\frac{x-x^*}{x}\\
+e_r=\frac{e}{x^*}=\frac{x-x^*}{x^*}
+\end{align}
+\]</span> 即<strong>绝对误差与真值或近似值的比值</strong>。</p>
+<blockquote>
+<p>当 <span class="math inline">\(|e_r|\)</span> 趋近于零时， <span class="math display">\[
+\frac{e}{x}-\frac{e}{x^*}=\frac{-e^2}{xx^*}
+\]</span> 是 <span class="math inline">\(e_r\)</span>
+的高阶无穷小，可以忽略不计，所以无论哪个公式都是合理的，但一般默认是绝对误差与近似值的比值，因为这可计算。</p>
+</blockquote>
+<p>同样的，也有<strong>相对误差限</strong>（relative error
+bound），符号为 <span class="math inline">\(\epsilon_r\)</span>，定义为
+<span class="math display">\[
+|e_r|=|\frac{e}{x^*}|\leq \epsilon_r
+\]</span> 显然，误差限（error bound）不是唯一的。</p>
+<blockquote>
+<p>误差（error）函数写为 <span class="math display">\[
+e(x^*)=x-x^*
+\]</span> 误差限（error bound）函数写为 <span class="math display">\[
+e(x^*)\leq\epsilon(x^*)
+\]</span></p>
+</blockquote>
+<h2 id="有效数字">有效数字</h2>
+<p>从左到右，从第一个非零数字开始数，一共有几位就是几位有效数字</p>
+<figure>
+<img src="/numerical-method-note/%E6%9C%89%E6%95%88%E6%95%B0%E5%AD%97%E6%A0%B7%E5%BC%8F.png" alt="有效数字样式">
+<figcaption aria-hidden="true">有效数字样式</figcaption>
+</figure>
+<blockquote>
+<p>比如说 0.023 的有效数字是两位（23），而 0.0230
+的有效数字是三位（230）。</p>
+</blockquote>
+<p>对于有效数字是有<strong>舍入</strong>的（四舍五入），那么其<strong>误差限</strong>显然是小数点后最后一位的<strong>半个</strong>单位，一般写作
+<span class="math inline">\(0.5\times 10^{-n}\)</span>，这里的 <span class="math inline">\(n\)</span> 不是上图的 <span class="math inline">\(n\)</span> 个数，而是小数点后的位数。</p>
+<blockquote>
+<p>比如说 0.023 的误差限是 0.0005，0.0230 的误差限是 0.00005。</p>
+</blockquote>
+<p>有效数字（对于近似值而言）是有严格定义的，一定是满足<strong>四舍五入的舍入规则</strong>才能被作为有效数字，以
+<span class="math inline">\(x=\sqrt{3}=1.7320508\cdots\)</span>
+为例，如果说有三个近似值 <span class="math inline">\(x_1=1.73\)</span>，<span class="math inline">\(x_2=1.7321\)</span>，<span class="math inline">\(x_3=1.7320\)</span>，可以计算这三个近似值的误差限分别为
+<span class="math display">\[
+\begin{align}
+|x-x_1|=|\sqrt{3}-1.73|=0.20508\cdots\times10^{-2}\leq0.5\times10^{-2}\\
+|x-x_2|=|\sqrt{3}-1.7321|=0.508\cdots\times10^{-4}\leq0.5\times10^{-4}\\
+|x-x_3|=|\sqrt{3}-1.7320|=0.508\cdots\times10^{-4}\leq0.5\times10^{-3}\\
+\end{align}
+\]</span> 故对于三个近似值而言，分别是</p>
+<ul>
+<li><span class="math inline">\(x_1\)</span> 精确到小数点后 2 位，有 3
+位有效数字；</li>
+<li><span class="math inline">\(x_2\)</span> 精确到小数点后 4 位，有 5
+位有效数字；</li>
+<li><span class="math inline">\(x_3\)</span> 精确到小数点后 3 位，有 4
+位有效数字。</li>
+</ul>
+<h2 id="误差的传播">误差的传播</h2>
+<p>自变量的误差势必会传播到因变量，比如说 <span class="math inline">\(y=ax+b\)</span>，假定自变量存在误差 <span class="math inline">\(e=x-x^*\)</span>，那么有 <span class="math display">\[
+y-y^*=a(x-x^*)
+\]</span> 即 <span class="math inline">\(e(y^*)=ae(x^*)\)</span>，对于一个线性函数，误差会直接扩大
+<span class="math inline">\(a\)</span> 倍。</p>
+<p>扩展到对一个连续可导函数 <span class="math inline">\(f(x)\)</span>，有 $$ <span class="math display">\[\begin{align}
+\Delta y=y-y^*=f(x)-f(x^*)\\
+
+\end{align}\]</span> <span class="math display">\[
+当 $\Delta y$ 很小时，可以做一个线性近似得到
+\]</span> yf'(x<sup><em>)(x-x^</em>)=f'(x</sup><em>)x <span class="math display">\[
+也就是
+\]</span> e(y<sup><em>)f'(x^</em>)e(x</sup></em>) <span class="math display">\[
+那么其误差限也应该有
+\]</span> (y<sup><em>)|f'(x^</em>)|(x</sup><em>) <span class="math display">\[
+而对于相对误差，有
+\]</span> e_r(y^</em>)=y|<em>{y=y<sup><em>} <span class="math display">\[
+当 $f$ 是多元函数时，绝对误差为
+\]</span> e(y^</em>)=</sup>n</em>{k=1}e(x^*) <span class="math display">\[
+相对误差为
+\]</span> <span class="math display">\[\begin{align}
+e_r(y^*)&amp;=\frac{e(y^*)}{y^*}\\
+&amp;=\sum^n_{k=1}\frac{\partial f(x_1^*,\cdots,x_n^*)}{\partial
+x_k}\frac{e(x^*)}{y^*}\\
+&amp;=\sum^n_{k=1}\frac{\partial f(x_1^*,\cdots,x_n^*)}{\partial
+x_k}\frac{x^*}{y^*}e_r(x^*)
+\end{align}\]</span> $$</p>
+<h2 id="四则运算的误差传播">四则运算的误差传播</h2>
+<p>加减法的误差传播公式 <span class="math display">\[
+\begin{cases}
+e(x_1\pm x_2)=e(x_1)\pm e(x_2)\\
+e_r(x_1\pm x_2)=\frac{x_1}{x_1\pm x_2}e_r(x_1)\pm \frac{x_2}{x_1\pm
+x_2}e_r(x_2)\\
+\end{cases}
+\]</span> 如果扩展到 <span class="math inline">\(n\)</span>
+元，显然满足<strong>叠加定理</strong>，且相对误差按权重比例分配误差影响。</p>
+<p>乘除法的误差传播公式 <span class="math display">\[
+\begin{cases}
+e(x_1x_2)\approx x_2e(x_1)\pm x_1e(x_2)\\
+e_r(x_1x_2)\approx e_r(x_1)+e_r(x_2)\\
+\end{cases}
+\]</span></p>
+<p><span class="math display">\[
+\begin{cases}
+e(\frac{x_1}{x_2})\approx \frac{1}{x_2}e(x_1)-\frac{x_1}{x_2^2}e(x_2)\\
+e_r(x_1x_2)\approx e_r(x_1)-e_r(x_2)\\
+\end{cases}
+\]</span></p>
+<p>之所以乘除法的误差传播公式是约等于，是因为误差的传播公式是做线性近似，而这里的函数是二次的，如果对于高次函数（或者说多元乘法）误差限会很大。</p>
+<h2 id="误差传播例题">误差传播例题</h2>
+<h3 id="section">1</h3>
+<p>已知某物体行程 <span class="math inline">\(s\)</span> 的近似值 <span class="math inline">\(s^*=800\mathrm{m}\)</span>，所需时间 <span class="math inline">\(t\)</span> 的近似值 <span class="math inline">\(t^*=35\mathrm{s}\)</span>。如果已知 <span class="math inline">\(|s-s^*|\leq 0.5\)</span>，<span class="math inline">\(|t-t^*|\leq 0.05\)</span>，试求平均速度 <span class="math inline">\(v\)</span> 的绝对误差限和相对误差限。</p>
+<p><strong>提取题目信息</strong>，<span class="math inline">\(\epsilon(s^*)=0.5,\epsilon(t^*)=0.05,\epsilon_r(s^*)=0.5/800,\epsilon_r(t^*)=0.05/35\)</span></p>
+<p>首先计算平均速度 <span class="math inline">\(v^*\)</span> 的绝对误差
+<span class="math display">\[
+\begin{align}
+v^*&amp;=\frac{s^*}{t^*}\\
+e(v^*)&amp;=e(\frac{s^*}{t^*})\\
+&amp;\approx \frac{1}{t^*}e(s^*)-\frac{s^*}{t^{*2}}e(t^*)
+\end{align}
+\]</span> 根据绝对值不等式，有 <span class="math display">\[
+\begin{align}
+|e(v^*)|&amp;\leq \frac{1}{t^*}e(s^*)+\frac{s^*}{t^{*2}}e(t^*)\\
+&amp;\leq
+\frac{1}{t^*}\epsilon(s^*)+\frac{s^*}{t^{*2}}\epsilon(t^*)\approx
+0.0469\\
+\end{align}
+\]</span> 即 <span class="math inline">\(\epsilon(v^*)=0.0469\)</span>。</p>
+<p>那么 <span class="math display">\[
+\begin{align}
+\epsilon_r(v^*)=\frac{\epsilon(v^*)}{v^*}=0.00205
+\end{align}
+\]</span></p>
+<blockquote>
+<p>或者也可以套用公式 <span class="math display">\[
+\begin{align}
+e_r(v^*)&amp;= e_r(\frac{s^*}{t^*})\\
+&amp;\approx e_r(s^*)-e_r(t^*)
+\end{align}
+\]</span> 那么根据绝对值不等式，有 <span class="math display">\[
+\begin{align}
+|e_r(v^*)|&amp;\leq |e_r(s^*)|+|e_r(t^*)|=0.00205
+\end{align}
+\]</span> 即 <span class="math inline">\(\epsilon_r(v^*)=0.00205\)</span>。</p>
+</blockquote>
+<h3 id="section-1">2</h3>
+<p>已知 <span class="math inline">\(a=1.2031,b=0.978\)</span>
+是四舍五入的近似值，求 <span class="math inline">\(a+b\)</span> 和 <span class="math inline">\(a\times b\)</span> 各有几位有效数字？</p>
+<p>根据有效数字的定义，得知 <span class="math display">\[
+\epsilon(a)=0.5\times 10^{-4}\\
+\epsilon(b)=0.5\times 10^{-3}\\
+\]</span> 那么有 <span class="math display">\[
+\begin{align}
+|e(a+b)|=|e(a)+e(b)|\leq \epsilon(a)+\epsilon(b)=0.55\times 10^{-3}\leq
+0.5\times 10^{-2}\\
+|e(a\times b)|=|be(a)+ae(b)|\leq b\epsilon(a)+a\epsilon(b)=0.65045\times
+10^{-3}\leq 0.5\times 10^{-2}\\
+\end{align}
+\]</span> 故全都精确到小数点后 2 位，大约计算 <span class="math inline">\(1.20+0.97&gt;2,1.20\times
+0.97&gt;1\)</span>，故结果均为三位有效数字。</p>
+<h3 id="section-2">3</h3>
+<p>设计算球体积要使相对误差限为 1%，问度量半径为 <span class="math inline">\(R\)</span> 时允许的相对误差限是多少？</p>
+<p>首先明确球体积公式为 <span class="math display">\[
+V(R)=\frac{4}{3}\pi R^3
+\]</span> 那么绝对误差为 <span class="math display">\[
+e[V(R)]=\frac{4}{3}\pi(3R^2)e(R)=4\pi R^2e(R)
+\]</span> 那么相对误差为 <span class="math display">\[
+e_r[V(R)]=\frac{e[V(R)]}{V(R)}=3\frac{e(R)}{R}=3e_r(R)
+\]</span> 那么 <span class="math display">\[
+e_r(R)=\frac{1}{3}e_r[V(R)]\leq \frac{1}{3}\epsilon[V(R)]=0.3333\%
+\]</span></p>
+<h2 id="误差改善">误差改善</h2>
+<p>为了减少误差的影响，设计算法时需要考虑以下几个方面</p>
+<ol type="1">
+<li>选择数值稳定的算法</li>
+<li>避免两个相近的数相减</li>
+<li>避免大数吃小数现象</li>
+<li>避免绝对值太小的数做除数</li>
+<li>简化计算步骤，减少运算次数</li>
+</ol>
+<h3 id="选择数值稳定的算法">选择数值稳定的算法</h3>
+<p>一个算法，如果在一定的条件下，其<strong>舍入误差</strong>在整个运算过程中能够得到控制或者舍入误差的增长不影响产生可靠的结果，则称该算法是数值稳定的，否则称为<strong>数值不稳定</strong>的。</p>
+<p>比如说计算积分式的值 <span class="math display">\[
+I_n=\int^1_0 x^ne^{x-1}\mathrm{d}x
+\]</span> 利用分部积分法可以求得递推公式 <span class="math display">\[
+I_n=1-nI_{n-1}
+\]</span> 其误差为 <span class="math display">\[
+e(I_n^*)=-ne(I_{n-1}^*)
+\]</span> 可以尝试<strong>数值实验</strong>：</p>
+<figure>
+<img src="/numerical-method-note/%E6%95%B0%E5%80%BC%E5%AE%9E%E9%AA%8C1.png" alt="数值实验1">
+<figcaption aria-hidden="true">数值实验1</figcaption>
+</figure>
+<p>不难发现在 <span class="math inline">\(n=8,9\)</span>
+时，误差就变得难以接受了。</p>
+<p>显然分析可得，误差传播到 <span class="math inline">\(n\)</span> 时，
+<span class="math display">\[
+|e(I_n^*)|=n!|e(I_0)^*|
+\]</span> 以阶乘倍扩大误差，算法不稳定。</p>
+<p>但是反之，从高积分值求得低积分值，即递推公式为 <span class="math display">\[
+I_{n-1}=\frac{1-I_n}{n}
+\]</span> 可知误差为 <span class="math display">\[
+e(I_{n-1}^*)=-\frac{e(I_n^*)}{n}
+\]</span> <img src="/numerical-method-note/%E6%95%B0%E5%80%BC%E5%AE%9E%E9%AA%8C2.png" alt="数值实验2"></p>
+<p>那么误差传播到 <span class="math inline">\(0\)</span> 时， <span class="math display">\[
+|e(I_0^*)|=\frac{|e(I_n)^*|}{n!}
+\]</span> 误差反而会越来越小。</p>
+<p>对于同一数学问题，算法设计至关重要。只有选用数值稳定性好的算法，舍入误差才能够得到控制，求得比较精确的结果。</p>
+<p>与数值稳定性相关的概念是<strong>良态</strong>和<strong>病态</strong>问题。</p>
+<p>对于一个数值问题，如果输入数据的细微变化(或误差)，引起输出数据(即所求解)的很大变化，则称之为<strong>病态问题</strong>；如果输入数据的细微变化，不会引起解的很大变化，则称之为<strong>良态问题</strong>。</p>
+<h3 id="避免两个相近的数相减">避免两个相近的数相减</h3>
+<p>两数差的相对误差关系式为 <span class="math display">\[
+e_r(x-y)=\frac{e(x)-e(y)}{x-y}
+\]</span> 如果 <span class="math inline">\(x-y\)</span> 趋近于
+0，那么相对误差将会很大，有效数字位数将严重丢失。</p>
+<p>一般来说会用三种方式防止这种现象产生：</p>
+<ol type="1">
+<li><p>因式分解 <span class="math display">\[
+\begin{align}
+\frac{1}{x}-\frac{1}{1+x}=\frac{1}{x(x+1)}
+\end{align}
+\]</span></p></li>
+<li><p>分子分母有理化 <span class="math display">\[
+\begin{align}
+\sqrt{x+1}-\sqrt{x}=\frac{1}{\sqrt{x+1}+\sqrt{x}}\\
+\end{align}
+\]</span></p></li>
+<li><p>三角恒等式 <span class="math display">\[
+\begin{align}
+1-\cos{x}=2\sin^2\frac{x}{2}\\
+\frac{1-\cos{x}}{\sin x}=\frac{\sin x}{1-\cos{x}}\\
+\end{align}
+\]</span></p></li>
+<li><p>其他 <span class="math display">\[
+\ln{x_1}-\ln{x_2}=\ln{\frac{x_1}{x_2}}
+\]</span></p></li>
+</ol>
+<p>例如说求二次方程 <span class="math inline">\(x^2-16x+1=0\)</span>
+的根，取 <span class="math inline">\(\sqrt{63}\approx
+7.94\)</span>，那么根据求根公式有 <span class="math display">\[
+x_1=8+\sqrt{63}
+\]</span> 而第二个根为 <span class="math display">\[
+x_2=8-\sqrt{63}\approx 0.06
+\]</span> 但是如果避免减法 <span class="math display">\[
+x_2=\frac{1}{8+\sqrt{63}}\approx\frac{1}{15.94}\approx 0.0627
+\]</span> 反而精度更高。</p>
+<h3 id="避免大数吃小数现象">避免大数“吃”小数现象</h3>
+<p>比如说计算机实例，使用 JavaScript</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">0.1</span>+<span class="number">0.00000000000000001</span></span><br></pre></td></tr></table></figure>
+<p>结果令人吃惊</p>
+<figure>
+<img src="/numerical-method-note/%E8%AE%A1%E7%AE%97%E6%9C%BA%E6%B5%AE%E7%82%B9%E7%B2%BE%E5%BA%A6.png" alt="计算机浮点精度">
+<figcaption aria-hidden="true">计算机浮点精度</figcaption>
+</figure>
+<h3 id="避免绝对值太小的数作除数">避免绝对值太小的数作除数</h3>
+<p><span class="math display">\[
+e(\frac{x}{y})\approx \frac{1}{y}e(x)-\frac{x}{y^2}e(y)\\
+\]</span></p>
+<p>当 <span class="math inline">\(x\ll y\)</span> 或 <span class="math inline">\(y\to 0\)</span> 时，<span class="math inline">\(e(\frac{x}{y})\)</span> 可能很大。</p>
+<h3 id="简化计算步骤减少运算次数">简化计算步骤，减少运算次数</h3>
+<p>比如说快速幂算法，本身求解 <span class="math inline">\(x^{31}\)</span> 需要 30
+次乘法运算，但是使用快速幂算法仅需要 8 次乘法运算 <span class="math display">\[
+x^{31}=x^1x^2x^4x^8x^{16}
+\]</span></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/numerical-method-note.html" title="计算方法笔记">https://hasegawaazusa.github.io/numerical-method-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/math/" rel="tag"><i class="fa fa-tag"></i> math</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/sensors-and-detection-technology-note.html" rel="prev" title="传感器与检测技术笔记">
+                  <i class="fa fa-chevron-left"></i> 传感器与检测技术笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/modern-control-theory-note.html" rel="next" title="现代控制理论笔记">
+                  现代控制理论笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">761k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">11:31</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
