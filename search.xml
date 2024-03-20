@@ -3189,8 +3189,10 @@ Ciphey 支持 272 个哈希。</p>
 为共素数（common primes）。其中 <span class="math inline">\(g\)</span>
 为这两个素数的共因子（common factor）。</p>
 <p>我们需要注意到对于共素数RSA有着以下性质： <span class="math display">\[
+\begin{align}
 \lambda(pq)=\mathrm{lcm}(p-1,q-1)=\mathrm{lcm}(2ga,2gb)=2gab\\
 \varphi(pq)=(p-1)(q-1)=2ga2gb=2g\lambda(pq)
+\end{align}
 \]</span> 此外存在额外定义，RSA加密指数和解密指数需要与 <span class="math inline">\(\lambda(pq)\)</span> 互素。</p>
 <p>根据上述定义，可以推导出 <span class="math display">\[
 N=pq=(2ga+1)(2gb+1)=2g(2gab+a+b)+1=2gh+1
@@ -3291,6 +3293,30 @@ y^{rd}\equiv y^{u-s}\pmod{N}
 <h3 id="分解-n-1">分解 <span class="math inline">\(N-1\)</span></h3>
 <p>当 <span class="math inline">\(\gamma\)</span> 过小，即 <span class="math inline">\(g=N^\gamma\)</span> 过小时，因为已知 <span class="math inline">\(N-1=2gh\)</span>，故分解出 <span class="math inline">\(g\)</span> 是较为容易的。</p>
 <p>可以使用 <code>yafu</code> 分解 <span class="math inline">\(\frac{N-1}{2}\)</span>，其中当 <span class="math inline">\(\gamma\)</span> 值约为 0.10 左右时分解迅速。</p>
+<h3 id="mumtaz-luo攻击">Mumtaz-Luo攻击</h3>
+<p>由已知，得 <span class="math display">\[
+\begin{cases}
+ed=(p-1)bk+1\\
+ed=(q-1)ak+1
+\end{cases}
+\]</span> 可以变换为 <span class="math display">\[
+\begin{cases}
+ed-1+bk=pbk\\
+ed-1+ak=qak
+\end{cases}
+\]</span> 两式相乘，可得 <span class="math display">\[
+(ed-1+bk)(ed-1+ak)=pbk\cdot qak=abk^2N
+\]</span> 展开得到完整式 <span class="math display">\[
+e^2d^2+ed(ak+bk-2)-abk^2(N-1)-ak-bk+1=0
+\]</span> 不妨构建多项式函数 <span class="math display">\[
+f(x,y,z)=e^2x^2+ex(y+z-2)-(y+z-1)-(N-1)yz
+\]</span> 其中特解 <span class="math inline">\((x^*,y^*,z^*)=(d,ak,bk)\)</span>，边界为 <span class="math display">\[
+\begin{align}
+&amp;|x^*|\leq N^\delta\\
+&amp;|y^*|\leq N^{\delta-\gamma+0.5}\\
+&amp;|z^*|\leq N^{\delta-\gamma+0.5}
+\end{align}
+\]</span> 其中，<span class="math inline">\(\delta\)</span> 是私钥 <span class="math inline">\(d\)</span> 的大小。</p>
 ]]></content>
       <tags>
         <tag>note</tag>
@@ -10621,6 +10647,16 @@ GCD
 \bold{y}=(1,1)\text{ or }\bold{y}=(-1,1)
 \]</span> 这也就是 SVP 问题。</p>
 <blockquote>
+<p>上文使用了<strong>赫米特定理</strong>，即对于所有 <span class="math inline">\(n\)</span> 维的格 <span class="math inline">\(\mathcal{L}\)</span>，都包含一个非零向量 <span class="math inline">\(v\in \mathcal{L}\)</span> 满足 <span class="math display">\[
+v\leq \sqrt{n}|\det{(\mathcal{L})}|^{1/n}
+\]</span> 除此之外还有更精确的<strong>高斯启发式</strong>（The Gaussian
+Heuristic）。</p>
+<p>如果 <span class="math inline">\(\mathcal{L}\)</span> 是 <span class="math inline">\(n\)</span> 维的格，那么最短基底向量的长度是 <span class="math display">\[
+\|v\|\approx \sigma(\mathcal{L})=\sqrt{\frac{n}{2\pi
+e}}|\det{(\mathcal{L})}|^{1/n}
+\]</span></p>
+</blockquote>
+<blockquote>
 <p>格规约算法有许多，最常见的是 LLL 算法，但 LLL
 算法得到的基向量质量不一定完美，可能还需要使用 BKZ 算法进行调整。</p>
 </blockquote>
@@ -17369,9 +17405,11 @@ mn\)</span></p>
 <span class="math inline">\(p\)</span> 整数 <span class="math inline">\(a\)</span>，有 <span class="math display">\[
 a^{p-1}\equiv1\pmod{p}
 \]</span> 推论有： <span class="math display">\[
-na^{p-1}\equiv n\pmod{p},n\in\Z\newline
-a^{p-2}\equiv a^{-1}\pmod{p}\newline
-a^b\equiv a^{b\pmod{p-1}}\pmod{p},b\in\Z\newline
+\begin{align}
+na^{p-1}&amp;\equiv n\pmod{p},n\in Z\\
+a^{p-2}&amp;\equiv a^{-1}\pmod{p}\\
+a^b&amp;\equiv a^{b\pmod{p-1}}\pmod{p},b\in Z\\
+\end{align}
 \]</span></p>
 <h1 id="rsapython-实现">RSA&amp;python 实现</h1>
 <h2 id="加密">加密</h2>
@@ -17447,11 +17485,11 @@ PEM，可以用上面这段标准字节流一一对照分析。</p>
 e_1x+e_2y=1
 \]</span> 其中<span class="math inline">\(x,y\)</span>皆为整数，一正一负。</p>
 <p>利用扩展欧几里得算法可以求得解<span class="math inline">\((x,y)\)</span>，在这里不妨设<span class="math inline">\(x\)</span>为正，<span class="math inline">\(y\)</span>为负，利用模运算性质得 <span class="math display">\[
-c_1^xc_2^y(mod\ n)=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m\pmod{n}
+c_1^xc_2^y=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m\pmod{n}
 \]</span></p>
 <p>特别地，当 <span class="math inline">\(\gcd(e_1,e_2)=g\)</span>
 较小时，也可以构造为： <span class="math display">\[
-c_1^xc_2^y(mod\ n)=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m^g\pmod{n}
+c_1^xc_2^y=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m^g\pmod{n}
 \]</span> 随后进行低加密指数攻击。</p>
 <h3 id="实现">实现</h3>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> gcdext</span><br><span class="line">n = <span class="number">0xa6241c28743fbbe4f2f67cee7121497f622fd81947af30f327fb028445b39c2d517ba7fdcb5f6ac9e6217205f8ec9576bdec7a0faef221c29291c784eed393cd95eb0d358d2a1a35dbff05d6fa0cc597f672dcfbeecbb14bd1462cb6ba4f465f30f22e595c36e6282c3e426831d30f0479ee18b870ab658a54571774d25d6875</span></span><br><span class="line">e1 = <span class="number">0x3045</span></span><br><span class="line">e2 = <span class="number">0xff4d</span></span><br><span class="line">c1 = <span class="number">0x5d1e39bc751108ec0a1397d79e63c013d238915d13380ae649e84d7d85ebcffbbc35ebb18d2218ccbc5409290dfa8a4847e5923c3420e83b1a9d7aa67190dc0d34711cce261665c64c28ed2834394d4b181926febf7eb685f9ce81f36c7fb72798da3a14a123287171d26e084948aab0fba81c53f10b5696fc291006254ee690</span></span><br><span class="line">c2 = <span class="number">0x3d90f2bec4fe02d8ce4cece3ddb6baed99337f7e6856eef255445741b5cfe378390f058679d70236e51be4746db4c207f274c40b092e24f8c155a0957867e84dca48e27980af488d2615a280c6eadec2f1d30b95653b1ee3135e2edff100dd2c529994f846722f811348b082d0bec7cfab579a4bd0ab789928b1bebed68d628f</span></span><br><span class="line">g, r, s = gcdext(e1, e2)</span><br><span class="line">m = <span class="built_in">pow</span>(c1, r, n) * <span class="built_in">pow</span>(c2, s, n) % n</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(<span class="built_in">int</span>(m)))</span><br></pre></td></tr></table></figure>
@@ -17466,8 +17504,12 @@ c_1^xc_2^y(mod\ n)=m^{e_1x}m^{e_2y}=m^{e_1x+e_2y}=m^g\pmod{n}
 <span class="math inline">\(\varphi(N)\)</span> 分解</h2>
 <h3 id="原理-2">原理</h3>
 <p>我们已知 <span class="math display">\[
-N=pq\newline
-\varphi(N)=(p-1)(q-1)=pq-(p+q)+1=N-(p+q)+1
+\begin{align}
+N&amp;=pq\\
+\varphi(N)&amp;=(p-1)(q-1)\\
+&amp;=pq-(p+q)+1\\
+&amp;=N-(p+q)+1
+\end{align}
 \]</span> 我们不妨构建一个二次方程，这个二次方程的两根之和为 <span class="math inline">\(x_1+x_2=p+q\)</span>，两根之积为 <span class="math inline">\(x_1x_2=pq\)</span>，即方程： <span class="math display">\[
 x^2+(\varphi(N)-N-1)x+N=0
 \]</span> 该方程的解即为 <span class="math inline">\((p,q)\)</span></p>
@@ -17508,12 +17550,14 @@ k=\frac{k\varphi(N)}{N}+1=k-\left \lceil \frac{p+q+1}{N} \right \rceil
 <p>如果选取的加密指数较低，并且使用了相同的加密指数给一个接受者的群发送相同的信息，那么可以进行广播攻击得到明文。</p>
 <p>例如当<span class="math inline">\(e=3\)</span>时，有以下等式成立：
 <span class="math display">\[
-c_1=pow(m,e,n_1)\newline
-c_2=pow(m,e,n_2)\newline
-c_3=pow(m,e,n_3)\newline
-\cdots
+\begin{aligned}
+c_1&amp;=pow(m,e,n_1)\\
+c_2&amp;=pow(m,e,n_2)\\
+c_3&amp;=pow(m,e,n_3)\\
+&amp;\vdots
+\end{aligned}
 \]</span> 对上列等式运用中国剩余定理，得到 <span class="math display">\[
-c_x=pow(m,e,n_1*n_2*n_3*\cdots)
+c_x=pow(m,e,n_1\times n_2\times n_3\times \cdots)
 \]</span></p>
 <p>随后再进行低加密指数攻击。</p>
 <h3 id="实现-4">实现</h3>
@@ -17597,8 +17641,10 @@ ed-1=k\varphi(n)=2^st
 <p>可以证明得到对于至少一半的 <span class="math inline">\(a\in
 Z_n\)</span>，存在一个 <span class="math inline">\(i\in [1,s]\)</span>
 满足 <span class="math display">\[
-r=a^{2^{i-1}t}\neq \pm1\pmod{n}\newline
-a^{2^it}=1\pmod{n}
+\begin{align}
+r=a^{2^{i-1}t}&amp;\neq \pm1\pmod{n}\newline
+a^{2^it}&amp;=1\pmod{n}
+\end{align}
 \]</span> 那么此时，<span class="math inline">\(p=\gcd(r-1,n)\)</span>
 是 <span class="math inline">\(n\)</span> 的一个非平凡因子。</p>
 <h3 id="代码-1">代码</h3>
@@ -17646,8 +17692,10 @@ c_p=m^e\pmod{p}
 m_p\equiv c_p^{d_p}\pmod{p}\equiv m\pmod{p}
 \]</span> 当 <span class="math inline">\(\gcd(e,p-1)\neq 1\)</span>
 时，此时无法直接求出 <span class="math inline">\(d_p\)</span>（或者说存在多个 <span class="math inline">\(m_p\)</span>），那么我们令 <span class="math inline">\(k=\gcd(e,p-1)\)</span>，那么 <span class="math inline">\(\gcd(e/k,p-1)=1\)</span>，那么 <span class="math display">\[
-d_p&#39;=(e/k)^{-1}\pmod{p}\\
-m_p^k\equiv c_p^{d_p&#39;}\pmod{p}
+\begin{align}
+d_p&#39;&amp;=(e/k)^{-1}\pmod{p}\\
+m_p^k&amp;\equiv c_p^{d_p&#39;}\pmod{p}
+\end{align}
 \]</span> 此时相当于变为了加密指数为 <span class="math inline">\(k\)</span> 的 RSA 问题，可以使用 AMM 算法求解
 <span class="math inline">\(m_p\)</span>。</p>
 <p>那么对于 <span class="math inline">\(n=pq\)</span>，我们首先计算出
@@ -17693,17 +17741,21 @@ e = 65537 c =
 <h3 id="原理-12">原理</h3>
 <ul>
 <li><p>计算出 <span class="math inline">\(m_p\)</span> 和<span class="math inline">\(m_q\)</span>： <span class="math display">\[
-m_p=\sqrt{c}\mod{p}\newline
-m_q=\sqrt{c}\mod{q}
+\begin{align}
+m_p&amp;=\sqrt{c}\mod{p}\newline
+m_q&amp;=\sqrt{c}\mod{q}
+\end{align}
 \]</span></p></li>
 <li><p>利用扩展欧几里得算法计算出 <span class="math inline">\(y_p\)</span> 和 <span class="math inline">\(y_q\)</span> <span class="math display">\[
 y_p·p+y_q·q=1
 \]</span></p></li>
 <li><p>然后解得四个明文： <span class="math display">\[
-a=(y_p·p·m_q+y_q·q·m_p)\pmod{n}\newline
-b=n-a\newline
-c=(y_p·p·m_q-y_q·q·m_p)\pmod{n}\newline
-d=n-c
+\begin{cases}
+a&amp;=&amp;(y_p·p·m_q+y_q·q·m_p)\pmod{n}\\
+b&amp;=&amp;n-a\\
+c&amp;=&amp;(y_p·p·m_q-y_q·q·m_p)\pmod{n}\\
+d&amp;=&amp;n-c
+\end{cases}
 \]</span></p></li>
 <li><p>其中，如果<span class="math inline">\(p,q\)</span>是形为<span class="math inline">\(4k+3\)</span>的不同素数，即<span class="math inline">\(p\equiv q\equiv 3\pmod{4}\)</span>，则 <span class="math display">\[
 m_p=c^{\frac{1}{4}(p+1)}\pmod{p}\newline
@@ -17884,16 +17936,22 @@ g=\gcd(a^{n!}-1,N)
 <h3 id="原理-17">原理</h3>
 <p>首先我们知道多项式分解的复杂度在于其项数的多少和系数的大小，同时任意一个数我们可以使用多项式来表达，比如说数字
 1234567890 可以表达为： <span class="math display">\[
-P_{10}(x)=x^{9} + 2x^{8} + 3x^{7} + 4x^{6} + 5x^{5} + 6x^{4} + 7x^{3} +
-8x^{2} + 9x\newline
-P(10)=1234567890
+\begin{align}
+P_{10}(x)&amp;=x^{9} + 2x^{8} + 3x^{7} + 4x^{6} + 5x^{5} + 6x^{4} +
+7x^{3} + 8x^{2} + 9x\\
+P(10)&amp;=1234567890
+\end{align}
 \]</span> 或者是 <span class="math display">\[
-P_{5}(x)=x^{13} + x^{10} + 2x^{9} + 2x^{7} + 2x^{6} + x^{5} + 3x^{4} +
-3x^{3} + 3x\newline
-P(5)=1234567890
+\begin{align}
+P_{5}(x)&amp;=x^{13} + x^{10} + 2x^{9} + 2x^{7} + 2x^{6} + x^{5} +
+3x^{4} + 3x^{3} + 3x\newline
+P(5)&amp;=1234567890
+\end{align}
 \]</span> 甚至是 <span class="math display">\[
-P_{1000}=x^{3} + 234x^{2} + 567x + 890\newline
-P(1000)=1234567890
+\begin{align}
+P_{1000}&amp;=x^{3} + 234x^{2} + 567x + 890\newline
+P(1000)&amp;=1234567890
+\end{align}
 \]</span> 可以发现，在不同的 <span class="math inline">\(p\)</span>
 进数下，多项式的复杂度会发生改变。</p>
 <p>于是乎有可能出现在十进制下多项式复杂，分解时间复杂度高，但在 <span class="math inline">\(p\)</span>
@@ -17944,11 +18002,13 @@ m_1=-G(0)
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">e = <span class="number">5</span></span><br><span class="line">N = <span class="number">5836720399</span></span><br><span class="line">c1 = <span class="number">2083888300</span></span><br><span class="line">c2 = <span class="number">2918851827</span></span><br><span class="line">f = <span class="keyword">lambda</span> x: x + <span class="number">17</span></span><br><span class="line">PR = PolynomialRing(Zmod(N), <span class="string">&#x27;x&#x27;</span>, <span class="number">1</span>)</span><br><span class="line">m1 = PR.gen()</span><br><span class="line">m2 = f(m1)</span><br><span class="line">g = <span class="keyword">lambda</span> x: x ** e</span><br><span class="line">Fs = [g(m1) - c1, g(m2) - c2]</span><br><span class="line">I = Ideal(Fs)</span><br><span class="line">G = I.groebner_basis()[<span class="number">0</span>]</span><br><span class="line">m1 = -G(<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">f&#x27;<span class="subst">&#123;m1 = &#125;</span>&#x27;</span>)</span><br></pre></td></tr></table></figure>
 <h3 id="扩展-2">扩展</h3>
 <p>当我们已知 <span class="math inline">\(l+1\)</span> 个条件 <span class="math display">\[
-f_0(x_1,\cdots,x_l)=f(x_1,\cdots,x_l)\equiv 0\pmod{N}\newline
-f_1(x_1,\cdots,x_l)=x_1^e-c_1\equiv 0\pmod{N}\newline
-f_2(x_1,\cdots,x_l)=x_2^e-c_2\equiv 0\pmod{N}\newline
-\vdots\newline
-f_l(x_1,\cdots,x_l)=x_l^e-c_l\equiv 0\pmod{N}
+\begin{align}
+f_0(x_1,\cdots,x_l)&amp;=f(x_1,\cdots,x_l)\equiv 0\pmod{N}\newline
+f_1(x_1,\cdots,x_l)&amp;=x_1^e-c_1\equiv 0\pmod{N}\newline
+f_2(x_1,\cdots,x_l)&amp;=x_2^e-c_2\equiv 0\pmod{N}\newline
+&amp;\vdots\newline
+f_l(x_1,\cdots,x_l)&amp;=x_l^e-c_l\equiv 0\pmod{N}
+\end{align}
 \]</span> 我们对其求 Groebner 基有 <span class="math display">\[
 [x_1-m_1,\cdots,x_l-m_l]
 \]</span> 生成代码如下</p>
@@ -17961,8 +18021,10 @@ f_l(x_1,\cdots,x_l)=x_l^e-c_l\equiv 0\pmod{N}
 m_2=m_1+b
 \]</span> 但我们需要求解的是 <span class="math inline">\(b\)</span>。</p>
 <p>考虑 <span class="math display">\[
-m_1^3-c_1\equiv 0\pmod{N}\newline
-(m_1+b)^3-c_2\equiv 0\pmod{N}
+\begin{align}
+m_1^3-c_1&amp;\equiv 0\pmod{N}\newline
+(m_1+b)^3-c_2&amp;\equiv 0\pmod{N}
+\end{align}
 \]</span> 由于两式都存在公共根 <span class="math inline">\(m_1\)</span>，那么其对 <span class="math inline">\(m_1\)</span> 的结式有非零零点，即线性方程 <span class="math inline">\(\varphi(P,Q)=0\)</span> 有非零解。</p>
 <p>显然两式的结式是关于 <span class="math inline">\(b\)</span>
 的函数，那么我们可以使用 Coppersmith 方法求解 <span class="math inline">\(b\)</span>，需要满足 <span class="math inline">\(b&lt;N^{1/9}\)</span>。</p>
@@ -22551,9 +22613,37 @@ ed=1+k\varphi(N)
 <p>但在维纳攻击中，我们只有 <span class="math inline">\(e\)</span> 和
 <span class="math inline">\(N\)</span>，那是否会在特定条件中 <span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 是 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
 的一个有理近似？</p>
-<p>实际上当 <span class="math inline">\(N=pq\)</span> 且 <span class="math inline">\(q&lt;p&lt;2q\)</span> 时，如果满足 <span class="math inline">\(d&lt;\displaystyle\frac{1}{3}N^{\frac{1}{4}}\)</span>，那么
-<span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 将是 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
+<p>如果说 <span class="math inline">\(N=pq\)</span> 且 <span class="math inline">\(q&lt;p&lt;2q\)</span>，那么 <span class="math display">\[
+\varphi(N)=(p-1)(q-1)
+\]</span> 可以计算误差限 <span class="math display">\[
+N-\varphi(N)=p+q-1&lt; 3\sqrt{N}
+\]</span> 如果此时把 <span class="math inline">\(N\)</span> 替换为 <span class="math inline">\(\varphi(N)\)</span> 到上述变形式，有 <span class="math display">\[
+\begin{align}
+\left|\frac{e}{N}-\frac{k}{d}\right|&amp;=\frac{ed-kN}{Nd}\\
+&amp;=\left|\frac{1-k[N-\varphi(N)]}{Nd}\right|\\
+\end{align}
+\]</span> 此时误差限 <span class="math display">\[
+\begin{align}
+\left|\frac{e}{N}-\frac{k}{d}\right|&amp;&lt;\left|\frac{k[N-\varphi(N)]}{Nd}\right|\\
+&amp;&lt;\left|\frac{3k\sqrt{N}}{Nd}\right|\\
+&amp;=\frac{3k}{d\sqrt{N}}\\
+&amp;\leq \frac{3k}{d\sqrt{N}}\\
+&amp;&lt;\frac{3}{\sqrt{N}}
+\end{align}
+\]</span></p>
+<blockquote>
+<p>由 <span class="math inline">\(k\varphi(N)&lt;ed&lt;\varphi(N)d\)</span>，得
+<span class="math inline">\(k&lt;d\)</span></p>
+</blockquote>
+<p>由于连分数定理，必须要有 <span class="math display">\[
+\frac{3}{\sqrt{N}}&lt;\frac{1}{2d^2}
+\]</span> 得 <span class="math display">\[
+d&lt;\frac{1}{\sqrt{6}}N^{\frac{1}{4}}
+\]</span> 只有满足此式时，<span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 才是 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
 的一个有理近似。</p>
+<blockquote>
+<p>实际证明中应该是 <span class="math inline">\(d&lt;\displaystyle\frac{1}{3}N^{\frac{1}{4}}\)</span>，因为这里在数值的界定上不一定完备，仅作思路引导。</p>
+</blockquote>
 <h3 id="步骤">步骤</h3>
 <ol type="1">
 <li>估测是否满足 <span class="math inline">\(d&lt;\displaystyle\frac{1}{3}N^{\frac{1}{4}}\)</span></li>
@@ -22568,6 +22658,19 @@ ed=1+k\varphi(N)
 <h3 id="脚本">脚本</h3>
 <p>以下仅给出 Sagemath 脚本：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">wienerAttack</span>(<span class="params">N, e</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    维纳攻击</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        N - p * q\\</span></span><br><span class="line"><span class="string">        e - public key</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        p, q, d</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    cf = continued_fraction(e / N)</span><br><span class="line">    convers = cf.convergents()</span><br><span class="line">    <span class="keyword">for</span> pkd <span class="keyword">in</span> convers:</span><br><span class="line">        <span class="comment"># possible k, d</span></span><br><span class="line">        pk, pd = pkd.as_integer_ratio()</span><br><span class="line">        <span class="keyword">if</span> pk == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># verify</span></span><br><span class="line">        <span class="keyword">if</span> (e * pd - <span class="number">1</span>) % pk != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># possible phi</span></span><br><span class="line">        pphi = (e * pd - <span class="number">1</span>) // pk</span><br><span class="line">        p = var(<span class="string">&#x27;p&#x27;</span>, domain=ZZ)</span><br><span class="line">        roots = solve(p ** <span class="number">2</span> + (pphi - N - <span class="number">1</span>) * p + N, p)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(roots) == <span class="number">2</span>:</span><br><span class="line">            <span class="comment"># possible p, q</span></span><br><span class="line">            pp, pq = roots</span><br><span class="line">            <span class="keyword">if</span> pp * pq == N:</span><br><span class="line">                <span class="keyword">return</span> pp, pq, pd</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">N = <span class="number">507419170088344932990702256911694788408493968749527614421614568612944144764889717229444020813658893362983714454159980719026366361318789415279417172858536381938870379267670180128174798344744371725609827872339512302232610590888649555446972990419313445687852636305518801236132032618350847705234643521557851434711389664130274468354405273873218264222293858509477860634889001898462547712800153111774564939279190835857445378261920532206352364005840238252284065587291779196975457288580812526597185332036342330147250312262816994625317482869849388424397437470502449815132000588425028055964432298176942124697105509057090546600330760364385753313923003549670107599757996810939165300581847068233156887269181096893089415302163770884312255957584660964506028002922164767453287973102961910781312351686488047510932997937700597992705557881172640175117476017503918294534205898046483981707558521558992058512940087192655700351675718815723840568640509355338482631416345193176708501897458649841539192993142790402734898948352382350766125000186026261167277014748183012844440603384989647664190074853086693408529737767147592432979469020671772152652865219092597717869942730499507426269170189547020660681363276871874469322437194397171763927907099922324375991793759</span></span><br><span class="line">e = <span class="number">77310199867448677782081572109343472783781135641712597643597122591443011229091533516758925238949755491395489408922437493670252550920826641442189683907973926843505436730014899918587477913032286153545247063493885982941194996251799882984145155733050069564485120660716110828110738784644223519725613280140006783618393995138076030616463398284819550627612102010214315235269945251741407899692274978642663650687157736417831290404871181902463904311095448368498432147292938825418930527188720696497596867575843476810225152659244529481480993843168383016583068747733118703000287423374094051895724494193455175131120243097065270804457787026492578916584536863548445813916819417857064037664101684455000184987531252344582899589746272173970083733130106407810619258077266603898529285634495710846838011858287024329514491058790557305041389614650730267774482954666726949886313386881066593946789460028399523245777171320319444673551268379126203862576627540177888290265714418064334752499940587750374552330008143708562065940245637685833371348603338834447212248648869514585047871442060412622164276894766238383894693759347590977926306581080390685360615407766600573527565016914830132066428454738135380178959590692145577418811677639050929791996313180297924833690095</span></span><br><span class="line">c = <span class="number">165251729917394529793163344300848992394021337429474789711805041655116845722480301677817165053253655027459227404782607373107477419083333844871948673626672704233977397989843349633720167495862807995411682262559392496273163155214888276398332204954185252030616473235814999366132031184631541209554169938146205402400412307638567132128690379079483633171535375278689326189057930259534983374296873110199636558962144635514392282351103900375366360933088605794654279480277782805401749872568584335215630740265944133347038070337891035560658434763924576508969938866566235926587685108811154229747423410476421860059769485356567301897413767088823807510568561254627099309752215808220067495561412081320541540679503218232020279947159175547517811501280846596226165148013762293861131544331444165070186672186027410082671602892508739473724143698396105392623164025712124329254933353509384748403154342322725203183050328143736631333990445537119855865348221215277608372952942702104088940952142851523651639574409075484106857403651453121036577767672430612728022444370874223001778580387635197325043524719396707713385963432915855227152371800527536048555551237729690663544828830627192867570345853910196397851763591543484023134551876591248557980182981967782409054277224</span></span><br><span class="line">p, q, d = wienerAttack(N, e)</span><br><span class="line">m = <span class="built_in">pow</span>(c, d, N)</span><br></pre></td></tr></table></figure>
+<h3 id="技巧">技巧</h3>
+<p>有时会注意到因为某些关系使得 <span class="math inline">\(d\)</span>
+过大，导致 <span class="math inline">\(\frac{1}{d\varphi(N)}\)</span>
+不满足连分数定理，比如说最简单的情况是使其扩大一个倍数 <span class="math inline">\(d=td_0\)</span>，其中 <span class="math inline">\(d_0\)</span> 满足条件。</p>
+<p>如果说此时 <span class="math inline">\(t\)</span> 知道，我们仅需使得
+<span class="math inline">\(e=te_0\)</span> 即可，其中 <span class="math inline">\(e_0d=1\pmod{\varphi(N)}\)</span>。</p>
+<p>这样就会使得 <span class="math display">\[
+\frac{t}{d\varphi(N)}=\frac{1}{d_0\varphi(N)}
+\]</span> 此时再次满足条件。</p>
+<blockquote>
+<p>由于只需满足条件就会使得 <span class="math inline">\(N\)</span>
+可以替换 <span class="math inline">\(\varphi(N)\)</span>，故这里不作严格数值分析。</p>
+</blockquote>
 <h2 id="扩展维纳攻击">扩展维纳攻击</h2>
 <h3 id="wiener-s-approach">Wiener 's Approach</h3>
 <p>我们已知 <span class="math display">\[
@@ -28655,7 +28758,24 @@ Solidity 特性的<strong>脑洞</strong>。</p>
 </blockquote>
 <p>基于 Hardhat 的一个测试任务</p>
 <figure class="highlight ts"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> artifacts <span class="keyword">from</span> <span class="string">&quot;./artifacts/contracts/FlagListener.sol/FlagListener.json&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">task</span>(<span class="string">&quot;testflag&quot;</span>).<span class="title function_">setAction</span>(<span class="keyword">async</span> (_, &#123; web3 &#125;) =&gt; &#123;</span><br><span class="line">  <span class="comment">// Deploy `FlagListener` contract</span></span><br><span class="line">  <span class="keyword">const</span> [deployer, ] = <span class="keyword">await</span> web3.<span class="property">eth</span>.<span class="title function_">getAccounts</span>();</span><br><span class="line">  <span class="keyword">const</span> contract = <span class="keyword">new</span> web3.<span class="property">eth</span>.<span class="title class_">Contract</span>(artifacts.<span class="property">abi</span>);</span><br><span class="line">  <span class="keyword">const</span> rawContract = contract.<span class="title function_">deploy</span>(&#123;</span><br><span class="line">    <span class="attr">data</span>: artifacts.<span class="property">bytecode</span></span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="keyword">const</span> flagListener = <span class="keyword">await</span> rawContract.<span class="title function_">send</span>(&#123;</span><br><span class="line">    <span class="attr">from</span>: deployer</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// Get the `Flag` event</span></span><br><span class="line">  <span class="keyword">const</span> eventFlag = flagListener.<span class="property">events</span>.<span class="title class_">Flag</span>()</span><br><span class="line">  <span class="comment">// Listen for every charactor of flag</span></span><br><span class="line">  <span class="keyword">let</span> subcribedFlagHex = <span class="string">&quot;&quot;</span></span><br><span class="line">  eventFlag.<span class="title function_">on</span>(<span class="string">&#x27;data&#x27;</span>, <span class="function">(<span class="params">data</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> hex = data.<span class="property">data</span>[data.<span class="property">data</span>.<span class="property">length</span> - <span class="number">1</span>]</span><br><span class="line">    subcribedFlagHex += hex</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// Get the `listen(uint248)` function selector</span></span><br><span class="line">  <span class="keyword">const</span> selector = web3.<span class="property">eth</span>.<span class="property">abi</span>.<span class="title function_">encodeFunctionSignature</span>(&#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;listen&quot;</span>,</span><br><span class="line">    <span class="attr">type</span>: <span class="string">&quot;function&quot;</span>,</span><br><span class="line">    <span class="attr">inputs</span>: [&#123;</span><br><span class="line">      <span class="attr">name</span>: <span class="string">&quot;x&quot;</span>,</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;uint248&quot;</span></span><br><span class="line">    &#125;]</span><br><span class="line">  &#125;)</span><br><span class="line">  <span class="comment">// Send flag</span></span><br><span class="line">  <span class="keyword">const</span> flag = <span class="string">&quot;Aurora&#123;qsdzyyds!&#125;&quot;</span></span><br><span class="line">  <span class="keyword">const</span> hexFlag = web3.<span class="property">utils</span>.<span class="title function_">toHex</span>(flag).<span class="title function_">substring</span>(<span class="number">2</span>)</span><br><span class="line">  <span class="comment">// Only send a single HexString at a time</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; hexFlag.<span class="property">length</span>; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> byteString = <span class="string">&quot;0&quot;</span> + hexFlag[i]</span><br><span class="line">    <span class="keyword">const</span> data = selector + byteString + web3.<span class="property">utils</span>.<span class="title function_">keccak256</span>(<span class="title class_">Math</span>.<span class="title function_">random</span>()).<span class="title function_">substring</span>(<span class="number">4</span>)</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Send Data: <span class="subst">$&#123;data&#125;</span>`</span>)</span><br><span class="line">    <span class="keyword">await</span> web3.<span class="property">eth</span>.<span class="title function_">sendTransaction</span>(&#123;</span><br><span class="line">      <span class="attr">to</span>: flagListener.<span class="property">options</span>.<span class="property">address</span>,</span><br><span class="line">      <span class="attr">data</span>: data</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="comment">// Get the flag</span></span><br><span class="line">  <span class="keyword">const</span> finalFlag = web3.<span class="property">utils</span>.<span class="title function_">hexToAscii</span>(<span class="string">&quot;0x&quot;</span> + subcribedFlagHex)</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Final Flag: <span class="subst">$&#123;finalFlag&#125;</span>`</span>)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<h2 id="参考">参考</h2>
+<h1 id="画外音">画外音</h1>
+<h2 id="助记词">助记词</h2>
+<p>助记词，也称为恢复短语或种子短语，是存储恢复加密货币钱包所需的全部信息的单词列表。</p>
+<p>助记词通常由 12、15、18、21 或 24 个单词组成，这些单词是从一个包含
+2048
+个单词的预定列表中生成的。助记词的单词数量与安全级别相对应——更多的单词意味着更多的可能组合，因此安全性更高。</p>
+<p>助记词是根据加密标准生成的，其中最常见的加密标准是 <a href="https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki">BIP-39</a>（比特币第
+39 号改进提案）。</p>
+<p>在此之外还有 MetaMask 使用的 BIP32/44，或者其他钱包使用的
+BIP84、BIP141等。</p>
+<p>使用在线网站 <a href="https://iancoleman.io/bip39/">https://iancoleman.io/bip39/</a>
+就可以生成助记词或者通过助记词生成种子、密钥等。</p>
+<blockquote>
+<p>也可以选择使用 Python 库 <code>mnemonic</code> 来生成。</p>
+</blockquote>
+<p>同时由于每个词只有 2048（2 的 20
+次方）种可能性，如果说大部分助记词被知晓的前提下，可以通过爆破得到用户钱包地址、私钥。</p>
+<h1 id="参考">参考</h1>
 <ul>
 <li>犬子博客：<a href="https://cauliweak9.github.io/2024/02/11/SmartContractSecurity/">https://cauliweak9.github.io/2024/02/11/SmartContractSecurity/</a></li>
 <li><a href="https://solidity-by-example.org/hello-world/">https://solidity-by-example.org/hello-world/</a></li>
@@ -28733,7 +28853,7 @@ e_r=\frac{e}{x^*}=\frac{x-x^*}{x^*}
 bound），符号为 <span class="math inline">\(\epsilon_r\)</span>，定义为
 <span class="math display">\[
 |e_r|=|\frac{e}{x^*}|\leq \epsilon_r
-\]</span> 显然，误差限（error bound）不是唯一的。</p>
+\]</span> 显然，误差限（error bound）不是唯一的，且 <span class="math inline">\(\frac{\epsilon}{|x^*|}\)</span> 是 <span class="math inline">\(x^*\)</span> 的一个相对误差限。</p>
 <blockquote>
 <p>误差（error）函数写为 <span class="math display">\[
 e(x^*)=x-x^*
@@ -28978,6 +29098,446 @@ e(\frac{x}{y})\approx \frac{1}{y}e(x)-\frac{x}{y^2}e(y)\\
 次乘法运算，但是使用快速幂算法仅需要 8 次乘法运算 <span class="math display">\[
 x^{31}=x^1x^2x^4x^8x^{16}
 \]</span></p>
+<h1 id="插值法">插值法</h1>
+<h2 id="插值问题">插值问题</h2>
+<p>插值法是数值计算的基本课题，目标是使用<strong>简单函数</strong>为离散数组建立<strong>连续模型（连续关系）</strong>。</p>
+<p>比如说在物理实验中测得一组被测对象的关系值，比如说压力传感器的力的大小和输出电压的大小，这是一组离散点，可能数据如下</p>
+<table>
+<thead>
+<tr class="header">
+<th>Force (N)</th>
+<th>voltage (mV)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>20</td>
+<td>810</td>
+</tr>
+<tr class="even">
+<td>21</td>
+<td>892</td>
+</tr>
+<tr class="odd">
+<td>24</td>
+<td>1162</td>
+</tr>
+<tr class="even">
+<td>25</td>
+<td>1260</td>
+</tr>
+<tr class="odd">
+<td>27</td>
+<td>1468</td>
+</tr>
+<tr class="even">
+<td>34</td>
+<td>2322</td>
+</tr>
+<tr class="odd">
+<td>50</td>
+<td>5010</td>
+</tr>
+<tr class="even">
+<td>52</td>
+<td>5418</td>
+</tr>
+<tr class="odd">
+<td>55</td>
+<td>6060</td>
+</tr>
+<tr class="even">
+<td>56</td>
+<td>6282</td>
+</tr>
+</tbody>
+</table>
+<p>这时使用简单的线性关系是无法完美描述该传感器的传感特性的，使用最小二乘法做拟合得到的结果如下</p>
+<figure>
+<img src="/numerical-method-note/%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95%E7%9A%84%E6%8B%9F%E5%90%88%E7%BB%93%E6%9E%9C.png" alt="最小二乘法的拟合结果">
+<figcaption aria-hidden="true">最小二乘法的拟合结果</figcaption>
+</figure>
+<p>其相关系数 <span class="math inline">\(R^2=0.9926\)</span>。</p>
+<p>如果说这个时候应用<strong>多项式插值法</strong>，得到的拟合结果是</p>
+<figure>
+<img src="/numerical-method-note/%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%8F%92%E5%80%BC%E6%B3%95%E7%9A%84%E6%8B%9F%E5%90%88%E7%BB%93%E6%9E%9C.png" alt="多项式插值法的拟合结果">
+<figcaption aria-hidden="true">多项式插值法的拟合结果</figcaption>
+</figure>
+<p>其相关系数 <span class="math inline">\(R^2=1\)</span>，我们很好的拟合了该传感器的传感特性，这使得对该传感器的研究更加精确了。</p>
+<blockquote>
+<p>上述只是为了说明插值法的意义，实际上最小二乘法是直线拟合法，不要求所有离散点必须通过该拟合直线；而插值法要求所有离散点必须通过拟合直线。</p>
+</blockquote>
+<p>一般来说，我们将<strong>插值问题</strong>描述为，</p>
+<p>已知 <span class="math inline">\(n+1\)</span> 个节点 <span class="math inline">\((x_i,y_i)\)</span>，其中 <span class="math inline">\(x_i\)</span> 互不相同，不妨设 <span class="math inline">\(a=x_0&lt;x_1&lt;\cdots&lt;x_n=b\)</span>，那么求任一插值点
+<span class="math inline">\(x^*\neq x_i\)</span> 处的插值 <span class="math inline">\(y^*\)</span>。</p>
+<p>随后构造平面曲线 <span class="math inline">\(y=\varphi(x)\)</span>
+使其通过所有节点，即 <span class="math inline">\(y_i=\varphi(x_i)\)</span>。</p>
+<p>根据上述定义，可以得到<strong>插值法</strong>的定义为：</p>
+<p>设函数 <span class="math inline">\(y=f(x)\)</span> 在区间 <span class="math inline">\([a,b]\)</span> 上有定义，且已知在点 <span class="math inline">\(a=x_0&lt;x_1&lt;\cdots&lt;x_n=b\)</span> 上的值
+<span class="math inline">\(f(x_i)=y_i(i=0,1,\cdots,n)\)</span>，若存在一简单函数
+<span class="math inline">\(\varphi(x)\)</span>，使 <span class="math display">\[
+\varphi(x_i)=y_i(i=0,1,\cdots,n)
+\]</span> 成立，就称 <span class="math inline">\(\varphi(x)\)</span> 为
+<span class="math inline">\(f(x)\)</span>
+的<strong>插值函数</strong>，点 <span class="math inline">\(x_i(i=0,1,\cdots,n)\)</span>
+为<strong>插值节点</strong>，包括插值节点的区间 <span class="math inline">\([a,b]\)</span>
+称为<strong>插值区间</strong>，求插值函数 <span class="math inline">\(\varphi(x)\)</span>
+的方法称为<strong>插值法</strong>。</p>
+<p>对于被插函数 <span class="math inline">\(f(x)\)</span> 和插值函数
+<span class="math inline">\(\varphi(x)\)</span> 在节点 <span class="math inline">\(x_i\)</span> 处的函数值必然相等，但在节点外 <span class="math inline">\(\varphi(x)\)</span> 的值可能就会偏离 <span class="math inline">\(f(x)\)</span>，因此 <span class="math inline">\(\varphi(x)\)</span> 近似代替 <span class="math inline">\(f(x)\)</span>
+必然存在<strong>截断误差</strong>。</p>
+<p>如果说 <span class="math inline">\(\varphi_n(x)\)</span> 为次数不超过
+<span class="math inline">\(n\)</span> 的代数多项式 <span class="math display">\[
+\varphi_n(x)=a_0+a_1x+\cdots+a_nx^n
+\]</span> 那么就称 <span class="math inline">\(\varphi_n(x)\)</span>
+为<strong>插值多项式</strong>，相应的插值法称为<strong>多项式插值法</strong>；</p>
+<p>若 <span class="math inline">\(\varphi_n(x)\)</span>
+为分段多项式，就称为<strong>分段插值法</strong>。</p>
+<blockquote>
+<p>一般来说会选择多项式函数作为插值法的目标插值函数，这是因为其计算简便、性质简单。</p>
+</blockquote>
+<h2 id="多项式插值法">多项式插值法</h2>
+<h3 id="唯一解">唯一解</h3>
+<p>由定义可以构造方程组 <span class="math display">\[
+\begin{cases}
+a_0+a_1x_0+a_2x_0^2+\cdots+a_nx_0^n=y_0\\
+a_0+a_1x_1+a_2x_1^2+\cdots+a_nx_1^n=y_1\\
+\vdots\\
+a_0+a_1x_n+a_2x_n^2+\cdots+a_nx_n^n=y_n\\
+\end{cases}
+\]</span> 那么该方程组的行列式为 <span class="math display">\[
+\det{(\mathcal{A})}=
+\begin{vmatrix}
+1&amp;x_0&amp;\cdots&amp;x_0^n\\
+1&amp;x_1&amp;\cdots&amp;x_1^n\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+1&amp;x_n&amp;\cdots&amp;x_n^n\\
+\end{vmatrix}=\prod(x_i-x_j)
+\]</span> 只要满足任意 <span class="math inline">\(x_i\neq x_j\)</span>
+且插值多项式 <span class="math inline">\(\varphi(x)\)</span> 的阶数
+<span class="math inline">\(\leq
+n\)</span>，那么该方程组就有唯一解。</p>
+<h3 id="误差估计">误差估计</h3>
+<p>上文提到插值法会造成截断误差，而插值多项式的<strong>截断误差</strong>可以写为
+<span class="math display">\[
+R_n(x)=f(x)-\varphi_n(x)
+\]</span> 也称为插值多项式的<strong>余项</strong>。</p>
+<p>截断误差的证明过程是复杂的，这里仅给出结论 <span class="math display">\[
+R_n(x)=\frac{f^{(n+1)}(\xi)}{(n+1)!}w_{n+1}(x),w_{n+1}(x)=\prod^n_{i=0}(x-x_i)
+\]</span> 但是这个表达式只有在 <span class="math inline">\(f(x)\)</span>
+的高阶导数存在时才能应用，且 <span class="math inline">\(\xi\)</span>
+无法确定，但可以估算 <span class="math inline">\(\xi\in
+(a,b)\)</span>，如果可以求出 <span class="math display">\[
+\max_{a&lt;x&lt;b}|f^{(n+1)}(x)|=M_{n+1}
+\]</span> 那么可以得到<strong>误差限</strong> <span class="math display">\[
+|R_n(x)|\leq \frac{M_{n+1}}{(n+1)!}|w_{n+1}(x)|
+\]</span></p>
+<h2 id="拉格朗日插值法">拉格朗日插值法</h2>
+<h3 id="线性插值">线性插值</h3>
+<p>先讨论 <span class="math inline">\(n=1\)</span> 的情况，<span class="math inline">\(\varphi_1(x)=a_0+a_1x\)</span>，这也被称为<strong>线性插值</strong></p>
+<figure>
+<img src="/numerical-method-note/%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC.png" alt="线性插值">
+<figcaption aria-hidden="true">线性插值</figcaption>
+</figure>
+<p>那么根据两点，可以构造出方程组 <span class="math display">\[
+\begin{cases}
+\varphi_1(x_0)=a_0+a_1x_0=y_0=f(x_0)\\
+\varphi_1(x_1)=a_0+a_1x_1=y_1=f(x_1)\\
+\end{cases}
+\]</span> 使用两点式公式，可以得到 <span class="math display">\[
+\varphi_1(x)=\frac{x-x_1}{x_0-x_1}y_0+\frac{x-x_0}{x_1-x_0}y_1
+\]</span> 似乎可以抽象出一个函数 <span class="math inline">\(l_i(x)\)</span> 将插值多项式表示为 <span class="math display">\[
+\varphi_1(x)=l_0(x)y_0+l_1(x)y_1
+\]</span></p>
+<h3 id="抛物插值">抛物插值</h3>
+<p>再讨论 <span class="math inline">\(n=2\)</span> 的情况，<span class="math inline">\(\varphi_2(x)=a_0+a_1x+a_2x^2\)</span>，这也被称为<strong>抛物插值</strong></p>
+<figure>
+<img src="/numerical-method-note/%E6%8A%9B%E7%89%A9%E6%8F%92%E5%80%BC.png" alt="抛物插值">
+<figcaption aria-hidden="true">抛物插值</figcaption>
+</figure>
+<p>同样的，可以构造出 <span class="math display">\[
+\begin{align}
+\varphi_2(x)&amp;=\frac{(x-x_1)(x-x_2)}{(x_0-x_1)(x_0-x_2)}y_0\\
+&amp;+\frac{(x-x_0)(x-x_2)}{(x_1-x_0)(x_1-x_2)}y_0\\
+&amp;+\frac{(x-x_0)(x-x_1)}{(x_2-x_0)(x_2-x_1)}y_0
+\end{align}
+\]</span> 似乎同样可以抽象出一个函数 <span class="math inline">\(l_i(x)\)</span> 将插值多项式表示为 <span class="math display">\[
+\varphi_2(x)=l_0(x)y_0+l_1(x)y_1+l_2(x)y_2
+\]</span></p>
+<h3 id="一般形式">一般形式</h3>
+<p>更一般地，可以发现插值多项式就是 <span class="math inline">\(n+1\)</span> 个线性函数的线性组合。</p>
+<p>将规律延伸到 <span class="math inline">\(n\)</span> 次，那么可以得到
+<span class="math display">\[
+L_n(x)=l_0(x)y_0+\cdots+l_n(x)y_n=\sum^n_{i=0}y_il_i(x)
+\]</span> 其中，<span class="math inline">\(L_n\)</span>
+称为拉格朗日插值函数，<span class="math inline">\(l_i(x)\)</span>
+称为拉格朗日基函数，定义为 <span class="math display">\[
+l_i(x_j)=\begin{cases}
+0,&amp;j\neq i\\
+1,&amp;j=i
+\end{cases}
+\]</span> 为了计算方便，可以写出数值形式为 <span class="math display">\[
+l_i(x)=\frac{(x-x_0)\cdots(x-x_{n})}{(x_i-x_0)\cdots(x_i-x_n)}=\prod^n_{j=0,j\neq
+i}\frac{x-x_j}{x_i-x_j}
+\]</span> 而插值多项式为 <span class="math display">\[
+L_n(x)=\sum^n_{i=0}y_il_i(x)=\sum^n_{i=0}\left(\prod^n_{j=0,j\neq
+i}\frac{x-x_j}{x_i-x_j}\right)
+\]</span></p>
+<blockquote>
+<p>除此之外还有 <span class="math inline">\(w_{n+1}(x)\)</span>
+形式下的拉格朗日插值函数 <span class="math display">\[
+\begin{align}
+w_{n+1}(x)&amp;=\prod^n_{j=0}(x-x_j)\\
+w_{n+1}&#39;(x_i)&amp;=\prod^n_{j=0,j\neq i}(x_i-x_j)\\
+L_n(x)&amp;=\sum^n_{i=0}\frac{w_{n+1}(x)}{(x-x_i)w_{n+1}&#39;(x_i)}y_i
+\end{align}
+\]</span></p>
+</blockquote>
+<h3 id="优缺点">优缺点</h3>
+<p>拉格朗日插值法的公式简洁，结构紧凑，理论分析方便，但改变一个数据点时，全部的插值基函数都将发生改变，基函数没有承袭性，且数据点很多时，计算量很大，为
+<span class="math inline">\(2n^2+2n\)</span>。</p>
+<h2 id="牛顿插值法">牛顿插值法</h2>
+<h3 id="规律延伸">规律延伸</h3>
+<p>同理首先考虑线性插值 <span class="math display">\[
+\varphi_1(x)=y_0+\frac{y_1-y_0}{x_1-x_0}(x-x_0)
+\]</span> 但此时我们使用点斜式，再来观察抛物插值 <span class="math display">\[
+\varphi_2(x)=y_0+\frac{y_1-y_0}{x_1-x_0}(x-x_0)+\frac{\frac{y_2-y_0}{x_2-x_0}-\frac{y_1-y_0}{x_1-x_0}}{x_2-x_1}(x-x_0)(x-x_1)
+\]</span> 我们可以从中抽象出一个函数 <span class="math inline">\(p_i\)</span>，使得 <span class="math display">\[
+\varphi_n(x)=p_0+p_1(x-x_0)+p_2(x-x_0)(x-x_1)+\cdots+p_n\prod^{n-1}_{i=0}(x-x_i)
+\]</span> 如果说接着推导 <span class="math inline">\(p_n\)</span>，那么其形式会十分复杂，故需要引入<strong>差商</strong>的概念来简化运算。</p>
+<h3 id="差商">差商</h3>
+<p>对函数 <span class="math inline">\(f(x)\)</span> 有 <span class="math inline">\(x_0,x_1,\cdots\)</span> 一系列互不相同的点，称
+<span class="math display">\[
+f[x_i,x_j]=\frac{f(x_i)-f(x_j)}{x_i-x_j}(i\neq j)
+\]</span> 为 <span class="math inline">\(f(x)\)</span> 关于点 <span class="math inline">\(x_i, x_j\)</span> 的一阶差商（均差）。</p>
+<blockquote>
+<p>类比斜率。</p>
+<p>中括号是为了有意区分函数值和差商的概念，可以认为 <span class="math inline">\(f[x_i]=f(x_i)\)</span> 是零阶差商。</p>
+</blockquote>
+<p>而称 <span class="math display">\[
+f[x_i,x_j,x_k]=\frac{f[x_i,x_j]-f[x_j,x_k]}{x_i-x_k}(i\neq j\neq k)
+\]</span> 为 <span class="math inline">\(f(x)\)</span> 关于点 <span class="math inline">\(x_i,x_j,x_k\)</span>
+的二阶差商（一阶差商的差商）。</p>
+<p>那么 <strong><span class="math inline">\(k\)</span>
+阶差商</strong>如下 <span class="math display">\[
+f[x_0,x_1,\cdots,x_k]=\frac{f[x_0,x_1,\cdots,x_{k-1}]-f[x_1,x_2,\cdots,x_{k}]}{x_0-x_k}
+\]</span></p>
+<h3 id="差商的性质">差商的性质</h3>
+<p>差商具有<strong>线性性</strong>，若 <span class="math inline">\(f(x)=a\varphi(x)+b\phi(x)\)</span>，则对于任意正整数
+<span class="math inline">\(k\)</span> 都有 <span class="math display">\[
+f[x_0,x_1,\cdots,x_k]=a\varphi[x_0,x_1,\cdots,x_k]+b\phi[x_0,x_1,\cdots,x_k]
+\]</span> <span class="math inline">\(k\)</span>
+阶差商可以由函数值的<strong>线性组合表示</strong>，即 <span class="math display">\[
+f[x_0,x_1,\cdots,x_k]=\sum^k_{i=0}\frac{f(x_i)}{(x_i-x_0)\cdots(x_i-x_{k})}=\sum^n_{i=0}\frac{f(x_i)}{w_{k+1}&#39;(x_i)}
+\]</span>
+差商具有<strong>对称性</strong>，即任意调换节点的次序，差商的值不变，如
+<span class="math display">\[
+f[x_0,x_1,x_2]=f[x_0,x_2,x_1]=f[x_2,x_1,x_0]
+\]</span> 若 <span class="math inline">\(f(x)\)</span> 是 <span class="math inline">\(x\)</span> 的 <span class="math inline">\(n\)</span> 次多项式，则其一阶差商 <span class="math inline">\(f[x,x_i]\)</span> 是 <span class="math inline">\(n-1\)</span> 次多项式。</p>
+<p>若 <span class="math inline">\(f(x)\)</span> 在 <span class="math inline">\([a,b]\)</span> 上存在 <span class="math inline">\(n\)</span> 阶导数，且 <span class="math inline">\(x_i\in[a,b]\)</span>，那么 <strong><span class="math inline">\(n\)</span> 阶差商与导数的关系</strong>为 <span class="math display">\[
+f[x_0,x_1,\cdots,x_k]=\frac{f^{(n)}(\xi)}{n!},\xi\in(a,b)
+\]</span></p>
+<h3 id="牛顿多项式">牛顿多项式</h3>
+<p>用差商的形式表示为 <span class="math display">\[
+\begin{align}
+N_n(x)&amp;=f(x_0)\\
+&amp;+(x-x0)f[x_0,x_1]\\
+&amp;+(x-x_0)(x-x_1)f[x_0,x_1,x_2]\\
+&amp;+\cdots\\
+&amp;+(x-x_0)\cdots(x-x_{n-1})f[x_0,\cdots,x_n]
+\end{align}
+\]</span> 其中牛顿多项式的误差也可以用差商表示 <span class="math display">\[
+R_n(x)=(x-x_0)\cdots(x-x_n)f[x,x_0,\cdots,x_n]=w_{n+1}(x)f[x,x_0,\cdots,x_n]
+\]</span>
+牛顿插值的优点是，每增加一个节点，插值多项式只增加一项，因此便于递推运算和程序设计，即
+<span class="math display">\[
+N_n(x)=N_{n-1}(x)+f[x_0,\cdots,x_n](x-x_0)\cdots(x-x_{n-1})
+\]</span>
+且与拉格朗日插值法相比，<strong>多项式等价，误差一致</strong>。</p>
+<p>一般来说，会根据 <span class="math inline">\(x_i,y_i\)</span>
+的值构造差分表，比如说以下数据</p>
+<table>
+<thead>
+<tr class="header">
+<th><span class="math inline">\(x_i\)</span></th>
+<th><span class="math inline">\(y_i\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.40</td>
+<td>0.41075</td>
+</tr>
+<tr class="even">
+<td>0.55</td>
+<td>0.57815</td>
+</tr>
+<tr class="odd">
+<td>0.65</td>
+<td>0.69675</td>
+</tr>
+<tr class="even">
+<td>0.80</td>
+<td>0.88811</td>
+</tr>
+<tr class="odd">
+<td>0.90</td>
+<td>1.02652</td>
+</tr>
+<tr class="even">
+<td>1.05</td>
+<td>1.25382</td>
+</tr>
+</tbody>
+</table>
+<p>我们可以构造这样的差分表</p>
+<table style="width:100%;">
+<colgroup>
+<col style="width: 8%">
+<col style="width: 10%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 16%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>x_i</th>
+<th>y_i</th>
+<th>一阶差商</th>
+<th>二阶差商</th>
+<th>三阶差商</th>
+<th>四阶差商</th>
+<th>五阶差商</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.40</td>
+<td>0.41075</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>0.55</td>
+<td>0.57815</td>
+<td>1.11600</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>0.65</td>
+<td>0.69675</td>
+<td>1.18600</td>
+<td>0.28000</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>0.80</td>
+<td>0.88811</td>
+<td>1.27573</td>
+<td>0.35893</td>
+<td>0.197333</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>0.90</td>
+<td>1.02652</td>
+<td>1.38410</td>
+<td>0.43348</td>
+<td>0.212952</td>
+<td>0.0312381</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>1.05</td>
+<td>1.25382</td>
+<td>1.51533</td>
+<td>0.52493</td>
+<td>0.228667</td>
+<td>0.0314286</td>
+<td>0.000380952</td>
+</tr>
+</tbody>
+</table>
+<p>其中，对角线即为所求的差商 <span class="math inline">\(f[x_0],f[x_0,x_1],\cdots,f[x_0,\cdots,x_n]\)</span>。</p>
+<h3 id="差分">差分</h3>
+<h4 id="定义">定义</h4>
+<p>向前差分，Forward Difference（F-差分） <span class="math display">\[
+\Delta f_k=f_{k+1}-f_k
+\]</span> 向后差分，Backward Difference（B-差分） <span class="math display">\[
+\nabla f_k=f_k-f_{k-1}
+\]</span></p>
+<h4 id="性质">性质</h4>
+<p>对于向前差分而言，具有连续性 <span class="math display">\[
+\begin{align}
+\Delta f_k&amp;=f_{k+1}-f_k\\
+\Delta^2 f_k&amp;=\Delta f_{k+1}-\Delta f_k\\
+&amp;\vdots\\
+\Delta^m f_k&amp;=\Delta^{m-1} f_{k+1}-\Delta^{m-1} f_k
+\end{align}
+\]</span> <img src="/numerical-method-note/%E5%89%8D%E5%90%91%E5%B7%AE%E5%88%86%E8%A1%A8.png" alt="前向差分表"></p>
+<p>线性性 <span class="math display">\[
+f(x)=a\varphi(x)+b\phi(x)\to \Delta^m f_k=a\Delta^m \varphi_k+b\Delta^m
+\phi_k
+\]</span> 线性表示 <span class="math display">\[
+\Delta^m f_k=\sum^m_{j=0}(-1)^j\binom{j}{m} f_{k+m-j}
+\]</span> 差分与差商的关系 <span class="math display">\[
+f[x_k,\cdots,x_{k+m}]=\frac{1}{m!}\frac{1}{h^m}\Delta^m f_k
+\]</span> 差分与导数的关系 <span class="math display">\[
+f^{(m)}(\xi)=\frac{\Delta^m f_k}{h^m}
+\]</span></p>
+<h3 id="等距节点牛顿插值法">等距节点牛顿插值法</h3>
+<p>实际使用中，通常我们得到的是等距节点下的数据值，例如说 <span class="math inline">\((0,1.002),(1,1.208),\cdots,(x_n,y_n)\)</span>，满足
+<span class="math inline">\(h=x_i-x_{i-1}\)</span> 为常数（等差）。</p>
+<p>不妨将<strong>差分与差商的关系</strong>代入牛顿插值公式，可以得到
+<span class="math display">\[
+N_n(x)=f_0+\frac{\delta f_0}{h}w_1(x)+\frac{\Delta^2
+f_0}{2!h^2}w_2(x)+\cdots+\frac{\Delta^n f_0}{n!h^n}
+\]</span> 其中，<span class="math inline">\(h\)</span>
+为等距节点的<strong>等差</strong>。</p>
+<p>为方便起见，将 <span class="math inline">\(w_{n+1}(x)\)</span>
+化为无关 <span class="math inline">\(x\)</span> 的函数，即不妨取 <span class="math inline">\(x=x_0+th\)</span>，其中 <span class="math inline">\(t\)</span> 为间距倍数，使得 <span class="math display">\[
+w_{n+1}(x)=w_{n+1}(x_0+th)=(t-0)(t-1)\cdots(t-n)h^{n+1}
+\]</span> 那么牛顿多项式化为 F-插值公式 <span class="math display">\[
+N_n(x)=f_0+t\Delta f_0+\frac{t(t-1)}{2!}\Delta^2
+f_0+\cdots+\frac{t(t-1)\cdots(t-n+1)}{n!}\Delta^n f_0
+\]</span> 其余项（误差）化为 <span class="math display">\[
+R_n(x)=\frac{t(t-1)\cdots(t-n)}{(n+1)!}h^{n+1}f^{(n+1)}(\xi)
+\]</span> 误差限为 <span class="math display">\[
+|R_n(x)|\leq
+\left|\frac{t(t-1)\cdots(t-n)}{(n+1)!}h^{n+1}M_{n+1}\right|,|f^{(n+1)}(\xi)|\leq
+M_{n+1}
+\]</span> 同理，B-差分也有类似的关系，可以得到 B-插值公式 <span class="math display">\[
+N_n(x)=f_n+t\nabla f_n+\frac{t(t-1)}{2!}\nabla^2
+f_n+\cdots+\frac{t(t-1)\cdots(t-n+1)}{n!}\nabla^n f_n
+\]</span> 当插值点 <span class="math inline">\(x\)</span>
+接近<strong>数据表头</strong>时，一般采用<strong>向前插值法</strong>；</p>
+<p>当插值点 <span class="math inline">\(x\)</span>
+接近<strong>数据表尾</strong>时，一般采用<strong>向后插值法</strong>。</p>
+<blockquote>
+<p>看的是 <span class="math inline">\(x\)</span> 接近 <span class="math inline">\(f_0\)</span> 还是 <span class="math inline">\(f_n\)</span>，越相近截断误差越小。</p>
+</blockquote>
+<h2 id="埃尔米特插值法">埃尔米特插值法</h2>
+<h3 id="埃尔米特插值多项式">埃尔米特插值多项式</h3>
+<p>许多实际的插值问题不但要求节点处函数值相同，还要求它的函数有相同的一阶、二阶导数。</p>
+<p>满足这种要求的插值多项式就是埃尔米特插值多项式，其插值多项式有 <span class="math inline">\(2n+1\)</span> 次数，即 <span class="math display">\[
+H_{2n+1}(x)=a_0+a_1x+\cdots+a_{2n+1}x^{2n+1}
+\]</span> 故需要 <span class="math inline">\(2n+2\)</span>
+个条件（数据点），其满足 <span class="math display">\[
+H_{2n+1}(x_i)=f(x_i),H&#39;_{2n+1}(x_i)=f&#39;(x_i)
+\]</span> 余项为 <span class="math display">\[
+R(x)=\frac{f^{2n+2}(\xi)}{(2n+2)!}w_{n+1}^2(x)
+\]</span></p>
 ]]></content>
       <tags>
         <tag>math</tag>
@@ -29128,7 +29688,7 @@ S=\frac{\Delta y}{\Delta x}
 \]</span>
 传感器输出曲线的斜率就是其灵敏度，对于线性特性的传感器灵敏度与输入量大小无关。</p>
 <blockquote>
-<p>输出特性为曲线求导即可。</p>
+<p>输出特性为曲线那么需要求拟合直线的斜率即可。</p>
 </blockquote>
 <p>一般来说希望传感器灵敏度高（高精度），在满量程范围内恒定（线性特性）。</p>
 <p>对于<strong>线性检测系统</strong>来说，<strong>串联</strong>的各环节灵敏度相乘得到总灵敏度。</p>
@@ -29519,7 +30079,25 @@ Behinder 的多个交互流量过大的情况。</p>
   <entry>
     <title>现代控制理论笔记</title>
     <url>//modern-control-theory-note.html</url>
-    <content><![CDATA[<h1 id="现代控制理论">现代控制理论</h1>
+    <content><![CDATA[<h1 id="状态空间表达式">状态空间表达式</h1>
+<h2 id="前言">前言</h2>
+<p>在经典控制理论中，通过对被控对象的输入输出建立微分方程，或者是传递函数的方式来对一个系统进行分析，将一个复杂的系统拆分成多个简单系统的集合。</p>
+<p>然而，传统的微分方程或传递函数方法可能会受限于系统结构的复杂性，难以完整描述系统的内部状态以及其动态特性，比如说虽然针对于单输入单输出的时不变系统是完善的，但是如果面对多输入多输出，时变系统经典控制理论将无法解决问题。</p>
+<p>在现代控制理论中，引入了新的数学工具——线性代数。这不仅允许我们对被控对象的输入输出进行建模，同时也能对系统的<strong>状态变量</strong>进行独立建模。通过引入状态变量的概念，我们能够更准确地描述系统的动态行为和状态演化，从而使得我们的系统方程更具<strong>可解释性和准确性</strong>。</p>
+<p>我们知道输入 <span class="math inline">\(\mathbf{u}(t)=[u_1(t),\cdots,u_n(t)]\)</span>
+会改变系统的内部状态，假定内部状态为 <span class="math inline">\(\mathbf{x}(t)=[x_1(t),\cdots,x_n(t)]\)</span>，其中
+<span class="math inline">\(t\)</span> 表示了第 <span class="math inline">\(t\)</span>
+时刻下的内部状态，为了能够精确建模内部状态的<strong>未来与过去的关系</strong>，我们需要利用<strong>微分方程</strong>来描述<strong>状态变量随时间的演化规律</strong>。</p>
+<p><strong>一阶微分方程</strong>常常被用来表示系统的动态行为，因为它们能够直接反映状态变量的变化率，从而更准确地捕捉系统的动态特性。
+<span class="math display">\[
+\mathbf{x}&#39;(t)=\mathbf{f}[\mathbf{x}(t),\mathbf{u}(t),t]
+\]</span> 这也是状态空间表达式下的<strong>状态方程</strong>。</p>
+<p>同理，输出与状态和输入的关系为 <span class="math display">\[
+\mathbf{y}(t)=\mathbf{g}[\mathbf{x}(t),\mathbf{u}(t),t]
+\]</span> 这也是状态空间表达式下的<strong>输出方程</strong>。</p>
+<p>而其中 <span class="math inline">\(\mathbf{x}(t)\)</span>
+也被称作状态向量，<span class="math inline">\(\mathbf{u}(t)\)</span>
+是输入向量。</p>
 ]]></content>
       <tags>
         <tag>math</tag>

@@ -30,7 +30,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hasegawaazusa.github.io/wiener-attack/extendwiener-chosen-relations.png">
 <meta property="article:published_time" content="2023-01-14T13:30:00.000Z">
-<meta property="article:modified_time" content="2024-02-18T12:31:34.666Z">
+<meta property="article:modified_time" content="2024-03-20T15:02:53.691Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="crypto">
@@ -146,7 +146,7 @@
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
             <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BB%B4%E7%BA%B3%E6%94%BB%E5%87%BB-wiener-attack"><span class="nav-number">1.</span> <span class="nav-text">维纳攻击 (wiener attack)</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E7%BB%B4%E7%BA%B3%E6%94%BB%E5%87%BB"><span class="nav-number">1.1.</span> <span class="nav-text">普通维纳攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E5%88%86%E6%95%B0"><span class="nav-number">1.1.1.</span> <span class="nav-text">连分数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%90%86%E8%BF%91%E4%BC%BC%E6%94%B6%E6%95%9B%E5%88%86%E6%95%B0"><span class="nav-number">1.1.2.</span> <span class="nav-text">有理近似（收敛分数）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#legendres-theorem-%E8%BF%9E%E5%88%86%E6%95%B0%E5%AE%9A%E7%90%86"><span class="nav-number">1.1.3.</span> <span class="nav-text">Legendre&#39;s theorem
-(连分数定理)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.4.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.1.5.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC"><span class="nav-number">1.1.6.</span> <span class="nav-text">脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%BB%B4%E7%BA%B3%E6%94%BB%E5%87%BB"><span class="nav-number">1.2.</span> <span class="nav-text">扩展维纳攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#wiener-s-approach"><span class="nav-number">1.2.1.</span> <span class="nav-text">Wiener &#39;s Approach</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#guo-s-approach-with-two-exponents"><span class="nav-number">1.2.2.</span> <span class="nav-text">Guo &#39;s Approach With Two
+(连分数定理)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">1.1.4.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.1.5.</span> <span class="nav-text">步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC"><span class="nav-number">1.1.6.</span> <span class="nav-text">脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%80%E5%B7%A7"><span class="nav-number">1.1.7.</span> <span class="nav-text">技巧</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%89%A9%E5%B1%95%E7%BB%B4%E7%BA%B3%E6%94%BB%E5%87%BB"><span class="nav-number">1.2.</span> <span class="nav-text">扩展维纳攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#wiener-s-approach"><span class="nav-number">1.2.1.</span> <span class="nav-text">Wiener &#39;s Approach</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#guo-s-approach-with-two-exponents"><span class="nav-number">1.2.2.</span> <span class="nav-text">Guo &#39;s Approach With Two
 Exponents</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E5%B0%8F%E8%A7%A3%E5%AF%86%E6%8C%87%E6%95%B0%E7%9A%84%E5%8E%9F%E7%90%86"><span class="nav-number">1.2.3.</span> <span class="nav-text">两个小解密指数的原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E5%B0%8F%E8%A7%A3%E5%AF%86%E6%8C%87%E6%95%B0%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">1.2.4.</span> <span class="nav-text">三个小解密指数的情况</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E5%85%B3%E7%B3%BB"><span class="nav-number">1.2.5.</span> <span class="nav-text">选择关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%84%9A%E6%9C%AC-1"><span class="nav-number">1.2.6.</span> <span class="nav-text">脚本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%AE%BA%E6%96%87"><span class="nav-number">1.3.</span> <span class="nav-text">参考论文</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
@@ -239,7 +239,7 @@ Exponents</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" hr
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-02-18 20:31:34" itemprop="dateModified" datetime="2024-02-18T20:31:34+08:00">2024-02-18</time>
+      <time title="修改时间：2024-03-20 23:02:53" itemprop="dateModified" datetime="2024-03-20T23:02:53+08:00">2024-03-20</time>
     </span>
 
   
@@ -249,14 +249,14 @@ Exponents</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" hr
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>17k</span>
+      <span>18k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>15 分钟</span>
+      <span>16 分钟</span>
     </span>
 </div>
 
@@ -333,9 +333,37 @@ ed=1+k\varphi(N)
 <p>但在维纳攻击中，我们只有 <span class="math inline">\(e\)</span> 和
 <span class="math inline">\(N\)</span>，那是否会在特定条件中 <span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 是 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
 的一个有理近似？</p>
-<p>实际上当 <span class="math inline">\(N=pq\)</span> 且 <span class="math inline">\(q&lt;p&lt;2q\)</span> 时，如果满足 <span class="math inline">\(d&lt;\displaystyle\frac{1}{3}N^{\frac{1}{4}}\)</span>，那么
-<span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 将是 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
+<p>如果说 <span class="math inline">\(N=pq\)</span> 且 <span class="math inline">\(q&lt;p&lt;2q\)</span>，那么 <span class="math display">\[
+\varphi(N)=(p-1)(q-1)
+\]</span> 可以计算误差限 <span class="math display">\[
+N-\varphi(N)=p+q-1&lt; 3\sqrt{N}
+\]</span> 如果此时把 <span class="math inline">\(N\)</span> 替换为 <span class="math inline">\(\varphi(N)\)</span> 到上述变形式，有 <span class="math display">\[
+\begin{align}
+\left|\frac{e}{N}-\frac{k}{d}\right|&amp;=\frac{ed-kN}{Nd}\\
+&amp;=\left|\frac{1-k[N-\varphi(N)]}{Nd}\right|\\
+\end{align}
+\]</span> 此时误差限 <span class="math display">\[
+\begin{align}
+\left|\frac{e}{N}-\frac{k}{d}\right|&amp;&lt;\left|\frac{k[N-\varphi(N)]}{Nd}\right|\\
+&amp;&lt;\left|\frac{3k\sqrt{N}}{Nd}\right|\\
+&amp;=\frac{3k}{d\sqrt{N}}\\
+&amp;\leq \frac{3k}{d\sqrt{N}}\\
+&amp;&lt;\frac{3}{\sqrt{N}}
+\end{align}
+\]</span></p>
+<blockquote>
+<p>由 <span class="math inline">\(k\varphi(N)&lt;ed&lt;\varphi(N)d\)</span>，得
+<span class="math inline">\(k&lt;d\)</span></p>
+</blockquote>
+<p>由于连分数定理，必须要有 <span class="math display">\[
+\frac{3}{\sqrt{N}}&lt;\frac{1}{2d^2}
+\]</span> 得 <span class="math display">\[
+d&lt;\frac{1}{\sqrt{6}}N^{\frac{1}{4}}
+\]</span> 只有满足此式时，<span class="math inline">\(\displaystyle\frac{k}{d}\)</span> 才是 <span class="math inline">\(\displaystyle\frac{e}{N}\)</span>
 的一个有理近似。</p>
+<blockquote>
+<p>实际证明中应该是 <span class="math inline">\(d&lt;\displaystyle\frac{1}{3}N^{\frac{1}{4}}\)</span>，因为这里在数值的界定上不一定完备，仅作思路引导。</p>
+</blockquote>
 <h3 id="步骤">步骤</h3>
 <ol type="1">
 <li>估测是否满足 <span class="math inline">\(d&lt;\displaystyle\frac{1}{3}N^{\frac{1}{4}}\)</span></li>
@@ -350,6 +378,19 @@ ed=1+k\varphi(N)
 <h3 id="脚本">脚本</h3>
 <p>以下仅给出 Sagemath 脚本：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">wienerAttack</span>(<span class="params">N, e</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    维纳攻击</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        N - p * q\\</span></span><br><span class="line"><span class="string">        e - public key</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        p, q, d</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    cf = continued_fraction(e / N)</span><br><span class="line">    convers = cf.convergents()</span><br><span class="line">    <span class="keyword">for</span> pkd <span class="keyword">in</span> convers:</span><br><span class="line">        <span class="comment"># possible k, d</span></span><br><span class="line">        pk, pd = pkd.as_integer_ratio()</span><br><span class="line">        <span class="keyword">if</span> pk == <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># verify</span></span><br><span class="line">        <span class="keyword">if</span> (e * pd - <span class="number">1</span>) % pk != <span class="number">0</span>:</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment"># possible phi</span></span><br><span class="line">        pphi = (e * pd - <span class="number">1</span>) // pk</span><br><span class="line">        p = var(<span class="string">&#x27;p&#x27;</span>, domain=ZZ)</span><br><span class="line">        roots = solve(p ** <span class="number">2</span> + (pphi - N - <span class="number">1</span>) * p + N, p)</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(roots) == <span class="number">2</span>:</span><br><span class="line">            <span class="comment"># possible p, q</span></span><br><span class="line">            pp, pq = roots</span><br><span class="line">            <span class="keyword">if</span> pp * pq == N:</span><br><span class="line">                <span class="keyword">return</span> pp, pq, pd</span><br><span class="line">    <span class="keyword">raise</span> ValueError(<span class="string">&#x27;Could not factor N!&#x27;</span>)</span><br><span class="line"></span><br><span class="line">N = <span class="number">507419170088344932990702256911694788408493968749527614421614568612944144764889717229444020813658893362983714454159980719026366361318789415279417172858536381938870379267670180128174798344744371725609827872339512302232610590888649555446972990419313445687852636305518801236132032618350847705234643521557851434711389664130274468354405273873218264222293858509477860634889001898462547712800153111774564939279190835857445378261920532206352364005840238252284065587291779196975457288580812526597185332036342330147250312262816994625317482869849388424397437470502449815132000588425028055964432298176942124697105509057090546600330760364385753313923003549670107599757996810939165300581847068233156887269181096893089415302163770884312255957584660964506028002922164767453287973102961910781312351686488047510932997937700597992705557881172640175117476017503918294534205898046483981707558521558992058512940087192655700351675718815723840568640509355338482631416345193176708501897458649841539192993142790402734898948352382350766125000186026261167277014748183012844440603384989647664190074853086693408529737767147592432979469020671772152652865219092597717869942730499507426269170189547020660681363276871874469322437194397171763927907099922324375991793759</span></span><br><span class="line">e = <span class="number">77310199867448677782081572109343472783781135641712597643597122591443011229091533516758925238949755491395489408922437493670252550920826641442189683907973926843505436730014899918587477913032286153545247063493885982941194996251799882984145155733050069564485120660716110828110738784644223519725613280140006783618393995138076030616463398284819550627612102010214315235269945251741407899692274978642663650687157736417831290404871181902463904311095448368498432147292938825418930527188720696497596867575843476810225152659244529481480993843168383016583068747733118703000287423374094051895724494193455175131120243097065270804457787026492578916584536863548445813916819417857064037664101684455000184987531252344582899589746272173970083733130106407810619258077266603898529285634495710846838011858287024329514491058790557305041389614650730267774482954666726949886313386881066593946789460028399523245777171320319444673551268379126203862576627540177888290265714418064334752499940587750374552330008143708562065940245637685833371348603338834447212248648869514585047871442060412622164276894766238383894693759347590977926306581080390685360615407766600573527565016914830132066428454738135380178959590692145577418811677639050929791996313180297924833690095</span></span><br><span class="line">c = <span class="number">165251729917394529793163344300848992394021337429474789711805041655116845722480301677817165053253655027459227404782607373107477419083333844871948673626672704233977397989843349633720167495862807995411682262559392496273163155214888276398332204954185252030616473235814999366132031184631541209554169938146205402400412307638567132128690379079483633171535375278689326189057930259534983374296873110199636558962144635514392282351103900375366360933088605794654279480277782805401749872568584335215630740265944133347038070337891035560658434763924576508969938866566235926587685108811154229747423410476421860059769485356567301897413767088823807510568561254627099309752215808220067495561412081320541540679503218232020279947159175547517811501280846596226165148013762293861131544331444165070186672186027410082671602892508739473724143698396105392623164025712124329254933353509384748403154342322725203183050328143736631333990445537119855865348221215277608372952942702104088940952142851523651639574409075484106857403651453121036577767672430612728022444370874223001778580387635197325043524719396707713385963432915855227152371800527536048555551237729690663544828830627192867570345853910196397851763591543484023134551876591248557980182981967782409054277224</span></span><br><span class="line">p, q, d = wienerAttack(N, e)</span><br><span class="line">m = <span class="built_in">pow</span>(c, d, N)</span><br></pre></td></tr></table></figure>
+<h3 id="技巧">技巧</h3>
+<p>有时会注意到因为某些关系使得 <span class="math inline">\(d\)</span>
+过大，导致 <span class="math inline">\(\frac{1}{d\varphi(N)}\)</span>
+不满足连分数定理，比如说最简单的情况是使其扩大一个倍数 <span class="math inline">\(d=td_0\)</span>，其中 <span class="math inline">\(d_0\)</span> 满足条件。</p>
+<p>如果说此时 <span class="math inline">\(t\)</span> 知道，我们仅需使得
+<span class="math inline">\(e=te_0\)</span> 即可，其中 <span class="math inline">\(e_0d=1\pmod{\varphi(N)}\)</span>。</p>
+<p>这样就会使得 <span class="math display">\[
+\frac{t}{d\varphi(N)}=\frac{1}{d_0\varphi(N)}
+\]</span> 此时再次满足条件。</p>
+<blockquote>
+<p>由于只需满足条件就会使得 <span class="math inline">\(N\)</span>
+可以替换 <span class="math inline">\(\varphi(N)\)</span>，故这里不作严格数值分析。</p>
+</blockquote>
 <h2 id="扩展维纳攻击">扩展维纳攻击</h2>
 <h3 id="wiener-s-approach">Wiener 's Approach</h3>
 <p>我们已知 <span class="math display">\[
@@ -571,13 +612,13 @@ D = diag\begin{pmatrix}
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">761k</span>
+    <span title="站点总字数">771k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11:31</span>
+    <span title="站点阅读时长">11:41</span>
   </span>
 </div>
 

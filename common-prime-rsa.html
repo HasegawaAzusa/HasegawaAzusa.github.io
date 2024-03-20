@@ -29,7 +29,7 @@
 <meta property="og:description" content="Common Prime RSA 相关的笔记">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-14T13:30:00.000Z">
-<meta property="article:modified_time" content="2023-07-21T15:00:02.749Z">
+<meta property="article:modified_time" content="2024-03-16T06:14:46.694Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="note">
 <meta property="article:tag" content="crypto">
@@ -144,7 +144,7 @@
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
             <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#common-prime-rsa"><span class="nav-number">1.</span> <span class="nav-text">Common Prime RSA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">生成算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%94%BB%E5%87%BB"><span class="nav-number">1.3.</span> <span class="nav-text">攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gamma-%E6%8E%A5%E8%BF%91%E4%BA%8E-12"><span class="nav-number">1.3.1.</span> <span class="nav-text">\(\gamma\)
-接近于 \(1&#x2F;2\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5-ab"><span class="nav-number">1.3.2.</span> <span class="nav-text">已知 \(a,b\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5-g"><span class="nav-number">1.3.3.</span> <span class="nav-text">已知 \(g\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E8%A7%A3-n-1"><span class="nav-number">1.3.4.</span> <span class="nav-text">分解 \(N-1\)</span></a></li></ol></li></ol></li></ol></div>
+接近于 \(1&#x2F;2\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5-ab"><span class="nav-number">1.3.2.</span> <span class="nav-text">已知 \(a,b\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5-g"><span class="nav-number">1.3.3.</span> <span class="nav-text">已知 \(g\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E8%A7%A3-n-1"><span class="nav-number">1.3.4.</span> <span class="nav-text">分解 \(N-1\)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mumtaz-luo%E6%94%BB%E5%87%BB"><span class="nav-number">1.3.5.</span> <span class="nav-text">Mumtaz-Luo攻击</span></a></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -236,7 +236,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-07-21 23:00:02" itemprop="dateModified" datetime="2023-07-21T23:00:02+08:00">2023-07-21</time>
+      <time title="修改时间：2024-03-16 14:14:46" itemprop="dateModified" datetime="2024-03-16T14:14:46+08:00">2024-03-16</time>
     </span>
 
   
@@ -246,7 +246,7 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>6.6k</span>
+      <span>7k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
@@ -280,8 +280,10 @@
 为共素数（common primes）。其中 <span class="math inline">\(g\)</span>
 为这两个素数的共因子（common factor）。</p>
 <p>我们需要注意到对于共素数RSA有着以下性质： <span class="math display">\[
+\begin{align}
 \lambda(pq)=\mathrm{lcm}(p-1,q-1)=\mathrm{lcm}(2ga,2gb)=2gab\\
 \varphi(pq)=(p-1)(q-1)=2ga2gb=2g\lambda(pq)
+\end{align}
 \]</span> 此外存在额外定义，RSA加密指数和解密指数需要与 <span class="math inline">\(\lambda(pq)\)</span> 互素。</p>
 <p>根据上述定义，可以推导出 <span class="math display">\[
 N=pq=(2ga+1)(2gb+1)=2g(2gab+a+b)+1=2gh+1
@@ -382,6 +384,30 @@ y^{rd}\equiv y^{u-s}\pmod{N}
 <h3 id="分解-n-1">分解 <span class="math inline">\(N-1\)</span></h3>
 <p>当 <span class="math inline">\(\gamma\)</span> 过小，即 <span class="math inline">\(g=N^\gamma\)</span> 过小时，因为已知 <span class="math inline">\(N-1=2gh\)</span>，故分解出 <span class="math inline">\(g\)</span> 是较为容易的。</p>
 <p>可以使用 <code>yafu</code> 分解 <span class="math inline">\(\frac{N-1}{2}\)</span>，其中当 <span class="math inline">\(\gamma\)</span> 值约为 0.10 左右时分解迅速。</p>
+<h3 id="mumtaz-luo攻击">Mumtaz-Luo攻击</h3>
+<p>由已知，得 <span class="math display">\[
+\begin{cases}
+ed=(p-1)bk+1\\
+ed=(q-1)ak+1
+\end{cases}
+\]</span> 可以变换为 <span class="math display">\[
+\begin{cases}
+ed-1+bk=pbk\\
+ed-1+ak=qak
+\end{cases}
+\]</span> 两式相乘，可得 <span class="math display">\[
+(ed-1+bk)(ed-1+ak)=pbk\cdot qak=abk^2N
+\]</span> 展开得到完整式 <span class="math display">\[
+e^2d^2+ed(ak+bk-2)-abk^2(N-1)-ak-bk+1=0
+\]</span> 不妨构建多项式函数 <span class="math display">\[
+f(x,y,z)=e^2x^2+ex(y+z-2)-(y+z-1)-(N-1)yz
+\]</span> 其中特解 <span class="math inline">\((x^*,y^*,z^*)=(d,ak,bk)\)</span>，边界为 <span class="math display">\[
+\begin{align}
+&amp;|x^*|\leq N^\delta\\
+&amp;|y^*|\leq N^{\delta-\gamma+0.5}\\
+&amp;|z^*|\leq N^{\delta-\gamma+0.5}
+\end{align}
+\]</span> 其中，<span class="math inline">\(\delta\)</span> 是私钥 <span class="math inline">\(d\)</span> 的大小。</p>
 
     </div>
 
@@ -456,13 +482,13 @@ y^{rd}\equiv y^{u-s}\pmod{N}
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">761k</span>
+    <span title="站点总字数">771k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11:31</span>
+    <span title="站点阅读时长">11:41</span>
   </span>
 </div>
 
