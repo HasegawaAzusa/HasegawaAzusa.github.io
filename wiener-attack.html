@@ -30,10 +30,10 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hasegawaazusa.github.io/wiener-attack/extendwiener-chosen-relations.png">
 <meta property="article:published_time" content="2023-01-14T13:30:00.000Z">
-<meta property="article:modified_time" content="2024-03-20T15:02:53.691Z">
+<meta property="article:modified_time" content="2024-03-24T15:49:04.603Z">
 <meta property="article:author" content="qsdz">
-<meta property="article:tag" content="note">
 <meta property="article:tag" content="crypto">
+<meta property="article:tag" content="note">
 <meta property="article:tag" content="rsa">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://hasegawaazusa.github.io/wiener-attack/extendwiener-chosen-relations.png">
@@ -239,7 +239,7 @@ Exponents</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" hr
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-03-20 23:02:53" itemprop="dateModified" datetime="2024-03-20T23:02:53+08:00">2024-03-20</time>
+      <time title="修改时间：2024-03-24 23:49:04" itemprop="dateModified" datetime="2024-03-24T23:49:04+08:00">2024-03-24</time>
     </span>
 
   
@@ -280,8 +280,10 @@ x=a_0+\frac{1}{a_1+\frac{1}{a_2+\frac{1}{a_3+\cdots}}}
 x=[a_0,a_1,a_2,\cdots,a_n]
 \]</span> 而一个有理数（无理数）具有有限（无限）的连分数展开式。</p>
 <p>一些简单的例子是： <span class="math display">\[
-\frac{73}{95}=0+\frac{1}{1+\frac{1}{3+\frac{1}{3+\frac{1}{7+}}}}=[0,1,3,3,7]\\
-\pi=[3,7,15,1,292,1,1,1,2,\cdots]
+\begin{align}
+\frac{73}{95}&amp;=0+\frac{1}{1+\frac{1}{3+\frac{1}{3+\frac{1}{7+}}}}=[0,1,3,3,7]\\
+\pi&amp;=[3,7,15,1,292,1,1,1,2,\cdots]
+\end{align}
 \]</span> 获取连分数的 Python 脚本如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">continuedFractions</span>(<span class="params">x: <span class="built_in">int</span>, y: <span class="built_in">int</span></span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用辗转相处将分数 x/y 转为连分数的形式</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; list(continuedFractions(73, 95))</span></span><br><span class="line"><span class="string">    [0, 1, 3, 3, 7]</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    `Parameters`:</span></span><br><span class="line"><span class="string">        x - 分子\\</span></span><br><span class="line"><span class="string">        y - 分母</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        连分数</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">while</span> y:</span><br><span class="line">        <span class="keyword">yield</span> x // y</span><br><span class="line">        x, y = y, x % y</span><br></pre></td></tr></table></figure>
 <p>或者我们也可以使用 Sagemath 的函数获取连分数：</p>
@@ -289,10 +291,12 @@ x=[a_0,a_1,a_2,\cdots,a_n]
 <h3 id="有理近似收敛分数">有理近似（收敛分数）</h3>
 <p>虽然 <span class="math inline">\(\pi\)</span>
 是一个无理数，但我们可以使用连分数展开式获取到一个简洁的有理近似： <span class="math display">\[
-c_0=\frac{3}{1}=3.0\\
-c_1=3+\frac{1}{7}=3.142857\\
-c_2=3+\frac{1}{7+\frac{1}{15}}=3.141509\\
-\cdots
+\begin{align}
+&amp;c_0=\frac{3}{1}=3.0\\
+&amp;c_1=3+\frac{1}{7}=3.142857\\
+&amp;c_2=3+\frac{1}{7+\frac{1}{15}}=3.141509\\
+&amp;\cdots
+\end{align}
 \]</span> 这些有理数 (<span class="math inline">\(c_i\)</span>)
 我们称作连分数的收敛，当 <span class="math inline">\(i\)</span>
 增大时，<span class="math inline">\(c_i\)</span> 将会无限接近于 <span class="math inline">\(\pi\)</span></p>
@@ -309,9 +313,9 @@ e=[c_0,c_1,\cdots,c_n]
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = continued_fraction(<span class="number">73</span>/<span class="number">95</span>)</span><br><span class="line"><span class="built_in">print</span>(a.convergent(<span class="number">3</span>))</span><br><span class="line"><span class="built_in">print</span>(a.convergents())</span><br></pre></td></tr></table></figure>
 <h3 id="legendres-theorem-连分数定理">Legendre's theorem
 (连分数定理)</h3>
-<p>如果存在 <span class="math inline">\(\alpha \in \Q\)</span>，<span class="math inline">\(c,d\in \Z\)</span> 满足 <span class="math display">\[
+<p>如果存在 <span class="math inline">\(\alpha \in Q\)</span>，<span class="math inline">\(c,d\in Z\)</span> 满足 <span class="math display">\[
 \left|\alpha-\frac{c}{d}\right|&lt;\frac{1}{2d^2}
-\]</span> 那么 <span class="math inline">\(\displaystyle\frac{c}{d}\)</span> 就是 <span class="math inline">\(a\)</span> 的一个有理近似。</p>
+\]</span> 那么 <span class="math inline">\(\displaystyle\frac{c}{d}\)</span> 就是 <span class="math inline">\(\alpha\)</span> 的一个有理近似。</p>
 <h3 id="原理">原理</h3>
 <p>首先我们考虑，如果已知 <span class="math inline">\(N=pq\)</span> 和
 <span class="math inline">\(\varphi(N)=(p-1)(q-1)\)</span>，那么 <span class="math display">\[
@@ -564,8 +568,8 @@ D = diag\begin{pmatrix}
 </div>
 
           <div class="post-tags">
-              <a href="/tags/note/" rel="tag"><i class="fa fa-tag"></i> note</a>
               <a href="/tags/crypto/" rel="tag"><i class="fa fa-tag"></i> crypto</a>
+              <a href="/tags/note/" rel="tag"><i class="fa fa-tag"></i> note</a>
               <a href="/tags/rsa/" rel="tag"><i class="fa fa-tag"></i> rsa</a>
           </div>
 
@@ -612,13 +616,13 @@ D = diag\begin{pmatrix}
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">771k</span>
+    <span title="站点总字数">813k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11:41</span>
+    <span title="站点阅读时长">12:19</span>
   </span>
 </div>
 

@@ -30,8 +30,9 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://hasegawaazusa.github.io/ecc-note/The%20addition%20law%20on%20an%20elliptic%20curve.png">
 <meta property="og:image" content="https://hasegawaazusa.github.io/ecc-note/Adding%20a%20point%20P%20to%20itself.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/ecc-note/ID-Based%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F%E7%AE%97%E6%B3%95%E6%8F%8F%E8%BF%B0.png">
 <meta property="article:published_time" content="2022-02-11T05:00:00.000Z">
-<meta property="article:modified_time" content="2023-10-17T16:46:06.426Z">
+<meta property="article:modified_time" content="2024-03-25T09:57:59.657Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="crypto">
 <meta property="article:tag" content="ecc">
@@ -147,7 +148,7 @@
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
             <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc-%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">ECC 简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc-%E5%8E%9F%E7%90%86"><span class="nav-number">2.</span> <span class="nav-text">ECC 原理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ecc-%E5%B8%B8%E7%94%A8%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%AE%9A%E4%B9%89"><span class="nav-number">2.1.</span> <span class="nav-text">ECC 常用椭圆曲线定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B1%82%E8%A7%A3-e_pab"><span class="nav-number">2.2.</span> <span class="nav-text">求解 \(E_p(a,b)\)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E4%B8%8A%E7%9A%84%E7%BE%A4%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">椭圆曲线上的群操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ecdlp-%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0%E9%97%AE%E9%A2%98"><span class="nav-number">2.4.</span> <span class="nav-text">ECDLP 椭圆曲线离散对数问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E7%9A%84-diffie-hellman-%E5%AF%86%E9%92%A5%E4%BA%A4%E6%8D%A2"><span class="nav-number">2.5.</span> <span class="nav-text">基于椭圆曲线的
-Diffie-Hellman 密钥交换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elgamal-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.6.</span> <span class="nav-text">ElGamal 加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90"><span class="nav-number">2.6.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86"><span class="nav-number">2.6.2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86"><span class="nav-number">2.6.3.</span> <span class="nav-text">解密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ec-elgamal"><span class="nav-number">2.7.</span> <span class="nav-text">EC ElGamal</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-1"><span class="nav-number">2.7.2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-1"><span class="nav-number">2.7.3.</span> <span class="nav-text">解密</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eccsagemath-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">ECC&amp;sagemath 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-2"><span class="nav-number">3.1.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-2"><span class="nav-number">3.2.</span> <span class="nav-text">解密</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eccpython-%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">ECC&amp;Python 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90-ecc-%E5%AF%86%E9%92%A5"><span class="nav-number">4.1.</span> <span class="nav-text">生成 ECC 密钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E5%85%AC%E5%BC%80%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8F%82%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">查询公开椭圆曲线参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc%E5%B7%B2%E5%85%AC%E5%BC%80%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8F%82%E6%95%B0"><span class="nav-number">5.</span> <span class="nav-text">ECC已公开椭圆曲线参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc-%E6%B1%82%E8%A7%A3"><span class="nav-number">6.</span> <span class="nav-text">ECC 求解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E6%98%8E%E6%96%87%E6%98%A0%E5%B0%84"><span class="nav-number">6.1.</span> <span class="nav-text">普通明文映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0"><span class="nav-number">6.2.</span> <span class="nav-text">普通离散对数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pohlig-hellman-%E6%94%BB%E5%87%BB"><span class="nav-number">6.3.</span> <span class="nav-text">Pohlig-Hellman 攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">6.3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">6.3.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smart-%E6%94%BB%E5%87%BB"><span class="nav-number">6.4.</span> <span class="nav-text">Smart 攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81"><span class="nav-number">6.4.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p%E8%BF%9B%E6%95%B0%E6%9C%89%E7%90%86%E6%95%B0%E5%9F%9F"><span class="nav-number">6.4.2.</span> <span class="nav-text">p进数有理数域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p%E8%BF%9B%E6%95%B0%E6%A4%AD%E5%9C%86%E5%AF%B9%E6%95%B0%E6%98%A0%E5%B0%84"><span class="nav-number">6.4.3.</span> <span class="nav-text">p进数椭圆对数映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">6.4.4.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">6.4.5.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mov-%E6%94%BB%E5%87%BB"><span class="nav-number">6.5.</span> <span class="nav-text">MOV 攻击</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5%E7%82%B9%E5%8F%8D%E6%8E%A8%E7%B3%BB%E6%95%B0"><span class="nav-number">6.6.</span> <span class="nav-text">已知点反推系数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-ecc-%E7%9A%84-pem-%E5%AF%86%E9%92%A5%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">6.7.</span> <span class="nav-text">查看 ECC 的 pem 密钥文件信息</span></a></li></ol></li></ol></div>
+Diffie-Hellman 密钥交换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#elgamal-%E5%8A%A0%E5%AF%86%E7%AE%97%E6%B3%95"><span class="nav-number">2.6.</span> <span class="nav-text">ElGamal 加密算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90"><span class="nav-number">2.6.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86"><span class="nav-number">2.6.2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86"><span class="nav-number">2.6.3.</span> <span class="nav-text">解密</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ec-elgamal"><span class="nav-number">2.7.</span> <span class="nav-text">EC ElGamal</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%86%E9%92%A5%E7%94%9F%E6%88%90-1"><span class="nav-number">2.7.1.</span> <span class="nav-text">密钥生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-1"><span class="nav-number">2.7.2.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-1"><span class="nav-number">2.7.3.</span> <span class="nav-text">解密</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eccsagemath-%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">ECC&amp;sagemath 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86-2"><span class="nav-number">3.1.</span> <span class="nav-text">加密</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%AF%86-2"><span class="nav-number">3.2.</span> <span class="nav-text">解密</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#eccpython-%E5%AE%9E%E7%8E%B0"><span class="nav-number">4.</span> <span class="nav-text">ECC&amp;Python 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E6%88%90-ecc-%E5%AF%86%E9%92%A5"><span class="nav-number">4.1.</span> <span class="nav-text">生成 ECC 密钥</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E5%85%AC%E5%BC%80%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8F%82%E6%95%B0"><span class="nav-number">4.2.</span> <span class="nav-text">查询公开椭圆曲线参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF"><span class="nav-number">5.</span> <span class="nav-text">椭圆曲线</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9D%90%E6%A0%87%E7%B3%BB%E8%BD%AC%E6%8D%A2"><span class="nav-number">5.1.</span> <span class="nav-text">坐标系转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%88%B1%E5%BE%B7%E5%8D%8E%E6%9B%B2%E7%BA%BF"><span class="nav-number">5.2.</span> <span class="nav-text">爱德华曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%85%83%E7%88%B1%E5%BE%B7%E5%8D%8E%E6%9B%B2%E7%BA%BF"><span class="nav-number">5.3.</span> <span class="nav-text">二元爱德华曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%92%99%E5%93%A5%E9%A9%AC%E5%88%A9%E6%9B%B2%E7%BA%BF"><span class="nav-number">5.4.</span> <span class="nav-text">蒙哥马利曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%93%88%E5%A4%AB%E6%9B%B2%E7%BA%BF"><span class="nav-number">5.5.</span> <span class="nav-text">哈夫曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E6%AC%A1%E6%9B%B2%E7%BA%BF"><span class="nav-number">5.6.</span> <span class="nav-text">四次曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%A9%E5%B0%94%E6%9B%B2%E7%BA%BF"><span class="nav-number">5.7.</span> <span class="nav-text">佩尔曲线</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E8%BD%AC%E6%8D%A2"><span class="nav-number">5.8.</span> <span class="nav-text">椭圆曲线转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A4%AD%E5%9C%86%E6%9B%B2%E7%BA%BF%E5%8F%82%E6%95%B0"><span class="nav-number">5.9.</span> <span class="nav-text">椭圆曲线参数</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%8C%E7%BA%BF%E6%80%A7%E9%85%8D%E5%AF%B9"><span class="nav-number">6.</span> <span class="nav-text">双线性配对</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E6%AD%A5"><span class="nav-number">6.1.</span> <span class="nav-text">初步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#weil-%E9%85%8D%E5%AF%B9"><span class="nav-number">6.2.</span> <span class="nav-text">Weil 配对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tate-%E9%85%8D%E5%AF%B9"><span class="nav-number">6.3.</span> <span class="nav-text">Tate 配对</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-id-%E7%9A%84%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F"><span class="nav-number">6.4.</span> <span class="nav-text">基于 ID 的公钥密码系统</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ecc-%E6%B1%82%E8%A7%A3"><span class="nav-number">7.</span> <span class="nav-text">ECC 求解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E6%98%8E%E6%96%87%E6%98%A0%E5%B0%84"><span class="nav-number">7.1.</span> <span class="nav-text">普通明文映射</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E7%A6%BB%E6%95%A3%E5%AF%B9%E6%95%B0"><span class="nav-number">7.2.</span> <span class="nav-text">普通离散对数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pohlig-hellman-%E6%94%BB%E5%87%BB"><span class="nav-number">7.3.</span> <span class="nav-text">Pohlig-Hellman 攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">7.3.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">7.3.2.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smart-%E6%94%BB%E5%87%BB"><span class="nav-number">7.4.</span> <span class="nav-text">Smart 攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%B9%E5%BE%81"><span class="nav-number">7.4.1.</span> <span class="nav-text">特征</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p%E8%BF%9B%E6%95%B0%E6%9C%89%E7%90%86%E6%95%B0%E5%9F%9F"><span class="nav-number">7.4.2.</span> <span class="nav-text">p进数有理数域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#p%E8%BF%9B%E6%95%B0%E6%A4%AD%E5%9C%86%E5%AF%B9%E6%95%B0%E6%98%A0%E5%B0%84"><span class="nav-number">7.4.3.</span> <span class="nav-text">p进数椭圆对数映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86-1"><span class="nav-number">7.4.4.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81-1"><span class="nav-number">7.4.5.</span> <span class="nav-text">代码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#mov-%E7%AE%97%E6%B3%95"><span class="nav-number">7.5.</span> <span class="nav-text">MOV 算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%B2%E7%9F%A5%E7%82%B9%E5%8F%8D%E6%8E%A8%E7%B3%BB%E6%95%B0"><span class="nav-number">7.6.</span> <span class="nav-text">已知点反推系数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E6%9B%B2%E7%BA%BF"><span class="nav-number">7.6.1.</span> <span class="nav-text">一般曲线</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%B1%E5%BE%B7%E5%8D%8E%E6%9B%B2%E7%BA%BF-1"><span class="nav-number">7.6.2.</span> <span class="nav-text">爱德华曲线</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B-ecc-%E7%9A%84-pem-%E5%AF%86%E9%92%A5%E6%96%87%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">7.7.</span> <span class="nav-text">查看 ECC 的 pem 密钥文件信息</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -239,7 +240,7 @@ Diffie-Hellman 密钥交换</span></a></li><li class="nav-item nav-level-2"><a c
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-10-18 00:46:06" itemprop="dateModified" datetime="2023-10-18T00:46:06+08:00">2023-10-18</time>
+      <time title="修改时间：2024-03-25 17:57:59" itemprop="dateModified" datetime="2024-03-25T17:57:59+08:00">2024-03-25</time>
     </span>
 
   
@@ -249,14 +250,14 @@ Diffie-Hellman 密钥交换</span></a></li><li class="nav-item nav-level-2"><a c
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>17k</span>
+      <span>24k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>15 分钟</span>
+      <span>22 分钟</span>
     </span>
 </div>
 
@@ -471,8 +472,258 @@ P_m+kP_A-n_AkG=P_m+k(n_AG)-n_AkG=P_m
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.PublicKey <span class="keyword">import</span> ECC</span><br><span class="line"></span><br><span class="line"><span class="comment">#生成ECC密钥</span></span><br><span class="line">key = ECC.generate(curve=<span class="string">&#x27;NIST P-256&#x27;</span>) <span class="comment">#使用椭圆曲线NIST P-256</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#输出密钥（包括私钥k，基点G）</span></span><br><span class="line"><span class="built_in">print</span>(key)</span><br><span class="line"></span><br><span class="line"><span class="comment">#公钥（point_x，point_y是基点G的坐标）</span></span><br><span class="line"><span class="built_in">print</span>(key.public_key())</span><br><span class="line"></span><br><span class="line"><span class="comment">#椭圆曲线</span></span><br><span class="line"><span class="built_in">print</span>(key.curve)</span><br><span class="line"></span><br><span class="line"><span class="comment">#私钥k</span></span><br><span class="line"><span class="built_in">print</span>(key.d)</span><br><span class="line"></span><br><span class="line"><span class="comment">#导出为pem密钥文件</span></span><br><span class="line"><span class="built_in">print</span>(key.export_key(<span class="built_in">format</span>=<span class="string">&#x27;PEM&#x27;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#导入密钥文件</span></span><br><span class="line">key = ECC.import_key(f.read())</span><br></pre></td></tr></table></figure>
 <h2 id="查询公开椭圆曲线参数">查询公开椭圆曲线参数</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> fastecdsa.curve <span class="keyword">as</span> curve</span><br><span class="line"></span><br><span class="line"><span class="comment">#P-384的a</span></span><br><span class="line">curve.P384.a</span><br><span class="line"></span><br><span class="line"><span class="comment">#P-384的b</span></span><br><span class="line">curve.P384.b</span><br><span class="line"></span><br><span class="line"><span class="comment">#P-384的p</span></span><br><span class="line">curve.P384.p</span><br></pre></td></tr></table></figure>
-<h1 id="ecc已公开椭圆曲线参数">ECC已公开椭圆曲线参数</h1>
+<h1 id="椭圆曲线">椭圆曲线</h1>
+<h2 id="坐标系转换">坐标系转换</h2>
+<p>雅可比射影坐标将仿射坐标系（笛卡尔坐标系）进行一定转换，使得椭圆曲线上两点相加避免求逆运算，转换关系为：</p>
+<p>仿射坐标转换为雅可比坐标 <span class="math display">\[
+(X,Y)\to (X,Y,1)
+\]</span> 雅可比坐标转换为仿射坐标 <span class="math display">\[
+(X,Y,Z)\to (X/Z^2,Y/Z^3)
+\]</span></p>
+<h2 id="爱德华曲线">爱德华曲线</h2>
+<p>2007 年，Harold Edwards 在论文 <a target="_blank" rel="noopener" href="https://www.ams.org/journals/bull/2007-44-03/S0273-0979-07-01153-6/S0273-0979-07-01153-6.pdf">A
+NORMAL FORM FOR ELLIPTIC CURVES</a> 中提出椭圆曲线的新形式 <span class="math display">\[
+x^2+y^2=1+dx^2y^2
+\]</span> &gt; 有时可能会简单另一种形式下的爱德华曲线 &gt; <span class="math display">\[
+&gt; x^2+y^2=c^2(1+dx^2y^2)
+&gt; \]</span> &gt; 二者是等价的，对其进行仿射变换，令 &gt; <span class="math display">\[
+&gt; \begin{cases}
+&gt; x&#39;=\frac{x}{c}\\
+&gt; y&#39;=\frac{y}{c}\\
+&gt; \end{cases}
+&gt; \]</span> &gt; 那么得到 &gt; <span class="math display">\[
+&gt;
+\Big(\cfrac{x}{c}\Big)^2+\Big(\cfrac{y}{c}\Big)^2=1+dc^4\Big(\cfrac{x}{c}\Big)^2\Big(\cfrac{y}{c}\Big)^2
+&gt; \]</span> &gt; 即一个新方程 &gt; <span class="math display">\[
+&gt; x&#39;^2+y&#39;^2=1+Dc^4x&#39;^2y&#39;^2
+&gt; \]</span></p>
+<p>与上文之前的椭圆曲线不同，爱德华曲线上的点相加公式为 <span class="math display">\[
+(x_1,y_1)+(x_2,y_2)=\left(\frac{x_1y_2+x_2y_1}{1+dx_1x_2y_1y_2},\frac{y_1y_2-x_1x_2}{1-dx_1x_2y_1y_2}\right)
+\]</span> 倍乘公式为 <span class="math display">\[
+2(x_1,y_1)=\left(\frac{2x_1y_1}{1+dx_1^2y_1^2},\frac{y_1^2-x_1^2}{1-dx_1^2y_1^2}\right)
+\]</span></p>
+<p>点 <span class="math inline">\((x_1,y_1)\)</span> 的逆是 <span class="math inline">\((-x_1,y_1)\)</span>，零元为 <span class="math inline">\((0,1)\)</span>。</p>
+<p>其中，<strong>爱德华曲线</strong>可以被映射为<strong>蒙哥马利曲线</strong>
+<span class="math display">\[
+\begin{cases}
+u&amp;=\displaystyle\frac{1+y}{1-y}\\
+v&amp;=\displaystyle\frac{2(1+y)}{x(1-y)}=\frac{2u}{x}\\
+A&amp;=\displaystyle\frac{4}{1-d}-2\\
+B&amp;=\displaystyle\frac{1}{1-d}
+\end{cases}
+\]</span> 那么得到方程 <span class="math display">\[
+Bv^2=u^3+Au^2+u
+\]</span> ## 扭曲爱德华曲线</p>
+<p>同 2007 年，Daniel J. Bernstein 和 Tanja Lange 在论文 <a target="_blank" rel="noopener" href="https://eprint.iacr.org/2007/286.pdf">Faster addition and doubling
+on elliptic curves</a> 中对 Edwards form 进行了扩展 <span class="math display">\[
+ax^2+y^2=1+dx^2y^2
+\]</span> 也被称为扭曲爱德华曲线（<a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Twisted_Edwards_curve">Twisted
+Edwards curve</a>）。 &gt; 有时可能会简单另一种形式下的爱德华曲线 &gt;
+<span class="math display">\[
+&gt; ax^2+y^2=c^2(1+dx^2y^2)
+&gt; \]</span> &gt; 二者是等价的，对其进行仿射变换，令 &gt; <span class="math display">\[
+&gt; \begin{cases}
+&gt; x&#39;=\frac{x}{c}\\
+&gt; y&#39;=\frac{y}{c}\\
+&gt; \end{cases}
+&gt; \]</span> &gt; 那么得到 &gt; <span class="math display">\[
+&gt;
+a\left(\frac{x}{c}\right)^2+\left(\frac{y}{c}\right)^2=1+dc^4\left(\frac{x}{c}\right)^2\left(\frac{y}{c}\right)^2
+&gt; \]</span> &gt; 即一个新方程 &gt; <span class="math display">\[
+&gt; ax&#39;^2+y&#39;^2=1+Dc^4x&#39;^2y&#39;^2
+&gt; \]</span></p>
+<p>对于扭曲爱德华曲线而言，加法公式为 <span class="math display">\[
+(x_1,y_1)+(x_2,y_2)=\left(\frac{x_1y_2+x_2y_1}{1+dx_1x_2y_1y_2},\frac{y_1y_2-ax_1x_2}{1-dx_1x_2y_1y_2}\right)
+\]</span> 倍乘公式为 <span class="math display">\[
+\begin{align}
+2(x_1,y_1)&amp;=\left(\frac{2x_1y_1}{1+dx_1^2y_1^2},\frac{y_1^2-ax_1^2}{1-dx_1^2y_1^2}\right)\\
+&amp;=\left(\frac{2x_1y_1}{ax_1^2+y_1^2},\frac{y_1^2-ax_1^2}{2-ax_1^2-y_1^2}\right)
+\end{align}
+\]</span> 点 <span class="math inline">\((x_1,y_1)\)</span> 的逆是 <span class="math inline">\((-x_1,y_1)\)</span>，零元为 <span class="math inline">\((0,1)\)</span>。</p>
+<p>对于<strong>扭曲爱德华曲线</strong>也可以被映射为<strong>蒙哥马利曲线</strong>
+<span class="math display">\[
+\begin{cases}
+u=\displaystyle\frac{1+y}{1-y}\\
+v=\displaystyle\frac{1+y}{x(1-y)}=\frac{u}{x}\\
+A=\displaystyle\frac{2(a+d)}{a-d}\\
+B=\displaystyle\frac{4}{a-d}
+\end{cases}
+\]</span></p>
+<p>那么得到方程 <span class="math display">\[
+Bv^2=u^3+Au^2+u
+\]</span></p>
+<h2 id="二元爱德华曲线">二元爱德华曲线</h2>
+<p>二元爱德华曲线（Binary Edwards Curves）的标准方程为 <span class="math display">\[
+d_1(x+y)+d_2(x^2+y^2)=(x+x^2)(y+y^2)
+\]</span> 加法公式为 <span class="math display">\[
+\begin{cases}
+(x_1,y_1)+(x_2,y_2)=(x_3,y_3)\\
+x_3=\displaystyle\frac{d_1(x_1+x_2)+d_2(x_1+y_1)(x_2+y_2)+(x_1+x_1^2)[x_2(y_1+y_2+1)+y_1y_2]}{d_1+(x_1+x_1^2)(x_2+y_2)}\\
+y_3=\displaystyle\frac{d_1(y_1+y_2)+d_2(x_1+y_1)(x_2+y_2)+(y_1+y_1^2)[y_2(x_1+x_2+1)+x_1x_2]}{d_1+(y_1+y_1^2)(x_2+y_2)}
+\end{cases}
+\]</span> 倍乘公式为 <span class="math display">\[
+\begin{cases}
+2(x_1,y_1)=(x_2,y_2)\\
+x_2=\displaystyle\frac{2d_1x_1+d_2(x_1+y_1)^2+(x_1+x_1^2)[x_1(2y_1+1)+y_1^2]}{d_1+(x_1+x_1^2)(x_1+y_1)}\\
+y_2=\displaystyle\frac{2d_1y_1+d_2(x_1+y_1)^2+(y_1+y_1^2)[y_1(2x_1+1)+x_1^2]}{d_1+(y_1+y_1^2)(x_1+y_1)}
+\end{cases}
+\]</span> 求逆为 <span class="math inline">\(-(x_1,y_1)=(y_1,x_1)\)</span>。</p>
+<p>对于<strong>二元爱德华曲线</strong>也可以被映射为<strong>Weierstrass
+曲线</strong> <span class="math display">\[
+\begin{cases}
+u=\displaystyle d_1(d_1^2+d_1+d_2)\frac{x+y}{xy+d_1(x+y)}\\
+v=\displaystyle
+d_1(d_1^2+d_1+d_2)\left(\frac{x}{xy+d_1(x+y)}+d_1+1\right)\\
+a=d_1^2+d_2\\
+b=d_1^4(d_1^4+d_1^2+d_2^2)
+\end{cases}
+\]</span></p>
+<p>那么得到方程 <span class="math display">\[
+v^2+uv=u^3+au^2+b
+\]</span></p>
+<h2 id="蒙哥马利曲线">蒙哥马利曲线</h2>
+<p>蒙哥马利曲线（Montgomery curve）是另一种形式的椭圆曲线，方程如下
+<span class="math display">\[
+By^2=x^3+Ax^2+x
+\]</span> 其中，<span class="math inline">\(B(A^2-4)\neq
+0\)</span>。</p>
+<p>其点加法为 <span class="math display">\[
+(x_1,y_1)+(x_2,y_2)=\left(\frac{B(x_2y_1-x_1y_2)^2}{x_1x_2(x_2-x_1)^2},\frac{B(y_2-y_1)^3}{(x_2-x_1)^3}\right)
+\]</span> Curve25519是蒙哥马利曲线形式的一个实例，
+声称是最快的Diffie-Hellman密钥交换函数，方程为 <span class="math display">\[
+y^2=x^3+486662x^2+x\pmod{p}
+\]</span> 素数 <span class="math inline">\(p=2^{255}-19\)</span>，这就是名字中 25519
+的由来。</p>
+<p>而对于<strong>蒙哥马利曲线</strong>，可以被映射为 <strong>Weierstrass
+曲线</strong> <span class="math display">\[
+\begin{cases}
+u=\displaystyle\frac{x}{B}+\frac{A}{3B}\\
+v=\displaystyle\frac{y}{B}\\
+a=\displaystyle\frac{3-A^2}{3B^2}\\
+b=\displaystyle\frac{2A^3-9A}{27B^3}
+\end{cases}
+\]</span> 那么得到方程 <span class="math display">\[
+v^2=u^3+au+b
+\]</span></p>
+<h2 id="哈夫曲线">哈夫曲线</h2>
+<p>Huff 曲线定义为 <span class="math display">\[
+ax(y^2-1)=by(x^2-1)
+\]</span></p>
+<p>加法公式为 <span class="math display">\[
+(x_1,y_1)+(x_2,y_2)=\left(\frac{(x_1+x_2)(1+ay_1y_2)}{(1+bx_1x_2)(1-ay_1y_2)},\frac{(y_1+y_2)(1+bx_1x_2)}{(1-bx_1x_2)(1+ay_1y_2)}\right)
+\]</span> 倍乘公式为 <span class="math display">\[
+2(x_1,y_1)=\left(\frac{2x_1(1+ay_1^2)}{(1+bx_1^2)(1-ay_1^2)},\frac{2y_1(1+bx_1^2)}{(1-bx_1^2)(1+ay_1^2)}\right)
+\]</span> 点 <span class="math inline">\((x_1,y_1)\)</span> 的逆是其本身
+<span class="math inline">\((x_1,y_1)\)</span>。</p>
+<p>对于<strong>哈夫曲线</strong>可以被映射为<strong>蒙哥马利曲线</strong>
+<span class="math display">\[
+\begin{cases}
+u=\displaystyle\frac{bx-ay}{y-x}\\
+v=\displaystyle\frac{b0a}{y-x}\\
+A=a+b\\
+B=ab
+\end{cases}
+\]</span> 那么得到方程 <span class="math display">\[
+Bv^2=u^3+Au^2+u
+\]</span></p>
+<h2 id="四次曲线">四次曲线</h2>
+<p><span class="math display">\[
+y^2=ax^4+bx^3+cx^2+dx+e
+\]</span></p>
+<h2 id="佩尔曲线">佩尔曲线</h2>
+<p>佩尔方程也满足 ECC 的要求，其方程为 <span class="math display">\[
+x^2-d^2y^2=c^2
+\]</span> 具体可参见佩尔方程。</p>
+<h2 id="椭圆曲线转换">椭圆曲线转换</h2>
+<p>可以发现，SageMath 的一般化椭圆方程是 Weierstrass
+模型，即一般的椭圆方程模型 <span class="math display">\[
+y^2+a_1xy+a_3y=x^3+a_2x^2+a_4x+a_6
+\]</span> 而没有蒙哥马利曲线、爱德华曲线等曲线的构造函数。</p>
+<p>这是因为无论哪种曲线最终都可以被表示为 Weierstrass
+模型，不过需要做一定的转化。</p>
+<h2 id="椭圆曲线参数">椭圆曲线参数</h2>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#NIST P-256（Secp256r1）</span></span><br><span class="line"><span class="comment">#p = 2^224(2^32 − 1) + 2^192 + 2^96 − 1</span></span><br><span class="line">p = <span class="number">115792089210356248762697446949407573530086143415290314195533631308867097853951</span></span><br><span class="line">a = <span class="number">115792089210356248762697446949407573530086143415290314195533631308867097853948</span></span><br><span class="line">b = <span class="number">41058363725152142129326129780047268409114441015993725554835256314039467401291</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#Secp256k1（比特币使用）</span></span><br><span class="line"><span class="comment">#p = 2^256 − 2^32 − 2^9 − 2^8 − 2^7 − 2^6 − 2^4 − 1 = 2^256 – 2^32 – 977 </span></span><br><span class="line">p = <span class="number">115792089237316195423570985008687907853269984665640564039457584007908834671663</span></span><br><span class="line">a = <span class="number">0</span></span><br><span class="line">b = <span class="number">7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#NIST P-384</span></span><br><span class="line"><span class="comment">#p = 2^384 – 2^128 – 2^96 + 2^32 – 1</span></span><br><span class="line">p = <span class="number">39402006196394479212279040100143613805079739270465446667948293404245721771496870329047266088258938001861606973112319</span></span><br><span class="line">a = -<span class="number">3</span></span><br><span class="line">b = <span class="number">27580193559959705877849011840389048093056905856361568521428707301988689241309860865136260764883745107765439761230575</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#NIST P-521</span></span><br><span class="line">p = <span class="number">6864797660130609714981900799081393217269435300143305409394463459185543183397656052122559640661454554977296311391480858037121987999716643812574028291115057151</span></span><br><span class="line">a = -<span class="number">3</span></span><br><span class="line">b = <span class="number">1093849038073734274511112390766805569936207598951683748994586394495953116150735016013708737573759623248592132296706313309438452531591012912142327488478985984</span></span><br></pre></td></tr></table></figure>
+<h1 id="双线性配对">双线性配对</h1>
+<h2 id="初步">初步</h2>
+<p>最简单易懂的双线性配对（Bilinear
+Pairing）的例子就是线性空间中两向量的内积，即 <span class="math display">\[
+\beta(\mathbf{v},\mathbf{w})=\mathbf{v}\cdot
+\mathbf{w}=v_1w_1+\cdots+v_nw_n
+\]</span> 其中，<span class="math inline">\(\beta\)</span>
+表示一种双线性配对，又或者叫做双线性映射（Bilinear Map）。</p>
+<p>对于两向量内积的双线性配对，不难发现其具有双线性性，即对任一元素的线性运算都会推广到双线性配对的结果中，即
+<span class="math display">\[
+\beta(a_1\mathbf{v}_1+a_2\mathbf{v}_2,\mathbf{w})=a_1\beta(\mathbf{v}_1,\mathbf{w})+a_2\beta(\mathbf{v}_2,\mathbf{w})\\
+\beta(\mathbf{v},b_1\mathbf{w}_1+b_2\mathbf{w}_2)=b_1\beta(\mathbf{v},\mathbf{w}_1)+b_2\beta(\mathbf{v},\mathbf{w}_2)
+\]</span>
+那么推广到更一般的情况（数学总是这样），<strong>双线性配对</strong>指的是两个不同群的元素映射到第三个群的元素的<strong>映射关系</strong>，写作数学符号是
+<span class="math display">\[
+G_1\times G_2\Rightarrow G_3
+\]</span>
+就类似于函数是描述一个群（集合）的元素映射到另一个群（集合）的元素的映射关系那样。</p>
+<p>不过在密码学中，我们关注的是有意义的，双线性性良好的双线性配对。</p>
+<h2 id="weil-配对">Weil 配对</h2>
+<p>Weil 配对（Weil
+Pairing）是一个有良好性质的，对椭圆群元素起作用的双线性映射。</p>
+<p>其定义为，对一个椭圆曲线中的两点 <span class="math inline">\(P,Q\)</span>，其中椭圆曲线的阶为 <span class="math inline">\(m\)</span>，那么其 Weil 配对表示为 <span class="math inline">\(e_m(P,Q)\)</span>，并且满足 <span class="math display">\[
+\begin{align}
+e_m(P_1+P_2,Q)=e_m(P_1,Q)e_m(P_2,Q)\\
+e_m(P,Q_1+Q_2)=e_m(P,Q_1)e_m(P,Q_2)
+\end{align}
+\]</span> 而其中， <span class="math display">\[
+e_m(P,Q)=\frac{f_P(Q+S)}{f_P(S)}/\frac{f_Q(P-S)}{f_Q(-S)}
+\]</span> <span class="math inline">\(S\)</span>
+是任意椭圆曲线中的元素且 <span class="math inline">\(S\notin\{O,P,-Q,P-Q\}\)</span>，只做中间计算；<span class="math inline">\(f_P,f_Q\)</span> 是任意有理函数。</p>
+<p><strong><span class="math inline">\(e_m(P,Q)\)</span> 的值与 <span class="math inline">\(f_P,f_Q,S\)</span> 的选取无关。</strong></p>
+<p>可以证明的是，<span class="math inline">\(e_m(P,Q)^m=1\)</span>
+恒定，即 <span class="math inline">\(e_m(P,Q)\)</span> 一定是 <span class="math inline">\(m\)</span> 次单位根。</p>
+<h2 id="tate-配对">Tate 配对</h2>
+<p>Tate 配对的计算效率要比 Weil 配对效率高，定义为 <span class="math display">\[
+\tau(P,Q)=\frac{f_P(Q+S)}{f_P(S)}
+\]</span> 与 Weil 配对的关系为 <span class="math display">\[
+e_l(P,Q)=\frac{\tau(P,Q)}{\tau(Q,P)}
+\]</span> 计算量约为 Tate 配对的两倍。</p>
+<h2 id="基于-id-的公钥密码系统">基于 ID 的公钥密码系统</h2>
+<p>基于 ID 的公钥密码系统的目标很简单，就是希望每个用户可以通过自己的 ID
+创建公私钥对，而不是从密码系统中获取一个公私钥对后与自己的 ID
+强行绑定，这样避免了复杂的证书签名，同时也避免了存储负担。</p>
+<p>从 ID 中直接生成公钥是方便的，任何人都可以直接推导出某个 ID
+的公钥，方便消息的发送；但从 ID
+中直接生成私钥是不安全的，任何人都可以直接推导出某个 ID
+的私钥，窃取其消息。</p>
+<p>所以为了安全性考虑，需要一个第三方，一般来说称其为 PKG（Private Key
+Generator），PKG 有一对<strong>主公私钥对</strong>（Master Key）。</p>
+<p>其中公钥是公开的，任何人可以根据<strong>主公钥</strong>和 ID
+计算出基于 ID 的公钥；私钥是保密的，任何人可以使用身份 ID 通过 PKG
+生成与<strong>主私钥</strong>相关联的基于 ID 的私钥。</p>
+<p>这样，一个基于 ID
+的公钥密码系统就完成了，安全性主要在于对主私钥的保密性。</p>
+<p>一个实际的解决方案是这样的，PKG 发布两个哈希函数 <span class="math inline">\(H_1,H_2\)</span>，其中 <span class="math inline">\(H_1\)</span> 负责将用户的 ID 转化为一个椭圆曲线
+<span class="math inline">\(E(F_q)[l]\)</span> 上的点，<span class="math inline">\(H_2\)</span> 负责将有限域 <span class="math inline">\(F_q^*\)</span> 的元素转化为一个长度为 <span class="math inline">\(B\)</span> 的字节流，<span class="math inline">\(B\)</span> 是明文 <span class="math inline">\(M\)</span> 的字节流长度。</p>
+<blockquote>
+<p>描述时是使用二进制位长度，但实现时更多的是用字节流长度。</p>
+<p>概括的说，<span class="math inline">\(H_1\)</span>
+与公钥生成相关，<span class="math inline">\(H_2\)</span>
+与加密相关。</p>
+</blockquote>
+<p>那么 PKG 拥有的公私钥对为 <span class="math display">\[
+P^{\text{PKG}}=sP\in E(F_q)[l]
+\]</span> 主私钥是 <span class="math inline">\(s\)</span>，主公钥是
+<span class="math inline">\(P^{\text{PKG}}\)</span>。</p>
+<p>那么加密流程如下，首先获取用户的公钥 <span class="math display">\[
+P^{\text{User}}=H_1(\text{UserID})\in E(F_q)[l]
+\]</span> 选择一个随机数 <span class="math inline">\(1&lt;r&lt;q\)</span>，计算 <span class="math display">\[
+\begin{align}
+C_1&amp;=rP\\
+C_2&amp;=M\oplus H_2(e_l(P^{\text{User}}, P^{\text{PKG}})^r)
+\end{align}
+\]</span> 其中，<span class="math inline">\(\oplus\)</span>
+表示异或操作，这样一个密文是一对值 <span class="math inline">\(C=(C_1,C_2)\)</span>。</p>
+<p>解密时计算用户的私钥， <span class="math display">\[
+Q^{\text{User}}=sP^{\text{User}}\in E(F_q)[l]
+\]</span> 随后计算 <span class="math display">\[
+M=C_2\oplus H_2(e_l(Q^{\text{User}},C_1))
+\]</span> <img src="/ecc-note/ID-Based%E5%85%AC%E9%92%A5%E5%AF%86%E7%A0%81%E7%B3%BB%E7%BB%9F%E7%AE%97%E6%B3%95%E6%8F%8F%E8%BF%B0.png" alt="ID-Based公钥密码系统算法描述"></p>
 <h1 id="ecc-求解">ECC 求解</h1>
 <h2 id="普通明文映射">普通明文映射</h2>
 <p>task.sage</p>
@@ -560,28 +811,71 @@ k=\frac{\phi_p(p\cdot Q)}{\phi_p(p\cdot P)}
 \]</span></p>
 <h3 id="代码-1">代码</h3>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">p = <span class="number">0xd3ceec4c84af8fa5f3e9af91e00cabacaaaecec3da619400e29a25abececfdc9bd678e2708a58acb1bd15370acc39c596807dab6229dca11fd3a217510258d1b</span></span><br><span class="line">A = <span class="number">0x95fc77eb3119991a0022168c83eee7178e6c3eeaf75e0fdf1853b8ef4cb97a9058c271ee193b8b27938a07052f918c35eccb027b0b168b4e2566b247b91dc07</span></span><br><span class="line">B = <span class="number">0x926b0e42376d112ca971569a8d3b3eda12172dfb4929aea13da7f10fb81f3b96bf1e28b4a396a1fcf38d80b463582e45d06a548e0dc0d567fc668bd119c346b2</span></span><br><span class="line">E = EllipticCurve(GF(p),[A,B])</span><br><span class="line">P = E(<span class="number">10121571443191913072732572831490534620810835306892634555532657696255506898960536955568544782337611042739846570602400973952350443413585203452769205144937861</span>, <span class="number">8425218582467077730409837945083571362745388328043930511865174847436798990397124804357982565055918658197831123970115905304092351218676660067914209199149610</span>)</span><br><span class="line">Q = E(<span class="number">964864009142237137341389653756165935542611153576641370639729304570649749004810980672415306977194223081235401355646820597987366171212332294914445469010927</span>, <span class="number">5162185780511783278449342529269970453734248460302908455520831950343371147566682530583160574217543701164101226640565768860451999819324219344705421407572537</span>)</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">SmartAttack</span>(<span class="params">P,Q</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    使用Smart攻击求解P.discrete_log(Q)</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">    `Returns`:</span></span><br><span class="line"><span class="string">        P.discrete_log(Q)</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    E = P.curve()</span><br><span class="line">    p = E.base_ring().order()</span><br><span class="line">    <span class="keyword">if</span> E.order() != p:</span><br><span class="line">        <span class="keyword">raise</span> <span class="string">&quot;Smart&#x27;s attack need E.order() == p&quot;</span></span><br><span class="line">    Eqp = EllipticCurve(Qp(p, <span class="number">2</span>), [ ZZ(t) + randint(<span class="number">0</span>,p)*p <span class="keyword">for</span> t <span class="keyword">in</span> E.a_invariants() ])</span><br><span class="line"></span><br><span class="line">    P_Qps = Eqp.lift_x(ZZ(P.xy()[<span class="number">0</span>]), <span class="built_in">all</span>=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">for</span> P_Qp <span class="keyword">in</span> P_Qps:</span><br><span class="line">        <span class="keyword">if</span> (P_Qp.xy()[<span class="number">1</span>]) % p == P.xy()[<span class="number">1</span>]:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    Q_Qps = Eqp.lift_x(ZZ(Q.xy()[<span class="number">0</span>]), <span class="built_in">all</span>=<span class="literal">True</span>)</span><br><span class="line">    <span class="keyword">for</span> Q_Qp <span class="keyword">in</span> Q_Qps:</span><br><span class="line">        <span class="keyword">if</span> (Q_Qp.xy()[<span class="number">1</span>]) % p == Q.xy()[<span class="number">1</span>]:</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">    p_times_P = p * P_Qp</span><br><span class="line">    p_times_Q = p * Q_Qp</span><br><span class="line"></span><br><span class="line">    x_P, y_P = p_times_P.xy()</span><br><span class="line">    x_Q, y_Q = p_times_Q.xy()</span><br><span class="line"></span><br><span class="line">    phi_P = -(x_P // y_P)</span><br><span class="line">    phi_Q = -(x_Q // y_Q)</span><br><span class="line">    k = phi_Q // phi_P</span><br><span class="line">    <span class="keyword">return</span> ZZ(k)</span><br><span class="line">k = <span class="built_in">int</span>(SmartAttack(P, Q))</span><br><span class="line"><span class="built_in">print</span>(k)</span><br></pre></td></tr></table></figure>
-<h2 id="mov-攻击">MOV 攻击</h2>
+<h2 id="mov-算法">MOV 算法</h2>
+<blockquote>
+<p>参考论文《Reducing elliptic curve logarithms to logarithms in a
+finite field》</p>
+</blockquote>
+<p>简单来说就是使用双线性配对，使得原 ECDLP 问题变为了 DLP
+问题，最重要的意义在于实质证明了 ECDLP 问题与 DLP 问题是等价的。</p>
+<blockquote>
+<p>虽然在计算上 DLP 问题的求解要比 ECDLP
+问题的求解稍微快一些，少了许多不必要的消耗。</p>
+</blockquote>
+<p>一个简单的示例如下，但实际上由于问题等价，故实际不会使用该算法进行攻击。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Curve parameters</span></span><br><span class="line">p = <span class="number">17</span></span><br><span class="line">a, b = <span class="number">1</span>, -<span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Target secret key</span></span><br><span class="line">d = <span class="number">8</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Setup curve</span></span><br><span class="line">Fp = GF(p)</span><br><span class="line">E = EllipticCurve(Fp, [a, b])</span><br><span class="line">G = E.gen(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line">P = d * G</span><br><span class="line"></span><br><span class="line"><span class="comment"># Find the embedding degree</span></span><br><span class="line"><span class="comment"># p**k - 1 === 0 (mod order)</span></span><br><span class="line">order = E.order()</span><br><span class="line">k = <span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> (p**k - <span class="number">1</span>) % order:</span><br><span class="line">    k += <span class="number">1</span></span><br><span class="line"></span><br><span class="line">K.&lt;a&gt; = Fp.extension(k)</span><br><span class="line">EK = E.base_extend(K)</span><br><span class="line">PK = EK(P)</span><br><span class="line">GK = EK(G)</span><br><span class="line">QK = EK.lift_x(a + <span class="number">2</span>)  <span class="comment"># Independent from PK</span></span><br><span class="line">AA = PK.tate_pairing(QK, E.order(), k)</span><br><span class="line">GG = GK.tate_pairing(QK, E.order(), k)</span><br><span class="line">dlA = AA.log(GG)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(dlA)</span><br></pre></td></tr></table></figure>
 <h2 id="已知点反推系数">已知点反推系数</h2>
+<h3 id="一般曲线">一般曲线</h3>
 <p>已知两点 <span class="math inline">\(C_1(x_1,y_1),C_2(x_2,y_2)\)</span>，那么有 <span class="math display">\[
-y_1^2=x_1^3+ax_1+b\pmod{p}\\
-y_2^2=x_2^3+ax_2+b\pmod{p}
+\begin{align}
+y_1^2&amp;=x_1^3+ax_1+b\pmod{p}\\
+y_2^2&amp;=x_2^3+ax_2+b\pmod{p}
+\end{align}
 \]</span> 两边相减可得 <span class="math display">\[
 y_1^2-y_2^2=(x_1^3-x_2^3)+a(x_1-x_2)\pmod{p}
 \]</span> 即 <span class="math display">\[
-a=[(y_1^2-y_2^2)-(x_1^3-x_2^3)](x_1-x_2)^{-1}\pmod{p}
+a=\frac{(y_1^2-y_2^2)-(x_1^3-x_2^3)}{x_1-x_2}\pmod{p}
+\]</span> 简写成 <span class="math display">\[
+a=A_{1,2}=\frac{(y_1^2-y_2^2)-(x_1^3-x_2^3)}{x_1-x_2}\pmod{p}
 \]</span> 那么 <span class="math display">\[
 b=y_1^2-x_1^3-ax_1
 \]</span> 已知三点 <span class="math inline">\(C_1(x_1,y_1),C_2(x_2,y_2),C_3(x_3,y_3)\)</span>，可得
 <span class="math display">\[
-(y_1^2-y_2^2)-(x_1^3-x_2^3)=a(x_1-x_2)\pmod{p}\\
-(y_1^2-y_3^2)-(x_1^3-x_3^3)=a(x_1-x_3)\pmod{p}
-\]</span> 有 <span class="math display">\[
-[(y_1^2-y_2^2)-(x_1^3-x_2^3)](x_1-x_3)=a(x_1-x_2)(x_1-x_3)\pmod{p}\\
-[(y_1^2-y_3^2)-(x_1^3-x_3^3)](x_1-x_2)=a(x_1-x_3)(x_1-x_2)\pmod{p}
+\begin{align}
+a&amp;=A_{1,2}\pmod{p}\\
+a&amp;=A_{1,3}\pmod{p}
+\end{align}
 \]</span> 两式相减可得 <span class="math display">\[
-[(y_1^2-y_2^2)-(x_1^3-x_2^3)](x_1-x_3)-[(y_1^2-y_3^2)-(x_1^3-x_3^3)](x_1-x_2)=0\pmod{p}
+A_{1,2}-A_{1,3}=0\pmod{p}
 \]</span> 即 <span class="math inline">\(p\)</span> 的公倍数。</p>
+<h3 id="爱德华曲线-1">爱德华曲线</h3>
+<p>已知两点 <span class="math inline">\(C_1(x_1,y_1),C_2(x_2,y_2)\)</span>，那么有 <span class="math display">\[
+\begin{align}
+x_1^2+y_1^2=c^2(1+dx_1^2y_1^2)\pmod{p}\\
+x_2^2+y_2^2=c^2(1+dx_2^2y_2^2)\pmod{p}
+\end{align}
+\]</span> 两式相减可得 <span class="math display">\[
+(x_1^2-x_2^2)+(y_1^2-y_2^2)-c^2d(x_1^2y_1^2-x_2^2y_2^2)=0\pmod{p}
+\]</span> 即 <span class="math display">\[
+c^2d=\frac{(x_1^2-x_2^2)+(y_1^2-y_2^2)}{x_1^2y_1^2-x_2^2y_2^2}\pmod{p}
+\]</span> 简写成 <span class="math display">\[
+c^2d=E_{1,2}=\frac{(x_1^2-x_2^2)+(y_1^2-y_2^2)}{x_1^2y_1^2-x_2^2y_2^2}\pmod{p}
+\]</span> 原公式变形为 <span class="math display">\[
+\begin{align}
+c^2&amp;=x_1^2+y_1^2-c^2dx_1^2y_1^2\pmod{p}\\
+&amp;=x_1^2+y_1^2-E_{1,2}x_1^2y_1^2\pmod{p}
+\end{align}
+\]</span> 可求出 <span class="math inline">\(c,d\)</span>。</p>
+<p>已知三点 <span class="math inline">\(C_1(x_1,y_1),C_2(x_2,y_2),C_3(x_3,y_3)\)</span>，可得
+<span class="math display">\[
+\begin{align}
+c^2d&amp;=E_{1,2}\pmod{p}\\
+c^2d&amp;=E_{1,3}\pmod{p}
+\end{align}
+\]</span> 两式相减可得 <span class="math display">\[
+E_{1,2}-E_{1,3}=0\pmod{p}
+\]</span> 即 <span class="math inline">\(p\)</span> 的公倍数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">E</span>(<span class="params">a: <span class="built_in">tuple</span>[<span class="built_in">int</span>, <span class="built_in">int</span>], b: <span class="built_in">tuple</span>[<span class="built_in">int</span>, <span class="built_in">int</span>]</span>):</span><br><span class="line">    x1, y1 = a</span><br><span class="line">    x2, y2 = b</span><br><span class="line">    <span class="keyword">return</span> ZZ((x1 ** <span class="number">2</span> - x2 ** <span class="number">2</span>) + (y1 ** <span class="number">2</span> - y2 ** <span class="number">2</span>)) / ZZ(x1 ** <span class="number">2</span> * y1 ** <span class="number">2</span> - x2 ** <span class="number">2</span> * y2 ** <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 <h2 id="查看-ecc-的-pem-密钥文件信息">查看 ECC 的 pem 密钥文件信息</h2>
 <p>使用 openssl</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#查看ECC私钥信息</span></span><br><span class="line">openssl ec -<span class="keyword">in</span> p384-key.pem -text -noout</span><br><span class="line"><span class="comment">#查看ECC公钥信息</span></span><br><span class="line">openssl ec -pubin -<span class="keyword">in</span> public.pem -text -noout</span><br></pre></td></tr></table></figure>
@@ -659,13 +953,13 @@ b=y_1^2-x_1^3-ax_1
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">771k</span>
+    <span title="站点总字数">813k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">11:41</span>
+    <span title="站点阅读时长">12:19</span>
   </span>
 </div>
 

