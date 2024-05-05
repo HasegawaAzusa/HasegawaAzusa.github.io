@@ -37,8 +37,13 @@
 <meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC.png">
 <meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E6%8A%9B%E7%89%A9%E6%8F%92%E5%80%BC.png">
 <meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E5%89%8D%E5%90%91%E5%B7%AE%E5%88%86%E8%A1%A8.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E9%BE%99%E6%A0%BC%E7%8E%B0%E8%B1%A1.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/matlab%E5%AF%B9%E4%BA%8E%E5%AE%9E%E9%AA%8C%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8B%9F%E5%90%88.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E6%AE%8B%E5%B7%AE%E5%AE%9A%E4%B9%89.png">
+<meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E4%B8%80%E6%AC%A1%E6%9C%80%E4%BD%B3%E5%B9%B3%E6%96%B9%E9%80%BC%E8%BF%91%E6%8B%9F%E5%90%88%E7%A8%8B%E5%BA%A6.jpg">
+<meta property="og:image" content="https://hasegawaazusa.github.io/numerical-method-note/%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98.jpg">
 <meta property="article:published_time" content="2024-03-07T02:00:00.000Z">
-<meta property="article:modified_time" content="2024-04-02T14:35:12.952Z">
+<meta property="article:modified_time" content="2024-05-01T17:20:28.540Z">
 <meta property="article:author" content="qsdz">
 <meta property="article:tag" content="math">
 <meta name="twitter:card" content="summary">
@@ -100,7 +105,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">67</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">131</span></a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">67</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">133</span></a></li>
       <li class="menu-item menu-item-search">
         <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
         </a>
@@ -151,7 +156,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">计算方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE"><span class="nav-number">1.2.</span> <span class="nav-text">误差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E8%AF%AF%E5%B7%AE%E4%B8%8E%E7%9B%B8%E5%AF%B9%E8%AF%AF%E5%B7%AE"><span class="nav-number">1.3.</span> <span class="nav-text">绝对误差与相对误差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E6%95%88%E6%95%B0%E5%AD%97"><span class="nav-number">1.4.</span> <span class="nav-text">有效数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD"><span class="nav-number">1.5.</span> <span class="nav-text">误差的传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E5%88%99%E8%BF%90%E7%AE%97%E7%9A%84%E8%AF%AF%E5%B7%AE%E4%BC%A0%E6%92%AD"><span class="nav-number">1.6.</span> <span class="nav-text">四则运算的误差传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E4%BC%A0%E6%92%AD%E4%BE%8B%E9%A2%98"><span class="nav-number">1.7.</span> <span class="nav-text">误差传播例题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#section"><span class="nav-number">1.7.1.</span> <span class="nav-text">1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#section-1"><span class="nav-number">1.7.2.</span> <span class="nav-text">2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#section-2"><span class="nav-number">1.7.3.</span> <span class="nav-text">3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E6%94%B9%E5%96%84"><span class="nav-number">1.8.</span> <span class="nav-text">误差改善</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">1.8.1.</span> <span class="nav-text">选择数值稳定的算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E4%B8%A4%E4%B8%AA%E7%9B%B8%E8%BF%91%E7%9A%84%E6%95%B0%E7%9B%B8%E5%87%8F"><span class="nav-number">1.8.2.</span> <span class="nav-text">避免两个相近的数相减</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E5%A4%A7%E6%95%B0%E5%90%83%E5%B0%8F%E6%95%B0%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.8.3.</span> <span class="nav-text">避免大数“吃”小数现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E7%BB%9D%E5%AF%B9%E5%80%BC%E5%A4%AA%E5%B0%8F%E7%9A%84%E6%95%B0%E4%BD%9C%E9%99%A4%E6%95%B0"><span class="nav-number">1.8.4.</span> <span class="nav-text">避免绝对值太小的数作除数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8C%96%E8%AE%A1%E7%AE%97%E6%AD%A5%E9%AA%A4%E5%87%8F%E5%B0%91%E8%BF%90%E7%AE%97%E6%AC%A1%E6%95%B0"><span class="nav-number">1.8.5.</span> <span class="nav-text">简化计算步骤，减少运算次数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">插值法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.</span> <span class="nav-text">插值问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">多项式插值法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%94%AF%E4%B8%80%E8%A7%A3"><span class="nav-number">2.2.1.</span> <span class="nav-text">唯一解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E4%BC%B0%E8%AE%A1"><span class="nav-number">2.2.2.</span> <span class="nav-text">误差估计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">拉格朗日插值法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC"><span class="nav-number">2.3.1.</span> <span class="nav-text">线性插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%9B%E7%89%A9%E6%8F%92%E5%80%BC"><span class="nav-number">2.3.2.</span> <span class="nav-text">抛物插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E5%BD%A2%E5%BC%8F"><span class="nav-number">2.3.3.</span> <span class="nav-text">一般形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.3.4.</span> <span class="nav-text">优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%9B%E9%A1%BF%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">牛顿插值法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%84%E5%BE%8B%E5%BB%B6%E4%BC%B8"><span class="nav-number">2.4.1.</span> <span class="nav-text">规律延伸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%AE%E5%95%86"><span class="nav-number">2.4.2.</span> <span class="nav-text">差商</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%AE%E5%95%86%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">2.4.3.</span> <span class="nav-text">差商的性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%9B%E9%A1%BF%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="nav-number">2.4.4.</span> <span class="nav-text">牛顿多项式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%AE%E5%88%86"><span class="nav-number">2.4.5.</span> <span class="nav-text">差分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.4.5.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%B4%A8"><span class="nav-number">2.4.5.2.</span> <span class="nav-text">性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%89%E8%B7%9D%E8%8A%82%E7%82%B9%E7%89%9B%E9%A1%BF%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.4.6.</span> <span class="nav-text">等距节点牛顿插值法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%83%E5%B0%94%E7%B1%B3%E7%89%B9%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.5.</span> <span class="nav-text">埃尔米特插值法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%83%E5%B0%94%E7%B1%B3%E7%89%B9%E6%8F%92%E5%80%BC%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="nav-number">2.5.1.</span> <span class="nav-text">埃尔米特插值多项式</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">计算方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE"><span class="nav-number">1.2.</span> <span class="nav-text">误差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BB%9D%E5%AF%B9%E8%AF%AF%E5%B7%AE%E4%B8%8E%E7%9B%B8%E5%AF%B9%E8%AF%AF%E5%B7%AE"><span class="nav-number">1.3.</span> <span class="nav-text">绝对误差与相对误差</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%89%E6%95%88%E6%95%B0%E5%AD%97"><span class="nav-number">1.4.</span> <span class="nav-text">有效数字</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E7%9A%84%E4%BC%A0%E6%92%AD"><span class="nav-number">1.5.</span> <span class="nav-text">误差的传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E5%88%99%E8%BF%90%E7%AE%97%E7%9A%84%E8%AF%AF%E5%B7%AE%E4%BC%A0%E6%92%AD"><span class="nav-number">1.6.</span> <span class="nav-text">四则运算的误差传播</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E4%BC%A0%E6%92%AD%E4%BE%8B%E9%A2%98"><span class="nav-number">1.7.</span> <span class="nav-text">误差传播例题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#section"><span class="nav-number">1.7.1.</span> <span class="nav-text">1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#section-1"><span class="nav-number">1.7.2.</span> <span class="nav-text">2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#section-2"><span class="nav-number">1.7.3.</span> <span class="nav-text">3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E6%94%B9%E5%96%84"><span class="nav-number">1.8.</span> <span class="nav-text">误差改善</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%89%E6%8B%A9%E6%95%B0%E5%80%BC%E7%A8%B3%E5%AE%9A%E7%9A%84%E7%AE%97%E6%B3%95"><span class="nav-number">1.8.1.</span> <span class="nav-text">选择数值稳定的算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E4%B8%A4%E4%B8%AA%E7%9B%B8%E8%BF%91%E7%9A%84%E6%95%B0%E7%9B%B8%E5%87%8F"><span class="nav-number">1.8.2.</span> <span class="nav-text">避免两个相近的数相减</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E5%A4%A7%E6%95%B0%E5%90%83%E5%B0%8F%E6%95%B0%E7%8E%B0%E8%B1%A1"><span class="nav-number">1.8.3.</span> <span class="nav-text">避免大数“吃”小数现象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8D%E7%BB%9D%E5%AF%B9%E5%80%BC%E5%A4%AA%E5%B0%8F%E7%9A%84%E6%95%B0%E4%BD%9C%E9%99%A4%E6%95%B0"><span class="nav-number">1.8.4.</span> <span class="nav-text">避免绝对值太小的数作除数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E5%8C%96%E8%AE%A1%E7%AE%97%E6%AD%A5%E9%AA%A4%E5%87%8F%E5%B0%91%E8%BF%90%E7%AE%97%E6%AC%A1%E6%95%B0"><span class="nav-number">1.8.5.</span> <span class="nav-text">简化计算步骤，减少运算次数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">插值法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%92%E5%80%BC%E9%97%AE%E9%A2%98"><span class="nav-number">2.1.</span> <span class="nav-text">插值问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E9%A1%B9%E5%BC%8F%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">多项式插值法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%94%AF%E4%B8%80%E8%A7%A3"><span class="nav-number">2.2.1.</span> <span class="nav-text">唯一解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%AF%E5%B7%AE%E4%BC%B0%E8%AE%A1"><span class="nav-number">2.2.2.</span> <span class="nav-text">误差估计</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8B%89%E6%A0%BC%E6%9C%97%E6%97%A5%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">拉格朗日插值法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC"><span class="nav-number">2.3.1.</span> <span class="nav-text">线性插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%9B%E7%89%A9%E6%8F%92%E5%80%BC"><span class="nav-number">2.3.2.</span> <span class="nav-text">抛物插值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E5%BD%A2%E5%BC%8F"><span class="nav-number">2.3.3.</span> <span class="nav-text">一般形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="nav-number">2.3.4.</span> <span class="nav-text">优缺点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%89%9B%E9%A1%BF%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.4.</span> <span class="nav-text">牛顿插值法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%84%E5%BE%8B%E5%BB%B6%E4%BC%B8"><span class="nav-number">2.4.1.</span> <span class="nav-text">规律延伸</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%AE%E5%95%86"><span class="nav-number">2.4.2.</span> <span class="nav-text">差商</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%AE%E5%95%86%E7%9A%84%E6%80%A7%E8%B4%A8"><span class="nav-number">2.4.3.</span> <span class="nav-text">差商的性质</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%9B%E9%A1%BF%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="nav-number">2.4.4.</span> <span class="nav-text">牛顿多项式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B7%AE%E5%88%86"><span class="nav-number">2.4.5.</span> <span class="nav-text">差分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">2.4.5.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%A7%E8%B4%A8"><span class="nav-number">2.4.5.2.</span> <span class="nav-text">性质</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AD%89%E8%B7%9D%E8%8A%82%E7%82%B9%E7%89%9B%E9%A1%BF%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.4.6.</span> <span class="nav-text">等距节点牛顿插值法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%83%E5%B0%94%E7%B1%B3%E7%89%B9%E6%8F%92%E5%80%BC%E6%B3%95"><span class="nav-number">2.5.</span> <span class="nav-text">埃尔米特插值法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%83%E5%B0%94%E7%B1%B3%E7%89%B9%E6%8F%92%E5%80%BC%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="nav-number">2.5.1.</span> <span class="nav-text">埃尔米特插值多项式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%BE%99%E6%A0%BC%E7%8E%B0%E8%B1%A1"><span class="nav-number">2.6.</span> <span class="nav-text">龙格现象</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%AE%B5%E7%BA%BF%E6%80%A7%E6%8F%92%E5%80%BC"><span class="nav-number">2.7.</span> <span class="nav-text">分段线性插值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E6%AE%B5%E4%B8%89%E6%AC%A1%E5%9F%83%E5%B0%94%E7%B1%B3%E7%89%B9%E6%8F%92%E5%80%BC"><span class="nav-number">2.8.</span> <span class="nav-text">分段三次埃尔米特插值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E6%AC%A1%E6%A0%B7%E6%9D%A1%E6%8F%92%E5%80%BC"><span class="nav-number">2.9.</span> <span class="nav-text">三次样条插值</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E9%80%BC%E8%BF%91%E4%B8%8E%E6%9B%B2%E7%BA%BF%E6%8B%9F%E5%90%88"><span class="nav-number">3.</span> <span class="nav-text">函数逼近与曲线拟合</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E6%9B%B2%E7%BA%BF%E6%8B%9F%E5%90%88"><span class="nav-number">3.1.</span> <span class="nav-text">为什么需要曲线拟合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%87%BD%E6%95%B0%E9%80%BC%E8%BF%91"><span class="nav-number">3.2.</span> <span class="nav-text">函数逼近</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%85%E7%A7%AF%E4%B8%8E%E5%86%85%E7%A7%AF%E7%A9%BA%E9%97%B4"><span class="nav-number">3.3.</span> <span class="nav-text">内积与内积空间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E4%BA%A4%E5%A4%9A%E9%A1%B9%E5%BC%8F"><span class="nav-number">3.4.</span> <span class="nav-text">正交多项式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E4%BA%A4%E4%B8%89%E8%A7%92%E5%87%BD%E6%95%B0%E7%B3%BB"><span class="nav-number">3.5.</span> <span class="nav-text">正交三角函数系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%BD%E5%AF%86%E7%89%B9%E6%AD%A3%E4%BA%A4%E5%8C%96"><span class="nav-number">3.6.</span> <span class="nav-text">施密特正交化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%B9%B3%E6%96%B9%E9%80%BC%E8%BF%91"><span class="nav-number">3.7.</span> <span class="nav-text">最佳平方逼近</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%B9%B3%E6%96%B9%E9%80%BC%E8%BF%91%E7%A4%BA%E4%BE%8B"><span class="nav-number">3.8.</span> <span class="nav-text">最佳平方逼近示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E6%95%B0%E7%9F%A9%E9%98%B5"><span class="nav-number">3.9.</span> <span class="nav-text">系数矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%B3%95"><span class="nav-number">3.10.</span> <span class="nav-text">最小二乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E6%8B%9F%E5%90%88"><span class="nav-number">3.11.</span> <span class="nav-text">非线性最小二乘拟合</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -166,7 +171,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">131</span>
+          <span class="site-state-item-count">133</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -243,7 +248,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2024-04-02 22:35:12" itemprop="dateModified" datetime="2024-04-02T22:35:12+08:00">2024-04-02</time>
+      <time title="修改时间：2024-05-02 01:20:28" itemprop="dateModified" datetime="2024-05-02T01:20:28+08:00">2024-05-02</time>
     </span>
 
   
@@ -253,14 +258,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>14k</span>
+      <span>23k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>13 分钟</span>
+      <span>21 分钟</span>
     </span>
 </div>
 
@@ -1016,15 +1021,365 @@ f_n+\cdots+\frac{t(t-1)\cdots(t-n+1)}{n!}\nabla^n f_n
 </blockquote>
 <h2 id="埃尔米特插值法">埃尔米特插值法</h2>
 <h3 id="埃尔米特插值多项式">埃尔米特插值多项式</h3>
-<p>许多实际的插值问题不但要求节点处函数值相同，还要求它的函数有相同的一阶、二阶导数。</p>
-<p>满足这种要求的插值多项式就是埃尔米特插值多项式，其插值多项式有 <span class="math inline">\(2n+1\)</span> 次数，即 <span class="math display">\[
-H_{2n+1}(x)=a_0+a_1x+\cdots+a_{2n+1}x^{2n+1}
-\]</span> 故需要 <span class="math inline">\(2n+2\)</span>
+<p>许多实际的插值问题不但要求节点处函数值相同，还要求它的函数有相同的一阶、二阶导数，满足这种要求的插值多项式就是埃尔米特插值多项式。</p>
+<p>故需要 <span class="math inline">\(2n+2\)</span>
 个条件（数据点），其满足 <span class="math display">\[
-H_{2n+1}(x_i)=f(x_i),H&#39;_{2n+1}(x_i)=f&#39;(x_i)
+\begin{cases}
+H_{2n+1}(x_i)=f(x_i)\\
+H&#39;_{2n+1}(x_i)=f&#39;(x_i)
+\end{cases}
 \]</span> 余项为 <span class="math display">\[
 R(x)=\frac{f^{2n+2}(\xi)}{(2n+2)!}w_{n+1}^2(x)
+\]</span> 为了满足条件，那么埃尔米特插值多项式的一般公式为 <span class="math display">\[
+H(x)=\sum^n_{i=0}[\alpha_i(x)y_i+\beta_i(x)y_i&#39;]
+\]</span> 其中，<span class="math inline">\(\alpha_i(x)\)</span>
+主管函数值，其导数值要为 0；<span class="math inline">\(\beta_i(x)\)</span> 主管导数值，函数值为 0。</p>
+<p>一个满足条件的函数为 <span class="math display">\[
+\begin{cases}
+\alpha_i(x)=[1-2(x-x_i)l_i&#39;(x_i)][l_i(x)]^2\\
+\beta_i(x)=(x-x_i)[l_i(x)]^2
+\end{cases}
 \]</span></p>
+<h2 id="龙格现象">龙格现象</h2>
+<p>龙格（Runge）现象指的是当对函数进行高次插值时，插值多项式 <span class="math inline">\(\varphi_n(x)\)</span> 对 <span class="math inline">\(f(x)\)</span> 的逼近效果反而会更差。</p>
+<p>比如说 <span class="math inline">\(f(x)=1/(1+x_i^2)\)</span>，对该函数进行 <span class="math inline">\(n\)</span>
+次插值，可以得到不同次数下拉格朗日插值多项式的比较图</p>
+<figure>
+<img src="/numerical-method-note/%E9%BE%99%E6%A0%BC%E7%8E%B0%E8%B1%A1.png" alt="龙格现象">
+<figcaption aria-hidden="true">龙格现象</figcaption>
+</figure>
+<p>并不是插值多项式的次数越高，插值效果越好，精度也不一定是随次数的提高而升高。</p>
+<p>故<strong>不适宜在大范围使用高次代数插值</strong>。</p>
+<h2 id="分段线性插值">分段线性插值</h2>
+<p>基于龙格现象的理论，既然大范围使用代数插值效果不好，那么就说明小范围使用代数插值效果是良好的，那对于多个紧凑的数据点，不妨通过分段插值的方式，使得各个插值点用折线段连接起来，便得到了一个分段插值函数。</p>
+<p>在一定区间内，可证明的是，计算量与 <span class="math inline">\(n\)</span> 无关，<span class="math inline">\(n\)</span> 越大误差越小。</p>
+<h2 id="分段三次埃尔米特插值">分段三次埃尔米特插值</h2>
+<h2 id="三次样条插值">三次样条插值</h2>
+<h1 id="函数逼近与曲线拟合">函数逼近与曲线拟合</h1>
+<h2 id="为什么需要曲线拟合">为什么需要曲线拟合</h2>
+<p>插值法的核心要求是，插值函数要经过数据点中的所有点，但实际上的实验数据并不都是完美接近理论的，总会存在一定的噪声使得数据点偏离，这时插值法实际上并不能很好地拟合原函数。</p>
+<figure>
+<img src="/numerical-method-note/matlab%E5%AF%B9%E4%BA%8E%E5%AE%9E%E9%AA%8C%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8B%9F%E5%90%88.png" alt="matlab对于实验数据的拟合">
+<figcaption aria-hidden="true">matlab对于实验数据的拟合</figcaption>
+</figure>
+<p>此时我们可以回归原本，我们为什么想要拟合函数经过数据点中的所有点呢？</p>
+<p>因为希望说拟合函数逼近原函数。</p>
+<p>这也是函数逼近问题：在实际应用中常需为解析式比较复杂的函数<strong>寻找一个简单函数来近似代替它</strong>，并<strong>要求其误差在某种度量意义下最小</strong>。</p>
+<p>曲线拟合问题：在实际应用中，往往并不需要曲线通过给定的数据点，而只要求<strong>用曲线（函数）近似代替给定的列表函数</strong>时，其<strong>误差在某种度量意义下最小</strong>。</p>
+<p><strong>最佳逼近问题：要求在被插函数的定义区间上都有较好的近似。</strong></p>
+<h2 id="函数逼近">函数逼近</h2>
+<figure>
+<img src="/numerical-method-note/%E6%AE%8B%E5%B7%AE%E5%AE%9A%E4%B9%89.png" alt="残差定义">
+<figcaption aria-hidden="true">残差定义</figcaption>
+</figure>
+<p>我们定义，近似函数求得的近似值 <span class="math inline">\(y_i^*\)</span> 与观测值 <span class="math inline">\(y_i\)</span> 的差 <span class="math inline">\(\delta=y_i-y_i^*\)</span>
+称为<strong>残差</strong>。</p>
+<p>那么为了度量近似函数的好坏，常用的准则为</p>
+<ul>
+<li>使残差的最大绝对值 <span class="math inline">\(\max_i|\delta_i|\)</span> 最小</li>
+<li>使残差的绝对值之和 <span class="math inline">\(\sum|\delta_i|\)</span> 最小</li>
+<li>使残差的平方和 <span class="math inline">\(\sum\delta_i^2\)</span>
+最小</li>
+</ul>
+<blockquote>
+<p>准则 1、2 有绝对值，计算时不方便。</p>
+</blockquote>
+<p>准则 1 求近似函数的方法称为函数的最佳一致逼近。</p>
+<p>准则 3
+确定参数求近似函数的方法称为函数的最佳平方逼近（对连续函数），也称曲线拟合的最小二乘法（对离散数据）。</p>
+<h2 id="内积与内积空间">内积与内积空间</h2>
+<p>在曾经学过，两个向量的内积定义和范数定义是 <span class="math display">\[
+\begin{cases}
+(\mathbf{x},\mathbf{y})=\sum x_iy_i\\
+\|\mathbf{x}\|_2=\sqrt{(\mathbf{x},\mathbf{x})}=\sqrt{\sum x_i^2}
+\end{cases}
+\]</span>
+在某些问题中，向量中每个分量的重要性是不相同的，比如说在机器学习中，可能前几个分量的重要性高，而后几个分量的重要性低，此时我们就会引入权重
+<span class="math inline">\(w_i\)</span>
+来表征<strong>各个分量的重要性</strong>，即 <span class="math display">\[
+\begin{cases}
+(\mathbf{x},\mathbf{y})=\sum w_ix_iy_i\\
+\|\mathbf{x}\|_2=\sqrt{(\mathbf{x},\mathbf{x})}=\sqrt{\sum w_ix_i^2}
+\end{cases}
+\]</span>
+向量是离散的，如果说扩展内积的定义，延伸到连续函数上，那么求和就变成了积分，假定两个连续函数
+<span class="math inline">\(f,g\in
+C[a,b]\)</span>，那么<strong>函数内积</strong>的定义为 <span class="math display">\[
+\begin{cases}
+(f,g)=\int^b_af(x)g(x)\mathrm{d}x\\
+\|f\|_2=\sqrt{(f,f)}=\sqrt{\int^b_af^2(x)\mathrm{d}x}
+\end{cases}
+\]</span> 带权重的函数内积同理。</p>
+<blockquote>
+<p>在机器学习中，权函数 <span class="math inline">\(w(x)=1\)</span>
+意味着<strong>区间中所有点具有同等重要性</strong>；</p>
+<p>权函数 <span class="math inline">\(w(x)=\frac{1}{\sqrt{1-x^2}}\)</span>
+意味着<strong>靠近区间端点处的点更加重要而区间中点处的点最不重要</strong>。</p>
+</blockquote>
+<h2 id="正交多项式">正交多项式</h2>
+<p>离散型正交多项式可作为基函数用于<strong>曲线拟合</strong>，提高算法的稳定性；</p>
+<p>连续型正交多项式可作为基函数用于<strong>高斯型求积公式</strong>的构造。</p>
+<p>正交的定义是内积为 0，对于函数内积也是一样的，即如果满足以下式子
+<span class="math display">\[
+(f,g)=\int^b_af(x)g(x)\mathrm{d}x=0
+\]</span> 那么我们称 <span class="math inline">\(f(x)\)</span> 与 <span class="math inline">\(g(x)\)</span> 在 <span class="math inline">\([a,b]\)</span> 上<strong>正交</strong>。</p>
+<p>如果说函数族 <span class="math inline">\(\varphi_0(x),\varphi_1(x),\cdots,\varphi_n(x)\)</span>
+满足关系 <span class="math display">\[
+\begin{align}
+(\varphi_i,\varphi_j)=\int_a^b\varphi_i(x)\varphi_j(x)\mathrm{d}x=\begin{cases}
+0,&amp;i\neq j\\
+A_j,&amp;i=j
+\end{cases}
+\end{align}
+\]</span> 那么称 <span class="math inline">\(\{\varphi_i(x)\}\)</span>
+是 <span class="math inline">\([a,b]\)</span>
+上的<strong>正交函数系</strong>。</p>
+<p>特别地，如果 <span class="math inline">\(A_j=1\)</span>，那么称之为<strong>标准正交函数系</strong>。</p>
+<blockquote>
+<p>带权也是同理。</p>
+</blockquote>
+<h2 id="正交三角函数系">正交三角函数系</h2>
+<p>三角函数系为 <span class="math display">\[
+\{1,\cos x,\sin x,\cos 2x,\sin 2x,\cdots\},x\in[-\pi,\pi]
+\]</span> 可以计算得到任意两个<strong>不同函数</strong>在 <span class="math inline">\([-\pi,\pi]\)</span> 上的内积（积分）为 0 <span class="math display">\[
+\begin{align}
+\int^\pi_{-\pi}\cos {(nx)} \mathrm{d}x=0\\
+\int^\pi_{-\pi}\sin {(nx)} \mathrm{d}x=0\\
+\int^\pi_{-\pi}\sin {(mx)}\cos {(nx)} \mathrm{d}x=0\\
+\int^\pi_{-\pi}\cos {(mx)}\sin {(nx)} \mathrm{d}x=0\\
+\end{align}
+\]</span> 而任意两个相同函数在 <span class="math inline">\([-\pi,\pi]\)</span> 上的内积（积分）为正数 <span class="math display">\[
+\begin{align}
+(1,1)=2\pi\\
+(\sin{(kx)},\sin{(kx)})=\pi\\
+(\cos{(kx)},\cos{(kx)})=\pi
+\end{align}
+\]</span></p>
+<h2 id="施密特正交化">施密特正交化</h2>
+<p>在线性代数中学习可知，对于一组线性无关向量组 <span class="math inline">\(\alpha_1,\alpha_2,\cdots,\alpha_m\)</span>，那么可以通过以下方式计算得到
+<span class="math display">\[
+\begin{cases}
+\beta_1=\alpha_1\\
+\beta_2=\alpha_2-\frac{(\alpha_2,\beta_1)}{(\beta_1,\beta_1)}\beta_1\\
+\vdots\\
+\beta_m=\alpha_m-\frac{(\alpha_m,\beta_1)}{(\beta_1,\beta_1)}\beta_1-\frac{(\alpha_m,\beta_2)}{(\beta_2,\beta_2)}\beta_2-\cdots-\frac{(\alpha_m,\beta_{m-1})}{(\beta_{m-1},\beta_{m-1})}\beta_{m-1}
+\end{cases}
+\]</span> 其中，<span class="math inline">\(\beta_1,\beta_2,\cdots,\beta_m\)</span>
+就是一组<strong>正交向量组</strong>。</p>
+<p>如果再令 <span class="math display">\[
+e_i=\frac{\beta_i}{\|\beta_i\|}
+\]</span> 那么 <span class="math inline">\(e_1,e_2,\cdots,e_m\)</span>
+就是一组<strong>标准正交向量组</strong>。</p>
+<p>那么同样的，如果说我们对一族线性无关的幂函数 <span class="math display">\[
+\{1,x,\cdots,x^m\}
+\]</span>
+通过施密特正交化的方式也可以得到一族<strong>正交函数系</strong>。</p>
+<p>可以成立如下递推关系式 <span class="math display">\[
+\varphi_{n+1}(x)=(x-\alpha_n)\varphi_n(x)-\beta_n\varphi_{n-1}(x)
+\]</span> 其中， <span class="math display">\[
+\begin{cases}
+\varphi_0(x)=1,\varphi_{-1}(x)=0\\
+\alpha_n=\displaystyle\frac{(x\varphi_n(x),\varphi_n(x))}{(\varphi_n(x),\varphi_n(x))}\\
+\beta_n=\displaystyle\frac{(\varphi_n(x),\varphi_n(x))}{(\varphi_{n-1}(x),\varphi_{n-1}(x))}
+\end{cases}
+\]</span> 在区间 <span class="math inline">\([0,1]\)</span> 上的结果如下
+<span class="math display">\[
+\begin{cases}
+\varphi_0(x)=1\\
+\varphi_1(x)=x-\frac{1}{2}\\
+\varphi_2(x)=x^2-x+\frac{1}{6}\\
+\varphi_3(x)=x^3-\frac{3}{2}x^2+\frac{3}{5}x-\frac{1}{20}\\
+\varphi_4(x)=x^4-2x^3+\frac{9}{7}x^2-\frac{2}{7}x+\frac{1}{70}\\
+\varphi_5(x)=x^5-\frac{5}{2}x^4+\frac{20}{9}x^3-\frac{5}{6}x^2+\frac{5}{42}x-\frac{1}{252}\\
+\varphi_6(x)=x^6-3x^5+\frac{75}{22}x^4-\frac{20}{11}x^3+\frac{5}{11}x^2-\frac{1}{22}x+\frac{1}{924}\\
+\end{cases}
+\]</span> 在区间 <span class="math inline">\([-1,1]\)</span>
+的结果会更简单些（因为奇函数积分为 0），即 <span class="math display">\[
+\begin{cases}
+\varphi_0(x)=1\\
+\varphi_1(x)=x\\
+\varphi_2(x)=x^2-\frac{1}{3}\\
+\varphi_3(x)=x^3-\frac{3}{5}x\\
+\varphi_4(x)=x^4-\frac{6}{7}x^2+\frac{3}{35}\\
+\varphi_5(x)=x^5-\frac{10}{9}x^3+\frac{5}{21}x\\
+\varphi_6(x)=x^6-\frac{15}{11}x^4+\frac{5}{11}x^2-\frac{5}{231}\\
+\varphi_7(x)=x^7-\frac{231}{143}x^5+\frac{105}{143}x^3-\frac{25}{429}x
+\end{cases}
+\]</span> 常用的正交多项式有</p>
+<ul>
+<li>勒让德(Legendre)多项式</li>
+<li>切比雪夫(Chebyshev)多项式</li>
+<li>拉盖尔(Laguerre)多项式</li>
+<li>第二类切比雪夫(Chebyshev)多项式</li>
+<li>埃尔米特(Hermite)多项式</li>
+</ul>
+<h2 id="最佳平方逼近">最佳平方逼近</h2>
+<p>在函数逼近问题中，以残差的平方 <span class="math inline">\(\delta_i^2\)</span>
+最小作为准则就是<strong>最佳平方逼近方法</strong>，而对应的拟合函数称为<strong>最佳平方逼近函数</strong>。</p>
+<p>设 <span class="math inline">\(f(x)\)</span> 在区间 <span class="math inline">\([a,b]\)</span> 上连续，<span class="math inline">\(\varphi_i(x)\)</span> 是一组线性无关的连续函数，即
+<span class="math display">\[
+H=\mathrm{span}\{1,x,\cdots,x^n\}
+\]</span> 若 <span class="math inline">\(\varphi(x)=a_0+a_1x+\cdots+a_nx^n\)</span>，使得
+<span class="math display">\[
+F(a_0,a_1,\cdots,a_n)=\int^b_a[f(x)-\varphi(x)]^2\mathrm{d}x
+\]</span> 最小，则称 <span class="math inline">\(\varphi(x)\)</span> 为
+<span class="math inline">\(f(x)\)</span> 在空间 <span class="math inline">\(H\)</span> 中的 <strong><span class="math inline">\(n\)</span> 次最佳平方逼近多项式</strong>。</p>
+<p>根据多元函数取极值的必要条件可得 <span class="math display">\[
+\frac{\partial F}{\partial
+a_i}=-2\int^b_a[f(x)-\varphi(x)]\varphi_i(x)\mathrm{d}x=0
+\]</span> 即 <span class="math display">\[
+\sum^n_{j=0}a_j\int^b_a\varphi_i(x)\varphi_j(x)\mathrm{d} x=\int^b_a
+f(x)\varphi_i(x)\mathrm{d}x,i=0,\cdots,n
+\]</span> 将积分转化为函数内积的表现形式，为 <span class="math display">\[
+\sum^n_{j=0}(\varphi_i(x),\varphi_j(x))a_j=(f(x),\varphi_i(x)),i=0,\cdots,n
+\]</span> 改写为矩阵形式为 <span class="math display">\[
+\begin{bmatrix}
+(\varphi_0,\varphi_0)&amp;(\varphi_0,\varphi_1)&amp;\cdots&amp;(\varphi_0,\varphi_n)\\
+(\varphi_1,\varphi_0)&amp;(\varphi_1,\varphi_1)&amp;\cdots&amp;(\varphi_1,\varphi_n)\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+(\varphi_n,\varphi_0)&amp;(\varphi_n,\varphi_1)&amp;\cdots&amp;(\varphi_n,\varphi_n)
+\end{bmatrix}
+\begin{bmatrix}
+a_0\\
+a_1\\
+\vdots\\
+a_n
+\end{bmatrix}=
+\begin{bmatrix}
+(f,\varphi_0)\\
+(f,\varphi_1)\\
+\vdots\\
+(f,\varphi_n)
+\end{bmatrix}
+\]</span> 由于 <span class="math inline">\(\varphi_0,\varphi_1,\cdots,\varphi_n\)</span>
+线性无关，故<strong>方程组仅有唯一解</strong>。</p>
+<h2 id="最佳平方逼近示例">最佳平方逼近示例</h2>
+<p>比如说 <span class="math inline">\(f(x)=\cos{(\pi x)}\)</span> 在
+<span class="math inline">\([0,1]\)</span>
+上的<strong>一次最佳平方逼近多项式</strong>。</p>
+<p>取 <span class="math inline">\(\varphi_0(x)=1,\varphi_1(x)=x\)</span>，即 <span class="math display">\[
+H=\mathrm{span}\{1,x\}
+\]</span> 那么 <span class="math display">\[
+\begin{cases}
+(\varphi_0,\varphi_0)=\displaystyle\int^1_0 1\mathrm{d}x=1\\
+(\varphi_0,\varphi_1)=(\varphi_1,\varphi_0)=\displaystyle\int^1_0
+x\mathrm{d}x=\frac{1}{2}\\
+(\varphi_1,\varphi_1)=\displaystyle\int^1_0 x^2\mathrm{d}x=\frac{1}{3}\\
+(f,\varphi_0)=\displaystyle\int^1_0 \cos{(\pi x)}\mathrm{d}x=0\\
+(f,\varphi_1)=\displaystyle\int^1_0 x\cos{(\pi
+x)}\mathrm{d}x=-\frac{2}{\pi^2}\\
+\end{cases}
+\]</span> 那么列出方程 <span class="math display">\[
+\begin{cases}
+a_0+\frac{1}{2}a_1=0\\
+\frac{1}{2}a_0+\frac{1}{3}a_1=-\displaystyle\frac{2}{\pi^2}
+\end{cases}
+\]</span> 可以解得 <span class="math display">\[
+\begin{cases}
+a_0=1.2159\\
+a_1=-2.4317
+\end{cases}
+\]</span> 那么一次最佳平方逼近多项式为 <span class="math display">\[
+\varphi(x)=1.2159-2.4317x
+\]</span> 也可以根据极值条件有 <span class="math display">\[
+F(a_0,a_1)=\int^1_0[\cos{(\pi x)-a_0-a_1x}]^2\mathrm{d}x
+\]</span> 使得 <span class="math display">\[
+\begin{cases}
+\displaystyle\frac{\partial F}{\partial a_0}=2\int^1_0-[\cos{(\pi
+x)-a_0-a_1x}]\mathrm{d}x=2a_0+a_1=0\\
+\displaystyle\frac{\partial F}{\partial a_1}=2\int^1_0-x[\cos{(\pi
+x)-a_0-a_1x}]\mathrm{d}x=2(\frac{2}{\pi^2}+\frac{1}{2}a_0+\frac{1}{3}a_1)=0\\
+\end{cases}
+\]</span> <img src="/numerical-method-note/%E4%B8%80%E6%AC%A1%E6%9C%80%E4%BD%B3%E5%B9%B3%E6%96%B9%E9%80%BC%E8%BF%91%E6%8B%9F%E5%90%88%E7%A8%8B%E5%BA%A6.jpg" alt="一次最佳平方逼近拟合程度"></p>
+<h2 id="系数矩阵">系数矩阵</h2>
+<p>从上文不难发现，<span class="math inline">\((\varphi_i,\varphi_j)\)</span> 都是常数，即 <span class="math display">\[
+\begin{bmatrix}
+1&amp;1/2&amp;\cdots&amp;1/(n+1)\\
+1/2&amp;1/3&amp;\cdots&amp;1/(n+2)\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+1/(n+1)&amp;1/(n+2)&amp;\cdots&amp;1/(2n+1)
+\end{bmatrix}
+\]</span> 而此时如果 <span class="math inline">\(H\)</span>
+取正交函数系，那么可以进一步简化为 <span class="math display">\[
+\begin{bmatrix}
+(\varphi_0,\varphi_0)&amp;0&amp;\cdots&amp;0\\
+0&amp;(\varphi_1,\varphi_1)&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;(\varphi_n,\varphi_n)
+\end{bmatrix}
+\begin{bmatrix}
+a_0\\
+a_1\\
+\vdots\\
+a_n
+\end{bmatrix}=
+\begin{bmatrix}
+(f,\varphi_0)\\
+(f,\varphi_1)\\
+\vdots\\
+(f,\varphi_n)
+\end{bmatrix}
+\]</span> 对于不同的正交多项式，其系数矩阵均为常数。</p>
+<h2 id="最小二乘法">最小二乘法</h2>
+<p>最佳平方逼近是针对于函数逼近问题的，但实际应用中我们更希望的是给予一堆数据点，然后对其作<strong>曲线拟合</strong>，往往我们并不知道原函数。</p>
+<p>由于数据点是离散的，套用最佳平方逼近的准则是行不通的，需要做一点点改进
+<span class="math display">\[
+\sum \delta_i^2=\sum [y_i-P_m(x_i)]^2
+\]</span> 使得残差平方和最小就是最小二乘法的准则，其中 <span class="math inline">\(P_m(x)\)</span> 称为这组数据的<strong>最小二乘
+<span class="math inline">\(m\)</span> 次拟合多项式</strong>。</p>
+<p>与最佳平方逼近同样的道理，令 <span class="math display">\[
+F(a_0,a_1,\cdots,a_n)=\sum_{i=1}^n[y_i-P_m(x_i)]^2
+\]</span> 那么由极值的必要条件，得 <span class="math display">\[
+\frac{\partial F}{\partial a_i}=-2\sum_{i=1}^n
+[y_i-P_m(x_i)]\varphi_j(x_i)\mathrm{d}x=0
+\]</span> 整理可得 <span class="math display">\[
+\sum_{i=1}^n P_m(x_i)=\sum_{i=1}^n y_i
+\]</span> 那么转化为正规方程组 <span class="math display">\[
+\begin{cases}
+\displaystyle a_0n+a_1\sum_{i=1}^n x_i+\cdots+a_m\sum_{i=1}^n
+x_i^m=\sum_{i=1}^n y_i\\
+\displaystyle a_0\sum_{i=1}^n x_i+a_1\sum_{i=1}^n
+x_i^2+\cdots+a_m\sum_{i=1}^n x_i^{m+1}=\sum_{i=1}^n y_ix_i\\
+\vdots\\
+\displaystyle a_0\sum_{i=1}^n x_i^m+a_1\sum_{i=1}^n
+x_i^{m+1}+\cdots+a_m\sum_{i=1}^n x_i^{2m}=\sum_{i=1}^n y_ix_i^m\\
+\end{cases}
+\]</span> 转化为矩阵形式为 <span class="math display">\[
+\mathbf{Q}^T\mathbf{Q}\mathbf{A}=\mathbf{Q}^T\mathbf{Y}
+\]</span> 其中， <span class="math display">\[
+\begin{align}
+\mathbf{Q}&amp;=\begin{bmatrix}
+1&amp;x_1&amp;\cdots&amp;x_1^m\\
+1&amp;x_2&amp;\cdots&amp;x_2^m\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+1&amp;x_n&amp;\cdots&amp;x_n^m\\
+\end{bmatrix}\\
+\mathbf{Q}^T\mathbf{Q}&amp;=\begin{bmatrix}
+n&amp;\sum_1^n x_i&amp;\cdots&amp;\sum_1^n x_i^m\\
+\sum_1^n x_i&amp;\sum_1^n x_i^2&amp;\cdots&amp;\sum_1^n x_i^{m+1}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\sum_1^n x_i^m&amp;\sum_1^n x_i^{m+1}&amp;\cdots&amp;\sum_1^n x_i^{2m}\\
+\end{bmatrix}\\
+\mathbf{A}&amp;=\begin{bmatrix}
+a_0\\
+a_1\\
+\vdots\\
+a_m
+\end{bmatrix},\mathbf{Y}=\begin{bmatrix}
+y_0\\
+y_1\\
+\vdots\\
+y_n
+\end{bmatrix}
+\end{align}
+\]</span> 该方程组的解对应的多项式就是满足已知数据组的最小二乘 <span class="math inline">\(m\)</span>
+次拟合多项式由于多项式拟合中的正规方程组为线性方程组，所以称其为<strong>线性最小二乘问题</strong>。</p>
+<h2 id="非线性最小二乘拟合">非线性最小二乘拟合</h2>
+<p>高中就学过，如何对非线性数据作最小二乘拟合。</p>
+<figure>
+<img src="/numerical-method-note/%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98.jpg" alt="非线性最小二乘">
+<figcaption aria-hidden="true">非线性最小二乘</figcaption>
+</figure>
 
     </div>
 
@@ -1097,13 +1452,13 @@ R(x)=\frac{f^{2n+2}(\xi)}{(2n+2)!}w_{n+1}^2(x)
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">845k</span>
+    <span title="站点总字数">863k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">12:48</span>
+    <span title="站点阅读时长">13:04</span>
   </span>
 </div>
 

